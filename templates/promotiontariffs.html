@@ -1,0 +1,62 @@
+<!--// $Id$ //-->
+<TABLE WIDTH="100%" CELLPADDING="3">
+    <TR CLASS="DARK">
+	    <TD width="100%" class="fall hand" align="left" nowrap="nowrap" onClick="showOrHide('promotiontariffs');">
+	        <IMG SRC="img/money.gif" ALT="">
+			<B>{t a=$promotion.tariffs|@count}Promotion's Tariffs ($a):{/t}</B>
+        </TD>
+    </TR>
+	<TR id="promotiontariffs" style="display:none;">
+	    <TD WIDTH="100%" class="fall">
+	        <TABLE cellpadding="5" cellspacing="0" WIDTH="100%">
+				<TR class="dark">
+					<TD CLASS="fleftu" width="95%" NOWRAP><B>{trans("Name:")}</B></TD>
+					<TD CLASS="fbt" width="1%" align="right" NOWRAP>{trans("ID:")}</TD>
+					<TD CLASS="fbt" width="1%" align="right" NOWRAP><B>{trans("Value")}:</B></TD>
+					<TD CLASS="fbt" width="1%" align="right" NOWRAP>{trans("Downceil:")}</TD>
+					<TD CLASS="fbt" width="1%" align="right" NOWRAP>{trans("Upceil:")}</TD>
+					<TD CLASS="frightu" width="1%">&nbsp;</TD>
+			    </TR>
+				{cycle values="light,lucid" print=false name=tariffs}
+				{foreach from=$promotion.tariffs item=tariff}
+				<TR class="{cycle name=tariffs}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+					<TD onClick="return self.location.href='?m=tariffinfo&id={$tariff.id}';" NOWRAP>
+						<B>{$tariff.name}</B>
+					</TD>
+					<TD align="right" onClick="return self.location.href='?m=tariffinfo&id={$tariff.id}';" NOWRAP>
+						({$tariff.id|string_format:"%04d"})
+					</TD>
+					<TD onClick="return self.location.href='?m=tariffinfo&id={$tariff.id}';" NOWRAP>
+					    <B>{$tariff.value|string_format:"%.2f"}</B>
+					</TD>
+					<TD onClick="return self.location.href='?m=tariffinfo&id={$tariff.id}';" NOWRAP>
+					    {if $tariff.downceil}{$tariff.downceil} kbit/s{else}-{/if}
+					</TD>
+					<TD onClick="return self.location.href='?m=tariffinfo&id={$tariff.id}';" NOWRAP>
+					    {if $tariff.upceil}{$tariff.upceil} kbit/s{else}-{/if}
+					</TD>
+					<TD>
+						<A HREF="?m=promotionedit&action=tariffdel&id={$promotion.id}&tid={$tariff.id}" OnClick="return confirmLink(this, '{trans("Are you sure, you want to delete this assignment?")}');"><IMG SRC="img/delete.gif" ALT="[ {trans("Delete assignment")} ]" TITLE="[ {trans("Delete assignment")} ]"></A>
+					</TD>
+				</TR>
+				{foreachelse}
+				<TR>
+					<TD colspan="6" align="center">
+						<p>&nbsp;</p>
+						<p><B>{trans("This promotion has no assigned tariffs.")}</b></p>
+						<p>&nbsp;</p>
+					</TD>
+				</TR>
+				{/foreach}
+			</TABLE>
+		</TD>
+	</TR>
+</TABLE>
+<SCRIPT type="text/javascript">
+<!--
+if (getCookie('promotiontariffs') == '1')
+{
+	document.getElementById('promotiontariffs').style.display = '';
+}
+//-->
+</SCRIPT>

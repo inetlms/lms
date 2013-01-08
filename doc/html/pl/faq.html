@@ -1,0 +1,503 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>FAQ</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Moduły"
+HREF="userpanel-modules.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="userpanel-modules.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+>&nbsp;</TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="FAQ"
+></A
+>Rozdzia&#322; 10. FAQ</H1
+><DIV
+CLASS="QANDASET"
+><DL
+><DT
+>10.1. <A
+HREF="faq.html#Q1"
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Co zrobić gdy nie generuje się mapa sieci?</B
+></SPAN
+></A
+></DT
+><DT
+>10.2. <A
+HREF="faq.html#Q2"
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Jak dodać dwa komputery z tym samym adresem IP?</B
+></SPAN
+></A
+></DT
+><DT
+>10.3. <A
+HREF="faq.html#Q3"
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Jak dodać dwa komputery z tym samym adresem MAC?</B
+></SPAN
+></A
+></DT
+><DT
+>10.4. <A
+HREF="faq.html#Q4"
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Co oznacza błąd <SAMP
+CLASS="PROMPT"
+>Can't locate Config/IniFiles.pm in @INC ...</SAMP
+>?</B
+></SPAN
+></A
+></DT
+><DT
+>10.5. <A
+HREF="faq.html#Q5"
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Zrobiłem parę poprawek. Jak mogę dodać je do LMSa?</B
+></SPAN
+></A
+></DT
+><DT
+>10.6. <A
+HREF="faq.html#Q6"
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Która wersja LMSa jest najnowsza, a która najlepsza dla mnie?</B
+></SPAN
+></A
+></DT
+><DT
+>10.7. <A
+HREF="faq.html#Q7"
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Jak wypisać się z listy mailingowej?</B
+></SPAN
+></A
+></DT
+><DT
+>10.8. <A
+HREF="faq.html#Q9"
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Insecure $ENV{BASH_ENV} while running -T switch...</B
+></SPAN
+></A
+></DT
+></DL
+><DIV
+CLASS="QANDAENTRY"
+><DIV
+CLASS="QUESTION"
+><P
+><A
+NAME="Q1"
+></A
+><B
+>10.1. </B
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Co zrobić gdy nie generuje się mapa sieci?</B
+></SPAN
+></P
+></DIV
+><DIV
+CLASS="ANSWER"
+><P
+><B
+> </B
+>Pierwsze co należy sprawdzić, to logi serwera www. 
+		Najczęściej pomaga zwiększenie parametru <SAMP
+CLASS="PROMPT"
+>memory_limit</SAMP
+>
+		w <TT
+CLASS="FILENAME"
+>php.ini</TT
+>.</P
+></DIV
+></DIV
+><DIV
+CLASS="QANDAENTRY"
+><DIV
+CLASS="QUESTION"
+><P
+><A
+NAME="Q2"
+></A
+><B
+>10.2. </B
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Jak dodać dwa komputery z tym samym adresem IP?</B
+></SPAN
+></P
+></DIV
+><DIV
+CLASS="ANSWER"
+><P
+><B
+> </B
+>Nie ma takiej możliwości. Co więcej, autorzy nie przewidują
+		takiej funkcjonalności w najbliższej przyszłości. Jednak masz jeszcze
+		szansę skorzystać z patch'a <SAMP
+CLASS="PROMPT"
+>multiip</SAMP
+> znajdującego
+		się w <SAMP
+CLASS="PROMPT"
+>contrib</SAMP
+>.</P
+></DIV
+></DIV
+><DIV
+CLASS="QANDAENTRY"
+><DIV
+CLASS="QUESTION"
+><P
+><A
+NAME="Q3"
+></A
+><B
+>10.3. </B
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Jak dodać dwa komputery z tym samym adresem MAC?</B
+></SPAN
+></P
+></DIV
+><DIV
+CLASS="ANSWER"
+><P
+><B
+> </B
+>A dokumentację przejrzałeś? Do tego służy opcja <SAMP
+CLASS="PROMPT"
+>		allow_mac_sharing = 1</SAMP
+>.</P
+></DIV
+></DIV
+><DIV
+CLASS="QANDAENTRY"
+><DIV
+CLASS="QUESTION"
+><P
+><A
+NAME="Q4"
+></A
+><B
+>10.4. </B
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Co oznacza błąd <SAMP
+CLASS="PROMPT"
+>Can't locate Config/IniFiles.pm in @INC ...</SAMP
+>?</B
+></SPAN
+></P
+></DIV
+><DIV
+CLASS="ANSWER"
+><P
+><B
+> </B
+>Prawdopodobnie nie masz zainstalowanych wymaganych modułów 
+		Perla, w tym wypadku chodzi o <TT
+CLASS="FILENAME"
+>Config::IniFiles</TT
+>.
+		Najwygodniejszym sposobem instalacji modułów jest skorzystanie z CPANu
+		w następujący sposób: 
+		<SAMP
+CLASS="PROMPT"
+>perl -MCPAN -e 'install Config::IniFiles'</SAMP
+>.</P
+></DIV
+></DIV
+><DIV
+CLASS="QANDAENTRY"
+><DIV
+CLASS="QUESTION"
+><P
+><A
+NAME="Q5"
+></A
+><B
+>10.5. </B
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Zrobiłem parę poprawek. Jak mogę dodać je do LMSa?</B
+></SPAN
+></P
+></DIV
+><DIV
+CLASS="ANSWER"
+><P
+><B
+> </B
+>Poprawki najlepiej zgłaszać na listę mailingową. Do wiadomości,
+		z krótkim opisem poprawki, należy dołączyć diff'a (najlepiej do aktualnej
+		wersji cvs'owej), którego można wykonać w następujący sposób:
+<PRE
+CLASS="SCREEN"
+>$ cd lms
+$ cvs -z7 diff -uN &#62; /tmp/moja_latka.patch</PRE
+>
+		Jeżeli jesteś zainteresowany dołączeniem do grona developerów
+		i otrzymaniem praw zapisu do CVSu zgłoś taką chęć na listę. Wcześniej
+		jednak powinieneś się dać poznać na liście jako odpowiedzialna 
+		i kompetentna osoba np. przysyłając poprawki.</P
+></DIV
+></DIV
+><DIV
+CLASS="QANDAENTRY"
+><DIV
+CLASS="QUESTION"
+><P
+><A
+NAME="Q6"
+></A
+><B
+>10.6. </B
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Która wersja LMSa jest najnowsza, a która najlepsza dla mnie?</B
+></SPAN
+></P
+></DIV
+><DIV
+CLASS="ANSWER"
+><P
+><B
+> </B
+>Wersje LMSa są numerowane analogicznie do jądra Linuksa. 
+		I tak w LMS-x.y.z mamy: x - główny numer wersji, y - jak parzysty
+		to wersja stabilna, jak nieparzysty to rozwojowa (niestabilna), 
+		z - mniej istotny numer podwersji. W związku z tym, jeśli ukaże się 
+		wersja stabilna np. 1.4.0, to w tej gałęzi (1.4) nie będzie już dodawana
+		nowa funkcjonalność, będą usuwane tylko ewentualne błędy. Jednocześnie
+		powstaje wersja rozwojowa 1.5.x, która przez dodanie nowych rzeczy,
+		może być niestabilna/nie działająca prawidłowo.</P
+><P
+>Archiwum wszystkich wersji LMS znajduje się pod adresem
+		<A
+HREF="http://www.lms.org.pl/download/"
+TARGET="_top"
+>www.lms.org.pl/download</A
+></P
+><P
+>Warto zauważyć że wersje stabilne najpierw wydawane są jako -RC 
+		(kandydaci do wydania, ang. release candidate). Pamiętaj że gdy np dostępna 
+		jest wersja 1.4.4 oraz 1.6.0rc3 to powinieneś stosować wersję 1.4.4, do czasu 
+		gdy gałąź 1.6 będzie stabilna. 
+			</P
+></DIV
+></DIV
+><DIV
+CLASS="QANDAENTRY"
+><DIV
+CLASS="QUESTION"
+><P
+><A
+NAME="Q7"
+></A
+><B
+>10.7. </B
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Jak wypisać się z listy mailingowej?</B
+></SPAN
+></P
+></DIV
+><DIV
+CLASS="ANSWER"
+><P
+><B
+> </B
+>Informacja ta jest zawarta w nagłówkach wszystkich wiadomości 
+		z listy mailingowej. Należy wysłać wiadomość z tematem "unsubscribe"
+		na adres lms-request@lists.lms.org.pl.</P
+></DIV
+></DIV
+><DIV
+CLASS="QANDAENTRY"
+><DIV
+CLASS="QUESTION"
+><P
+><A
+NAME="Q9"
+></A
+><B
+>10.8. </B
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Insecure $ENV{BASH_ENV} while running -T switch...</B
+></SPAN
+></P
+></DIV
+><DIV
+CLASS="ANSWER"
+><P
+><B
+> </B
+>Powołany błąd pojawia się podczas uruchamiania skryptów
+		perlowych korzystających z zewnętrznych programów na niektórych 
+		systemach. Opis problemu i sposoby jego rozwiązania podane są w manualu
+		perla (man perlsec) w dziale "Cleaning Up Your Path". Najprostszym rozwiązaniem jest
+		usunięcie przełącznika -T (który odpowiada za to zamieszanie) z pierwszej 
+		linii skryptu.
+		</P
+></DIV
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="userpanel-modules.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Moduły</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

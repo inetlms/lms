@@ -1,0 +1,40 @@
+1. Wstęp.
+
+Moduł cbq-init tworzy pliki konfiguracyjne dla skryptu cbq.init. Dla każdego
+komputera zostaną wygenerowane dwa pliki (download i upload). Dodatkowo
+powstanie plik z regułami markującymi pakiety na potrzeby cbq.
+
+2. Konfiguracja.
+
+* path = /etc/sysconfig/cbq
+
+	lokalizacja plików konfiguracyjnych - nazwa istniejącego katalogu 
+	(bez ukośnika na końcu).
+
+* command = "/etc/rc.d/cbq.init restart nocache"
+
+	polecenie wykonywane po utworzeniu plików konfiguracyjnych.
+
+* cbq_down, cbq_up 
+
+	szablony treści plików dla downloadu i uploadu (wartości domyślne
+	zdefiniowano w cbq-init.c).
+	
+* mark_file = /etc/rc.d/rc.marks
+
+	lokalizacja pliku z regułami markującymi pakiety. Jeśli przypiszemy tej
+	opcji pustą wartość plik nie zostanie utworzony.
+	
+* mark_file_begin, mark_file_end
+
+	nagłówek i stopka w/w pliku (wartości domyślne zdef. w cbq-init.c). 
+
+* mark_rule
+
+	reguła markująca dla każdego komputera (wartość domyślna w cbq-init.c).
+
+* networks, customergroups
+
+	jak w innych modułach, ograniczenie generowanych plików do wybranych
+	sieci i grup użytkowników (domyślnie wszyscy użytkownicy).
+	

@@ -1,0 +1,87 @@
+{include file="header.html"}
+<h1>{$layout.pagetitle}</h1>
+<script type="text/javascript">
+<!--
+    function clear_filtr()
+    {
+	document.getElementById('d_from').value = "";
+	document.getElementById('d_to').value = "";
+	document.getElementById('cid').value = "";
+	document.getElementById('searchcustomer').value = "";
+	document.getElementById('searchip').value = "";
+	document.iphistory.submit();
+	
+    }
+//-->
+</script>
+<form name="iphistory" id="iphistory" method="GET">
+<input type="submit" class="hiddenbtn">
+<input type="hidden" name="page" value="1">
+<input type="hidden" name="m" value="iphistory">
+<input type="hidden" name="cid" id="cid" value="{$listdata.cid}">
+<table width="100%" cellpadding="4">
+
+    <tr class="dark">
+	<td width="100%" colspan="8" class="fall">
+	    <img src="img/Filter.png">
+	    <img src="img/search.gif" style="cursor:pointer;border:0;" {tip text="ustaw filtr"} onclick="document.iphistory.submit();">
+	    <img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="clear_filtr();" style="border:0;cusros:pointer;">
+	    <input type="text" class="tcal" style="width:90px;{if $listdata.dfrom !=''}background-color:#FFFF99;{/if}" name="dfrom" id="d_from" value="{$listdata.dfrom}" readonly {tip text="kliknij aby wybrać datę początkową"}>&nbsp;<img src="img/cancel.gif" {tip text="wyczyść datę początkową"} onclick="document.getElementById('d_from').value='';document.iphistory.submit();" style="width:14px;cursor:pointer;">
+	    <input type="text" class="tcal" style="width:90px;{if $listdata.dto !=''}background-color:#FFFF99;{/if}" name="dto" id="d_to" value="{$listdata.dto}" {tip text="Kliknij aby wybrać datę końcową"} readonly>&nbsp;<img src="img/cancel.gif" {tip text="wyczyść datę końcową"} onclick="document.getElementById('d_to').value='';document.iphistory.submit();" style="width:14px;cursor:pointer;">
+	    Adres IP: <input type="text" size="15" {tip text="podaj cały lub częściowy adres IP lokalny lub publiczny"} name="sip" id="searchip" value="{$listdata.searchip}" {if $listdata.searchip !=''}style="background-color:#FFFF99;"{/if}> <img src="img/cancel.gif" onclick="document.getElementById('searchip').value='';document.iphistory.submit();" style="width:14px;cursor:pointer;">&nbsp;&nbsp;&nbsp;
+	    Klient: <input type="text" size="20" {tip text="Wprowadź identyfikator klienta, imię, nazwisko, adres lub email"} id="searchcustomer" name="searchcustomer" value="{$customername}" {if $customername}style="background-color:#FFFF99;"{/if}>&nbsp;<img src="img/cancel.gif" {tip text="wyczyść filtr na podstawie klienta"} onclick="document.getElementById('searchcustomer').value='';document.getElementById('cid').value='';document.iphistory.submit();" style="width:14px;cursor:pointer;">&nbsp;
+	    
+	    <img src="img/search.gif" style="cursor:pointer;border:0;" {tip text="ustaw filtr"} onclick="document.iphistory.submit();">&nbsp;
+	    <img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="clear_filtr();" style="border:0;cusros:pointer;">
+	</td>
+    </tr>
+    
+    <script type="text/javascript">
+	new AutoSuggest(document.getElementById('iphistory'),document.getElementById('searchcustomer'),'?m=quicksearch&ajax=1&mode=customer&iphistory&what=',1);
+    </script>
+
+    <tr class="scroller">
+	<td width="100%" colspan="8" class="fall">
+	    {if $listdata.total != 0}{include file="scroller.html" loop=$iplist}{else}&nbsp;{/if}
+	</td>
+    </tr>
+
+    <tr class="dark">
+	<td width="1%" nowrap class="fleftu pad2" align="center" style="font-weight:bold;"><a href="?m={$layout.module}&o=id,{if $listdata.direction eq 'desc' && $listdata.order eq 'id'}asc{else}desc{/if}">&nbsp;ID&nbsp;<img src="img/{if $listdata.order eq 'id'}{if $listdata.direction eq 'asc'}desc{else}asc{/if}_order{else}empty{/if}.gif"></a></td>
+	<td width="1%" nowrap class="fbt pad2" align="center" style="font-weight:bold;"><a href="?m={$layout.module}&o=fromdate,{if $listdata.direction eq 'asc' && $listdata.order eq 'fromdate'}desc{else}asc{/if}">&nbsp;od dnia&nbsp;<img src="img/{if $listdata.order eq 'fromdate'}{if $listdata.direction eq 'asc'}asc{else}desc{/if}_order{else}empty{/if}.gif"></a></td>
+	<td width="1%" nowrap class="fbt pad2" align="center" style="font-weight:bold;"><a href="?m={$layout.module}&o=todate,{if $listdata.direction eq 'asc' && $listdata.order eq 'todate'}desc{else}asc{/if}">&nbsp;do dnia&nbsp;<img src="img/{if $listdata.order eq 'todate'}{if $listdata.direction eq 'asc'}asc{else}desc{/if}_order{else}empty{/if}.gif"></a></td>
+	<td width="1%" nowrap class="fbt pad2" align="center" style="font-weight:bold;"><a href="?m={$layout.module}&o=ipaddr,{if $listdata.direction eq 'asc' && $listdata.order eq 'ipaddr'}desc{else}asc{/if}">&nbsp;IP&nbsp;<img src="img/{if $listdata.order eq 'ipaddr'}{if $listdata.direction eq 'asc'}desc{else}asc{/if}_order{else}empty{/if}.gif"></a></td>
+	<td width="1%" nowrap class="fbt pad2" align="center" style="font-weight:bold;"><a href="?m={$layout.module}&o=ipaddr_pub,{if $listdata.direction eq 'asc' && $listdata.order eq 'ipaddr_pub'}desc{else}asc{/if}">&nbsp;IP PUB&nbsp;<img src="img/{if $listdata.order eq 'ipaddr_pub'}{if $listdata.direction eq 'asc'}desc{else}asc{/if}_order{else}empty{/if}.gif"></a></td>
+	<td width="1%" nowrap class="fbt pad2" align="left" style="font-weight:bold;"><a href="?m={$layout.module}&o=node,{if $listdata.direction eq 'asc' && $listdata.order eq 'node'}desc{else}asc{/if}">&nbsp;Komputer&nbsp;<img src="img/{if $listdata.order eq 'node'}{if $listdata.direction eq 'asc'}desc{else}asc{/if}_order{else}empty{/if}.gif"></a></td>
+	<td width="93%" class="fbt pad2" align="left" style="font-weight:bold;"><a href="?m={$layout.module}&o=customer,{if $listdata.direction eq 'asc' && $listdata.order eq 'customer'}desc{else}asc{/if}">&nbsp;Właściciel&nbsp;<img src="img/{if $listdata.order eq 'customer'}{if $listdata.direction eq 'asc'}desc{else}asc{/if}_order{else}empty{/if}.gif"></a></td>
+	<td width="1%" nowrap class="frightu pad2" align="center">&nbsp;</td>
+    </tr>
+
+    {cycle values="light,lucid" print=false}
+    {section name="list" loop=$iplist start=$start max=$pagelimit}
+
+    <tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td width="1%" nowrap class="fleft pad2" align="center">{$iplist[list].id|string_format:"%04d"}</td>
+	<td width="1%" nowrap class="pad2" align="center" style="min-width:100px;">{$iplist[list].fromdate|date_format:"Y-m-d H:i"}</td>
+	<td width="1%" nowrap class="pad2" align="center" style="min-width:100px;">{if $iplist[list].todate}{$iplist[list].todate|date_format:"Y-m-d H:i"}{/if}</td>
+	<td width="1%" nowrap style="padding-left:20px;min-width:100px;" align="left">{if $iplist[list].ipaddr!='0.0.0.0'}{$iplist[list].ipaddr}{/if}</td>
+	<td width="1%" nowrap style="padding-left:20px;min-width:100px;" align="left">{if $iplist[list].ipaddr_pub!='0.0.0.0'}{$iplist[list].ipaddr_pub}{/if}</td>
+	<td width="1%" nowrap class="pad2" align="left" style="min-width:120px;">{if $iplist[list].nodeid}<a href="?m=nodeinfo&id={$iplist[list].nodeid}">{/if}{$iplist[list].nodesname}{if $iplist[list].nodeid}</a>{/if}</td>
+	<td width="93%" style="padding-right:20px;" align="left">{if $iplist[list].ownerid}<a href="?m=customerinfo&id={$iplist[list].ownerid}">{/if}{$iplist[list].customername}{if $iplist[list].ownerid}</a>{/if}</td>
+	<td width="1%" nowrap class="fright pad2" align="right">&nbsp;</td>
+    </tr>
+
+    {sectionelse}
+    <tr class="light">
+	<td width="100%" nowrap class="flr" align="center" colspan="8"><br><p><h2>brak wpisów</h2></p><br></td>
+    </tr>
+    {/section}
+
+    <tr class="scroller">
+	<td width="100%" colspan="8" class="fall">
+	    {if $listdata.total != 0}{include file="scroller.html" loop=$iplist}{else}&nbsp;{/if}
+	</td>
+    </tr>
+
+</table>
+{include file="footer.html"}

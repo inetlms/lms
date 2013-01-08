@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+	<meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
+	<meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
+	<link href="img/style.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="img/autoiframe.js"></SCRIPT>
+	<script type="text/javascript" src="img/common.js"></SCRIPT>
+    </head>
+<body>
+
+<div style="width:400px;">
+<table width="100%" cellpadding="3" class="light" id="table">
+    <tr class="dark">
+	<td width="100%" align="left" class="fall" ><b>
+	    {trans('The last three entries')}</b>
+	{if $topic.closed}<br>
+	    <div class="active" style="border:solid 1px #333333;padding:4px 10px 4px 10px;"><b>TEMAT ZAMKNIĘTY dnia: {$topic.closeddate|date_format:"Y/m/d H:i"} przez {$topic.closedname}</b><br>{$topic.closedinfo|nl2br}</div>
+	    {/if}    
+	</td>
+    </tr>
+    {cycle values="light,lucid" print=false}
+    {section name='list' loop=$info}
+	<tr class="{cycle}">
+	    <td width="100%">
+		{$info[list].post|nl2br}
+		<p class="blend">{$info[list].cdate|date_format:"Y/m/d H:i"} ({$info[list].clogin})
+		{if $info[list].mdate} | Mod: {$info[list].mdate|date_format:"Y/m/d H:i"} ({$info[list].mlogin}){/if}</p>
+		
+	    </td>
+	</tr>
+    {sectionelse}
+	<tr>
+	    <td width="100%" align="center">
+	    <p><b>{trans('No Results')}</b></p>
+	    </td>
+	</tr>
+    {/section}
+			
+
+</table>
+</div>
+<script type="text/javascript">
+<!--
+    var table = document.getElementById('table');
+    autoiframe_setsize('autoiframe', table.offsetWidth, table.offsetHeight);
+//-->
+</script>
+</body>
+</html>

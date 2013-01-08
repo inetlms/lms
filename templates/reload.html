@@ -1,0 +1,90 @@
+<!--// $Id$ //-->
+<H1><span class="bold">{$layout.pagetitle}</span></H1>
+<P><FORM name="reload" method="POST" action="?m=reload&setreloads">
+<INPUT type="submit" class="hiddenbtn">
+<TABLE WIDTH="100%" CELLPADDING="3">
+	<TR CLASS="DARK">
+		<TD class="fall">
+		<div style="float:left">
+			<span class="bold">{trans("Select hosts for configuration reload:")} </div> </span> <div id="reloadtxt" style="display:none; float:right"><span class="bold">{trans("Reload configuration in:")} </span> <span id="reloadtimer" class="bold"></span> </div>
+		</TD>
+	</TR>
+	<TR>
+		<TD width="100%" class="fall">
+			<TABLE cellpadding="5" cellspacing="0" width="100%">
+				<TR class="dark">
+					<TD width="1%" class="fleftu" nowrap><IMG src="img/host.gif" ALT=""> <span class="bold">{trans("Name:")}</span></TD>
+					<TD width="96%" class="fbt" nowrap>{trans("Description:")}</TD>
+					<TD width="1%" class="fbt" align="right" nowrap>{trans("Last Reload:")}</TD>
+					<TD width="1%" class="fbt" nowrap>{trans("Status:")}</TD>
+					<TD width="1%" class="frightu"></TD>
+				</TR>
+				{cycle values="light,lucid" print=false}
+				{section name=hosts loop=$hosts}
+				<TR class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+					<TD nowrap onClick="return checkElement({$hosts[hosts].id});"><IMG src="img/host.gif" ALT=""> <span class="bold">{$hosts[hosts].name}</span></TD>
+					<TD onClick="return checkElement({$hosts[hosts].id});">{$hosts[hosts].description}</TD>
+					<TD align="right" nowrap onClick="return checkElement({$hosts[hosts].id});">{if $hosts[hosts].lastreload}{$hosts[hosts].lastreload|date_format:"%Y/%m/%d %H:%M"}{else}-{/if}</TD>
+					<TD nowrap onClick="return checkElement({$hosts[hosts].id});">{if $hosts[hosts].reload==1}{trans("waiting")}
+						    {elseif $hosts[hosts].reload==0}{trans("OK")}
+						    {else}{trans("unknown")}{/if}</TD>
+					<TD>
+						<INPUT TYPE="checkbox" NAME="hosts[]" ID="{$hosts[hosts].id}" VALUE="{$hosts[hosts].id}"{if $hosts[hosts].reload} CHECKED{/if}>
+					</TD>
+				</TR>
+				{sectionelse}
+				<TR>
+					<TD colspan="4" align="center">
+						<P>&nbsp;</P>
+						<P><span class="bold">{trans("No such hosts in database.")}</span></P>
+						<P>&nbsp;</P>
+					</TD>
+				</TR>
+				{/section}
+				<TR class="light">
+					<TD CLASS="ftop" colspan="2"nowrap>
+						<INPUT TYPE="checkbox" NAME="allbox" id="allbox" onchange="CheckAll('reload', this)" VALUE="1"><label for="allbox">{trans("Check All")}</label>
+					</TD>
+					<TD CLASS="ftop" ALIGN="right" colspan="3" nowrap>
+						<A href="javascript:document.reload.submit();">{trans("Submit")} <IMG src="img/save.gif" ALT=""></A>
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+</TABLE>
+</FORM>
+</P>
+{if $serverTime}
+<SCRIPT type="text/javascript">
+        <!--
+
+	var serverTime = new Date("{$serverTime}");
+	var timerOn = false;
+{section name=hosts loop=$hosts}
+	{if $hosts[hosts].reload==1}timerOn=true;{/if}
+{/section}
+	var timer;
+	var userDate = new Date();
+
+	function ShowSeconds()
+	{
+		var serverTimeMinute = new Date(serverTime.getFullYear(),serverTime.getMonth(),serverTime.getDate(),serverTime.getHours(),serverTime.getMinutes(),Math.floor((serverTime.getSeconds()+59)/60)*60);
+		var serverTimeDiff = serverTimeMinute-serverTime;
+		serverTimeDiff=Math.round((serverTimeDiff+(userDate-(new Date())))/1000);
+		if (serverTimeDiff>=0)
+		{
+			document.getElementById("reloadtxt").style.display='inline';
+			document.getElementById("reloadtimer").innerHTML=" "+serverTimeDiff+" s";
+			timer=setTimeout("ShowSeconds()",1000);
+		}
+		else
+			window.location.reload();
+	}
+
+	if (timerOn && typeof(serverTime) != 'undefined')
+		ShowSeconds();
+
+	//-->
+</SCRIPT>
+{/if}

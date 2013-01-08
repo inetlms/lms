@@ -1,0 +1,128 @@
+{include file="header.html"}
+{include file="hv_js.html"}
+<script type="text/javascript" language="JavaScript" src="img/overlib.js"></script>
+
+{literal}
+<SCRIPT type="text/javascript" language="JavaScript">
+<!--
+    function odeslijdane() {
+
+	var dok = document.searchterminal;
+	opener.document.getElementById('id_province').value = '{/literal}{$nazwa.province}{literal}';
+	opener.document.getElementById('id_county').value = '{/literal}{$nazwa.county}{literal}';
+	opener.document.getElementById('id_borough').value = '{/literal}{$nazwa.borough}{literal}';
+	opener.document.getElementById('id_id_terminal_location').value = '{/literal}{$idlocal}{literal}';
+	window.close();
+    
+    }
+    
+    function zmienlokalizacje(typ) {
+	
+	var dok = document.searchterminal;
+	
+	if ( typ == 't' ) {
+	    dok.county.value = '';
+	    dok.borough.value = '';
+	    dok.submit();
+	}
+	
+	if ( typ == 'c' ) {
+	    dok.borough.value = '';
+	    dok.submit();
+	}
+    
+    }
+//-->
+</SCRIPT>
+{/literal}
+
+<TABLE width="100%" cellpadding="3">
+    <TR class="dark">
+	<TD class="fall" align="center">
+	    <B>Wybierz lokalizację terminala dla połączeń alarmowych</B>
+	</TD>
+    </TR>
+</TABLE>
+
+<BR>
+
+<FORM name="searchterminal" method="POST" action="?m=hv_searchterminallocation">
+
+    <TABLE width="100%" cellpadding="3">
+    
+	<TR>
+	    <TD width="1%" align="left" nowrap />
+		<B>Województwo:</B>
+	    </TD>
+	    <TD width="99%" align="left">
+		<SELECT name="province" style="width:240px;color:#000;border:solid 1px #000; background-color:#fff;font:normal 8pt verdana;" onChange="zmienlokalizacje('t');">
+		    <OPTION value="" {if !$province} SELECTED{/if}></OPTION>
+		    {section name=l1 loop=$list.province}
+			<OPTION value="{$list.province[l1].id}" {if $list.province[l1].id==$province} SELECTED{/if}>{$list.province[l1].name}</OPTION>
+		    {/section}
+		</SELECT>
+	    </TD>
+	</TR>
+	
+	{if $province}
+	<TR>
+	    <TD width="1%" align="left" nowrap />
+		<B>Powiat:</B>
+	    </TD>
+	    <TD width="99%" align="left">
+		<SELECT name="county" style="width:240px;color:#000;border:solid 1px #000; background-color:#fff;font:normal 8pt verdana;" onChange="zmienlokalizacje('c');">
+		    <OPTION value="" {if !$county} SELECTED{/if}></OPTION>
+		    {section name=l2 loop=$list.county}
+			<OPTION value="{$list.county[l2].id}" {if $list.county[l2].id==$county} SELECTED{/if}>{$list.county[l2].name}</OPTION>
+		    {/section}
+		</SELECT>
+	    </TD>
+	</TR>
+	{else}
+	    <INPUT TYPE="hidden" name="county" value="">
+	{/if}
+	
+	{if $county}
+	<TR>
+	    <TD width="1%" align="left" nowrap />
+		<B>Gmina:</B>
+	    </TD>
+	    <TD width="99%" align="left">
+		<SELECT name="borough" style="width:240px;color:#000;border:solid 1px #000; background-color:#fff;font:normal 8pt verdana;" onChange="document.searchterminal.submit();">
+		    <OPTION value="" {if !$borough} SELECTED{/if}></OPTION>
+		    {section name=l3 loop=$list.borough}
+			<OPTION value="{$list.borough[l3].id}" {if $list.borough[l3].id==$borough} SELECTED{/if}>{$list.borough[l3].name}</OPTION>
+		    {/section}
+		</SELECT>
+	    </TD>
+	</TR>
+	{else}
+	    <INPUT type="hidden" name="borough" value="">
+	{/if}
+	
+	{if $idlocal}
+	<TR>
+	    <TD width="1%" align="left" nowrap />
+		<B>Id lokalizacji</B>
+	    </TD>
+	    <TD width="99%" align="left" style="font: bold 8pt verdana">
+		{$idlocal}
+	    </TD>
+	</TR>
+	
+	<TR>
+	    <TD width="99%" align="center" colspan="2" style="font: bold 8pt verdana">
+		<INPUT type="button" style="background-color:#FFFEEE;font-weight:bold;color:green;" value="&nbsp;&nbsp;Wybierz&nbsp;&nbsp;" onClick="odeslijdane();">&nbsp;&nbsp;&nbsp;
+		<INPUT type="button" style="font-weight:bold;background-color:#FFFEEE;color:red;"value="&nbsp;&nbsp;Anuluj&nbsp;&nbsp;" onClick="window.close();">
+	    </TD>
+	</TR>
+	{else}
+	<TR>
+	    <TD width="99%" align="center" colspan="2" style="font: bold 8pt verdana">
+		<INPUT type="button" style="font-weight:bold;background-color:#FFFEEE;color:red;"value="&nbsp;&nbsp;Anuluj&nbsp;&nbsp;" onClick="window.close();">
+	    </TD>
+	</TR>
+	{/if}
+	
+    </TABLE>
+</FORM>

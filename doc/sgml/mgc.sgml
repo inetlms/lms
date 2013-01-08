@@ -1,0 +1,482 @@
+<!-- $Id$ -->
+<chapter id="mgc">
+ <title>Configuration file generator (lms-mgc)</title>
+  <para>LMS-MGC is "magical" configuration file generator. With some efforts, you can create virtually any configuration file using it (ie. zone definition file for BIND)</para>
+  <sect1 id="mgc-install">
+    <title>Installation</title>
+    <para>LMS-MGC has its own configuration file: <filename>lms-mgc.ini</filename>. You should install script by moving it to <filename>/usr/sbin</filename> directory. LMS-MGC should be used in two either ways: scheduled from cron (eg. hourly)</para>
+        <screen>
+0 * * * *       /usr/sbin/lms-mgc 1 &gt; /dev/null</screen>
+	<para>or called from LMS 'Reload' menu. Second setup requires <filename>sudo</filename> to be used. Unfortunately this method requires you to add user to sudo, and set in configuration section [phpui]</para>
+	<para><prompt>reload_type 	= exec</prompt></para>
+	<para><prompt>reload_execcmd 	= sudo /usr/sbin/lms-mgc</prompt></para>
+        <para>LMS-MGC has following command line options:
+	<screen>
+-C, --config-file=/path/lms-mgc.ini alternative configuration file
+                                    (default: /etc/lms/lms-mgc.ini);
+-i, --instances=name                instance name (number) to launch, without reading
+                                    lms-mgc.ini configuration, ie. -i "name1 name2"
+-h, --help                          shows help;
+-v, --version                       shows version number;
+-q, --quiet                         shows only errors during execution;
+-d, --debug                         verbose information for each IP;</screen>
+	</para>
+  </sect1>
+  <sect1 id="mgc-config">
+    <title>Configuration</title>    
+  <para>Configuration of LMS-MGC is held in <filename>lms-mgc.ini</filename> file.</para>
+	<sect2 id="mgc-config-db">
+	<title>Section [database] - database setup</title>
+   <itemizedlist>
+    <listitem>
+     <para>type</para>
+     <para>Database type. Currently only 'mysql' is 100% supported, however there seems to be no significant problems with 'postgres'. Default: mysql</para>
+     <para>Example:	<prompt>type = mysql</prompt></para>
+    </listitem>
+    <listitem>
+     <para>host</para>
+     <para>Database host. Usually localhost, but you can set it to anything (IP, domain, path to socket in 'localhost:/path/to/socket' format). Default: localhost</para>
+     <para>Example:	<prompt>host = localhost</prompt></para>
+    </listitem>
+    <listitem>
+     <para>user</para>
+     <para>Database user. In most cases (if you followed this documentation) it should be 'lms'. If you want to use privileged account, you should enter 'root' (MySQL on *nices), 'mysql' (on PLD) or 'postgres' (PostgreSQL). Default: root</para>
+     <para>Example:	<prompt>user = mysql</prompt></para>
+    </listitem>
+    <listitem>
+     <para>password</para>
+     <para>Database password. Default: empty.</para>
+     <para>Example:	<prompt>password = secret_password</prompt></para>
+    </listitem>
+    <listitem>
+     <para>database</para>
+     <para>Database name. Default: lms.</para>
+     <para>Example:	<prompt>database = lms</prompt></para>
+    </listitem>
+   </itemizedlist>
+	</sect2>
+	<sect2 id="mgc-config-lms">
+	<title>Section [mgc] - list of instances</title>
+  	<para>Significant parts of configuration are placed in section <emphasis>[mgc]</emphasis> and its derivative sections. In <emphasis>[mgc]</emphasis> alone you can use the following parameter:
+   <itemizedlist>
+    <listitem>
+     <para>instances</para>
+     <para>List of instances (separated by spaces).</para>
+     <para>Example:	<prompt>instances = dhcp firewall squid</prompt></para>
+    </listitem>
+   </itemizedlist>
+   <note><para>You can also place <filename>instances</filename> variable in any derivative instance section. See below.</para></note>
+   </para>
+	</sect2>
+	<sect2 id="mgc-config-instances">
+	<title>Section [mgc:xxx] - instance configuration</title>  
+	<para>Each instance has its name and its configuration is created by creating derivative section of name <emphasis>[mgc:name]</emphasis>, eg.
+	<emphasis>[mgc:mydaemon]</emphasis></para>
+  <para>All of those sections may include following configuration options:</para>
+   <itemizedlist>
+    <listitem>
+     <para>instances</para>
+     <para>This variable allows you to group a list of other instances (eg. instances = ins1 ins2 ins3), and then call your mgc with '<prompt>lms-mgc -i mydaemon</prompt>'  instead of '<prompt>lms-mgc -i "ins1 ins2 ins3"</prompt>'. If you use this variable all other settings in this section will be ignored.</para>
+     <para>Example:	<prompt>instances = dns1 dns2 dns3</prompt></para>
+    </listitem>
+    <listitem>
+     <para>outfile</para>
+     <para>Output file, where instance structured dump will be saved (instance will quit instantly if this variable is not set).</para>
+     <para>Example:	<prompt>outfile = /etc/somefile</prompt></para>
+    </listitem>
+    <listitem>
+     <para>append</para>
+     <para>It allows you to define to not overwrite outfile, but append to its end instead.</para>
+     <para>Example:	<prompt>append = 1</prompt></para>
+    </listitem>
+    <listitem>
+     <para>outfile_perm</para>
+     <para>Permissions for output file. Default: 600 (-rw-------)</para>
+     <para>Example:	<prompt>outfile_perm = 700</prompt></para>
+    </listitem>
+    <listitem>
+     <para>outfile_owner</para>
+     <para>UID of output file owner. Default: 0</para>
+     <para>Example:	<prompt>outfile_owner = 0</prompt></para>
+     <para><warning><para>You have to provide numerical UID, not username!</para></warning></para>
+    </listitem>
+    <listitem>
+     <para>outfile_group</para>
+     <para>GID of output file owner. Default: 0</para>
+     <para>Example:	<prompt>outfile_group = 0</prompt></para>
+     <para><warning><para>You have to provide numerical GID, not group name!</para></warning></para>
+    </listitem>
+    <listitem>
+     <para>header_file</para>
+     <para>Filename, that should be prepended at beginning of output file. Default: unset</para>
+     <para>Example:	<prompt>header_file = /etc/lms/myservice_header</prompt></para>
+    </listitem>
+    <listitem>
+     <para>header</para>
+     <para>String, which should be put at beginning of output file. Default: unset</para>
+     <para>Example:	<prompt>header = option1 = blah\noption2 = blab-la</prompt></para>
+     <para><note><para>You should use \n as line separator. You may omit line separator at the end of last line.</para></note></para>
+    </listitem>
+    <listitem>
+     <para>customergroups</para>
+     <para>>List of (space separated) groups of customers, that should be
+    considered while creating configuration file. If unset, configuration will
+    include all groups.</para>
+     <para>Example:	<prompt>customergroups = group1 group2</prompt></para>
+    </listitem>
+    <listitem>
+     <para>excluded_customergroups</para>
+     <para>>List of (space separated) groups of customers, that should be
+    ommited while creating configuration file.</para>
+     <para>Example:	<prompt>excluded_customergroups = group3 group4</prompt></para>
+    </listitem>
+    <listitem>
+     <para>networks</para>
+     <para>>List of (space separated) networks, that should be
+considered while creating configuration file. If unset, configuration will
+include all networks.</para>
+     <para>Example:	<prompt>networks = cust1-publ cust2-publ cust3-priv</prompt></para>
+    </listitem>
+    <listitem>
+     <para>excluded_networks</para>
+     <para>>List of (space separated) networks, that should be
+    ommited while creating configuration file.</para>
+     <para>Example:	<prompt>excluded_networks = cust4-publ cust5-publ</prompt></para>
+    </listitem>
+   </itemizedlist>    
+   <para>Mgc script now loops for each network and performs the following tasks:</para>
+   <itemizedlist>
+    <listitem>
+     <para>network_header</para>
+     <para>String, which should be put at beginning of network section. Default: empty</para>
+     <para>Example:	<prompt>network_header = network %ADDR/%MASK { # Config section for %NAME</prompt></para>
+    </listitem>
+    <listitem>
+     <para>dst_networks</para>
+     <para>List of destination network names, for which dst_network_header variable (see below) will be used. Default: all</para>
+     <para>Example:	<prompt>dst_networks = main coalloc</prompt></para>
+    </listitem>
+    <listitem>
+     <para>dst_network_header</para>
+     <para>Lets you to set destination networks header.</para>
+     <para>Example:	<prompt>dst_network_header = \tallow to %DADDR/%DMASK;</prompt></para>
+    </listitem>
+    <listitem>
+     <para>network_body</para>
+     <para>This parameter is parsed after network headers and before IP addresses loop.</para>
+     <para>Example:	<prompt>network_body = \tnodes {</prompt></para>
+    </listitem>
+   </itemizedlist>
+   <para>Mgc script now loops into below rules for each IP address for given range. It takes each IP address and checks if a rule is defined for this address, if yes - it executes first rule that matches. Matches are being parsed in specific order, as described below:</para>
+    <itemizedlist>
+    <listitem>
+     <para>ignore</para>
+     <para>Lets you setup list of addresses (in address/prefix or address/netmask form, space separated) which should be skipped.</para>
+     <para>Example:	<prompt>ignore = 192.168.0.100/32</prompt></para>
+    </listitem>
+    <listitem>
+     <para>node(IP)</para>
+     <para>Allows you to add line for given IP address. IP address should be provided in parenthesis. Each section may have unlimited number of such options.</para>
+     <para>Example:	<prompt>node(192.168.0.20) = ??</prompt></para>
+    </listitem>
+    <listitem>
+     <para>allnodes</para>
+     <para>Adds line for each non-ignored IP address.</para>
+     <para>Example:	<prompt>allnodes = ??</prompt></para>
+    </listitem>
+    <listitem>
+     <para>allexistnodes</para>
+     <para>Adds line for each IP address that is 'owner' by a computer in database.</para>
+     <para>Example:	<prompt>allexistnodes = ??</prompt></para>
+    </listitem>
+    <listitem>
+     <para>netdevnode</para>
+     <para>Adds line for each IP address of network device.</para>
+     <para>Example:	<prompt>netdevnode = ??</prompt></para>
+    </listitem>
+    <listitem>
+     <para>grantednode_priv</para>
+     <para>Adds line for each IP address with 'connected' status in database (parsed only for private address pools).</para>
+     <para>Example:	<prompt>grantednode_priv = \t\tnode %NAME (%IP/%MAC) unique %ID;</prompt></para>
+    </listitem>
+    <listitem>
+     <para>grantednode_publ</para>
+     <para>Adds line for each IP address with 'connected' status in database (parsed only for public address pools).</para>
+     <para>Example:	<prompt>grantednode_publ = \t\tnode %NAME (%IP/%MAC) unique %ID;</prompt></para>
+    </listitem>
+    <listitem>
+     <para>deniednode_priv</para>
+     <para>Adds line for each IP address with 'disconnected' status in database (parsed only for private address pools).</para>
+     <para>Example:	<prompt>deniednode_priv = node %NAME (%IP/%MAC) unique %ID deny;</prompt></para>
+    </listitem>
+    <listitem>
+     <para>deniednode_publ</para>
+     <para>Adds line for each IP address with 'disconnected' status in database (parsed only for public address pools).</para>
+     <para>Example:	<prompt>deniednode_publ = node %NAME (%IP/%MAC) unique %ID deny;</prompt></para>
+    </listitem>
+    <listitem>
+     <para>dhcpnode_priv</para>
+     <para>Adds line for each IP address within DHCP dynamic range (parsed only for private address pools).</para>
+     <para>Example:	<prompt>dhcpnode_priv = node unknown (%IP) reject;</prompt></para>
+    </listitem>
+    <listitem>
+     <para>dhcpnode_publ</para>
+     <para>Adds line for each IP address within DHCP dynamic range (parsed only for public address pools).</para>
+     <para>Example:	<prompt>dhcpnode_publ = node unknown (%IP) reject;</prompt></para>
+    </listitem>
+    <listitem>
+     <para>freeip_priv</para>
+     <para>Adds line for each IP address that is not occupied by any computer in database (parsed only for private address pools).</para>
+     <para>Example:	<prompt>freeip_priv = node unknown (%IP) lock_as_unused;</prompt></para>
+    </listitem>
+    <listitem>
+     <para>freeip_publ</para>
+     <para>Adds line for each IP address that is not occupied by any computer in database (parsed only for public address pools).</para>
+     <para>Example:	<prompt>freeip_publ = node unknown (%IP) lock_as_unused;</prompt></para>
+    </listitem>
+    <listitem>
+     <para>default_priv</para>
+     <para>Default line, which is inserted when none of grantednode or deniednode matches for given IP address (parsed only for private address pools)</para>
+     <para>Example:	<prompt>default_priv = node unknown (%IP) lock_as_intruder;</prompt></para>
+     <para><note><para>Mgc automatically detects if given address belongs to private or public network.</para></note></para>
+    </listitem>
+    <listitem>
+     <para>default_publ</para>
+     <para>Default line, which is inserted when none of grantednode or deniednode matches for given IP address (parsed only for public address pools)</para>
+     <para>Example:	<prompt>default_publ = node unknown (%IP) lock_as_intruder;</prompt></para>
+    </listitem>
+    </itemizedlist>
+    <para>Mgc now is ready to append final part of the file and execute system command.</para>
+    <itemizedlist>
+    <listitem>
+     <para>network_footer</para>
+     <para>Adds line for currently processed network.</para>
+     <para>Example:	<prompt>network_footer = ??</prompt></para>
+    </listitem>
+    <listitem>
+     <para>footer_file</para>
+     <para>Filename, that should be appended at the end of output file. Default: unset</para>
+     <para>Example:	<prompt>footer_file = /etc/lms/myservice_footer</prompt></para>
+    </listitem>
+    <listitem>
+     <para>footer</para>
+     <para>String, which should be put at the end of output file. Default: unset</para>
+     <para>Example:	<prompt>footer = # End.</prompt></para>
+    </listitem>
+    <listitem>
+     <para>post_exec</para>
+     <para>System command that should be executed after saving output file.</para>
+     <para>Example:	<prompt>post_exec = killall -HUP mydaemon</prompt></para>
+    </listitem>
+  </itemizedlist>
+	</sect2>
+	<sect2 id="mgc-config-vars">
+	<title>Configuration variables</title>
+    <para>You can use the following templates in your configuration variables. They all will be substituted with appropriate data from LMS database.</para>
+    <para>Computer templates:
+   <itemizedlist>
+    <listitem>
+     <para>%IP - IP address</para>
+    </listitem>
+    <listitem>
+     <para>%PUBIP - second (public) IP address</para>
+    </listitem>
+    <listitem>
+     <para>%PIN - PIN of customer who owns node</para>
+    </listitem>
+    <listitem>
+     <para>%ID - ID of computer</para>
+    </listitem>
+    <listitem>
+     <para>%MAC - MAC address</para>
+    </listitem>
+    <listitem>
+     <para>%SMAC - MAC address in lowercase and without colon separators</para>
+    </listitem>
+    <listitem>
+     <para>%CMAC - MAC address in CISCO format (FFFF.FFFF.FFFF)</para>
+    </listitem>
+    <listitem>
+     <para>%OWNER - owner's ID</para>
+    </listitem>
+    <listitem>
+     <para>%CUSTOMER - owner's lastname and name</para>
+    </listitem>
+    <listitem>
+     <para>%NAME - computer name, in uppercase</para>
+    </listitem>
+    <listitem>
+     <para>%name - computer name, in lowercase</para>
+    </listitem>
+    <listitem>
+     <para>%INFO - computer description</para>
+    </listitem>
+    <listitem>
+     <para>%PASSWD - node password</para>
+    </listitem>
+    <listitem>
+     <para>%PORT - device's port, to which node is connected</para>
+    </listitem>
+    <listitem>
+     <para>%UPRATE - guaranteed upload rate</para>
+    </listitem>
+    <listitem>
+     <para>%NUPRATE - guaranteed upload rate (for night hours)</para>
+    </listitem>
+    <listitem>
+     <para>%DOWNRATE - guaranteed download rate</para>
+    </listitem>
+    <listitem>
+     <para>%NDOWNRATE - guaranteed download rate (for night hours)</para>
+    </listitem>
+    <listitem>
+     <para>%UPCEIL - maximum upload rate</para>
+    </listitem>
+    <listitem>
+     <para>%NUPCEIL - maximum upload rate (for night hours)</para>
+    </listitem>
+    <listitem>
+     <para>%DOWNCEIL - maximum download rate</para>
+    </listitem>
+    <listitem>
+     <para>%NDOWNCEIL - maximum download rate (for night hours)</para>
+    </listitem>
+    <listitem>
+     <para>%CLIMIT - limit of concurrent connections</para>
+    </listitem>
+    <listitem>
+     <para>%NCLIMIT - limit of concurrent connections (for night hours)</para>
+    </listitem>
+    <listitem>
+     <para>%PLIMIT - maximum number of packets per second</para>
+    </listitem>
+    <listitem>
+     <para>%NPLIMIT - maximum number of packets per second (for night hours)</para>
+    </listitem>
+    <listitem>
+     <para>%1 %2 %3 %4 - consecutive (left to right) decimal octets of IP address</para>
+    </listitem>
+    <listitem>
+     <para>%NID - network ID where computer belongs</para>
+    </listitem>
+    <listitem>
+     <para>%NNAME - network name, in uppercase</para>
+    </listitem>
+    <listitem>
+     <para>%nname - network name, in lowercase</para>
+    </listitem>
+    <listitem>
+     <para>%NADDR - network address</para>
+    </listitem>
+    <listitem>
+     <para>%NIFACE - network interface</para>
+    </listitem>
+    <listitem>
+     <para>%NMASK - network mask</para>
+    </listitem>
+    <listitem>
+     <para>%NGATE - network gateway IP address</para>
+    </listitem>
+    <listitem>
+     <para>%NDNS - primary DNS server IP address</para>
+    </listitem>
+    <listitem>
+     <para>%NDNS2 - secondary DNS server IP address</para>
+    </listitem>
+    <listitem>
+     <para>%NDOMAIN - domain name of the network</para>
+    </listitem>
+    <listitem>
+     <para>%NWINS - WINS server IP address</para>
+    </listitem>
+    <listitem>
+     <para>%NDHCPS - first IP address of dynamic DHCP range</para>
+    </listitem>
+    <listitem>
+     <para>%NDHCPE - last IP address of dynamic DHCP range</para>
+    </listitem>
+   </itemizedlist>
+    </para>
+    <para>Network templates (for sections relevant to networks only):
+   <itemizedlist>
+    <listitem>
+     <para>%ID - network ID</para>
+    </listitem>
+    <listitem>
+     <para>%NAME - network name, in uppercase</para>
+    </listitem>
+    <listitem>
+     <para>%name - network name, in lowercase</para>
+    </listitem>
+    <listitem>
+     <para>%ADDR - network IP address</para>
+    </listitem>
+    <listitem>
+     <para>%IFACE - network interface</para>
+    </listitem>
+    <listitem>
+     <para>%MASK - network IP mask</para>
+    </listitem>
+    <listitem>
+     <para>%GATE - network gateway IP address</para>
+    </listitem>
+    <listitem>
+     <para>%DNS - primary DNS server IP address</para>
+    </listitem>
+    <listitem>
+     <para>%DNS2 - secondary DNS server IP address</para>
+    </listitem>
+    <listitem>
+     <para>%DOMAIN - domain name of the network</para>
+    </listitem>
+    <listitem>
+     <para>%WINS - WINS server IP address for the network</para>
+    </listitem>
+    <listitem>
+     <para>%DHCPS - first IP address of dynamic DHCP range for the network</para>
+    </listitem>
+    <listitem>
+     <para>%DHCPE - last IP address of dynamic DHCP range for the network</para>
+    </listitem>
+   </itemizedlist>
+    <note><para>Additionally, <prompt>dst_network_header</prompt> variable may include above templates prepended with D (ie. %DADDR, %dname) to get data relevant to destination networks.</para></note>
+   </para>
+   <para>Templates which can be used everywhere:
+   <itemizedlist>
+   <listitem>
+     <para>%DATE - date in YYYYMMDD format;</para>
+    </listitem>
+    <listitem>
+     <para>%TIME - time in HHMM format;</para>
+    </listitem>
+    <listitem>
+     <para>%TIMES - time in HHMMSS format;</para>
+    </listitem>
+    <listitem>
+     <para>%UTIME - time in unix timestamp format;</para>
+    </listitem>
+    </itemizedlist>
+   </para>
+	</sect2>
+  </sect1>
+  <sect1 id="mgc-example">
+	<title>Examples of use</title>
+	<para>Configuration and implementation of lms-mgc might seem quite complex, so we provide small example. Below you can find rules to create and execute quite simple ipchains firewall.</para>
+	<example id="instance-example">
+	<title>Lms-mgc: Example instance</title>
+	<para>You should start with creating new mgc section in <filename>lms-mgc.ini</filename>, with relevant name ('ipchains') and put a simple masquerade rules, per IP, inside:
+	<screen>
+[mgc:ipchains]
+outfile           = /etc/rc.d/rc.masq
+outfile_perm      = 700
+header            = #!/bin/sh\n/sbin/ipchains -F\n/sbin/ipchains -X\n/sbin/ipchains -P forward DENY
+grantednode_priv  = /sbin/ipchains -A forward -s %IP -j MASQ
+post_exec         = /etc/rc.d/rc.masq</screen>
+	You can also add your ipchains subsection to main mgc section, so that it executes it by default:
+	<screen>
+[mgc]
+instances         = ipchains</screen>
+	</para><para>If you run lms-mgc now, without any arguments, you should have simple script <filename>/etc/rc.d/rc.masq</filename> generated and already executed.</para>
+	</example>
+  </sect1>
+</chapter>

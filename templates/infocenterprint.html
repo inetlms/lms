@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!--// $Id$ //-->
+<html>
+<head>
+<meta name="GENERATOR" content="LMS {$layout.lmsv}">
+<meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
+<meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
+<link href="img/style_print.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<TABLE WIDTH="100%" CELLPADDING="3" ALIGN="CENTER">
+	<TR>
+		<TD WIDTH="480" VALIGN="TOP">
+		{$layout.pagetitle}<br>
+		<b>id:</b> {$topic.cid|string_format:"%05d"}
+		</TD>
+		<TD WIDTH="235" ALIGN="RIGHT" NOWRAP>
+			{$layout.lmsv} LMS @ {$layout.hostname}<BR>
+			{$smarty.now|date_format:"d.m.Y H:i"}<BR>
+			{t a=$layout.logname}Prepared by: $a{/t}
+		</TD>
+	</TR>
+</TABLE>
+<br>
+{if $print=='topic'}
+    <table width="100%" cellpadding="3">
+    <tr style="background:#333333;color:#FFFFFF;">
+	<td width="730" class="fall" style="padding-left:5px;">
+	    <b>{trans('Topic')}:</b> <b>{$topic.topic}</b>
+	</td>
+    </tr>
+    <tr>
+	<td width="730" class="flr" style="padding-left:5px;">
+	    <b>{trans('Description')}: </b>{$topic.description}
+	</td>
+    </tr>
+    <tr>
+	<td width="730" class="flr" style="padding-left:5px;">
+	    <b>Priorytet:</b>&nbsp;{if $topic.prio=='1'}normalny{/if}{if $topic.prio=='2'}ważne{/if}&nbsp;&nbsp;&nbsp;&nbsp;<b>Status:</b>&nbsp;{if !$topic.closed}otwarte{else}zamknięte{/if}
+	</td>
+    </tr>
+    <tr>
+	<td width="730" align="left" class="fbottomu" style="padding-left:5px;">
+	    <b>Utworzono:</b> {$topic.cdate|date_format:"Y/m/d H:i"} przez {$topic.cname}{if $topic.mdate}&nbsp;&nbsp;&nbsp;<b>Ostatni wpis:</b> {$topic.mdate|date_format:"Y/m/d H:i"} przez {$topic.mname}{/if}
+	    {if $topic.closed}<br><br>
+	    <div class="grey" style="border:solid 1px #AAAAAA;padding:4px 10px 4px 10px;"><b>TEMAT ZAMKNIĘTY dnia: {$topic.closeddate|date_format:"Y/m/d H:i"} przez {$topic.closedname}</b><br>{$topic.closedinfo|nl2br}</div><br>
+	    {/if}
+	</td>
+    </tr>
+    </table>
+<br>
+<table width="100%" cellpadding="2">
+    <tr  style="background:#333333;color:#FFFFFF;">
+	<td width="37" nowrap align="center" style="border-left:solid 1pt #333333;border-right:solid 1pt #aaaaaa;border-top:solid 1pt #333333;">
+	    <b>LP</b>
+	</td>
+	<td class="frightu" width="673" align="left" style="padding-left:5px;">
+	    <b>Notatka<br>data</b>
+	</td>
+    </tr>
+    {cycle values="white,grey" print=false}
+    {section name='l1' loop=$postlist}
+    {assign var='lp' value=$smarty.section.l1.index+1}
+    <tr class="{cycle}">
+	<td width="37" nowrap align="center" style="border-left:solid 1pt #333333;border-bottom:solid 1pt #333333;border-right:solid 1pt #333333;">
+	    {$lp|string_format:"%02d"}
+	</td>
+	<td width="673" align="left" style="vertical-align:top;border-bottom:solid 1pt #333333;border-right:solid 1pt #333333;padding-left:5px;">
+	    {$postlist[l1].post|nl2br}<br>
+	    <span class="blend">{$postlist[l1].cdate|date_format:"Y/m/d H:i"} ({$postlist[l1].cname}){if $postlist[l1].mdate} | MOD: {$postlist[l1].mdate|date_format:"Y/m/d H:i"} ({$postlist[l1].mname}){/if}</span>
+	</td>
+    </tr>
+    {/section}
+</table>
+{/if}
+</body>
+</html>

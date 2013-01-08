@@ -1,0 +1,79 @@
+{include file="header.html"}
+<!--// $Id: contractorlist.html //-->
+<table width="100%">
+    <tr>
+	<td width="99%" align="left">
+	    <h1>{$layout.pagetitle}</h1>
+	</td>
+	<td width="1%" nowrap>
+	    <a href="?m=contractorgroupadd" {tip text='Allows you to add new group'}><b>{trans('New Group')}</b> <img src="img/add.gif" alt=""></a>
+	</td>
+    </tr>
+</table>
+<table width="100%" cellpadding="3">
+	<tr class="dark">
+		<td width="1%" class="fleftu">
+			<img src="img/group.gif" alt="">&nbsp;<b>{trans("Name:")}</b><BR>
+		</td>
+		<td width="96%" class="fbt">
+			<img src="img/info1.gif" alt="">&nbsp;{trans("Description:")}
+		</td>
+		<td width="1%" class="fbt" align="right">
+			{trans("ID:")}
+		</td>
+		<td width="1%" class="fbt" align="right">
+			{trans("Members:")}
+		</td>
+		<td width="1%" class="frightu" align="RIGHT" nowrap>
+			<b>{t a=$listdata.total|default:"0"}Total: $a{/t}</b>
+		</td>
+	</tr>
+	{cycle values="light,lucid" print=false}
+	{section name=contractorgroups loop=$contractorgrouplist}
+	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td width="1%" class="fleft" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';" nowrap style="padding-right:10px;">
+			<b>{$contractorgrouplist[contractorgroups].name}</b>
+		</td>
+		<td width="96%" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';">
+    			{if $contractorgrouplist[contractorgroups].description}{$contractorgrouplist[contractorgroups].description}{/if}
+		</td>
+		<td width="1%" align="right" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';">
+			({$contractorgrouplist[contractorgroups].id|string_format:"%04d"})
+		</td>
+		<td width="1%" align="right" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';">
+			{$contractorgrouplist[contractorgroups].contractorscount} 
+		</td>
+		<td width="1%" class="fright" align="right">
+			<NOBR>
+			{if $contractorgrouplist[contractorgroups].contractorscount}
+				<a href="javascript:alert('{trans("Group with members cannot be deleted!")}');">
+			{else}
+				<a href="?m=contractorgroupdel&id={$contractorgrouplist[contractorgroups].id}" onclick="return confirmLink(this,'{trans("Are you sure, you want to remove this group?")}');">
+			{/if}<img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
+				<a href="?m=contractorgroupedit&id={$contractorgrouplist[contractorgroups].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
+				<a href="?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></a>
+			</NOBR>
+		</td>
+	</tr>
+	{sectionelse}
+	<tr>
+		<td colspan="5" align="center" class="fall">
+			<p>&nbsp;</p>
+			<p><b>{trans("There are no such groups in database.")}</b></p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>
+	{/section}
+	<tr class="dark">
+		<td class="fleftu" colspan="3" width="98%" align="right">
+			<img src="img/info2.gif" alt="">&nbsp;<b>{trans("Total:")}</b>
+		</td>
+		<td class="fbt" width="1%" align="right" NOWRAP>
+			<b>{$listdata.totalcount|default:"0"} </b>
+		</td>
+		<td class="frightu" width="1%">
+			&nbsp;
+		</td>
+	</tr>
+</table>
+{include file="footer.html"}

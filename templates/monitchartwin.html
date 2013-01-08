@@ -1,0 +1,24 @@
+{include file="header.html"}
+<p class="light">
+<table width="100%">
+
+<tr>
+    <td align="center" width="100%">
+	<img src="?m=monitchartimg&chart=ping&chartsize=normal&type={$chart.type}&id={$chart.id}&from={$chart.from}&to={$chart.to}">
+    </td>
+</tr>
+<form name="pingwin" method="GET" action="?m=monitchartwin">
+<input type="hidden" name="id" value="{$chart.id}">
+<input type="submit" class="hiddenbtn">
+<input type="hidden" name="m" value="monitchartwin">
+<tr>
+    <td width="100%" align="left" style="padding-top:10px;padding-bottom:10px;">
+	Pokaż wykres od dnia: <input type="text" name="from" size="10" value="{$chart.from|date_format:"Y/m/d"}">
+	do dnia: <input type="text" name="to" size="10" value="{$chart.to|date_format:"Y/m/d"}">
+	<input type="submit" value="Pokaż">
+    </td>
+</tr>
+</form>
+
+</table>
+</p>

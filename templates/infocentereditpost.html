@@ -1,0 +1,41 @@
+
+<form name="infocentereditpost" method="POST" action="?m=infocenter&tid={$tid}&backto={$backto}{if $cid}&cid={$cid}{/if}{$callback}" id="infocentereitpost">
+    <input type="hidden" name="infocentereditpost[empty]" value="1">
+    <input type="hidden" name="postid" value="{$post.id}">
+    <table width="100%" cellpadding="3">
+
+    <tr class="dark">
+	<td class="fall"><b>Edycja notatki</b></td>
+    </tr>
+    
+    <tr class="light">
+	<td width="100%" class="flr" style="vertical-align:top;">
+	    <b>Informacja:</b><br>
+	    <textarea  style="width:100%" rows="12" name="post" required="required">{$post.post}</textarea>
+	</td>
+    </tr>
+
+    <tr class="dark">
+	<td width="100%" class="fall" align="right">
+	    <input type="submit" value="Zapisz">
+	    
+	    <a href="?m=infocenter&tid={$tid}&backto={$backto}{if $cid}&cid={$cid}{/if}">Anuluj <img src="img/cancel.gif"></a>
+	    
+	</td>
+    </tr>
+    </table>
+</form>
+<br><Br>
+{literal}
+<script type="text/javascript">
+<!--
+    $(document).ready(function(input,value){$("#infocentereditpost").validate({
+	    rules: {post:"required"}
+	});
+    });
+    document.infocentereditpost.post.focus();
+//-->
+</script>
+{/literal}
+
+

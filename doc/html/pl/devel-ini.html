@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Format pliku konfiguracyjnego</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Dla dociekliwych"
+HREF="devel.html"><LINK
+REL="PREVIOUS"
+TITLE="Struktura bazy danych"
+HREF="devel-db.html"><LINK
+REL="NEXT"
+TITLE="Generowanie danych losowych"
+HREF="devel-genfake.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="devel-db.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Rozdzia&#322; 7. Dla dociekliwych</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="devel-genfake.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DEVEL-INI"
+>7.3. Format pliku konfiguracyjnego</A
+></H1
+><P
+>W pliku konfiguracyjnym LMS'a (standardowo <TT
+CLASS="FILENAME"
+>/etc/lms/lms.ini</TT
+>)
+          można ustawiać parametry <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>, <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS_MGC</I
+></SPAN
+>
+	  i innych skryptów. Przechowywanie konfiguracji demona <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>lmsd</I
+></SPAN
+>
+	  w pliku konfiguracyjnym nie jest zalecane. Format wartości parametrów dla skryptów 
+	  perlowych podlega większym restrykcjom niż dla UI.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INI-COMMENTS"
+>7.3.1. Komentarze</A
+></H2
+><P
+>Programy parsujące plik konfiguracyjny pomijają wszystkie linie
+               zaczynające się znakiem '#' lub ';'. Komentarze poprzedzone jednym z tych
+               znaków można także wstawiać w tej samej linii co sekcje i opcje.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INI-PARAMS"
+>7.3.2. Sekcje, klucze, wartości</A
+></H2
+><P
+>Opcje konfiguracyjne pogrupowane są w sekcje. Nazwę sekcji, składającą
+               się z liter i/lub cyfr należy zamknąć w nawiasy kwadratowe. Ich nazwy
+               powinny być unikalne.</P
+><P
+>Sekcje i parametry umieszcza się w osobnych liniach. Parametry
+               składają się z klucza i wartości. Klucz to nazwa parametru konfiguracyjnego
+               składająca się z liter i/lub cyfr. W tej samej linii co klucz, po znaku
+               równości, umieszcza się wartość parametru. Jeśli wartość zawiera znaki specjalne
+               należy ją objąć w apostrofy lub cudzysłów.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="CONFIG-FORMAT"
+></A
+><P
+><B
+>Przyk&#322;ad 7-1. Format opcji konfiguracyjnych</B
+></P
+><PRE
+CLASS="SCREEN"
+>[sekcja]
+klucz = wartość 
+zmienna1 = "jakiś tekst"
+para_metr = 'zmienna "para_metr" w apostrofach'
+
+[sekcja_1]                    #tu można komentować
+klucz = "tekst ze znakami \t i ;"     ; tu też można komentować
+; a to jest komentarz na całą linię
+key = "A.L.E.C's LMS Daemon is the best"
+# opcja = wyłączona</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INI-PERL"
+>7.3.3. Zmienne dla skryptów perlowych</A
+></H2
+><P
+>Konfiguracja skryptów perlowych, z uwagi na zastosowanie
+               modułu Config::IniFiles, ma pewne ograniczenia. Komentarze mogą
+               być wstawiane tylko i wyłącznie w nowej linii. Wartości
+               zmiennych nie obejmuje się w apostrofy lub cudzysłów, a są
+               one czytane od znaku równości do końca wiersza. Dlatego właśnie 
+               nie można umieszczać komentarzy w jednej linii z parametrami.
+               </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="devel-db.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="devel-genfake.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Struktura bazy danych</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="devel.html"
+ACCESSKEY="U"
+>Pocz&#261;tek rozdzia&#322;u</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Generowanie danych losowych</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

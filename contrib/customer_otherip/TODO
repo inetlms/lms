@@ -1,0 +1,11 @@
+-Po cichu założyć że osoba która ostatno księgowała wpłatę danego lusera
+ jest "księgowym właściwym dla sprawy" i dać linka mailowego/gg/telefon
+ do niego koło zaległych/nadpłaconych $$$, a osoba która robiła ostanio
+ zmianę danych usera w okolicach taryfy i dopisać tam np "zmień taryfę"
+ albo zgłoś reklamację etc.
+
+Suggested by (From: "Maciej Krok" <maciek@grybow.net.pl>)
+- pobieranie numeru konta z lms.ini zamiast wklepanych na sztywno
+- jezeli klient ma nadplacone to w przelewpie pojawia sie i tak wartosc
+  tylko bezwzgledna( ale to juz kosmetyka)
+

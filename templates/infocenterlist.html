@@ -1,0 +1,181 @@
+{include file="header.html"}
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr>
+    <td width="99%">
+	<h1>{$layout.pagetitle}</h1>
+    </td>
+    <td width="1%" nowrap>
+	{if $cid}
+	    <a href="?m=infocenter&backto=infocenterlist&cid={$cid}&action=newtopic" {tip text="Dodaj nowe zdarzenie"}><img src="img/add.gif"></a>
+	{else}
+	    &nbsp;
+	{/if}
+    </td>
+</tr>
+{literal}
+<script type="text/javascript">
+<!--
+    function clear_filter()
+    {
+	var dok = document.callcenter;
+	dok.s.value = "";
+	dok.st.value = "";
+	dok.datefrom.value = "";
+	dok.dateto.value = "";
+	dok.submit();
+    }
+    function clear_date(id)
+    {
+	document.getElementById(id).value = "";
+    }
+    function clear_dates()
+    {
+	    clear_date('datefrom');
+	    clear_date('dateto');
+    }
+    
+//-->
+</script>
+{/literal}
+<form method="GET" name="callcenter" id="callcenter" action="?m=infocenterlist">
+<input type="submit" class="hiddenbtn">
+<input type="hidden" name="m" value="infocenterlist">
+<input type="hidden" name="page" value="1">
+<input type="hidden" name="cid" value="{$listdata.cid}">
+
+<table width="100%" cellpadding="3">
+    <tr class="dark">
+	<td width="100%" colspan="5" class="fall">
+	    <img src="img/Filter.png">&nbsp;
+	    <img src="img/search.gif" {tip text="ustaw filtr"} border="0" style="cursor:pointer;" onclick="document.callcenter.submit();">&nbsp;
+	    <img src="img/cancel.gif" {tip text="resetuj filtr"} border="0" style="cursor:pointer;" onclick="clear_filter();">&nbsp;
+	    &nbsp;&nbsp;
+	    <b>Status:</b>&nbsp;
+	    <select name="s" {if $listdata.status} class="active"{/if}  onchange="document.callcenter.submit();">
+		<option value="">-- all --</option>
+		<option value="1" {if $listdata.status eq "1"}SELECTED{/if}>normalne</option>
+		<option value="2" {if $listdata.status eq "2"}SELECTED{/if}>ważne</option>
+	    </select>&nbsp;
+	    <select name="st" {if $listdata.status2} class="active"{/if}  onchange="document.callcenter.submit();">
+		<option value="">-- all --</option>
+		<option value="1" {if $listdata.status2 eq "1"}SELECTED{/if}>otwarte</option>
+		<option value="2" {if $listdata.status2 eq "2"}SELECTED{/if}>zamknięte</option>
+	    </select>&nbsp;<b>Okres:</b>&nbsp;
+	    od:
+		<input type="text" class="tcal" style="width:90px;{if $listdata.datefrom}background-color:#ffff99;{/if}" name="datefrom" id="datefrom" value="{$listdata.datefrom}" readonly>
+		<img src="img/cancel.gif" {tip text="usuń datę początkową"} border="0" width="14" style="cursor:pointer;" onclick="clear_date('datefrom');">
+	    &nbsp;do:
+		<input type="text" class="tcal" style="width:90px;{if $listdata.dateto}background-color:#ffff99;{/if}" name="dateto" id="dateto" value="{$listdata.dateto}" readonly>
+		<img src="img/cancel.gif" {tip text="usuń datę końcową"} style="cursor:pointer;width:14px;border:0;" onclick="clear_date('dateto');">
+	    &nbsp;&nbsp;
+	    Klient: <input type="text" size="20" {tip text="Wprowadź identyfikator klienta, imię, nazwisko, adres lub email"} id="searchcustomer" value="{$customername}" {if $customername}style="background-color:#FFFF99;"{/if}>
+	    <img src="img/cancel.gif" {tip text="usuń filtr w.g klienta"} style="cursor:pointer;width:14px;border:0;" onclick="location.href='?m=infocenterlist&cid=';">
+	    &nbsp;&nbsp;&nbsp;
+	    <img src="img/search.gif" {tip text="ustaw filtr"} border="0" style="cursor:pointer;" onclick="document.callcenter.submit();">&nbsp;
+	    <img src="img/cancel.gif" {tip text="resetuj filtr"} border="0" style="cursor:pointer;" onclick="clear_filter();">
+	</td>
+	    
+    </tr>
+    <script type="text/javascript">
+	new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('searchcustomer'),'?m=quicksearch&ajax=1&mode=customer&infocenterlist&what=',1);
+    </script>
+    <tr class="dark">
+	<td class="fleftu pad" width="1%" nowrap>
+	    Nr. zgłoszenia
+	    </br>
+	    <a href="?m={$layout.module}&cd={$listdata.cd}&o=cldate&d={if $listdata.order=='cldate' && $listdata.direction=='desc'}asc{else}desc{/if}">Data&nbsp;zamknięcia&nbsp;<img src="img/{if $listdata.order eq 'cldate'}{if $listdata.direction eq 'desc'}desc{else}asc{/if}_order{else}empty{/if}.gif" width="7"></a>
+	</td>
+	
+	<td class="fbt pad" width="1%" nowrap>
+	    <a href="?m={$layout.module}&cd={$listdata.cd}&o=cdate&d={if $listdata.order=='cdate' && $listdata.direction=='desc'}asc{else}desc{/if}">Data utworzenia zdarzenia <img src="img/{if $listdata.order eq 'cdate'}{if $listdata.direction eq 'desc'}desc{else}asc{/if}_order{else}empty{/if}.gif" width="7"></a><br>
+	    <a href="?m={$layout.module}&cd={$listdata.cd}&o=mdate&d={if $listdata.order=='mdate' && $listdata.direction=='desc'}asc{else}desc{/if}">Data utworzenia ostatniej notatki <img src="img/{if $listdata.order eq 'mdate'}{if $listdata.direction eq 'desc'}desc{else}asc{/if}_order{else}empty{/if}.gif" width="7"></a>
+	</td>
+	
+	<td class="fbt pad" width="30%" align="left">
+	    <a href="?m={$layout.module}&cd={$listdata.cd}&o=topic&d={if $listdata.order=='topic' && $listdata.direction=='asc'}desc{else}asc{/if}">Temat&nbsp;(postów)&nbsp;<img src="img/{if $listdata.order eq 'topic'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7"></a>
+	    <br>
+	    Opis
+	</td>
+	<td class="fbt pad" width="69%" align="left">
+	    Klient:<br>
+	    Ostatnia notatka
+	    </td>
+	<td class="frightu pad" width="1%" nowrap align="center">&nbsp;</td>
+    </tr>
+
+    {if $listdata.total != 0}
+	<tr class="dark">
+	    <td class="fall" colspan="5">
+		{include file="scroller.html" loop=$topiclist}
+	    </td>
+	</tr>
+    {/if}
+    
+    {cycle values="light,lucid" print=false}
+    {section name='l1' loop=$topiclist start=$start max=$pagelimit}
+    <tr class="{cycle}{if $topiclist[l1].closed} blend{/if}"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td class="fleft" align="center">
+	    <nobr>
+	    {$topiclist[l1].id}/{$topiclist[l1].cid|string_format:"%04d"}/{$topiclist[l1].cdate|date_format:"Y"}
+	    <br>
+	    {if $topiclist[l1].closed}<span {tip text=$topiclist[l1].closedinfo|nl2br} style="cursor:pointer;">{$topiclist[l1].closeddate|date_format:"Y/m/d H:i"}</span>{else}---{/if}
+	    </nobr>
+	</td>
+	<td class="pad" width="1%" nowrap>
+	{$topiclist[l1].cdate|date_format:"Y/m/d H:i"} {$topiclist[l1].topicusername}<br>
+	{if !$topiclist[l1].closed}<font class="darkblend">{/if}{$topiclist[l1].post_cdate|date_format:"Y/m/d H:i"} {$topiclist[l1].postusername}{if !$topiclist[l1].closed}</font>{/if}
+	</td>
+	<td width="30" class="pad{if $topiclist[l1].prio=='2'} bold{/if}" align="left" style="vertical-align:top;">
+	    <a href="?m=infocenter&tid={$topiclist[l1].id}&backto=infocenterlist&cid={$topiclist[l1].cid}" {tip a={$topiclist[l1].id} dynpopup='?m=infocenterpostshort&id=$a' sticky=0}>{$topiclist[l1].topic} ( {$topiclist[l1].countpost} ) &raquo;&raquo;&raquo;</a>
+	    <br>
+	    {if $topiclist[l1].description}{$topiclist[l1].description}{/if}<br>
+	    
+	</td>
+	<td width="69%" class="pad{if $topiclist[l1].prio=='2'} bold{/if}" align="left" style="vertical-align:top;">
+	    <a href="?m=customerinfo&id={$topiclist[l1].cid}" {tip a=$topiclist[l1].cid dynpopup='?m=customerinfoshort&id=$a'}>{$topiclist[l1].cusname}&nbsp;&raquo;&raquo;&raquo;</a><br>
+	    {if $topiclist[l1].post_post}{$topiclist[l1].post_post}{/if}<br>
+	    
+	</td>
+	<td class="fright pad" nowrap width="1%" align="right">
+	{if !$topiclist[l1].closed}
+	    <a href="?m=infocenter&tid={$topiclist[l1].id}&backto=infocenterlist&cid={$topiclist[l1].cid}&action=addpost&callback" {tip text="Dodaj notatkę"}><img src="img/add.gif"></a>
+	    {if !get_conf('privileges.hide_callcenteredit')}<a href="?m=infocenter&tid={$topiclist[l1].id}&backto=infocenterlist&cid={$topiclist[l1].cid}&action=edittopic&callback" {tip text="Edytuj temat"}><img src="img/edit.gif"></a>{/if}
+	{/if}    
+	    {if !get_conf('privileges.hide_callcenterdel')}<a href="?m=infocenter&tid={$topiclist[l1].id}&backto=infocenterlist{if $cid}&cid={$cid}{/if}&action=deltopic" onclick="return confirmLink(this,'Czy napewno skasować cały temat ?');" {tip text="usuń temat"}><img src="img/delete.gif"></a>{/if}
+	    <img src="img/info.gif" style="cursor:pointer;" {tip text="Kliknij aby zobaczyć wszystkie wpisy"} onclick="infocenter_popup('{$topiclist[l1].id}');">
+	    <a href="?m=infocenterprint&cid={$topiclist[l1].cid}&tid={$topiclist[l1].id}&print=topic&asc" target="_blank"><img src="img/print.gif"></a>
+	    {if !$topiclist[l1].closed}
+		<img src="img/circle_{if $topiclist[l1].prio=='1'}green{else}red{/if}.png" {if $topiclist[l1].prio=='1'}title="[ normalny ]"{else}title="[ ważny ]"{/if}>
+	    {else}
+		{if !get_conf('privileges.reopen_callcenter')}
+		<a href="?m=infocenter&backto=infocenterlist&action=reopen&tid={$topiclist[l1].id}" {tip text="Otwórz ponownie temat"}><img src="img/circle_grey.png"></a>
+		{else}
+		<img src="img/circle_grey.png" title="[ temat zamknięty ]">
+		{/if}
+	    {/if}
+	</td>
+    </tr>
+    {sectionelse}
+	<tr>
+	    <td width="100%" class="flr" colspan="5" align="center">
+		<br><p><b>Brak wyników do pasujących reguł filtrowania, lub lista jest pusta</b></p></br>
+	    </td>
+	</tr>
+    {/section}
+    {if $listdata.total != 0}
+	<tr class="dark">
+	    <td class="fall" colspan="5">
+		{include file="scroller.html" loop=$topiclist}
+	    </td>
+	</tr>
+    {else}
+    <tr class="dark">
+	<td colspan="5" class="fall">
+	&nbsp;
+	</td>
+    </tr>
+    {/if}
+</table>
+</form>
+
+{include file="footer.html"}

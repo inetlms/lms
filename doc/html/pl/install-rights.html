@@ -1,0 +1,369 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Prawa dostępu</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Instalacja i konfiguracja"
+HREF="install.html"><LINK
+REL="PREVIOUS"
+TITLE="Konfiguracja podstawowa"
+HREF="install-config.html"><LINK
+REL="NEXT"
+TITLE="Upgrade"
+HREF="install-upgrade.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="install-config.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Rozdzia&#322; 2. Instalacja i konfiguracja</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="install-upgrade.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INSTALL-RIGHTS"
+>2.7. Prawa dostępu</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-RIGHTS-IDEA"
+>2.7.1. Idea</A
+></H2
+><P
+>LMS  ma  możliwość  zdefiniowania  do 256 reguł dostępu do systemu. Każda z nich może
+      zabraniać, bądź pozwalać na dostęp do konkretnych modułów. Każdemu użytkownikowi można
+      przydzielić dowolną kombinację reguł dostępu.</P
+><P
+>Domyślnie zdefiniowana jest następująca lista reguł dostępu:
+       <UL
+><LI
+><P
+>pełen dostęp</P
+></LI
+><LI
+><P
+>odczyt wszystkich danych (z wyjątkiem Helpdesku)</P
+></LI
+><LI
+><P
+>podłączanie i odłączanie komputerów</P
+></LI
+><LI
+><P
+>zarządzanie finansami</P
+></LI
+><LI
+><P
+>przeładowywanie konfiguracji</P
+></LI
+><LI
+><P
+>zarządzanie klientami</P
+></LI
+><LI
+><P
+>zarządzanie komputerami</P
+></LI
+><LI
+><P
+>dostęp do statystyk</P
+></LI
+><LI
+><P
+>dostęp do korespondencji seryjnej</P
+></LI
+><LI
+><P
+>zarządzanie Helpdeskiem (RT)</P
+></LI
+><LI
+><P
+>obsługa Helpdesku (RT)</P
+></LI
+><LI
+><P
+>zarządzanie hostingiem</P
+></LI
+><LI
+><P
+>konfiguracja interfejsu użytkownika</P
+></LI
+><LI
+><P
+>zarządzanie sieciami i urządzeniami sieciowymi</P
+></LI
+><LI
+><P
+>zarządzanie terminarzem</P
+></LI
+><LI
+><P
+>zarządzanie i konfiguracja demona</P
+></LI
+><LI
+><P
+>operacje kasowe</P
+></LI
+><LI
+><P
+>zarządzanie grupami klientów</P
+></LI
+><LI
+><P
+>zarządzanie grupami komputerów</P
+></LI
+><LI
+><P
+>przypisywanie klientów do grup</P
+></LI
+><LI
+><P
+>przypisywanie komputerów do grup</P
+></LI
+><LI
+><P
+>zarządzanie kontami voip</P
+></LI
+><LI
+><P
+>zarządzanie Userpanelem</P
+></LI
+><LI
+><P
+>brak dostępu do modyfikacji i zakładania kont użytkowników</P
+></LI
+><LI
+><P
+>brak dostępu</P
+></LI
+></UL
+>
+      Niektóre z nich zezwalają na dostęp do modułów oraz dwie zabraniają. Moduły do których 
+      użytkownik ma zawsze dostęp to: welcome, copyrights,  logout, chpasswd (przy czym 
+      chpasswd umożliwia tylko zmianę własnego hasła), dostęp do reszty jest zdefiniowany regułami.</P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Jeśli nie ustawimy użytkownikowi żadnej reguły dostępu, to LMS domyślnie
+      przydzieli mu regułkę 0, czyli pełen dostęp.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-RIGHTS-HOW"
+>2.7.2. Jak to działa?</A
+></H2
+><P
+>Decyzja  czy  użytkownik  ma prawo dostępu do modułu czy nie przebiega następująco:
+          <TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+>-  najpierw  sprawdzana  jest  lista  modułów, do których zawsze ma się
+          dostęp,</TD
+></TR
+><TR
+><TD
+>-  potem  następuje sprawdzenie czy moduł pasuje do reguł w poszczególnych
+          poziomach, do których użytkownik ma dostęp,</TD
+></TR
+><TR
+><TD
+>-  na  końcu podejmowana jest decyzja czy użytkownik ma uprawnienia by
+          do  modułu się dobrać. Jeżeli moduł się załapał na którykolwiek poziom, który zabrania dostępu,
+          dostęp  zostanie  zabroniony  nawet  jeżeli użytkownik ma ustawiony poziom, który pozwala
+          na dostęp do modułu (np.  ktoś  ma  pełny  dostęp oraz brak dostępu do modułu dodawania
+          komputerów,  nie  będzie  on  mógł się odwołać do tego modułu). Jeżeli moduł pasuje do
+          poziomu, który pozwala na dostęp do danego modułu LMS zezwala na dalszą pracę.
+          Jeżeli natomiast moduł się nie "załapał" na żaden poziom również zostanie mu wyświetlony
+          komunikat o braku dostępu.</TD
+></TR
+></TBODY
+></TABLE
+>
+          </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-RIGHTS-USER"
+>2.7.3. Reguły dostępu definiowane przez użytkownika</A
+></H2
+><P
+>Zaawansowani użytkownicy mają możliwość zdefiniowania dodatkowych
+          dowolnych reguł dostępu lub przedefiniowania istniejących. W tym celu
+          należy utworzyć skrypt PHP na wzór <TT
+CLASS="FILENAME"
+>lib/accesstable.php</TT
+>.
+          Lokalizację pliku podajemy w opcji <TT
+CLASS="FILENAME"
+>custom_accesstable</TT
+> sekcji [phpui].</P
+><P
+>W ten sposób można zdefiniować własne reguły zezwalające lub
+          zabraniające dostępu do dowolnych modułów. Moduł to nazwa pliku PHP
+          z katalogu <TT
+CLASS="FILENAME"
+>modules</TT
+>, którą w regułach dostępu podajemy
+          bez rozszerzenia. Dla przykładu, można zdefiniować uprawnienie do
+          odczytu faktur (np. na potrzeby skryptu lms-sendinvoices) w następujący
+          sposób:
+<PRE
+CLASS="SCREEN"
+>&lt;?php
+$access['table'][100]['name']      = 'odczyt faktur';
+$access['table'][100]['allow_reg'] = '^invoice$';
+?&gt;</PRE
+>
+          </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install-config.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="install-upgrade.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Konfiguracja podstawowa</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="install.html"
+ACCESSKEY="U"
+>Pocz&#261;tek rozdzia&#322;u</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Upgrade</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,35 @@
+{include file="header.html"}
+
+<H3>{$layout.pagetitle}</H3>
+
+<TABLE width="100%" cellpadding="3">
+    <TR class="dark">
+	<TD class="fall">
+	    <B>&nbsp;Wykorzystanie numerów PSTN</B>
+	</TD>
+    </TR>
+    <TR>
+	<TD width="100%" class="flr" nowrap>
+	    <TABLE cellpadding="4" width="100%">
+		{cycle values="light,lucid" print=false}
+		{section name=lista loop=$lista step=8}
+		    <TR class="{cycle}">
+			{section name=l2 loop=$lista start=$smarty.section.lista.index max=8}
+			<TD width="12%" align="center" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+			    {if $lista[l2].customerid==0}
+				{$lista[l2].number}
+			    {else}
+				<A href="?m=hv_accountinfo&id={$lista[l2].customerid}"><FONT class="blend">{$lista[l2].customer_name}</FONT></A>
+			    {/if}
+			</TD>
+			{/section}
+		    </TR>
+		    {/section}
+	    </TABLE>
+	</TD>
+    </TR>
+    <TR>
+	<TD width="100%" class="ftop"></TD>
+    </TR>
+</TABLE>
+{include file="footer.html"}

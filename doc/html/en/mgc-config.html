@@ -1,0 +1,1109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Configuration</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Configuration file generator (lms-mgc)"
+HREF="mgc.html"><LINK
+REL="PREVIOUS"
+TITLE="Configuration file generator (lms-mgc)"
+HREF="mgc.html"><LINK
+REL="NEXT"
+TITLE="Examples of use"
+HREF="mgc-example.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mgc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Configuration file generator (lms-mgc)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mgc-example.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MGC-CONFIG"
+>5.2. Configuration</A
+></H1
+><P
+>Configuration of LMS-MGC is held in <TT
+CLASS="FILENAME"
+>lms-mgc.ini</TT
+> file.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MGC-CONFIG-DB"
+>5.2.1. Section [database] - database setup</A
+></H2
+><UL
+><LI
+><P
+>type</P
+><P
+>Database type. Currently only 'mysql' is 100% supported, however there seems to be no significant problems with 'postgres'. Default: mysql</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>type = mysql</SAMP
+></P
+></LI
+><LI
+><P
+>host</P
+><P
+>Database host. Usually localhost, but you can set it to anything (IP, domain, path to socket in 'localhost:/path/to/socket' format). Default: localhost</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>host = localhost</SAMP
+></P
+></LI
+><LI
+><P
+>user</P
+><P
+>Database user. In most cases (if you followed this documentation) it should be 'lms'. If you want to use privileged account, you should enter 'root' (MySQL on *nices), 'mysql' (on PLD) or 'postgres' (PostgreSQL). Default: root</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>user = mysql</SAMP
+></P
+></LI
+><LI
+><P
+>password</P
+><P
+>Database password. Default: empty.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>password = secret_password</SAMP
+></P
+></LI
+><LI
+><P
+>database</P
+><P
+>Database name. Default: lms.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>database = lms</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MGC-CONFIG-LMS"
+>5.2.2. Section [mgc] - list of instances</A
+></H2
+><P
+>Significant parts of configuration are placed in section <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[mgc]</I
+></SPAN
+> and its derivative sections. In <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[mgc]</I
+></SPAN
+> alone you can use the following parameter:
+   <UL
+><LI
+><P
+>instances</P
+><P
+>List of instances (separated by spaces).</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>instances = dhcp firewall squid</SAMP
+></P
+></LI
+></UL
+>
+   <DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>You can also place <TT
+CLASS="FILENAME"
+>instances</TT
+> variable in any derivative instance section. See below.</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MGC-CONFIG-INSTANCES"
+>5.2.3. Section [mgc:xxx] - instance configuration</A
+></H2
+><P
+>Each instance has its name and its configuration is created by creating derivative section of name <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[mgc:name]</I
+></SPAN
+>, eg.
+	<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[mgc:mydaemon]</I
+></SPAN
+></P
+><P
+>All of those sections may include following configuration options:</P
+><UL
+><LI
+><P
+>instances</P
+><P
+>This variable allows you to group a list of other instances (eg. instances = ins1 ins2 ins3), and then call your mgc with '<SAMP
+CLASS="PROMPT"
+>lms-mgc -i mydaemon</SAMP
+>'  instead of '<SAMP
+CLASS="PROMPT"
+>lms-mgc -i "ins1 ins2 ins3"</SAMP
+>'. If you use this variable all other settings in this section will be ignored.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>instances = dns1 dns2 dns3</SAMP
+></P
+></LI
+><LI
+><P
+>outfile</P
+><P
+>Output file, where instance structured dump will be saved (instance will quit instantly if this variable is not set).</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>outfile = /etc/somefile</SAMP
+></P
+></LI
+><LI
+><P
+>append</P
+><P
+>It allows you to define to not overwrite outfile, but append to its end instead.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>append = 1</SAMP
+></P
+></LI
+><LI
+><P
+>outfile_perm</P
+><P
+>Permissions for output file. Default: 600 (-rw-------)</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>outfile_perm = 700</SAMP
+></P
+></LI
+><LI
+><P
+>outfile_owner</P
+><P
+>UID of output file owner. Default: 0</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>outfile_owner = 0</SAMP
+></P
+><P
+><DIV
+CLASS="WARNING"
+><TABLE
+CLASS="WARNING"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/warning.gif"
+HSPACE="5"
+ALT="Warning"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>You have to provide numerical UID, not username!</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></LI
+><LI
+><P
+>outfile_group</P
+><P
+>GID of output file owner. Default: 0</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>outfile_group = 0</SAMP
+></P
+><P
+><DIV
+CLASS="WARNING"
+><TABLE
+CLASS="WARNING"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/warning.gif"
+HSPACE="5"
+ALT="Warning"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>You have to provide numerical GID, not group name!</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></LI
+><LI
+><P
+>header_file</P
+><P
+>Filename, that should be prepended at beginning of output file. Default: unset</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>header_file = /etc/lms/myservice_header</SAMP
+></P
+></LI
+><LI
+><P
+>header</P
+><P
+>String, which should be put at beginning of output file. Default: unset</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>header = option1 = blah\noption2 = blab-la</SAMP
+></P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>You should use \n as line separator. You may omit line separator at the end of last line.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>&#62;List of (space separated) groups of customers, that should be
+    considered while creating configuration file. If unset, configuration will
+    include all groups.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>customergroups = group1 group2</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_customergroups</P
+><P
+>&#62;List of (space separated) groups of customers, that should be
+    ommited while creating configuration file.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>excluded_customergroups = group3 group4</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>&#62;List of (space separated) networks, that should be
+considered while creating configuration file. If unset, configuration will
+include all networks.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>networks = cust1-publ cust2-publ cust3-priv</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_networks</P
+><P
+>&#62;List of (space separated) networks, that should be
+    ommited while creating configuration file.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>excluded_networks = cust4-publ cust5-publ</SAMP
+></P
+></LI
+></UL
+><P
+>Mgc script now loops for each network and performs the following tasks:</P
+><UL
+><LI
+><P
+>network_header</P
+><P
+>String, which should be put at beginning of network section. Default: empty</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>network_header = network %ADDR/%MASK { # Config section for %NAME</SAMP
+></P
+></LI
+><LI
+><P
+>dst_networks</P
+><P
+>List of destination network names, for which dst_network_header variable (see below) will be used. Default: all</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>dst_networks = main coalloc</SAMP
+></P
+></LI
+><LI
+><P
+>dst_network_header</P
+><P
+>Lets you to set destination networks header.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>dst_network_header = \tallow to %DADDR/%DMASK;</SAMP
+></P
+></LI
+><LI
+><P
+>network_body</P
+><P
+>This parameter is parsed after network headers and before IP addresses loop.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>network_body = \tnodes {</SAMP
+></P
+></LI
+></UL
+><P
+>Mgc script now loops into below rules for each IP address for given range. It takes each IP address and checks if a rule is defined for this address, if yes - it executes first rule that matches. Matches are being parsed in specific order, as described below:</P
+><UL
+><LI
+><P
+>ignore</P
+><P
+>Lets you setup list of addresses (in address/prefix or address/netmask form, space separated) which should be skipped.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>ignore = 192.168.0.100/32</SAMP
+></P
+></LI
+><LI
+><P
+>node(IP)</P
+><P
+>Allows you to add line for given IP address. IP address should be provided in parenthesis. Each section may have unlimited number of such options.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>node(192.168.0.20) = ??</SAMP
+></P
+></LI
+><LI
+><P
+>allnodes</P
+><P
+>Adds line for each non-ignored IP address.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>allnodes = ??</SAMP
+></P
+></LI
+><LI
+><P
+>allexistnodes</P
+><P
+>Adds line for each IP address that is 'owner' by a computer in database.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>allexistnodes = ??</SAMP
+></P
+></LI
+><LI
+><P
+>netdevnode</P
+><P
+>Adds line for each IP address of network device.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>netdevnode = ??</SAMP
+></P
+></LI
+><LI
+><P
+>grantednode_priv</P
+><P
+>Adds line for each IP address with 'connected' status in database (parsed only for private address pools).</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>grantednode_priv = \t\tnode %NAME (%IP/%MAC) unique %ID;</SAMP
+></P
+></LI
+><LI
+><P
+>grantednode_publ</P
+><P
+>Adds line for each IP address with 'connected' status in database (parsed only for public address pools).</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>grantednode_publ = \t\tnode %NAME (%IP/%MAC) unique %ID;</SAMP
+></P
+></LI
+><LI
+><P
+>deniednode_priv</P
+><P
+>Adds line for each IP address with 'disconnected' status in database (parsed only for private address pools).</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>deniednode_priv = node %NAME (%IP/%MAC) unique %ID deny;</SAMP
+></P
+></LI
+><LI
+><P
+>deniednode_publ</P
+><P
+>Adds line for each IP address with 'disconnected' status in database (parsed only for public address pools).</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>deniednode_publ = node %NAME (%IP/%MAC) unique %ID deny;</SAMP
+></P
+></LI
+><LI
+><P
+>dhcpnode_priv</P
+><P
+>Adds line for each IP address within DHCP dynamic range (parsed only for private address pools).</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>dhcpnode_priv = node unknown (%IP) reject;</SAMP
+></P
+></LI
+><LI
+><P
+>dhcpnode_publ</P
+><P
+>Adds line for each IP address within DHCP dynamic range (parsed only for public address pools).</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>dhcpnode_publ = node unknown (%IP) reject;</SAMP
+></P
+></LI
+><LI
+><P
+>freeip_priv</P
+><P
+>Adds line for each IP address that is not occupied by any computer in database (parsed only for private address pools).</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>freeip_priv = node unknown (%IP) lock_as_unused;</SAMP
+></P
+></LI
+><LI
+><P
+>freeip_publ</P
+><P
+>Adds line for each IP address that is not occupied by any computer in database (parsed only for public address pools).</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>freeip_publ = node unknown (%IP) lock_as_unused;</SAMP
+></P
+></LI
+><LI
+><P
+>default_priv</P
+><P
+>Default line, which is inserted when none of grantednode or deniednode matches for given IP address (parsed only for private address pools)</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>default_priv = node unknown (%IP) lock_as_intruder;</SAMP
+></P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Mgc automatically detects if given address belongs to private or public network.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></LI
+><LI
+><P
+>default_publ</P
+><P
+>Default line, which is inserted when none of grantednode or deniednode matches for given IP address (parsed only for public address pools)</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>default_publ = node unknown (%IP) lock_as_intruder;</SAMP
+></P
+></LI
+></UL
+><P
+>Mgc now is ready to append final part of the file and execute system command.</P
+><UL
+><LI
+><P
+>network_footer</P
+><P
+>Adds line for currently processed network.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>network_footer = ??</SAMP
+></P
+></LI
+><LI
+><P
+>footer_file</P
+><P
+>Filename, that should be appended at the end of output file. Default: unset</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>footer_file = /etc/lms/myservice_footer</SAMP
+></P
+></LI
+><LI
+><P
+>footer</P
+><P
+>String, which should be put at the end of output file. Default: unset</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>footer = # End.</SAMP
+></P
+></LI
+><LI
+><P
+>post_exec</P
+><P
+>System command that should be executed after saving output file.</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>post_exec = killall -HUP mydaemon</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MGC-CONFIG-VARS"
+>5.2.4. Configuration variables</A
+></H2
+><P
+>You can use the following templates in your configuration variables. They all will be substituted with appropriate data from LMS database.</P
+><P
+>Computer templates:
+   <UL
+><LI
+><P
+>%IP - IP address</P
+></LI
+><LI
+><P
+>%PUBIP - second (public) IP address</P
+></LI
+><LI
+><P
+>%PIN - PIN of customer who owns node</P
+></LI
+><LI
+><P
+>%ID - ID of computer</P
+></LI
+><LI
+><P
+>%MAC - MAC address</P
+></LI
+><LI
+><P
+>%SMAC - MAC address in lowercase and without colon separators</P
+></LI
+><LI
+><P
+>%CMAC - MAC address in CISCO format (FFFF.FFFF.FFFF)</P
+></LI
+><LI
+><P
+>%OWNER - owner's ID</P
+></LI
+><LI
+><P
+>%CUSTOMER - owner's lastname and name</P
+></LI
+><LI
+><P
+>%NAME - computer name, in uppercase</P
+></LI
+><LI
+><P
+>%name - computer name, in lowercase</P
+></LI
+><LI
+><P
+>%INFO - computer description</P
+></LI
+><LI
+><P
+>%PASSWD - node password</P
+></LI
+><LI
+><P
+>%PORT - device's port, to which node is connected</P
+></LI
+><LI
+><P
+>%UPRATE - guaranteed upload rate</P
+></LI
+><LI
+><P
+>%NUPRATE - guaranteed upload rate (for night hours)</P
+></LI
+><LI
+><P
+>%DOWNRATE - guaranteed download rate</P
+></LI
+><LI
+><P
+>%NDOWNRATE - guaranteed download rate (for night hours)</P
+></LI
+><LI
+><P
+>%UPCEIL - maximum upload rate</P
+></LI
+><LI
+><P
+>%NUPCEIL - maximum upload rate (for night hours)</P
+></LI
+><LI
+><P
+>%DOWNCEIL - maximum download rate</P
+></LI
+><LI
+><P
+>%NDOWNCEIL - maximum download rate (for night hours)</P
+></LI
+><LI
+><P
+>%CLIMIT - limit of concurrent connections</P
+></LI
+><LI
+><P
+>%NCLIMIT - limit of concurrent connections (for night hours)</P
+></LI
+><LI
+><P
+>%PLIMIT - maximum number of packets per second</P
+></LI
+><LI
+><P
+>%NPLIMIT - maximum number of packets per second (for night hours)</P
+></LI
+><LI
+><P
+>%1 %2 %3 %4 - consecutive (left to right) decimal octets of IP address</P
+></LI
+><LI
+><P
+>%NID - network ID where computer belongs</P
+></LI
+><LI
+><P
+>%NNAME - network name, in uppercase</P
+></LI
+><LI
+><P
+>%nname - network name, in lowercase</P
+></LI
+><LI
+><P
+>%NADDR - network address</P
+></LI
+><LI
+><P
+>%NIFACE - network interface</P
+></LI
+><LI
+><P
+>%NMASK - network mask</P
+></LI
+><LI
+><P
+>%NGATE - network gateway IP address</P
+></LI
+><LI
+><P
+>%NDNS - primary DNS server IP address</P
+></LI
+><LI
+><P
+>%NDNS2 - secondary DNS server IP address</P
+></LI
+><LI
+><P
+>%NDOMAIN - domain name of the network</P
+></LI
+><LI
+><P
+>%NWINS - WINS server IP address</P
+></LI
+><LI
+><P
+>%NDHCPS - first IP address of dynamic DHCP range</P
+></LI
+><LI
+><P
+>%NDHCPE - last IP address of dynamic DHCP range</P
+></LI
+></UL
+>
+    </P
+><P
+>Network templates (for sections relevant to networks only):
+   <UL
+><LI
+><P
+>%ID - network ID</P
+></LI
+><LI
+><P
+>%NAME - network name, in uppercase</P
+></LI
+><LI
+><P
+>%name - network name, in lowercase</P
+></LI
+><LI
+><P
+>%ADDR - network IP address</P
+></LI
+><LI
+><P
+>%IFACE - network interface</P
+></LI
+><LI
+><P
+>%MASK - network IP mask</P
+></LI
+><LI
+><P
+>%GATE - network gateway IP address</P
+></LI
+><LI
+><P
+>%DNS - primary DNS server IP address</P
+></LI
+><LI
+><P
+>%DNS2 - secondary DNS server IP address</P
+></LI
+><LI
+><P
+>%DOMAIN - domain name of the network</P
+></LI
+><LI
+><P
+>%WINS - WINS server IP address for the network</P
+></LI
+><LI
+><P
+>%DHCPS - first IP address of dynamic DHCP range for the network</P
+></LI
+><LI
+><P
+>%DHCPE - last IP address of dynamic DHCP range for the network</P
+></LI
+></UL
+>
+    <DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Additionally, <SAMP
+CLASS="PROMPT"
+>dst_network_header</SAMP
+> variable may include above templates prepended with D (ie. %DADDR, %dname) to get data relevant to destination networks.</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+   </P
+><P
+>Templates which can be used everywhere:
+   <UL
+><LI
+><P
+>%DATE - date in YYYYMMDD format;</P
+></LI
+><LI
+><P
+>%TIME - time in HHMM format;</P
+></LI
+><LI
+><P
+>%TIMES - time in HHMMSS format;</P
+></LI
+><LI
+><P
+>%UTIME - time in unix timestamp format;</P
+></LI
+></UL
+>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mgc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mgc-example.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Configuration file generator (lms-mgc)</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="mgc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Examples of use</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

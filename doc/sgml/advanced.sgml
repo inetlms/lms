@@ -1,0 +1,1059 @@
+<!-- $Id$ -->
+<chapter id="devel">
+     <title>For curious</title>
+     <sect1 id="devel-catalogs">
+          <title>Directory tree</title>
+               <table id="catalog-tree">
+                    <title>LMS directory tree</title>
+               <tgroup cols="2">
+                    <colspec ALIGN="center" COLWIDTH="200">
+                    <colspec ALIGN="center" COLWIDTH="300">
+                   <thead>
+                    <row>
+                    <entry>Name</entry>
+                    <entry>Description</entry>
+                    </row>
+                   </thead>
+                   <tbody>
+                    <row>
+                    <entry>backups</entry>
+                    <entry>Backup copies of LMS database</entry>
+                    </row>
+                    <row>
+                    <entry>bin</entry>
+                    <entry>Executable lms-* Perl scripts</entry>
+                    </row>
+                    <row>
+                    <entry>contrib</entry>
+                    <entry>LMS user's contributions</entry>
+                    </row>
+                    <row>
+                    <entry>daemon</entry>
+                    <entry>A.L.E.C's LMS Daemon</entry>
+                    </row>
+                    <row>
+                    <entry>devel</entry>
+                    <entry>Developers' scripts to build LMS package</entry>
+                    </row>
+                    <row>
+                    <entry>doc</entry>
+                    <entry>LMS Documentation</entry>
+                    </row>
+                    <row>
+                    <entry>documents</entry>
+                    <entry>Documents archive</entry>
+                    </row>
+                    <row>
+                    <entry>img</entry>
+                    <entry>User Interface Images</entry>
+                    </row>
+                    <row>
+                    <entry>lib</entry>
+                    <entry>Set of LMS and Smarty libraries</entry>
+                    </row>
+                    <row>
+                    <entry>modules</entry>
+                    <entry>User Interface Modules</entry>
+                    </row>
+                    <row>
+                    <entry>sample</entry>
+                    <entry>Sample scripts, configs and additions</entry>
+                    </row>
+                    <row>
+                    <entry>templates</entry>
+                    <entry>User Interface Theme</entry>
+                    </row>
+                    <row>
+                    <entry>templates_c</entry>
+                    <entry>Smarty Theme compilation directory</entry>
+                    </row>
+               </tbody>
+               </tgroup>
+                   </table>
+     </sect1>
+     <sect1 id="devel-db">
+          <title>Database structure</title>
+          <para>Simple database layout is provided below. For more details (data types, fields restrictions and default values) please refer to <ulink url="../lms.mysql"><filename>lms.mysql</filename></ulink>, <ulink url="../lms.pgsql"><filename>lms.pgsql</filename></ulink> in <filename>doc/</filename> directory.</para>
+          <sect2 id="users">
+               <title>LMS users ('users')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>login - login</member>
+                    <member>name - first and last name</member>
+                    <member>email - user's email address</member>
+                    <member>phone - user's phone number</member>
+                    <member>position - user's position name</member>
+                    <member>rights - binary access rights</member>
+                    <member>hosts - list of hosts allowed to login</member>
+                    <member>passwd - password to login</member>
+                    <member>ntype - supported notofication types</member>
+                    <member>lastlogindate - date of last login</member>
+                    <member>lastloginip - IP of last login</member>
+                    <member>failedlogindate - date of last failed login attempt</member>
+                    <member>failedloginip - IP of last failed login attempt</member>
+                    <member>deleted - if is deleted boolean (0/1)</member>
+                    <member>access - whether the account is active (0/1)</member>
+                    <member>accessfrom - date from which the account is active</member>
+                    <member>accessto - date to which the account is active</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="customers">
+               <title>Customers ('customers')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>lastname - last/company name</member>
+                    <member>name - first name</member>
+                    <member>divisionid - identifier of company/division</member>
+                    <member>status - customer status (3-connected, 2-awaiting, 1-prospect)</member>
+                    <member>type - legal personality (0-private person, 1-legal entity)</member>
+                    <member>email - email address</member>
+                    <member>pin - pin number (for authentication)</member>
+                    <member>address - street address (street, apartment, flat, etc)</member>
+                    <member>zip - zip code</member>
+                    <member>city - location (city)</member>
+                    <member>countryid - country identifier</member>
+                    <member>post_name - correspondence address - name</member>
+                    <member>post_address - correspondence address - street, apartment, flat, etc</member>
+                    <member>post_zip - correspondence address - zip code</member>
+                    <member>post_city - correspondence address - location (city)</member>
+                    <member>post_countryid - correspondence address - country identifier</member>
+                    <member>ten - tax exempt number</member>
+                    <member>ssn - social security number</member>
+		    <member>regon - business registration number</member>
+		    <member>rbe - register of business entities</member>
+		    <member>icn - identity card number</member>
+                    <member>info - additional information</member>
+		    <member>notes - notes</member>
+                    <member>creationdate - record creation date</member>
+                    <member>moddate - record modification date</member>
+                    <member>creatorid - serial of LMS user who created this record</member>
+                    <member>modid - serial of LMS user last modification this record</member>
+                    <member>deleted - if is deleted from database boolean (0/1)</member>
+                    <member>message - message to be displayed if warnings enabled</member>
+                    <member>cutoffstop - date to which customers cutting off is disabled</member>
+                    <member>paytime - invoices deadline in days</member>
+                    <member>paytype - invoices payment type identifier (see documents table)</member>
+                    <member>einvoice - enables e-invoices</member>
+                    <member>invoicenotice - enables invoices delivery via e-mail</member>
+                    <member>mailingnotice - enables messages delivery via e-mail or sms</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="customergroups">
+               <title>Customer groups ('customergroups')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - group name</member>
+                    <member>description - group description</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="customerassignments">
+               <title>Customer groups - assignments ('customerassignments')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>customergroupid - group serial number</member>
+                    <member>customerid - customer serial number</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="excludedgroups">
+               <title>Customer groups - users access ('excludedgroups')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>userid - user serial number</member>
+                    <member>customergroupid - group serial number</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="networks">
+               <title>Networks ('networks')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - network name</member>
+                    <member>address - IP address</member>
+                    <member>mask - network mask</member>
+                    <member>interface - network interface (eg. eth1)</member>
+                    <member>gateway - gateway IP address</member>
+                    <member>dns - IP address of dns server</member>
+                    <member>dns2 - IP address of secondary dns server</member>
+                    <member>domain - domain of the network</member>
+                    <member>wins - WINS server address</member>
+                    <member>dhcpstart - first address of dynamic DHCP range</member>
+                    <member>dhcpend - last address of dynamic DHCP range</member>
+                    <member>disabled - disabled/enabled flag (1/0)</member>
+                    <member>notes - additional notes</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="netdevices">
+               <title>Network devices ('netdevices')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - name</member>
+                    <member>location - physical location text</member>
+                    <member>location_city - city identifier</member>
+                    <member>location_street - street identifier</member>
+                    <member>location_house - house number</member>
+                    <member>location_flat - flat number</member>
+                    <member>description - device summary</member>
+                    <member>producer - manufacturer's name</member>
+                    <member>model - model number</member>
+                    <member>serialnumber - products serial number (not DB identifier)</member>
+                    <member>ports - number of connections available</member>
+		    <member>purchasetime - purchase date</member>
+		    <member>guaranteeperiod - period in months (NULL - lifetime)</member>
+		    <member>shortname - shortname (radius)</member>
+		    <member>nastype - NAS type identifier (radius)</member>
+		    <member>clients - max. number of clients (radius)</member>
+		    <member>secret - password (radius)</member>
+		    <member>community - SNMP community</member>
+		    <member>channelid - STM channel identifier (ewx_channels table)</member>
+		    <member>longitude - geog. longitude</member>
+		    <member>latitude - geog latitude</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="netlinks">
+               <title>Network connections ('netlinks')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>src - connection's beginning</member>
+                    <member>dst - connection's end</member>
+                    <member>type - type of connection (0-cable, 1-wireless)</member>
+                    <member>srcport - begin's port number</member>
+                    <member>dstport - end's port number</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="nodes">
+               <title>Computers and IP addresses ('nodes')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - device name</member>
+                    <member>ipaddr - IP address</member>
+                    <member>passwd - computer password for radius/pppoe login</member>
+                    <member>ownerid - serial number of the owner ('0' if network device)</member>
+                    <member>creationdate - creation timestamp</member>
+                    <member>moddate - last modification timestamp</member>
+                    <member>creatorid - creator's serial number</member>
+                    <member>modid - modifier's serial number</member>
+                    <member>netdev - serial number of connected network device</member>
+                    <member>linktype - type of connection (0-cable, 1-wireless)</member>
+                    <member>port - port number in device</member>
+                    <member>access - connected/disconnected (cutoff) (1/0)</member>
+                    <member>warning - should be warned with administration message? (1/0)</member>
+                    <member>chkmac - enable/disable MAC checking? (1/0)</member>
+                    <member>halfduplex - half/full duplex mode (0/1)</member>
+                    <member>lastonline - last network activity timestamp</member>
+                    <member>info - additional information</member>
+                    <member>location_address - address string</member>
+                    <member>location_city - city identifier</member>
+                    <member>location_street - street identifier</member>
+                    <member>location_house - house number</member>
+                    <member>location_flat - flat number</member>
+                    <member>nas - NAS flag (1/0)</member>
+                    <member>longitude - geog. longitude</member>
+		    <member>latitude - geog latitude</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="macs">
+               <title>MAC addresses ('macs')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>mac - MAC address</member>
+                    <member>nodeid - IP address identifier (nodes table)</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="nodegroups">
+               <title>Node groups ('nodegroups')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - group name</member>
+		    <member>prio - group order</member>
+                    <member>description - group description</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="nodegroupassignments">
+               <title>Node groups - assignments ('nodegroupassignments')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>nodegroupid - group serial number</member>
+                    <member>nodeid - node serial number</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="nastypes">
+               <title>NAS Device Types ('nastypes')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - type name</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="cash">
+               <title>Financial operations ('cash')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>time - timestamp of operation</member>
+		    <member>type - type of operation (1-payment, 0-liability)</member>
+                    <member>userid - LMS user id</member>
+                    <member>value - amount in dollars</member>
+                    <member>taxid - tax rate identifier</member>
+                    <member>customerid - customer's serial number ('0' - does not apply)</member>
+                    <member>docid - serial number for document (e.g. invoice) related to this operation</member>
+                    <member>itemid - document item identifier</member>
+		    <member>importid - import identifier</member>
+		    <member>sourceid - import source identifier</member>
+                    <member>comment - description of operation</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="cashimport">
+               <title>Import of financial operations ('cashimport')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>date - timestamp of operation</member>
+                    <member>customer - customer data</member>
+                    <member>value - amount</member>
+                    <member>taxid - tax rate identifier</member>
+                    <member>customerid - customer's serial number</member>
+                    <member>description - operation description</member>
+                    <member>hash - unique operation identifier</member>
+		            <member>sourceid - import source identifier</member>
+		            <member>sourcefileid - import file identifier</member>
+                    <member>closed - yes (1), if operation was moved to cash table</member>
+               </simplelist>
+          </sect2>
+	    <sect2 id="cashsources">
+            <title>Cash import sources ('cashsources')</title>
+            <simplelist>
+                <member>id - serial number</member>
+                <member>name - name</member>
+                <member>description - additional information</member>
+           </simplelist>
+        </sect2>
+	    <sect2 id="sourcefiles">
+            <title>Cash import packages ('sourcefiles')</title>
+            <simplelist>
+                <member>id - serial number</member>
+                <member>name - filename</member>
+                <member>idate - date/time of import</member>
+                <member>userid - user identifier</member>
+           </simplelist>
+        </sect2>
+          <sect2 id="tariffs">
+               <title>Subscription fees ('tariffs')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - subscription name</member>
+                    <member>type - subscription type (see lib/definitions.php)</member>
+                    <member>value - amount</member>
+                    <member>taxid - tax rate identifier</member>
+                    <member>period - payment period (for specified tariff value)</member>
+                    <member>prodid - product/service classification number</member>
+                    <member>uprate - upload warranty</member>
+                    <member>upceil - upload boundary</member>
+                    <member>downrate - download warranty</member>
+                    <member>downceil - download boundary</member>
+                    <member>climit - limit of concurrent connections</member>
+                    <member>plimit - limit of packets per second</member>
+                    <member>uprate_n - upload warranty at night</member>
+                    <member>upceil_n - upload boundary at night</member>
+                    <member>downrate_n - download warranty at night</member>
+                    <member>downceil_n - download boundary at night</member>
+                    <member>climit_n - limit of concurrent connections at night</member>
+                    <member>plimit_n - limit of packets per second at night</member>
+                    <member>dlimit - limit of data per time unit</member>
+                    <member>domain_limit - limit of domains</member>
+                    <member>alias_limit - limit of aliases</member>
+                    <member>sh_limit - limit of shell accounts</member>
+                    <member>mail_limit - limit of mail accounts</member>
+                    <member>www_limit - limit of www accounts</member>
+                    <member>ftp_limit - limit of ftp_accounts</member>
+                    <member>sql_limit - limit of sql accounts</member>
+                    <member>quota_sh_limit - quota limit of shell account</member>
+                    <member>quota_mail_limit - quota limit of mail account</member>
+                    <member>quota_wwww_limit - quota limit of www account</member>
+                    <member>quota_ftp_limit - quota limit of ftp account</member>
+                    <member>quota_sql_limit - quota limit of sql account</member>
+                    <member>description - description for subscription</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="promotions">
+               <title>Promotions ('promotions')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - promotion name</member>
+                    <member>description - additional information</member>
+                    <member>disabled - status</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="promotionschemas">
+               <title>Promotion Schemas ('promotionschemas')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - schema name</member>
+                    <member>description - additional information</member>
+                    <member>promotionid - promotion identifier</member>
+                    <member>data - schema periods definition</member>
+                    <member>disabled - status</member>
+                    <member>continuation - contract continuation option</member>
+                    <member>ctariffid - additional continuation tariff identifier</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="promotionassignments">
+               <title>Schema-To-Tariff assignments ('promotionassignments')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>promotionschemaid - schema identifier</member>
+                    <member>tariffid - subscription identifier</member>
+                    <member>data - schema values definition</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="liabilities">
+               <title>Custom liabilities ('liabilities')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - liability name/description</member>
+                    <member>value - amount</member>
+                    <member>taxid - tax rate identifier</member>
+                    <member>prodid - product/service classification number</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="payments">
+               <title>Solid payments ('payments')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - name</member>
+                    <member>value - amount</member>
+                    <member>creditor - creditor name</member>
+                    <member>period - interval of operation: daily/weekly/monthly/quarterly/annually (1/2/3/4/5)</member>
+                    <member>at - pay day</member>
+                    <member>description - description for payment</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="assignments">
+               <title>Financial assignments ('assignments')</title>
+                  <simplelist>
+                    <member>id - serial number</member>
+                    <member>tariffid - subscription serial number</member>
+		            <member>liabilityid - liability serial number</member>
+                    <member>customerid - customer serial number</member>
+                    <member>period - interval of operation: daily/weekly/monthly/quarterly/annually (1/2/3/4/5)</member>
+                    <member>at - pay day</member>
+                    <member>datefrom - start date for assignment</member>
+                    <member>dateto - end date for assignment</member>
+                    <member>invoice - invoice writeout? (1 - yes, 0 - no)</member>
+                    <member>pdiscount - discount percentage</member>
+                    <member>vdiscount - discount value</member>
+                    <member>suspended - is this payment suspended? (1 - yes, 0 - no)</member>
+		            <member>settlement - do deficient period settlement? (1 - yes, 0 - no)</member>
+		            <member>paytype - invoice payment type identifier</member>
+		            <member>numberplanid - numbering plan identifier</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="nodeassignments">
+               <title>Nodes-tariffs assignments ('nodeassignments')</title>
+                  <simplelist>
+                    <member>id - serial number</member>
+                    <member>assignmentid - financial assignment serial number</member>
+                    <member>nodeid - node serial number</member>
+               </simplelist>
+          </sect2>
+	  <sect2 id="taxes">
+               <title>Tax rates ('taxes')</title>
+                  <simplelist>
+                    <member>id - serial number</member>
+                    <member>value - tax value</member>
+		    <member>taxed - "is taxed" flag</member>
+		    <member>label - rate label</member>
+                    <member>validfrom - binding period start</member>
+		    <member>validto - binding period end</member>
+		  </simplelist>
+	  </sect2>
+	  <sect2 id="numberplans">
+               <title>Documents numbering plans ('numberplans')</title>
+                  <simplelist>
+                    <member>id - serial number</member>
+                    <member>template - number template (pattern)</member>
+		    <member>period - numbering time span: day/week/month/quarter/year</member>
+		    <member>doctype - document type</member>
+                    <member>isdefault - '1' if this plan is default for respondent doctype, else '0'</member>
+		  </simplelist>
+	  </sect2>
+	  <sect2 id="numberplanassignments">
+               <title>Numbering plans to divisions assignments ('numberplanassignments')</title>
+                  <simplelist>
+                    <member>id - serial number</member>
+                    <member>planid - numbering plan identifier</member>
+		    <member>divisionid - division identifier</member>
+		  </simplelist>
+	  </sect2>
+	  <sect2 id="cashregs">
+		  <title>Cash registries ('cashregs')</title>
+		  <simplelist>
+			  <member>id - serial number</member>
+			  <member>name - registry name</member>
+			  <member>description - additional description</member>
+			  <member>in_numberplanid - numbering plan identifier for cash-in receipts</member>
+			  <member>out_numberplanid - numbering plan identifier for cash-out receipts</member>
+			  <member>disabled - summary disabling (0/1)</member>
+		  </simplelist>
+	  </sect2>
+	  <sect2 id="cashrights">
+		<title>Cash registries - access rights ('cashrights')</title>
+		<simplelist>
+			<member>id - serial number</member>
+			<member>regid - registry serial number</member>
+			<member>userid - user serial number</member>
+			<member>rights - (1-read, 2-write, 3-advanced)</member>
+		</simplelist>
+          </sect2>
+	  <sect2 id="cashreglog">
+		<title>Cash registries - cash history ('cashreglog')</title>
+		<simplelist>
+			<member>id - serial number</member>
+			<member>regid - registry serial number</member>
+			<member>userid - user serial number</member>
+			<member>time - entry timestamp</member>
+			<member>value - real cash state value</member>
+			<member>snapshot - cash state value</member>
+			<member>description - additional information</member>
+		</simplelist>
+          </sect2>
+          <sect2 id="documents">
+               <title>Documents: invoices, receipts, contracts, etc. ('documents')</title>
+                  <simplelist>
+                    <member>id - serial number</member>
+                    <member>number - document number (%N)</member>
+		    <member>extnumber - additional (extended) number part (%I)</member>
+		    <member>numberplanid - numbering plan identifier</member>
+		    <member>type - document type (1 - invoice, 2 - cash receipt)</member>
+                    <member>cdate - date of write out</member>
+                    <member>sdate - sale date (for invoices)</member>
+                    <member>paytime - deadline in days</member>
+                    <member>paytype - payment type (1-cash, 2-transfer, 3-transfer/cash, 4-card, 5-compensation, 6-barter, 7-contract)</member>
+                    <member>customerid - customer (buyer) serial number</member>
+		    <member>userid - user serial number</member>
+                    <member>divisionid - identifier of company/division</member>
+                    <member>name - name of customer</member>
+                    <member>address - address of customer</member>
+                    <member>ssn - SSN of customer</member>
+                    <member>ten - Tax Exempt Number of customer</member>
+                    <member>zip - zip code of customer</member>
+                    <member>city - location of customer</member>
+		    <member>countryid - country identifier</member>
+		    <member>closed - is document (invoice) closed (accounted)? (0/1)</member>
+		    <member>reference - document ID reference</member>
+		    <member>reason - e.g. invoice note reason</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="documentcontents">
+               <title>Non-financial documents contents ('documentcontents')</title>
+                  <simplelist>
+                    <member>docid - document serial number</member>
+                    <member>title - document title</member>
+		    <member>fromdate - start of binding period</member>
+                    <member>todate - end of binding period</member>
+                    <member>filename - document file name</member>
+                    <member>contenttype - file type</member>
+                    <member>md5sum - file md5 sum</member>
+		    <member>description - additional information</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="invoicecontents">
+               <title>Invoices ('invoicecontents')</title>
+                  <simplelist>
+                    <member>docid - invoice serial number</member>
+                    <member>itemid - invoice item identifier</member>
+                    <member>value - amount</member>
+		    <member>pdiscount - discount percentage</member>
+		    <member>vdiscount - discount value</member>
+                    <member>taxid - tax rate identifier</member>
+                    <member>prodid - product/service classification number</member>
+                    <member>content - used unit (usually 'pc.')</member>
+                    <member>count - unit count</member>
+                    <member>description - description for invoice</member>
+                    <member>tariffid - subscription serial number</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="debitnotecontents">
+               <title>Debit notes ('debitnotecontents')</title>
+                  <simplelist>
+                    <member>docid - debit note serial number</member>
+                    <member>itemid - debit note item identifier</member>
+                    <member>value - amount</member>
+                    <member>description - description for the note item</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="receiptcontents">
+               <title>Cash Receipts ('receiptcontents')</title>
+                  <simplelist>
+                    <member>docid - receipt serial number</member>
+                    <member>itemid - receipt item identifier</member>
+		    <member>regid - registry serial number</member>
+                    <member>value - amount</member>
+                    <member>description - description for receipt item</member>
+               </simplelist>
+          </sect2>
+	  <sect2 id="docrights">
+		<title>Documents - access rights ('docrights')</title>
+		<simplelist>
+			<member>userid - user identifier</member>
+			<member>doctype - document type id (see lib/definitions.php)</member>
+			<member>rights - (1-read, 2-create, 3-confirm, 4-edit, 5-delete)</member>
+		</simplelist>
+          </sect2>
+          <sect2 id="imessengers">
+               <title>Internet Messengers ('imessengers')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>customerid - customer serial number</member>
+                    <member>uid - messenger user name/identifier</member>
+                    <member>type - messenger type (0-gadu-gadu, 1-yahoo, 2-skype)</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="customercontacts">
+               <title>Customers contacts ('customer contacts')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>customerid - customer serial number</member>
+                    <member>phone - phone number</member>
+                    <member>name - contact name/description</member>
+                    <member>type - contact type (sum of: 1-mobile, 2-fax)</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="domains">
+               <title>Domains ('domains')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - domain name</member>
+                    <member>description - comments</member>
+                    <member>type - DNS type ('MASTER', 'SLAVE', 'NATIVE')</member>
+                    <member>master - master DNS server</member>
+                    <member>account - email address of DNS administrator</member>
+                    <member>last_check - timestamp</member>
+                    <member>notified_serial - timestamp</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="records">
+                <title>DNS Records ('records')</title>
+                <simplelist>
+                        <member>id - serial number</member>
+                        <member>domain_id - domain serial number</member>
+                        <member>name - name</member>
+                        <member>type - record type (MX, SOA, A, AAAA, etc.)</member>
+                        <member>content - data</member>
+                        <member>ttl - TTL</member>
+                        <member>prio - priority</member>
+                        <member>change_date - last change timestamp</member>
+                </simplelist>
+          </sect2>
+          <sect2 id="passwd">
+               <title>Accounts ('passwd')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>ownerid - customer serial number (0 - "system" account)</member>
+                    <member>login - login name</member>
+                    <member>password - password encrypted with crypt()</member>
+                    <member>realname - additional name</member>
+                    <member>lastlogin - last login date</member>
+                    <member>uid - account system UID (usually ownerid+200)</member>
+                    <member>home - account home directory</member>
+                    <member>type - account type (binary sum: 1-shell, 2-email, 4-www, 8-ftp)</member>
+                    <member>expdate - account expire date</member>
+                    <member>domainid - domain serial number</member>
+                    <member>createtime - account creation date</member>
+                    <member>quota_sh - shell space limits</member>
+                    <member>quota_mail - email space limits</member>
+                    <member>quota_www - www space limits</member>
+                    <member>quota_ftp - ftp space limits</member>
+		    <member>quota_sql - sql database space limits</member>
+		    <member>mail_forward - account for mail forwarding</member>
+		    <member>mail_bcc - account for blind carbon copy mail</member>
+		    <member>description - additional information</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="aliases">
+               <title>Aliases ('aliases')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>login - account name (without domain)</member>
+                    <member>domainid - account serial number</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="aliasassignments">
+               <title>Alias-to-account assignments ('aliasassignments')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>aliasid - alias serial number</member>
+                    <member>accountid - account serial number</member>
+                    <member>mail_forward - forward address</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="voipaccounts">
+               <title>VoIP Accounts ('voipaccounts')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>ownerid - customer identifier</member>
+                    <member>login - login</member>
+                    <member>passwd - password</member>
+                    <member>phone - phone number</member>
+                    <member>access - enabled/disabled (1/0)</member>
+                    <member>creationdate - date of account creation</member>
+                    <member>moddate - date of last account modification</member>
+                    <member>creatorid - creator (user) identifier</member>
+                    <member>modid - last change (user) identifier</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="stats">
+               <title>Bandwidth consumption statistics ('stats')</title>
+               <simplelist>
+                    <member>nodeid - node serial number</member>
+                    <member>dt - timestamp</member>
+                    <member>upload - number of bytes sent</member>
+                    <member>download - number of bytes received</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="rtqueues">
+               <title>Helpdesk - Request Tracking ('rtqueues')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>name - queue name</member>
+                    <member>email - email account for the queue</member>
+                    <member>description - main description for the queue</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="rttickets">
+               <title>Helpdesk - Request Tracking - continued... ('rttickets')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>queueid - queue serial number</member>
+                    <member>requestor - reporter name and email</member>
+                    <member>customerid - customer serial number (if reported by customer)</member>
+                    <member>subject - ticket name)</member>
+                    <member>state - status (0-new, 1-open, 2-resolved, 3-dead)</member>
+                    <member>cause - request cause (0-unknown, 1-customer, 2-company)</member>
+                    <member>owner - user serial number (ticket's owner)</member>
+                    <member>creatorid - user serial number (ticket's creator)</member>
+                    <member>createtime - timestamp of report</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="rtmessages">
+               <title>Helpdesk - Request Tracking - continued... ('rtmessages')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>ticketid - ticket serial number</member>
+                    <member>userid - LMS user serial number (if ticket sender)</member>
+                    <member>customerid - customer serial number (if ticket sender)</member>
+                    <member>mailfrom - sender email</member>
+                    <member>subject - message subject</member>
+                    <member>messageid - Message-ID message header</member>
+                    <member>inreplyto - thread serial number (if threaded)</member>
+                    <member>replyto - Reply-To message header</member>
+                    <member>headers - all message headers</member>
+                    <member>body - content of message body</member>
+                    <member>createtime - date of creation/send/delivery </member>
+               </simplelist>
+          </sect2>
+          <sect2 id="rtattachments">
+               <title>Helpdesk - Request Tracking - continued... ('rtattachments')</title>
+               <simplelist>
+                    <member>messageid - message serial number</member>
+                    <member>filename - name of file attachment</member>
+                    <member>contenttype - type of file</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="rtnotes">
+               <title>Helpdesk - Request Tracking - continued... ('rtnotes')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>ticketid - ticket serial number</member>
+                    <member>userid - LMS user serial number</member>
+                    <member>body - content of note</member>
+                    <member>createtime - date of creation</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="rtrights">
+               <title>Helpdesk - Request Tracking - continued... ('rtrights')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>queueid - queue serial number </member>
+                    <member>userid - LMS user serial number</member>
+                    <member>rights - permissions (1-read, 2-write)</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="uiconfig">
+               <title>LMS-UI Online Configuration ('uiconfig')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>section - config section name</member>
+                    <member>var - config variable name</member>
+                    <member>value - config variable value</member>
+                    <member>description - option description or comment</member>
+                    <member>disabled - is option disabled? (0-active, 1-disabled/default)</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="events">
+               <title>Timetable - events ('events')</title>
+               <simplelist>
+                    <member>id - identifier</member>
+                    <member>title - title</member>
+                    <member>description - info</member>
+                    <member>note - note</member>
+                    <member>date - event date</member>
+                    <member>begintime - beginning of event</member>
+                    <member>endtime - end of event</member>
+                    <member>userid - event creator ID</member>
+                    <member>customerid - customer ID</member>
+                    <member>private - status (private/public)</member>
+                    <member>closed - is event closed? (1-yes/0-no)</member>
+		    <member>moduserid - id of last user that modified the event</member>
+		    <member>moddate - date of last event modification</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="eventassignments">
+               <title>Timetable - assignments ('eventassignments')</title>
+               <simplelist>
+                    <member>eventid - event identifier</member>
+                    <member>userid - user identifier</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="sessions">
+               <title>Sessions ('sessions')</title>
+               <simplelist>
+                    <member>id - session identifier</member>
+                    <member>ctime - create time</member>
+                    <member>mtime - last modification time</member>
+                    <member>atime - last access time</member>
+                    <member>vdata - verification data</member>
+                    <member>content - data</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="hosts">
+               <title>Hosts ('hosts')</title>
+               <simplelist>
+                    <member>id - identifier</member>
+                    <member>name - host name</member>
+                    <member>description - additional information</member>
+                    <member>lastreload - last reload date</member>
+                    <member>reload - reload order</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="daemoninstances">
+               <title>Daemon configuration - instances ('daemoninstances')</title>
+               <simplelist>
+                    <member>id - identifier</member>
+                    <member>name - instance name</member>
+                    <member>hostid - host identifier</member>
+                    <member>module - module file path and name</member>
+                    <member>crontab - time of reload</member>
+                    <member>priority - reload priority</member>
+                    <member>description - additional information</member>
+                    <member>disabled - status (enabled/disabled)</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="daemonconfig">
+               <title>Daemon configuration - options ('daemonconfig')</title>
+               <simplelist>
+                    <member>id - identifier</member>
+                    <member>instanceid - instance identifier</member>
+                    <member>var - option name</member>
+                    <member>value - option value</member>
+                    <member>description - additional information</member>
+                    <member>disabled - status (enabled/disabled)</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="states">
+               <title>States ('states')</title>
+               <simplelist>
+                    <member>id - identifier</member>
+                    <member>name - state name</member>
+                    <member>description - additional information</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="zipcodes">
+               <title>Zip codes ('zipcodes')</title>
+               <simplelist>
+                    <member>id - identifier</member>
+                    <member>zip -  zip code</member>
+                    <member>stateid - state identifier</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="countries">
+               <title>Countries ('countries')</title>
+               <simplelist>
+                    <member>id - identifier</member>
+                    <member>name -  country name</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="divisions">
+               <title>Companies/Divisions ('divisions')</title>
+               <simplelist>
+                    <member>id - identifier</member>
+                    <member>shortname -  division short name</member>
+                    <member>name - division long name</member>
+                    <member>address - address</member>
+                    <member>zip - zip code</member>
+                    <member>city - city</member>
+                    <member>countryid - country identifier</member>
+                    <member>ten - tax exempt number</member>
+		    <member>regon - business registration number</member>
+                    <member>account - bank account or mass payments account prefix</member>
+                    <member>description - additional information</member>
+                    <member>status - lock status (1/0)</member>
+                    <member>inv_header - invoice header</member>
+                    <member>inv_footer - invoice footer</member>
+                    <member>inv_author - invoice default author</member>
+                    <member>inv_cplace - invoice creation place</member>
+                    <member>inv_paytime - invoice deadline</member>
+                    <member>inv_paytype - invoice payment type (see documents table)</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="messages">
+               <title>Messages - list ('messages')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>subject - message subject</member>
+                    <member>body - message contents</member>
+                    <member>cdate - creation date</member>
+                    <member>type - type (1-email, 2-sms)</member>
+                    <member>userid - sender (user) identifier</member>
+                    <member>sender - e-mail 'From' header</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="messagesitems">
+               <title>Messages - items ('messageitems')</title>
+               <simplelist>
+                    <member>id - serial number</member>
+                    <member>messageid - message identifier</member>
+                    <member>customerid - customer identifier</member>
+                    <member>destination - destination (phone num./e-mail)</member>
+                    <member>lastdate - last meaning date</member>
+                    <member>status - sending status (see lib/definitions.php)</member>
+                    <member>error - error message</member>
+               </simplelist>
+          </sect2>
+          <sect2 id="dbinfo">
+               <title>Database information ('dbinfo')</title>
+               <simplelist>
+                    <member>keytype - type</member>
+                    <member>keyvalue - value</member>
+               </simplelist>
+          </sect2>
+     </sect1>
+     <sect1 id="devel-ini">
+          <title>Configuration file format</title>
+          <para>Configuration file default location is <filename>/etc/lms/lms.ini</filename>. 
+          It's intended to be central configuration for <emphasis>LMS-UI</emphasis>,
+	  <emphasis>LMS-MGC</emphasis> and other scripts (exluding <emphasis>lmsd</emphasis> daemon).  
+	  However variable format for Perl scripts is more restricted than for PHP.</para>
+          <sect2 id="ini-comments">
+               <title>Comments</title>
+               <para>Configuration file parsers skip all lines that begin with '#' or ';' sign. 
+               You can also append comments to the end of the lines containing valid variables 
+               and sections , followed by that signs. </para>
+          </sect2>
+          <sect2 id="ini-params">
+               <title>Sections, variables, values</title>
+               <para>Configuration options are grouped in sections. Name of the section, which is 
+               build with alphanumerical signs must be enclosed in square brackets. Their name 
+               should be unique in the span of configuration file.</para>
+               <para>Sections and parameters should be placed one per line. Parameter consists 
+               of key (variable name) and value (variable content). Key is name of configuration 
+               parameter, built from alphanumerical signs. Value should be placed in the same line, 
+               after equality sign. If it contains any special characters it should be placed into 
+               quotes or apostrophes.</para>
+               <example id="config-format">
+                    <title>Format of configuration options</title>
+                    <screen>
+[section]
+key =  value
+variable1 = "some text"
+para_meter = 'i am "para_meter" variable in apostrophes'
+
+[section_1]                    # you can comment here
+key = "text with specials: \t and ;"     ; you can comment here either
+; and this is comment all line long
+key = "A.L.E.C's LMS Daemon is the best"
+# option = disabled
+</screen>
+               </example>
+          </sect2>
+          <sect2 id="ini-perl">
+               <title>Perl scripts variables</title>
+               <para>Configuration for use by Perl scripts is someway restricted, 
+	       due to restrictions of Config::IniFiles module which parses 
+	       configuration file. Comments must be placed in new lines only. 
+	       Values shouldn't be enclosed into apostrophes or quotes and are 
+	       being read from equality sign since the end of line.</para>
+          </sect2>
+     </sect1>
+     <sect1 id="devel-genfake">
+          <title>Filling DB with random data</title>
+          <para>If you want to test your LMS installation instantly you can fill it with
+	  some random data using 'genfake' module.</para>
+          <para>To generate data you should, once logged in, open in your Web browser
+	  URL <filename>http://ourserver.org/lms/?m=genfake</filename> and write how many
+	  user records should be created in the text box. After you hit enter, the whole
+	  content of database will be erased and populated with some random data.
+	  You might get some database errors while generating data, as this algorithm
+	  is not truly random.
+          <note><para>For proper creation of dependences you should only run this module
+	  on empty database.</para></note>
+          <warning><para>All data will be erased from database, except LMS users
+	  (Administrators) records.</para></warning>
+          </para>
+     </sect1>
+     <sect1 id="devel-rights">
+          <title>Access levels</title>
+          <para>This description intended audience are LMS developers. :)</para>
+          <para>Originally access levels were supposed to be defined by various letters.
+	  It was assumption made at LMS-0.4, but it never actually took place.
+	  Due to it's presence in 1.0, I've racked my brain bout using 64-character string.
+	  So, in 64-character long field, there is just 256-bit hexadecimal number.
+	  Each character might describe maximum of 4 bits (4*64 = 256, which is a number
+	  of valid combinations). Turning some level on effects in turning some bit on.
+	  Then, if "full access" has index 0 in lib/accesstable.php, 0 bit will be set to 1,
+	  so the number will be 1. Levels may have numbers (indices) from 0 to 255.
+	  This is not final boundary, because using more letters and chars you can
+	  expand to 6 bytes per char easily, which gives you 384 combinations.
+          </para>
+     </sect1>
+     <sect1 id="devel-limits">
+          <title>Restrictions</title>
+          <para>Each system has its restrictions. Some of ours are inherited from SQL engine being used. Some from assumptions (nearly) knowingly made by developers. Those are current restrictions:</para>
+          <sect2 id="devel-limits-lms">
+               <title>LMS project related</title>
+               <para>Amount of money (in 'cash' table) was stored (as of lms-1.1) as 32 integer value, so if you had 5000 users you might had problems in 8 years or so. Nowadays (since lms-1.1.7 Hathor) we use more appropriate type [ decimal (9.2), with 2 significant places after dot and 9 numers for whole sum] and the maximum is 9'999'999.99 (sum of all in/out cash operations). Procedures converting numbers to words are able to process numbers as big as 10^18.</para>
+        </sect2>
+          <sect2 id="devel-limits-db">
+               <title>SQL engine related</title>
+               <itemizedlist>
+               <listitem>
+               <para>MySQL</para>
+               <itemizedlist>
+               <listitem>
+               <para>Database size:</para>
+               <para>Following MySQL documentation ("How Big Can MySQL Tables Be?" in chapter "Table size"), MySQL 3.22 is restricted 4GB per table. Since 3.23 restriction is 8 million terabytes (2^63 bytes). It's worth to mention, however, that some systems have filesystem level, usually at 2 or 4 GB.</para>
+               </listitem>
+               <listitem>
+               <para>Number of records:</para>
+               <para>True information can be obtained, by issuing (in mysql shell):</para>
+               <screen>
+mysql&gt; show table status;
+
+...| Avg_row_length | Data_length | Max_data_length | Index_length |
+...|             44 |       24136 |      4294967295 |        19456 |</screen>
+               <para>See that free space is about 175 000 time more than currently used, so until you plan to have 100000 users, you're pretty safe in this matter :-)</para>
+               </listitem>
+               </itemizedlist>
+               </listitem>
+               <listitem>
+               <para>PostgreSQL</para>
+               <itemizedlist>
+               <listitem>
+               <para>Database size:</para>
+               <para>PostgreSQL stores data in 8kB blocks. Number of blocks in bound to 32-bit number with sign, which gives maximum table size of 16 terabytes. Filesystem restrictions are avoided by keeping data in slices, 1GB each.</para>
+               </listitem>
+               <listitem>
+               <para>Number of records:</para>
+               <para>PostgreSQL does not have row number limit for tables.</para>
+               </listitem>
+               </itemizedlist>
+               </listitem>
+               </itemizedlist>
+          </sect2>
+     </sect1>
+</chapter>

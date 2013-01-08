@@ -1,0 +1,36 @@
+{include file="header.html"}
+
+<H3>{$layout.pagetitle}</H3>
+<TABLE width="100%" cellpadding="4" cellspacing="3">
+    <TR class="dark">
+	<TD width="3%" align="left" nowrap class="fleftu"><B>Numery Od</B></TD>
+	<TD width="3%" align="left" nowrap class="fbt"><B>Numery Do</B></TD>
+	<TD width="3%" align="left" nowrap class="fbt"><B>Pula</B></TD>
+	<TD width="3%" align="left" nowrap class="fbt"><B>Użytych</B></TD>
+	<TD width="3%" align="center" nowrap class="fbt"><B>Kod kraju</B></TD>
+	<TD width="auto" align="left" nowrap class="fbt"><B>Opis</B></TD>
+	<TD width="1%" align="right" nowrap class="frightu">&nbsp;</TD>
+    </TR>
+    {cycle values="lucid,light" print=false}
+    {section name=lp loop=$pstn}
+    <TR class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');" style="cursor:pointer;">
+	<TD width="3%" nowrap align="left" class="fleft" onClick="return self.location.href='?m=hv_pstnusagelist&id={$pstn[lp].id}'">{$pstn[lp].range_start}&nbsp;&nbsp;</TD>
+	<TD width="3%" nowrap align="left" onClick="return self.location.href='?m=hv_pstnusagelist&id={$pstn[lp].id}'">{$pstn[lp].range_end}&nbsp;&nbsp;</TD>
+	<TD width="3%" nowrap align="center" onClick="return self.location.href='?m=hv_pstnusagelist&id={$pstn[lp].id}'">{$pstn[lp].ilosc}&nbsp;&nbsp;</TD>
+	<TD width="3%" nowrap align="center" onClick="return self.location.href='?m=hv_pstnusagelist&id={$pstn[lp].id}'">{$pstn[lp].uzyte}&nbsp;&nbsp;</TD>
+	<TD width="3%" nowrap align="center" onClick="return self.location.href='?m=hv_pstnusagelist&id={$pstn[lp].id}'">{$pstn[lp].country_code}</TD>
+	<TD width="auto" align="left" nowrap onClick="return self.location.href='?m=hv_pstnusagelist&id={$pstn[lp].id}'">{$pstn[lp].description}</TD>
+	<TD width="1%" align="right" nowrap class="fright"><A HREF="?m=hv_pstnrangelist&access={if $pstn[lp].ussage=='f'}t{else}f{/if}&id={$pstn[lp].id}" {tip text="Włącz / Wyłącz"}><IMG src="img/{if $pstn[lp].ussage=='f'}no{/if}access.gif" border="0"></A><A HREF="?m=hv_pstnusagelist&id={$pstn[lp].id}"><IMG src="img/info.gif" border="0"></A></TD>
+    </TR>
+    {sectionelse}
+    <TR class="light">
+	<TD class="flr" colspan="7" align="center">
+	    <BR><H2>Brak przyznanych pul numeracyjnych PSTN</H2><BR>
+	</TD>
+    </TR>
+    {/section}
+    <TR class="dark">
+	<TD width="100%" colspan="7" align="right" class="fall"></TD>
+    </TR>
+</TABLE>
+{include file="footer.html"}

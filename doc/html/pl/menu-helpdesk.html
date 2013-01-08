@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Helpdesk</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interfejs Użytkownika (LMS-UI)"
+HREF="user.html"><LINK
+REL="PREVIOUS"
+TITLE="Statystyki"
+HREF="menu-stats.html"><LINK
+REL="NEXT"
+TITLE="Terminarz"
+HREF="menu-timetable.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="menu-stats.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Rozdzia&#322; 3. Interfejs Użytkownika (LMS-UI)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="menu-timetable.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MENU-HELPDESK"
+>3.13. Helpdesk</A
+></H1
+><P
+>Helpdesk (inaczej Request Tracker) to system obsługi zgłoszeń.
+	    W systemie można prowadzić bazę wszystkich zgłoszeń i zapytań klientów
+	    sieci, ale także osób które nie są wpisane do bazy LMS'a. Zgłoszenia można
+	    pogrupować w kategorie (kolejki) i wyszukiwać wg zadanych kryteriów.
+	    Do każdej kolejki można zdefiniować uprawnienia dla użytkowników.
+	    </P
+><P
+>W menu po lewej stronie znajduje się pole szybkiego wyszukiwania
+	    zgłoszenia, w którym można podawać jego ID lub nazwisko zgłaszającego je
+	    klienta. W drugim przypadku zostanie wyświetlona lista wszystkich zgłoszeń
+	    danego klienta.</P
+><P
+>Każde zgłoszenie posiada historię, na którą składają się wiadomości
+	    od użytkowników i klientów. Administrator może wysłać swoją wiadomość do 
+	    klienta, klikając 'Wyślij' podczas dodawania wiadomości. (Należy podać
+	    e-mail odbiorcy. Adresem nadawcy będzie adres kolejki, a jeśli jest pusty, adres 
+	    użytkownika). Wszystkie wiadomości także te wysłane, zostają zapisane 
+	    w historii zgłoszenia. Zgłoszenie może mieć cztery stany: nowy, otwarty, rozwiązany 
+	    i martwy.</P
+><P
+>Skrypt <A
+HREF="scripts-config.html#LMS-RTPARSER"
+>lms-rtparser</A
+> został stworzony aby umożliwić
+	    obsługę systemu i przesyłanie zgłoszeń pocztą elektroniczną.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-HELPDESK-LIST"
+>3.13.1. Lista kolejek</A
+></H2
+><P
+>Na liście kolejek znajdują się podstawowe informacje i statystyki zgłoszeń.
+	    Kliknięcie na wybranej kolejce powoduje wyświetlenie listy zgłoszeń. Stąd można
+	    także przejść do informacji szczegółowych (w tym także uprawnieniach) o kolejce lub
+	    usunąć wybraną kolejkę. Usunięcie kolejki spowoduje także usunięcie zgłoszeń z bazy
+	    danych przypisanych do niej.
+	    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-HELPDESK-NEWQUEUE"
+>3.13.2. Nowa kolejka</A
+></H2
+><P
+>Kolejka (kategoria) posiada nazwę, opcjonalny opis oraz opcjonalny adres
+	    poczty elektronicznej, który używany jest do korespondencji. W tabeli 'Uprawnienia'
+	    definiuje się prawa do danej kolejki, które mają moc większą od ogólnych 
+	    uprawnień użytkowników tzn. jeśli user nie ma praw do danej kolejki, to nawet
+	    jeśli ma 'pełny dostęp' zgłoszeń w tej kolejce nie zobaczy. Prawo zapisu pozwala na edycję i dodawanie zgłoszeń i wiadomości. Prawo 'Usuwanie'
+	    pozwala na usuwanie wiadomości i zgłoszeń. Prawo 'Powiadomienia'
+	    służy do otrzymywania informacji o nowych zgłoszeniach. Jeżeli włączono opcję 'newticket_notify' 
+	    wszyscy użytkownicy z tym uprawnieniem będą otrzymywać emailowe powiadomienia 
+	    o nowych zgłoszeniach do przedmiotowej kolejki. Wszystkie prawa "wyższe" od
+    	prawa 'Odczyt' zawierają uprawnienie do odczytu wiadomości.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-HELPDESK-SEARCH"
+>3.13.3. Wyszukiwanie</A
+></H2
+><P
+>Wyszukiwanie zgłoszeń polega na wybraniu z bazy zgłoszeń spełniających 
+	    wszystkie podane kryteria (warunek AND, nie OR). Możesz podać temat, właściciela, 
+	    kolejkę, status i zgłaszającego. Klientów sieci wybieraj z listy, dla pozostałych
+	    należy podać Nazwisko/Imię i/lub e-mail.
+	    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-HELPDESK-NEWTICKET"
+>3.13.4. Nowe zgłoszenie</A
+></H2
+><P
+>Dodając nowe zgłoszenie należy określić dla niego temat, treść, wybrać kolejkę
+	    oraz zgłaszającego klienta. Osoby spoza sieci wpisujemy w polach Nazwisko i Imię.
+	    Opcjonalnie, jeśli wiadomość została zgłoszona pocztą elektroniczną podajemy adres 
+	    e-mail (także dla klienta zapisanego w bazie).</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-HELPDESK-REPORTS"
+>3.13.5. Raporty</A
+></H2
+><P
+>Tutaj mamy możliwość wydruku list zgłoszeń lub statystyk helpdesku:
+		<UL
+><LI
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Lista zgłoszeń</I
+></SPAN
+> z  filtrami kolejki, statusu i klienta oraz możliwością określenia granicy dni,</P
+></LI
+><LI
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Statystyki zgłoszeń</I
+></SPAN
+> z możliwością wyboru kolejki oraz wartości granicznych.</P
+></LI
+></UL
+>
+		</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="menu-stats.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="menu-timetable.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Statystyki</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="user.html"
+ACCESSKEY="U"
+>Pocz&#261;tek rozdzia&#322;u</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Terminarz</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,367 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Installation and configuration</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Other Information"
+HREF="moreinfo.html"><LINK
+REL="NEXT"
+TITLE="Requirements"
+HREF="install-requirements.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="moreinfo.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="install-requirements.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="INSTALL"
+></A
+>Chapter 2. Installation and configuration</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>2.1. <A
+HREF="install.html#INSTALL-INTRO"
+>Intro</A
+></DT
+><DT
+>2.2. <A
+HREF="install-requirements.html"
+>Requirements</A
+></DT
+><DD
+><DL
+><DT
+>2.2.1. <A
+HREF="install-requirements.html#INSTALL-REQ-WWW"
+>Web Server</A
+></DT
+><DT
+>2.2.2. <A
+HREF="install-requirements.html#INSTALL-REQ-PHP"
+>PHP Interpreter</A
+></DT
+><DT
+>2.2.3. <A
+HREF="install-requirements.html#INSTALL-REQ-DB"
+>Database Server</A
+></DT
+><DT
+>2.2.4. <A
+HREF="install-requirements.html#INSTALL-REQ-SMARTY"
+>Smarty Library</A
+></DT
+><DT
+>2.2.5. <A
+HREF="install-requirements.html#INSTALL-REQ-PERL"
+>Perl</A
+></DT
+><DT
+>2.2.6. <A
+HREF="install-requirements.html#INSTALL-REQ-C"
+>C Compiler</A
+></DT
+><DT
+>2.2.7. <A
+HREF="install-requirements.html#INSTALL-REQ-BROWSER"
+>Web Browser</A
+></DT
+></DL
+></DD
+><DT
+>2.3. <A
+HREF="install-install.html"
+>LMS Installation</A
+></DT
+><DT
+>2.4. <A
+HREF="install-locale.html"
+>Localization</A
+></DT
+><DT
+>2.5. <A
+HREF="install-db.html"
+>Database Server Installation</A
+></DT
+><DD
+><DL
+><DT
+>2.5.1. <A
+HREF="install-db.html#INSTALL-MYSQL"
+>MySQL</A
+></DT
+><DT
+>2.5.2. <A
+HREF="install-db.html#INSTALL-PGSQL"
+>PostgreSQL</A
+></DT
+></DL
+></DD
+><DT
+>2.6. <A
+HREF="install-config.html"
+>Basic Configuration</A
+></DT
+><DD
+><DL
+><DT
+>2.6.1. <A
+HREF="install-config.html#INSTALL-CONFIG-DB"
+>Section [database] - Database Settings</A
+></DT
+><DT
+>2.6.2. <A
+HREF="install-config.html#INSTALL-CONFIG-DIR"
+>Section [directories] - Directories Settings</A
+></DT
+><DT
+>2.6.3. <A
+HREF="install-config.html#INSTALL-CONFIG-FINANCES"
+>Section [finances] - Finances Settings</A
+></DT
+></DL
+></DD
+><DT
+>2.7. <A
+HREF="install-rights.html"
+>Access rights</A
+></DT
+><DD
+><DL
+><DT
+>2.7.1. <A
+HREF="install-rights.html#INSTALL-RIGHTS-IDEA"
+>Idea</A
+></DT
+><DT
+>2.7.2. <A
+HREF="install-rights.html#INSTALL-RIGHTS-HOW"
+>How does it work?</A
+></DT
+><DT
+>2.7.3. <A
+HREF="install-rights.html#INSTALL-RIGHTS-USER"
+>User-defined access rules</A
+></DT
+></DL
+></DD
+><DT
+>2.8. <A
+HREF="install-upgrade.html"
+>Upgrade</A
+></DT
+><DT
+>2.9. <A
+HREF="install-documents.html"
+>Documents</A
+></DT
+><DD
+><DL
+><DT
+>2.9.1. <A
+HREF="install-documents.html#TAX-CALCULATION"
+>Calculation of tax value</A
+></DT
+><DT
+>2.9.2. <A
+HREF="install-documents.html#INSTALL-INVOICES"
+>Invoices</A
+></DT
+><DT
+>2.9.3. <A
+HREF="install-documents.html#INSTALL-TRANSFERFORMS"
+>Transfer forms</A
+></DT
+><DT
+>2.9.4. <A
+HREF="install-documents.html#INSTALL-RECEIPTS"
+>Cash Receipts</A
+></DT
+><DT
+>2.9.5. <A
+HREF="install-documents.html#INSTALL-DOCUMENTS-OTHER"
+>Other documents</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INSTALL-INTRO"
+>2.1. Intro</A
+></H1
+><P
+>LMS consist a few modules. <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+> is user interface, which is
+     responsible for all interactions with user, entirely written in PHP and it uses SQL database to
+     store all data, thus PHP script interpreter and SQL engine of your choice (MySQL or Postgresql).
+     </P
+><P
+>LMS also contains a set of Perl scripts, responsible for various operations, ie.
+     periodically applying subscription fees or sending reminders to users who are in debt. It
+     also contains <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-MGC</I
+></SPAN
+>, which may be configured to generate virtually
+     any configuration file or script and manage your server. Note that some of the scripts might
+     need additional Perl modules to function.</P
+><P
+>At the end there is also <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS Daemon</I
+></SPAN
+>, written in C, which is
+     being used (its plugins in fact) as a drop-in replacement for <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-MGC</I
+></SPAN
+> - to
+     configure and manage (ie. restart) your services. It's main advantage is that it responds for
+     all <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+> changes in realtime.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="moreinfo.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="install-requirements.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Other Information</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Requirements</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

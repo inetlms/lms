@@ -1,0 +1,2638 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Modules</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="LMS Daemon"
+HREF="daemon.html"><LINK
+REL="PREVIOUS"
+TITLE="LMS Daemon"
+HREF="daemon.html"><LINK
+REL="NEXT"
+TITLE="T-Script"
+HREF="tscript.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="daemon.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. LMS Daemon</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="tscript.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DAEMON-MODULES"
+>6.2. Modules</A
+></H1
+><P
+>As we stated before daemon can only run modules and they are doing all the job. 
+     Most modules are designed to specific application, only 'hostfile' 
+     can be used to create many different configs (and manage numerous services), ie. various firewall types. 
+     Module configuration parameters MUST be placed in appropriate instance section.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-MODULESLIST"
+>6.2.1. Modules list</A
+></H2
+><DIV
+CLASS="TABLE"
+><A
+NAME="MODULES-LIST"
+></A
+><P
+><B
+>Table 6-1. List of all lmsd modules</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL
+WIDTH="200"
+ALIGN="CENTER"><COL
+WIDTH="300"
+ALIGN="CENTER"><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-SYSTEM"
+>system</A
+></TD
+><TD
+>Shell commands execution</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-PARSER"
+>parser</A
+></TD
+><TD
+>Universal T-Script scripts parser</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-DHCP"
+>dhcp</A
+></TD
+><TD
+>Configuration of DHCP server</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-CUTOFF"
+>cutoff</A
+></TD
+><TD
+>Disconnection of indebted users</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-DNS"
+>dns</A
+></TD
+><TD
+>Configuration of DNS server</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-ETHERS"
+>ethers</A
+></TD
+><TD
+>/etc/ethers file creation</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-HOSTFILE"
+>hostfile</A
+></TD
+><TD
+>Universal module (eg. making iptables rules)</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-NOTIFY"
+>notify</A
+></TD
+><TD
+>Email notify about payments</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-GGNOTIFY"
+>ggnotify</A
+></TD
+><TD
+>Gadu-Gadu (polish internet messenger) notify about payments</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-PAYMENTS"
+>payments</A
+></TD
+><TD
+>Payments accounting</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-OIDENT"
+>oident</A
+></TD
+><TD
+>Configuration of oident daemon</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-TC"
+>tc</A
+></TD
+><TD
+>Making HTB rules</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-TRAFFIC"
+>traffic</A
+></TD
+><TD
+>Internet link usage statistics</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-PINGER"
+>pinger</A
+></TD
+><TD
+>Users activity (online) scanning</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-SYSTEM"
+>6.2.2. System</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="SYSTEM-DESC"
+>6.2.2.1. Description</A
+></H3
+><P
+>This module does only one thing: it runs given 
+	      Linux shell command or/and SQL query. It can be useful if you want to 
+	      execute some command or run external script while configuration is 
+	      being reload, eg. one of scripts in LMS <TT
+CLASS="FILENAME"
+>/bin</TT
+> 
+	      directory. SQL command is executed first.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="SYSTEM-CONFIG"
+>6.2.2.2. Configuration</A
+></H3
+><P
+>You can define command strings or SQL queries. Commands will be executed via
+              shell, separated by semicolons:</P
+><UL
+><LI
+><P
+>sql</P
+><P
+>SQL command. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>command = 'DELETE FROM stats WHERE dt &#60; %NOW% - 365*86400'</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Shell command(s). Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>command = 'echo -n "hello "; echo "world"'</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-PAYMENTS"
+>6.2.3. Payments</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="PAYMENTS-DESC"
+>6.2.3.1. Description</A
+></H3
+><P
+>Module calculates subscription and solid fees for customers, basing on current
+               date. It should be executed once a day. Payments are calculated basing on customers
+               liabilities and written to database with description filled in 'comment' field. If
+               appropriate, invoices are created. Description of solid payment is a combination of liability
+               and creditor name. At the end outdated liabilities are being removed from database. </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="PAYMENTS-CONFIG"
+>6.2.3.2. Configuration</A
+></H3
+><P
+>You can use following options for this module:</P
+><UL
+><LI
+><P
+>comment</P
+><P
+>Description of operation. '%period' will be replaced by start and end
+                   date of subscription, e.g. '2003/10/10 - 2003/11/09', '%tariff' by name of
+                   liability, %month by full name of current month and %year by current year, 
+		   %next_mon by next month in YYYY/MM format. 
+		   Default: 'Subscription: '%tariff' for period: %period'.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>comment = 'Subscription %tariff' </SAMP
+></P
+></LI
+><LI
+><P
+>settlement_comment</P
+><P
+>Description of settlement operation. '%period' will be replaced by start and end
+                   date of settlement period, e.g. '2003/10/20 - 2003/11/09', and '%tariff' by name of
+                   liability. Defaults to <SAMP
+CLASS="PROMPT"
+>comment</SAMP
+> option.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>settlement_comment = 'Settlement of subscription %tariff'</SAMP
+>.</P
+></LI
+><LI
+><P
+>up_payments</P
+><P
+>How should period in comment be counted - forward or backward relatively to
+                   date of write out. Default: yes.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>up_payments = no</SAMP
+></P
+></LI
+><LI
+><P
+>expiry_days</P
+><P
+>Defines number of days from date of liability expiration, after which 
+                   that liability will be removed from database. When you set '0' data will be
+                   removed immediately after date of the write out. Default: 30.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>expiry_days = 365</SAMP
+></P
+></LI
+><LI
+><P
+>deadline</P
+><P
+>Payment deadline in days. Default: 14.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>deadline = 21</SAMP
+></P
+></LI
+><LI
+><P
+>paytype</P
+><P
+>Payment type identifier (1-cash, 2-transfer, 3-transfer/cash,
+                        4-card, 5-compensation, 6-barter, 7-contract). Default: 2 (transfer).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>paytype = 1</SAMP
+></P
+></LI
+><LI
+><P
+>numberplan</P
+><P
+>ID of invoices numbering plan defined in Configuration -&#62; Numbering Plans. 
+                   Default: 0 (default plan).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>numberplan = 1</SAMP
+></P
+></LI
+><LI
+><P
+>check_invoices</P
+><P
+>Enables checking of invoices as accounted for customers with balance
+		   equal or greater than zero. Default: false.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>check_invoices = 1</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>List of network names to restrinct customers for accounting.
+                   Default: empty (all networks).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_networks</P
+><P
+>List of excluded network names to restrinct customers for accounting.
+                   Default: empty (none).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>excluded_networks = "lan3 lan4"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>List of customers groups to restrict customers for accounting.
+                   Default: empty (all groups).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>customergroups = "group1 group2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_customergroups</P
+><P
+>List of excluded customers groups to restrict customers for accounting.
+                   Default: empty (none).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>excluded_customergroups = "group3 group4"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-NOTIFY"
+>6.2.4. Notify</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="NOTIFY-DESC"
+>6.2.4.1. Description</A
+></H3
+><P
+>Module 'notify' is designed to inform customers about their debt using
+               electronic mail. Current customer balance is compared to 'limit' option, if it's
+               beneath that limit - message will be sent. Message content is taken from template,
+               which may include the following variables:
+              <UL
+><LI
+><P
+>%saldo - current customer balance (also %b)</P
+></LI
+><LI
+><P
+>%B - absolute value of current customer balance</P
+></LI
+><LI
+><P
+>%pin - customer PIN</P
+></LI
+><LI
+><P
+>%name - customer forename</P
+></LI
+><LI
+><P
+>%lastname - company name or customer lastname</P
+></LI
+><LI
+><P
+>%last_10_in_a_table - last 10 operations on customer account</P
+></LI
+></UL
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="NOTIFY-CONFIG"
+>6.2.4.2. Configuration</A
+></H3
+><P
+>Configuration options for 'notify' module are presented below:</P
+><UL
+><LI
+><P
+>template</P
+><P
+>Location of message template file. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>template = modules/notify/sample/mailtemplate</SAMP
+></P
+></LI
+><LI
+><P
+>file</P
+><P
+>Location of temporary file. Default: /tmp/mail</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>file = /tmp/mail.txt</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Shell command for sending an e-mail. '%address' will be replaced by
+                   customer e-mail address. Default: 'mail -s "Liabilities Information" %address
+                   &lt; /tmp/mail'.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>command = 'mail -s "You must pay or ..." $address &lt; /tmp/mail.txt'</SAMP
+></P
+></LI
+><LI
+><P
+>limit</P
+><P
+>Message is sent when customer balance will decrease below value defined in
+                   this option. Default: 0</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>limit = -20</SAMP
+></P
+></LI
+><LI
+><P
+>debug_mail</P
+><P
+>If set, all messages goes to this address, instead of sending them to
+                   customers. Useful for testing. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>debug_mail = tester@my.net</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-GGNOTIFY"
+>6.2.5. Ggnotify</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="GGNOTIFY-DESC"
+>6.2.5.1. Description</A
+></H3
+><P
+>Equivalent of 'notify' module developed to send gadu-gadu instant messages.
+              Gadu-Gadu is most popular polish internet messenger.</P
+><P
+>Module require <TT
+CLASS="FILENAME"
+>libgadu</TT
+> shared library and sources
+              of <TT
+CLASS="FILENAME"
+>ekg</TT
+> program. Appropriate paths for them must be present in
+              <TT
+CLASS="FILENAME"
+>modules/ggnotify/Makefile</TT
+> before module compilation.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="GGNOTIFY-CONFIG"
+>6.2.5.2. Configuration</A
+></H3
+><P
+>Options similar to 'notify' module might be also used here:</P
+><UL
+><LI
+><P
+>template</P
+><P
+>Location of message template file. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>template = modules/notify/sample/mailtemplate</SAMP
+></P
+></LI
+><LI
+><P
+>uin</P
+><P
+>Gadu-gadu identifier number of message sender. 
+                   Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>uin = 1234567</SAMP
+></P
+></LI
+><LI
+><P
+>password</P
+><P
+>Password for account specified by 'uin'. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>password = "my_HURD.password"</SAMP
+></P
+></LI
+><LI
+><P
+>limit</P
+><P
+>Message is sent when customer balance will decrease below value defined in
+                   this option. Default: 0</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>limit = -20</SAMP
+></P
+></LI
+><LI
+><P
+>debug_uin</P
+><P
+>If is set, all messages will go to that 'uin'. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>debug_uin = 7654321</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-CUTOFF"
+>6.2.6. Cutoff</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="CUTOFF-DESC"
+>6.2.6.1. Description</A
+></H3
+><P
+>Cutoff do change nodes status to 'disconnected' and/or enable warnings for
+              customers, which have debts greater than specified limit. Also, disables computers 
+	      due to assignments expiration. This module does not doing
+              actual blocking of network access.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="CUTOFF-CONFIG"
+>6.2.6.2. Configuration</A
+></H3
+><P
+>You can use following options for 'cutoff' module:</P
+><UL
+><LI
+><P
+>limit</P
+><P
+>Disconnection occurs when customer balance decreases 
+		   below specified limit as numeric value or as percentage of
+		   sum of customer's monthly assignments (with '%' sign). 
+                   Default: 0.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>limit = -20</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Specifies system command, that is executed if at least one customer should
+                   be disconnected or warning should be enabled.
+                   Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>command = 'lmsd -qi firewall'</SAMP
+></P
+></LI
+><LI
+><P
+>warning</P
+><P
+>Enable warning for disconnected customer and write him WWW browser message
+                   specified in this option. If empty, warning will be not enabled. Date in
+                   message is substituted providing '%time' variable. You can also use %B for real customer
+		   balance and %b for unsigned balance value. Default: 'Blocked
+                   automatically due to payment deadline override at %time".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>warning = ""</SAMP
+></P
+></LI
+><LI
+><P
+>expired_warning</P
+><P
+>Sets the message to customer when disabling his computers access 
+		   due to all assignments expiration. If empty, warning will be not set. 
+		   Date in message is substituted providing '%time' variable.
+		   Default: 'Blocked automatically due to tariff(s) expiration at %time'.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>expired_warning = ""</SAMP
+></P
+></LI
+><LI
+><P
+>warnings_only</P
+><P
+>Here you can to decide, if you want to use this module only for warnings or
+                   to actually cut people off. Works for customers with assignments. Default: false.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>warnings_only = true</SAMP
+></P
+></LI
+><LI
+><P
+>setnodegroup_only</P
+><P
+>Sets nodes group name. Module assigns to that group all computers
+		    of customer who exceeds value or invoice limit. Customer's status isn't changed.
+                    Default: none.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>setnodegroup_only = blocked_nodes</SAMP
+></P
+></LI
+><LI
+><P
+>disable_suspended</P
+><P
+>Use this option to disable customers with suspended all current assignments.
+                    Default: false.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>disable_suspended = true</SAMP
+></P
+></LI
+><LI
+><P
+>use_nodeassignments</P
+><P
+>You should enable this option only if you are using nodes with
+		   tariffs assignments. In other way tariffs assignments with customers
+		   are checked. Default: false.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>use_nodeassignments = true</SAMP
+></P
+></LI
+><LI
+><P
+>use_customerassignments</P
+><P
+>You should disable this option only if you don't want to check
+		   assignments (or node assignments are used). Default: true.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>use_customerassignments = false</SAMP
+></P
+></LI
+><LI
+><P
+>check_invoices</P
+><P
+>This option enables additional checking if customer has
+			unpayed invoices with deadline date older than date specified in 'deadline' option. Default: false.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>check_invoices = true</SAMP
+></P
+></LI
+><LI
+><P
+>deadline</P
+><P
+>Sets period in days (from invoice deadline date), after which 
+			unpayed invoice is considered for 'check_invoices' check. By default, 
+			customer would be blocked just after deadline. Default: 0.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>deadline = 30</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>List of customers groups to restrict customers for accounting.
+			Default: empty (all groups).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>customergroups = "group1 group2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_customergroups</P
+><P
+>List of excluded customers groups to restrict customers for 
+			accounting. Default: empty (none).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>excluded_customergroups = "group3 group4"</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>List of network names to get into consideration. Default: empty (all networks).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>networks = 'lan1 lan2'</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_networks</P
+><P
+>List of network names to exclude. Default: empty (none).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>excluded_networks = 'lan3 lan4'</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-DHCP"
+>6.2.7. DHCP</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DHCP-DESC"
+>6.2.7.1. Description</A
+></H3
+><P
+>Module responsible for management of DHCP server, creates configuration file and
+              restarts service. It's possible to execute other functions (programs) with 'command'
+              option.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DHCP-CONFIG"
+>6.2.7.2. Configuration</A
+></H3
+><P
+>Most of configuration parameters match with parts of DHCP configuration file,
+              and in typical environment doesn't need any changes:</P
+><UL
+><LI
+><P
+>file</P
+><P
+>Location of DHCP server configuration file. 
+                   Default: /etc/dhcpd.conf.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>file = /etc/dhcp/dhcpd.conf</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Shell command executed after config file creation. 
+                   Default: 'killall dhcpd; /usr/sbin/dhcpd'.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>command = '/etc/rc.d/rc.dhcpd restart'</SAMP
+></P
+></LI
+><LI
+><P
+>begin</P
+><P
+>File header. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>begin = "authoritative;"</SAMP
+></P
+></LI
+><LI
+><P
+>end</P
+><P
+>File footer. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>end = ""</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_start</P
+><P
+>Subnet header. '%a' - name, '%m' - mask, %b - broadcast address. 
+		   Default: "subnet %a netmask %m {\ndefault-lease-time 86400;\nmax-lease-time 86400;".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>subnet_start = "subnet %a netmask %m {default-lease-time 3600;"</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_end</P
+><P
+>Subnet footer. Default: "}".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>subnet_end = '\t}'</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_gateway</P
+><P
+>Subnet gateway. '%i' will be changed to IP address. Default: "option routers %i;".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>subnet_gateway = "option routers %i"</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_dns</P
+><P
+>Subnet DNS servers. '%i - dns addresses. Default: "option domain-name-servers %i;".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>subnet_dns = "option domain-name-servers 192.168.0.1"</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_domain</P
+><P
+>Subnet domain name. '%n' - name. Default: 'option domain-name "%n";'.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>subnet_domain = 'option domain-name "test.%n";'</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_wins</P
+><P
+>WINS servers. '%i' - server IP address. Default: "option netbios-name-servers %i;".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>subnet_wins = ""</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_range</P
+><P
+>Subnet address range. '%s' - initial address, '%e' - end of range. Default: "range %s %e;".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>subnet_range = "range %s %e;"</SAMP
+></P
+></LI
+><LI
+><P
+>host</P
+><P
+>Hosts parameters, where '%n' - host name, '%m' - MAC, '%i' - IP address. 
+                   Default: "\thost %n {\n\t\thardware ethernet %m; fixed-address %i; \n\t}".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host = "host %n {hardware ethernet %m; fixed-address %i;}"</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>List of network names that should be included in configuration (case insensitive).
+                   Default: empty (all networks).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>List of customers groups that should be included in configuration (case insensitive).
+                   Default: empty (all groups).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>customergroups = "group1 group2"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-HOSTFILE"
+>6.2.8. Hostfile</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="HOSTFILE-DESC"
+>6.2.8.1. Description</A
+></H3
+><P
+>Module 'hostfile' is a multipurpose tool. It performs loop on all hosts
+			(nodes and network devices addresses) from database fetching their 
+			connection and warnings status, private and public addresses, network
+			that they are connected to and groups of they owners. Because of that it 
+			is possible to create any set of firewall rules, or /etc/hosts file. Data is 
+			written to file and after that specified shell command can be 
+			executed.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="HOSTFILE-CONFIG"
+>6.2.8.2. Configuration</A
+></H3
+><P
+>The following replacement variables can be used in host rule options:
+			<TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+>%i - IP address,</TD
+></TR
+><TR
+><TD
+>%ipub - public IP address,</TD
+></TR
+><TR
+><TD
+>%id - node ID,</TD
+></TR
+><TR
+><TD
+>%m - MAC address,</TD
+></TR
+><TR
+><TD
+>%ms - comma-separated list of node MACs</TD
+></TR
+><TR
+><TD
+>%n - host name,</TD
+></TR
+><TR
+><TD
+>%p - node (computer) password,</TD
+></TR
+><TR
+><TD
+>%port - device's port to which computer is connected,</TD
+></TR
+><TR
+><TD
+>%l - host location,</TD
+></TR
+><TR
+><TD
+>%devl - location of device to which node is connected,</TD
+></TR
+><TR
+><TD
+>%info - node description,</TD
+></TR
+><TR
+><TD
+>%domain - domain,</TD
+></TR
+><TR
+><TD
+>%net - network name,</TD
+></TR
+><TR
+><TD
+>%gw - gateway address of network,</TD
+></TR
+><TR
+><TD
+>%if - network's interface,</TD
+></TR
+><TR
+><TD
+>%mask - network mask,</TD
+></TR
+><TR
+><TD
+>%addr - network's address,</TD
+></TR
+><TR
+><TD
+>%prefix - network mask CIDR-style prefix,</TD
+></TR
+><TR
+><TD
+>%dns, %dns2 - DNS server addresses,</TD
+></TR
+><TR
+><TD
+>%dhcps, %dhcpe - start and end of DHCP range,</TD
+></TR
+><TR
+><TD
+>%wins - WINS server address,</TD
+></TR
+><TR
+><TD
+>%i16 - IP's last octet in hex,</TD
+></TR
+><TR
+><TD
+>%i16pub - public IP's last octet in hex.</TD
+></TR
+><TR
+><TD
+>%domainpub - domain name of public network,</TD
+></TR
+><TR
+><TD
+>%netpub - public network name,</TD
+></TR
+><TR
+><TD
+>%gwpub - gateway address of public network,</TD
+></TR
+><TR
+><TD
+>%ifpub - public network's interface,</TD
+></TR
+><TR
+><TD
+>%maskpub - public network mask,</TD
+></TR
+><TR
+><TD
+>%addrpub - public network's address,</TD
+></TR
+><TR
+><TD
+>%prefixpub - public network mask CIDR-style prefix,</TD
+></TR
+><TR
+><TD
+>%dnspub, %dns2pub - DNS server addresses in public network,</TD
+></TR
+><TR
+><TD
+>%dhcpspub, %dhcpepub - start and end of DHCP range in public network,</TD
+></TR
+><TR
+><TD
+>%winspub - WINS server address in public network,</TD
+></TR
+><TR
+><TD
+>%customer - node owner's name,</TD
+></TR
+><TR
+><TD
+>%cid - node owner's ID,</TD
+></TR
+></TBODY
+></TABLE
+>
+              This module has following options:</P
+><UL
+><LI
+><P
+>file</P
+><P
+>Location of generated file. Default: /tmp/hostfile</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>file = /etc/rc.d/rc.firewall</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Shell command(s) executed after 'file' creation. Default: empty</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>command = '/bin/sh /etc/rc.d/rc.firewall'</SAMP
+></P
+></LI
+><LI
+><P
+>begin</P
+><P
+>File header. Default: "/usr/sbin/iptables -F FORWARD\n"</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>begin = "IPT=/usr/sbin/iptables \n$IPT -F FORWARD\n"</SAMP
+></P
+></LI
+><LI
+><P
+>end</P
+><P
+>File footer. Default: "/usr/sbin/iptables -A FORWARD -J REJECT\n"</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>end = "$IPT -A FORWARD -J REJECT\n"</SAMP
+></P
+></LI
+><LI
+><P
+>host_begin</P
+><P
+>Host rule header. Default: ""</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host_begin = "#%n\n"</SAMP
+></P
+></LI
+><LI
+><P
+>host_end</P
+><P
+>Host rule footer. Default: ""</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host_end = "\n"</SAMP
+></P
+></LI
+><LI
+><P
+>grantedhost</P
+><P
+>Line with rule(s) for connected node. Default: "/usr/sbin/iptables -A FORWARD -s %i -m mac --mac-source %m -j ACCEPT\n"</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>grantedhost = "$IPT -A FORWARD -s %i -m mac --mac-source %m -j ACCEPT\n"</SAMP
+></P
+></LI
+><LI
+><P
+>deniedhost</P
+><P
+>Line with rule(s) for disconnected node. Default: "/usr/sbin/iptables -A FORWARD -s %i -m mac --mac-source %m -j REJECT\n"</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>deniedhost = "$IPT -A FORWARD -s %i -m mac --mac-source %m -j REJECT\n"</SAMP
+></P
+></LI
+><LI
+><P
+>public_grantedhost</P
+><P
+>Line with rule(s) for connected node with specified public IP.
+				By default rule specified in 'grantedhost' option.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>public_grantedhost = "$IPT -A FORWARD -s %i -m mac --mac-source %m -j ACCEPT\n$IPT -t nat -A PREROUTING -p tcp -d %ipub -j DNAT --to-destination %i\n$IPT -t nat -A POSTROUTING -s %i -j SNAT --to-source %ipub\n"</SAMP
+></P
+></LI
+><LI
+><P
+>public_deniedhost</P
+><P
+>Line with rule(s) for disconnected node with specified public IP.
+				By default rule specified in 'deniedhost' option.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>public_deniedhost = ""</SAMP
+></P
+></LI
+><LI
+><P
+>warnedhost</P
+><P
+>Line with rule(s) for node with set warnings flag.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>warnedhost = "$IPT -A PREROUTING -s %i --dport 80 -p tcp -j REDIRECT --to-port 82\n"</SAMP
+></P
+></LI
+><LI
+><P
+>public_warnedhost</P
+><P
+>Line with rule(s) for node with set warnings flag and specified 
+				public IP. By default rule specified in 'warnedhost' option.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>public_warnedhost = ""</SAMP
+></P
+></LI
+><LI
+><P
+>public_replace</P
+><P
+>Specify that rules for public addresses would overwrite main rules
+				or be added to them. Default: enabled.</P
+><P
+>Przyk³ad: <SAMP
+CLASS="PROMPT"
+>public_replace = false</SAMP
+></P
+></LI
+><LI
+><P
+>warn_replace</P
+><P
+>Specify that rules for nodes with warnings would replace main rules 
+				or be added to them. Default: disabled.</P
+><P
+>Przyk³ad: <SAMP
+CLASS="PROMPT"
+>warn_replace = true</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>List of network names which members should be included in config (case
+                   insensitive). Default: empty (all networks).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>List of customer groups names which members should be included in config
+                   (case insensitive). Default: empty (all groups).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>customergroups = "group1 group2"</SAMP
+></P
+></LI
+><LI
+><P
+>nodegroups</P
+><P
+>List of node groups names which members should be included in config
+                   (case insensitive). Default: empty (all groups).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>nodegroups = "group1 group2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_networks</P
+><P
+>List of network names which members should be excluded from config (case
+                   insensitive). Default: empty (none).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>excluded_networks = "lan3 lan4"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_customergroups</P
+><P
+>List of customer groups names which members should be excluded from config
+                   (case insensitive). Default: empty (none).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>excluded_customergroups = "group1 group2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_nodegroups</P
+><P
+>List of node groups names which members should be excluded from config
+                   (case insensitive). Default: empty (none).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>excluded_nodegroups = "group1 group2"</SAMP
+></P
+></LI
+><LI
+><P
+>skip_dev_ips</P
+><P
+>If enabled (yes, true) network devices (devices that does not belong to
+                   customers) will be ignored (omitted). Default: yes</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>skip_dev_ips = no</SAMP
+></P
+></LI
+><LI
+><P
+>skip_host_ips</P
+><P
+>If enabled (yes, true) hosts IPs (customers nodes) will be ignored (omitted). Default: no</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>skip_host_ips = yes</SAMP
+></P
+></LI
+><LI
+><P
+>multi_mac</P
+><P
+>If enabled (yes, true) each IP-MAC pair will be listed. Default: no</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>multi_mac = yes</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-TRAFFIC"
+>6.2.9. Traffic</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="TRAFFIC-DESC"
+>6.2.9.1. Description</A
+></H3
+><P
+>'Traffic' is an equivalent of 'lms-traffic' Perl script,which loads internet
+              link stats to database, from file created by user. That file must have format: host_IP upload
+              download. More information (including how to make such file) can be found in chapter with
+              lms-traffic description.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="TRAFFIC-CONFIG"
+>6.2.9.2. Configuration</A
+></H3
+><P
+>There is only one available option and it's mandatory:</P
+><UL
+><LI
+><P
+>file</P
+><P
+>Location of file with firewall stats. Default: /var/log/traffic.log</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>file = /tmp/log</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-TC"
+>6.2.10. Tc (HTB)</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="TC-DESC"
+>6.2.10.1. Description</A
+></H3
+><P
+>Generate script containing iptables and tc rules for traffic control ie. band
+              and customer connections limits. Rules for nodes can be freely defined and used not only
+              for traffic control. Principle of operation of this module is following: First of all
+              all customers data is being retrieved. Totals for limitations (uprate, downrate, upceil,
+              downceil, connection limit) are being calculated for each customer. Then, loop is performed
+              to check networks and groups (if specified). If limit values are not zeroes rules are written
+              to file with variables replacement. The following variables can be used in rules: %name - host
+              name, %i - IP address, %m - MAC, %if - network interface, %uprate, %downrate, %upceil, %downceil,
+	          %plimit, %climit, %o1, %o2, %o3, %o4 - IP's octets, %h1, %h2, %h3, %h4 - IP's octets in hex
+	          and %x - integer counter with initial value of 100 incremented by one for each node (or customer).</P
+><P
+>Default policy for creating HTB class is one class per all nodes belonging to
+              each customer. It can be changed with 'one_class_per_host' option.</P
+><P
+>Default configuration assumes that your system supports HTB and iptables with
+              modules limit, connlimit, mark and ipp2p. You can patch kernel or use sources available
+              at <A
+HREF="http://www.inet.one.pl"
+TARGET="_top"
+>www.inet.one.pl</A
+> (polish project, site in
+              PL).</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="TC-CONFIG"
+>6.2.10.2. Configuration</A
+></H3
+><P
+>There are basic options like groups of customers, file, command, networks and
+              extra options which are define tc and firewall rules available to use. Default config is
+              designed for 512/128 kbit limits and 100mbit links.</P
+><UL
+><LI
+><P
+>file</P
+><P
+>Location of file. Default: /etc/rc.d/rc.htb.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>file = /tmp/rc.htb</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Shell command executed after file creation. Default: "sh /etc/rc.d/rc.htb start".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>command = "chmod 700 /tmp/rc.htb; /tmp/rc.htb start"</SAMP
+></P
+></LI
+><LI
+><P
+>begin</P
+><P
+>Script header. Default:
+<PRE
+CLASS="SCREEN"
+>"#!/bin/sh
+IPT=/usr/sbin/iptables
+TC=/sbin/tc
+LAN=eth0
+WAN=eth1
+BURST="burst 30k"
+
+stop ()
+{
+$IPT -t mangle -D FORWARD -i $WAN -j LIMITS &#62;/dev/null 2&#62;&#38;1
+$IPT -t mangle -D FORWARD -o $WAN -j LIMITS &#62;/dev/null 2&#62;&#38;1
+$IPT -t mangle -F LIMITS &#62;/dev/null 2&#62;&#38;1
+$IPT -t mangle -X LIMITS &#62;/dev/null 2&#62;&#38;1
+$IPT -t mangle -F OUTPUT
+$IPT -t filter -F FORWARD
+$TC qdisc del dev $LAN root 2&#62; /dev/null
+$TC qdisc del dev $WAN root 2&#62; /dev/null
+}
+
+start ()
+{
+stop
+$IPT -t mangle -N LIMITS
+$IPT -t mangle -I FORWARD -i $WAN -j LIMITS
+$IPT -t mangle -I FORWARD -o $WAN -j LIMITS
+# incoming traffic
+$IPT -t mangle -A OUTPUT -j MARK --set-mark 1
+$TC qdisc add dev $LAN root handle 1:0 htb default 3 r2q 1
+$TC class add dev $LAN parent 1:0 classid 1:1 htb rate 99000kbit ceil 99000kbit quantum 1500
+$TC class add dev $LAN parent 1:1 classid 1:2 htb rate   500kbit ceil   500kbit
+$TC class add dev $LAN parent 1:1 classid 1:3 htb rate 98500kbit ceil 98500kbit prio 9 quantum 1500
+$TC qdisc add dev $LAN parent 1:3 esfq perturb 10 hash dst
+# priorities for ICMP, TOS 0x10 and ports 22 and 53
+$TC class add dev $LAN parent 1:2 classid 1:20 htb rate 50kbit ceil 500kbit $BURST prio 1 quantum 1500
+$TC qdisc add dev $LAN parent 1:20 esfq perturb 10 hash dst
+$TC filter add dev $LAN parent 1:0 protocol ip prio 2 u32 match ip sport 22 0xffff flowid 1:20
+$TC filter add dev $LAN parent 1:0 protocol ip prio 2 u32 match ip sport 53 0xffff flowid 1:20
+$TC filter add dev $LAN parent 1:0 protocol ip prio 1 u32 match ip tos 0x10 0xff flowid 1:20
+$TC filter add dev $LAN parent 1:0 protocol ip prio 1 u32 match ip protocol 1 0xff flowid 1:20
+# server -&#62; LAN
+$TC filter add dev $LAN parent 1:0 protocol ip prio 4 handle 1 fw flowid 1:3
+
+# outgoing traffic
+$TC qdisc add dev $WAN root handle 2:0 htb default 11 r2q 1
+$TC class add dev $WAN parent 2:0 classid 2:1 htb rate 120kbit ceil 120kbit
+# priorities for ACK, ICMP, TOS 0x10, ports 22 and 53
+$TC class add dev $WAN parent 2:1 classid 2:10 htb rate 60kbit ceil 120kbit prio 1 quantum 1500
+$TC qdisc add dev $WAN parent 2:10 esfq perturb 10 hash dst
+$TC filter add dev $WAN parent 2:0 protocol ip prio 1 u32 match ip protocol 6 0xff \
+match u8 0x05 0x0f at 0 match u16 0x0000 0xffc0 at 1 match u8 0x10 0xff at 33 flowid 2:10
+$TC filter add dev $WAN parent 2:0 protocol ip prio 1 u32 match ip dport 22 0xffff flowid 2:10
+$TC filter add dev $WAN parent 2:0 protocol ip prio 1 u32 match ip dport 53 0xffff flowid 2:10
+$TC filter add dev $WAN parent 2:0 protocol ip prio 1 u32 match ip tos 0x10 0xff flowid 2:10
+$TC filter add dev $WAN parent 2:0 protocol ip prio 1 u32 match ip protocol 1 0xff flowid 2:10
+# server -&#62; Internet
+$TC class add dev $WAN parent 2:1 classid 2:11 htb rate 30kbit ceil 120kbit prio 2 quantum 1500
+$TC qdisc add dev $WAN parent 2:11 esfq perturb 10 hash dst
+$TC filter add dev $WAN parent 2:0 protocol ip prio 3 handle 1 fw flowid 2:11
+$TC filter add dev $WAN parent 2:0 protocol ip prio 9 u32 match ip dst 0/0 flowid 2:11</PRE
+></P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>begin = "#!/bin/bash\n$TC=/usr/local/sbin/tc\n"</SAMP
+></P
+></LI
+><LI
+><P
+>end</P
+><P
+>Script footer. Default:
+<PRE
+CLASS="SCREEN"
+>}
+
+case "$1" in
+    'start')
+     start
+    ;;
+    'stop')
+     stop
+    ;;
+    'status')
+     echo "WAN Interface"
+     echo "============="
+     $TC class show dev $WAN | grep root
+     $TC class show dev $WAN | grep -v root | sort | nl
+     echo "LAN Interface"
+     echo "============="
+     $TC class show dev $LAN | grep root
+     $TC class show dev $LAN | grep -v root | sort | nl
+    ;;
+    *)
+     echo -e "\nUsage: rc.htb start|stop|status"
+    ;;
+esac</PRE
+>
+                   </P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>end = ""</SAMP
+></P
+></LI
+><LI
+><P
+>one_class_per_host</P
+><P
+>Specify htb class creation policy. By default all computers of customer
+                   will be placed in one class. Setting it to 'true' will effect in that rules
+                   specified in host_htb_up and host_htb_down will be generated for all customer's
+                   computers (with different value of '%x'). Rules host_mark_down, host_mark_up,
+                   host_plimit and host_climit are generated for each node regardless of this option
+                   setting. Default: false</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>one_class_per_host = 1</SAMP
+></P
+></LI
+><LI
+><P
+>host_mark_up</P
+><P
+>Mark rule for each computer. Default:
+<PRE
+CLASS="SCREEN"
+># %n
+$IPT -t mangle -A LIMITS -s %i -j MARK --set-mark %x</PRE
+>
+                   </P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host_mark_up = ""</SAMP
+></P
+></LI
+><LI
+><P
+>host_mark_down</P
+><P
+>Mark rule for each offline computer. Default:
+<PRE
+CLASS="SCREEN"
+>$IPT -t mangle -A LIMITS -d %i -j MARK --set-mark %x</PRE
+>
+                   </P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host_mark_down = ""</SAMP
+></P
+></LI
+><LI
+><P
+>host_htb_down</P
+><P
+>Rules for each computer executed when uprate and downrate value
+		   is above zero. Default:
+<PRE
+CLASS="SCREEN"
+>$TC class add dev $LAN parent 1:2 classid 1:%x htb rate %downratekbit ceil %downceilkbit $BURST prio 2 quantum 1500
+$TC qdisc add dev $LAN parent 1:%x esfq perturb 10 hash dst
+$TC filter add dev $LAN parent 1:0 protocol ip prio 5 handle %x fw flowid 1:%x</PRE
+>
+                   </P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host_htb_down = ""</SAMP
+></P
+></LI
+><LI
+><P
+>host_htb_up</P
+><P
+>Rules for each computer executed when uprate and downrate value
+		   is above zero. Default:
+<PRE
+CLASS="SCREEN"
+>$TC class add dev $WAN parent 2:1 classid 2:%x htb rate %upratekbit ceil %upceilkbit $BURST prio 2 quantum 1500
+$TC qdisc add dev $WAN parent 2:%x esfq perturb 10 hash dst
+$TC filter add dev $WAN parent 2:0 protocol ip prio 5 handle %x fw flowid 2:%x</PRE
+>
+                   </P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host_htb_up = ""</SAMP
+></P
+></LI
+><LI
+><P
+>host_climit</P
+><P
+>Rule with simultaneous TCP connections limit. Executed
+                   when climit value is above zero. Default:
+<PRE
+CLASS="SCREEN"
+>$IPT -t filter -I FORWARD -p tcp -s %i -m connlimit --connlimit-above %climit -m ipp2p --ipp2p -j REJECT</PRE
+>
+                   </P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host_climit = "$IPT -t filter -I FORWARD -p tcp -s %i -m connlimit --connlimit-above -j REJECT"</SAMP
+></P
+></LI
+><LI
+><P
+>host_plimit</P
+><P
+>Rule with limiting of packets in time unit (here second). Executed
+                   when plimit value is above zero. Default:
+<PRE
+CLASS="SCREEN"
+>$IPT -t filter -I FORWARD -p tcp -d %i -m limit --limit %plimit/s -m ipp2p --ipp2p -j ACCEPT
+$IPT -t filter -I FORWARD -p tcp -s %i -m limit --limit %plimit/s -m ipp2p --ipp2p -j ACCEPT</PRE
+>
+                   </P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host_plimit = ""</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>List of network names that should be included in configuration (case insensitive).
+                   Default: empty (all networks).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>List of customer groups that should be included in configuration (case insensitive).
+                   Default: empty (all groups).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>customergroups = "group1 group2"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-DNS"
+>6.2.11. Dns</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DNS-DESC"
+>6.2.11.1. Description</A
+></H3
+><P
+>Configuration of named zones. This is one of most complicated modules
+              to setup. It creates zone files for each network and zone definition entries
+              in named.conf on the basis of template files. Example templates are placed in
+              <TT
+CLASS="FILENAME"
+>/modules/dns/sample</TT
+> directory.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DNS-CONFIG"
+>6.2.11.2. Configuration</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>forward-patterns</P
+><P
+>Directory with zone templates. Default: forward.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>forward-patterns = /dns/patterns/forward</SAMP
+></P
+></LI
+><LI
+><P
+>reverse-patterns</P
+><P
+>Directory with reverse zone templates. Default: reverse.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>reverse-patterns = /dns/patterns/revers</SAMP
+></P
+></LI
+><LI
+><P
+>generic-forward</P
+><P
+>Default template. It will be used if directory specified by
+                   'forward-patterns' doesn't contain a file with name corresponding to network
+                   domain name. Default: modules/dns/sample/forward/generic.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>generic-forward = /dns/patterns/forward</SAMP
+></P
+></LI
+><LI
+><P
+>generic-reverse</P
+><P
+>Default template. It will be used if directory specified by
+                   'reverse-patterns' doesn't contain a file with name corresponding to network IP
+                   address. Default: modules/dns/sample/reverse/generic.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>generic-reverse = /dns/patterns/forward</SAMP
+></P
+></LI
+><LI
+><P
+>forward-zones</P
+><P
+>Directory for generated zone files.
+                   Default: modules/dns/sample/out/forward.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>forward-zones = /dns/forward</SAMP
+></P
+></LI
+><LI
+><P
+>reverse-zones</P
+><P
+>Directory for generated reverse zone files.
+                   Default: modules/dns/sample/out/reverse.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>reverse-zones = /dns/reverse</SAMP
+></P
+></LI
+><LI
+><P
+>host-reverse</P
+><P
+>Line in reverse zone file for each computer of given network.
+                   Default: "%n IN A %i\n".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host-reverse = "\t %n IN A %i\n"</SAMP
+></P
+></LI
+><LI
+><P
+>host-forward</P
+><P
+>Line in zone file for each computer of given network.
+                   Default: "%c IN PTR %n.%d.\n".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host-forward = "\t %c IN PTR %n.%d.\n"</SAMP
+></P
+></LI
+><LI
+><P
+>conf-pattern</P
+><P
+>Location of main template for server configuration file.
+                   Default: modules/dns/sample/named.conf.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>conf-pattern = /dns/patterns/named.conf</SAMP
+></P
+></LI
+><LI
+><P
+>conf-output</P
+><P
+>Location of main configuration file.
+                   Default: /tmp/named.conf.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>conf-output = /etc/named.conf</SAMP
+></P
+></LI
+><LI
+><P
+>conf-forward-entry</P
+><P
+>Entry for each zone in main configuration file.
+		   Default: 'zone "%n" {\ntype master;\n file "forward/%n"; \nnotify yes; \n}; \n'.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>conf-forward-entry = 'zone "%n" { \n\ttype master; \n\tfile "forward/%n"; \n\tnotify yes; \n}; \n'</SAMP
+></P
+></LI
+><LI
+><P
+>conf-reverse-entry</P
+><P
+>Entry for each reverse zone in main configuration file.
+                   Default: 'zone "%c.in-addr.arpa" { \ntype master; \nfile "reverse/%c"; \nnotify yes; \n}; \n'.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>conf-revers-entry = 'zone "%c.in-addr.arpa" { \n\ttype master; \n\tfile "reverse/%c"; \n\tnotify yes; \n}; \n'</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Shell command executed after files creation. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>command = "killall -HUP named"</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>List of network names that should be included in configuration (case insensitive).
+                   Default: empty (all networks).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>List of customer (user) groups that should be included in configuration (case insensitive).
+                   Default: empty (all groups).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>customergroups = "group1 group2"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-ETHERS"
+>6.2.12. Ethers</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="ETHERS-DESC"
+>6.2.12.1. Description</A
+></H3
+><P
+>This module creates configuration for system ARP table. Setting option
+              'dummy_macs' will put mac address 00:00:00:00:00:00 for all disconnected
+              computers.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="ETHERS-CONFIG"
+>6.2.12.2. Configuration</A
+></H3
+><P
+>Basic options:</P
+><UL
+><LI
+><P
+>file</P
+><P
+>Location of output file. Default: /etc/ethers.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>file = /tmp/ethers</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Shell command to execute after config file creation. Default: 'arp -f /etc/ethers'.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>command = ""</SAMP
+></P
+></LI
+><LI
+><P
+>dummy_macs</P
+><P
+>If you set to 'yes', disconnected computers will get
+                   MAC '00:00:00:00:00:00'. Default: "no".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>dummy_macs = yes</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>List of network names that should be included in configuration (case insensitive).
+                   Default: empty (all networks).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>List of customer groups names that should be included in configuration (case insensitive).
+                   Default: empty (all groups).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>customergroups = "group1 group2"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-OIDENT"
+>6.2.13. Oident</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="OIDENT-DESC"
+>6.2.13.1. Description</A
+></H3
+><P
+>Module for oidentd configuration. Basically it can be created
+              with hostfile module, but here you have ready-made default settings
+	      for this purpose.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="OIDENT-CONFIG"
+>6.2.13.2. Configuration</A
+></H3
+><P
+>And here are the options of oident:</P
+><UL
+><LI
+><P
+>begin</P
+><P
+>Text inserted on the beginning of file. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>begin = "#Auto-generated\n"</SAMP
+></P
+></LI
+><LI
+><P
+>end</P
+><P
+>Text inserted on the end of file. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>end = ""</SAMP
+></P
+></LI
+><LI
+><P
+>host</P
+><P
+>Line of text for each of computers. Default: "%i\t%n\tUNIX".</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>host = "%i %n WINDOWS"</SAMP
+></P
+></LI
+><LI
+><P
+>file</P
+><P
+>Configuration file. Default: /etc/oidentd.conf.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>file = /tmp/identd.conf</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>List of networks. Default: empty (all networks).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>networks = 'lan1 lan2'</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Shell command(s) to execute after file creation. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>command = "killall -HUP oidentd"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-PINGER"
+>6.2.14. Pinger</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="PINGER-DESC"
+>6.2.14.1. Description</A
+></H3
+><P
+>Module pinger is an equivalent of lms-fping Perl script, however it has some
+              fundamental differences. It doesn't need external program to check hosts availability and
+              work with use of ARP protocol and thus it can perform network scanning about 2 times faster.
+              Also there are no problems with hosts with ping response disabled or firewalled. After
+              scanning, last-seen time is set for all online hosts in database used to illustrate hosts
+              activity on nodes list and network map.</P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Pinger for work use interface names, so (e.g. if you are
+	      using <TT
+CLASS="FILENAME"
+>ip</TT
+> command) you'll need to label interfaces in your system (ip addr add ... label ...). 
+	      Also remember, don't use a dots or dashes in interface names (<TT
+CLASS="FILENAME"
+>ip</TT
+> allows that, but
+	      such a name is not usable for pinger).</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="PINGER-CONFIG"
+>6.2.14.2. Configuration</A
+></H3
+><P
+>Pinger has only one config option:</P
+><UL
+><LI
+><P
+>networks</P
+><P
+>List of network names. Default: empty (all networks).</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>networks = 'lan1 lan2'</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-PARSER"
+>6.2.15. Parser</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DAEMON-PARSER-INTRO"
+>6.2.15.1. Introduction</A
+></H3
+><P
+>Parser module is based on a scripting language
+		<A
+HREF="http://silvercoders.com/index.php?page=T_Script"
+TARGET="_top"
+>T-Script</A
+> which 
+		primary purpose is to generate text files. It can be useful for processing
+		templates with some additional data retrieved from data sources 
+		like SQL databases or text files. In lmsd's module contents of scripts
+		are stored in database, so they can be edited via <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>.
+		In the future parser should replace almost all lmsd modules.</P
+><P
+>T-Script language is described in section <A
+HREF="tscript.html"
+>T-Script</A
+>.</P
+><P
+>Before compilation ensure that you have in your system packages
+		<TT
+CLASS="FILENAME"
+>bison</TT
+> (at least 1.875 version) and <TT
+CLASS="FILENAME"
+>flex</TT
+>.
+		</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DAEMON-PARSER-CONFIG"
+>6.2.15.2. Configuration</A
+></H3
+><P
+>Parser has following options:</P
+><UL
+><LI
+><P
+>script</P
+><P
+>Contents of script. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>script = '{var=1}variable var={var}'</SAMP
+></P
+></LI
+><LI
+><P
+>file</P
+><P
+>Location of output file. Default: empty.</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>file = /tmp/parser.out</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Shell command to execute after script compilation. Default: empty</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>command = "sh /tmp/parser.out"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="daemon.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tscript.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>LMS Daemon</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="daemon.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>T-Script</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

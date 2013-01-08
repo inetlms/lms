@@ -1,0 +1,24 @@
+1. Wstęp.
+
+Moduł cutoff został tak zmodyfikowany, aby umożliwić procentowe określenie
+progu zaległości oraz określenie liczby dni, po których ma nastąpić 
+odłączenie/włączenie ostrzeżeń. Jako dzień płatności przyjmowany jest
+największy dzień płatności z wszystkich zobowiązań miesięcznych każdego 
+użytkownika. Także do obliczenia kwoty miesięcznego zobowiązania, brane są
+pod uwagę tylko zobowiązania płatne co miesiąc.
+
+2. Konfiguracja.
+
+Moduł oprócz opcji dostępnych w standardowym cutoff posiada:
+
+deadline = 14
+
+Termin płatności. Ilość dni od naliczenia opłaty, kiedy ma nastąpić
+odłączenie. Domyślnie 0, czyli odłączenie nastąpi od razu po przekroczeniu
+limitu zaległości.
+
+limit = 100%
+
+Limit zaległości - kwotowy lub procentowy. Jeśli jej wartość zawiera
+znak '%' bilans użytkownika będzie porównywany z odp. procentem sumy jego
+zobowiązań miesięcznych. Domyślnie 0.

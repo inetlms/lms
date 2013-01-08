@@ -1,0 +1,130 @@
+{include file="clearheader.html"}
+<!--// $Id$ //-->
+<TABLE width="660" align="center">
+	<TR>
+		<TD width="100%" align="RIGHT">
+			LMS {$layout.lmsv} @ {$layout.hostname}<BR>
+			{$smarty.now|date_format:"%A, %x"}<BR>
+			{t a=$layout.logname}Created by: $a{/t}
+		</TD>
+	</TR>
+</TABLE>
+<P>
+<TABLE width="660" cellpadding="3" border="1" align="CENTER">
+	<TR>
+		<TD class="HEAD" colspan="2">
+			<H1>{t a=$ticket.ticketid|string_format:"%06d"}Ticket No. $a{/t}</H1>
+		</TD>
+	</TR>
+	<TR>
+		<TD width="1%">
+			<B>{trans("Subject:")}</B>
+		</TD>
+		<TD width="99%" NOWRAP>
+		        <B>{$ticket.subject|escape|truncate:50:"..."}</B>
+		</TD>
+	</TR>
+	<TR>
+	        <TD width="1%">
+			<B>{trans("Submitter:")}</B>
+	        </TD>
+	        <TD width="99%" NOWRAP>
+			{if $ticket.customerid}
+				{$ticket.customername|escape}
+			{else}
+				{$ticket.requestor|escape} 
+			{/if}
+			{if $ticket.requestoremail && !$ticket.customerid}
+				{$ticket.requestoremail}
+			{/if}
+		</TD>
+	</TR>
+	<TR>
+		<TD width="1%" NOWRAP>
+			<B>{trans("Create time:")}</B>
+		</TD>
+		<TD width="99%">
+			{$ticket.createtime|date_format:"%Y/%m/%d %H:%M:%S"}
+		</TD>
+	</TR>
+	{if $ticket.ownername}
+	<TR>
+		<TD width="1%">
+			<B>{trans("Owner:")}</B>
+		</TD>
+		<TD width="99%" NOWRAP>
+			{$ticket.ownername}
+		</TD>
+	</TR>
+	{/if}
+{*
+	<TR>
+	        <TD width="1%">
+			<B>{trans("Status:")}</B>
+		</TD>
+		<TD width="99%">
+			{$ticket.status}
+		</TD>
+	</TR>
+	<TR>
+	        <TD width="1%">
+			<B>{trans("Uptime:")}</B>
+		</TD>
+		<TD width="99%" NOWRAP>
+			{$ticket.uptime}
+		</TD>
+	</TR>
+	<TR>
+	        <TD width="1%">
+			<B>{trans("Queue:")}</B>
+		</TD>
+		<TD width="99%" NOWRAP>
+			{$ticket.queuename}
+		</TD>
+	</TR>
+*}
+	<TR>
+	        <TD width="1%">
+			<B>{trans("Message:")}</B>
+		</TD>
+		<TD width="99%">
+			{$ticket.messages.0.body|escape|replace:"\n":"<BR>"}
+		</TD>
+	</TR>
+</TABLE>
+{if $stats}
+<P>
+<TABLE width="660" cellpadding="3" align="center">
+        <TR CLASS="dark">
+	        <TD width="1%" nowrap>
+		        <B>{trans("Requests causes (last year):")}</B>
+		</TD>
+		<TD WIDTH="99%">
+		        {trans("company's side")}: <B>{$stats.2.num|default:0}</B>,
+			{trans("customer's side")}: <B>{$stats.1.num|default:0}</B>,
+		        {trans("unknown/other<!plural>")}: <B>{$stats.0.num|default:0}</B>,
+			{trans("all")}: <B>{$stats.0.num+$stats.1.num+$stats.2.num}</B>
+		</TD>
+	</TR>
+</TABLE>
+</P>
+{/if}
+<P>
+<TABLE width="660" cellpadding="3" align="CENTER">
+	<TR>
+		<TD width="100%" class="HEAD">
+		{trans("Notes:")}	
+		</TD>
+	</TR>
+	<TR>
+		<TD width="100%" class="flr">
+			<P>&nbsp;
+			<P>&nbsp;
+			<P>&nbsp;
+			<P>&nbsp;
+			<P>&nbsp;
+			<P>&nbsp;
+		</TD>
+	</TR>
+</TABLE>
+{include file="clearfooter.html"}

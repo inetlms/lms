@@ -1,0 +1,375 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Instalacja LMS</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Instalacja i konfiguracja"
+HREF="install.html"><LINK
+REL="PREVIOUS"
+TITLE="Wymagania"
+HREF="install-requirements.html"><LINK
+REL="NEXT"
+TITLE="Lokalizacja"
+HREF="install-locale.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="install-requirements.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Rozdzia&#322; 2. Instalacja i konfiguracja</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="install-locale.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INSTALL-INSTALL"
+>2.3. Instalacja LMS</A
+></H1
+><P
+>LMS w postaci archiwum tar.gz można pobrać ze strony 
+        domowej projektu (<A
+HREF="http://www.lms.org.pl"
+TARGET="_top"
+>www.lms.org.pl</A
+>),
+        a następnie rozpakować i umieścić w wybranym katalogu (np. <TT
+CLASS="FILENAME"
+>/var/www/lms
+        </TT
+>) dostępnym dla serwera www:
+<PRE
+CLASS="SCREEN"
+>$ cd /var/www
+$ wget http://www.lms.org.pl/download/stable/lms-x.x.x.tar.gz
+$ tar zxf lms-x.x.x.tar.gz</PRE
+>
+        </P
+><P
+>Biblioteka Smarty zawarta jest w paczce z LMSem. Natomiast gdy
+	używasz wersji systemu pobranej wprost z CVSu musisz sam zadbać
+	o jej instalację. Najprościej skorzystać ze skryptu 
+	<TT
+CLASS="FILENAME"
+>/devel/smarty_install.sh</TT
+>, który pobierze
+	bibliotekę Smarty z Internetu i skopiuje zawartość katalogu 
+	<TT
+CLASS="FILENAME"
+>/lib</TT
+> z pobranej paczki do katalogu <TT
+CLASS="FILENAME"
+>/lib/Smarty</TT
+>.
+        </P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Położenie wszystkich katalogów możesz zmienić w sekcji
+          <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[directories]</I
+></SPAN
+> pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><P
+>Pliki z konfiguracją (<TT
+CLASS="FILENAME"
+>sample/lms.ini</TT
+> i <TT
+CLASS="FILENAME"
+>          sample/lms-mgc.ini</TT
+>) umieść w katalogu <TT
+CLASS="FILENAME"
+>/etc/lms</TT
+>.
+          </P
+><P
+>Skrypty wykonywalne z katalogu <TT
+CLASS="FILENAME"
+>bin</TT
+> 
+          najlepiej przenieść do katalogu <TT
+CLASS="FILENAME"
+>/usr/sbin</TT
+>.
+          </P
+><P
+>		<DIV
+CLASS="WARNING"
+><TABLE
+CLASS="WARNING"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/warning.gif"
+HSPACE="5"
+ALT="Ostrze&#380;enie"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Serwer www musi mieć prawo odczytu pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>
+		oraz prawa odczytu i zapisu do katalogu <TT
+CLASS="FILENAME"
+>backup</TT
+>. 
+		Stanowi to potencjalne obniżenie poziomu bezpieczeństwa systemu.
+		</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+		<DIV
+CLASS="WARNING"
+><TABLE
+CLASS="WARNING"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/warning.gif"
+HSPACE="5"
+ALT="Ostrze&#380;enie"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Bezwzględnie LMS wymaga wyłączenia opcji PHP <TT
+CLASS="FILENAME"
+>register_globals</TT
+>.
+		</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+		<DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Począwszy od wersji 1.6 przechowywanie konfiguracji 
+		interfejsu użytkownika w <TT
+CLASS="FILENAME"
+>lms.ini</TT
+> jest przestarzałe. 
+		Jedynymi koniecznymi sekcjami w tym pliku są [database] i [directories]
+		oraz konfiguracja skryptów perlowych. Ustawienia LMS-UI
+	    	przechowywane są w bazie danych i mogą być modyfikowane przez 
+		interfejs użytkownika, mają także wyższy priorytet od tych zawartych
+		w <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+	</P
+><P
+>Zalecane zmiany w php.ini (lub httpd.conf dla wirtualki LMSa):
+<PRE
+CLASS="SCREEN"
+>mbstring.func_overload = 7
+register_globals = off
+max_execution_time = 60 ; co najmniej
+memory_limit = 32M ; co najmniej</PRE
+>
+	</P
+><P
+>Przed pierwszym uruchomieniem LMSa wymagane jest ustawienie opcji
+		konfiguracyjnych bazy danych i katalogów w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>. 
+		Następnie po uruchomieniu <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+> zakładamy konto użytkownika uprzywilejowanego (zaznaczając wszystkie uprawnienia).
+		Po czym możemy przystąpić do konfiguracji podstawowej systemu. W menu Konfiguracja -&#62; Interfejs użytkownika ustawiamy podstawowe opcje
+		odnoszące się do <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>. Następnie wymagane jest
+		zdefiniowanie przynajmniej jednej firmy (oddziału) oraz wskazane jest
+		zdefiniowanie stawek podatkowych, planów numeracyjnych, województw oraz hostów.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install-requirements.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="install-locale.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Wymagania</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="install.html"
+ACCESSKEY="U"
+>Pocz&#261;tek rozdzia&#322;u</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Lokalizacja</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

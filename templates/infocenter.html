@@ -1,0 +1,88 @@
+{include file="header.html"}
+<table width="100%">
+<tr>
+    <td width="99%">
+	<h1>{$layout.pagetitle}</h1>
+    </td>
+    <td width="1%" nowrap>
+	{if $action != 'newtopic'}
+	    {if !$topic.closed}
+		<a href="?{str_replace('&action=addpost','',$smarty.server.QUERY_STRING)}&action=addpost" {tip text="Dodaj notatkę"}><img src="img/add.gif"></a>
+		{if !get_conf('privileges.hide_callcenteredit')}
+		    <a href="?{str_replace('&action=edittopic','',$smarty.server.QUERY_STRING)}&action=edittopic" {tip text="Edytuj temat"}><img src="img/edit.gif"></a>
+		{/if}
+	    {/if}
+	    {if !get_conf('privileges.hide_callcenterdel')}
+		<a href="?m=infocenter&tid={$tid}&backto={$backto}{if $cid}&cid={$cid}{/if}&action=deltopic" onclick="return confirmLink(this,'Czy napewno skasować cały temat ?');"><img src="img/delete.gif"></a>
+	    {/if}
+	
+	    <a href="?m=infocenterprint&cid={$cid}&tid={$tid}&print=topic&asc" target="_blank"><img src="img/print.gif"></a>
+	    {if !$topic.closed}
+		<img src="img/circle_{if $topic.prio=='1'}green{else}red{/if}.png" {if $topic.prio=='1'}title="[ normalny ]"{else}title="[ ważny ]"{/if}>
+	    {else}
+		{if !get_conf('privileges.reopen_callcenter')}<a href="?m=infocenter&backto=infocenter&action=reopen&tid={$tid}&cid={$cid}" {tip text="Otwórz ponownie temat"}><img src="img/circle_grey.png"></a>{else}<img src="img/circle_grey.png" title="[ temat zamknięty ]">{/if}
+	    {/if}
+	{else}
+	    &nbsp;
+	{/if}
+    </td>
+</tr>
+</table>
+
+{if $action=='newtopic'}
+    {include file="infocenternewtopic.html"}
+{/if}
+
+{if $action=='edittopic'}
+    {include file="infocenteredittopic.html"}
+{/if}
+
+{if $action=='addpost'}
+    {include file="infocenteraddpost.html"}
+{/if}
+
+{if $action=='editpost'}
+    {include file="infocentereditpost.html"}
+{/if}
+
+{if $action != 'newtopic'}
+<table width="100%" cellpadding="2">
+
+    <tr class="dark">
+	<td class="fall" colspan="2">
+	    <b>{$topic.topic}</b> - {$topic.description}<br>
+	    Utworzono: {$topic.cdate|date_format:"Y/m/d H:i"} przez {$topic.cname}<br>
+	    {if $topic.mdate}Ostatni wpis z: {$topic.mdate|date_format:"Y/m/d H:i"} przez {$topic.mname}{/if}
+	    {if $topic.closed}<br>
+	    <div class="active" style="border:solid 1px #333333;padding:4px 10px 4px 10px;"><b>TEMAT ZAMKNIĘTY dnia: {$topic.closeddate|date_format:"Y/m/d H:i"} przez {$topic.closedname}</b><br>{$topic.closedinfo|nl2br}</div>
+	    {/if}
+	</td>
+    </tr>
+
+    {cycle values="light,lucid" print=false}
+    {section name='l1' loop=$postlist}
+    <tr class="{cycle}"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td style="padding:3px 5px 3px 5px;" class="fleft" width="99%">
+	    {$postlist[l1].post|nl2br}
+	    <p class="blend">{$postlist[l1].cdate|date_format:"Y/m/d H:i"} ({$postlist[l1].cname})
+	    {if $postlist[l1].mdate} | MOD: {$postlist[l1].mdate|date_format:"Y/m/d H:i"} ({$postlist[l1].mname}){/if}</p>
+	</td>
+	<td class="fright" width="1%" nowrap>
+	{if !$topic.closed}
+	    {if !get_conf('privileges.hide_callcenteredit')}<a href="?m=infocenter&tid={$tid}&backto={$backto}{if $cid}&cid={$cid}{/if}&action=editpost&postid={$postlist[l1].id}"><img src="img/edit.gif"></a>{/if}
+	    {if !get_conf('privileges.hide_callcenterdel')}<a href="?m=infocenter&tid={$tid}&backto={$backto}{if $cid}&cid={$cid}{/if}&action=delpost&postid={$postlist[l1].id}" onclick="return confirmLink(this,'Czy napewno skasować post ?');" ><img src="img/delete.gif"></a>{/if}
+	{else}&nbsp;{/if}
+	</td>
+	
+    </tr>
+    {/section}
+    <tr class="dark">
+	<td class="fall" colspan="2">
+	&nbsp;
+	</td>
+    </tr>
+</table>
+{/if}
+
+
+{include file="footer.html"}

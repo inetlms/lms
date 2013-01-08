@@ -1,0 +1,78 @@
+<!-- $Id$ -->
+<chapter id="contrib">
+<title>Extensions</title>
+	<para>This chapter describes additional modules and implementations which extend LMS functionality. Some of them need to be adjusted for user's own need, some of them integrate with <emphasis>LMS-UI</emphasis> interface. All extensions are located in <filename>contrib</filename> subdirectory.</para>
+	<sect1 id="contrib-customer">
+    	<title>Customer account</title>
+		<sect2 id="customer-intro">
+		<title>Intro</title>
+		<para>In <filename>contrib/customer</filename> directory you can find example solution, which displays financial balance and contact information for a given user, which makes possible for your customers to view this data themselves.</para>
+		<para>Script checks IP address for request and displays data which is relevant to computer's owner.</para>
+		<para>For proxy users, people not checking from home or to those who don't intend that they children/spouse/workers are able to see their financial data there's "Customer account 2" module.</para>
+		</sect2>
+		<sect2 id="customer-install">
+		<title>Installation</title>
+		<para>You should copy those files to any path and make it accessible to your Web Server, or set appropriate alias (eg. Alias /myAccount/ /var/www/lms/contrib/customer) and put correct path to <filename>lms.ini</filename> in <filename>index.php</filename>.</para>
+		</sect2>
+	</sect1>
+	<sect1 id="contrib-customer2">
+    	<title>Customer account 2</title>
+		<sect2 id="customer2-intro">
+		<title>Intro</title>
+		<para>In <filename>contrib/customer_otherip</filename> directory you can find equivalent of "Customer account" module, which does not authorize user basing on his IP address, but requires login. Authentication can be performed basing on user's PIN number and phone - or alternatively ID or contact number - as username, see balanceview.php and authentication.inc files).</para>
+		<para>Script shows user his balance and contact information, and, with help of <filename>contrib/formularz_przelewu_wplaty</filename> gives user a possibility to print money order for his debts.</para>
+		<para>It also allows aquiring and printing invoices by customers</para>
+		</sect2>
+		<sect2 id="customer2-install">
+		<title>Installation</title>
+		<para>All installation is limited to setup of <filename>sys_dir</filename> option in <emphasis>[directories]</emphasis> section of lms.ini file and linking <filename>img/</filename> with UI icons.</para>
+		</sect2>
+	</sect1>
+	<sect1 id="contrib-sqlpanel">
+    	<title>SQL Panel</title>
+		<sect2 id="sqlpanel-intro">
+		<title>Intro</title>
+		<para>In <filename>contrib/sqlpanel</filename> directory you can find 
+		module which enables you direct access to LMS database, based on direct 
+		queries. Results are being shown as table, along with execution time. 
+		It's also possible to print query results.</para>
+		<para>Number of instantly displayed records is 50 by default. 
+		You can change this limit in <prompt>sqlpanel_pagelimit</prompt> variable 
+		in section <emphasis>[phpui]</emphasis> of configuration.</para>
+		</sect2>
+		<sect2 id="sqlpanel-install">
+		<title>Installation</title>
+		<para>Installation is limited to copying needed files into LMS tree: <filename>sql.php</filename> should be placed into <filename>modules</filename> directory, and <filename>sql.html, sqlprint.html</filename> 
+		into <filename>templates</filename>. After those steps are done, you're able to access this module via http://lms.domain.pl/?m=sql.</para>
+		</sect2>
+	</sect1>
+	<sect1 id="contrib-squid">
+    	<title>Squid redirector</title>
+		<sect2 id="squid-redirector-intro">
+		<title>Intro</title>
+		<para>This tiny set of tools allows you to display users their warning messages (and cut access to entire Web off, it needed) in very elegant way, namely using squid Proxy Server. Obviously to make this work, all users should be forced to use proxy (or transparent proxy should be setup).</para>
+		<para>Key component is redirector. It's responsible for user redirection to programmed message, when warn flag is set in database for his computers. URL to programmed message is not subject of redirection, which enables user's browser to download images. If computer has warn flag set, it's redirected to message, where he has a choice to mark this message as read. After that user is taken back to original (requested) URL. If given computer is disconnected (cutoff) it always redirects him to the message, without any possibility to "quit" to Web. For more information, please see <filename>README</filename> file.</para>
+		</sect2>
+		<sect2 id="squid-redirector-install">
+		<title>Installation</title>
+		<para>Let's start from configuring squid (<filename>squid.conf</filename>):
+<screen>
+# version 2.5
+redirector_bypass on
+redirect_program /path/to/lms-squid
+# version 2.6
+url_rewrite_program /path/to/lms-squid
+</screen>
+		That informs squid that it should use our redirector for each URL. Next step is to configure our redirector. Open lms-squid file in your favorite editor and change this line:
+<screen>
+my $configfile = '/etc/lms/lms.ini';
+</screen>
+		...to reflect location of your lms.ini file. The rest of configuration is being set in actual <filename>lms.ini</filename> file, where we should add <filename>[redirector]</filename> section and define URL of our programmed message:
+<screen>
+[redirector]
+redirect        = http://net-komp.net.pl
+</screen>
+		At last, we copy files <filename>index.php, message.html</filename> to the directory that should serve a message to users and linking to lms images directory (<filename>img</filename>).</para>
+		</sect2>
+	</sect1>
+</chapter>

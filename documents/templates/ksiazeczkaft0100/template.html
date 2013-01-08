@@ -1,0 +1,14 @@
+{assign var='msc' value=$date.msc}
+{assign var='year' value=$date.fromyear}
+{assign var='month' value=$date.frommonth}
+{assign 'indeks' value=$date.countmc}
+
+{section name='l' loop=$date.countmc}
+{assign var='title' value=$msc.$month}
+<img src="?m=form_payment&cid={$cid}&title=Abonament {$title} {$year}" style="width:710px;">
+{math assign="month" equation="x+y" x=$month y="1"}
+{if $month == "13"}
+    {assign var='month' value='1'}
+    {math assign='year' equation="x+y" x=$year y='1'}
+{/if}
+{/section}

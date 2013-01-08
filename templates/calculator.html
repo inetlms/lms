@@ -1,0 +1,93 @@
+{include file="header.html"}
+
+<script language="javascript" type="text/javascript">
+/* Visit http://www.yaldex.com/ for full source code
+and get more free JavaScript, CSS and DHTML scripts! */
+<!-- Begin
+//  DECLARE AND INITIALIZE VARIABLES
+var zero = '0';
+var one = '1';
+var two = '2';
+var three = '3';
+var four = '4';
+var five = '5';
+var six = '6';
+var seven = '7';
+var eight = '8';
+var nine = '9';
+var add = '+';
+var subtract = '-';
+var multiply = '*';
+var divide = '/';
+var decimal = '.';
+var power = '^';
+//  FUNCTION: compute
+function compute(f)
+{
+f.view.value = eval(f.view.value);
+}
+//  FUNCTION: getNum
+function getNum(f, val)
+{
+f.view.value += val;
+}
+//  End -->
+</script>
+
+<TABLE CELLPADDING=0 CELLSPACING=0 BORDER=1 BORDERCOLOR=DDDDDD width="100%">
+<TR><TD width="100%">
+<TABLE CELLPADDING=7 CELLSPACING=0 BGCOLOR=AABBCC width="100%">
+<!----------------------BEGIN CALCULATOR------------------------->
+<FORM NAME="calc">
+<TR>
+<TD COLSPAN=2>
+<INPUT TYPE=text NAME="view" style="width:200px;" action="compute(this)"><BR>
+<HR>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2><DIV ALIGN=RIGHT><nobr>
+<INPUT TYPE=button VALUE="  7  " onClick="getNum(this.form, seven)">
+<INPUT TYPE=button VALUE="  8  " onClick="getNum(this.form, eight)">
+<INPUT TYPE=button VALUE="  9  " onClick="getNum(this.form, nine)">
+<INPUT TYPE=button VALUE="   .  " onClick="getNum(this.form, decimal)">
+<INPUT TYPE=reset VALUE="   C  ">
+</nobr></DIV></TD>
+</TR>
+<TR>
+<TD COLSPAN=2><DIV ALIGN=RIGHT><nobr>
+<INPUT TYPE=button VALUE="  4  " onClick="getNum(this.form, four)">
+<INPUT TYPE=button VALUE="  5  " onClick="getNum(this.form, five)">
+<INPUT TYPE=button VALUE="  6  " onClick="getNum(this.form, six)">
+<INPUT TYPE=button VALUE="  *  " onClick="getNum(this.form, multiply)">
+<INPUT TYPE=button VALUE="   /    " onClick="getNum(this.form, divide)">
+</nobr></DIV></TD>
+</TR>
+<TR>
+<TD COLSPAN=2><DIV ALIGN=RIGHT><nobr>
+<INPUT TYPE=button VALUE="  1  " onClick="getNum(this.form, one)">
+<INPUT TYPE=button VALUE="  2  " onClick="getNum(this.form, two)">
+<INPUT TYPE=button VALUE="  3  " onClick="getNum(this.form, three)">
+<INPUT TYPE=button VALUE="  -  " onClick="getNum(this.form, subtract)">
+<INPUT TYPE=button VALUE="   +   " onClick="getNum(this.form, add)">
+</nobr></DIV></TD>
+</TR>
+<TR>
+<TD><DIV ALIGN=CENTER><nobr>
+<INPUT TYPE=button VALUE="  0  " onClick="getNum(this.form, zero)">
+</nobr></DIV>
+</TD>
+<TD>
+<DIV ALIGN=RIGHT><nobr>
+<INPUT TYPE=button VALUE="   =   " onClick="compute(this.form)">
+</nobr></DIV>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2>
+</TD>
+</TR>
+</FORM>
+<!------------------------END CALCULATOR---------------------------->
+</TABLE>
+</TD></TR></TABLE>

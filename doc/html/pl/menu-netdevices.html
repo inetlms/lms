@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Osprzęt sieciowy</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interfejs Użytkownika (LMS-UI)"
+HREF="user.html"><LINK
+REL="PREVIOUS"
+TITLE="Komputery"
+HREF="menu-nodes.html"><LINK
+REL="NEXT"
+TITLE="Sieci IP"
+HREF="menu-networks.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="menu-nodes.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Rozdzia&#322; 3. Interfejs Użytkownika (LMS-UI)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="menu-networks.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MENU-NETDEVICES"
+>3.5. Osprzęt sieciowy</A
+></H1
+><P
+>W panelu przeznaczonym do ewidencji sprzętu zarządzamy strukturą 
+	sieci, urządzeniami typu switch, hub, router, serwer i połączeniami między
+	nimi, a także przyłączonymi do nich komputerami. Każdemu urządzeniu można przypisać 
+	co najmniej jeden adres sieciowy.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-NETDEVICES-LIST"
+>3.5.1. Lista</A
+></H2
+><P
+>Lista urządzeń zawiera ich nazwy i symbole, położenie i opis, a ponadto 
+		ilość dostępnych portów. Lista może być sortowana wg dowolnego parametru/kolumny.
+		Kliknięcie na wybranym urządzeniu spowoduje wyświetlenie informacji szczegółowych 
+		o nim, gdzie możliwe jest definiowanie połączeń urządzeń i komputerów, adresów IP
+		urządzenia oraz zamiana dwóch urządzeń.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-NETDEVICES-NEW"
+>3.5.2. Nowe urządzenie</A
+></H2
+><P
+>Urządzenie sieciowe powinno posiadać unikalną nazwę. Pozostałe
+		parametry tj. producent, model, nr seryjny, ilość portów, lokalizacja
+		i opis są opcjonalne.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-NETDEVICES-SEARCH"
+>3.5.3. Szukaj</A
+></H2
+><P
+>Wyszukiwanie urządzeń według zadanych kryteriów. Możesz podać 
+		całą lub fragment nazwy, adresów IP i MAC oraz innych danych.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-NETDEVICES-MAP"
+>3.5.4. Mapa</A
+></H2
+><P
+>Generowanie graficznej mapy całej sieci, na podstawie
+		danych z bazy LMS'a następuje po wybraniu opcji menu 'Mapa'. Możesz 
+		zdefiniować, które urządzenie jest nadrzędne w stosunku do pozostałych.
+		<DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Do wygenerowania mapy potrzebna jest wbudowana w PHP obsługa 
+		biblioteki graficznej GD lub Ming.</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+		Aby wybrać typ mapy musisz skorzystać z opcji <TT
+CLASS="FILENAME"
+>map_type</TT
+>
+		z sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[phpui]</I
+></SPAN
+>. Ustaw "flash" jeśli używasz biblioteki
+		Ming, "gd" jeśli chcesz generować obrazki przy pomocy gdlib lub "openlayers" jeśli
+		chcesz używać biblioteki OpenLayers do generowania mapy. Domyślnie
+		(opcja nieustawiona) LMS spróbuje wykryć jaką bibliotekę masz dostępną w systemie, przy czym
+		w pierwszej kolejności szuka możliwości wygenerowania mapy we flashu, a jak
+		się to nie uda, to użyje GD.
+		</P
+><P
+>Na mapie hosty wyłączone oznaczone są kolorem czarnym. Ikona z pytajnikiem
+		oznacza, że dany komputer nie był jeszcze skanowany/włączony. Aby skorzystać z 
+		tej funkcjonalności należy, korzystając z crona, uruchamiać skrypt skanujący.
+		Na mapie komputer traktowany jest za włączony jeśli czas ostatniego pozytywnego
+		skanowania nie jest starszy od zadanej wartości (domyślnie 600 sekund).
+		Parametr ten określa się przy pomocy opcji
+		<TT
+CLASS="FILENAME"
+>lastonline_limit</TT
+> w sekcji [phpui] pliku konfiguracyjnego.
+		Powyższe odnosi się również do urządzeń z tym, że status urządzenia określa
+		się na podstawie statusu wszystkich jego adresów.
+		Status komputerów jest także widoczny na liście komputerów.
+		<DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Do badania aktywności hostów można wykorzystać skrypt lms-fping lub demona lmsd.</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+		</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="menu-nodes.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="menu-networks.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Komputery</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="user.html"
+ACCESSKEY="U"
+>Pocz&#261;tek rozdzia&#322;u</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Sieci IP</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

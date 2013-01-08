@@ -1,0 +1,124 @@
+$Id$
+
+0. Co to?
+
+Ten mały zestaw narzędzi pozwala za pomocą squida w dosyć elegancki sposób 
+wyświetlać wiadomości administracyjne oraz w razie potrzeby blokować dostęp
+do w3cache. Oczywiście aby to działało w 100%, wszyscy klienci muszą 
+korzystać ze squida.
+
+1. Instalacja.
+
+Można wyróżnić 3 etapy:
+
+a) konfiguracja squida
+b) konfiguracja redirectora
+c) konfiguracja serwera wirtualnego
+
+Ad a.
+
+Do squid.conf dodajemy dwie linie:
+------ wersja 2.5 ------
+redirector_bypass on
+redirect_program /sciezka/do/lms-squid
+------ wersja 2.6 ------
+url_rewrite_program /sciezka/do/lms-squid
+------------------------
+które informują squida aby dla każdego adresu używał naszego redirectora.
+
+Ad b.
+
+Otwieramy w naszym ulubionym edytorze plik lms-squid i praktycznie wszystko 
+co można ustawić w naszym redirectorze to:
+------
+my $configfile = '/etc/lms/lms.ini';
+------
+Czyli położenie pliku konfiguracyjnego. Reszta konfiguracji ustawiana jest 
+w lms.ini, gdzie dopisujemy:
+------
+[redirector]
+redirect        = http://nasz.serwer.pl/winetka/
+------
+Czyli adres winetki.
+
+Ad c.
+
+Do katalogu gdzie ma być widoczna winetka kopiujemy index.php, message.html 
+i zawartość katalog img.
+
+2. W działaniu.
+
+Kluczowym elementem jest redirector. Odpowiada on za to, aby w momencie 
+ustawienia dla danego komputera flagi warn lub no access, przekierowywał 
+wszystkie żądania wysyłane do squida na nasz, ustalony wcześniej adres. 
+Przekierowaniu nie ulegają adresy zawierające adres naszej winetki, tak aby 
+umożliwić załadowanie się obrazków.
+
+Jeśli komputer ma ustawioną flagę warn, to po przekierowaniu użytkownik ma 
+możliwość oznaczenia wiadomości jako przeczytanej, po czym skrypt automatycznie 
+kieruje przeglądarkę na pierwotnie wywoływany URL, w przypadku oznaczeniu danego 
+komputera jako wyłączony, użytkownik będzie zawsze przekierowywany na adres 
+winetki, bez możliwości oznaczenia wiadomości jako przeczytanej.
+
+Po drodze nigdzie nie są wykorzystywane żadne regułki firewalla, ani żaden
+daemon nie jest przeładowywany. Skrypty podczas działania nie modyfikują
+żadnych plików. Jedyną wadą może być nieznaczne spowolnienie pracy squida
+(przykładowo, na moim Athlonie 1.2 przetworzenie 2000 adresów, z czego połowa 
+podlegała przekierowaniu, a druga nie trwało 0,774 sekundy, co daje czas 
+przetwarzania około 0,000387 sekundy na adres. W momencie pisania tego tekstu
+strona główna Wirtualnej Polski składała się z 62 elementów, przez co 
+redirector zwiększył jej czas ładowania o 0,023994 sekundy).
+
+3. Co zrobić jeśli nie działa.
+
+Jeśli redirector nie działa w ogóle, lub nie działa tak jak byśmy chcieli, 
+pierwsze co należy zrobić, to sprawdzić czy nasz system spełnia wymagania LMSa,
+oraz czy zrobiliśmy wszystko co jest wymagane podczas instalacji redirectora. 
+Następnie, warto zajrzeć w logi Squida. Jeśli znajdziemy w logach coś takiego 
+(99% przypadków):
+
+Mar 14 11:20:09 localhost squid[27459]: WARNING: redirector #1 (FD 7) exited 
+Mar 14 11:20:09 localhost squid[27459]: WARNING: redirector #2 (FD 8) exited 
+Mar 14 11:20:09 localhost squid[27459]: WARNING: redirector #3 (FD 9) exited 
+Mar 14 11:20:09 localhost squid[27459]: Too few redirector processes are 
+running 
+Mar 14 11:20:09 localhost squid[27459]: The redirector helpers are crashing too 
+rapidly, need help! 
+
+to wszystkiemu winien jest sam redirector. Uruchamiamy więc redirector "z 
+palca" czy też jak mówią inni - w trybie interaktywnym, czyli wydajemy komendę:
+
+./lms-squid
+
+najlepiej będąc zalogowanym jako root. Wszystko co powinniśmy teraz zobaczyć, 
+to migający kursor. Jeśli widzisz jakieś komunikaty, to radzę dokładnie je 
+przeczytać, gdyż będą to komunikaty błędów i zarazem wskazówka czego brak. 
+Jeśli natomiast widzimy wesoło migający kursor, wpisujemy dowolny tekst, oraz 
+naciskamy enter:
+
+test
+
+Redirector powinien wysłać nam coś w stylu 
+
+302:http://adres_winetki/?oldurl=test
+
+czyli adres przekierowania, oraz kontynuować pracę. Jeśli redirector w tym 
+momencie zamyka się, oraz wyświetla komunikat błędu, mamy następną wskazówkę. 
+Jeśli natomiast nadal pracuje wpisujemy:
+
+http://www.lms.org.pl/ 192.168.0.1/-
+
+gdzie 192.168.0.1 jest adresem z naszej sieci, który nie podlega przekierowaniu. 
+Redirector powinien odpowiedzieć dokładnie tym samym co wpisaliśmy. Jeśli nie, 
+kolejna wskazówka.
+
+Jeśli redirector nadal kontynuuje pracę, spróbuj wykonać powyższe czynności na 
+koncie na którym pracuje squid. Czyli robimy np.
+
+su proxy
+./lms-squid
+
+Jeśli na koncie na którym pracuje squid redirector działa poprawnie, należy 
+sprawdzić jeszcze raz konfigurację squida. Jeśli to nadal nic nie daje, sprawdź 
+wszystkie nietypowe rzeczy w twoim systemie (być może używasz chroot, i w 
+chrootowanym środowisku brakuje bibliotek).

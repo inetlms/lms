@@ -1,0 +1,44 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.1//EN"
+[
+<!ENTITY % version SYSTEM "version.sgml">
+%version;
+<!ENTITY rozdzial1 SYSTEM "intro.sgml">
+<!ENTITY rozdzial2 SYSTEM "install.sgml">
+<!ENTITY rozdzial3 SYSTEM "userif.sgml">
+<!ENTITY rozdzial4 SYSTEM "scripts.sgml">
+<!ENTITY rozdzial5 SYSTEM "mgc.sgml">
+<!ENTITY rozdzial6 SYSTEM "daemon.sgml">
+<!ENTITY rozdzial7 SYSTEM "advanced.sgml">
+<!ENTITY rozdzial8 SYSTEM "contrib.sgml">
+<!ENTITY rozdzial9 SYSTEM "userpanel.sgml">
+<!ENTITY faq SYSTEM "faq.sgml">
+<!ENTITY tscript SYSTEM "tscript.sgml">
+]>
+
+<book lang=en>
+  <bookinfo>
+    <title>LMS - LAN Management System &version;</title>
+    <mediaobject>
+	<imageobject>
+	    <imagedata fileref="../images/logo-small.png" format="png">
+	</imageobject>
+    </mediaobject>
+    <corpauthor> LMS Developers</corpauthor>
+    <copyright>
+        <year>2001-2012</year>
+        <holder> LMS Developers</holder>
+    </copyright>
+  </bookinfo>
+<toc></toc>
+
+&rozdzial1;
+&rozdzial2;
+&rozdzial3;
+&rozdzial4;
+&rozdzial5;
+&rozdzial6;
+&rozdzial7;
+&rozdzial8;
+&rozdzial9;
+&faq;
+</book>

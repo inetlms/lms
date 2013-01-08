@@ -1,0 +1,1100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Configuration</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="User Interface (LMS-UI)"
+HREF="user.html"><LINK
+REL="PREVIOUS"
+TITLE="Timetable"
+HREF="menu-timetable.html"><LINK
+REL="NEXT"
+TITLE="Scripts"
+HREF="scripts.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="menu-timetable.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. User Interface (LMS-UI)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="scripts.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MENU-CONFIGURATION"
+>3.15. Configuration</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-UI"
+>3.15.1. User Interface</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="CONFIG-BASIC"
+>3.15.1.1. Basics</A
+></H3
+><P
+>Since LMS 1.5.3 you're able to configure all UI-related
+    	        options directly via <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>, instead of editing
+        	<TT
+CLASS="FILENAME"
+>lms.ini</TT
+>. Those options are stored in database and you first
+                need to import them from your config file (even if you haven't edited anything
+	        yet, default values will be imported). This can be done by clicking
+    	        on the link presented on empty list.</P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Options setup with <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>
+                have higher priority than those in configuration file. With options setup in UI,
+	        the configuration will be still imported from file but values will be then
+    	        overwritten by those found in DB.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Daemon read some options other than its configuration from
+    		database only, so it's preferred to store configuration in database.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><P
+>In order to manually add new option click 'Add option' on the
+	        bottom of the list. To edit option value, click on its record. You'll be given
+    		with edit form, where you are also able to remove this option. Changing option
+    		status allows you to turn it on and off instantly. When an option is off,
+    	        default value will be used (if it posses any).</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="CONFIG-OPTIONS"
+>3.15.1.2. Configuration Options List</A
+></H3
+><P
+>Here we've got the list of UI configuration options. Those options
+	    should be placed in <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[phpui]</I
+></SPAN
+> section. The rest of options
+	    is described in appropriate chapters.
+    	    <UL
+><LI
+><P
+>allow_from  (optional)</P
+><P
+>List of networks or IP addresses, which have access to LMS. If empty, every IP
+    		address is permitted. You can write here list of addresses or address pools and LMS
+            	will dismiss every unwanted user with HTTP 403 error.</P
+><P
+>Example:          <SAMP
+CLASS="PROMPT"
+>allow_from = 192.168.0.0/16, 213.25.209.224/27, 213.241.77.29</SAMP
+></P
+></LI
+><LI
+><P
+>lang</P
+><P
+>User interface language code (ISO). IF not set, language will be based on HTML
+    		browser settings. Default: en</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>lang = pl</SAMP
+></P
+></LI
+><LI
+><P
+>timeout</P
+><P
+>Timeout for WWW session. User will be log out if he won't perform any action in such
+    		number of seconds. Default: 600</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>timeout = 900</SAMP
+></P
+><P
+><DIV
+CLASS="WARNING"
+><TABLE
+CLASS="WARNING"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/warning.gif"
+HSPACE="5"
+ALT="Warning"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>It's not possible to not to have any timeout. If you set this value to
+    		zero, you won't be able to use LMS at all!</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></LI
+><LI
+><P
+>default_module</P
+><P
+>Start-up module (filename from <TT
+CLASS="FILENAME"
+>/modules</TT
+> without .php). 
+		Default: welcome.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>default_module = copyrights</SAMP
+></P
+></LI
+><LI
+><P
+>customerlist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of customers list. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>customerlist_pagelimit = 10</SAMP
+></P
+></LI
+><LI
+><P
+>nodelist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of nodes list. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>nodelist_pagelimit = 10</SAMP
+></P
+></LI
+><LI
+><P
+>balancelist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of customer balance. Default: 100.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>balancelist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>invoicelist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of invoices list. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>invoicelist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>ticketlist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of ticket (requests) list. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>ticketlist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>networkhosts_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of nodes with network information.
+        	Default: 256</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>networkhosts_pagelimit = 1024</SAMP
+></P
+></LI
+><LI
+><P
+>accountlist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of customer accounts. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>accountlist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>domainlist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of system domains. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>domainlist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>aliaslist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of user aliases. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>aliaslist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>configlist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of UI configuration list. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>configlist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>taxratelist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of tax rates list. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>taxratelist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>numberplanlist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of numbering plans list. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>numberplanlist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>divisionlist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of divisions list. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>divisionlist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>documentlist_pagelimit</P
+><P
+>Limit of records that can be displayed on one page of documents list. Default: 100</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>documentlist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>reload_type</P
+><P
+>Reload type. Allowed values:</P
+><P
+>exec - execute some command (usually with sudo, script or something
+        	else, configurable below)</P
+><P
+>sql  - doing SQL writes (can be also set to custom query)</P
+><P
+>Default: sql.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>reload_type = exec</SAMP
+></P
+></LI
+><LI
+><P
+>reload_execcmd</P
+><P
+>Command to run during reload, if reload_type is set to 'exec'. By default
+        	<TT
+CLASS="FILENAME"
+>/bin/true</TT
+>. This string is send to system() command, so make sure that
+        	you know what you're doing. :) Besides, semicolons should be parsed by bash, but LMS splits
+        	that string and execute commands separately. In commands you can use
+		'%host' variable, which is replaced by defined host name (Configuration -&#62; Hosts).</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>reload_execcmd = "sudo /usr/bin/reload_lms.sh %host"</SAMP
+></P
+></LI
+><LI
+><P
+>reload_sqlquery</P
+><P
+>SQL query executed while reload, if <SAMP
+CLASS="PROMPT"
+>reload_type = sql</SAMP
+>. By default,
+        	query sets reload order for daemon <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>lmsd</I
+></SPAN
+>. You can use '%TIME%'
+        	template in your query which will be substituted with current UNIX timestamp and '%host'
+		for host name. WARNING!	Semicolon is handled as query separator, which means 
+		that you can enter couple of SQL queries separated by semicolon sign.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>reload_sqlquery = "INSERT INTO reload VALUES ('1','%TIME%')"</SAMP
+></P
+></LI
+><LI
+><P
+>force_ssl</P
+><P
+>Enforce SSL for all connections. Setting this option to 1 will
+        	turn LMS into enforcing SSL connections by applying redirect to
+        	'https://'.$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI] at every access without SSL. Default:
+        	0 (off).</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>force_ssl = 1</SAMP
+></P
+></LI
+><LI
+><P
+>allow_mac_sharing</P
+><P
+>Allows for node addition even if its MAC address is not unique (not checking that
+        	some computer have that MAC yet). Default: 0 (off)</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>allow_mac_sharing = 1</SAMP
+></P
+></LI
+><LI
+><P
+>smarty_debug</P
+><P
+>Enable Smarty debug console. Useful for tracking values passed from PHP to Smarty.
+        	Default: 0 (off).</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>smarty_debug = 1</SAMP
+></P
+></LI
+><LI
+><P
+>default_zip, default_city, default_address</P
+><P
+>Default zip code, city and street used on "new user" form. Useful when we have many
+        	users on the same street.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>default_zip = 39-300</SAMP
+></P
+></LI
+><LI
+><P
+>use_current_payday</P
+><P
+>Forces to use current day of month as a payment day.
+        	Default: 0 (off).</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>use_current_payday = 1</SAMP
+></P
+></LI
+><LI
+><P
+>default_monthly_payday</P
+><P
+>Forces to use given day of month as a payment day.
+		Default: 0 (undefined).</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>default_monthly_payday = 1</SAMP
+></P
+></LI
+><LI
+><P
+>use_invoices</P
+><P
+>Makes option "with invoice" checked by default.
+		Default: false.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>use_invoices = true</SAMP
+></P
+></LI
+><LI
+><P
+>lastonline_limit</P
+><P
+>Specify time (in seconds), after which node will be marked offline. It should match
+        	frequency of execution for script responsible for checking nodes activity (i.e. lms-fping).
+        	Default: 600.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>lastonline_limit = 300</SAMP
+></P
+></LI
+><LI
+><P
+>timetable_days_forward</P
+><P
+>Specify number of days (including current day) visible on timetable.
+        	Default: 7.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>timetable_days_forward = 2</SAMP
+></P
+></LI
+><LI
+><P
+>arpd_servers</P
+><P
+>List of arpd servers for reading MAC addresses from remote networks.
+        	That list should include IP[:port] items separated with spaces.
+        	Default: empty.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>arpd_servers = 192.168.1.1 192.168.2.1</SAMP
+></P
+></LI
+><LI
+><P
+>helpdesk_backend_mode</P
+><P
+>When enabled, all messages in helpdesk system (except those sent to ticket reporter)
+        	will be sent to mail server to the appropriate queue address. Mail server should run
+        	lms-rtparser script, which will write messages to database. Default: disabled.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>helpdesk_backend_mode = On</SAMP
+></P
+></LI
+><LI
+><P
+>helpdesk_sender_name</P
+><P
+>Name of message sender or predefined values: 'queue' - ticket's queue name,
+    		'user' - name of logged user (sender). Default: empty.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>helpdesk_sender_name = Helpdesk</SAMP
+></P
+></LI
+><LI
+><P
+>newticket_notify</P
+><P
+>If enabled, after new ticket addition system will send notification
+        	emails to all users with rights to the queue. Default: disabled.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>newticket_notify = On</SAMP
+></P
+></LI
+><LI
+><P
+>helpdesk_stats</P
+><P
+>Adds requests causes stats on ticket view and print pages.
+        	Default: enabled.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>helpdesk_stats = true</SAMP
+></P
+></LI
+><LI
+><P
+>helpdesk_customerinfo</P
+><P
+>Adds customer basic information on ticket view and in notifications.
+        	Default: enabled.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>helpdesk_customerinfo = false</SAMP
+></P
+></LI
+><LI
+><P
+>ticketlist_status</P
+><P
+>Default status filter setting on tickets list. For allowed values
+		see html source code. Default: not set.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>ticketlist_status = -1</SAMP
+></P
+></LI
+><LI
+><P
+>ticket_template_file</P
+><P
+>Helpdesk ticket printout template file. Default: rtticketprint.html.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>ticket_template_file = ../mytemplates/ticket.html</SAMP
+></P
+></LI
+><LI
+><P
+>to_words_short_version</P
+><P
+>Specify format of verbal amounts representation (on invoices). For value "1"
+        	verbal expand of 123,15 will be "one two thr 15/100". Default: 0.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>to_words_short_version = 1</SAMP
+></P
+></LI
+><LI
+><P
+>nodepassword_length</P
+><P
+>Length of (auto-generated) node password. Max.32. Default: 16.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>nodepassword_length = 8</SAMP
+></P
+></LI
+><LI
+><P
+>gd_translate_to</P
+><P
+>Charset of data that GD library expects (useful if GD need ISO-8859-2 instead of UTF-8 to feed imagetext() function. Default: ISO-8859-2.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>gd_translate_to = </SAMP
+></P
+></LI
+><LI
+><P
+>check_for_updates_period</P
+><P
+>How often to check for LMS updates (in seconds). Default: 86400.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>check_for_updates_period = 604800</SAMP
+></P
+></LI
+><LI
+><P
+>default_taxrate</P
+><P
+>Specify value (not label) of tax rate which will be selected 
+		on drop-down lists by default. Default: 22.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>default_taxrate = 22.0</SAMP
+></P
+></LI
+><LI
+><P
+>big_networks</P
+><P
+>Support for big ISPs e.g. hidding long selection dropdowns. 
+		Default: false.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>big_networks = true</SAMP
+></P
+></LI
+><LI
+><P
+>short_pagescroller</P
+><P
+>Enables page scroller designed for lists with very big number of pages. Default: false.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>short_pagescroller = true</SAMP
+></P
+></LI
+><LI
+><P
+>ewx_support</P
+><P
+>Support for <A
+HREF="http://etherwerx.com"
+TARGET="_top"
+>EtherWerX</A
+> devices. 
+		Default: false.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>ewx_support = true</SAMP
+></P
+></LI
+><LI
+><P
+>default_assignment_period</P
+><P
+>Default period value for assignment.
+			    Possible values:
+			    
+			    disposable - 0
+			    daily      - 1
+			    weekly     - 2
+			    monthly    - 3 
+			    quarterly  - 4
+			    yearly     - 5			
+			    Default: 0</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>default_assignment_period = 3</SAMP
+></P
+></LI
+></UL
+>
+	    </P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-TAXES"
+>3.15.2. Tax Rates</A
+></H2
+><P
+>Before you have to begin with financial system you will need
+		to define tax rates which you will use. On the list are place all 
+		rates data. It's possible to edit tax rate, but system will not
+		allow to change value of rate that was used in the past. Also isn't
+		possible to delete that rate.</P
+><P
+>Link 'Add tax rate' moves you to the form, where you can define 
+		a new rate. Tax rate label is displayed on select lists and invoice
+		printout. Value of tax rate is a number from 0 to 100 with two 
+		decimal places precision. Taxing status is used for tax-free rate, that 
+		means the rest of defined tax rates should have taxing enabled.</P
+><P
+>Tax rate which will be selected by default on lists is defined
+		by <TT
+CLASS="FILENAME"
+>default_taxrate</TT
+> option in section 
+		<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[phpui]</I
+></SPAN
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-NUMBERPLANS"
+>3.15.3. Number plans</A
+></H2
+><P
+>This feature allows you to add unique numbering plan
+	        (numbering sequence) for each type of documents created in LMS.
+		It's also possible to define different sequences within one type of 
+		documents. For each document type you might define default
+		sequence (important, ie. when you're issuing invoices
+		automatically, as perl scripts or daemon will use this default
+		scheme when creating new document).</P
+><P
+>For each sequence you should also define time span, that is
+		period in which sequence numbers will be unique. When time span
+		selected will reach its end, sequence will be zeroed. You are able
+		to set period to one of: daily, weekly (Monday to Sunday), monthly, 
+		quarterly or annually.</P
+><P
+>Numbering plans list consist of all its identifying
+		information included, followed by example number generated using
+		this plan plus number of documents created with this plan. You
+		might select 'Add plan' to enter new sequence. Editing is possible by 
+		clicking the field that you want to change. Deletion of plan is
+		only possible when no documents has been created with that
+		yet.</P
+><P
+>Sequence template might be any string, which consist some of
+		symbols (specifiers) known from PHP strftime function. Detailed
+		information and list of all symbols can be find in <A
+HREF="http://www.php.net/manual/pl/function.strftime.php"
+TARGET="_top"
+>PHP
+		Manual</A
+>. The most important and the only required symbol in
+		sequence template is '%N', which will be substituted with
+		incremented document number. All other symbols will expand to
+		document's date of issue. Below you can find most popular ones:
+		<UL
+><LI
+><P
+>%N - integer number, uniquely identifying document</P
+></LI
+><LI
+><P
+>%[1-9]N - as above, but with leading zeroes, ie.  '%4N' will return '0012' for 12</P
+></LI
+><LI
+><P
+>%I - additional part of number (works with cash documents only)</P
+></LI
+><LI
+><P
+>%Y - year as a 4 digit number</P
+></LI
+><LI
+><P
+>%y - year as a 2 digit number</P
+></LI
+><LI
+><P
+>%m - month number with leading zero (01 to 12)</P
+></LI
+><LI
+><P
+>%b - short month name (according to system locales)</P
+></LI
+></UL
+>
+		</P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>If you have no numbering plans defined, each document will 
+		take default number as of '%N/LMS/%Y' with annual time span.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-DIVISIONS"
+>3.15.4. Divisions</A
+></H2
+><P
+>Divisions/Companies are used for customers grouping. You should create
+	    at least one division. You can define division's short and long names, address
+	    bank account (or mass-payments account prefix) and other data for invoices.
+	    Locked division cannot be assigned to customer.
+	    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-HOSTS"
+>3.15.5. Hosts</A
+></H2
+><P
+>This section defines host names of those machines 
+	    (routers, servers) that read its configuration from LMS database 
+	    and where scripts or <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>lmsd</I
+></SPAN
+> daemon will be 
+	    setup. </P
+><P
+>Each host name should be unique and it's recommended to 
+	    be machine's real name, which could be obtained by running 
+	    <SAMP
+CLASS="PROMPT"
+>hostname</SAMP
+> command on each of them 
+	    (assuming they're all u*ix hosts).</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-DAEMON"
+>3.15.6. Daemon</A
+></H2
+><P
+>When you create hosts list, you will be able to configure
+	    daemon <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>lmsd</I
+></SPAN
+>. Daemon configuration is described
+	    in appropriate chapter.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-SOURCES"
+>3.15.7. Import sources</A
+></H2
+><P
+>It's possible to import customer payments from many sources (banks).
+	    Here you can define its names/description. Then you will able to
+	    select source from the list to add/import payments or some create payments reports.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="menu-timetable.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="scripts.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Timetable</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="user.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Scripts</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

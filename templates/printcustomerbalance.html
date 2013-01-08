@@ -1,0 +1,92 @@
+{include file="clearheader.html"}
+<!--// $Id$ //-->
+<TABLE WIDTH="100%" CELLPADDING="3" ALIGN="CENTER">
+	<TR>
+		<TD WIDTH="535" VALIGN="TOP">
+			<H1>{$layout.pagetitle}</H1>
+		</TD>
+		<TD WIDTH="180" ALIGN="RIGHT" NOWRAP>
+			LMS {$layout.lmsv} @ {$layout.hostname}<BR>
+			{$smarty.now|date_format:"%A, %x"}<BR>
+			{t a=$layout.logname}Prepared by: $a{/t}
+		</TD>
+	</TR>
+</TABLE>
+<BR>
+<TABLE WIDTH="100%" CELLPADDING="3" BORDER="1" ALIGN="CENTER">
+	<TR>
+		<TD WIDTH="15" CLASS="HEAD" ALIGN="CENTER">
+			{trans("No.")}
+		</TD>
+		<TD WIDTH="45" CLASS="HEAD" ALIGN="CENTER">
+			{trans("Date")}
+		</TD>
+		<TD WIDTH="60" CLASS="HEAD" ALIGN="CENTER">
+			{trans("Liability")}
+		</TD>
+		<TD WIDTH="50" CLASS="HEAD" ALIGN="CENTER">
+			{trans("Income")}
+		</TD>
+		<TD WIDTH="50" CLASS="HEAD" ALIGN="CENTER">
+			{trans("Expense")}
+		</TD>
+		<TD WIDTH="50" CLASS="HEAD" ALIGN="CENTER">
+			{trans("After")}
+		</TD>
+		<TD WIDTH="280" CLASS="HEAD" ALIGN="CENTER">
+			{trans("Description")}
+		</TD>
+	</TR>
+	{cycle values="white,grey" print=false}
+	{section name=balancelist loop=$balancelist.id}
+	<TR class="{cycle}">
+		<TD ALIGN="CENTER">
+			{counter}.
+		</TD>
+		<TD ALIGN="CENTER" NOWRAP>
+			{$balancelist.date[balancelist]}
+		</TD>
+		<TD ALIGN="RIGHT" NOWRAP>
+			{if !$balancelist.type[balancelist]}{($balancelist.value[balancelist]*-1)|money_format}{else}-{/if}
+		</TD>
+		<TD ALIGN="RIGHT" NOWRAP>
+			{if $balancelist.type[balancelist] && $balancelist.value[balancelist] > 0}{$balancelist.value[balancelist]|money_format}{else}-{/if}
+		</TD>
+		<TD ALIGN="RIGHT" NOWRAP>
+			{if $balancelist.type[balancelist] && $balancelist.value[balancelist] < 0}{($balancelist.value[balancelist]*-1)|money_format}{else}-{/if}
+		</TD>
+		<TD ALIGN="RIGHT" NOWRAP>
+			{$balancelist.after[balancelist]|money_format}
+		</TD>
+		<TD ALIGN="LEFT">
+			{$balancelist.comment[balancelist]|wordwrap:60:"<br />\n"}
+		</TD>
+	</TR>
+	{sectionelse}
+	<TR>
+		<TD ALIGN="center" WIDTH="100%" COLSPAN="7">
+			<p>&nbsp;</p>
+			<p><B>{trans("No such transactions")}</B></p>
+			<p>&nbsp;</p>
+		</TD>
+	</TR>
+	{/section}
+	<TR>
+		<TD CLASS="HEADGREY" ALIGN="right" COLSPAN="2">
+			<B>{trans("Total:")}</B>
+		</TD>
+		<TD CLASS="HEADGREY" ALIGN="right" nowrap>
+			<B>{$balancelist.liability|money_format}</B>
+		</TD>
+		<TD CLASS="HEADGREY" ALIGN="right" nowrap>
+			<B>{$balancelist.income|money_format}</B>
+		</TD>
+		<TD CLASS="HEADGREY" ALIGN="right" nowrap>
+			<B>{$balancelist.expense|money_format}</B>
+		</TD>
+		<TD CLASS="HEADGREY" COLSPAN="2" ALIGN="right">
+			<B>{trans("Balance:")} {$balancelist.summary|money_format}</B>
+		</TD>
+	</TR>
+</TABLE>
+{include file="clearfooter.html"}

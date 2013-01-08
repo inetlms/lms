@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="pl">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+{literal}
+
+<style type="text/css">
+body {background-color: #FFFFFF;}
+.small{font-size:7px;}
+.small2{font-size:8px;}
+.grey{background-color:#EEEEEE;}
+.white{background-color:#FFFFFF;}
+.stopka{background-color:#DDDDDD;}
+h4{font-size:6pt;}
+</style>
+{/literal}
+
+<table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+	<td align="left" width="50%" style="font:normal 6pt Verdana;vertical-align:top;">{if $lmscustomer}<b>{$lmscustomer.lastname} {$lmscustomer.name} {$lmscustomer.address} {$lmscustomer.zip} {$lmscustomer.city},&nbsp;&nbsp;&nbsp;&nbsp;ID : {$lmscustomer.id}</b><br>{/if}Wykaz połączeń telefonicznych za {$miesiace[$msc]} {$rok} rok<br>konto VoIP: {$cusname} , Terminal : {$terminal}</td>
+	<td align="right" width="50%" style="font:normal 6pt Verdana;vertical-align:top;">{if $divisions}<b>{$divisions.name}</b><br>{$divisions.address}<br>{$divisions.zip} {$divisions.city}{/if}</td>
+    </tr>
+</table>
+
+<table width="100%" cellpadding="1" cellspacing="0">
+    <tr>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-top: solid 1px #000;"></td>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-top: solid 1px #000;"><b>czas</b></td>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-top: solid 1px #000;">&nbsp;</td>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-top: solid 1px #000;"><b>Numer</b></td>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-top: solid 1px #000;"><b>Numer</b></td>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-top: solid 1px #000;"></td>
+	    <td class="small" colspan="3" style="border-left: solid 1px #000;border-top: solid 1px #000;">&nbsp;</td>
+	    <td class="small" align="center" nowrap  colspan="3" style="border-left: solid 1px #000;border-top: solid 1px #000;"><b>Koszty Klienta</b></td>
+	    {if $extends}
+	        <td  class="small" nowrap align="center" colspan="4" style="border-left: solid 1px #000;border-top: solid 1px #000;"><b>Koszt Resellera</b></td>
+	        <td  class="small" nowrap style="border-left: solid 1px #000;border-top: solid 1px #000;"></td>
+	        <td  class="small" nowrap style="border-left: solid 1px #000;border-top: solid 1px #000;"></td>
+	    {/if}
+	    <td class="small" nowrap style="border-left: solid 1px #000;border-top: solid 1px #000;border-right:solid 1px #000;"><b>Zreali-</b></td>
+    </tr>
+    <tr>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-bottom: solid 1px #000;"><b>data</b></td>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-bottom: solid 1px #000;"><b>rozmowy</b></td>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-bottom: solid 1px #000;"><b>kieru.</b></td>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-bottom: solid 1px #000;"><b>Inicjujcy</b></td>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-bottom: solid 1px #000;"><b>Odbiorcy</b></td>
+	    <td class="small" nowrap align="center" style="border-left: solid 1px #000;border-bottom: solid 1px #000;"><b>kraj</b></td>
+	    <td class="small" align="center" colspan="3" style="border-left: solid 1px #000;border-bottom: solid 1px #000;"><b>kierunek-operator</b></td>
+	    <td class="small" align="right" nowrap style="border-left: solid 1px #000;border-bottom: solid 1px #000;">rozmowy</td>
+	    <td class="small" align="right" nowrap style="border-bottom: solid 1px #000;">połączenia</td>
+	    <td class="small" align="right" nowrap style="border-bottom: solid 1px #000;">cena/min&nbsp;</td>
+	    {if $extends}
+	        <td class="small" align="right" nowrap style="border-left: solid 1px #000;border-bottom: solid 1px #000;">rozmowy</td>
+	        <td class="small" align="right" nowrap style="border-bottom: solid 1px #000;">połączenie</td>
+	        <td class="small" align="right" nowrap style="border-bottom: solid 1px #000;">cena/min</td>
+	        <td class="small" align="right" nowrap style="border-bottom: solid 1px #000;">marża&nbsp;</td>
+	        <td class="small" nowrap  style="border-left: solid 1px #000;border-bottom: solid 1px #000;"></td>
+	        <td class="small" nowrap  style="border-left: solid 1px #000;border-bottom: solid 1px #000;"></td>
+	    {/if}
+	    <td class="small" nowrap  style="border-left:solid 1px #000;border-bottom:solid 1px #000;border-right:solid 1px #000;"><b>zowane</b></td>
+    </tr>
+    {cycle values="grey,white" print=false}
+    {assign var='sumduration' value=0}
+    {assign var='sumcost' value=0}
+    {assign var='suminit_charge' value=0}
+    {assign var='sumreseller_cost' value=0}
+    {assign var='sumreseller_init_charge' value=0}
+    {assign var='summargin' value=0}
+    {section name=l loop=$billing}
+	{math assign='sumduration' equation="x+y" x=$sumduration y=$billing[l].duration}
+	{math assign='sumcost' equation="x+y" x=$sumcost y=$billing[l].cost}
+	{math assign='suminit_charge' equation="x+y" x=$suminit_charge y=$billing[l].init_charge}
+	{math assign='sumreseller_cost' equation="x+y" x=$sumreseller_cost y=$billing[l].reseller_cost}
+	{math assign='sumreseller_init_charge' equation="x+y" x=$sumreseller_init_charge y=$billing[l].reseller_init_charge}
+	{math assign='summargin' equation="x+y" x=$summargin y=$billing[l].margin}
+	{assign var='ctn' value=$billing[l].calltype}
+	<tr>
+	    <td class="small" nowrap style="border-left:solid 1px #000;">{$billing[l].start_time|regex_replace:"/ /":"&nbsp;"}</td>
+	    <td class="small" nowrap align="center">&nbsp;{$billing[l].duration|seconds_to_hours}&nbsp;</td>
+	    <td class="small" nowrap align="center">&nbsp;{$ctypename[$ctn]}&nbsp;</td>
+	    <td class="small" nowrap>{if $billing[l].caller=='unknown'}nieznany{else}{$billing[l].caller}{/if}</td>
+	    <td class="small" nowrap>{$billing[l].bill_cpb}</td>
+	    <td class="small" nowrap>{$billing[l].country}</td>
+	    <td class="small" nowrap align="left">{$billing[l].description}</td>
+	    <td class="small" align="left">{$billing[l].operator}</td>
+	    <td class="small" nowrap align="left">{$billing[l].type}</td>
+	    <td class="small" align="right" nowrap style="border-left:solid 1px #000;">
+		{math assign='tempek' equation="x*y" x=$stvat y=$billing[l].cost}
+		&nbsp;{$tempek|string_format:"%.02f"}
+	    </td>
+	    <td class="small" align="right" nowrap>
+		{math assign='tempek' equation="x*y" x=$stvat y=$billing[l].init_charge}
+		&nbsp;{$tempek|string_format:"%.02f"}
+	    </td>
+	    <td class="small" align="right" nowrap>
+		{math assign='tempek' equation="x*y" x=$stvat y=$billing[l].price}
+		&nbsp;{$tempek|string_format:"%.02f"}&nbsp;
+	    </td>
+	    {if $extends}
+	        <td class="small" align="right" nowrap style="border-left:solid 1px #000;">
+	    	    {math assign='tempek' equation="x*y" x=$stvat y=$billing[l].reseller_cost}
+	    	    &nbsp;{$tempek|string_format:"%.02f"}
+	    	</td>
+		<td class="small" align="right" nowrap>
+		    {math assign='tempek' equation="x*y" x=$stvat y=$billing[l].reseller_init_charge}
+		    &nbsp;{$tempek|string_format:"%.02f"}
+		</td>
+		<td class="small" align="right" nowrap>
+		    {math assign='tempek' equation="x*y" x=$stvat y=$billing[l].reseller_price}
+		    &nbsp;{$tempek|string_format:"%.02f"}
+		</td>
+	        <td class="small" align="right" nowrap>
+	    	    {math assign='tempek' equation="x*y" x=$stvat y=$billing[l].margin}
+	    	    {$tempek|string_format:"%.02f"}&nbsp;
+	    	</td>
+	        <td class="small" nowrap style="border-left:solid 1px #000;">&nbsp;{$billing[l].platform_type}</td>
+	        <td class="small" nowrap style="border-left:solid 1px #000;">&nbsp;{if $billing[l].subscription_used=='t'}A{else}P{/if}</td>
+	    {/if}
+	    <td class="small" nowrap style="text-align:center;border-left:solid 1px #000;border-right:solid 1px #000;">&nbsp;{if $billing[l].success_call=='t'}Tak{else}Nie{/if}</td>
+	</tr>
+    {/section}
+    {if $billing|@count ne 0}
+	<tr class="stopka">
+	    <td class="small" style="border-left:solid 1px #000;border-top:solid 1px #000;border-bottom:solid 1px #000;" nowrap><b>ŁĄCZNIE:</b></td>
+	    <td class="small" nowrap  align="right" style="border-top:solid 1px #000;border-bottom:solid 1px #000;">&nbsp;<b>{$sumduration|seconds_to_hours}</b>&nbsp;</td>
+	    <td class="small" colspan="7" style="border-top:solid 1px #000;border-bottom:solid 1px #000;">&nbsp;</td>
+	    <td class="small" align="right" nowrap style="border-top:solid 1px #000;border-bottom:solid 1px #000;border-left:solid 1px #000;">{math assign='tempek' equation="x*y" x=$stvat y=$sumcost}&nbsp;<b>{$tempek|string_format:"%.02f"}</b></td>
+	    <td class="small" align="right" nowrap style="border-top:solid 1px #000;border-bottom:solid 1px #000;">{math assign='tempek' equation="x*y" x=$stvat y=$suminit_charge}&nbsp;<b>{$tempek|string_format:"%.02f"}</b></td>
+	    <td class="small" align="right" nowrap style="border-top:solid 1px #000;border-bottom:solid 1px #000;">&nbsp;</td>
+	    {if $extends}
+		<td class="small" align="right" nowrap style="border-left:solid 1px #000;border-top:solid 1px #000;border-bottom:solid 1px #000;">{math assign='tempek' equation="x*y" x=$stvat y=$sumreseller_cost}&nbsp;<b>{$tempek|string_format:"%.02f"}</b></td>
+		<td class="small" align="right" nowrap style="border-top:solid 1px #000;border-bottom:solid 1px #000;">{math assign='tempek' equation="x*y" x=$stvat y=$sumreseller_init_charge}&nbsp;<b>{$tempek|string_format:"%.02f"}</b></td>
+		<td class="small" align="right" nowrap style="border-top:solid 1px #000;border-bottom:solid 1px #000;">&nbsp;</td>
+		<td class="small" align="right" nowrap style="border-top:solid 1px #000;border-bottom:solid 1px #000;">{math assign='tempek' equation="x*y" x=$stvat y=$summargin}&nbsp;<b>{$tempek|string_format:"%.02f"}</b></td>
+		<td class="small" nowrap style="border-left:solid 1px #000;border-top:solid 1px #000;border-bottom:solid 1px #000;">&nbsp;</td>
+		<td class="small" nowrap style="border-left:solid 1px #000;border-top:solid 1px #000;border-bottom:solid 1px #000;">&nbsp;</td>
+	    {/if}
+	    <td class="small" nowrap style="border-top:solid 1px #000;border-bottom:solid 1px #000;border-right:solid 1px #000;">&nbsp;</td>
+	</tr>
+    {/if}
+</table>
+{if $billing|@count ne 0}
+{math assign='allcost' equation="x+y" x=$sumcost y=$suminit_charge}
+{math assign='allkasa' equation="x+y" x=$allcost y=$subscription}
+<br>
+<table width="100%" cellpadding="4" cellspacing="0">
+    <tr>
+	<td width="auto" align="left" class="small2">Całkowity koszt rozmów poza abonamentem</td>
+	<td align="right" class="small2" style="width:150px;" nowrap>{math assign='tempek' equation="x*y" x=$stvat y=$allcost}{$tempek|money_format}&nbsp;&nbsp;&nbsp;</td>
+    </tr>
+    <tr>
+	<td width="auto" align="left" class="small2">Wartość abonamentu</td>
+	<td align="right" class="small2" style="width:150px;" nowrap>{math assign='tempek' equation="x*y" x=$stvat y=$subscription}{$tempek|money_format}&nbsp;&nbsp;&nbsp;</td>
+    </tr>
+    <tr>
+	<td width="auto" align="left" class="small2"><b>Łączna kwota do zapłaty</b></td>
+	<td align="right" class="small2" style="width:150px;" nowrap>{math assign='tempek' equation="x*y" x=$stvat y=$allkasa}<b>{$tempek|money_format}&nbsp;&nbsp;&nbsp;</b></td>
+    </tr>
+</table>
+{/if}
+</html>

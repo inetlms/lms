@@ -1,0 +1,134 @@
+{include file="header.html"}
+{include file="hv_js.html"}
+
+<h3>{$layout.pagetitle}</h3>
+<table width="100%" cellpadding="3">
+{literal}
+<script type="text/javascript" language="JavaScript">
+<!--
+    function dodajpstn() {
+	var dok = document.pstnadd;
+	var blad = false;
+	if (dok.elements['pstnadd[extension]'].value.length==0) {
+	    blad = true;
+	    addClass(dok.elements['pstnadd[country_code]'],'alert');
+	    addClass(dok.elements['pstnadd[number]'],'alert');
+	    addClass(dok.elements['pstnadd[extension]'],'alert');
+	    alert('Proszę wybrać numer PSTN');
+	} else {
+	    removeClass(dok.elements['pstnadd[country_code]'],'alert');
+	    removeClass(dok.elements['pstnadd[number]'],'alert');
+	    removeClass(dok.elements['pstnadd[extension]'],'alert');
+	}
+	
+	if(!blad) {
+	    dok.action='?m=hv_pstnadd&cusid={/literal}{$customerid}{literal}';
+	    dok.method="post";
+	    dok.submit();
+	}
+	
+    }
+//-->
+</script>
+{/literal}
+<form name="pstnadd" method="post" onsubmit="return false;">
+
+    <tr class="dark"><td width="1%" class="fall">&nbsp;<b>Dodaj nowy numer PSTN</b></td></tr>
+    <tr class="light">
+	<td width="100%" class="flr">
+	
+	    <table width="100%" cellpadding="0" cellspacing="0">
+		<tr class="light">
+		    <td width="33%" style="text-align:left;vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			    <tr>
+				<td width="1%" align="left" nowrap ><b>Terminal</b></td>
+				<td width="1%"><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				{if $terminallist|@count >1 }
+				    <select name="pstnadd[id_terminal]" id="select_terminal" style="min-width:130px;cursor:pointer;" {tip text="Wybierz terminal do którego ma być przypisany nowy numer PSTN"}>
+					{section name=terminallist loop=$terminallist}
+					    <option value="{$terminallist[terminallist].id}">({$terminallist[terminallist].id|string_format:"%7d"}) {$terminallist[terminallist].username}</option>
+					{/section}
+				    </select>
+				{else}
+				    <b>({$terminallist[0].id|string_format:"%7d"}) {$terminallist[0].username}</b>
+				    <input type="hidden" name="pstnadd[id_terminal]" value="{$terminallist[0].id}">
+				{/if}
+				</td>
+			    </tr>
+			    <tr><td width="1%" align="left" nowrap >Kod kraju</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="pstnadd[country_code]" value="" id="id_country_code" {if !get_conf('hiperus_c5.number_manually')}readonly>{/if}</td></tr>
+			    <tr><td width="1%" align="left" nowrap >Nr. krajowy</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="pstnadd[number]" value="" id="id_number" {if !get_conf('hiperus_c5.number_manually')}readonly{/if}></td></tr>
+			    <tr><td width="1%" align="left" nowrap >Nr. międzynarodowy</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left"><input type="text" name="pstnadd[extension]" value="" id="id_extension" {if !get_conf('hiperus_c5.number_manually')}readonly{/if}>&nbsp;&nbsp;<a href="javascript:searchemptypstn('{$dane.pstn.extension}')" {tip text="Wybierz nowy numer"}>&raquo;&raquo;&raquo;</a></td></tr>
+			</table>
+		    </td>
+		    <td width="33%" style="text-align:left;vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			    
+			    <tr>
+				<td width="1%" align="left" nowrap >Główny numer</td>
+				<td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				    <select name="pstnadd[is_main]">
+					<option value='t' SELECTED>TAK</option>
+					<option value='f'>NIE</option>
+				    </select>
+				</td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap >DISA</td>
+				<td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				    <select name="pstnadd[disa_enabled]">
+					<option value='t'>TAK</option>
+					<option value='f' SELECTED>NIE</option>
+				    </select>
+				</td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap >CLIR</td>
+				<td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				    <select name="pstnadd[clir]">
+					<option value='t'>TAK</option>
+					<option value='f' SELECTED>NIE</option>
+				    </select>
+				</td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap >FAX</td>
+				<td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				    <select name="pstnadd[virtual_fax]">
+					<option value='t'>TAK</option>
+					<option value='f' SELECTED>NIE</option>
+				    </select>
+				</td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap >Poczta głosowa</td>
+				<td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				    <select name="pstnadd[voicemail_enabled]">
+					<option value='t' SELECTED>TAK</option>
+					<option value='f'>NIE</option>
+				    </select>
+				</td>
+			    </tr>
+			</table>
+		    </td>
+		    <td width="auto" style="text-align:left;vertical-align:top;">
+		    </td>
+		</tr>
+	    </table>
+	</td>
+    </tr>
+    <tr class="dark">
+	<td width="100%" align="right" class="fall">
+	    <a href="javascript:dodajpstn();">Zapisz zmiany&nbsp;<img src="img/save.gif" border="0"></a>&nbsp;&nbsp;&nbsp;
+	    <a href="?m=hv_accountinfo&id={$customerid}">Anuluj&nbsp;<img src="img/cancel.gif" border="0"></a>&nbsp;
+	</td>
+    </tr>
+    </form>
+</table>
+{include file="footer.html"}

@@ -1,0 +1,69 @@
+{include file="clearheader.html"}
+<!--// $Id$ //-->
+<TABLE WIDTH="100%" CELLPADDING="3" ALIGN="CENTER">
+	<TR>
+		<TD WIDTH="535" VALIGN="TOP">
+			<P class="hdf"><B>{$layout.pagetitle}</B>
+			{if $source}<BR><font class="sdr"><B>{trans("Source:")} {$source}</B></font>{/if}
+			</P>
+		</TD>
+		<TD WIDTH="180" ALIGN="RIGHT" NOWRAP>
+			LMS {$layout.lmsv} @ {$layout.hostname}<BR>
+			{$smarty.now|date_format:"%A, %x"}<BR>
+			{t a=$layout.logname}Created by: $a{/t}
+		</TD>
+	</TR>
+</TABLE>
+<BR>
+<TABLE WIDTH="100%" CELLPADDING="3" BORDER="1" ALIGN="CENTER">
+	<TR>
+		<TD WIDTH="15" CLASS="HEAD" ALIGN="CENTER">
+			{trans("No.")}
+		</TD>
+		<TD WIDTH="50" CLASS="HEAD" ALIGN="CENTER">
+			{trans("Date")}
+		</TD>
+		<TD WIDTH="100" CLASS="HEAD" ALIGN="CENTER">
+			{trans("Value")}
+		</TD>
+		<TD WIDTH="400" CLASS="HEAD" ALIGN="CENTER">
+			{trans("Customer")}
+		</TD>
+	</TR>
+	{cycle values="white,grey" print=false}
+	{section name=importlist loop=$importlist}
+	<TR class="{cycle}">
+		<TD ALIGN="CENTER">
+			{counter}.
+		</TD>
+		<TD ALIGN="CENTER" NOWRAP>
+			{$importlist[importlist].time|date_format:"%d.%m.%Y"}
+		</TD>
+		<TD ALIGN="RIGHT" NOWRAP>
+			{$importlist[importlist].value|money_format}
+		</TD>
+		<TD>
+			{$importlist[importlist].customername} ({$importlist[importlist].customerid|string_format:"%04d"})
+		</TD>
+	</TR>
+	{assign var=total value=$total+$importlist[importlist].value}
+	{sectionelse}
+	<TR>
+		<TD ALIGN="center" WIDTH="100%" COLSPAN="4">
+			<P>&nbsp;</P>
+			<P><B>{trans("No such cash operations.")}</B></P>
+			<P>&nbsp;</P>
+		</TD>
+	</TR>
+	{/section}
+	<TR>
+		<TD CLASS="HEADGREY" ALIGN="RIGHT" COLSPAN="2">
+			<B>{trans("Total:")}</B>
+		</TD>
+		<TD CLASS="HEADGREY" ALIGN="RIGHT" NOWRAP>
+			<B>{$total|money_format}</B>
+		</TD>
+		<TD CLASS="HEADGREY"></TD>
+	</TR>
+</TABLE>
+{include file="clearfooter.html"}

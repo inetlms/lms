@@ -1,0 +1,191 @@
+{include file="header.html"}
+
+<FORM name="billingext" method="GET" action="?m={$layout.module}" >
+    <INPUT type="submit" class="hiddenbtn">
+    <INPUT type="hidden" name="m" value="{$layout.module}">
+    <INPUT type="hidden" name="cusid" value="{$cusid}">
+    <input type="hidden" name="terminal" value="{$terminal}">
+    <TABLE width="100%" cellpadding="2" cellspacing="0">
+	<TR class="dark">
+	    <TD width="auto" class="fleftu" align="left">
+		&nbsp;Rok:&nbsp;
+		<SELECT name="rok" style="cursor:pointer;text-align:center;width:60px;" onChange="document.billingext.submit();" >
+		    {section name=pbfr loop=$listyear}
+			<OPTION value="{$listyear[pbfr].rok}" {if $listyear[pbfr].rok==$rok} SELECTED{/if}>{$listyear[pbfr].rok}</OPTION>
+		    {/section}
+		</SELECT>&nbsp;&nbsp;&nbsp;
+		Miesiąc:&nbsp;
+		<SELECT name="msc" style="cursor:pointer;text-align:center;width:100px;" onChange="document.billingext.submit();" >
+			<OPTION value="1" {if $msc==1} SELECTED{/if}>styczeń</OPTION>
+			<OPTION value="2" {if $msc==2} SELECTED{/if}>luty</OPTION>
+			<OPTION value="3" {if $msc==3} SELECTED{/if}>marzec</OPTION>
+			<OPTION value="4" {if $msc==4} SELECTED{/if}>kwiecień</OPTION>
+			<OPTION value="5" {if $msc==5} SELECTED{/if}>maj</OPTION>
+			<OPTION value="6" {if $msc==6} SELECTED{/if}>czerwiec</OPTION>
+			<OPTION value="7" {if $msc==7} SELECTED{/if}>lipiec</OPTION>
+			<OPTION value="8" {if $msc==8} SELECTED{/if}>sierpień</OPTION>
+			<OPTION value="9" {if $msc==9} SELECTED{/if}>wrzesień</OPTION>
+			<OPTION value="10" {if $msc==10} SELECTED{/if}>październik</OPTION>
+			<OPTION value="11" {if $msc==11} SELECTED{/if}>listopad</OPTION>
+			<OPTION value="12" {if $msc==12} SELECTED{/if}>grudzień</OPTION>
+		</SELECT>&nbsp;&nbsp;&nbsp;
+		Połączenie:&nbsp;
+		<SELECT name="ctype" style="cursor:pointer;text-align:center;width:110px;{if $ctype}background-color:#FFFE9F;{/if}" onChange="document.billingext.submit();" >
+		    <OPTION value="">-- wszystkie --</OPTION>
+			<OPTION value="outgoing" {if $ctype=='outgoing'} SELECTED{/if}>wychodzące</OPTION>
+			<OPTION value="incoming" {if $ctype=='incoming'} SELECTED{/if}>przychodzące</OPTION>
+			<OPTION value="forwarded" {if $ctype=='forwarded'} SELECTED{/if}>przekazane</OPTION>
+			<OPTION value="internal" {if $ctype=='internal'} SELECTED{/if}>wew. sieci</OPTION>
+			<OPTION value="disa" {if $ctype=='disa'} SELECTED{/if}>DISA</OPTION>
+			<OPTION value="vpbx" {if $ctype=='vpbx'} SELECTED{/if}>VPBX</OPTION>
+		</SELECT>&nbsp;&nbsp;&nbsp;
+		Zrealizowane:&nbsp;
+		<SELECT name="csuccess" style="cursor:pointer;text-align:center;width:100px;{if $csuccess}background-color:#FFFE9F;{/if}" onChange="document.billingext.submit();" >
+		    <OPTION value="">-- wszystkie --</OPTION>
+			<OPTION value="t" {if $csuccess=='t'} SELECTED{/if}>TAK</OPTION>
+			<OPTION value="f" {if $csuccess=='f'} SELECTED{/if}>NIE</OPTION>
+		</SELECT>&nbsp;&nbsp;&nbsp;
+	    </TD>
+	    <TD width="1%" style="text-align:right;vertical-align:top;" nowrap class="frightu">
+		<INPUT type="checkbox" name="extends" value="1" id="vextends"  {if $extends} checked{/if} onClick="document.billingext.submit();">&nbsp;<A href="javascript:checkElement('vextends');document.billingext.submit();" ><B>Widok rozszerzony</B></A>&nbsp;|&nbsp;
+		<A href="?m=hv_billinginfoext_print&cusid={$cusid}&rok={$rok}&msc={$msc}&ctype={$ctype}&csuccess={$csuccess}{if $extends}&extends{/if}&terminal={$terminal}" target="_blank"><IMG src="img/print.gif" border="0" {tip text="Drukuj wykaz połączeń"} style="cursor:pointer;"></A>&nbsp;|&nbsp;
+		<A href="javascript:window.close();"><B>Zamknij okno</B></A>
+	    </TD>
+	</TR>
+    </TABLE>
+</FORM>
+
+<h4>&nbsp;Konto VoIP: {$cusname} | Terminal : {$terminal} | Abonament : {$subscription|money_format}{if $lmscustomer} | Klient : {$lmscustomer.lastname} {$lmscustomer.name} {$lmscustomer.address} {$lmscustomer.zip} {$lmscustomer.city}{/if}</h4>
+
+<TABLE width="100%" cellpadding="3" cellspacing="0">
+	<TR class="dark">
+	    <TD width="1%" nowrap align="center"</TD>
+	    <TD width="1%" nowrap align="center"><B>czas</B></TD>
+	    <TD width="1%" nowrap align="center"></TD>
+	    <TD width="1%" nowrap align="center"><b>Numer</b></TD>
+	    <TD width="1%" nowrap align="center"><b>Numer</b></TD>
+	    <TD width="1%" nowrap align="center"></TD>
+	    <TD width="1%" colspan="3" nowrap ></TD>
+	    <TD width="1%" align="center" nowrap  style="cursor:pointer;" colspan="3" ><B>Koszty Klienta</B></TD>
+	    {if $extends}
+		<TD width="1%" align="center" nowrap  style="cursor:pointer;" colspan="4" class="flr"><B>Koszt Resellera</B></TD>
+		<TD width="1%" nowrap  style="cursor:pointer;"></TD>
+		<TD width="1%" nowrap  style="cursor:pointer;"></TD>
+	    {/if}
+	    <TD width="1%" nowrap  ><B>Zreali-</B></TD>
+	</TR>
+	<TR class="dark">
+	    <TD width="1%" nowrap align="center"><B>data</B></TD>
+	    <TD width="1%" nowrap align="center"><B>rozmowy</B></TD>
+	    <TD width="1%" nowrap align="center"><B>kieru.</B></TD>
+	    <TD width="1%" nowrap align="center"><b>Inicjujcy</b></TD>
+	    <TD width="1%" nowrap align="center"><b>Odbiorcy</b></TD>
+	    <TD width="1%" nowrap align="center"><b>kraj</b></TD>
+	    <TD width="1%" colspan="3" nowrap ><B>kierunek - operator</B></TD>
+	    <TD width="1%" align="right" nowrap>rozmowy</TD>
+	    <TD width="1%" align="right" nowrap>połączenia</TD>
+	    <TD width="1%" align="right" nowrap>cena/min&nbsp;</TD>
+	    {if $extends}
+		<TD width="1%" align="right" nowrap class="fleft">rozmowy</TD>
+		<TD width="1%" align="right" nowrap>połączenie</TD>
+		<TD width="1%" align="right" nowrap>cena/min</TD>
+		<TD width="1%" align="right" nowrap class="fright">marża&nbsp;</TD>
+		<TD width="1%" nowrap>Plat.</TD>
+		<TD width="1%" nowrap>AB.</TD>
+	    {/if}
+	    <TD width="1%" nowrap  ><B>zowane</B></TD>
+	</TR>
+    {cycle values="lucid,light" print=false}
+    {assign var='sumduration' value=0}
+    {assign var='sumcost' value=0}
+    {assign var='suminit_charge' value=0}
+    {assign var='sumreseller_cost' value=0}
+    {assign var='sumreseller_init_charge' value=0}
+    {assign var='summargin' value=0}
+    {section name=l loop=$billing}
+	{math assign='sumduration' equation="x+d" x=$sumduration d=$billing[l].duration}
+	{math assign='sumcost' equation="x+y" x=$sumcost y=$billing[l].cost}
+	{math assign='suminit_charge' equation="x+y" x=$suminit_charge y=$billing[l].init_charge}
+	{math assign='sumreseller_cost' equation="x+y" x=$sumreseller_cost y=$billing[l].reseller_cost}
+	{math assign='sumreseller_init_charge' equation="x+y" x=$sumreseller_init_charge y=$billing[l].reseller_init_charge}
+	{math assign='summargin' equation="x+y" x=$summargin y=$billing[l].margin}
+	{assign var='ctn' value=$billing[l].calltype}
+	<TR class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	    <TD width="1%" nowrap {tip text="Data i godzina rozpoczęcia rozmowy"}>{$billing[l].start_time}</TD>
+	    <TD width="1%" nowrap  align="center"{tip text="Czas trwania rozmowy HH:MM:SS"} align="right">&nbsp;{$billing[l].duration|seconds_to_hours}&nbsp;</TD>
+	    <TD width="1%" nowrap  align="center"{tip text="Typ połączenia"}>&nbsp;{$ctypename[$ctn]}&nbsp;</TD>
+	    <TD width="1%" nowrap  {tip text="Numer z którego dzwoniono"}>{if $billing[l].caller=='unknown'}nieznany{else}{$billing[l].caller}{/if}</TD>
+	    <TD width="1%" nowrap  {tip text="Numer na który dzwoniono"}>{$billing[l].bill_cpb}</TD>
+	    <TD width="1%" nowrap  {tip text="Kierunek - kraj"}>{$billing[l].country}</TD>
+	    <TD width="1%" nowrap  {tip text="Opis kierunku"}>{$billing[l].description}</TD>
+	    <TD width="auto" nowrap  {tip text="Operator kierunku"}>{$billing[l].operator}</TD>
+	    <TD width="1%" nowrap  {tip text="Typ kierunku"}>{$billing[l].type}</TD>
+	    <TD width="1%" align="right" nowrap  style="cursor:pointer;"{tip text="Koszt rozmowy dla klienta"}>
+		{math assign='tempek' equation="x*y" x=$stvat y=$billing[l].cost}
+		&nbsp;{$tempek|string_format:"%.02f"}
+	    </TD>
+	    <TD width="1%" align="right" nowrap  style="cursor:pointer;"{tip text="Koszt inicjacji połączenia dla klienta"}>
+		{math assign='tempek' equation="x*y" x=$stvat y=$billing[l].init_charge}
+		&nbsp;{$tempek|string_format:"%.02f"}
+	    </TD>
+	    <TD width="1%" align="right" nowrap  style="cursor:pointer;"{tip text="Cena połączenia dla klienta"}>
+		{math assign='tempek' equation="x*y" x=$stvat y=$billing[l].price}
+		&nbsp;{$tempek|string_format:"%.02f"}&nbsp;
+	    </TD>
+	    {if $extends}
+		<TD width="1%" align="right" nowrap  class="fleft" style="cursor:pointer;"{tip text="Koszt rozmowy dla resellera"}>
+		    {math assign='tempek' equation="x*y" x=$stvat y=$billing[l].reseller_cost}
+		    &nbsp;{$tempek|string_format:"%.02f"}
+		</TD>
+		<TD width="1%" align="right" nowrap  style="cursor:pointer;"{tip text="Koszt inicjacji połączenia dla resellera"}>
+		    {math assign='tempek' equation="x*y" x=$stvat y=$billing[l].reseller_init_charge}
+		    &nbsp;{$tempek|string_format:"%.02f"}
+		</TD>
+		<TD width="1%" align="right" nowrap  style="cursor:pointer;{if $billing[l].reseller_price>$billing[l].price}color:red;{/if}"{tip text="Cena połączenia dla resellera"}>
+		    {math assign='tempek' equation="x*y" x=$stvat y=$billing[l].reseller_price}
+		    &nbsp;{$tempek|string_format:"%.02f"}
+		</TD>
+		<TD width="1%" align="right" nowrap  class="fright" style="cursor:pointer;{if $billing[l].margin<0}color:red;{/if}"{tip text="Marża dla resellera"}>
+		    {math assign='tempek' equation="x*y" x=$stvat y=$billing[l].margin}
+		    &nbsp;{$tempek|string_format:"%.02f"}&nbsp;
+		</TD>
+		<TD width="1%" nowrap  style="cursor:pointer;"{tip text="Typ usługi platformy Hiperus C5"}>&nbsp;{$billing[l].platform_type}</TD>
+		<TD width="1%" nowrap  style="cursor:pointer;"{tip text="<b>A</b> - w abonamencie<br><b>P</b> - poza abonamentem"}>&nbsp;{if $billing[l].subscription_used=='t'}A{else}P{/if}</TD>
+	    {/if}
+	    <TD width="1%" nowrap  style="cursor:pointer;text-align:center;"{tip text="Czy połączenie zostało zrealizowane"}>&nbsp;{if $billing[l].success_call=='t'}Tak{else}Nie{/if}</TD>
+	</TR>
+    {/section}
+    {if $billing|@count ne 0}
+	<TR class="dark" >
+	    <TD width="1%" nowrap ><B>ŁĄCZNIE:</B></TD>
+	    <TD width="1%" nowrap  {tip text="Czas trwania rozmowy HH:MM:SS"} align="right">&nbsp;<B>{$sumduration|seconds_to_hours}</b>&nbsp;</TD>
+	    <TD width="auto" colspan="7">&nbsp;</TD>
+	    <TD width="1%" align="right" nowrap  style="cursor:pointer;"{tip text="Koszt rozmowy dla klienta"}>
+		{math assign='tempek' equation="x*y" x=$stvat y=$sumcost}
+		&nbsp;<b>{$tempek|string_format:"%.02f"}</b>
+	    </TD>
+	    <TD width="1%" align="right" nowrap  style="cursor:pointer;"{tip text="Koszt inicjacji połączenia dla klienta"}>
+		{math assign='tempek' equation="x*y" x=$stvat y=$suminit_charge}
+		&nbsp;<b>{$tempek|string_format:"%.02f"}</b>
+	    </TD>
+	    <TD width="1%" align="right" nowrap>&nbsp;</TD>
+	    {if $extends}
+		<TD width="1%" align="right" nowrap  class="fleft"style="cursor:pointer;"{tip text="Koszt rozmowy dla resellera"}>
+		    {math assign='tempek' equation="x*y" x=$stvat y=$sumreseller_cost}
+		    &nbsp;<b>{$tempek|string_format:"%.02f"}</b>
+		</TD>
+		<TD width="1%" align="right" nowrap  style="cursor:pointer;"{tip text="Koszt inicjacji połączenia dla resellera"}>
+		    {math assign='tempek' equation="x*y" x=$stvat y=$sumreseller_init_charge}
+		    &nbsp;<b>{$tempek|string_format:"%.02f"}</b>
+		</TD>
+		<TD width="1%" align="right" nowrap">&nbsp;</TD>
+		<TD width="1%" align="right" nowrap  class="fright" style="cursor:pointer;{if $billing[l].margin<0}color:red;{/if}"{tip text="Marża dla resellera"}>
+		    {math assign='tempek' equation="x*y" x=$stvat y=$summargin}
+		    &nbsp;<b>{$tempek|string_format:"%.02f"}</b>
+		</TD>
+		<TD width="1%" align="right" nowrap">&nbsp;</TD>
+	    {/if}
+	    <TD width="1%" nowrap  colspan="2">&nbsp;</TD>
+	</TR>
+    {/if}
+</TABLE>

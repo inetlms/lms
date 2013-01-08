@@ -1,0 +1,616 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>LMS Daemon</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Przykład zastosowania lms-mgc"
+HREF="mgc-example.html"><LINK
+REL="NEXT"
+TITLE="Moduły"
+HREF="daemon-modules.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mgc-example.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="daemon-modules.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="DAEMON"
+></A
+>Rozdzia&#322; 6. LMS Daemon</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Spis tre&#347;ci</B
+></DT
+><DT
+>6.1. <A
+HREF="daemon.html#DAEMON-INTRO"
+>Informacje podstawowe</A
+></DT
+><DD
+><DL
+><DT
+>6.1.1. <A
+HREF="daemon.html#DAEMON-REQUIREMENTS"
+>Wymagania</A
+></DT
+><DT
+>6.1.2. <A
+HREF="daemon.html#DAEMON-INSTALL"
+>Instalacja</A
+></DT
+><DT
+>6.1.3. <A
+HREF="daemon.html#DAEMON-CONFIG"
+>Konfiguracja</A
+></DT
+><DT
+>6.1.4. <A
+HREF="daemon.html#DAEMON-RUN"
+>Uruchomienie</A
+></DT
+></DL
+></DD
+><DT
+>6.2. <A
+HREF="daemon-modules.html"
+>Moduły</A
+></DT
+><DD
+><DL
+><DT
+>6.2.1. <A
+HREF="daemon-modules.html#DAEMON-MODULESLIST"
+>Lista dostępnych modułów</A
+></DT
+><DT
+>6.2.2. <A
+HREF="daemon-modules.html#DAEMON-SYSTEM"
+>System</A
+></DT
+><DT
+>6.2.3. <A
+HREF="daemon-modules.html#DAEMON-PAYMENTS"
+>Payments</A
+></DT
+><DT
+>6.2.4. <A
+HREF="daemon-modules.html#DAEMON-NOTIFY"
+>Notify</A
+></DT
+><DT
+>6.2.5. <A
+HREF="daemon-modules.html#DAEMON-GGNOTIFY"
+>Ggnotify</A
+></DT
+><DT
+>6.2.6. <A
+HREF="daemon-modules.html#DAEMON-CUTOFF"
+>Cutoff</A
+></DT
+><DT
+>6.2.7. <A
+HREF="daemon-modules.html#DAEMON-DHCP"
+>Dhcp</A
+></DT
+><DT
+>6.2.8. <A
+HREF="daemon-modules.html#DAEMON-HOSTFILE"
+>Hostfile</A
+></DT
+><DT
+>6.2.9. <A
+HREF="daemon-modules.html#DAEMON-TRAFFIC"
+>Traffic</A
+></DT
+><DT
+>6.2.10. <A
+HREF="daemon-modules.html#DAEMON-TC"
+>Tc (HTB)</A
+></DT
+><DT
+>6.2.11. <A
+HREF="daemon-modules.html#DAEMON-TC-NEW"
+>Tc-new (HTB)</A
+></DT
+><DT
+>6.2.12. <A
+HREF="daemon-modules.html#DAEMON-DNS"
+>Dns</A
+></DT
+><DT
+>6.2.13. <A
+HREF="daemon-modules.html#DAEMON-ETHERS"
+>Ethers</A
+></DT
+><DT
+>6.2.14. <A
+HREF="daemon-modules.html#DAEMON-OIDENT"
+>Oident</A
+></DT
+><DT
+>6.2.15. <A
+HREF="daemon-modules.html#DAEMON-PINGER"
+>Pinger</A
+></DT
+><DT
+>6.2.16. <A
+HREF="daemon-modules.html#DAEMON-PARSER"
+>Parser</A
+></DT
+><DT
+>6.2.17. <A
+HREF="daemon-modules.html#DAEMON-EWX-PT"
+>Ewx-pt</A
+></DT
+><DT
+>6.2.18. <A
+HREF="daemon-modules.html#DAEMON-EWX-STM"
+>Ewx-stm</A
+></DT
+><DT
+>6.2.19. <A
+HREF="daemon-modules.html#DAEMON-EWX-STM-CHANNELS"
+>Ewx-stm-channels</A
+></DT
+></DL
+></DD
+><DT
+>6.3. <A
+HREF="tscript.html"
+>T-Script</A
+></DT
+><DD
+><DL
+><DT
+>6.3.1. <A
+HREF="tscript.html#TSCRIPT-INTRO"
+>Wstęp</A
+></DT
+><DT
+>6.3.2. <A
+HREF="tscript.html#TSCRIPT-SYNTAX"
+>Składnia</A
+></DT
+><DT
+>6.3.3. <A
+HREF="tscript.html#EXTENSIONS"
+>Rozszerzenia</A
+></DT
+><DT
+>6.3.4. <A
+HREF="tscript.html#EXAMPLES"
+>Przykładowe skrypty</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DAEMON-INTRO"
+>6.1. Informacje podstawowe</A
+></H1
+><P
+>Napisany w języku C program ma ułatwiać zarządzanie usługami. Sam demon odpowiada
+	za uruchamianie odpowiednich modułów na żądanie użytkownika. Moduły
+	natomiast, służą do tworzenia plików konfiguracyjnych na podstawie 
+	danych z bazy LMS'a oraz restartowania odpowiednich usług na serwerze.
+	Spełniają także inne funkcje np. zbieranie statystyk, badanie aktywności
+	hostów, naliczanie opłat, powiadamianie o zaległościach.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-REQUIREMENTS"
+>6.1.1. Wymagania</A
+></H2
+><P
+>Oto lista rzeczy, które <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>lmsd</I
+></SPAN
+> potrzebuje już na etapie kompilacji:
+			<UL
+><LI
+><P
+>interfejs użytkownika <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+></P
+></LI
+><LI
+><P
+><TT
+CLASS="FILENAME"
+>libmysqlclient</TT
+> (tj. pełnej instalacji MySQL'a lub odpowiedniego 
+				pakietu) lub <TT
+CLASS="FILENAME"
+>libpq</TT
+> w przypadku bazy PostgreSQL</P
+></LI
+><LI
+><P
+><TT
+CLASS="FILENAME"
+>libdl</TT
+> (to w każdej dzisiejszej dystrybucji jest)</P
+></LI
+><LI
+><P
+>kompilator języka C (testowany na gcc-2.95.x i nowszych)</P
+></LI
+><LI
+><P
+>moduł <TT
+CLASS="FILENAME"
+>ggnotify</TT
+> wymaga biblioteki <TT
+CLASS="FILENAME"
+>libgadu</TT
+>
+				i jej plików nagłówkowych</P
+></LI
+><LI
+><P
+>moduł <TT
+CLASS="FILENAME"
+>parser</TT
+> wymaga pakietu bison w wersji 1.875 lub nowszej 
+				oraz pakietu flex</P
+></LI
+><LI
+><P
+>moduły <TT
+CLASS="FILENAME"
+>ewx-*</TT
+> wymagają biblioteki net-snmp i jej plików nagłówkowych.</P
+></LI
+></UL
+>
+      			</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-INSTALL"
+>6.1.2. Instalacja</A
+></H2
+><P
+>Przed kompilacją należy przy pomocy skryptu <TT
+CLASS="FILENAME"
+>./configure</TT
+>
+			ustalić opcje przedstawione na poniższym listingu (w nawiasach podano
+			wartości domyślne opcji):
+<PRE
+CLASS="SCREEN"
+>  --help                pomoc
+  --enable-debug0       logowanie zapytań SQL (wyłączone)
+  --enable-debug1       logowanie zdarzeń (wyłączone)
+  --with-pgsql          gdy korzystasz z bazy PostgreSQL (wyłączone)
+  --with-mysql          gdy korzystasz z bazy MySQL (włączone)
+  --prefix=PREFIX       docelowy katalog instalacyjny demona i modułów (/usr/local)
+  --lmsbindir=DIR       docelowa lokalizacja binarki lmsd (PREFIX/lms/bin)
+  --lmslibdir=DIR       docelowa lokalizacja modułów lmsd (PREFIX/lms/lib)
+  --libdir=DIR          lokalizacja bibliotek bazy danych (/usr/lib)
+  --incdir=DIR          lokalizacja plików nagłówkowych bazy danych (/usr/include)
+  --inifile=FILE        plik konfiguracyjny - wyłącza konfigurację przez UI</PRE
+>
+			Zatem wymagane jest określenie bazy z jakiej będziemy korzystać (-with-mysql 
+			lub -with-pgsql) oraz położenia bibliotek dostarczanych wraz z bazą (--incdir, 
+			--libdir). Możliwe jest zmuszenie demona do korzystania
+			z plików konfiguracyjnych zamiast bazy danych. Nie jest
+			możliwe używanie obu sposobów przechowywania konfiguracji,
+			dlatego należy o tym zdecydować przed kompilacją.
+<PRE
+CLASS="SCREEN"
+># ./configure --with-pgsql --libdir=/usr/local/pgsql/lib --incdir=/usr/local/pgsql/include</PRE
+>
+    			Następnie kompilacja i instalacja (umieszczenie demona w katalogu
+			określonym zmienną --prefix):
+<PRE
+CLASS="SCREEN"
+># make &#38;&#38; make install</PRE
+>
+			Skompilowane moduły (pliki z rozszerzeniem <TT
+CLASS="FILENAME"
+>.so</TT
+>),
+			znajdujące się w katalogu <TT
+CLASS="FILENAME"
+>modules/nazwa_modułu</TT
+> zostają 
+			umieszczone w katalogu PREFIX/lms/lib, a główny program (lmsd) w katalogu
+			PREFIX/lms/bin.
+			</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-CONFIG"
+>6.1.3. Konfiguracja</A
+></H2
+><P
+>Całą konfigurację demona i modułów przeprowadza się przy pomocy
+			<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+> w menu Konfiguracja -&#62; Demon.
+			Konfigurację modułów omówiono w osobnych rozdziałach ich dotyczących.
+			Podstawowe parametry pracy demona i dane do połączenia z bazą danych
+			podaje się jako opcje linii komend, zgodnie z poniższym listingiem:
+<PRE
+CLASS="SCREEN"
+>--dbhost -h host[:port]    host na którym zainstalowana jest baza danych (domyślnie: 'localhost')
+--dbname -d nazwa_bazy     nazwa bazy danych (domyślnie: 'lms')
+--dbuser -u użytkownik     nazwa użytkownika bazy danych (domyślnie: 'lms')
+--dbpass -p hasło          hasło do bazy danych (domyślnie: puste)
+--hostname -H nazwa_hosta  host, na którym działa demon. Domyślnie przyjmowana jest nazwa
+                           zwracana przez komendę hostname, ale można ją nadpisać. Nazwa
+                           ta musi zgadzać się z nazwą hosta podaną w konfiguracji hostów
+--pidfile -P pid_file      pidfile where daemon write pid (default: none)
+--ssl -s                   wymusza bezpieczne połączenie z bazą danych (domyślnie: wyłączone)
+--command -c polecenie     polecenie powłoki do wykonania przed każdym połączeniem z bazą 
+                           tzn. co minutę (domyślnie: puste)
+--instance -i "instancja[ ...]" lista instancji (modułów) do przeładowania. Wszystkie pozostałe 
+                           zostaną pominięte
+--reload -q                wykonuje przeładowanie i kończy pracę
+--reload-all -r            wykonuje przeładowanie wszystkich instancji (także tych, które mają
+                           zdefiniowany crontab) i kończy pracę
+--foreground -f            działa na pierwszym planie (nie forkuje się) 
+--version -v               wyświetla wersję i prawa licencyjne</PRE
+>
+			Opcje dostępu do bazy są także odczytywane ze zmiennych powłoki:
+			LMSDBPASS, LMSDBNAME, LMSDBUSER, LMSDBHOST, LMSDBPORT.
+			<DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Lista instancji składa się z nazw instancji oddzielonych 
+			spacją. W nazwach instancji zawierających spacje należy zamienić je
+			na znaki '\s', np. <SAMP
+CLASS="PROMPT"
+>lmsd -i "moja\sinstancja"</SAMP
+>.
+			</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+			</P
+><P
+>Konfiguracja demona jest podzielona na hosty (umożliwiając
+			osobne konfigurowanie i przeładowywanie demonów zainstalowanych
+			na różnych komputerach/routerach) oraz sekcje konfiguracyjne 
+			nazwane instancjami.</P
+><P
+>Instancja oprócz parametrów konfiguracyjnych wybranego modułu
+			zawiera opcje podstawowe, takie jak:
+			<UL
+><LI
+><P
+>Nazwa</P
+><P
+>Nazwa instancji unikalna w obrębie jednego hosta.</P
+><P
+>Przykład: system</P
+></LI
+><LI
+><P
+>Priorytet</P
+><P
+>Liczba określająca priorytet, czyli kolejność wykonania instancji. Instancja o najniższym numerze zostanie wykonana jako pierwsza.</P
+><P
+>Przykład: 10</P
+></LI
+><LI
+><P
+>Moduł</P
+><P
+>Nazwa pliku modułu (z rozszerzeniem lub bez). Jeśli nie podano
+				ścieżki demon będzie szukał modułu w katalogu PREFIX/lms/lib, do
+				którego trafiają moduły podczas "make install".</P
+><P
+>Przykład: /usr/lib/system.so</P
+></LI
+><LI
+><P
+>Crontab</P
+><P
+>Czas wykonania modułu określany w sposób podobny do używanego w programie crontab. Wszystkie dane muszą być numeryczne.
+				Podany przykład spowoduje wykonywanie wybranej instancji co 5 minut, w godzinach od 8 do 18. Gdy opcja ta jest pusta instancja 
+				zostanie wykonana wyłącznie podczas przeładowania. Domyślnie: pusta.</P
+><P
+>Przykład: */5 8-18 * * *</P
+></LI
+></UL
+>
+			</P
+><P
+>Jakakolwiek zmiana w konfiguracji nie wymaga restartu demona.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-RUN"
+>6.1.4. Uruchomienie</A
+></H2
+><P
+>Program domyślnie działa w trybie demona. Wtedy 
+			przeładowanie konfiguracji i usług jest dokonywane na żądanie, przy użyciu menu 
+			'Przeładowanie' w <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>. Sprawdzenie żądania przeładowania
+			oraz odczyt konfiguracji (w szczególności listy instancji i ich konfiguracji)
+			następuje co minutę. Gdy demon wykryje żądanie wykonania reloadu, wywoła 
+			wszystkie włączone instancje. Instancje z podaną opcją 'crontab' zostaną
+			wykonane o określonym tą opcją czasie.</P
+><P
+>Innym sposobem uruchomienia jest jednorazowy reload z wykorzystaniem
+			opcji -q. Ten sposób najczęściej używany jest w celach testowych, a w połączeniu
+			z opcją -i pozwala na wykonanie dowolnych instancji z pominięciem pozostałych
+			zapisanych w bazie oraz bez względu na wartość opcji 'crontab' tych 
+			instancji.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mgc-example.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="daemon-modules.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Przykład zastosowania lms-mgc</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Moduły</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

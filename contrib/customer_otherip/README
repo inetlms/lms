@@ -1,0 +1,92 @@
+$Id$
+
+Spis rzeczy:
+
+1) co to
+2) lms-notify
+3) ikonki
+4) posłowie
+5) różne autoryzacje
+6) dane firmy na formularzu przelewu
+
+1) co to
+
+Jest to mini panel dla klientów którzy:
+
+a) nie chcą aby dzieci/małżonkowie/pracownicy mieli wgląd w dane fiansowe 
+dotyczące ich dostępu do sieci/innych usług sprzedawanych przez LMS. W końcu 
+to mogą być dane np cafejki internetowej, czemu klienci mieliby mieć do tego
+wgląd?  
+
+b) nie korzystają z sieci tylko w domu
+
+c) korzystają z proxy
+	
+2) lms-notify
+	
+Dobrze jest też powiadomić klientów w co rocznym/miesięcznym/tygodniowym 
+mailu rozrachunkowo-newsletterowym:
+
+"
+Jednocześnie informujemy o wprowadzeniu możliwości sprawdzenia stanu
+swojego konta w każdej chwili:
+
+http://www.TwójUrl.pl/lms/contrib/customers/
+
+Państwa PIN to: %pin
+"
+
+3) ikonki,template
+
+Ikonki aby działały dobrze jest dać np:
+
+$ ln -s ../../img img
+
+Warto też jest zrobić tak aby katalog templates ze wzorkiem F/V był we 
+właściwym miejscu: 
+
+$ ln -s ../../templates templates
+
+w katalogu contrib/customer_otherip, oraz "Options +followlinks w apachu".
+
+4) posłowie
+
+panel wymaga ustawienia opcji sys_dir w lms.ini (sekcja [directories]).
+Można też zmienić [templates]...
+
+SOA#1
+
+DOBRZE jest być świadomym że nie wymagane jest konto z pełnym dostępem 
+do bazy danych, ja w tym celu stworzyłem konto "lmsro" w postgresie i 
+zezwoliłem mu tylko na odczyt danych (a i to tylko niektórych...).
+
+5) W pliku balanceview.php można się doszukać czegoś takiego:
+
+#v+
+customer authorization ways
+//$id = GetCustomerIDByPhoneAndPIN($login, $pin);
+//$id = GetCustomerIDByContractAndPIN($login, $pin);
+$id = GetCustomerIDByIDAndPIN($login, $pin);
+#v-
+
+Oznacza to ni mniej ni więcej ale że można klienta identyfikować po:
+Telefonie albo ID albo Nr umowy. Wybór należy do Was.
+
+Uwaga: 'numer umowy' nie jest standardowym kawałkiem LMSa i należy tej 
+łatki po prostu sobie poszukać.
+
+6) Aby na formularzu wpłaty mieć własne dane (nazwę firmy, tytuł) należy
+w lms.ini dopisać w sekcji 'finances':
+
+account		-	nr konta (iban, 26 cyfr)
+line_1
+line_2		- 2 linnie z nazwą firmy
+						(po cichu przycięte pod limit na formularzu!) 
+pay_title	- płatność tytułem, mozna tutaj zaszaleć:
+	np 
+	'Abonament - ID:%CID%: :%LongCID%:' 
+	zostanie zmienione na np 
+	'Abonament - ID:1: :0001:'
+
+	Takie coś ma na celu ułatwienie automatyzacji "płatności".
+

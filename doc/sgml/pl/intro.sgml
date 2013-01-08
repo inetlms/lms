@@ -1,0 +1,242 @@
+<!-- $Id$ -->
+<chapter id="intro">
+    <title>Wstêp</title>
+	<sect1 id="about-lms">
+		<title>Czym jest LMS</title>
+		<para>
+		"LMS" jest zintegrowanym systemem zarz±dzania sieciami przeznaczonym dla
+		ró¿nej wielko¶ci dostawców internetu (ISP).</para>
+		<para>Oprogramowanie to stworzone w PHP, C i Perlu, wspó³pracuj±ce z ró¿nymi bazami
+		danych, sk³ada siê z przyjaznego interfejsu u¿ytkownika (frontend) oraz
+		programów instalowanych na serwerze dostêpowym (backend) udostêpniaj±c
+		nastêpuj±ce funkcjonalno¶ci:</para>
+		<itemizedlist>
+  	 	<listitem>
+	 	    	<para>zarz±dzanie dostêpem do internetu (w tym kontrola przep³ywno¶ci i statystyki),</para>
+	  	</listitem>
+  	 	<listitem>
+	 	    	<para>modu³y finansowo-ksiêgowe z fakturowaniem,</para>
+	  	</listitem>
+  	 	<listitem>
+	 	    	<para>korespondencja seryjna i wiadomo¶ci administracyjne do klientów,</para>
+	  	</listitem>
+  	 	<listitem>
+	 	    	<para>zarz±dzanie kontami i hostingiem,</para>
+	  	</listitem>
+  	 	<listitem>
+	 	    	<para>ewidencja klientów i sprzêtu (mapa sieci),</para>
+	  	</listitem>
+  	 	<listitem>
+	 	    	<para>system obs³ugi zg³oszeñ (helpdesk),</para>
+	  	</listitem>
+  	 	<listitem>
+	 	    	<para>zarz±dzanie dowolnymi us³ugami,</para>
+	  	</listitem>
+  	 	<listitem>
+	 	    	<para>zarz±dzanie czasem (terminarz),</para>
+	  	</listitem>
+  	 	<listitem>
+	 	    	<para>panel administracyjny dla abonenta.</para>
+	  	</listitem>
+		</itemizedlist>
+		<para>Ca³o¶æ zosta³a wymy¶lona w ramach administracji <ulink url="http://www.netx.waw.pl/">ASK NetX</ulink> 
+		i tam jest nieustannie rozwijana i poddawana testom.</para>
+		<para>LMS nie zast±pi Ci umiejêtno¶ci jakie powinien mieæ administrator. 
+		Je¶li nie potrafisz wykonaæ tak prostych czynno¶ci jak instalacja czy konfiguracja, 
+		prawdopodobnie nie bêdziesz umia³ dostroiæ LMS do swojego systemu. Tak wiêc bez 
+		znajomo¶ci systemów U*IX siê nie obejdzie.</para>
+   	</sect1>
+	<sect1 id="authors">
+	    <title>Autorzy</title>
+	    <sect2 id="lms">
+	    	<title>LMS Developers</title>	
+		<itemizedlist>
+		<listitem>
+			<para>Kod PHP:
+			<simplelist>
+			<member><ulink url="http://www.baseciq.org">£ukasz 'Baseciq' Mozer</ulink></member>
+			<member>Micha³ 'DziQs' Zapalski</member>
+			<member><ulink url="http://debian.black.pl">Rados³aw 'Warden' Antoniuk</ulink></member>
+			<member>Krzysztof 'hunter' Drewicz</member>
+			<member><ulink url="http://lexx.polarnet.pl">Marcin 'Lexx' Król</ulink></member>
+			<member><ulink url="http://www.alec.pl">Aleksander A.L.E.C Machniak</ulink></member>
+			<member><ulink url="http://www.chilan.com">Tomasz 'Chilek' Chiliñski</ulink></member>
+			<member><ulink url="http://kondi.net">Konrad 'kondi' Rzentarzewski</ulink></member>
+			<member><ulink url="http://www.chilan.com">Grzegorz 'Ceho' Chwesewicz</ulink></member>
+			</simplelist>
+			</para>
+		</listitem>
+		<listitem>
+			<para>Kod C:
+			<simplelist>
+			<member><ulink url="http://www.alec.pl">Aleksander 'A.L.E.C' Machniak</ulink></member>
+			<member><ulink url="http://lexx.polarnet.pl">Marcin 'Lexx' Król</ulink></member>
+			<member><ulink url="http://www.chilan.com">Tomasz 'Chilek' Chiliñski</ulink></member>
+			</simplelist>
+			</para>
+		</listitem>
+		<listitem>
+			<para>Kod Perl:
+			<simplelist>
+			<member><ulink url="http://wwww.baseciq.org">£ukasz 'Baseciq' Mozer</ulink></member>
+			<member>Micha³ 'DziQs' Zapalski</member>
+			<member>Maciej 'agaran' Pijanka</member>
+			<member>Krzysztof 'hunter' Drewicz</member>
+			<member><ulink url="http://www.chilan.com">Tomasz 'Chilek' Chiliñski</ulink></member>
+			<member><ulink url="http://www.chilan.com">Grzegorz 'Ceho' Chwesewicz</ulink></member>
+			</simplelist>
+			</para>
+		</listitem>
+		<listitem>
+		    <para>Design:
+		    <simplelist>	
+		    <member><ulink url="http://wwww.baseciq.org">£ukasz 'Baseciq' Mozer</ulink></member>
+		    </simplelist>
+		    </para>
+		</listitem>
+		<listitem>
+			<para>HTML, JavaScript, CSS:
+			<simplelist>
+			<member><ulink url="http://wwww.baseciq.org">£ukasz 'Baseciq' Mozer</ulink></member>
+			<member><ulink url="http://plug.atn.pl/~bober/">Pawe³ 'Bob_R' Czerski</ulink></member>
+			<member><ulink url="http://gamechannel.int.pl">Pawe³ 'sickone' Kisiela</ulink></member>
+			<member><ulink url="http://www.chilan.com">Tomasz 'Chilek' Chiliñski</ulink></member>
+			<member><ulink url="http://kondi.net">Konrad 'kondi' Rzentarzewski</ulink></member>
+			<member><ulink url="http://www.chilan.com">Grzegorz 'Ceho' Chwesewicz</ulink></member>
+			</simplelist>
+			</para>
+		</listitem>
+		<listitem>
+			<para>Grafika:
+			<simplelist>
+			<member><ulink url="http://www.mierzenski.com/">Piotr 'Pierzak' Mierzeñski</ulink></member>
+			<member><ulink url="http://byko.pawlacz.net">Grzegorz 'byko' Cichowski</ulink></member>
+			<member><ulink url="http://www.kflis.net">Kuba 'kflis' Flis</ulink></member>
+			<member><ulink url="http://wwww.baseciq.org">£ukasz 'Baseciq' Mozer</ulink></member>
+			<member><ulink url="http://jimmac.musichall.cz">Jakub 'Jimmac' Steiner</ulink></member>
+			</simplelist>
+			</para>
+		</listitem>
+		<listitem>
+			<para>Dokumentacja i strona WWW:
+			<simplelist>
+			<member><ulink url="http://www.alec.pl">Aleksander 'A.L.E.C' Machniak</ulink></member>
+			<member><ulink url="http://s.atn.pl">Kuba 'shasta' Jankowski</ulink></member>
+			<member><ulink url="http://www.rednet.krakow.pl/~jabbas/">Grzegorz 'JaBBaS' Dziêgielewski</ulink></member>
+			<member><ulink url="http://wwww.baseciq.org">£ukasz 'Baseciq' Mozer</ulink></member>
+			<member><ulink url="http://lexx.polarnet.pl">Marcin 'Lexx' Król</ulink></member>
+			<member><ulink url="http://kondi.net">Konrad 'kondi' Rzentarzewski</ulink></member>
+			</simplelist>
+			</para>
+		</listitem>
+		<listitem>
+			<para>Betatesterzy:
+			<simplelist>
+			<member><ulink url="http://byko.pawlacz.net">Grzegorz 'byko' Cichowski</ulink></member>
+			<member><ulink url="http://debian.black.pl">Rados³aw 'Warden' Antoniuk</ulink></member>
+			<member>Tomasz 'dzwonek' Dzwonkowski</member>
+			<member>Sebastian 'Victus' Frasunkiewicz</member>
+			<member><ulink url="http://www.kflis.net">Kuba 'kflis' Flis</ulink></member>
+			<member>Krystian 'UFOczek' Kochanowski</member>
+			<member><ulink url="http://www.rednet.krakow.pl/~jabbas/">Grzegorz 'JaBBaS' Dziêgielewski</ulink></member>
+			<member>Andrzej 'chsh' Gr±dziel</member>
+			</simplelist>
+			</para>
+		</listitem>
+	    </itemizedlist>
+	    </sect2>
+	    <sect2 id="others">
+		<title>Inni</title>
+		<para>LMS zawiera fragmenty nastêpuj±cego oprogramowania: 
+		<ulink url="http://www.phpmyadmin.net/">phpMyAdmin</ulink>,
+		<ulink url="http://phpsysinfo.sourceforge.net">phpsysinfo</ulink>, 
+		<ulink url="http://florian-amrhein.de/newsportal/index-anglish.php3">NewsPortal</ulink>, 
+		<ulink url="http://www.bosrup.com/web/overlib/">overLIB</ulink>, 
+		<ulink url="http://www.ros.co.nz/pdf/">ezpdf</ulink>, 
+		<ulink url="http://www.xajaxproject.org/">xajax</ulink>, 
+		<ulink url="http://www.softcomplex.com/products/tigra_calendar/">Tigra Calendar</ulink>, 
+		procedury konwersji liczb na postaæ s³own± autorstwa Piotra Klebana oraz
+		przyk³ady kodu zawarte w <ulink url="http://www.php.net/manual/pl/">
+		Podrêczniku PHP</ulink>.</para>
+	    </sect2>
+	</sect1>
+	<sect1 id="legalnotice">
+		<title>Licencja</title>
+	   <para>Niniejszy  program  jest  oprogramowaniem  wolnodostêpnym;  
+		mo¿esz  go rozprowadzaæ dalej i/lub modyfikowaæ na warunkach Powszechnej 
+		Licencji Publicznej  GNU, wydanej przez Fundacjê Wolnodostêpnego Oprogramowania 
+		- wed³ug wersji drugiej tej Licencji lub której¶ z pó¼niejszych wersji.</para>
+    	   <para>Niniejszy program rozpowszechniany jest z nadziej±, i¿ bêdzie on u¿yteczny 
+		- jednak  BEZ JAKIEJKOLWIEK GWARANCJI, nawet domy¶lnej gwarancji  
+		PRZYDATNO¦CI HANDLOWEJ albo PRZYDATNO¦CI DO OKRE¦LONYCH ZASTOSOWAÑ.   
+		W celu uzyskania bli¿szych informacji - Powszechna Licencja Publiczna GNU.</para>
+    	   <para>Z  pewno¶ci±  wraz  z  niniejszym  programem otrzyma³e¶ te¿ egzemplarz 
+		Powszechnej Licencji Publicznej GNU; je¶li nie - napisz do Free Software 
+		Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. </para>
+	   <para>Angielski tekst tej licencji znajduje siê <ulink url="../COPYING">
+		tutaj</ulink>.</para>
+	</sect1>
+	<sect1 id="moreinfo">
+		<title>Informacje dodatkowe</title>
+		<sect2 id="contact">
+			<title>Kontakt z autorami</title>
+			<para>Najlepiej poprzez listê mailingow±, na któr± mo¿na siê zapisaæ wysy³aj±c
+			pustego maila o temacie "subscribe lms" na adres <ulink url="mailto: ecartis@lists.lms.org.pl">ecartis@lists.lms.org.pl</ulink>,
+			a maile wysy³a siê na adres lms@lists.lms.org.pl.
+			</para>
+		</sect2>
+		<sect2 id="bugs">
+			<title>Zg³aszanie b³êdów i pomys³ów</title>
+			<para>Aby efektywnie zg³osiæ b³±d lub nowy pomys³, najlepiej jest zapisaæ siê na listê mailingow±
+			gdzie kto¶ z autorów b±d¼ u¿ytkowników bêdzie mia³ szansê odpowiedzieæ
+			na pytania Ciê nurtuj±ce. Dostêpny jest tak¿e dla testów BTS, gdzie mo¿na
+			zg³aszaæ b³êdy po uprzedniej rejestracji. Raporty z BTS id± tak¿e na listê
+			mailingow±, wiêc najlepiej siê zapisaæ, zg³osiæ b³±d poprzez BTS, wys³aæ
+			linka na listê i czekaæ na rozwój wydarzeñ. Adres BTS to <ulink url="http://bts.lms.org.pl">
+			http://bts.lms.org.pl</ulink>.
+			</para>
+		</sect2>
+		<sect2 id="latest">
+			<title>Najnowsza wersja</title>
+			<para>Zawsze aktualn± wersjê LMS mo¿na pobraæ z repozytorium CVS za pomoc±
+			interfejsu www <ULINK URL="http://cvs.lms.org.pl/viewvc/Development/lms/?view=tar">tutaj</ulink>,
+			lub klasycznie (dostêp anonimowy, puste has³o):</para>
+			<screen>
+cvs -d :pserver:cvs@cvs.lms.org.pl:/cvsroot login
+cvs -d :pserver:cvs@cvs.lms.org.pl:/cvsroot co lms
+cvs -d :pserver:cvs@cvs.lms.org.pl:/cvsroot logout</screen>
+			<para>Repozytorium CVS mo¿na tak¿e przegl±daæ przy pomocy interfejsu WWW pod
+			adresem <ulink url="http://cvs.lms.org.pl">http://cvs.lms.org.pl</ulink>.
+			</para>
+		</sect2>
+		<sect2 id="history">
+			<title>Historia zmian</title>
+			<para>Informacje o zmianach jakie zasz³y w kolejnych 
+			wersjach LMS zawarte s± w pliku <ulink url="../ChangeLog">
+			ChangeLog</ulink>.</para>
+		</sect2>
+		<sect2 id="comercial-support">
+			<title>Wsparcie komercyjne</title>
+			<para>Wielokrotnie na li¶cie dyskusyjnej pojawiaj± siê pytania typu "kiedy dana 
+			funkcjonalno¶æ zostanie dodana, czy te¿ jaka kwota przyspieszy³aby wykonanie 
+			pewnych konkretnych prac."
+			Aby nie za¶miecaæ g³ównej listy mailingowej powsta³a lista lms-support. 
+			Aby siê na ni± zapisaæ nale¿y wysy³aæ email o tre¶ci: "subscribe lms-support" 
+			na adres ecartis (at) lists.lms.org.pl, a konkretne maile wysy³a siê na adres 
+			lms-support (at) lists.lms.org.pl.</para>
+			<para>Osoby poszukuj±ce p³atnego wsparcia w instalacji/konfiguracji lub 
+			potrzebuj±ce nowych funkcjonalno¶ci powinny w³a¶nie skorzystaæ z listy 
+			lms-support. Tam rozmawiamy o pieni±dzach. Zlecaj±c prace czy te¿ pytaj±c 
+			siê o cenê nale¿y pamiêtaæ ¿e LMS jest projektem Open Source. Nie jest on 
+			produktem jakiej¶ firmy, a wiêc ka¿d± poprawkê nale¿y uzgadniaæ bezpo¶rednio 
+			z developerem który ma j± wykonaæ. Osoby potrzebuj±ce dokumentu potwierdzaj±cego 
+			wykonanie us³ugi (faktury VAT, rachunku uproszczonego, umowy zlecenia b±d¼ 
+			o dzie³o) powinny to od razu zaznaczyæ - najprawdopodobniej uzyskanie takiego 
+			dokumentu podniesie koszty ca³ej us³ugi.</para>
+			<para>Najbardziej do¶wiadczonym w za³atwianiu tego typu spraw jest Alec. 
+			Prowadzi on stronê www gdzie mo¿na dokonywaæ wp³at maj±cych na celu 
+			rozwój projektu. Szczegó³y znajduj± siê na stronie:  <ulink url="http://lms.alec.pl/">http://lms.alec.pl</ulink>.
+			</para>   
+	</sect2>
+	</sect1>
+</chapter>

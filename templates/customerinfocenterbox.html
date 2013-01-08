@@ -1,0 +1,102 @@
+<!--// $Id$ //-->
+
+<table width="100%" cellpadding="3">
+    <tr class="dark" >
+	<td width="99%" class="fleftu" align="left" onclick="showOrHide('customercallcenter');" style="cursor:pointer;">
+	    <img src="img/info2.gif" alt="">&nbsp;<b>{trans('Call Center')} ( {$openedcallcenter} ): </b>
+	</td>
+	<td width="1%" class="frightu" align="right" nowrap>
+	    <a href="?m=infocenter&backto=customerinfo&cid={$customerinfo.id}&action=newtopic">Nowe zdarzenie &raquo;</a>&nbsp;&nbsp;
+	    <a href="?m=infocenterlist&backto={$layout.module}&cid={$customerinfo.id}&s=&st=&datefrom=&dateto=">Wszystkie zdarzenia &raquo;</a>
+	</td>
+    </tr>
+    <tr class="light" id="customercallcenter" style="display:none;">
+	<td width="100%" class="fall" colspan="4">
+	    <table width="100%" cellpadding="0">
+		<tr class="LIGHT">
+		    <td width="50%" style="vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			<tr class="dark">
+			    <td width="1%" class="fleftu" align="center" nowrap style="padding-right:10px;"><b>Nr. zgłoszenia</td>
+			    <td width="1%" class="fbt pad" align="left" nowrap><b>Data utworzenia tematu<br>Data ostatniego wpisu</b></td>
+			    <td width="20%%" class="fbt" align="left"><b>Temat (postów)<br>{trans('Description')}</b></td>
+			    <td width="77%" class="fbt" align="left"><b>Ostatni wpis</b></td>
+			    <td width="1%" class="frightu" nowrap style="padding-left:10px;">&nbsp;</td>
+			</tr>
+			
+			{cycle values="light,lucid" print=false}
+			{section name='calllist' loop=$customercallcenter}
+			
+			<tr class="{cycle} {if $customercallcenter[calllist].closed}blend{/if}"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+
+			    <td width="1%" align="center" nowrap style="padding-right:10px;">
+				{$customercallcenter[calllist].id}/{$customercallcenter[calllist].cid|string_format:"%04d"}/{$customercallcenter[calllist].cdate|date_format:"Y"}
+			    </td>
+
+			    <td width="1%" class="pad" align="left" style="vertical-align:top;" nowrap>
+				{$customercallcenter[calllist].cdate|date_format:"Y/m/d H:i"} {$customercallcenter[calllist].topicusername}<br>
+				{if !$customercallcenter[calllist].closed}<font class="darkblend">{/if}{$customercallcenter[calllist].lastpost_cdate|date_format:"Y/m/d H:i"} {$customercallcenter[calllist].postusername}{if !$customercallcenter[calllist].closed}</font>{/if}
+			    </td>
+
+			    <td width="20%" align="left" style="vertical-align:top;">
+				
+				<a href="?m=infocenter&tid={$customercallcenter[calllist].id}&backto=customerinfo&cid={$customerinfo.id}" {tip a={$customercallcenter[calllist].id} dynpopup='?m=infocenterpostshort&id=$a' sticky=0}>{$customercallcenter[calllist].topic} ( {$customercallcenter[calllist].countpost} )&raquo;&raquo;&raquo;</a><br>
+				{if $customercallcenter[calllist].description}{$customercallcenter[calllist].description}{/if}
+				
+			    </td>
+
+			    <td width="77%" align="left" style="vertical-align:top;">
+				
+				{$customercallcenter[calllist].lastpost}
+				
+			    </td> 
+
+			    <td width="1%" align="right" nowrap>
+				{if !$customercallcenter[calllist].closed}
+				    <a href="?m=infocenter&tid={$customercallcenter[calllist].id}&backto=customerinfo&cid={$customerinfo.id}&action=addpost&callback" {tip text="Dodaj notatkę"}><img src="img/add.gif"></a>
+				    {if !get_conf('privileges.hide_callcenteredit')}
+					<a href="?m=infocenter&tid={$customercallcenter[calllist].id}&backto=customerinfo&cid={$customerinfo.id}&action=edittopic&callback" {tip text="Edytuj temat"}><img src="img/edit.gif"></a>
+				    {/if}
+				{/if}
+				{if !get_conf('privileges.hide_callcenterdel')}
+				    <a href="?m=infocenter&tid={$customercallcenter[calllist].id}&backto=customerinfo&cid={$customerinfo.id}&action=deltopic" onclick="return confirmLink(this,'Czy napewno skasować cały temat ?');" {tip text="usuń temat"}><img src="img/delete.gif"></a>
+				{/if}
+				<img src="img/info.gif" style="cursor:pointer;" {tip text="Kliknij aby zobaczyć wszystkie wpisy"} onclick="infocenter_popup('{$customercallcenter[calllist].id}');">
+				<a href="?m=infocenterprint&cid={$customerinfo.id}&tid={$customercallcenter[calllist].id}&print=topic&asc" target="_blank"><img src="img/print.gif"></a>
+				{if !$customercallcenter[calllist].closed}
+				    <img src="img/circle_{if $customercallcenter[calllist].prio=='1'}green{else}red{/if}.png" {if $customercallcenter[calllist].prio=='1'}title="[ normalny ]"{else}title="[ ważny ]"{/if}>
+				{else}
+				    <img src="img/circle_grey.png" title="[ temat zamknięty ]">
+				{/if}
+			    </td>
+
+			</tr>
+			{sectionelse}
+			<tr>
+			    <td colspan="4" width="100%">
+				<center><h3>Brak wpisów</h3></center>
+			    </td>
+			</tr>
+			{/section}
+			
+			
+			</table>
+		    </td>
+		</tr>
+	    </table>
+	</td>
+    </tr>
+</table>
+			
+			
+
+
+
+<script type="text/javascript">
+<!--
+	if (getCookie('customercallcenter') == '1')
+	{
+		document.getElementById('customercallcenter').style.display = '';
+	}
+//-->
+</script>

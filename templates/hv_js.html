@@ -1,0 +1,33 @@
+{literal}
+<script type="text/javascript" language="JavaScript">
+<!--
+
+    function wyswietlbiling(id,rok,msc,terminal) { 
+	var vWidth = 0; 
+	var vHeight = 0; 
+	var szerokosc = 1150; 
+	var wysokosc = 550;  
+	vWidth = ((screen.width-szerokosc)/2);
+	vHeight = ((screen.height-wysokosc)/2);
+	window.open('?m=hv_billinginfoext&rok='+rok+'&msc='+msc+'&cusid='+id+'&terminal='+terminal+'','biling'+id,'location=0,directories=0,scrollbars=yes,toolbar=0,menubar=0,resizable=0,status=0,width='+szerokosc+',height='+wysokosc+',left='+vWidth+',top='+vHeight);return false;
+    }
+    
+    function searchemptypstn(oldpstn) {
+	var vWidth = 0;
+	var vHeight = 0;
+	var szerokosc = 1150;
+	var wysokosc = 550;
+	vWidth=((screen.width-szerokosc)/2);vHeight=((screen.height-wysokosc)/2);window.open('?m=hv_searchemptypstn&oldpstn='+oldpstn+'','searchemptypstn','location=0,directories=0,scrollbars=yes,toolbar=0,menubar=0,resizable=0,status=0,width='+szerokosc+',height='+wysokosc+',left='+vWidth+',top='+vHeight).focus();
+    }
+    
+    function searchterminallocation() {
+	var vWidth=0;
+	var vHeight=0;
+	var szerokosc=400;
+	var wysokosc=200;
+	vWidth=((screen.width-szerokosc)/2);vHeight=((screen.height-wysokosc)/2);window.open('?m=hv_searchterminallocation','searchterminalloaction','location=0,directories=0,scrollbars=yes,toolbar=0,menubar=0,resizable=0,status=0,width='+szerokosc+',height='+wysokosc+',left='+vWidth+',top='+vHeight).focus();
+    }
+    
+//-->
+</script>
+{/literal}

@@ -1,0 +1,42 @@
+
+<form name="infocenteraddpost" method="POST" action="?{str_replace('&action=addpost','',$smarty.server.QUERY_STRING)}{$callback}" id="infocenteraddpost">
+    <input type="hidden" name="infocenteraddpost[empty]" value="1">
+    <table width="100%" cellpadding="3">
+
+    <tr class="dark">
+	<td class="fall"><b>Nowa notatka</b></td>
+    </tr>
+    
+    <tr class="light">
+	<td width="100%" class="flr" style="vertical-align:top;">
+	    <b>Informacja:</b><br>
+	    <textarea style="width:100%" rows="12" name="post" required="required"></textarea>
+	</td>
+    </tr>
+
+    <tr class="dark">
+	<td width="100%" class="fall" align="right">
+	    <input type="submit" value="Zapisz">
+	    
+	    {if !$callback}
+		<a href="?{str_replace('&action=addpost','',$smarty.server.QUERY_STRING)}">
+	    {else}
+		<a href="?m={$backto}{if $cid}&id={$cid}{/if}">
+	    {/if}
+	    Anuluj <img src="img/cancel.gif"></a>
+	</td>
+    </tr>
+    </table>
+</form>
+<br><Br>
+{literal}
+<script type="text/javascript">
+<!--
+    $(document).ready(function(input,value){$("#infocenteraddpost").validate({
+	    rules: {post:"required"}
+	});
+    });
+    document.infocenteraddpost.post.focus();
+//-->
+</script>
+{/literal}

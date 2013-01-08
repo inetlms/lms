@@ -1,0 +1,25 @@
+$Id$
+
+0. Co to?
+
+LMS potrafi dużo, a wraz z tym modułem będzie potrafił zaparzyć kawę.
+
+1. Instalacja.
+
+Plik coffee.php kopiujemy do katalogu modules lmsa. Po tym zabiegu możemy
+z LMS-UI wywołać go przy pomocy http://adres/?m=coffee.
+
+Domyślnie coffee.php próboje wykonać plik /sbin/coffee który powinien 
+uruchomić ekspres do kawy. Jeśli nie posiadasz w/w pliku, możesz się
+posłużyć przykładowym coffee.c, opartym na Coffee HOWTO. Coffee.c uruchamia
+ekspres do kawy przyłączony do pierwszego portu równoległego (/dev/lp0) za 
+pomocą jednego z interface'ów zamieszczonych w w/w howto, odczekuje jedną minutę,
+po czym wyłącza ekspres. Po tym czasie powinieneś mieć smaczną kawę. Pamiętaj
+że coffee.c po kompilacji powinien otrzymać uprawnienia suid root, bo inaczej
+żaden użytkownik nie będzie w stanie uruchomić ekspresu (w tym coffee.php).
+
+2. W działaniu.
+
+Powinno działać. Serio :) A tak poważnie, w/w przykład demonstruje możliwość
+sterowania portem lpt za pomocą LMS-a. Ot, taki prosty a może się np. przydać
+do zdalnego resetowania urządzeń z poziomu UI.

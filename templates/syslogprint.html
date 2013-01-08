@@ -1,0 +1,40 @@
+{literal}
+<style type="text/css">
+*{margin: 0;padding: 0;}
+img {border: none;}
+body {background: #FFFFFF;}
+.main {min-width: 100%;vertical-align: top;}
+.foot {page-break-before:always;}
+.list1 {background:#cccccc;}
+.list2 {background:#FFFFFF;}
+TD {font:normal 11pt Arial;}
+.boxnav {background:#bbbbbb;}
+H2 {font:bold 9pt Arial;}
+</style>
+{/literal}
+<h2>LMS+ : Logi operacji systemowych, utworzył: {$kreator}, dnia: {$smarty.now|date_format:"%Y-%m-%d %H:%M:%S"}</h2>
+<table width="100%" cellpadding="3" cellspacing="0">
+    <tr class="boxnav">
+	<td width="1%" align="center" nowrap><b>L.P.</b></td>
+	<td width="1%" align="center" nowrap><b>Data</b></td>
+	<td width="1%" align="center" nowrap><b>Moduł</b></td>
+	<td width="1%" align="center" nowrap><b>Operacja</b></td>
+	<td width="96%"><b>Opis</b></td>
+	<td width="1%" align="center" nowrap><b>Użytkownik</b></td>
+    </tr>
+    {cycle values="list1,list2" print=false}
+    {section name="l1" loop=$syslog}
+    {assign var="syslogid" value=$syslog[l1].id}
+    {assign var="_modules" value=$syslog[l1].module}
+    {assign var="_event" value=$syslog[l1].event}
+    {assign var="lp" value=$smarty.section.l1.index+1}
+	<tr  class="{cycle} page-break-after:avoid;">
+	    <td width="1%" nowrap align="center" style="border-left:solid 1px #BBBBBB;border-bottom:solid 1px #BBBBBB;">{$lp}</td>
+	    <td width="1%" nowrap style="border-left:solid 1px #BBBBBB;border-bottom:solid 1px #BBBBBB;"><nobr>{$syslog[l1].cdate|date_format:"%Y-%m-%d"}&nbsp;{$syslog[l1].cdate|date_format:"%H:%M:%S"}</nobr></td>
+	    <td width="1%" align="center" style="border-left:solid 1px #BBBBBB;border-bottom:solid 1px #BBBBBB;"  nowrap><nobr>{$_MOD.$_modules}</nobr></td>
+	    <td width="1%" align="center" style="border-left:solid 1px #BBBBBB;border-bottom:solid 1px #BBBBBB;"  nowrap><nobr>{$_MSG_LOG.$_event}</nobr></td>
+	    <td width="96%" style="border-left:solid 1px #BBBBBB;border-bottom:solid 1px #BBBBBB;"  >{$syslog[l1].msg}</td>
+	    <td width="1%" align="center" nowrap style="border-right:solid 1px #BBBBBB;border-left:solid 1px #BBBBBB;border-bottom:solid 1px #BBBBBB;"><nobr>{$syslog[l1].login}</nobr></td>
+	</tr>
+    {/section}
+</table>

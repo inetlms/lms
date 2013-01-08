@@ -1,0 +1,1707 @@
+<!-- $Id$ -->
+<chapter id="user">
+ <title>Interfejs U¿ytkownika (LMS-UI)</title>
+ <para>LMS'owy Interfejs U¿ytkownika to panel administracyjny do tworzenia
+  i zarz±dzania baz± klientów i komputerów dostêpny za pomoc± przegl±darki
+  internetowej. Umo¿liwia wprowadzanie danych komputerów,
+  przypisanie ich do klientów i sieci. Definiowanie op³at i zarz±dzanie finansami sieci,
+  Szybkie wyszukiwanie danych o klientach i ich sprzêcie. Sporz±dzanie korespondencji
+  seryjnej do klientów, definiowanie praw dostêpu dla u¿ytkowników i ich hase³.
+  Ponadto daje mo¿liwo¶æ przegl±dania statystyk wykorzystania ³±cza, a tak¿e
+  tworzenia kopii bazy danych oraz zarz±dzania konfiguracj± us³ug na serwerze. 
+  <emphasis>LMS-UI</emphasis> posiada tak¿e wiele innych mo¿liwo¶ci, które w tym
+  rozdziale zostan± opisane.</para>
+  <sect1 id="user-login">
+	<title>Logowanie</title>
+	<para>Po wpisaniu w przegl±darce adresu do strony z LMS'em, powita ciê
+	ekran logowania. Musisz podaæ w³a¶ciwy login oraz has³o. Has³a w bazie
+	danych przechowywane s± w formie zaszyfrowanej.</para>
+	<para>Je¿eli jest to twoje pierwsze logowanie i nie masz jeszcze
+	za³o¿onego konta, zostaniesz przekierowany do modu³u tworzenia kont
+	u¿ytkowników. W tym momencie bêdziesz mia³ tylko dostêp do tego
+	jednego modu³u.</para>
+  </sect1>
+  <sect1 id="menu-administration">
+	<title>Administracja</title>
+	<para>Po zalogowaniu do LMS'a znajdziesz siê w module (menu) administracji
+	systemem LMS. Tutaj znajdziesz niezbêdne informacje o systemie. Bêdziesz
+	móg³ zarz±dzaæ u¿ytkownikami i tworzyæ/odtwarzaæ kopie bazy danych.</para>
+	<para>Z menu po lewej stronie wybierasz interesuj±cy ciê modu³. Mo¿esz równie¿
+	dokonaæ zmiany has³a, wylogowaæ siê lub szybko przej¶æ do informacji o kliencie i komputerze.
+	W polach szybkiego wyszukiwania, oprócz id klienta lub komputera, mo¿esz 
+	podawaæ nazwisko, nazwê, fragment adresu, telefon, email, adres IP lub MAC. 
+	W przypadku gdy w bazie znajduje siê wiêcej klientów pasuj±cych do szukanych
+	danych zostan± wy¶wietlone informacje tylko o jednym kliencie lub komputerze.</para>
+	<sect2 id="administration-info">
+	    <title>Informacje</title>
+	    <para>To panel, na którym znajduj± siê podstawowe informacje na temat naszego 
+	    systemu: wersja LMS i jego sk³adników, informacje o prawach autorskich, 
+	    wersja j±dra i uptime serwera, dane statystyczne o klientach i komputerach,
+	    bie¿±ce informacje o aktywno¶ci komputerów i stanie finansów sieci. 
+	    Ponadto znajdziesz tu przydatne LMS'owe linki.</para>
+	</sect2>
+	<sect2 id="administration-users">
+	    <title>U¿ytkownicy</title>
+	    <para>Panel 'U¿ytkownicy' s³u¿y do zarz±dzania kontami u¿ytkowników, czyli osób
+	    korzystaj±cych z LMS'a, zak³adania i przegl±dania ich kont, zmiany hase³ i definiowania 
+	    praw dostêpu.</para>
+	    <para> Prawa dostêpu zosta³y szczegó³owo opisane w rozdziale <xref linkend="install-rights">.</para> 
+	    <para>Po wybraniu menu 'U¿ytkownicy' zobaczysz listê wszystkich u¿ytkowników
+	    z informacj± o ostatnim logowaniu. Klikniêcie na pozycji z listy spowoduje wy¶wietlenie 
+	    informacji szczegó³owych o danym koncie, w tym o zdefiniowanych prawach dostêpu.
+	    W ka¿dej chwili mo¿liwa jest zmiana danych i uprawnieñ za pomoc± przycisku 'Edytuj'. 
+	    Aby za³o¿yæ nowe konto u¿ytkownika skorzystaj z górnego menu 'Nowy u¿ytkownik'.</para>
+	</sect2>
+	<sect2 id="administration-newuser">
+	<title>Nowy u¿ytkownik</title>
+	    <para>Aby dodaæ nowe konto u¿ytkownika nale¿y podaæ login, nazwisko/imiê oraz has³o,
+	    które nie mo¿e byæ puste. Pozosta³e dane nie s± wymagane.
+	    "Dozwolone hosty" to lista adresów IP hostów lub sieci
+	    oddzielonych przecinkiem, z których dany u¿ytkownik mo¿e siê logowaæ do
+	    systemu (podobnie do opcji konfiguracyjnej 'allow_from'). Je¶li lista ta
+	    jest pusta system nie dokonuje sprawdzenia adresu IP.
+	    Poni¿ej mo¿na zaznaczyæ uprawnienia dostêpu do
+	    systemu. Je¿eli wszystkie pola pozostawisz puste, u¿ytkownikowi 
+	    przypisany zostanie 'Pe³en dostêp'.</para>
+	    <para>Pole "Powiadomienia" okre¶la jakiego typu powiadomienia (np. z helpdesku)
+	    maj± byæ wysy³ane do u¿ytkownika. Aby skorzystaæ z powiadomieñ nale¿y te¿ podaæ adres e-mail i/lub
+	    numer telefonu.</para>
+	</sect2>
+	<sect2 id="administration-db">
+	    <title>Kopie zapasowe</title>
+	    <para>Z panelu 'Kopie zapasowe' mo¿esz zarz±dzaæ kopiami awaryjnymi danych z bazy LMSa.
+	    Kopia bazy to plik tekstowy zawieraj±cy zapytania SQL i dane z wszystkich tabel w bazie, zapisywany w
+	    katalogu zdefiniowanym w sekcji <emphasis>[directories]</emphasis> <filename>lms.ini</filename>
+	    zmienn± <prompt>backup_dir</prompt>.</para>
+	    <para><note><para>Domy¶lnie kopie zapisywane s± w katalogu <filename>lms/backups</filename>
+	    dostêpnym przez przegl±darkê, dlatego dobrze by³o by przenie¶æ go w inne miejsce.</para></note></para>
+	    <para>Sporz±dzone kopie mo¿na w ka¿dej chwili przegl±daæ, usuwaæ lub zapisywaæ na lokalnym dysku.
+	    Klikniêcie na ikonkê Odtwórz spowoduje wyczyszczenie bie¿±cej bazy danych i za³adowanie
+	    do niej danych z wybranego pliku kopii. Tu¿ przed odtworzeniem tworzona jest kopia
+	    aktualnej bazy danych. Odtworzenie bazy danych z kopii jest mo¿liwe tylko wtedy
+	    gdy zosta³a ona utworzona na tej samej wersji LMSa.</para>
+	</sect2>
+ </sect1>
+ <sect1 id="menu-customers">
+	<title>Klienci</title>
+	<para>Tutaj zarz±dzasz danymi klientów twojej sieci i ich finansami, ale tak¿e 
+	ich komputerami. Mo¿esz na przyk³ad jednym klikniêciem od³±czyæ wszystkie 
+	komputery klienta.
+	<note><para>Do automatycznego od³±czania komputerów klientów, których bilans jest poni¿ej zadanej warto¶ci
+	s³u¿y skrypt lms-cutoff.</para></note></para>
+	<sect2 id="menu-customers-list">
+	    <title>Lista</title>
+	    <para>Po wej¶ciu do panelu 'Klienci' uka¿e siê lista klientów,
+	    któr± mo¿esz filtrowaæ wed³ug wybranych kryteriów (statusu, grupy lub sieci)
+	    lub sortowaæ klikaj±c na nazwie kolumny. Na li¶cie ikona ¿arówki informuje
+	    o statusie pod³±czenia komputerów klienta, a ikona znaku drogowego
+	    o statusie ostrze¿eñ. Klikniêcie na nich zmienia status na przeciwny w
+	    stosunku do wszystkich komputerów danego klienta. Gdy klient nie
+	    posiada przypisanych ¿adnych komputerów ikony te zostan± zamienione znakiem
+	    wykrzyknika.</para>
+	    <para>U klientów z saldem ujemnym pojawia siê link "Rozlicz", pozwalaj±cy na
+	    zaksiêgowanie jednym klikniêciem wp³aty równowa¿±cej ujemne saldo.</para>
+	    <para>Klikniêcie na wybranym kliencie spowoduje przej¶cie do panelu
+	    z informacjami szczegó³owymi o nim i przypisanych mu komputerach, taryfach oraz
+	    operacjach finansowych. Tam te¿ mo¿esz modyfikowaæ dane klienta, definiowaæ
+	    op³aty abonamentowe i zaksiêgowaæ wp³atê lub obci±¿enie jego rachunku.</para>
+	</sect2>
+	<sect2 id="menu-customers-new">
+	    <title>Nowy klient</title>
+	    <para>Dodaj±c nowego klienta podajesz jego nazwisko/nazwê i dane teleadresowe
+	    oraz status (pod³±czony/oczekuj±cy/zainteresowany).
+	    <note><para>Czêsto zg³aszane jest b³êdne kapitalizowanie narodowych znaków diakrytycznych.
+	    Odpowiedzialny za to jest serwer bazy danych i rozwi±zania nale¿y szukaæ w jego 
+	    konfiguracji.</para></note></para>
+	</sect2>
+	<sect2 id="menu-customers-search">
+	    <title>Szukaj</title>
+	    <para>Mo¿liwe jest wyszukiwanie klientów (tak¿e usuniêtych) wg zadanych kryteriów. Modu³ ten,
+	    od pola szybkiego wyszukiwania z menu po lewej stronie, oprócz tego, ¿e jest bardziej rozbudowany 
+	    i pozwala wyszukiwaæ wg wielu kryteriów, ró¿ni siê tak¿e tym, ¿e zwraca listê klientów
+	    spe³niaj±cych podane kryteria.</para>
+	</sect2>
+	<sect2 id="menu-customers-groups">
+	    <title>Grupy</title>
+	    <para>Tutaj zarz±dzasz grupami klientów. Po klikniêciu menu 'Grupy'
+	    uka¿e ci siê lista grup z podstawowymi informacjami o grupach. Klikaj±c 
+	    na wybranej grupie przejdziesz do modu³u, w którym mo¿esz zmieniæ dane
+	    tej sieci, przegl±daæ oraz przypisywaæ klientów do grup.</para>
+	</sect2>
+	<sect2 id="menu-customers-newgropup">
+	    <title>Nowa grupa</title>
+	    <para>Grupa powinna posiadaæ unikaln± nazwê, sk³adaj±c± siê z liter, cyfr, znaku
+	    my¶lnika lub podkre¶lenia. Poniewa¿ grupy wykorzystywane s± w skryptach w nazwie
+	    nie mo¿e byæ znaku spacji.</para>
+	</sect2>
+	<sect2 id="menu-customers-notices">
+	    <title>Powiadomienia</title>
+	    <para>Tutaj mo¿na "hurtowo" przypisaæ tre¶æ wiadomo¶ci administracyjnej (powiadomienia)
+	    klientom, których wybiera siê z listy w lewym oknie. Tre¶æ przypisuje siê klientom,
+	    natomiast aby wiadomo¶æ zosta³± wy¶wietlona w przegl±darce internetowej na 
+	    komputrerze klienta nale¿y j± w³±czyæ dla wybranych komputerów. W³±czenie jak i wy³±czenie
+	    powiadomieñ wszystkim komputerom nale¿±cym do wybranych klientów jest mo¿liwe w tym miejscu.</para>
+	</sect2>
+	<sect2 id="menu-customers-reports">
+	    <title>Raporty</title>
+	    <para>Zestaw modu³ów wy¶wietlaj±cych listy i raporty formie przyjaznej dla drukarki
+	    zawiera:
+	    <itemizedlist>
+		<listitem>
+		    <para><emphasis>Lista klientów</emphasis> z wieloma filtrami i dowolnym sortowaniem,</para>
+		</listitem>
+		<listitem>
+		    <para><emphasis>Raport wierzytelno¶ci</emphasis> klienta(ów) na dany dzieñ,</para>
+		</listitem>
+		<listitem>
+		    <para><emphasis>Bilans klienta</emphasis> za wybrany okres</para>
+		</listitem>
+	    </itemizedlist>
+	    </para>
+	</sect2>
+ </sect1>
+ <sect1 id="menu-nodes">
+	<title>Komputery</title>
+	<para>Panel ten s³u¿y do zarz±dzania komputerami i umo¿liwia: przegl±danie listy komputerów,
+	wyszukiwanie, dodawanie nowych lub usuwanie ju¿	wpisanych do bazy komputerów, a tak¿e podgl±d 
+	i zmianê informacji o nich.</para>
+	<sect2 id="menu-nodes-list">
+	    <title>Lista</title>
+	    <para>Lista komputerów, ta która pokazuje siê po wej¶ciu do panelu 'Komputery'. 
+	    obejmuje wszystkie komputery w bazie. Mo¿na j± sortowaæ klikaj±c na nazwie dowolnej 
+	    kolumny. W ka¿dym wierszu, po prawej stronie znajduj± siê ikony s³u¿±ce kolejno do:
+	    zmiany statusu komputera [Pod³±cz/Od³±cz], zmiany statusu ostrze¿enia [Ostrzegaj/Nie ostrzegaj],
+	    usuniêcia z bazy [Usuñ], wywo³ania panelu edycyjnego [Edytuj] oraz wy¶wietlenia
+	    informacji szczegó³owych na temat danego komputera [Informacje]. Do panelu informacyjnego,
+	    który jest zintegrowany z panelem informacji o w³a¶cicielu komputera mo¿na tak¿e
+	    przej¶æ klikaj±c na pod¶wietlonym wierszu.</para>
+	</sect2>
+	<sect2 id="menu-nodes-new">
+	<title>Nowy komputer</title>
+	    <para>Tutaj dodaje siê nowe komputery do bazy danych. W tym celu definiujemy nazwê
+	    komputera (sk³adaj±c± siê z liter, cyfr, znaku podkre¶lenia lub my¶lnika), jego w³a¶ciciela,
+	    adres IP, adres MAC oraz status. Przy polach na adresy IP i MAC znajduj± siê linki
+	    do paneli, w których mo¿na wybraæ dostêpny adres IP oraz znaleziony w sieci MAC.
+	    Po wpisaniu danych naci¶nij "Zapisz". Przy wprowadzaniu danych dla wielu komputerów
+	    wygodnie jest zaznaczyæ pole "Wywo³aj ponownie..."
+	    <note><para>Aby wyszukaæ komputery w swojej sieci
+	    mo¿esz skorzystaæ z programu nbtscan. Je¶li jest on zainstalowany w systemie, po
+	    naci¶niêciu 'Skanuj' zobaczysz listê znalezionych komputerów.</para></note>
+	    <note><para>Aby dodaæ komputer musisz mieæ sieæ i klienta,
+	    którym go przypiszesz.</para></note></para>
+	</sect2>
+	<sect2 id="menu-nodes-search">
+	    <title>Szukaj</title>
+	    <para>Wyszukiwanie komputerów wed³ug zadanych kryteriów. Mo¿esz podaæ 
+	    ca³± lub fragment nazwy komputera oraz jego adresów IP i MAC.</para>
+	</sect2>
+	<sect2 id="menu-nodes-notices">
+	    <title>Powiadomienia</title>
+		<para>Tutaj definiuje siê tre¶æ wiadomo¶ci administracyjnych (powiadomieñ) dla klientów oraz
+		w³±cza lub wy³±cza je wybranym komputerom. Po lewej stronie znajduje siê lista, na
+		której komputery z w³±czonym powiadomieniem zaznaczone s± kolorem czerwonym. Je¶li chcesz
+		tylko zmieniæ/przypisaæ klientom tre¶æ powiadomienia, zaznacz odpowiednie
+		komputery na li¶cie i pozostaw puste pola 'W³±cz' oraz 'Wy³±cz'.</para>
+	</sect2>	
+	<sect2 id="menu-nodes-reports">
+	    <title>Raporty</title>
+		<para>Wy¶wietlenie list komputerów, w formacie przyjaznym dla drukarki 
+		z mo¿liwo¶ci± definiowania filtrów i sortowania podobnie jak na Li¶cie.</para>
+	</sect2>
+ </sect1>
+ <sect1 id="menu-netdevices">
+	<title>Osprzêt sieciowy</title>
+	<para>W panelu przeznaczonym do ewidencji sprzêtu zarz±dzamy struktur± 
+	sieci, urz±dzeniami typu switch, hub, router, serwer i po³±czeniami miêdzy
+	nimi, a tak¿e przy³±czonymi do nich komputerami. Ka¿demu urz±dzeniu mo¿na przypisaæ 
+	co najmniej jeden adres sieciowy.</para>
+	    <sect2 id="menu-netdevices-list">
+	    <title>Lista</title>
+		<para>Lista urz±dzeñ zawiera ich nazwy i symbole, po³o¿enie i opis, a ponadto 
+		ilo¶æ dostêpnych portów. Lista mo¿e byæ sortowana wg dowolnego parametru/kolumny.
+		Klikniêcie na wybranym urz±dzeniu spowoduje wy¶wietlenie informacji szczegó³owych 
+		o nim, gdzie mo¿liwe jest definiowanie po³±czeñ urz±dzeñ i komputerów, adresów IP
+		urz±dzenia oraz zamiana dwóch urz±dzeñ.</para>
+	    </sect2>
+	    <sect2 id="menu-netdevices-new">
+	    <title>Nowe urz±dzenie</title>
+		<para>Urz±dzenie sieciowe powinno posiadaæ unikaln± nazwê. Pozosta³e
+		parametry tj. producent, model, nr seryjny, ilo¶æ portów, lokalizacja
+		i opis s± opcjonalne.</para>
+	    </sect2>
+	    <sect2 id="menu-netdevices-search">
+		<title>Szukaj</title>
+		<para>Wyszukiwanie urz±dzeñ wed³ug zadanych kryteriów. Mo¿esz podaæ 
+		ca³± lub fragment nazwy, adresów IP i MAC oraz innych danych.</para>
+	    </sect2>
+	    <sect2 id="menu-netdevices-map">
+	    <title>Mapa</title>
+		<para>Generowanie graficznej mapy ca³ej sieci, na podstawie
+		danych z bazy LMS'a nastêpuje po wybraniu opcji menu 'Mapa'. Mo¿esz 
+		zdefiniowaæ, które urz±dzenie jest nadrzêdne w stosunku do pozosta³ych.
+		<note><para>Do wygenerowania mapy potrzebna jest wbudowana w PHP obs³uga 
+		biblioteki graficznej GD lub Ming.</para></note>
+		Aby wybraæ typ mapy musisz skorzystaæ z opcji <filename>map_type</filename>
+		z sekcji <emphasis>[phpui]</emphasis>. Ustaw "flash" je¶li u¿ywasz biblioteki
+		Ming, "gd" je¶li chcesz generowaæ obrazki przy pomocy gdlib lub "openlayers" je¶li
+		chcesz u¿ywaæ biblioteki OpenLayers do generowania mapy. Domy¶lnie
+		(opcja nieustawiona) LMS spróbuje wykryæ jak± bibliotekê masz dostêpn± w systemie, przy czym
+		w pierwszej kolejno¶ci szuka mo¿liwo¶ci wygenerowania mapy we flashu, a jak
+		siê to nie uda, to u¿yje GD.
+		</para>
+		<para>Na mapie hosty wy³±czone oznaczone s± kolorem czarnym. Ikona z pytajnikiem
+		oznacza, ¿e dany komputer nie by³ jeszcze skanowany/w³±czony. Aby skorzystaæ z 
+		tej funkcjonalno¶ci nale¿y, korzystaj±c z crona, uruchamiaæ skrypt skanuj±cy.
+		Na mapie komputer traktowany jest za w³±czony je¶li czas ostatniego pozytywnego
+		skanowania nie jest starszy od zadanej warto¶ci (domy¶lnie 600 sekund).
+		Parametr ten okre¶la siê przy pomocy opcji
+		<filename>lastonline_limit</filename> w sekcji [phpui] pliku konfiguracyjnego.
+		Powy¿sze odnosi siê równie¿ do urz±dzeñ z tym, ¿e status urz±dzenia okre¶la
+		siê na podstawie statusu wszystkich jego adresów.
+		Status komputerów jest tak¿e widoczny na li¶cie komputerów.
+		<note><para>Do badania aktywno¶ci hostów mo¿na wykorzystaæ skrypt lms-fping lub demona lmsd.</para></note>
+		</para>
+	    </sect2>
+ </sect1>
+ <sect1 id="menu-networks">
+	<title>Sieci IP</title>
+	<para>Tutaj definiujesz dane swojej sieci tj. pulê adresow±, domenê, DNS'y, bramê,
+	zakres DHCP. Je¿eli LMS s³u¿y ci do zarz±dzania wieloma sieciami lub dzielisz jedn± sieæ 
+	na podsieci, albo korzystasz z ró¿nych pul adresowych tutaj jest to mo¿liwe.</para>
+	<sect2 id="menu-networks-list">
+	    <title>Lista</title>
+	    <para>Lista sieci oprócz podstawowych danych o sieciach zawiera podsumowanie ilo¶ci
+	    adresów wolnych i przypisanych. Modyfikowanie w³a¶ciwo¶ci sieci nastêpuje w module 
+	    dostêpnym po wybraniu sieci z listy lub bezpo¶rednio po klikniêciu ikony [Edytuj].</para>
+	    <para>Podczas edycji danych sieci mo¿esz przegl±daæ listê komputerów z tej sieci, gdzie w 
+	    miejscu adresu IP pojawia siê nazwa komputera/urz±dzenia, do którego mo¿esz przej¶æ 
+	    klikaj±c na odpowiednim polu. Klikniêcie na polu z adresem IP przeniesie Ciê do modu³u
+	    dodawania nowego komputera. Znajdziesz tu tak¿e dwa przydatne linki: <emphasis>
+	    Porz±dkuj sieæ</emphasis> s³u¿±cy do przeadresowania komputerów, tak aby wyeliminowaæ 
+	    luki w adresacji oraz <emphasis>Przeadresuj do sieci</emphasis> s³u¿±cy do przenoszenia wszystkich 
+	    komputerów/urz±dzeñ z tej sieci do innej.</para>
+	</sect2>
+	<sect2 id="menu-networks-new">
+	    <title>Nowa sieæ</title>
+	    <para>Definiuj±c now± sieæ musisz okre¶liæ jej unikaln± nazwê i pulê adresow± podaj±c adres IP sieci i maskê. Pozosta³e dane s± opcjonalne.</para>
+	    <para>Interfejsy fizyczne, aliasy i vlany s± rozpoznawane przez LMS, w sposób podany poni¿ej:
+	    <itemizedlist>
+		    <listitem>
+			    <para><emphasis>Interfejs fizyczny</emphasis> - przyk³ad: eth0</para>
+		    </listitem>
+		    <listitem>
+			    <para><emphasis>Alias</emphasis> - przyk³ad: eth0:1</para>
+		    </listitem>
+		    <listitem>
+			    <para><emphasis>Interfejs vlan o VID 19</emphasis> - przyk³ad: eth0.19</para>
+		    </listitem>
+		    <listitem>
+			    <para><emphasis>Pierwszy alias na interfejsie vlan o VID 19</emphasis> - przyk³ad: eth0.19:1</para>
+		    </listitem>
+	    </itemizedlist>
+    </para>
+	</sect2>
+ </sect1>
+ <sect1 id="menu-finances">
+	<title>Finanse</title>
+	<para>Jest to w³a¶ciwie wiele modu³ów umo¿liwiaj±cych zarz±dzanie finansami sieci.
+	Masz mo¿liwo¶æ definiowania taryf abonamentowych, op³at (zleceñ) sta³ych, ksiêgowania 
+	operacji finansowych, przegl±dania bilansu i historii rachunku oraz sporz±dzania faktur
+	i zestawieñ finansowych.</para> 
+	<sect2 id="menu-tariffs-list">
+	    <title>Lista taryf</title>
+	    <para>Po wej¶ciu do panelu 'Finanse' zobaczysz listê taryf zawieraj±c±
+	    podstawowe informacje o nich. Klikaj±c wybran± taryfê na li¶cie zostaniesz
+	    przeniesiony do modu³u 'Informacje o taryfie', gdzie mo¿esz edytowaæ jej parametry
+	    lub zamieniaæ klientom taryfy. W polu 'ilo¶æ klientów' podana jest liczba
+	    klientów, którym dana taryfa zosta³a przypisana oraz kolejno od lewej (w nawiasie) ca³kowita 
+	    liczba przypisañ taryfy i liczba aktywnych przypisañ taryfy, uwzglêdniaj±ca okresy obowi±zywania.</para>
+	</sect2>
+	<sect2 id="menu-tariffs-new">
+	    <title>Nowa taryfa</title>
+	    <para>Definiuj±c now± taryfê musisz podaæ unikaln± nazwê, kwotê i stawkê podatku.
+	    Przy czym "zw." w polu stawka podatku oznacza "zwolnienie z podatku".</para>
+	</sect2>
+	<sect2 id="menu-payments-list">
+	    <title>Lista p³atno¶ci</title>
+    	    <para>Lista op³at sta³ych ¶wiadczonych na rzecz innych podmiotów, oprócz elementów standardowych
+	    zawiera ikonê [Nalicz], przy pomocy której mo¿na obci±¿yæ rachunek sieci. Automatycznym naliczaniem
+	    op³at zajmuje siê skrypt 'lms-payments' lub odpowiedni modu³ demona lmsd. Klikaj±c wybran± 
+	    op³atê na li¶cie zostaniesz przeniesiony do modu³u 'Informacje o op³acie', gdzie mo¿esz 
+	    edytowaæ jej parametry lub zaksiêgowaæ dan± op³atê w bazie operacji finansowych.</para>
+	</sect2>
+	<sect2 id="menu-payments-new">
+	    <title>Nowa p³atno¶æ</title>
+	    <para>Nowej op³acie sta³ej przypisujesz unikaln± nazwê, wierzyciela oraz kwotê i dzieñ
+	    naliczenia.</para>
+	</sect2>
+	<sect2 id="menu-balance">
+	    <title>Bilans finansowy</title>
+	    <para>Historia operacji finansowych z podsumowaniem przychodu, rozchodu,
+	    wp³at i zobowi±zañ klientów. Ikona drukarki umo¿liwia wydruk faktury odpowiadaj±cej
+	    danej pozycji z listy.</para>
+	</sect2>
+	<sect2 id="menu-newbalance">
+	    <title>Nowa operacja</title>
+	    <para>Wprowadzanie nowych operacji finansowych. Mo¿liwe jest
+	    zaksiêgowanie tej samej wp³aty lub obci±¿enia wielu klientom równocze¶nie.</para>
+	    <para><note><para>Do naliczania sta³ych op³at abonamentowych najlepiej wykorzystywaæ
+	    skrypt lms-payments lub demona <emphasis>lmsd</emphasis>, które potrafi± ponadto
+	    wystawiaæ faktury.</para></note></para>
+	</sect2>
+	<sect2 id="menu-invoices-list">
+		<title>Lista faktur</title>
+		<para>Lista wystawionych faktur z mo¿liwo¶ci± wydruku wybranych faktur (ikona [Drukuj])
+		oraz oznaczenia faktur jako rozliczone. Faktury oznaczone jako rozliczone bêd± na li¶cie
+		wyszarzone. Faktury mo¿na filtrowaæ wg zadanych kryteriów przy u¿yciu dostêpnego na li¶cie filtra.</para>
+	</sect2>
+	<sect2 id="menu-invoices-new">
+		<title>Nowa faktura</title>
+		<para>Rêczne wystawianie faktury dla wybranego klienta. W pierwszej kolejno¶ci
+		wybieramy klienta z listy, ustawiamy typ p³atno¶ci i pozosta³e dane takie jak
+		termin p³atno¶ci, data wystawienia, a nawet numer faktury i klikamy 
+		'Zapisz'. Nastêpnie mo¿emy dodawaæ pozycje do faktury. 
+		'Zapisz i drukuj' koñczy edycjê nowej faktury, zapisuje j± w systemie
+		i wy¶wietla wydruk faktury w nowym oknie.</para>
+		<para>Konfiguracjê wydruków faktur opisano w rozdziale p.t. 
+		Instalacja i Konfiguracja.</para>
+	</sect2>
+	<sect2 id="menu-debitnotes-list">
+		<title>Lista not obci±¿eniowych</title>
+		<para>Lista wystawionych not obci±¿eniowych (debetowych) z mo¿liwo¶ci± wydruku wybranych (ikona [Drukuj])
+		oraz oznaczenia ich jako rozliczone. Noty oznaczone jako rozliczone bêd± na li¶cie
+		wyszarzone. Noty mo¿na filtrowaæ wg zadanych kryteriów przy u¿yciu dostêpnego na li¶cie filtra.</para>
+	</sect2>
+	<sect2 id="menu-debitnotes-new">
+		<title>Nowa nota obci±¿eniowa</title>
+		<para>Rêczne wystawianie noty dla wybranego klienta. W pierwszej kolejno¶ci
+		wybieramy klienta z listy, ustawiamy datê wystawienia oraz numer i klikamy 
+		'Zapisz'. Nastêpnie w tabelce poni¿ej mo¿emy dodawaæ pozycje do noty. 
+		'Zapisz i drukuj' koñczy edycjê nowej noty obci±¿eniowej, zapisuje j± w systemie
+		i wy¶wietla wydruk faktury w nowym oknie.</para>
+		<para>Konfiguracjê wydruków not opisano w rozdziale p.t. 
+		Instalacja i Konfiguracja.</para>
+	</sect2>
+	<sect2 id="menu-receipts-list">
+	    <title>Rejestr kasowy</title>
+		<para>Kasê gotówkow± mo¿na podzieliæ na rejestry np. kasa1, kasa2, kasa g³ówna,
+		bank itp. Na li¶cie rejestrów znajduj± siê wszystkie informacje o zdefiniowanych
+		rejestrach wraz z aktualnym stanem kasy w ka¿dym z nich oraz podsumowaniem,
+		które nie obejmuje rejestrów, którym w³±czono opcjê "Wy³±czenie z sumowania".</para>
+		<para>Ka¿dy rejestr kasowy mo¿e posiadaæ w³asn± numeracjê dokumentów kasowych
+		oraz uprawnienia dla u¿ytkowników. Uprawnienie "Zapis", przeznaczone dla zwyk³ych
+		kasjerów, pozwala na odczyt oraz dodawanie nowych dokumentów dla wybranego celu:
+		<itemizedlist>
+			<listitem><para>klient - KP/KW dla klienta</para></listitem>
+			<listitem><para>przen.¶r. - przeniesienie ¶rodków miêdzy kasami</para></listitem>
+			<listitem><para>zaliczka - dowód wyp³aty zaliczki (dla u¿ytkownika - pracownika firmy)</para></listitem>
+			<listitem><para>inny - KP/KW dla osoby nie bêd±cej klientem</para></listitem>
+			<listitem><para>mod. - mo¿liwo¶æ dodania pozycji w inny sposób ni¿ wybranie z listy faktur.</para></listitem>
+		</itemizedlist>
+		Uprawnienie "Zaawansowany" daje mo¿liwo¶æ edycji i usuwania dokumentów oraz zmiany numeru i daty wystawienia.</para>
+		<para>Na dokumenty kasowe sk³adaj± siê dowody wp³aty "KP" oraz wyp³aty "KW",
+		stanowi±ce po¶wiadczenia przyjêcia/wydania gotówki do/z kasy (rejestru kasowego).
+		Lista dokumentów kasowych. do której dostajemy siê klikaj±c wybrany rejestr na
+		li¶cie rejestrów kasowych, mo¿e byæ dowolnie sortowana oraz filtrowana
+		podobnie jak lista faktur. Masz tak¿e mo¿liwo¶æ wydrukowania wybranych
+		dowodów.</para>
+		<para>Z listy mo¿na przej¶æ do edycji dokumentu. Dokonuj±c zmian 
+		w wystawionych po¶wiadczeniach nale¿y zachowaæ szczególn± ostro¿no¶æ, gdy¿
+		zapisanie zmian powoduje usuniêcie starego po¶wiadczenia i zwi±zanych z nim
+		operacji oraz wstawienie nowych.</para>
+	</sect2>
+	<sect2 id="menu-receipts-new">
+	    <title>Nowy dokument kasowy</title>
+		<para>Podczas wystawiania dokumentu kasowego w pierwszej kolejno¶ci
+		wybieramy rejestr kasowy i typ operacji. Nastêpnie wybieramy z listy klienta 
+		lub wyszukujemy go wg zadanych kryteriów, ustawiamy datê i numer (najlepiej pozostawiæ 
+		warto¶ci zaproponowane przez system). Istnieje mo¿liwo¶æ wybrania innego typu
+		operacji nie zwi±zanych z klientem lub przekazania ¶rodków do innego rejestru.
+		Nastêpnie klikamy 'Wybierz' aby zatwierdziæ wybór. Po tym mo¿emy dodawaæ dowoln± 
+		ilo¶æ pozycji zawieraj±cych opis i kwotê lub wybraæ je z listy nierozliczonych 
+		faktur klienta. 'Zapisz i drukuj' koñczy edycjê, zapisuje po¶wiadczenie
+		oraz wp³aty/wyp³aty w systemie, przechodzi do listy dokumentów w wybranym
+		rejestrze i wy¶wietla wydruk KP/KW w nowym oknie.</para>
+		<para>Konfiguracjê wydruków dokumentów kasowych opisano w rozdziale p.t. 
+		Instalacja i Konfiguracja.</para>
+	</sect2>
+	<sect2 id="menu-import">
+	    <title>Import</title>
+		<para>Import s³u¿y do zapisywania operacji finansowych z zewnêtrznych
+		systemów np. pobranych z banku bezpo¶rednio ze stron www lub z e-maila. 
+		Do tego celu nale¿y napisaæ skrypt (parser) wrzucaj±cy dane do tabeli
+		cashimport. Przyk³adem takiego zastosowania jest skrypt lms-cashimport-ingbs.
+		Nastêpnie po wej¶ciu do menu Import zobaczymy listê wrzuconych operacji
+		finansowych, które nale¿y zatwierdziæ (ewentualnie zmodyfikowaæ) przed
+		zapisem do systemu finansowego LMSa.</para>
+		<para>Dziêki temu modu³owi mo¿liwe jest tak¿e wczytanie p³atno¶ci/przelewów z przygotowanego
+		wcze¶niej pliku tekstowego. Plik taki jest czytany linia po linii
+		i korzystaj±c z ustawionych wyra¿eñ regularnych parsowany w celu wy³uskania
+		danych dotycz±cych ka¿dej p³atno¶ci, potrzebnych do zapisania w bazie danych
+		(ID klienta, kwota, itd.). Po wczytaniu pliku zostanie wy¶wietlona lista
+		p³atno¶ci do zatwierdzenia i/lub korekty.</para>
+		<para>Aby skrypt potrafi³ odczytaæ dane z plików w dowolnym formacie nale¿y
+		zdefiniowaæ odpowiednio wyra¿enia regularne w skrypcie PHP, którego lokalizacjê
+		podajemy w opcji <filename>import_config</filename> sekcji <emphasis>[phpui]</emphasis>.
+		Przyk³adowe warto¶ci wraz z obja¶nieniem dostêpnych parametrów znajduj± siê w pliku 
+		<filename>modules/cashimportcfg.php</filename>. 
+		Domy¶lna konfiguracja zak³ada, ¿e dane bêd± mia³y postaæ nastêpuj±c±:
+<screen>
+23.02.2004	Machniak Aleksander	123,45	Op³ata za Internet 04/2004 ID:0013
+15.02.2004	Ból Józef	123,45	Op³ata za faktrê LMS/34/2004
+</screen>
+		</para>
+		<para>Podczas zatwierdzania importowanych pozycji mo¿liwe jest w³±czenie
+		automatycznego oznaczania faktur jako rozliczonych, zale¿nie od wielko¶ci wp³aty 
+		(i bilansu klienta). S³u¿y do tego opcja 'cashimport_checkinvoices' z sekcji
+		<emphasis>[finances]</emphasis>. Faktura (oraz jej korekty) oznaczana jest jako
+		rozliczona je¶li wp³ata (z uwzglêdnieniem bilansu klienta) przewy¿sza
+		kwotê obci±¿enia wynikaj±c± z danej faktury.</para>
+	</sect2>
+	<sect2 id="menu-export">
+		<title>Eksport</title>
+			<para>Eksport danych finansowych do systemów zewnêtrznych polega na
+			generowaniu plików tekstowych zawieraj±cych dane pobrane wg zdefiniowanych
+			filtrów. Dla ka¿dego dokumentu tworzony jest rekord w pliku tekstowym.
+			Format rekordu ustala u¿ytkownik korzystaj±c ze zmiennych.</para>
+			<para>Konfiguracji eksportu dokonujemy w pliku, którego lokalizacjê
+			podajemy w opcji <filename>export_config</filename> sekcji <emphasis>[phpui]</emphasis>.
+			Przyk³adowe warto¶ci wraz z obja¶nieniem dostêpnych parametrów znajduj± siê w pliku 
+			<filename>modules/exportcfg.php</filename>. Najlepiej wiêc jest zapisaæ jego kopiê
+			i w niej dokonywaæ stosownych zmian.</para>
+			<para>Ka¿dej pozycji Rejestru Sprzeda¿y (ka¿dej fakturze)
+			odpowiada jeden rekord w pliku wyj¶ciowym. W przypadku Raportu Kasowego rekordem 
+			jest pozycja dokumentu kasowego.</para>
+	</sect2>
+	<sect2 id="menu-finances-reports">
+	    <title>Raporty</title>
+	    <para>Wydruki zestawieñ finansowych obejmuj±:
+	    <itemizedlist>
+		<listitem>
+			<para><emphasis>Historia operacji finansowych</emphasis> obejmuj±cy operacje finansowe 
+			za dany okres z mo¿liwo¶ci± u¿ycia rozbudowanego filtra.</para>
+		</listitem>
+		<listitem>
+			<para><emphasis>Historia operacji klienta</emphasis> na dany okres.</para>
+		</listitem>
+		<listitem>
+			<para><emphasis>Rejestr sprzeda¿y</emphasis>, czyli zestawienie faktur na dany okres.</para>
+		</listitem>
+		<listitem>
+			<para><emphasis>Raport kasowy</emphasis>, czyli zestawienie dokumentów
+			kasowych za dany okres, ca³o¶ciowe lub z wybranego rejestru albo dla
+			wybranego kasjera.</para>
+		</listitem>
+		<listitem>
+			<para><emphasis>Faktury</emphasis> - wydruk wszystkich lub wybranego klienta za dany okres 
+			(z wyborem orygina³/kopia) lub wygenerowanie PDFa z danymi potrzebnymi do zadruku standardowych 
+			dwuodcinkowych formularzy przelewu/wp³aty z potwierdzeniem.</para>
+		</listitem>
+		<listitem>
+			<para><emphasis>Formularze przelewu</emphasis> - wydruk PDFa z danymi przeznaczonymi
+			do zadruku standardowych czteroodcinkowych formularzy przelewu/wp³aty.</para>
+		</listitem>
+		<listitem>
+			<para><emphasis>£±czny przychód bezrachunkowy sieci</emphasis> w danym okresie.</para>
+		</listitem>
+		<listitem>
+		    <para><emphasis>Raport wierzytelno¶ci</emphasis> na dany dzieñ, dla wszystkich lub 
+		    wybranego klienta.</para>
+		</listitem>
+		<listitem>
+			<para><emphasis>Historia importu p³atno¶ci</emphasis> z danego okres
+			z mo¿liwo¶ci± wyboru ¼ród³a importu.</para>
+		</listitem>
+	    </itemizedlist>
+	    </para>
+	</sect2>
+</sect1>
+<sect1 id="menu-documents">
+	<title>Dokumenty</title>
+	<para>Dokumenty niefinansowe mo¿na znale¼æ bezpo¶rednio w zak³adce klienta oraz
+	w menu 'Dokumenty'. LMS umo¿liwia przechowywanie gotowych dokumentów w dowolnym formacie 
+	oraz tworzenie ich wg zdefiniowanych w³asnych szablonów. Zw³aszcza funkcjonalno¶æ
+	szablonów jest ciekawa, gdy¿ umo¿liwia tworzenie rozbudowanych wtyczek, których
+	dzia³anie nie musi ograniczaæ siê tylko do wygenerowania wydruku.</para>
+	<sect2 id="menu-documents-list">
+		<title>Lista</title>
+		<para>Lista zawiera podstawowe informacje o wszystkich dokumentach takie jak numer, tytu³,
+		typ, datê utworzenia, daty obowi±zywania oraz nazwê/nazwisko i imiê klienta. Prosty
+		filtr umo¿liwia przeszukiwanie wg typu dokumentu lub klienta.</para>
+	</sect2>
+	<sect2 id="menu-documents-new">
+		<title>Nowy dokument</title>
+		<para>Dokumenty mo¿na tworzyæ na podstawie szablonów utworzonych wed³ug
+		zasad opisanych w rozdziale <xref linkend="install-documents-other">. Mog± to byæ
+		tak¿e ju¿ gotowe pliki, które zostan± zapisane na serwerze. Podczas tworzenia/zapisu 
+		dokumentu nale¿y nadaæ mu tytu³ oraz typ oraz wybraæ klienta. Mo¿na okre¶liæ daty
+		obowi±zywania oraz dodatkowy opis. Dokumenty mog± byæ numerowane wed³ug dowolnie
+		zdefiniowanych w systemie planów numeracyjnych.</para>
+	</sect2>
+	<sect2 id="menu-documents-documentgen">
+		<title>Generator dokumentów</title>
+		<para>Generator umo¿liwia utworzenie dokumentów wg wybranego szablonu dla wybranej
+		grupy klientów. Opcja 'Drukuj' umo¿liwia jednocze¶nie wydruk wygenerowanych dokumentów
+		pod warunkiem, ¿e s± to dokumenty HTML.
+		<note><para>Z uwagi na wydajno¶æ zaleca siê korzystanie ze zoptymalizowanych pod k±tem 
+		generatora szablonów oraz nie drukowania wiêkszej ilo¶ci dokumentów (mo¿e to prowadziæ do
+		zawieszenia przegl±darki).</para></note>
+		</para>
+	</sect2>
+	<sect2 id="menu-documents-rights">
+		<title>Prawa dostêpu</title>
+		<para>Tutaj mo¿esz zdefiniowaæ prawa dostêpu (odczyt, tworzenie, 
+		zatwierdzanie, edycja, usuwanie) u¿ytkowników do wybranych typów
+		dokumentów.</para>
+	</sect2>
+</sect1>
+<sect1 id="menu-hosting">
+	<title>Hosting</title>
+	<para>Zarz±dzanie ró¿nymi us³ugami na serwerze jest teraz
+	mo¿liwe. Funkcjonalno¶æ ta jest przeznaczona dla zaawansowanych 
+	u¿ytkowników. Wymaga znajomo¶ci tych us³ug i ich konfiguracji
+	w celu korzystania z bazy danych.</para>
+	<para>W LMSie mo¿na utworzyæ piêæ rodzajów kont: shell (1), poczta (2),
+	www (4), ftp (8) i sql (16). W nawiasach podano numeryczne wewnêtrzne oznaczenie
+	typu konta w bazie. Konta mog± byæ wielotypowe. Przyk³adowo, je¶li 
+	zdefiniujesz konto shell+poczta+ftp w bazie zostanie zapisana cyfra 11.
+	Oznacza to, ¿e do rozpoznawania typu konta w warunkach WHERE zapytañ
+	SQL nale¿y stosowaæ sumowanie binarne (jak na przyk³adach w dalszej
+	czê¶ci rozdzia³u).</para>
+	<para>Masz tak¿e mo¿liwo¶æ definiowania domen i aliasów.</para>
+	<sect2 id="menu-hosting-accounts">
+	    <title>Konta</title>
+	    <para>Na li¶cie przedstawione s± podstawowe informacje o kontach.
+	    Mo¿liwe jest dowolne sortowanie listy poprzez klikniêcie nazwy
+	    kolumny oraz filtrowanie wg zadanych kryteriów. Przej¶cie do edycji 
+	    danych konta nastêpuje po wybraniu ikony [Edytuj]. U¿ytkownik ma 
+	    tak¿e prawo do zmiany has³a.</para>
+	</sect2>
+	<sect2 id="menu-hosting-new-account">
+	    <title>Nowe konto</title>
+	    <para>Definiuj±c dane konto musisz podaæ login, has³o, wybraæ domenê,
+	    wybraæ typ konta oraz przypisaæ klienta (lub utworzyæ tzw. konto
+	    systemowe). Data wa¿no¶ci konta jest opcjonalna. Pozostawienie pustego pola z dat± 
+	    oznacza, ¿e konto nigdy nie wygasa. </para>
+	    <para>Masz mo¿liwo¶æ zdefiniowaæ dowolny katalog domowy u¿ytkownika (konta).
+	    Opcja konfiguracyjna <filename>homedir_prefix</filename> w sekcji 
+	    <emphasis>[phpui]</emphasis> zawiera prefix katalogu domowego, domy¶lnie
+	    ustawiony na warto¶æ "/home/".</para>
+	</sect2>
+	<sect2 id="menu-hosting-aliases">
+	    <title>Aliasy</title>
+	    <para>Konta (g³ównie mailowe) mog± posiadaæ dowoln± ilo¶æ aliasów.
+	    Administrator serwera pocztowego mo¿e przekierowaæ (lokalnie) pocztê
+	    z wszystkich aliasów do jednego konta. Na li¶cie aliasów przedstawione 
+	    s± podstawowe informacje o nich i o kontach na które aliasy te wskazuj±.
+	    Mo¿liwe jest dowolne sortowanie listy poprzez klikniêcie nazwy
+	    kolumny oraz filtrowanie wg zadanych kryteriów.</para>
+	</sect2>
+	<sect2 id="menu-hosting-new-alias">
+		<title>Nowy alias</title>
+		<para>Tworz±c alias definiujesz dla niego login i domenê oraz cel. Celem mo¿e 
+		byæ jedno lub wiêcej istniej±cych kont. Uwaga: aby utworzyæ alias do konta,
+		które znajduje siê na obcym serwerze nale¿y utworzyæ konto i podaæ adres przekierowania.</para>
+	</sect2>
+	<sect2 id="menu-hosting-domains">
+	    <title>Domeny</title>
+	    <para>Obecnie LMS mo¿e bezpo¶rednio zarz±dzaæ serwerem PowerDNS z mysql/pqsl backend.
+		LMS teraz posiada pe³ne wsparcie dla wiêkszo¶ci funkcji serwera PowerDNS. Ma pe³nie wsparcie 
+		dla domen typu: master, slave i native. Na li¶cie domen przedstawione s± podstawowe informacje 
+		o zdefiniowanych domenach jak nazwa, typ, w³a¶ciciel. Mo¿liwe jest dowolne sortowanie listy 
+		poprzez klikniêcie nazwy kolumny lub poprzez pierwsz± literê nazwy domeny. Mo¿liwa jest edycja 
+		podstawowych danych domeny po wybraniu ikony [Edytuj]. Zaawansowana edycja rekordów domeny 
+		odbywa siê poprzez wybranie ikony [Informacje] a nastêpnie [Rekordy]. Mo¿liwa wtedy jest pe³na 
+		konfiguracja wszystkich rekordów opisuj±cych dan± domenê. Ka¿da zmiana rekordu zapisana w bazie 
+		danych LMS np.: edycja, dodanie lub usuniêcie rekordu automatycznie zwiêksza licznik domeny o 1.
+		Ka¿da zmiana jest tak¿e automatycznie dostrzegana przez serwer PowerDNS. Aby taka wspópraca by³a 
+		mo¿liwa nale¿y w bazie danych LMS za³o¿yæ dodatkowego u¿ytkownika z uprawieniami SELECT, INSERT,
+		UPDATE, DELETE dla tabel domains, records oraz SELECT dla tabeli supermaster.</para>
+	</sect2>
+	<sect2 id="menu-hosting-new-domain">
+		<title>Nowa domena</title>
+		<para>Dane domeny zawieraj± nazwê, opis, typ (master, slave, native), adres ip serwera www, 
+		adres ip serwera pocztowego, adres ip g³ównego serwera nazw (je¶li wybrano typ slave) i inne
+		parametry, których warto¶ci domy¶lne ustawione s± w sekcji [zones]. Domena mo¿e zostaæ przypisana 
+		do klienta.</para>
+	</sect2>
+	<sect2 id="menu-hosting-search">
+		<title>Szukaj</title>
+		<para>Wyszukiwanie kont, aliasów i domen wed³ug zadanych kryteriów.</para>
+	</sect2>
+	<sect2 id="hosting-examples">
+	    <title>Przyk³ady</title>
+	    <para>Poni¿ej opisano sposób intergracji LMS z serwerem PowerDNS.
+	    <example id="hosting-e0">
+	    <title>Domeny. Konfiguracja PowerDNS.</title>
+<screen>
+Przygotowanie bazy danych na której dzia³a LMS do wspó³pracy z serwerem PowerDNS.  
+
+Dodajemy u¿ytkownika powerdns o uprawnieniach ograniczonych do tabel domains i records.
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON lms.domains TO 'powerdns'@'adres-serwera-dns' IDENTIFIED BY 'has³o';
+GRANT SELECT, INSERT, UPDATE, DELETE ON lms.records TO 'powerdns'@'adres-serwera-dns' IDENTIFIED BY 'has³o';
+
+Instalujemy pakiety: pdns, pdns-backend, pdns-recursor.
+
+W dystrybucjach Centos, Fedora, RedHat:
+
+yum install pdns pdns-backend pdns-recursor
+
+Edytujemy plik /etc/pdns/pdns.conf dodaj±c:
+
+launch=gmysql
+gmysql-dbname=lms #wpisz w³a¶ciw± nazwê bazy danych na której pracuje lms
+gmysql-host=adres-serwera-sql #podaj adres ip lub nazwê serwera na którym pracuje bazy danych
+gmysql-password=has³o
+gmysql-user=powerdns
+master=yes 
+slave=yes
+recursor=127.0.0.1:5300
+allow-recursion=127.0.0.0/8, 192.168.0.1/24 
+
+Gdzie 192.168.0.1 to przyk³adowa sieæ. Po przecinku nale¿y dodaæ w³asne sieci z których
+serwer ma obs³ugiwaæ zapytania rekurencyjne.
+
+Edytujemy plik /etc/pdns-recursor/recursor.conf	dodaj±c:
+
+allow-from=127.0.0.0/8 
+local-address=127.0.0.1
+local-port=5300
+
+Nastêpnie:
+
+chkconfig --levels 235 pdns-recursor on
+chkconfig --levels 235 pdns on
+
+service pdns-recursor start
+service pdns start
+
+Na Debianie:
+
+apt-get install pdns-server pdns-backend-mysql pdns-recursor
+
+Edytujemy plik  /etc/powerdns/pdns.conf dodaj±c:
+
+launch=gmysql
+
+Edytujemy /etc/powerdns/pdns.d/pdns.local dodaj±c: 
+
+gmysql-dbname=lms #wpisz w³a¶ciw± nazwê bazy danych na której pracuje lms
+gmysql-host=adres-serwera-sql #podaj adres ip lub nazwê serwera na którym pracuje bazy danych
+gmysql-password=has³o
+gmysql-user=powerdns
+master=yes 
+slave=yes
+
+Edytujemy plik /etc/powerdns/recursor.conf	dodaj±c:
+
+allow-from=127.0.0.0/8 
+local-address=127.0.0.1
+local-port=5300
+
+Nastêpnie 
+
+/etc/init.d/pdns start
+/etc/init.d/pdns-recursor start
+
+</screen>
+</example></para>
+	    <para>Poni¿szy listing zawiera istotne fragmenty pliku konfiguracyjnego
+	    demona proftpd (w wersji 1.2.10) umo¿liwiaj±cy przechowywanie danych
+	    o kontach ftp w bazie LMSa. Przyk³ad zawiera konfiguracjê dla bazy
+	    danych PostgreSQL, w komentarzach podano rozwi±zania dla MySQLa:
+	    <example id="hosting-e1">
+		<title>Hosting. Konfiguracja proftpd.</title>
+<screen>
+  ServerName	"LMS FTP Server"
+  
+  #nazwa_bazy@host:port klient has³o
+  SQLConnectInfo lms@localhost:5432 lms mypassword
+  
+  SQLAuthTypes Crypt Plaintext
+  SQLUserInfo passwd login password uid NULL home NULL
+  RequireValidShell off
+  SQLAuthenticate users
+  
+  # utworzenie katalogu domowego gdy nie istnieje
+  SQLHomedirOnDemand on
+  
+  # komunikat przy logowaniu
+  SQLShowInfo PASS "230" "Last login: %{getlastlogin}"
+  SQLLog PASS setlastlogin
+  
+  # SQLNamedQuery getlastlogin SELECT "CASE lastlogin WHEN 0 THEN '' ELSE FROM_UNIXTIME(lastlogin) END FROM passwd WHERE login='%u'"
+  # SQLNamedQuery setlastlogin UPDATE "lastlogin=UNIX_TIMESTAMP() WHERE login='%u'" passwd 
+  SQLNamedQuery getlastlogin SELECT "CASE lastlogin WHEN 0 THEN '' ELSE lastlogin::abstime::timestamp::text END FROM passwd WHERE login='%u'"
+  SQLNamedQuery setlastlogin UPDATE "lastlogin=EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0)) WHERE login='%u'" passwd
+  
+  # Sprawdzamy datê wa¿no¶ci konta oraz ograniczamy szukanie do kont ftp
+  # SQLUserWhereClause "type & 8 = 8 AND (expdate = 0 OR expdate &gt; UNIX_TIMESTAMP())"
+  SQLUserWhereClause "type & 8 = 8 AND (expdate = 0 OR expdate &gt; EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0)))"
+</screen>
+	    </example></para>
+	    <para>W kolejnym przyk³adzie przedstawimy jak skonfigurowaæ serwer
+	    Postfix 2.1.1 oraz Cyrus-SASL 2.1.19, Courier-IMAP/POP3 3.0.4, aby korzysta³y
+	    z bazy danych LMSa. LMS'owe konta bêd± kontami wirtualnymi, a poczta
+	    przechowywana bêdzie w formacie Maildir.</para>
+	    <para>Poniewa¿ has³a w LMS'ie s± szyfrowane, wymagane jest zainstalowanie
+	    SASL'a z ³at± pozwalaj±c± na to. W komentarzach podano warto¶ci opcji
+	    charakterystycznych dla bazy MySQL. Listing zawiera tylko opcje bezpo¶rednio
+	    zwi±zane z baz± danych:
+	    <example id="hosting-e2">
+		<title>Konta. Konfiguracja serwera pocztowego (postfix+sasl+courier).</title>
+<screen>
+# Plik smtpd.conf (Cyrus-SASL):
+
+pwcheck_method: auxprop
+password_format: crypt
+mech_list: login plain
+sql_user: lms
+sql_passwd: has³o
+sql_hostnames: localhost
+sql_database: lms
+# MySQL
+#sql_engine: mysql
+#sql_select: SELECT p.password FROM passwd p, domains d WHERE p.domainid = d.id
+#       AND p.login='%u' AND d.name ='%r' AND p.type & 2 = 2 
+#	AND (p.expdate = 0 OR p.expdate &gt; UNIX_TIMESTAMP())
+# PostgreSQL
+sql_engine: pgsql
+sql_select: SELECT p.password FROM passwd p, domains d WHERE p.domainid = d.id
+	AND p.login='%u' AND d.name ='%r' AND p.type & 2 = 2 
+	AND (p.expdate = 0 OR p.expdate &gt; EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0)))
+
+# authpgsqlrc (lub authmysqlrc) (Courier):
+
+# u¿ytkownik postfix (w³a¶ciciel katalogu z poczt±)
+#MYSQL_UID_FIELD '1004'
+PGSQL_UID_FIELD '1004'
+# grupa postfix (w³a¶ciciel katalogu z poczt±)
+#MYSQL_GID_FIELD '1004'
+PGSQL_GID_FIELD '1004'
+#MYSQL_PORT		3306
+PGSQL_PORT		5432
+#MYSQL_USERNAME		lms
+PGSQL_USERNAME		lms
+#MYSQL_PASSWORD		has³o
+PGSQL_PASSWORD		has³o
+#MYSQL_DATABASE		lms
+PGSQL_DATABASE		lms
+#MYSQL_SELECT_CLAUSE SELECT p.login, \
+#       p.password, '', 104, 104, '/var/spool/mail/virtual', \
+#       CONCAT(d.name,'/', p.login, '/'), '', p.login, '' \
+#       FROM passwd p, domains d WHERE p.domainid = d.id \
+#       AND p.login = '$(local_part)' AND d.name = '$(domain)' \
+#       AND p.type & 2 = 2 AND (p.expdate = 0 OR p.expdate &gt; UNIX_TIMESTAMP())
+PGSQL_SELECT_CLAUSE SELECT p.login, \
+        p.password, '', 104, 104, '/var/spool/mail/virtual', \
+        d.name || '/' || p.login ||'/', '', p.login, '' \
+        FROM passwd p, domains d WHERE p.domainid = d.id 
+        AND p.login = '$(local_part)' AND d.name = '$(domain)' \
+        AND p.type & 2 = 2 \
+        AND (p.expdate = 0 OR p.expdate &gt; EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0)))
+
+# main.cf (Postfix):
+
+virtual_mailbox_base = /var/spool/mail/virtual
+virtual_mailbox_domains = pgsql:/etc/postfix/virtual_domains_maps.cf
+virtual_mailbox_maps = pgsql:/etc/postfix/virtual_mailbox_maps.cf
+virtual_alias_maps = pgsql:/etc/postfix/virtual_alias_maps.cf
+recipient_bcc_maps = pgsql:/etc/postfix/recipient_bcc_maps.cf
+
+# virtual_domains_maps.cf (Postfix):
+
+user = lms
+password = has³o
+hosts = localhost
+dbname = lms
+#pgSQL i MySQL
+query = SELECT name FROM domains WHERE name = '%s'
+
+# virtual_mailbox_maps.cf (Postfix):
+
+user = lms
+password = has³o
+hosts = localhost
+dbname = lms
+
+# MySQL
+#query = SELECT CONCAT(d.name,'/', p.login, '/') 
+#	FROM passwd p, domains d WHERE p.domainid = d.id
+#	AND p.login = '%u' AND d.name = '%d' 
+#	AND p.type & 2 = 2 AND (p.expdate = 0 OR p.expdate &gt; UNIX_TIMESTAMP())
+# PostgresSQL
+query = SELECT d.name || '/' || p.login || '/' 
+	FROM passwd p, domains d WHERE p.domainid = d.id
+        AND p.login = '%u' AND d.name = '%d' 
+        AND p.type & 2 = 2 
+        AND (p.expdate = 0 OR p.expdate &gt; EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0)))
+
+# virtual_alias_maps.cf (Postfix):
+
+user = lms
+password = has³o
+hosts = localhost
+dbname = lms
+# MySQL
+#query = SELECT p.mail_forward
+#	FROM passwd p
+#	JOIN domains d ON (p.domainid = d.id)
+#	WHERE p.login = '%u' AND d.name = '%d'
+#		AND p.type & 2 = 2 AND p.mail_forward != ''
+#		AND (p.expdate = 0 OR p.expdate &gt; UNIX_TIMESTAMP())
+#	UNION
+#       SELECT CASE WHEN aa.mail_forward != '' THEN aa.mail_forward ELSE CONCAT(p.login, '@', pd.name) END
+#	FROM aliases a
+#	JOIN domains ad ON (a.domainid = ad.id)
+#	JOIN aliasassignments aa ON (aa.aliasid = a.id)
+#	LEFT JOIN passwd p ON (aa.accountid = p.id AND (p.expdate = 0 OR p.expdate &gt; UNIX_TIMESTAMP()))
+#	LEFT JOIN domains pd ON (p.domainid = pd.id)
+#	WHERE a.login = '%u' AND ad.name = '%d'
+#		AND (aa.mail_forward != '' OR p.id IS NOT NULL)
+# PostgreSQL	
+query = SELECT p.mail_forward
+	FROM passwd p
+	JOIN domains d ON (p.domainid = d.id)
+	WHERE p.login = '%u' AND d.name = '%d'
+		AND p.type & 2 = 2 AND p.mail_forward != ''
+		AND (p.expdate = 0 OR p.expdate &gt; EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0)))
+	UNION
+	SELECT CASE WHEN aa.mail_forward != '' THEN aa.mail_forward ELSE p.login || '@' || pd.name END
+	FROM aliases a
+	JOIN domains ad ON (a.domainid = ad.id)
+	JOIN aliasassignments aa ON (aa.aliasid = a.id)
+	LEFT JOIN passwd p ON (aa.accountid = p.id
+		AND (p.expdate = 0 OR p.expdate &gt; EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0))))
+	LEFT JOIN domains pd ON (p.domainid = pd.id)
+	WHERE a.login = '%u' AND ad.name = '%d'
+		AND (aa.mail_forward != '' OR p.id IS NOT NULL)
+
+# recipient_bcc_maps.cf (Postfix):
+
+user = lms
+password = has³o
+hosts = localhost
+dbname = lms
+# MySQL
+#query = SELECT p.mail_bcc FROM passwd p, domains d 
+#	WHERE p.domainid = d.id
+#	    AND p.login = '%u' AND d.name = '%d'
+#		AND p.type & 2 = 2
+#		AND p.mail_bcc != ''
+#		AND (p.expdate = 0 OR p.expdate &gt; UNIX_TIMESTAMP())
+# PostgreSQL
+query = SELECT p.mail_bcc FROM passwd p, domains d 
+	WHERE p.domainid = d.id
+	        AND p.login = '%u' AND d.name = '%d'
+		AND p.type & 2 = 2
+		AND p.mail_bcc != ''
+		AND (p.expdate = 0 OR p.expdate &gt; EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0)))
+					
+</screen>
+	    </example></para>
+		<para>Nastêpny przyk³ad podes³any przez bart'a przedstawia instalacjê i konfiguracjê
+		serwera pure-ftpd w dystrybucji Gentoo z wykorzystaniem bazy danych MySQL.
+		<example id="accounts-e3">
+		    <title>Konta. Konfiguracja pure-ftpd.</title>
+		    <para>No to zaczynamy od instalacji serwera pure-ftpd. Pod Gentoo wygl±da to tak:
+<screen>
+bart # emerge pure-ftpd -av
+These are the packages that I would merge, in order:
+Calculating dependencies ...done!
+[ebuild   R   ] net-ftp/pure-ftpd-1.0.20-r1  -caps -ldap +mysql +pam -postgres +ssl +vchroot 459 kB
+Total size of downloads: 459 kB
+</screen>
+			Co do innych systemów to ka¿dy chyba wie jak siê instaluje pakiety w
+			swoim systemie, a je¿eli nie to pozostaje kompilacja ze ¼róde³.
+			Po zainstalowaniu przechodzimy do stworzenia pliku, który bêdzie
+			odpowiada³ za ³±czenie siê z baz± LMS'a.
+			Tworzymy plik <filename>/etc/pureftpd-mysql.conf</filename>, który to 
+			powinien zawieraæ minimum:
+<screen>
+MYSQLServer     localhost (adres serwera bazy danych - domy¶lnie 'localhost')
+MYSQLPort       3306 (port na którym dzia³a serwer MySql - domy¶lnie '3306')
+MYSQLSocket     /var/run/mysqld/mysqld.sock (
+MYSQLUser       lms (nazwa usera z dostêpem do bazy)
+MYSQLPassword   has³o (tutaj nale¿y podaæ has³o)
+MYSQLDatabase   lms (nazwa bazy danych)
+MYSQLCrypt      crypt (sposób przechowywania hase³)
+MYSQLGetPW      SELECT password FROM passwd WHERE login="\L" (pobieranie has³a dla usera)
+MYSQLGetUID     SELECT uid FROM passwd WHERE login="\L" (pobieranie uid dla usera)
+MYSQLGetGID     SELECT gid FROM passwd WHERE login="\L" (pobieranie gid dla usera)
+MYSQLGetDir     SELECT home FROM passwd WHERE login="\L" (pobieranie nazwy katalogu domowego dla usera)
+MySQLGetQTASZ   SELECT quota_ftp FROM passwd WHERE login="\L" (quota czyli pojemno¶æ konta w MB - podaj±c w lms-ui 10 oznacza to pojemno¶æ 10MB)
+</screen>
+			Teraz pozostaje nam ju¿ tylko konfiguracja serwera pure-ftpd. (w gentoo
+			plik konfiguracyjny mie¶ci siê w <filename>/etc/conf.d/pure-ftpd</filename>) 
+			a wiêc:
+<screen>
+## Najpierw odkomentujmy tê liniê, poniewa¿ inaczej serwer nie bêdzie chcia³ wystartowaæ
+IS_CONFIGURED="yes"
+## Tutaj podajemy adres naszego serwera i port na którym ma nas³uchiwaæ
+SERVER="-S www.nasza.domena.pl,21"
+## Okre¶lamy ilo¶æ jednoczesnych po³±czeñ do serwera oraz ilo¶æ po³±czeñ z tego samego IP
+## To ju¿ chyba ka¿dy wed³ug potrzeb
+MAX_CONN="-c 50"
+MAX_CONN_IP="-C 2"
+## Startujemy daemona w tle
+DAEMON="-B"
+## Ustalamy procentow± zajêto¶æ dysku/partycji kiedy serwer powinien przestaæ zezwalaæ na przyjmowanie danych
+DISK_FULL="-k 90%"
+## Je¿eli serwer jest za NATem odkomentuj tê liniê
+#USE_NAT="-N"
+## Autoryzacja ma byæ pobierana z bazy LMS'a - podajemy ¶cie¿kê do stworzonego przez nas wcze¶niej pliku
+AUTH="-l mysql:/etc/pureftpd-mysql.conf"
+## Pozosta³e opcje w moim wypadku s± takie
+MISC_OTHER="-A -x -j"
+</screen></para>
+	</example></para>
+	</sect2>
+ </sect1>
+ <sect1 id="menu-messages">
+	<title>Wiadomo¶ci</title>
+	<para>Wiadomo¶ci to miejsce z którego mo¿esz rozsy³aæ do klientów spam w postaci
+	wiadomo¶ci e-mail lub sms. </para>
+	<sect2 id="menu-messages-list">
+		<title>Lista</title>
+		<para>Lista wiadomo¶ci zawiera historiê wys³anych wiadomo¶ci. Mo¿esz
+		j± dowolnie przeszukiwaæ korzystaj±c z filtra. Klikniêcie wiersza
+		wiadomo¶ci powoduje przej¶cie do strony ze szczegó³owymi informacjami
+		o wiadomo¶ci tj. tre¶ci, nadawcy. Strona ta zawiera równie¿ listê
+		odbiorców wiadomo¶ci wraz ze statusem wysy³ki.</para>
+	</sect2>
+	<sect2 id="menu-messages-new">
+		<title>Nowa wiadomo¶æ</title>
+		<para>Aby wys³aæ wiadomo¶æ nale¿y wybraæ grupê docelow± przy pomocy
+		dostêpnych filtrów okre¶laj±cych status klienta, sieæ, grupê, typ ³±cza, itp. 
+		Nale¿y równie¿ wybraæ typ wiadomo¶ci, podaæ jej temat (wymagany równie¿ dla smsów) i tre¶æ.</para>
+		<para>W tre¶ci wiadomo¶ci mo¿na u¿ywaæ zmiennych, w miejsce których zostan±
+		podstawione dane w³a¶ciwe dla ka¿dego z odbiorców:
+		<simplelist>
+			<member><prompt>%customer</prompt> - nazwisko/nazwa i imiê klienta</member>
+			<member><prompt>%balance</prompt> - kwota bilansu (ze znakiem)</member>
+			<member><prompt>%cid</prompt> - ID klienta</member>
+			<member><prompt>%pin</prompt> - PIN klienta</member>
+			<member><prompt>%last_10_in_a_table</prompt> - lista ostatnich 10 operacji na koncie klienta</member>
+			<member><prompt>%bankaccount</prompt> - numer konta bankowego</member>
+		</simplelist>
+		</para>
+	</sect2>
+	<sect2 id="menu-messages-conf">
+		<title>Konfiguracja</title>
+		<para>Serwer musi byæ odpowiednio skonfigurowany do u¿ycia PEAR::Mail dla mailingu. 
+		Je¿eli korzystasz z serwera pocztowego na zdalnym ho¶cie bêdziesz musia³ ustawiæ 
+		opcje smtp_host, smtp_port, smtp_username, smtp_password.</para>
+		<para>Poni¿ej znajduje siê lista opcji konfiguracyjnych zwi±zanych
+		z wysy³aniem wiadomo¶ci pocztowych. Opcje te umieszczone s± w sekcji
+		<emphasis>[mail]</emphasis>
+		<itemizedlist>
+			<listitem>
+				<para>debug_email</para>
+				<para>Adres e-mail do debugowania - pod ten adres bêd± sz³y wiadomo¶ci wysy³ane z sekcji 'Wiadomo¶ci' LMS'a, 
+				zamiast do w³a¶ciwych klientów.</para>
+				<para>Przyk³ad:     <prompt>debug_email = root@localhost</prompt></para>
+			</listitem>
+			<listitem>
+				<para>smtp_host, smtp_port, smtp_username, smtp_password</para>
+				<para>Parametry po³±czenia SMTP. LMS umo¿liwia korzystanie ze
+				zdalnego serwera pocztowego z autoryzacj±, wykorzystuj±c do tego modu³
+				PEAR::Mail. Domy¶lnie: 127.0.0.1:25.</para>
+				<para>Przyk³ad:     <prompt>smtp_host = poczta.domena.pl</prompt></para>
+			</listitem>
+			<listitem>
+				<para>smtp_auth_type</para>
+				<para>Metoda autoryzacji SMTP w mailingu. Przy ustawieniach domy¶lnych
+				zostanie u¿yta najlepsza z dostêpnych metod. Domy¶lnie: nie ustawiona.</para>
+				<para>Przyk³ad:     <prompt>smtp_auth_type = DIGEST-MD5</prompt></para>
+			</listitem>
+		</itemizedlist>
+		</para>
+		<para>Konfiguracja wiadomo¶ci SMS jest bardziej rozbudowana. Przede wszystkim 
+		nale¿y zdefiniowaæ z jakiej us³ugi bêdziemy korzystaæ. Czy bêdzie to bramka smsowa,
+		czy jakie¶ oprogramowanie zainstalowane na serwerze (np. gnokii, smstools). Konfiguracji
+		dokonujemy w sekcji <emphasis>[sms]</emphasis>:
+		<itemizedlist>
+			<listitem>
+				<para>service</para>
+				<para>Us³uga u¿ywana do wysy³ania smsów. Dozwolone warto¶ci to 'smstools' i 'smscenter'</para>
+				<para>Przyk³ad:     <prompt>service = smstools</prompt></para>
+			</listitem>
+			<listitem>
+				<para>prefix</para>
+				<para>Telefoniczny prefix kraju. Domy¶lnie: 48 (Polska)</para>
+				<para>Przyk³ad:     <prompt>prefix = 49</prompt></para>
+			</listitem>
+			<listitem>
+				<para>from</para>
+				<para>Nadawca wiadomo¶ci. Domy¶lnie: pusta.</para>
+				<para>Przyk³ad:     <prompt>from = ISP Sp. z o.o.</prompt></para>
+			</listitem>
+			<listitem>
+				<para>username</para>
+				<para>Nazwa u¿ytkownika bramki smsowej. Domy¶lnie: pusta.</para>
+				<para>Przyk³ad:     <prompt>username = isp</prompt></para>
+			</listitem>
+			<listitem>
+				<para>password</para>
+				<para>Has³o do bramki smsowej. Domy¶lnie: puste.</para>
+				<para>Przyk³ad:     <prompt>password = haslo</prompt></para>
+			</listitem>
+			<listitem>
+				<para>smscenter_type</para>
+				<para>Typ konta w us³udze smscenter. Je¶li wybrano 'static' LMS doda nazwê
+				nadawcy na koñcu wiadomo¶ci. Domy¶lnie: dynamic.</para>
+				<para>Przyk³ad:     <prompt>smscenter_type = static</prompt></para>
+			</listitem>
+			<listitem>
+				<para>smstools_outdir</para>
+				<para>Katalog na pliki wiadomo¶ci do wys³ania dla demona smsd z pakietu smstools.
+				Serwer HTTP musi mieæ prawa do zapisu w tym katalogu.
+				Domy¶lnie: /var/spool/sms/outgoing.</para>
+				<para>Przyk³ad:     <prompt>smstools_outdir = /home/smsd/outgoing</prompt></para>
+			</listitem>
+		</itemizedlist>
+		</para>
+	</sect2>
+ </sect1>
+ <sect1 id="menu-reload">
+	<title>Prze³adowanie</title>
+	<para>Menu 'Prze³adowanie' s³u¿y do zarz±dzania us³ugami na serwerach/routerach
+	poprzez "w³±czanie" ¿±dania prze³adowania dla <emphasis>LMS-MGC</emphasis>
+	lub demona <emphasis>lmsd</emphasis>.</para>
+	<para>Je¿eli korzystasz z <emphasis>LMS-MGC</emphasis> klikniêcie na menu 
+	'Prze³adowanie' spowoduje uruchomienie generatora plików
+	konfiguracyjnych <emphasis>LMS-MGC</emphasis>, który wygeneruje 
+	zdefiniowan± konfiguracjê i prze³aduje us³ugi (zale¿nie od zdefiniowanej
+	opcji <prompt>reload_execcmd</prompt>).</para>
+	<para> Zachowanie menu 'Prze³adowanie' jest zale¿ne od ustawienia 
+	opcji <prompt>reload_type</prompt>. Je¶li zdefiniowa³e¶ zapytanie SQL 
+	w opcji <prompt>reload_sqlquery</prompt> zostanie ono wykonane.
+	Je¿eli zdefiniowa³e¶ hosty mo¿esz wybraæ z listy, na których
+	z nich chcesz dokonaæ prze³adowania. W takim wypadku zapytania sql lub
+	komendy zostan± wykonane dla ka¿dego hosta, przy czym definiuj±c
+	je mo¿esz skorzystaæ ze zmiennej '%host', pod któr± zostanie
+	podstawiona w³a¶ciwa nazwa hosta.</para>
+	<para>Wiêcej informacji znajdziesz w rozdzia³ach dotycz±cych 
+	<emphasis>LMS-MGC</emphasis> oraz demona.</para>
+ </sect1>
+ <sect1 id="menu-stats">
+	<title>Statystyki</title>
+	<para>Interfejs do przegl±dania statystyk wykorzystania ³±cza w postaci prostych wykresów jest
+	dostêpny w menu 'Statystyki'. Dane statystyk zawieraj± ilo¶æ danych wysy³anych i pobieranych 
+	z Internetu (na danym interfejsie) dla ka¿dego komputera. Korzystaj±c z górnego menu mo¿esz szybko wygenerowaæ statystyki z ostatniej 
+	godziny, ostatniego dnia, ostatnich 30 dni lub ostatniego roku.</para>
+	<para> 
+	    <note><para>Zapisem danych do bazy zajmuje siê skrypt lms-traffic, albo demon <emphasis>lmsd</emphasis>.</para></note>
+	</para>
+	<sect2 id="menu-stats-filter">
+	<title>Filtr</title>
+	    <para>Przed wygenerowaniem wykresu mo¿esz zdefiniowaæ parametry
+	    okre¶laj±ce okres jaki ma byæ brany pod uwagê, ograniczyæ do jednej sieci (je¶li masz 
+	    ich wiêcej), ilo¶ci komputerów oraz posortowaæ odpowiednio wyniki (na przyk³ad 
+	    wed³ug downloadu).</para>
+	</sect2>
+	<sect2 id="menu-stats-compact">
+	<title>Kompaktowanie</title>
+		<para>W zale¿no¶ci od wybranej przez klienta czêstotliwo¶ci zapisu, mo¿e
+		nast±piæ szybki przyrost danych w bazie, co spowoduje zwiêkszenie czasu
+		oczekiwania na rysowanie wykresów. Z tego powodu w menu 'Kompaktowanie'
+		udostêpniono mo¿liwo¶æ zmniejszenia rozmiarów bazy statystyk bez
+		utraty danych. Wybieraj±c poziom dok³adno¶ci danych, dane zostan± u¶rednione
+		w nastêpuj±cy sposób:
+		<itemizedlist>
+			<listitem><para><emphasis>Poziom Niski (low)</emphasis>: dane z poprzedniego dnia i starsze, zostan± u¶rednione
+			do jednego dnia, czyli je¶li do bazy zapisywane by³y z czêstotliwo¶ci± 10 minut,
+			to 6*24 wpisów zostanie zast±pione jednym.</para></listitem>
+			<listitem><para><emphasis>Poziom ¦redni (medium)</emphasis>: dane starsze ni¿ miesi±c zostan± u¶rednione do
+			jednego dnia.</para></listitem>
+			<listitem><para><emphasis>Poziom Wysoki (high)</emphasis>: dane starsze ni¿ miesi±c zostan± u¶rednione do
+			jednej godziny.</para></listitem>
+		</itemizedlist>
+	    	<warning><para>Kompaktowanie bazy danych jest procesem nieodwracalnym.</para></warning>
+	    	</para>
+		<para>Mo¿liwe jest kompaktowanie bazy danych z wykorzystaniem cron'a. Stronê kompaktowania
+		mo¿na wywo³aæ (uruchomiæ) bezpo¶rednio w przegl±darce, np. w nastêpuj±cy sposób:
+<screen>
+links -dump \
+"http://lms/?m=trafficdbcompact&amp;level=low&amp;removeold=1&amp;removedeleted=1&amp;loginform[login]=login&amp;loginform[pwd]=pass&amp;override=1	
+</screen>
+		</para>
+	</sect2>
+	<sect2 id="menu-stats-reports">
+		<title>Raporty</title>
+			<para>Obecnie masz mo¿liwo¶æ wydruku statystyk klienta z wybranego miesi±ca.
+			Na wydruku bêd± statystyki podane w formie tabelarycznej z podzia³em na dni wraz
+			z podsumowaniem pobranych/wys³anych danych i ¶rednimi prêdko¶ciami.</para>
+	</sect2>
+ </sect1>
+  <sect1 id="menu-helpdesk">
+	<title>Helpdesk</title>
+	    <para>Helpdesk (inaczej Request Tracker) to system obs³ugi zg³oszeñ.
+	    W systemie mo¿na prowadziæ bazê wszystkich zg³oszeñ i zapytañ klientów
+	    sieci, ale tak¿e osób które nie s± wpisane do bazy LMS'a. Zg³oszenia mo¿na
+	    pogrupowaæ w kategorie (kolejki) i wyszukiwaæ wg zadanych kryteriów.
+	    Do ka¿dej kolejki mo¿na zdefiniowaæ uprawnienia dla u¿ytkowników.
+	    </para>
+	    <para>W menu po lewej stronie znajduje siê pole szybkiego wyszukiwania
+	    zg³oszenia, w którym mo¿na podawaæ jego ID lub nazwisko zg³aszaj±cego je
+	    klienta. W drugim przypadku zostanie wy¶wietlona lista wszystkich zg³oszeñ
+	    danego klienta.</para>
+	    <para>Ka¿de zg³oszenie posiada historiê, na któr± sk³adaj± siê wiadomo¶ci
+	    od u¿ytkowników i klientów. Administrator mo¿e wys³aæ swoj± wiadomo¶æ do 
+	    klienta, klikaj±c 'Wy¶lij' podczas dodawania wiadomo¶ci. (Nale¿y podaæ
+	    e-mail odbiorcy. Adresem nadawcy bêdzie adres kolejki, a je¶li jest pusty, adres 
+	    u¿ytkownika). Wszystkie wiadomo¶ci tak¿e te wys³ane, zostaj± zapisane 
+	    w historii zg³oszenia. Zg³oszenie mo¿e mieæ cztery stany: nowy, otwarty, rozwi±zany 
+	    i martwy.</para>
+	    <para>Skrypt <xref linkend="lms-rtparser"> zosta³ stworzony aby umo¿liwiæ
+	    obs³ugê systemu i przesy³anie zg³oszeñ poczt± elektroniczn±.</para>
+	<sect2 id="menu-helpdesk-list">
+	<title>Lista kolejek</title>
+	    <para>Na li¶cie kolejek znajduj± siê podstawowe informacje i statystyki zg³oszeñ.
+	    Klikniêcie na wybranej kolejce powoduje wy¶wietlenie listy zg³oszeñ. St±d mo¿na
+	    tak¿e przej¶æ do informacji szczegó³owych (w tym tak¿e uprawnieniach) o kolejce lub
+	    usun±æ wybran± kolejkê. Usuniêcie kolejki spowoduje tak¿e usuniêcie zg³oszeñ z bazy
+	    danych przypisanych do niej.
+	    </para>
+	</sect2>
+	<sect2 id="menu-helpdesk-newqueue">
+	<title>Nowa kolejka</title>
+	    <para>Kolejka (kategoria) posiada nazwê, opcjonalny opis oraz opcjonalny adres
+	    poczty elektronicznej, który u¿ywany jest do korespondencji. W tabeli 'Uprawnienia'
+	    definiuje siê prawa do danej kolejki, które maj± moc wiêksz± od ogólnych 
+	    uprawnieñ u¿ytkowników tzn. je¶li user nie ma praw do danej kolejki, to nawet
+	    je¶li ma 'pe³ny dostêp' zg³oszeñ w tej kolejce nie zobaczy. Prawo zapisu pozwala na edycjê i dodawanie zg³oszeñ i wiadomo¶ci. Prawo 'Usuwanie'
+	    pozwala na usuwanie wiadomo¶ci i zg³oszeñ. Prawo 'Powiadomienia'
+	    s³u¿y do otrzymywania informacji o nowych zg³oszeniach. Je¿eli w³±czono opcjê 'newticket_notify' 
+	    wszyscy u¿ytkownicy z tym uprawnieniem bêd± otrzymywaæ emailowe powiadomienia 
+	    o nowych zg³oszeniach do przedmiotowej kolejki. Wszystkie prawa "wy¿sze" od
+    	prawa 'Odczyt' zawieraj± uprawnienie do odczytu wiadomo¶ci.</para>
+	</sect2>
+	<sect2 id="menu-helpdesk-search">
+	<title>Wyszukiwanie</title>
+	    <para>Wyszukiwanie zg³oszeñ polega na wybraniu z bazy zg³oszeñ spe³niaj±cych 
+	    wszystkie podane kryteria (warunek AND, nie OR). Mo¿esz podaæ temat, w³a¶ciciela, 
+	    kolejkê, status i zg³aszaj±cego. Klientów sieci wybieraj z listy, dla pozosta³ych
+	    nale¿y podaæ Nazwisko/Imiê i/lub e-mail.
+	    </para>
+	</sect2>
+	<sect2 id="menu-helpdesk-newticket">
+	<title>Nowe zg³oszenie</title>
+	    <para>Dodaj±c nowe zg³oszenie nale¿y okre¶liæ dla niego temat, tre¶æ, wybraæ kolejkê
+	    oraz zg³aszaj±cego klienta. Osoby spoza sieci wpisujemy w polach Nazwisko i Imiê.
+	    Opcjonalnie, je¶li wiadomo¶æ zosta³a zg³oszona poczt± elektroniczn± podajemy adres 
+	    e-mail (tak¿e dla klienta zapisanego w bazie).</para>
+	</sect2>
+	<sect2 id="menu-helpdesk-reports">
+		<title>Raporty</title>
+		<para>Tutaj mamy mo¿liwo¶æ wydruku list zg³oszeñ lub statystyk helpdesku:
+		<itemizedlist>
+			<listitem>
+				<para><emphasis>Lista zg³oszeñ</emphasis> z  filtrami kolejki, statusu i klienta oraz mo¿liwo¶ci± okre¶lenia granicy dni,</para>
+			</listitem>
+			<listitem>
+				<para><emphasis>Statystyki zg³oszeñ</emphasis> z mo¿liwo¶ci± wyboru kolejki oraz warto¶ci granicznych.</para>
+			</listitem>
+		</itemizedlist>
+		</para>
+	</sect2>
+ </sect1>
+ <sect1 id="menu-timetable">
+	<title>Terminarz</title>
+	<para>Terminarz, to tzw. organizer czasu, czyli miejsce gdzie ka¿dy u¿ytkownik
+	mo¿e prowadziæ w³asny kalendarz. Wprowadzone zadania (zdarzenia) mog± byæ
+	równie¿ dostêpne dla wszystkich i mieæ przypisanych dowolnych klientów, co
+	pozwala np. na zarz±dzanie ekipami serwisowymi.</para>
+	<para>Dodatkiem do Terminarza jest skrypt <filename>lms-reminder</filename>,
+	s³u¿±cy do przypominania u¿ytkownikom o zaplanowanych na dany dzieñ zadaniach.</para>
+	<sect2 id="timetable-list">
+	    <title>Terminarz (Lista zadañ)</title>
+	    <para>Terminarz przedstawia listê dni od dnia wybranego z podrêcznego
+	    kalendarzyka. Ilo¶æ dni na li¶cie okre¶la opcja <filename>timetable_days_forward</filename>
+	    domy¶lnie ustawiona na 7 dni. Z poziomu listy mo¿na wydrukowaæ plan dnia
+	    lub przej¶æ do edycji zdarzenia.</para>
+	</sect2>
+	<sect2 id="timetable-new">
+	    <title>Nowe zdarzenie</title>
+	    <para>Dodaj±c do Terminarza nowe zadania musisz okre¶liæ krótki tytu³
+	    oraz dzieñ i godzinê (zakres godzin). Pozosta³e pola s± opcjonalne. 
+	    Zaznaczenie opcji 'prywatne' spowoduje ukrycie zadania przed wszystkimi
+	    u¿ytkownikami oprócz tego, który je doda³ do Terminarza. W³a¶ciwo¶æ ta
+	    pozwala na prowadzenie przez ka¿dego u¿ytkownika w³asnego, prywatnego kalendarza.</para>
+	</sect2>
+	<sect2 id="timetable-search">
+	    <title>Szukaj</title>
+	    <para>Wyszukuj±c w Terminarzu zadania mo¿emy okre¶liæ zakres dat,
+	    poszukiwanego klienta, klienta lub fragment tekstu, znajduj±cego
+	    siê w tytule, opisie lub notatce do zadania. Na li¶cie zadañ
+	    zostan± wy¶wietlone zadania spe³niaj±ce wszystkie podane kryteria.</para>
+	</sect2>
+ </sect1>
+    <sect1 id="menu-configuration">
+	<title>Konfiguracja</title>
+	<sect2 id="config-ui">
+	    <title>Interfejs U¿ytkownika</title>
+	    <sect3 id="config-basic">
+		<title>Podstawy</title>
+	        <para>Pocz±wszy od wersji 1.5.3 mo¿liwa jest konfiguracja interfejsu
+		u¿ytkownika tak¿e poprzez <emphasis>LMS-UI</emphasis>. Opcje przechowywane 
+        	s± w bazie danych i nale¿y je przenie¶æ z pliku <filename>lms.ini</filename>.
+		W celu automatycznego przeniesienia konfiguracji do bazy danych kliknij na
+    	        linku znajduj±cym siê na pustej li¶cie opcji konfiguracyjnych.</para>
+    		<para><note><para>Opcje konfigurowane w <emphasis>LMS-UI</emphasis> maj±
+    		wiêkszy priorytet od tych zapisanych w <filename>lms.ini</filename>, co
+    		oznacza, ¿e plik konfiguracyjny jest tak¿e odczytywany, ale warto¶ci 
+    		zmiennych z tego pliku nadpisywane s± warto¶ciami zapisanymi
+    		w bazie danych.</para></note>
+    		<note><para>Demon odczytuje niektóre opcje konfiguracyjne UI tylko z bazy
+    		danych, dlatego zaleca siê przechowywanie konfiguracji w bazie zamiast w pliku 
+    		ini.</para></note></para>
+    		<para>Aby dodaæ now± opcjê kliknij link 'Dodaj opcjê'.
+    		Aby wyedytowaæ parametry opcji kliknij na jej rekord. Zostaniesz przeniesiony 
+    		do formularza edycyjnego. Zmiana statusu
+    		opcji oznacza w³±czenie/wy³±czenie jej dzia³ania, co polega na przypisaniu
+    		jej warto¶ci domy¶lnej (je¿eli tak± posiada).</para>
+    	</sect3>
+	<sect3 id="config-options">
+        <title>Lista opcji konfiguracyjnych</title>
+    	    <para>Poni¿ej przedstawiamy listê opcji konfiguracyjnych interfejsu
+	    u¿ytkownika. Opcje te nale¿y umie¶ciæ w sekcji <emphasis>[phpui]</emphasis>.
+	    Pozosta³e opcje zosta³y omówione w odpowiednich rozdzia³ach ich dotycz±cych.
+    <itemizedlist>
+        <listitem>
+             <para>lang</para>
+             <para>Ustawia jêzyk interfejsu u¿ytkownika. Je¶li nie podano, jêzyk
+            zostanie ustawiony na podstawie ustawieñ przegl±darki. Domy¶lnie: en.</para>
+             <para>Przyk³ad:          <prompt>lang = pl</prompt></para>
+        </listitem>
+	<listitem>
+             <para>allow_from</para>
+             <para>Lista sieci i adresów IP które maj± dostêp do LMS. Je¿eli puste, ka¿dy adres IP ma dostêp do LMS'a, 
+            je¿eli wpiszemy tutaj listê adresów b±d¼ pul adresowych, LMS odrzuci b³êdem HTTP 403 ka¿dego 
+            niechcianego u¿ytkownika.</para>
+             <para>Przyk³ad:          <prompt>allow_from = 192.168.0.0/16, 213.25.209.224/27, 213.241.77.29</prompt></para>
+        </listitem>
+        <listitem>
+            <para>timeout</para>
+            <para>Timeout sesji www. Po tym czasie (w sekundach) u¿ytkownik zostanie wylogowany je¿eli nie 
+            podejmie ¿adnej akcji. Domy¶lnie 600 sekund.</para>
+            <para>Przyk³ad:     <prompt>timeout = 900</prompt></para>
+            <para><warning><para>Nie ma mo¿liwo¶ci ustawienia braku timeoutu. Je¿eli ustawisz t± warto¶æ na zero, nie 
+            bêdziesz móg³ korzystaæ z LMS!</para></warning></para>
+        </listitem>
+	<listitem>
+		<para>default_module</para>
+		<para>Nazwa modu³u startowego (nazwa pliku z katalogu <filename>/modules</filename>
+		bez rozszerzenia .php). Domy¶lnie: welcome.</para>
+		<para>Przyk³ad:          <prompt>default_module = copyrights</prompt></para>
+        </listitem>
+        <listitem>
+            <para>customerlist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie klientów. Domy¶lnie: 100.</para>
+            <para>Przyk³ad:     <prompt>customerlist_pagelimit = 10</prompt></para>
+        </listitem>
+        <listitem>
+            <para>nodelist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie komputerów. Domy¶lnie: 100.</para>
+            <para>Przyk³ad:     <prompt>nodelist_pagelimit = 10</prompt></para>
+        </listitem>
+        <listitem>
+            <para>balancelist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie na rachunku klienta. Domy¶lnie: 100.</para>
+            <para>Przyk³ad:     <prompt>balancelist_pagelimit = 50</prompt></para>
+    	</listitem>
+        <listitem>
+            <para>invoicelist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie faktur. Domy¶lnie: 100</para>
+            <para>Przyk³ad:     <prompt>invoicelist_pagelimit = 50</prompt></para>
+        </listitem>
+        <listitem>
+            <para>ticketlist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie zg³oszeñ. Domy¶lnie: 100</para>
+            <para>Przyk³ad:     <prompt>ticketlist_pagelimit = 50</prompt></para>
+        </listitem>
+        <listitem>
+            <para>networkhosts_pagelimit</para>
+            <para>Ilo¶æ komputerów wy¶wietlanych na jednej stronie w informacjach 
+            o sieci. Domy¶lnie: 256.</para>
+            <para>Przyk³ad:     <prompt>networkhosts_pagelimit = 1024</prompt></para>
+        </listitem>
+        <listitem>
+            <para>accountlist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie kont. Domy¶lnie: 100.</para>
+            <para>Przyk³ad:     <prompt>accountlist_pagelimit = 25</prompt></para>
+        </listitem>
+        <listitem>
+            <para>domainlist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie domen. Domy¶lnie: 100.</para>
+            <para>Przyk³ad:     <prompt>domainlist_pagelimit = 25</prompt></para>
+        </listitem>
+        <listitem>
+            <para>aliaslist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie aliasów. Domy¶lnie: 100.</para>
+            <para>Przyk³ad:     <prompt>aliaslist_pagelimit = 25</prompt></para>
+	</listitem>
+        <listitem>
+            <para>configlist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie opcji konfiguracyjnych. Domy¶lnie: 100.</para>
+            <para>Przyk³ad:     <prompt>configlist_pagelimit = 50</prompt></para>
+        </listitem>
+        <listitem>
+            <para>taxratelist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie stawek podatkowych. Domy¶lnie: 100.</para>
+            <para>Przyk³ad:     <prompt>taxratelist_pagelimit = 10</prompt></para>
+        </listitem>
+        <listitem>
+            <para>numberplanlist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie planów numeracyjnych. Domy¶lnie: 100.</para>
+            <para>Przyk³ad:     <prompt>numberplanlist_pagelimit = 10</prompt></para>
+        </listitem>
+        <listitem>
+            <para>divisionlist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie firm. Domy¶lnie: 100.</para>
+            <para>Przyk³ad:     <prompt>divisionlist_pagelimit = 10</prompt></para>
+        </listitem>
+        <listitem>
+            <para>documentlist_pagelimit</para>
+            <para>Limit wy¶wietlanych pozycji na stronie w li¶cie dokumentów. Domy¶lnie: 100.</para>
+            <para>Przyk³ad:     <prompt>documentlist_pagelimit = 10</prompt></para>
+        </listitem>
+        <listitem>
+            <para>reload_type</para>
+            <para>Typ reloadu. Dozwolone warto¶ci:</para>
+            <para>exec - wywo³ywanie jakiej¶ komendy (najczê¶ciej co¶ przez sudo, jaki¶ skrypt lub co¶, konfigurowalny
+            poni¿ej)</para>
+            <para>sql  - zrobienie wpisów w SQL'u (te¿ mo¿na ustawiæ konkretne query SQL'a)</para>
+            <para>Domy¶lna warto¶æ to 'sql'.</para>
+            <para>Przyk³ad:     <prompt>reload_type = exec</prompt></para>
+        </listitem>
+        <listitem>
+            <para>reload_execcmd</para>
+            <para>Komenda do wykonania podczas reloadu je¿eli reload_type jest ustawione na 'exec'. Domy¶lnie
+            <filename>/bin/true</filename>. String ten puszczany do komendy system() wiêc proponujê rozwagê 
+            i pomy¶lenie co siê robi i jak :) Generalnie ¶redniki powinny byæ parsowane przez bash'a, ale z paru 
+            wzglêdów LMS sam dzieli poni¿szy ci±g pod wzglêdem ¶redników i wykonuje komendy pojedynczo.
+	    W poleceniach mo¿na u¿ywaæ zmiennej '%host', która zostanie zamieniona na nazwê
+	    zdefiniowanego hosta (Konfiguracja -> Hosty).</para>
+            <para>Przyk³ad:     <prompt>reload_execcmd = "sudo /usr/bin/reload_lms.sh"</prompt></para>
+        </listitem>
+        <listitem>
+            <para>reload_sqlquery</para>
+            <para>Zapytanie SQL wykonywane podczas reloadu, je¶li <prompt>reload_type = sql</prompt>.  
+            Domy¶lnie zapytanie ustawia w bazie polecenie prze³adowania dla demona
+	    <emphasis>lmsd</emphasis>. W zapytaniu mo¿na u¿yæ zmiennej '%host' oraz
+            '%TIME%' jako podstawki pod aktualny timestamp unixowy. UWAGA! Znak ¶rednika jest 
+            traktowany jako separator kwerend, tzn. oddzielaj±c znakiem ¶rednika mo¿esz wpisaæ kilka zapytañ SQL.</para>
+            <para>Przyk³ad:     <prompt>reload_sqlquery = "INSERT INTO reload VALUES ('1','%TIME%')"</prompt></para>
+        </listitem>
+        <listitem>
+            <para>force_ssl</para>
+            <para>Wymuszanie SSL'a. Ustawienie tej zmiennej na 1 spowoduje ¿e LMS bêdzie wymusza³ po³±czenie 
+            SSL powoduj±c redirect do 'https://'.$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI] przy ka¿dej 
+            próbie dostêpu bez SSL. Domy¶lnie wy³±czone.</para>
+            <para>Przyk³ad:     <prompt>force_ssl = 0</prompt></para>
+	</listitem>
+        <listitem>
+            <para>allow_mac_sharing</para>
+            <para>Przyzwolenie na dodawanie rekordów komputerów z adresami MAC ju¿ istniej±cymi (nie sprawdza 
+            czy jaki¶ inny komputer posiada taki adres MAC). Domy¶lnie wy³±czone</para>
+            <para>Przyk³ad:     <prompt>allow_mac_sharing     = 1</prompt></para>
+        </listitem>
+        <listitem>
+            <para>smarty_debug</para>
+            <para>W³±czenie konsoli debugowej Smarty-ego, przydatne do ¶ledzenia warto¶ci przekazywanych z PHP 
+            do Smarty-ego. Domy¶lnie wy³±czone.</para>
+            <para>Przyk³ad:     <prompt>smarty_debug = 1</prompt></para>
+        </listitem>
+        <listitem>
+            <para>default_zip, default_city, default_address</para>
+            <para>Domy¶lny kod pocztowy, miasto, ulica, stosowane podczas wstawiania nowego
+            klienta. Przydatne gdy mamy do wpisania wielu klientów z tej samej ulicy.</para>
+            <para>Przyk³ad:     <prompt>default_zip = 39-300</prompt></para>
+        </listitem>
+        <listitem>
+            <para>use_current_payday</para>
+            <para>Okre¶la, czy ma byæ u¿yta aktualna data jako dzieñ zap³aty podczas
+            przypisywania zobowi±zañ klientom. Domy¶lnie wy³±czone.</para>
+            <para>Przyk³ad:     <prompt>use_current_payday = 1</prompt></para>
+        </listitem>
+        <listitem>
+            <para>default_monthly_payday</para>
+            <para>Okre¶la domy¶lny dzieñ miesi±ca odpowiadaj±cy dniom zap³aty podczas
+            przypisywania zobowi±zañ klientom. Domy¶lnie niezdefiniowany.</para>
+            <para>Przyk³ad:     <prompt>default_monthly_payday = 1</prompt></para>
+        </listitem>
+	<listitem>
+	    <para>use_invoices</para>
+	    <para>Powoduje zaznaczenie opcji "z faktur±" w formularzu dodawania zobowi±zania. Domy¶lnie wy³±czona.</para>
+	    <para>Przyk³ad:     <prompt>use_invoices = tak</prompt></para>
+        </listitem>
+        <listitem>
+            <para>lastonline_limit</para>
+            <para>Okre¶la czas (w sekundach), po którym komputer zostaje uznany za
+            nieaktywny. Powinien odpowiadaæ czêstotliwo¶ci uruchamiania skryptu
+            badaj±cego aktywno¶æ komputerów (np.lms-fping). Domy¶lnie: 600.</para>
+            <para>Przyk³ad:     <prompt>lastonline_limit = 300</prompt></para>
+        </listitem>
+        <listitem>
+            <para>timetable_days_forward</para>
+            <para>Okre¶la ilo¶æ dni (³±cznie z bie¿±cym) jaka ma byæ wy¶wietlana 
+            w terminarzu. Domy¶lnie: 7.</para>
+            <para>Przyk³ad:     <prompt>timetable_days_forward = 2</prompt></para>
+        </listitem>
+        <listitem>
+            <para>arpd_servers</para>
+            <para>Lista serwerów arpd do sczytywania MAC'adresów z odleg³ych sieci.
+            Lista ta powinna zawieraæ wpisy w postaci adresIP[:port] oddzielone
+            spacjami. Domy¶lnie pusta.</para>
+            <para>Przyk³ad:     <prompt>arpd_servers = 192.168.1.1 192.168.2.1</prompt></para>
+        </listitem>
+        <listitem>
+            <para>helpdesk_backend_mode</para>
+            <para>W³±czenie tej opcji spowoduje, ¿e wszystkie wiadomo¶ci w systemie 
+            helpdesk (oprócz tych skierowanych do zg³aszaj±cego) 
+            bêd± wysy³ane do serwera pocztowego na adres odpowiedniej kolejki.
+            Na serwerze tym powinien byæ uruchomiony skrypt lms-rtparser, który zajmie
+            siê zapisem wiadomo¶ci do bazy danych. Domy¶lnie: wy³±czona.</para>
+            <para>Przyk³ad:     <prompt>helpdesk_backend_mode = 1</prompt></para>
+        </listitem>
+        <listitem>
+            <para>helpdesk_sender_name</para>
+            <para>Nazwa nadawcy wiadomo¶ci albo predefiniowane warto¶ci: 'queue'
+            - nazwa kolejki do której nale¿y zg³oszenie, 'user' - nazwa zalogowanego
+            u¿ytkownika (nadawcy). Domy¶lnie: pusta.</para>
+            <para>Przyk³ad:     <prompt>helpdesk_sender_name = Helpdesk</prompt></para>
+        </listitem>
+        <listitem>
+            <para>newticket_notify</para>
+            <para>W³±czenie tej opcji spowoduje, ¿e wszyscy u¿ytkownicy z prawami
+            do kolejki dostan± powiadomienie (mailem i/lub smsem) o dodaniu do niej nowego
+            zg³oszenia. Domy¶lnie: wy³±czona.</para>
+            <para>Przyk³ad:     <prompt>newticket_notify = 1</prompt></para>
+        </listitem>
+	<listitem>
+		<para>helpdesk_stats</para>
+		<para>Dodaje statystyki przyczyn zg³oszeñ na stronie informacji o zg³oszeniu
+		oraz na jego wydruku. Domy¶lnie: w³±czona.</para>
+		<para>Przyk³ad:     <prompt>helpdesk_stats = 0</prompt></para>
+        </listitem>
+	<listitem>
+		<para>helpdesk_customerinfo</para>
+		<para>Dodaje podstawowe informacje o kliencie na stronie informacji o zg³oszeniu
+		oraz w tre¶ci powiadomienia. Domy¶lnie: w³±czona.</para>
+		<para>Przyk³ad:     <prompt>helpdesk_customerinfo = 0</prompt></para>
+        </listitem>
+	<listitem>
+		<para>ticketlist_status</para>
+		<para>Domy¶lne ustawienie filtra statusu na li¶cie zg³oszeñ. Dozwolonych
+		warto¶ci szukaj w kodzie strony html. Domy¶lnie: nie ustawiona.</para>
+		<para>Przyk³ad:     <prompt>ticketlist_status = -1</prompt></para>
+        </listitem>
+	<listitem>
+		<para>ticket_template_file</para>
+		<para>Szablon wydruku zg³oszenia. Domy¶lnie: rtticketprint.html.</para>
+		<para>Przyk³ad:     <prompt>ticket_template_file = ../mytemplates/ticket.html</prompt></para>
+        </listitem>
+        <listitem>
+            <para>to_words_short_version</para>
+            <para>Okre¶la format reprezentacji s³ownej kwot (na fakturach). Dla warto¶ci "1"
+            rozwiniêciem kwoty 123,15 bêdzie "jed dwa trz 15/100". Domy¶lnie: 0.</para>
+            <para>Przyk³ad:     <prompt>to_words_short_version = 1</prompt></para>
+        </listitem>
+        <listitem>
+            <para>nodepassword_length</para>
+            <para>Domy¶lna d³ugo¶æ has³a (generowanego automatycznie) dla komputera. 
+            Maksymalnie 32. Domy¶lnie: 16.</para>
+            <para>Przyk³ad:     <prompt>nodepassword_length = 8</prompt></para>
+        </listitem>
+	<listitem>
+            <para>gd_translate_to</para>
+            <para>Kodowanie danych dla biblioteki GD (przydatne je¶li GD wymaga ISO-8859-2 zamiast UTF-8 dla funkcji imagetext). Domy¶lnie: ISO-8859-2.</para>
+            <para>Przyk³ad:     <prompt>gd_translate_to = </prompt></para>
+	</listitem>
+	<listitem>
+    	    <para>check_for_updates_period</para>
+    	    <para>Jak czêsto sprawdzaæ czy s± dostêpne poprawki LMS-a (w sekundach). Domy¶lnie: 86400.</para>
+    	    <para>Przyk³ad:     <prompt>check_for_updates_period = 604800</prompt></para>
+	</listitem>
+	<listitem>
+    	    <para>default_taxrate</para>
+    	    <para>Okre¶la warto¶æ (nie etykietê) stawki podatkowej, która
+	    bêdzie domy¶lnie zaznaczona na listach wyboru. Domy¶lnie: 22</para>
+    	    <para>Przyk³ad:     <prompt>default_taxrate = 7</prompt></para>
+	</listitem>
+	<listitem>
+		<para>big_networks</para>
+		<para>Wsparcie dla du¿ych ISPów, np. ukrywanie list wyboru klientów. 
+		Domy¶lnie: wy³±czona</para>
+		<para>Przyk³ad:     <prompt>big_networks = true</prompt></para>
+	</listitem>
+	<listitem>
+		<para>short_pagescroller</para>
+		<para>Zmienia wygl±d pól wyboru strony, u³atwiaj±c nawigacjê na listach z 
+		bardzo du¿± liczb± stron. Domy¶lnie: wy³±czona</para>
+		<para>Przyk³ad:     <prompt>short_pagescroller = tak</prompt></para>
+	</listitem>
+	<listitem>
+		<para>ewx_support</para>
+		<para>Wsparcie dla urz±dzeñ <ulink url="http://etherwerx.com">EtherWerX</ulink>.
+		Domy¶lnie: wy³±czona</para>
+		<para>Przyk³ad:     <prompt>ewx_support = tak</prompt></para>
+	</listitem>
+	<listitem>
+		<para>account_type</para>
+		<para>Zmienia domy¶lnego zaznaczenie checkboxów w dodwaniu kont.
+		shell = 1 (0000000000000001)
+		mail = 2  (0000000000000010)
+		www = 4   (0000000000000100)
+		ftp = 8   (0000000000001000)
+		sql = 16  (0000000000010000)
+		Domy¶lnie: 32767</para>
+		<para>Przyk³ad:     <prompt>account_type = 2</prompt></para>
+	</listitem>
+	<listitem>
+		<para>default_assignment_period</para>
+		<para>Domy¶lnie wybrana z listy rozwijanej warto¶æ okresu obci±¿enia, przy dodawaniu zobowi±zania dla klienta.
+			Mo¿liwe warto¶ci:
+			
+			jednorazowo - 0
+			codziennie  - 1
+			co tydzieñ  - 2
+			co miesi±c  - 3 
+			co kwarta³  - 4
+			co rok	    - 5			
+			Domy¶lnie: 0</para>
+		<para>Przyk³ad:     <prompt>default_assignment_period = 3</prompt></para>
+	</listitem>
+    </itemizedlist>
+	</para>
+        </sect3>
+	</sect2>
+    	<sect2 id="config-taxes">
+	    <title>Stawki podatkowe</title>
+		<para>Przed rozpoczêciem pracy z systemem finansowym nale¿y zdefiniowaæ
+		stawki podatkowe jakich bêdziemy u¿ywaæ. Na li¶cie znajduj± siê wszystkie
+		dane stawek. Mo¿liwa jest edycja stawki podatkowej, przy czym nale¿y pamiêtaæ,
+		¿e system nie pozwoli na zmianê warto¶ci stawki, je¿eli zosta³a ona
+		u¿yta w przesz³o¶ci. Nie mo¿liwe jest tak¿e usuniêcie takiej stawki.</para>
+		<para>Link 'Dodaj stawkê' przenosi do formularza definiowania nowej stawki
+		procentowej. Etykieta stawki jest wy¶wietlana na listach wyboru oraz
+		w szablonie faktury. Warto¶æ stawki to liczba od 0 do 100 z dok³adno¶ci±
+		do dwóch miejsc po przecinku. Status opodatkowania jest wykorzystywany
+		do wyró¿nienia stawki zwolnionej z podatku, czyli wszystkie pozosta³e
+		stawki powinny mieæ w³±czone 'opodatkowanie'.</para>
+		<para>Stawkê, która bêdzie domy¶lnie zaznaczona na listach wyboru
+		mo¿na zdefiniowaæ przy pomocy opcji <filename>default_taxrate</filename>
+		w sekcji <emphasis>[phpui]</emphasis></para>
+	</sect2>
+	<sect2 id="config-numberplans">
+	    <title>Plany numeracyjne</title>
+		<para>Wszystkim dokumentom generowanym przez system LMS mo¿na nadawaæ
+		dowoln± numeracjê wg zdefiniowanych wzorów (planów). Mo¿liwe jest
+		u¿ywanie ró¿nych numeracji w obrêbie jednego typu dokumentów. Dla
+		ka¿dego typu mo¿na zdefiniowaæ jeden plan domy¶lny (wa¿ne w przypadku
+		faktur wystawianych automatycznie, skrypty/demon musz± wiedzieæ na jakiej
+		numeracji maj± byæ oparte nowo tworzone dokumenty).</para>
+		<para>Do ka¿dego planu nale¿y przypisaæ tak¿e okres numeracyjny, czyli
+		przedzia³ czasowy w jakim zachowywana jest ci±g³o¶æ numeracji. Przy
+		przej¶ciu do nowego okresu numeracja zostanie wyzerowana. Mo¿na zdefiniowaæ
+		numeracjê jednodniow±, tygodniow± (od poniedzia³ku do niedzieli), miesiêczn±, 
+		kwartaln± oraz roczn±.</para>
+		<para>Na li¶cie planów numeracyjnych znajduj± siê wszystkie niezbêdne 
+		informacje o planach wraz z przyk³adowym numerem oraz liczb± dokumentów
+		utworzonych przy ich u¿yciu. Poprzez link 'Dodaj plan' przechodzi siê 
+		do interfejsu dodawania planu. Edycji mo¿na dokonaæ klikaj±c na wybrany 
+		rekord na li¶cie. Usuniêcie planu numeracyjnego jest mo¿liwe tylko
+		wtedy gdy nie dotyczy on ¿adnego istniej±cego dokumentu.</para>
+		<para>Szablon numeru to dowolny ci±g znaków, który zawiera specjalne
+		symbole (specyfikatory) znane z funkcji strftime. Szczegó³y u¿ycia oraz
+		wykaz wszystkich symboli mo¿na znale¼æ w <ulink 
+		url="http://www.php.net/manual/pl/function.strftime.php">manualu PHP</ulink>.
+		Podstawowym i jedynym wymaganym symbolem w szablonie jest symbol '%N', za
+		który zostanie podstawiony numer wewnêtrzny dokumentu. Pozosta³e symbole
+		wynikaj± z daty wystawienia dokumentu. A oto najczê¶ciej u¿ywane z nich:
+		<itemizedlist>
+		    <listitem>
+			<para>%N - liczba dziesiêtna okre¶laj±ca numer dokumentu</para>
+		    </listitem>
+		    <listitem>
+			<para>%[1-9]N - j.w. ale z zerami wiod±cymi, np. '%4N' dla liczby 12 zwróci '0012'</para>
+		    </listitem>
+		    <listitem>
+			<para>%I - dodatkowy numer (dzia³a tylko z dokumentami kasowymi)</para>
+		    </listitem>
+		    <listitem>
+			<para>%Y - rok jako liczba dziesiêtna z wiekiem w³±cznie</para>
+		    </listitem>
+		    <listitem>
+			<para>%y - rok jako liczba dziesiêtna bez uwzglêdnienia wieku (00 do 99)</para>
+		    </listitem>
+		    <listitem>
+			<para>%m - miesi±c jako liczba dziesiêtna (01 do 12)</para>
+		    </listitem>
+		    <listitem>
+			<para>%b - skrótowa nazwa miesi±ca zgodnie z lokalizacj±</para>
+		    </listitem>
+		</itemizedlist>
+		</para>
+		<para><note><para>Je¿eli w systemie nie zdefiniowano planów numeracyjnych
+		dokumenty bêd± numerowane wg wzorca '%N/LMS/%Y' z okresem rocznym.</para></note></para>
+	</sect2>
+	<sect2 id="config-divisions">
+		<title>Firmy (Oddzia³y)</title>
+		<para>Firmy (Oddzia³y) s³u¿± do grupowania klientów. Powiniene¶ zdefiniowaæ
+		przynajmniej jedn± firmê. Masz mo¿liwo¶æ podania nazwy skróconej i pe³nej
+		firmy, jej adresu, konta bankowego (lub prefiksu konta p³atno¶ci masowych) 
+		oraz danych do fakturowania. Zablokowanie firmy uniemo¿liwia jej przypisanie
+		do klienta. 
+		</para>
+	</sect2>
+	<sect2 id="config-hosts">
+		<title>Hosty</title>
+		<para>Tutaj definiuje siê hosty które bêd± wspó³pracowa³y
+		z LMSem, czyli komputery (routery, serwery) pobieraj±ce 
+		konfiguracjê z bazy LMSa, na których bêd± uruchamiane
+		skrypty lub demon <emphasis>lmsd</emphasis>.</para>
+		<para>Nazwa ka¿dego hosta musi byæ unikalna i zaleca siê
+		aby odpowiada³a rzeczywistej nazwie maszyny, któr± mo¿na
+		uzyskaæ uruchamiaj±c polecenie <prompt>hostname</prompt>
+		na ka¿dej z tych maszyn (zak³adaj±c, ¿e s± to komputery
+		z u*ixem).</para>
+	</sect2>
+	<sect2 id="config-daemon">
+		<title>Demon</title>
+		<para>Po zdefiniowaniu hostów mo¿na rozpocz±æ konfiguracjê
+		demona <emphasis>lmsd</emphasis>. Konfiguracja jest bardziej
+		szczegó³owo opisana w rozdziale dotycz±cym demona.</para>
+	</sect2>
+	<sect2 id="config-sources">
+		<title>¬ród³a importu</title>
+		<para>Import p³atno¶ci mo¿e odbywaæ siê z wielu ¼róde³ (banków).
+		W tym miejscu definiuje siê ich nazwy, co umo¿liwia pó¼niejsze
+		przeszukiwanie wp³at wg ¼ród³a. ¬ród³o mo¿na ustawiæ równie¿
+                dla wp³at klientów poza importem. Dokonuj±c importu p³atno¶ci
+		masz mo¿liwo¶æ wyboru ¼ród³a. Mo¿liwe jest automatyczne okre¶lenie
+		¼ród³a, w tym celu nale¿y przypisaæ identyfikator ¼ród³a do
+		wzorca w konfiguracji importu.
+		</para>
+	</sect2>
+	<sect2 id="config-promotions">
+		<title>Promocje</title>
+		<para>W tym miejscu mamy mo¿liwo¶æ definiowania schematów promocji.
+		Schemat okre¶la kwotê oraz sposób p³atno¶ci abonamentu przez ca³y okres
+		trwania promocji. Definiujemy tutaj jeden lub wiele okresów o dowolnej d³ugo¶ci
+		i mamy mo¿liwo¶æ okre¶lenia kwoty abonamentu oraz sposobu naliczania.
+		Po okresie promocyjnym abonament bêdzie naliczany w normalnej (okre¶lonej
+		w taryfie) kwocie. Ponadto mo¿emy okre¶liæ kwotê op³aty aktywacyjnej oraz
+		dodatkowej taryfy doliczanej do abonamentu po okresie promocyjnym.
+		</para>
+		<para>Zdefiniowane schematy/promocje bêd± widoczne na li¶cie wyboru
+		w formularzu nowego zobowi±zania. Wybranie schematu i taryfy spowoduje
+		utworzenie odpowiedniej liczby zobowi±zañ wynikaj±cej ze zdefiniowanych
+		w schemacie okresów.
+		</para>
+	</sect2>
+    </sect1>
+</chapter>

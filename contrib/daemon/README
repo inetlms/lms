@@ -1,0 +1,19 @@
+1. What we've got here?
+
+Directory consist additional modules for lms daemon:
+
+cbq-init:	generate files for well-known script for traffic
+    		control (http://sourceforge.net/projects/cbqinit)
+
+cutoff2:	cutoff with additional functionality, works fine with 
+		monthly liabilities
+
+shaper:		shaper (another bandwidth limiting program) configuration 
+		(http://sp9wun.republika.pl)
+      
+2. Installation.
+
+    cp -r contrib/daemon/* daemon/modules/
+    cd daemon
+    ./configure	(with appropriate options, or ./config.status)
+    make

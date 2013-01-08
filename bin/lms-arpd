@@ -1,0 +1,144 @@
+#!/usr/bin/perl -Tw
+#
+#  LMS version 1.11-git
+#
+#  Copyright (C) 2001-2012 LMS Developers
+#
+#  Please, see the doc/AUTHORS for more information about authors!
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License Version 2 as
+#  published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+#  USA.
+#
+#  $Id$
+#
+
+package lms_arpd;
+
+use strict;
+use Getopt::Long;
+use vars qw(@ISA $help $version);
+use Net::Server::PreFork;
+my $_version = '1.11-cvs';
+
+@ISA = qw(Net::Server::PreFork);  
+lms_arpd->run();
+exit;
+
+sub process_request 
+{
+	my $self = shift;
+	if(open(ARP, "</proc/net/arp"))
+	{
+		my(@arps) = <ARP>;
+		foreach my $arp (@arps)
+		{
+			chomp $arp;
+			$arp =~ s/[\t ]+/ /g;
+			if($arp =~ /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/ )
+			{
+				my ($ip,$hwtype,$flags,$hwaddr,$mask,$device) = split(' ',$arp);
+				print STDOUT "$ip $hwaddr\n" if($flags eq "0x2");
+			}
+		}
+		close(ARP);
+	}
+	else 
+	{
+		
+# in case of [Free]BSD:
+# do a '*/3 * * * * /usr/sbin/arp -a -n >/tmp/arps' to your uncle cron
+# then sth like this should work:
+# 
+		if(open(ARP, "</tmp/arps"))
+		{
+			my(@arps) = <ARP>;
+			foreach my $arp (@arps)
+			{
+				chomp $arp;
+				$arp =~ s/^\? //g;
+				$arp =~ s/[\(\)]//g;
+				$arp =~ s/[\t ]+/ /g;
+				if($arp =~ /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/ )
+                        {
+                                my ($ip,$at,$hwaddr) = split(' ',$arp);
+                                print STDOUT "$ip $hwaddr\n";
+                        }
+			}
+            close(ARP);
+		}
+	}
+}  
+
+sub configure_hook
+{
+	my $self = shift;
+	
+	my $bind = "*";
+	my $port = 1029;
+	my $user = "nobody";
+	my $group = "nobody";
+	my $pidfile = "/var/run/lms-arpd.pid";
+	my $debug;
+	
+	my %options = (
+		"--help|h"              =>      \$help,
+		"--version|v"           =>      \$version,
+		"--host|H=s"		=>	\$bind,
+		"--port|p=i"		=>	\$port,
+		"--user|u=s"		=>	\$user,
+		"--group|g=s"		=>	\$group,
+		"--debug|d"		=>	\$debug,
+		"--pidfile|i=s"		=>	\$pidfile
+	);
+
+	Getopt::Long::config("no_ignore_case");
+	GetOptions(%options);
+
+	if($help)
+	{
+		print STDERR <<EOF;
+lms-arpd, version $_version
+(C) 2001-2012 LMS Developers
+
+-h, --help		print this help and exit;
+-v, --version		print version info and exit;
+-H, --host		set listen IP (default: ANY);
+-p, --port		set listen port (default: 1029);
+-u, --user		set user (default: nobody);
+-g, --group		set group (default: nobody);
+-d, --debug		don't fork and write some useless shit on stderr;
+-i, --pidfile		pid filename (default: /var/run/lms-arpd.pid);
+
+EOF
+		exit 0;
+	}
+	
+	if($debug)
+	{
+		print "debug enabled...\n";
+		$self->{server}->{log_level} = 4;
+	}else{
+		$self->{server}->{log_level} = 0;
+		$self->{server}->{setsid} = 1;
+	}
+	
+	$self->{server}->{port} = [$bind.':'.$port];
+	$self->{server}->{user} = $user;
+	$self->{server}->{group} = $group;
+	$self->{server}->{pid_file} = $pidfile;
+}
+
+
+
+1;

@@ -1,0 +1,68 @@
+{include file="header.html"}
+{include file="calendar_js.html"}
+
+
+
+<h1>{$layout.pagetitle} {if $cuslms} ( <a href="?m=customerinfo&id={$cuslms.id}">{$cuslms.lastname} {$cuslms.name}</a> ) {/if}</h1>
+
+{literal}
+<style type="text/css">
+    ul.css-tabs{margin:0 0 0 0 ;!important;padding:0;height:18px;}
+    ul.css-tabs li{float:left;padding:0;margin:0;list-style-type:none;min-width:10px;}
+    ul.css-tabs a{float:left;display:block;text-decoration:none;position:relative;outline:0;margin:4px 5px 0 5px;vertical-align:middle;padding:0;height:18px;font:normal 100% Sans-Serif;}
+    ul.css-tabs a:hover{color:#fff;cursor:pointer;}
+    ul.css-tabs li:hover{background-color:#0e3782;color:#fff;height:22px;}
+    .current{background-color:#333;color:#fff;height:22x;cursor:default;}
+</style>
+<script type="text/javascript">
+<!--
+    function showtabcard(card) {
+    
+	document.getElementById('t1').style.display='none';
+	document.getElementById('t2').style.display='none';
+	document.getElementById('t3').style.display='none';
+	document.getElementById('t4').style.display='none';
+	removeClass(document.getElementById('b1'),'current');
+	removeClass(document.getElementById('b2'),'current');
+	removeClass(document.getElementById('b3'),'current');
+	removeClass(document.getElementById('b4'),'current');
+	setCookie('voippanelaccount',card);
+	document.getElementById('t'+card).style.display='';
+	addClass(document.getElementById('b'+card),'current');
+    
+    }
+//-->
+</script>
+{/literal}
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr class="dark">
+     <td class="fall">
+	<ul  class="css-tabs">
+	    <li id="b1"><a onclick="showtabcard('1');" >Konto VoIP</a></li>
+	    <li id="b2"><a onclick="showtabcard('2');" >Terminale</a></li>
+	    <li id="b3"><a onclick="showtabcard('3');" >Numery PSTN</a></li>
+	    <li id="b4"><a onclick="showtabcard('4');" >Bilingi</a></li>
+	</ul>
+     </td>
+    </tr>
+</table>
+
+<p id="t1" style="display:none;">{include file="hv_accountinfobox.html"}</p>
+<p id="t2" style="display:none;">{include file="hv_terminalinfobox.html"}</p>
+<p id="t3" style="display:none;">{include file="hv_pstninfobox.html"}</p>
+<p id="t4" style="display:none;">{include file="hv_billinginfolistbox.html"}</p>
+
+{literal}
+<script type="text/javascript" language="JavaScript">
+<!--
+if ( getCookie('voippanelaccount') ) 
+{
+    var numer = getCookie('voippanelaccount');
+    document.getElementById('t'+numer).style.display='';
+    addClass(document.getElementById('b'+numer),'current');
+}
+//-->
+</script>
+{/literal}
+{include file="footer.html"}

@@ -1,0 +1,550 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>LMS - LAN Management System 1.11-cvs</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="NEXT"
+TITLE="Intro"
+HREF="intro.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
+><BODY
+CLASS="BOOK"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="BOOK"
+><A
+NAME="AEN1"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+><A
+NAME="AEN2"
+>LMS - LAN Management System 1.11-cvs</A
+></H1
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="../images/logo-small.png"></P
+></DIV
+><H3
+CLASS="CORPAUTHOR"
+> LMS Developers</H3
+><P
+CLASS="COPYRIGHT"
+>Copyright &copy; 2001-2012  LMS Developers</P
+><HR></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>1. <A
+HREF="intro.html"
+>Intro</A
+></DT
+><DD
+><DL
+><DT
+>1.1. <A
+HREF="intro.html#ABOUT-LMS"
+>About LMS</A
+></DT
+><DT
+>1.2. <A
+HREF="authors.html"
+>Authors</A
+></DT
+><DT
+>1.3. <A
+HREF="legalnotice.html"
+>Legal Notice</A
+></DT
+><DT
+>1.4. <A
+HREF="moreinfo.html"
+>Other Information</A
+></DT
+></DL
+></DD
+><DT
+>2. <A
+HREF="install.html"
+>Installation and configuration</A
+></DT
+><DD
+><DL
+><DT
+>2.1. <A
+HREF="install.html#INSTALL-INTRO"
+>Intro</A
+></DT
+><DT
+>2.2. <A
+HREF="install-requirements.html"
+>Requirements</A
+></DT
+><DT
+>2.3. <A
+HREF="install-install.html"
+>LMS Installation</A
+></DT
+><DT
+>2.4. <A
+HREF="install-locale.html"
+>Localization</A
+></DT
+><DT
+>2.5. <A
+HREF="install-db.html"
+>Database Server Installation</A
+></DT
+><DT
+>2.6. <A
+HREF="install-config.html"
+>Basic Configuration</A
+></DT
+><DT
+>2.7. <A
+HREF="install-rights.html"
+>Access rights</A
+></DT
+><DT
+>2.8. <A
+HREF="install-upgrade.html"
+>Upgrade</A
+></DT
+><DT
+>2.9. <A
+HREF="install-documents.html"
+>Documents</A
+></DT
+></DL
+></DD
+><DT
+>3. <A
+HREF="user.html"
+>User Interface (LMS-UI)</A
+></DT
+><DD
+><DL
+><DT
+>3.1. <A
+HREF="user.html#USER-LOGIN"
+>Login</A
+></DT
+><DT
+>3.2. <A
+HREF="menu-administration.html"
+>Administration</A
+></DT
+><DT
+>3.3. <A
+HREF="menu-customers.html"
+>Customers</A
+></DT
+><DT
+>3.4. <A
+HREF="menu-nodes.html"
+>Nodes</A
+></DT
+><DT
+>3.5. <A
+HREF="menu-netdevices.html"
+>Net Devices</A
+></DT
+><DT
+>3.6. <A
+HREF="menu-networks.html"
+>IP Networks</A
+></DT
+><DT
+>3.7. <A
+HREF="menu-finances.html"
+>Finances</A
+></DT
+><DT
+>3.8. <A
+HREF="menu-documents.html"
+>Documents</A
+></DT
+><DT
+>3.9. <A
+HREF="menu-hosting.html"
+>Hosting</A
+></DT
+><DT
+>3.10. <A
+HREF="menu-messages.html"
+>Messages</A
+></DT
+><DT
+>3.11. <A
+HREF="menu-reload.html"
+>Reload</A
+></DT
+><DT
+>3.12. <A
+HREF="menu-stats.html"
+>Stats</A
+></DT
+><DT
+>3.13. <A
+HREF="menu-helpdesk.html"
+>Helpdesk</A
+></DT
+><DT
+>3.14. <A
+HREF="menu-timetable.html"
+>Timetable</A
+></DT
+><DT
+>3.15. <A
+HREF="menu-configuration.html"
+>Configuration</A
+></DT
+></DL
+></DD
+><DT
+>4. <A
+HREF="scripts.html"
+>Scripts</A
+></DT
+><DD
+><DL
+><DT
+>4.1. <A
+HREF="scripts.html#SCRIPTS-INSTALL"
+>Installation</A
+></DT
+><DT
+>4.2. <A
+HREF="scripts-list.html"
+>List of available scripts</A
+></DT
+><DT
+>4.3. <A
+HREF="scripts-config.html"
+>Description and configuration</A
+></DT
+></DL
+></DD
+><DT
+>5. <A
+HREF="mgc.html"
+>Configuration file generator (lms-mgc)</A
+></DT
+><DD
+><DL
+><DT
+>5.1. <A
+HREF="mgc.html#MGC-INSTALL"
+>Installation</A
+></DT
+><DT
+>5.2. <A
+HREF="mgc-config.html"
+>Configuration</A
+></DT
+><DT
+>5.3. <A
+HREF="mgc-example.html"
+>Examples of use</A
+></DT
+></DL
+></DD
+><DT
+>6. <A
+HREF="daemon.html"
+>LMS Daemon</A
+></DT
+><DD
+><DL
+><DT
+>6.1. <A
+HREF="daemon.html#DAEMON-INTRO"
+>Basics</A
+></DT
+><DT
+>6.2. <A
+HREF="daemon-modules.html"
+>Modules</A
+></DT
+><DT
+>6.3. <A
+HREF="tscript.html"
+>T-Script</A
+></DT
+></DL
+></DD
+><DT
+>7. <A
+HREF="devel.html"
+>For curious</A
+></DT
+><DD
+><DL
+><DT
+>7.1. <A
+HREF="devel.html#DEVEL-CATALOGS"
+>Directory tree</A
+></DT
+><DT
+>7.2. <A
+HREF="devel-db.html"
+>Database structure</A
+></DT
+><DT
+>7.3. <A
+HREF="devel-ini.html"
+>Configuration file format</A
+></DT
+><DT
+>7.4. <A
+HREF="devel-genfake.html"
+>Filling DB with random data</A
+></DT
+><DT
+>7.5. <A
+HREF="devel-rights.html"
+>Access levels</A
+></DT
+><DT
+>7.6. <A
+HREF="devel-limits.html"
+>Restrictions</A
+></DT
+></DL
+></DD
+><DT
+>8. <A
+HREF="contrib.html"
+>Extensions</A
+></DT
+><DD
+><DL
+><DT
+>8.1. <A
+HREF="contrib.html#CONTRIB-CUSTOMER"
+>Customer account</A
+></DT
+><DT
+>8.2. <A
+HREF="contrib-customer2.html"
+>Customer account 2</A
+></DT
+><DT
+>8.3. <A
+HREF="contrib-sqlpanel.html"
+>SQL Panel</A
+></DT
+><DT
+>8.4. <A
+HREF="contrib-squid.html"
+>Squid redirector</A
+></DT
+></DL
+></DD
+><DT
+>9. <A
+HREF="userpanel.html"
+>Userpanel</A
+></DT
+><DD
+><DL
+><DT
+>9.1. <A
+HREF="userpanel.html#USERPANEL-ABOUT"
+>About</A
+></DT
+><DT
+>9.2. <A
+HREF="userpanel-install.html"
+>Installation</A
+></DT
+><DT
+>9.3. <A
+HREF="userpanel-config.html"
+>Configuration</A
+></DT
+><DT
+>9.4. <A
+HREF="userpanel-style.html"
+>Graphical themes (styles)</A
+></DT
+><DT
+>9.5. <A
+HREF="userpanel-modules.html"
+>Modules</A
+></DT
+></DL
+></DD
+><DT
+>10. <A
+HREF="faq.html"
+>FAQ</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Tables</B
+></DT
+><DT
+>4-1. <A
+HREF="scripts-list.html#SCRIPTS-TABLE"
+>Executable scripts list</A
+></DT
+><DT
+>6-1. <A
+HREF="daemon-modules.html#MODULES-LIST"
+>List of all lmsd modules</A
+></DT
+><DT
+>7-1. <A
+HREF="devel.html#CATALOG-TREE"
+>LMS directory tree</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Examples</B
+></DT
+><DT
+>3-1. <A
+HREF="menu-hosting.html#HOSTING-E1"
+>Accounts. Proftpd configuration.</A
+></DT
+><DT
+>3-2. <A
+HREF="menu-hosting.html#HOSTING-E2"
+>Accounts. Mail server configuration (postfix+sasl+courier).</A
+></DT
+><DT
+>4-1. <A
+HREF="scripts-config.html#NOTIFY-EXAMPLE"
+>Lms-notify: example of last 10 customer's operations</A
+></DT
+><DT
+>4-2. <A
+HREF="scripts-config.html#NOTIFY-TEMPLATE"
+>Lms-notify: example of mailing template</A
+></DT
+><DT
+>5-1. <A
+HREF="mgc-example.html#INSTANCE-EXAMPLE"
+>Lms-mgc: Example instance</A
+></DT
+><DT
+>6-1. <A
+HREF="tscript.html#TSCRIPT-EXAMPLE-HOSTS"
+>Parser: Creating /etc/hosts file</A
+></DT
+><DT
+>6-2. <A
+HREF="tscript.html#TSCRIPT-EXAMPLE-DEBTORS"
+>Parser: Debtors list</A
+></DT
+><DT
+>6-3. <A
+HREF="tscript.html#TSCRIPT-EXAMPLE-IPTRAF"
+>Parser: Ethernet hosts descriptions for iptraf.</A
+></DT
+><DT
+>6-4. <A
+HREF="tscript.html#TSCRIPT-EXAMPLE-ETHERS"
+>Parser: Ethers file for arp</A
+></DT
+><DT
+>6-5. <A
+HREF="tscript.html#TSCRIPT-EXAMPLE-NOTIFY"
+>Parser: Notify module replacement</A
+></DT
+><DT
+>6-6. <A
+HREF="tscript.html#TSCRIPT-EXAMPLE-TRAFFIC"
+>Parser: Traffic stats.</A
+></DT
+><DT
+>7-1. <A
+HREF="devel-ini.html#CONFIG-FORMAT"
+>Format of configuration options</A
+></DT
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="intro.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Intro</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

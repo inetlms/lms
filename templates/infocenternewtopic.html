@@ -1,0 +1,63 @@
+
+<form name="infocenternew" method="POST" action="?m=infocenter{if $cid}&cid={$cid}{/if}&backto={$backto}" id="newinfocenter">
+    <input type="hidden" name="infocenternew[empty]" value="1">
+    <input type="hidden" name="backto" value="{$backto}">
+    <input type="hidden" name="cid" value="{$cid}">
+    
+    <table width="100%" cellpadding="3">
+    
+    <tr class="dark">
+	<td width="1%" class="fleftu">
+	    <b>{trans('Topic')}</b>
+	</td>
+	<td width="99%" class="frightu">
+	    <input type="text" size="60" name="topic" value="" required="required">
+	</td>
+    </tr>
+    <tr class="light">
+	<td width="1%" class="fleft">
+	    <b>Priorytet</b>
+	</td>
+	<td width="99%" class="fright">
+	    <input type="radio" name="prio" value="1" id="normalne" checked><label for="normalne"> normalny</label>&nbsp;&nbsp;&nbsp;
+	    <input type="radio" name="prio" value="2" id="wazne"><label for="wazne"> ważne</label>&nbsp;&nbsp;&nbsp;
+	</td>
+    </tr>
+    <tr class="light">
+	<td width="1%" class="fleft">
+	    <b>{trans('Description')} </b>
+	</td>
+	<td width="99%" class="fright">
+	    <input type="text" size="60" name="description" value="">
+	</td>
+    </tr>
+    <tr class="light">
+	<td width="1%" class="fleft">
+	    <b>{trans('Info')} </b>
+	</td>
+	<td width="99%" class="fright">
+	    <textarea cols="58" rows="8" name="post" required="required"></textarea>
+	</td>
+    </tr>
+    <tr class="dark">
+	<td width="100%" class="fall" colspan="2" align="right">
+	    <input type="submit" value="Zapisz">
+	    <a href="?m={$backto}{if $cid}&id={$cid}&cid={$cid}{/if}">Anuluj <img src="img/cancel.gif"></a>
+	</td>
+    </tr>
+    </table>
+</form>
+
+{literal}
+<script type="text/javascript">
+<!--
+    $(document).ready(function(input,value){$("#newinfocenter").validate({
+	    rules: {topic:"required",post:"required"}
+	});
+    });
+    document.infocenternew.topic.focus();
+//-->
+</script>
+{/literal}
+
+

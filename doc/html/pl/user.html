@@ -1,0 +1,664 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Interfejs Użytkownika (LMS-UI)</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Baza podziału terytorialnego (TERYT)"
+HREF="install-teryt.html"><LINK
+REL="NEXT"
+TITLE="Administracja"
+HREF="menu-administration.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="install-teryt.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="menu-administration.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="USER"
+></A
+>Rozdzia&#322; 3. Interfejs Użytkownika (LMS-UI)</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Spis tre&#347;ci</B
+></DT
+><DT
+>3.1. <A
+HREF="user.html#USER-LOGIN"
+>Logowanie</A
+></DT
+><DT
+>3.2. <A
+HREF="menu-administration.html"
+>Administracja</A
+></DT
+><DD
+><DL
+><DT
+>3.2.1. <A
+HREF="menu-administration.html#ADMINISTRATION-INFO"
+>Informacje</A
+></DT
+><DT
+>3.2.2. <A
+HREF="menu-administration.html#ADMINISTRATION-USERS"
+>Użytkownicy</A
+></DT
+><DT
+>3.2.3. <A
+HREF="menu-administration.html#ADMINISTRATION-NEWUSER"
+>Nowy użytkownik</A
+></DT
+><DT
+>3.2.4. <A
+HREF="menu-administration.html#ADMINISTRATION-DB"
+>Kopie zapasowe</A
+></DT
+></DL
+></DD
+><DT
+>3.3. <A
+HREF="menu-customers.html"
+>Klienci</A
+></DT
+><DD
+><DL
+><DT
+>3.3.1. <A
+HREF="menu-customers.html#MENU-CUSTOMERS-LIST"
+>Lista</A
+></DT
+><DT
+>3.3.2. <A
+HREF="menu-customers.html#MENU-CUSTOMERS-NEW"
+>Nowy klient</A
+></DT
+><DT
+>3.3.3. <A
+HREF="menu-customers.html#MENU-CUSTOMERS-SEARCH"
+>Szukaj</A
+></DT
+><DT
+>3.3.4. <A
+HREF="menu-customers.html#MENU-CUSTOMERS-GROUPS"
+>Grupy</A
+></DT
+><DT
+>3.3.5. <A
+HREF="menu-customers.html#MENU-CUSTOMERS-NEWGROPUP"
+>Nowa grupa</A
+></DT
+><DT
+>3.3.6. <A
+HREF="menu-customers.html#MENU-CUSTOMERS-NOTICES"
+>Powiadomienia</A
+></DT
+><DT
+>3.3.7. <A
+HREF="menu-customers.html#MENU-CUSTOMERS-REPORTS"
+>Raporty</A
+></DT
+></DL
+></DD
+><DT
+>3.4. <A
+HREF="menu-nodes.html"
+>Komputery</A
+></DT
+><DD
+><DL
+><DT
+>3.4.1. <A
+HREF="menu-nodes.html#MENU-NODES-LIST"
+>Lista</A
+></DT
+><DT
+>3.4.2. <A
+HREF="menu-nodes.html#MENU-NODES-NEW"
+>Nowy komputer</A
+></DT
+><DT
+>3.4.3. <A
+HREF="menu-nodes.html#MENU-NODES-SEARCH"
+>Szukaj</A
+></DT
+><DT
+>3.4.4. <A
+HREF="menu-nodes.html#MENU-NODES-NOTICES"
+>Powiadomienia</A
+></DT
+><DT
+>3.4.5. <A
+HREF="menu-nodes.html#MENU-NODES-REPORTS"
+>Raporty</A
+></DT
+></DL
+></DD
+><DT
+>3.5. <A
+HREF="menu-netdevices.html"
+>Osprzęt sieciowy</A
+></DT
+><DD
+><DL
+><DT
+>3.5.1. <A
+HREF="menu-netdevices.html#MENU-NETDEVICES-LIST"
+>Lista</A
+></DT
+><DT
+>3.5.2. <A
+HREF="menu-netdevices.html#MENU-NETDEVICES-NEW"
+>Nowe urządzenie</A
+></DT
+><DT
+>3.5.3. <A
+HREF="menu-netdevices.html#MENU-NETDEVICES-SEARCH"
+>Szukaj</A
+></DT
+><DT
+>3.5.4. <A
+HREF="menu-netdevices.html#MENU-NETDEVICES-MAP"
+>Mapa</A
+></DT
+></DL
+></DD
+><DT
+>3.6. <A
+HREF="menu-networks.html"
+>Sieci IP</A
+></DT
+><DD
+><DL
+><DT
+>3.6.1. <A
+HREF="menu-networks.html#MENU-NETWORKS-LIST"
+>Lista</A
+></DT
+><DT
+>3.6.2. <A
+HREF="menu-networks.html#MENU-NETWORKS-NEW"
+>Nowa sieć</A
+></DT
+></DL
+></DD
+><DT
+>3.7. <A
+HREF="menu-finances.html"
+>Finanse</A
+></DT
+><DD
+><DL
+><DT
+>3.7.1. <A
+HREF="menu-finances.html#MENU-TARIFFS-LIST"
+>Lista taryf</A
+></DT
+><DT
+>3.7.2. <A
+HREF="menu-finances.html#MENU-TARIFFS-NEW"
+>Nowa taryfa</A
+></DT
+><DT
+>3.7.3. <A
+HREF="menu-finances.html#MENU-PAYMENTS-LIST"
+>Lista płatności</A
+></DT
+><DT
+>3.7.4. <A
+HREF="menu-finances.html#MENU-PAYMENTS-NEW"
+>Nowa płatność</A
+></DT
+><DT
+>3.7.5. <A
+HREF="menu-finances.html#MENU-BALANCE"
+>Bilans finansowy</A
+></DT
+><DT
+>3.7.6. <A
+HREF="menu-finances.html#MENU-NEWBALANCE"
+>Nowa operacja</A
+></DT
+><DT
+>3.7.7. <A
+HREF="menu-finances.html#MENU-INVOICES-LIST"
+>Lista faktur</A
+></DT
+><DT
+>3.7.8. <A
+HREF="menu-finances.html#MENU-INVOICES-NEW"
+>Nowa faktura</A
+></DT
+><DT
+>3.7.9. <A
+HREF="menu-finances.html#MENU-DEBITNOTES-LIST"
+>Lista not obciążeniowych</A
+></DT
+><DT
+>3.7.10. <A
+HREF="menu-finances.html#MENU-DEBITNOTES-NEW"
+>Nowa nota obciążeniowa</A
+></DT
+><DT
+>3.7.11. <A
+HREF="menu-finances.html#MENU-RECEIPTS-LIST"
+>Rejestr kasowy</A
+></DT
+><DT
+>3.7.12. <A
+HREF="menu-finances.html#MENU-RECEIPTS-NEW"
+>Nowy dokument kasowy</A
+></DT
+><DT
+>3.7.13. <A
+HREF="menu-finances.html#MENU-IMPORT"
+>Import</A
+></DT
+><DT
+>3.7.14. <A
+HREF="menu-finances.html#MENU-EXPORT"
+>Eksport</A
+></DT
+><DT
+>3.7.15. <A
+HREF="menu-finances.html#MENU-FINANCES-REPORTS"
+>Raporty</A
+></DT
+></DL
+></DD
+><DT
+>3.8. <A
+HREF="menu-documents.html"
+>Dokumenty</A
+></DT
+><DD
+><DL
+><DT
+>3.8.1. <A
+HREF="menu-documents.html#MENU-DOCUMENTS-LIST"
+>Lista</A
+></DT
+><DT
+>3.8.2. <A
+HREF="menu-documents.html#MENU-DOCUMENTS-NEW"
+>Nowy dokument</A
+></DT
+><DT
+>3.8.3. <A
+HREF="menu-documents.html#MENU-DOCUMENTS-DOCUMENTGEN"
+>Generator dokumentów</A
+></DT
+><DT
+>3.8.4. <A
+HREF="menu-documents.html#MENU-DOCUMENTS-RIGHTS"
+>Prawa dostępu</A
+></DT
+></DL
+></DD
+><DT
+>3.9. <A
+HREF="menu-hosting.html"
+>Hosting</A
+></DT
+><DD
+><DL
+><DT
+>3.9.1. <A
+HREF="menu-hosting.html#MENU-HOSTING-ACCOUNTS"
+>Konta</A
+></DT
+><DT
+>3.9.2. <A
+HREF="menu-hosting.html#MENU-HOSTING-NEW-ACCOUNT"
+>Nowe konto</A
+></DT
+><DT
+>3.9.3. <A
+HREF="menu-hosting.html#MENU-HOSTING-ALIASES"
+>Aliasy</A
+></DT
+><DT
+>3.9.4. <A
+HREF="menu-hosting.html#MENU-HOSTING-NEW-ALIAS"
+>Nowy alias</A
+></DT
+><DT
+>3.9.5. <A
+HREF="menu-hosting.html#MENU-HOSTING-DOMAINS"
+>Domeny</A
+></DT
+><DT
+>3.9.6. <A
+HREF="menu-hosting.html#MENU-HOSTING-NEW-DOMAIN"
+>Nowa domena</A
+></DT
+><DT
+>3.9.7. <A
+HREF="menu-hosting.html#MENU-HOSTING-SEARCH"
+>Szukaj</A
+></DT
+><DT
+>3.9.8. <A
+HREF="menu-hosting.html#HOSTING-EXAMPLES"
+>Przykłady</A
+></DT
+></DL
+></DD
+><DT
+>3.10. <A
+HREF="menu-messages.html"
+>Wiadomości</A
+></DT
+><DD
+><DL
+><DT
+>3.10.1. <A
+HREF="menu-messages.html#MENU-MESSAGES-LIST"
+>Lista</A
+></DT
+><DT
+>3.10.2. <A
+HREF="menu-messages.html#MENU-MESSAGES-NEW"
+>Nowa wiadomość</A
+></DT
+><DT
+>3.10.3. <A
+HREF="menu-messages.html#MENU-MESSAGES-CONF"
+>Konfiguracja</A
+></DT
+></DL
+></DD
+><DT
+>3.11. <A
+HREF="menu-reload.html"
+>Przeładowanie</A
+></DT
+><DT
+>3.12. <A
+HREF="menu-stats.html"
+>Statystyki</A
+></DT
+><DD
+><DL
+><DT
+>3.12.1. <A
+HREF="menu-stats.html#MENU-STATS-FILTER"
+>Filtr</A
+></DT
+><DT
+>3.12.2. <A
+HREF="menu-stats.html#MENU-STATS-COMPACT"
+>Kompaktowanie</A
+></DT
+><DT
+>3.12.3. <A
+HREF="menu-stats.html#MENU-STATS-REPORTS"
+>Raporty</A
+></DT
+></DL
+></DD
+><DT
+>3.13. <A
+HREF="menu-helpdesk.html"
+>Helpdesk</A
+></DT
+><DD
+><DL
+><DT
+>3.13.1. <A
+HREF="menu-helpdesk.html#MENU-HELPDESK-LIST"
+>Lista kolejek</A
+></DT
+><DT
+>3.13.2. <A
+HREF="menu-helpdesk.html#MENU-HELPDESK-NEWQUEUE"
+>Nowa kolejka</A
+></DT
+><DT
+>3.13.3. <A
+HREF="menu-helpdesk.html#MENU-HELPDESK-SEARCH"
+>Wyszukiwanie</A
+></DT
+><DT
+>3.13.4. <A
+HREF="menu-helpdesk.html#MENU-HELPDESK-NEWTICKET"
+>Nowe zgłoszenie</A
+></DT
+><DT
+>3.13.5. <A
+HREF="menu-helpdesk.html#MENU-HELPDESK-REPORTS"
+>Raporty</A
+></DT
+></DL
+></DD
+><DT
+>3.14. <A
+HREF="menu-timetable.html"
+>Terminarz</A
+></DT
+><DD
+><DL
+><DT
+>3.14.1. <A
+HREF="menu-timetable.html#TIMETABLE-LIST"
+>Terminarz (Lista zadań)</A
+></DT
+><DT
+>3.14.2. <A
+HREF="menu-timetable.html#TIMETABLE-NEW"
+>Nowe zdarzenie</A
+></DT
+><DT
+>3.14.3. <A
+HREF="menu-timetable.html#TIMETABLE-SEARCH"
+>Szukaj</A
+></DT
+></DL
+></DD
+><DT
+>3.15. <A
+HREF="menu-configuration.html"
+>Konfiguracja</A
+></DT
+><DD
+><DL
+><DT
+>3.15.1. <A
+HREF="menu-configuration.html#CONFIG-UI"
+>Interfejs Użytkownika</A
+></DT
+><DT
+>3.15.2. <A
+HREF="menu-configuration.html#CONFIG-TAXES"
+>Stawki podatkowe</A
+></DT
+><DT
+>3.15.3. <A
+HREF="menu-configuration.html#CONFIG-NUMBERPLANS"
+>Plany numeracyjne</A
+></DT
+><DT
+>3.15.4. <A
+HREF="menu-configuration.html#CONFIG-DIVISIONS"
+>Firmy (Oddziały)</A
+></DT
+><DT
+>3.15.5. <A
+HREF="menu-configuration.html#CONFIG-HOSTS"
+>Hosty</A
+></DT
+><DT
+>3.15.6. <A
+HREF="menu-configuration.html#CONFIG-DAEMON"
+>Demon</A
+></DT
+><DT
+>3.15.7. <A
+HREF="menu-configuration.html#CONFIG-SOURCES"
+>Źródła importu</A
+></DT
+><DT
+>3.15.8. <A
+HREF="menu-configuration.html#CONFIG-PROMOTIONS"
+>Promocje</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+><P
+>LMS'owy Interfejs Użytkownika to panel administracyjny do tworzenia
+  i zarządzania bazą klientów i komputerów dostępny za pomocą przeglądarki
+  internetowej. Umożliwia wprowadzanie danych komputerów,
+  przypisanie ich do klientów i sieci. Definiowanie opłat i zarządzanie finansami sieci,
+  Szybkie wyszukiwanie danych o klientach i ich sprzęcie. Sporządzanie korespondencji
+  seryjnej do klientów, definiowanie praw dostępu dla użytkowników i ich haseł.
+  Ponadto daje możliwość przeglądania statystyk wykorzystania łącza, a także
+  tworzenia kopii bazy danych oraz zarządzania konfiguracją usług na serwerze. 
+  <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+> posiada także wiele innych możliwości, które w tym
+  rozdziale zostaną opisane.</P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="USER-LOGIN"
+>3.1. Logowanie</A
+></H1
+><P
+>Po wpisaniu w przeglądarce adresu do strony z LMS'em, powita cię
+	ekran logowania. Musisz podać właściwy login oraz hasło. Hasła w bazie
+	danych przechowywane są w formie zaszyfrowanej.</P
+><P
+>Jeżeli jest to twoje pierwsze logowanie i nie masz jeszcze
+	założonego konta, zostaniesz przekierowany do modułu tworzenia kont
+	użytkowników. W tym momencie będziesz miał tylko dostęp do tego
+	jednego modułu.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install-teryt.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="menu-administration.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Baza podziału terytorialnego (TERYT)</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Administracja</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

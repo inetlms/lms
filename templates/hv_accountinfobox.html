@@ -1,0 +1,50 @@
+<table width="100%" cellpadding="3" cellspacing="0">
+
+    <tr class="dark hand">
+	<td width="100%" class="fall" colspan="2">
+	    <B>Konto VoIP : {$info.account.name}</B>
+	</td>
+    </tr>
+    <tr class="light">
+	<td width="50%" style="text-align:left;vertical-align:top;" class="fleft">
+	    <table width="100%" cellpadding="3" cellspacing="0">
+		<tr><td width="1%" align="left" nowrap >ID (Hiperus)</td><td width="1%"><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.id}</td></tr>
+		<tr><td width="1%" align="left" nowrap >ID Reseller</td>	<td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.id_reseller}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Utworzono</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.create_date}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Nazwa konta</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.name}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Adres</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.address}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Numer domu</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.street_number}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Numer mieszkania</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.apartment_number}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Kod pocztowy</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.postcode}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Miejscowość</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.city}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Kraj</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.country}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Klient LMS</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left">{if $cuslms}<a href="?m=customerinfo&id={$cuslms.id}">{$cuslms.lastname} {$cuslms.name} {$cuslms.address} {$cuslms.zip} {$cuslms.city}</a>{/if}</td></tr>
+		<tr><td width="1%" align="left" nowrap >E-mail</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{if $info.account.email}<a href="mailto:{$info.account.email}">{$info.account.email}</a>{/if}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Domyślny cennik</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{section name=lista loop=$price}{if $info.account.id_default_pricelist==$price[lista].id}{$price[lista].name}{/if}{/section}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Typ Płatności</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.payment_type}</td></tr>
+	    </table>
+	</td>
+	<td width="auto" style="text-align:left;vertical-align:top;" class="fright">
+	    <table width="100%" cellpadding="3" cellspacing="0">
+		<tr><td colspan="3" align="left" width="100%"><B>DANE DO FAKTURY W SERWISIE HIPERUS</td></tr>
+		<tr><td width="1%" align="left" nowrap >Nazwa</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.b_name}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Adres</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.b_address}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Numer domu</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.b_street_number}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Numer mieszkania</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.b_apartment_number}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Kod pocztowy</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.b_postcode}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Miejscowość</td><td width="1%"><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.b_city}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Kraj</td><td width="1%"><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.b_country}</td></tr>
+		<tr><td width="1%" align="left" nowrap >NIP / PESEL</td><td width="1%"><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.b_nip}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Regon</td><td width="1%"><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$info.account.b_regon}</td></tr>
+		<tr><td width="1%" align="left" nowrap >WLR</td><td width="1%"><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{if $info.account.is_wlr=='t'}TAK{else}NIE{/if}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Zgoda na przetwarzanie danych</td><td width="1%"><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{if $info.account.consent_data_processing=='t'}TAK{else}NIE{/if}</td></tr>
+		<tr><td width="1%" align="left" nowrap >Faktury VAT Wystawia</td><td width="1%"><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left">{if $info.account.invoice=='0'}bez faktury{/if}{if $info.account.invoice=='1'}Hiperus{/if}{if $info.account.invoice=='2'}LMS{/if}</td></tr>
+	    </table>
+	</td>
+    </tr>
+    <tr>
+	<td colspan="2" width="100%" align="right" class="dark fall">
+	    <A href="?m=hv_accountedit&out=panel&id={$info.account.id}">Edytuj dane&nbsp;<IMG src="img/edit.gif"></A>
+	</td>
+    </tr>
+</table>

@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+	<meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
+	<meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
+	<link href="img/style.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="img/autoiframe.js"></SCRIPT>
+	<script type="text/javascript" src="img/common.js"></SCRIPT>
+    </head>
+<body>
+
+<table width="100%" cellpadding="3" class="light" id="table">
+
+	<tr class="dark">
+		<td width="1%">
+			<img src="img/netdev.gif" alt="">
+		</td>
+		<td width="1%">
+		        <b>{trans("Name:")}</b>
+		</td>
+		<td width="98%" nowrap>
+		        {$netdevinfo.name}
+		</td>
+	</tr>
+
+        {if $netdevinfo.producer}
+	<tr class="LIGHT">
+		<td width="1%">
+			<img src="img/producer.gif" alt="">
+		</td>
+		<td width="1%">
+		        <b>{trans("Producer:")}</b>
+		</td>
+		<td width="98%" nowrap>
+		        {$netdevinfo.producer}
+		</td>
+	</tr>
+	{/if}
+
+	{if $netdevinfo.model}
+	<tr class="LIGHT">
+		<td width="1%">
+			<img src="img/netdev_model.gif" alt="">
+		</td>
+		<td width="1%">
+		        <b>{trans("Model:")}</b>
+		</td>
+		<td width="98%">
+		        {$netdevinfo.model}
+		</td>
+	</tr>
+	{/if}
+	
+	<tr class="LIGHT">
+		<td width="1%">
+			<img src="img/port.gif" alt="">
+		</td>
+		<td width="1%" NOWRAP>
+		        <b>{trans("Number of ports:")}</b>
+		</td>
+		<td width="98%">
+		        {$netdevinfo.ports}
+		</td>
+	</tr>
+
+	<tr class="LIGHT">
+		<td width="1%">
+			<img src="img/netdev_takenports.gif" alt="">
+		</td>
+		<td width="1%" NOWRAP>
+		        <b>{trans("Ports used:")}</b>
+		</td>
+		<td width="98%">
+		        {$netdevinfo.takenports}
+		</td>
+	</tr>
+
+	{if $netdevinfo.location}
+	<tr class="LIGHT">
+		<td width="1%">
+			<img src="img/home.gif" alt="">
+		</td>
+		<td width="1%" NOWRAP>
+		        <b>{trans("Location:")}</b>
+		</td>
+		<td width="98%" nowrap>
+		        {$netdevinfo.location}
+		</td>
+	</tr>
+	{/if}
+
+{if check_conf('phpui.radius')}
+	{if $netdevinfo.shortname}
+	<tr class="LIGHT">
+		<td width="1%">
+			<img src="img/radius.gif" alt="">
+		</td>
+		<td width="1%" NOWRAP>
+			<b>{trans("Shortname:")}</b>
+		</td>
+		<td width="98%">
+		        {$netdevinfo.shortname}
+		</td>
+	</tr>
+	{/if}
+	{if $netdevinfo.nastype}
+	<tr class="LIGHT">
+		<td width="1%">
+			<img src="img/radius.gif" alt="">
+		</td>
+		<td width="1%" NOWRAP>
+			<b>{trans("Type:")}</b>
+		</td>
+		<td width="98%">
+		        {$netdevinfo.nastypename}
+		</td>
+	</tr>
+	{/if}
+	{if $netdevinfo.clients}
+	<tr class="LIGHT">
+		<td width="1%">
+			<img src="img/radius.gif" alt="">
+		</td>
+		<td width="1%" NOWRAP>
+			<b>{trans("Max clients:")}</b>
+		</td>
+		<td width="98%">
+		        {$netdevinfo.clients}
+		</td>
+	</tr>
+	{/if}
+{/if}
+
+	{if $netdevinfo.description}
+	<tr class="LIGHT">
+	    <td width="1%">
+		<img src="img/desc.gif" alt="">
+	    </td>
+	    <td width="1%">
+		{trans('Description:')}
+	    </td>
+	    <td width="99%">
+		{$netdevinfo.description|nl2br}
+	    </td>
+	</tr>
+	{/if}
+
+</table>
+
+<script type="text/javascript">
+<!--
+    var table = document.getElementById('table');
+    autoiframe_setsize('autoiframe', table.offsetWidth, table.offsetHeight);
+//-->
+</script>
+</body>
+</html>

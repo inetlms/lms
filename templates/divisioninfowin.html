@@ -1,0 +1,182 @@
+{include file="header.html"}
+<div class="light">
+<TABLE width="100%" cellpadding="3">
+	<tr class="dark">
+		<td width="1%" class="fleftu">
+			<IMG src="img/division.gif" alt="">
+		</td>
+		<td width="1%" class="fbt">
+			<B>{trans("Name:")}</B>
+		</td>
+		<td width="98%" class="frightu">
+			{$division.shortname|escape}
+		</td>
+	</tr>
+	<tr >
+		<td width="1%" >
+			<IMG src="img/division.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<B>{trans("Long name:")}</B>
+		</td>
+		<td width="98%" >
+			{$division.name}
+		</td>
+	</tr>
+	<tr >
+		<td width="1%" >
+			<IMG src="img/home.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<B>{trans("Address:")}</B>
+		</td>
+		<td width="98%" >
+		    {$division.address}, {$division.zip} {$division.city}{foreach from=$countries item=item key=key}{if $key==$division.countryid}, {t}{$item.name}{/t}{/if}{/foreach}
+		
+		</td>
+	</tr>
+	<tr >	
+		<td width="%1" >
+			<IMG src="img/serialnumber.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<B>{trans("TEN")}</B>
+		</td>
+		<td width="99%" >
+			{$division.ten}
+		</td>
+	</tr>
+	<tr >
+		<td width="%1" >
+			<IMG src="img/serialnumber.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<B>{trans("REGON")}</B>
+		</td>
+		<td width="99%" >
+			{$division.regon}
+		</td>
+	</tr>
+	<tr >
+		<td width="1%" >
+			<IMG src="img/card.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<B>{trans("Bank account:")}</B>
+		</td>
+		<td width="98%" >
+			{$division.account|format_bankaccount}
+		</td>
+	</tr>
+	{if $division.description}
+	<tr >
+		<td width="1%" >
+			<IMG src="img/info.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<B>{trans("Description:")}</B>
+		</td>
+		<td width="98%" >
+			<textarea name="division[inv_footer]" cols="38" rows="4"  disabled style="color:#000000;">{$division.description}</textarea>
+		</td>
+	</tr>
+	{/if}
+	<tr >
+		<td width="1%" >
+			<IMG src="img/wait.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<B>{trans("Locked:")}</B>
+		</td>
+		<td width="98%" >
+			{if $division.status}{trans("yes")}{else}{trans("no")}{/if}
+		</td>
+	</tr>
+	{if $division.inv_header}
+	<tr >
+		<td width="1%" >
+			<IMG src="img/print.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<B>{trans("Invoice header:")}</B>
+		</td>
+		<td width="98%" >
+			<textarea name="division[inv_footer]" cols="38" rows="4"  disabled style="color:#000000;">{$division.inv_header}</TEXTAREA>
+		</td>
+	</tr>
+	{/if}
+	{if $division.inv_footer}
+	<tr >
+		<td width="1%" >
+			<IMG src="img/print.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<B>{trans("Invoice footer:")}</B>
+		</td>
+		<td width="98%" >
+			<textarea name="division[inv_footer]" cols="38" rows="4" disabled style="color:#000000;">{$division.inv_footer}</TEXTAREA>
+		</td>
+	</tr>
+	{/if}
+	{if $division.inv_author}
+	<tr >
+		<td width="1%" >
+			<IMG src="img/print.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<B>{trans("Invoice author:")}</B>
+		</td>
+		<td width="98%" >
+			{$division.inv_author}
+		</td>
+	</tr>
+	{/if}
+	{if $division.inv_cplace}
+	<tr >
+		<td width="1%" >
+			<IMG src="img/print.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<B>{trans("Invoice creation place:")}</B>
+		</td>
+		<td width="98%" >
+			{$division.inv_cplace}
+		</td>
+	</tr>
+	{/if}
+	<tr >
+                <td WIDTH="1%" >
+		        <IMG src="img/print.gif" ALT="">
+		</td>
+		<td WIDTH="1%">
+		        <B>{trans("Payment type:")}</B>
+		</td>
+		<td width="98%">
+		
+		{if !$division.inv_paytype}
+		    {trans("default")}
+		{else}
+		    {foreach from=$_PAYTYPES item=item key=key}
+			{if $division.inv_paytype==$key}{$item}{/if}
+		    {/foreach}
+		{/if}
+	    </td>
+	</tr>
+	<tr >
+                <td WIDTH="1%">
+		        <IMG src="img/print.gif" ALT="">
+		</td>
+		<td WIDTH="1%">
+		        <B>{trans("Deadline:")}</B>
+		</td>
+		<td width="98%">
+		    {if !strlen($division.inv_paytime)}
+			{trans("default<!paytime>")}
+		    {else}
+			{$division.inv_paytime}
+		    {/if}
+	        </td>
+	</tr>
+
+</TABLE>
+</div>

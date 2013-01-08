@@ -1,0 +1,27 @@
+{include file="header.html"}
+<div style="width:432px;margin-top:2px;height:245px;">
+<table width="100%" cellpadding="2">
+
+    <tr class="dark">
+	<td class="fall">
+	    <b>{$topic.topic}</b> - {$topic.description}<br>
+	    Utworzono: {$topic.cdate|date_format:"Y/m/d H:i"} przez {$topic.cname}<br>
+	    {if $topic.mdate}Ostatni wpis z: {$topic.mdate|date_format:"Y/m/d H:i"} przez {$topic.mname}{/if}
+	    {if $topic.closed}<br>
+	    <div class="active" style="border:solid 1px #333333;padding:4px 10px 4px 10px;"><b>TEMAT ZAMKNIĘTY dnia: {$topic.closeddate|date_format:"Y/m/d H:i"} przez {$topic.closedname}</b><br>{$topic.closedinfo|nl2br}</div>
+	    {/if}
+	</td>
+    </tr>
+    {cycle values="light,lucid" print=false}
+    {section name='l1' loop=$postlist}
+    <tr class="{cycle}">
+	<td style="padding:3px 5px 3px 5px;">
+	    {$postlist[l1].post|nl2br}
+	    <p class="blend">{$postlist[l1].cdate|date_format:"Y/m/d H:i"} ({$postlist[l1].cname})
+	    {if $postlist[l1].mdate} | MOD: {$postlist[l1].mdate|date_format:"Y/m/d H:i"} ({$postlist[l1].mname}){/if}</p>
+	    
+	</td>
+    </tr>
+    {/section}
+</table>
+</div>

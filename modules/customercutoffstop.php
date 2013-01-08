@@ -1,0 +1,57 @@
+<?php
+
+/*
+ * LMS version 1.11-git
+ *
+ *  (C) Copyright 2001-2012 LMS Developers
+ *
+ *  Please, see the doc/AUTHORS for more information about authors!
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License Version 2 as
+ *  published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+ *  USA.
+ *
+ *  $Id$
+ */
+
+$customerid = intval($_GET['customerid']);
+
+if(! $LMS->CustomerExists($customerid))
+{
+	$SESSION->redirect('?m=customerlist');
+}
+
+if(isset($_GET['cutoffstop']))
+{
+	if(!intval($_GET['cutoffstop']))
+	        $cutoffstop = 0;
+	else
+		$cutoffstop = mktime(23,59,59,date('m'), date('d') + intval($_GET['cutoffstop']));
+	
+	// excluded groups check
+	if(!$DB->GetOne('SELECT 1 FROM customerassignments a
+	                JOIN excludedgroups e ON (a.customergroupid = e.customergroupid)
+			WHERE e.userid = lms_current_user() AND a.customerid = ?',
+			array($customerid)))
+	{
+		$DB->Execute('UPDATE customers SET cutoffstop = ? WHERE id = ?', array($cutoffstop, $customerid));
+
+		if (SYSLOG) {
+		    addlogs(($cutoffstop ? 'włączono' : 'wyłączono').' zawieszenie blokowania dla klienta '.$LMS->getcustomername($customerid),'e=up;m=cus;c='.$customerid.';');
+		}
+	}
+}
+
+$SESSION->redirect('?'.$SESSION->get('backto'));
+
+?>

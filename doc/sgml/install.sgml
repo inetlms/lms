@@ -1,0 +1,750 @@
+<!-- $Id$ -->
+<chapter id="install">
+    <title>Installation and configuration</title>
+    <sect1 id="install-intro">
+     <title>Intro</title>
+     <para>LMS consist a few modules. <emphasis>LMS-UI</emphasis> is user interface, which is
+     responsible for all interactions with user, entirely written in PHP and it uses SQL database to
+     store all data, thus PHP script interpreter and SQL engine of your choice (MySQL or Postgresql).
+     </para>
+     <para>LMS also contains a set of Perl scripts, responsible for various operations, ie.
+     periodically applying subscription fees or sending reminders to users who are in debt. It
+     also contains <emphasis>LMS-MGC</emphasis>, which may be configured to generate virtually
+     any configuration file or script and manage your server. Note that some of the scripts might
+     need additional Perl modules to function.</para>
+     <para>At the end there is also <emphasis>LMS Daemon</emphasis>, written in C, which is
+     being used (its plugins in fact) as a drop-in replacement for <emphasis>LMS-MGC</emphasis> - to
+     configure and manage (ie. restart) your services. It's main advantage is that it responds for
+     all <emphasis>LMS-UI</emphasis> changes in realtime.</para>
+    </sect1>
+    <sect1 id="install-requirements">
+        <title>Requirements</title>
+        <sect2 id="install-req-www">
+             <title>Web Server</title>
+            <para>Because <emphasis>LMS-UI</emphasis> is written in PHP,
+            it needs Web server to work. Apache is preferred (<ulink
+            url="http://www.apache.org">www.apache.org</ulink>).</para>
+        </sect2>
+        <sect2 id="install-req-php">
+           <title>PHP Interpreter</title>
+    	    <para>Interpreter version should be 5.2.x or higher.
+            PHP can be downloaded from <ulink url="http://www.php.net">www.php.net</ulink>.
+            At least following PHP modules needs to be installed (look for "extension" in
+            php.ini or in output of phpinfo function):
+		<itemizedlist>
+    			<listitem>
+				<para>pcre, posix,</para>
+			</listitem>
+			<listitem>
+				<para>zlib (for compressed backups),</para>
+			</listitem>
+			<listitem>
+				<para>gd and/or ming (network map only),</para>
+			</listitem>
+			<listitem>
+				<para>mysql or mysqli or pgsql (for db support),</para>
+			</listitem>
+			<listitem>
+				<para>iconv, mbstring (LMS uses unicode)</para>
+			</listitem>
+			<listitem>
+				<para>PEAR::Mail (which require PEAR::Net_SMTP and PEAR::Net_Sockets) for mailing.</para>
+			</listitem>
+		</itemizedlist>
+	    </para>
+         </sect2>
+         <sect2 id="install-req-db">
+           <title>Database Server</title>
+           <para>MySQL server in version 5.x is supported. Probably LMS won't work correctly
+           with older versions.</para>
+           <para>PostgreSQL in version 8.2.x or higher is supported.</para>
+         </sect2>
+         <sect2 id="install-req-smarty">
+             <title>Smarty Library</title>
+            <para><emphasis>LMS-UI</emphasis> requires Smarty library (<ulink
+            url="http://www.smarty.net">http://www.smarty.net</ulink>) in version 3.0
+            or higher. Newer versions of Smarty requires that
+            you have not enabled "magic_quotes_runtime" (set to Off) option in <ulink
+            url="http://www.php.net/manual/en/configuration.php">PHP configuration</ulink>.</para>
+            </sect2>
+            <sect2 id="install-req-perl">
+            <title>Perl</title>
+       <para><emphasis>LMS-MGC</emphasis> and the rest of Perl scripts requires 
+          also Perl interpreter and some modules:
+       <itemizedlist>
+         <listitem>
+            <para>Perl and its basic modules (POSIX, GetOpt::Long),</para>
+         </listitem>
+         <listitem>
+            <para>Config::IniFiles,</para>
+         </listitem>
+         <listitem>
+            <para>DBI,</para>
+         </listitem>
+         <listitem>
+            <para>DBD-mysql (if you use MySQL),</para>
+         </listitem>
+         <listitem>
+            <para>DBD-Pg (if you use Postgres),</para>
+         </listitem>
+       </itemizedlist></para>
+       </sect2>
+       <sect2 id="install-req-c">
+         <title>C Compiler</title>
+       <para>If you intend to run <emphasis>LMS Daemon</emphasis> you will need
+       working C compiler, because daemon will be provided in source code form only.</para>
+       </sect2>
+       <sect2 id="install-req-browser">
+           <title>Web Browser</title>
+           <para>LMS has web user interface, so you'll need web browser with javascript and
+           cookies enabled. Our exparience says that Mozilla Firefox 1.x will be a good 
+           choice.</para>
+         </sect2>
+     </sect1>
+     <sect1 id="install-install">
+     <title>LMS Installation</title>
+            <para>LMS in tarball (.tar.gz) archive can be downloaded from project 
+          home page (<ulink url="http://www.lms.org.pl">www.lms.org.pl</ulink>),
+          which should be extracted and placed in chosen directory (i.e. <filename>/var/www/lms</filename>) 
+          and made available for Web Server (ie. with Alias /lms/ /var/www/lms):
+<screen>
+$ cd /var/www
+$ wget http://www.lms.org.pl/download/stable/lms-x.x.x.tar.gz
+$ tar zxf lms-x.x.x.tar.gz
+</screen>
+          </para>
+        <para>Smarty library is included in LMS package but if you are using CVS
+    	you have to install Smarty yourself. After download copy contents
+        of Smarty's <filename>lib</filename> directory into <filename>/lib/Smarty</filename>
+	or use <filename>/devel/smarty_install.sh</filename> script which will do
+	this for you.</para>
+          <para><note><para>Location of all directories can be set in
+          <emphasis>[directories]</emphasis> section in <filename>lms.ini</filename> configuration
+          file.</para></note></para> <para>Configuration files (<filename>sample/lms.ini</filename>
+          and <filename> sample/lms-mgc.ini</filename>) should be placed in
+          <filename>/etc/lms</filename> directory. </para>
+          <para>Scripts from <filename>bin</filename> directory should be moved to
+          <filename>/usr/sbin</filename> directory, so you can execute it directly without giving
+          path. </para>
+          <para><warning><para>Web Server must have read permission on <filename>lms.ini</filename>
+          file and write permission on <filename>backup</filename> directory. Please
+          consider security implications: you might want to protect backup directory with
+          <filename>.htaccess</filename> and place your lms.ini outside Web Server's DocumentRoot
+          (LMS allows you to place it in its home directory, but then it's possible to read it
+          with http://yourserver/lms.ini, and it contains valuable information such as database
+          password!).</para></warning>
+	  <warning><para>It's absolutely required for LMS to disable <filename>register_globals</filename>
+	  PHP's option.</para></warning>
+	  </para>
+        <para>Recommended setting in php.ini (or httpd.conf for LMS virtual host directory):
+<screen>
+mbstring.func_overload = 7
+register_globals = off
+max_execution_time = 60 ; or more
+memory_limit = 32M ; or more
+</screen>
+        </para>
+     </sect1>
+     <sect1 id="install-locale">
+     <title>Localization</title>
+     <para>Default language of user interface is English, and national characters
+     are encoded in UTF-8. For proper display of national characters in other languages
+     you must define appropriate locales. E.g. for polish language it's achieved by running
+     the following command:
+<screen>
+# localedef -v -c -i pl_PL -f UTF-8 /usr/share/locale/pl_PL.UTF-8
+</screen>
+     Instructions about database encoding settings in follow-up of this chapter.
+     </para>
+    </sect1>
+     <sect1 id="install-db">
+     <title>Database Server Installation</title>
+          <sect2 id="install-mysql">
+          <title>MySQL</title>
+          <sect3 id="install-mysql-intro">
+          <title>Intro</title>
+               <para>That very popular database server is available with majority of Linux
+               distributions. If, however, you have to install it yourself, start with downloading
+               its sources from <ulink url="http://www.mysql.com">www.mysql.com</ulink>.</para>
+          </sect3>
+          <sect3 id="install-mysql-server">
+          <title>MySQL Server Installation</title>
+               <para>After extracting, go to directory with MySQL and type this sequence
+               of commands:
+               <screen>
+$ ./configure --prefix=/usr/local/mysql
+$ make
+$ make install
+$ /usr/local/mysql/bin/mysql_install_db
+$ chown mysql -R /usr/local/mysql/var
+$ /usr/local/mysql/bin/safe_mysqld &
+$ /usr/local/mysql/bin/mysqladmin -u root password new_password</screen>
+          </para>
+          </sect3>
+          <sect3 id="install-mysql-dbcreate">
+          <title>Create Database</title>
+               <para>You have to create database if you run LMS for the first time. 
+		In order to create database and load it with schema go to LMS directory and run:
+<screen>
+mysql -u[user name with database creation rights] -p
+Enter password:[just enter password :)]
+mysql> CREATE DATABASE lms CHARACTER SET utf8 COLLATE utf8_polish_ci;
+mysql> GRANT USAGE ON lms.* TO lms@localhost;
+mysql> GRANT ALL ON lms.* TO lms@localhost IDENTIFIED BY '[your_password]';
+mysql> flush privileges;
+mysql> use lms;
+mysql> source doc/lms.mysql;</screen>
+          </para>
+          </sect3>
+          <sect3 id="install-mysql-lms">
+          <title>LMS Configuration (lms.ini)</title>
+               <para>Because MySQL is default database for LMS, configuration is limited to
+               [database] section setup. Thus you need to edit /etc/lms/lms.ini and fill in password
+               and user's name:
+               <screen>
+user     = lms
+password = your_password</screen>
+              </para>
+               <para>After this step you should be able to enter your system without any problems.
+               Just write an URL for your LMS installation. If there's no user account (first run),
+               you'll be prompted with form to add username and some personal data. When you enter
+               correct admin personal details LMS will move you to login page, where you can use
+               newly created account.</para>
+               <para>Let's stop here and add some stuff to cron, for peace of mind:
+               <screen>
+12 4 3,10,17,21,28 * * /usr/bin/mysqldump -u lms --password=your-super-secret-password \
+              --add-drop-table --add-locks lms > backups/lms-auto-"$(date +%s)".sql</screen>
+               </para>
+               <para>That will create mysql database backup automagically each 3, 10, 17, 21 and 28
+               day of month at 4:12 at night.</para>
+          </sect3>
+          </sect2>
+          <sect2 id="install-pgsql">
+          <title>PostgreSQL</title>
+          <sect3 id="install-pgsql-intro">
+          <title>Intro</title>
+               <para>LMS require PostgreSQL 8.2 or higher. If you have not installed PostgreSQL server, 
+	       you can compile it yourself from sources available on <ulink url="http://www.postgresql.org">
+               www.postgresql.org</ulink>.</para>
+          </sect3>
+          <sect3 id="install-pgsql-server">
+          <title>Installation</title>
+               <para>That is a short version of installation procedure, more info can be found in
+               Postgres documentation. After you download and extract sources go to main directory
+               and run following commands:
+               <screen>
+$ ./configure --enable-locale
+$ gmake
+$ su
+$ gmake install
+$ adduser postgres
+$ mkdir /usr/local/pgsql/data
+$ chown postgres /usr/local/pgsql/data
+$ su - postgres
+$ /usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data --locale=pl_PL.UTF-8
+$ /usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data >logfile 2>&1 &</screen>
+               </para>
+		<para><warning><para>Applies to version <= 9.1.x: It's required to add in postgresql.conf: custom_variable_classes = 'lms'</para></warning></para>
+          </sect3>
+          <sect3 id="install-pgsql-dbcreate">
+          <title>Database Creation</title>
+               <para>While server is running you can start with adding database and its owner, both
+               named 'lms' and loading database schema:
+               <screen>
+$ /usr/local/pgsql/bin/createuser -DPRS lms
+$ /usr/local/pgsql/bin/createdb -E UNICODE -O lms lms
+$ /usr/local/pgsql/bin/psql -d lms -U lms -f /lms/doc/lms.pgsql</screen>
+          </para>
+          </sect3>
+          <sect3 id="install-pgsql-lms">
+          <title>LMS Configuration (lms.ini)</title>
+               <para>For LMS default database server is MySQL so you have to set following options
+               in [database] section of /etc/lms/lms.ini file:
+                  <screen>
+type     = postgres
+user     = lms
+password = password_entered_with_lms_user_creation</screen>
+              </para>
+               <para><note><para>The need for password actually depends
+               on Postgres users authentication configuration found in
+               <filename>/usr/local/pgsql/data/pg_hba.conf</filename> (refer to <ulink
+               url="http://www.postgresql.org/docs/current/interactive/auth-pg-hba-conf.html">
+               Postgresql documentation</ulink>). By default password is not
+               required and you can comment it with semicolon.</para></note></para>
+               <para>After this step you should be able to enter your system without any problems.
+               Just write an URL for your LMS installation. If there's no user account (first run),
+               you'll be prompted with form to add username and some personal data. When you enter
+               correct admin personal details LMS will move you to login page, where you can use
+               newly created account.</para>
+               <para>Let's stop here and add some stuff to cron, for peace of mind:
+               <screen>
+12 4 3,10,17,21,28 * * /usr/bin/pg_dump -U lms --clean \
+                       lms --file=backups/lms-auto-"$(date +%s)".sql</screen>
+         </para>
+          </sect3>
+          </sect2>
+      </sect1>       
+      <sect1 id="install-config">
+           <title>Basic Configuration</title>
+          <para>Main configuration file of LMS is <filename>lms.ini</filename>, which must be placed
+         in directory <filename>/etc/lms</filename> or in LMS root directory (not recommended, see
+         <xref linkend="install-install">!!!). It contains configuration options for <emphasis>LMS-UI</emphasis>
+         and for all scripts with exception of <emphasis>LMS-MGC</emphasis>.</para>
+         <para><note><para>Remember to remove semicolons (comments sign) from beginning of line with
+         parameter that you set.</para></note></para>
+	 <para><note><para>As of version 1.6 and later storing config 
+	 in <filename>lms.ini</filename> is beeing treaded as obsolete. 
+	 The only required values there are from [database] and [directories]
+	 sections. Other settings are stored in database and could be changed by 
+	 user interface.</para></note></para>
+        <sect2 id="install-config-db">
+        <title>Section [database] - Database Settings</title>
+    	    <para>
+            <itemizedlist>
+    		<listitem>
+	    	    <para>type</para>
+    		    <para>Database driver type. Currently are supported 'mysql' or 'mysqli' 
+		    and 'postgres'. Default: mysql</para>
+    		    <para>Example: <prompt>type = mysql</prompt></para>
+		</listitem>
+        	<listitem>
+	            <para>host</para>
+    		    <para>Host where database is running. Usually 'localhost', but you can set anything here     
+	            (IP, domain or path to socket in 'localhost:/path/to/socket' format).                       
+	            Default: localhost</para>
+	            <para>Example:     <prompt>host = localhost</prompt></para>
+		</listitem>
+    		<listitem>
+	            <para>user</para>
+	            <para>Database user account name. In many cases (if you follow this documentation) that will
+	            be 'lms'. If you want to use privileged account, you can enter 'root' (MySQL on most of
+	            *nixes), 'mysql' (on PLD) or 'postgres' (PostgreSQL). Default: mysql</para>
+	            <para>Example:     <prompt>user = lms</prompt></para>
+	        </listitem>
+    		<listitem>
+    		    <para>password</para>
+	            <para>Database user password. Default: empty.</para>
+	            <para>Example:     <prompt>password = password</prompt></para>
+		</listitem>
+        	<listitem>
+	            <para>database</para>
+	            <para>Database name. Default: lms</para>
+	            <para>Example:     <prompt>database = lms</prompt></para>
+		</listitem>
+	    </itemizedlist>
+    	    </para>
+    </sect2>
+    <sect2 id="install-config-dir">         
+	<title>Section [directories] - Directories Settings</title>
+        <para>        
+     <itemizedlist>
+     <listitem>
+        <para>sys_dir</para>
+        <para>System directory. It is a place where the entire content of LMS UI is placed, that
+        means index.php, graphics, templates and the rest. By default index.php tries to guess where
+        is it located using getcwd(), but it's better to say it where it is:</para>
+        <para>Example:     <prompt>sys_dir = /var/www/htdocs/lms/</prompt></para>
+        </listitem>
+        <listitem>
+        <para>modules_dir</para>
+        <para>Directory with LMS "modules". That is content of /modules directory. By default it is
+        <filename>modules</filename> subdirectory of sys_dir.</para>
+        <para>Example:     <prompt>modules_dir = /usr/share/lms/modules/</prompt></para>
+        </listitem>
+        <listitem>
+        <para>lib_dir</para>
+        <para>Directory with LMS "libraries". That is content of /lib directory. By default it is
+        <filename>lib</filename> subdirectory of sys_dir.</para>
+        <para>Example:     <prompt>lib_dir = /usr/share/lms/lib/</prompt></para>
+        </listitem>
+        <listitem>
+        <para>backup_dir</para>
+        <para>Directory for database backup files - it's a place where LMS can write its database
+        snapshots. By default it is <filename>backups</filename> subdirectory of sys_dir.</para>
+        <para>Example:     <prompt>backup_dir = /var/backup/lms/</prompt></para>
+        <para><warning><para>If directory with backups is accessible from WWW
+        level (within Web Server DocumentRoot), anybody can access them without
+        authentication.</para></warning></para>
+        </listitem>
+        <listitem>
+        <para>doc_dir</para>
+        <para>Directory for documents archive - it's a place where LMS can write uploaded files.
+        By default it is <filename>documents</filename> subdirectory of sys_dir.</para>
+        <para>Example:     <prompt>doc_dir = /usr/share/lms/docs/</prompt></para>
+        <para><warning><para>If that directory is accessible from WWW
+        level (within Web Server DocumentRoot), anybody can access them without
+        authentication.</para></warning></para>
+        </listitem>
+        <listitem>
+        <para>smarty_compile_dir</para>
+        <para>Compilation directory for Smarty. It's a place where Smarty compile its templates. By
+        default it is <filename>templates_c</filename> subdirectory of sys_dir.</para>
+        <para>Example:      <prompt>smarty_compile_dir = /var/smarty/compile/lms</prompt></para>
+        </listitem>
+        <listitem>
+        <para>smarty_templates_dir</para>
+        <para>Directory with templates for Smarty. By default it is <filename>templates</filename  >
+        subdirectory of sys_dir.</para                                                             >
+        <para>Example:     <prompt>smarty_templates_dir = /usr/share/lms/templates</prompt></para>
+        </listitem>
+        </itemizedlist>
+     </para>
+     </sect2>
+    <sect2 id="install-config-finances">
+    <title>Section [finances] - Finances Settings</title>
+	<para>This section consist options for financial system and for payment
+        forms. You can read more about that in chapter 'Documents'.
+        <itemizedlist>
+    	    <listitem>
+            <para>suspension_percentage (optional)</para>
+            <para>Percentage for suspended liabilities. Default: '0'</para>
+            <para>Example:     <prompt>suspension_percentage = '50'</prompt></para>
+            </listitem>
+	</itemizedlist>
+        </para>
+    </sect2>
+    </sect1>
+    <sect1 id="install-rights">
+      <title>Access rights</title>
+      <sect2 id="install-rights-idea">
+                <title>Idea</title>
+      <para>In LMS you may define up to 256 rules to access the system. 
+      Each can permit or deny access to defined modules. 
+      Each user can have any combination of access rules assigned to his account.</para>
+      <para>By default following access rules list is defined:
+       <itemizedlist>
+        <listitem><para>full access</para></listitem>
+        <listitem><para>read only (excluding Helpdesk)</para></listitem>
+        <listitem><para>nodes connection/disconnection</para></listitem>
+        <listitem><para>finances management</para></listitem>
+        <listitem><para>configuration reload</para></listitem>
+        <listitem><para>customers management</para></listitem>
+        <listitem><para>nodes management</para></listitem>
+        <listitem><para>traffic stats</para></listitem>
+        <listitem><para>messaging (email, sms)</para></listitem>
+        <listitem><para>Helpdesk (RT) administration</para></listitem>
+        <listitem><para>Helpdesk (RT) operation</para></listitem>
+        <listitem><para>hosting management</para></listitem>
+        <listitem><para>configuration</para></listitem>
+        <listitem><para>networks and devices management</para></listitem>
+        <listitem><para>timetable management</para></listitem>
+        <listitem><para>daemon management and configuration</para></listitem>
+	<listitem><para>cash operations</para></listitem>
+        <listitem><para>customers groups management</para></listitem>
+        <listitem><para>nodes groups management</para></listitem>
+	<listitem><para>customers to groups assignment</para></listitem>
+        <listitem><para>nodes to groups assignment</para></listitem>
+        <listitem><para>voip accounts management</para></listitem>
+        <listitem><para>Userpanel management</para></listitem>
+        <listitem><para>users edition and addition forbidden</para></listitem>
+        <listitem><para>no access</para></listitem>
+       </itemizedlist>
+      Most of them grant access to modules and two denies. Modules that user
+      has always access are: welcome, copyrights, logout, chpasswd 
+      (chpasswd can change only own password), access to all others is defined by rules.</para>
+      <note><para>If you don't define any access rule for user, then LMS defines
+      0 rule for him, which mean: full access.</para></note>
+      </sect2>
+      <sect2 id="install-rights-how">
+                <title>How does it work?</title>
+          <para> Algorithm that decides whether user has access to given module or not is as following:
+          <simplelist>
+          <member>-  First of all: checking list of modules that user always has access.</member>
+          <member>-  Next: checking if module match rules in each levels user has access to.</member>
+          <member>-  Finally: Decision if user is permitted to access modules. If module 
+          match to any level that denies access then access will be forbidden even if user has
+          level that permits access to module. For example, if someone has full access and no access 
+          to "add computer" module, then he won't able to access module.
+          If module  matches level that permits access to module, then LMS will grant access to module, 
+          but if module does not match at any level then no-access-message also will be printed.</member>
+       </simplelist>
+          </para>
+     </sect2>
+     <sect2 id="install-rights-user">
+                <title>User-defined access rules</title>
+          <para>Advanced users can define any additional access rules
+          or redefine existing ones.  In order to do that you must make
+          PHP script based on file <filename>lib/accesstable.php</filename>.
+          Then set option <filename>custom_accesstable</filename> in [phpui]
+          section to created file name.</para>
+          <para>In that way it's possible to define your own rules to allow
+          or deny access for any modules. Module is a name of PHP file
+          in <filename>modules</filename> directory, given without extension 
+          in access rules. For example, it's possible to define
+          rule for invoices display (e.g. for lms-sendinvoices script) 
+          in the following way:
+<screen>
+&lt;?php
+$access['table'][100]['name']      = 'invoices display';
+$access['table'][100]['allow_reg'] = '^invoice$';
+?&gt;
+</screen>
+          </para>
+     </sect2>
+    </sect1>
+    <sect1 id="install-upgrade">
+        <title>Upgrade</title>
+	<para>Since version 1.5.4 LMS was released in polish language only. If you are upgrading
+	read polish documentation for upgrade description. In newest versions upgrade is very easy.
+        That process has two stages. Before you start check LMS requirements (they're
+	changing). Also if you're using MySQL check user privileges, they're changed
+	few times in the past.</para>
+	<para>Now, overwrite old files with new ones and remove contents of
+        <filename>templates_c</filename> directory (or better create new LMS directory tree). Second
+        stage is a database structure change - it's self-executing process acting upon first login to
+        the UI.</para>
+	<para><warning><para>If you've got CVS version you've to
+	install Smarty library. Just copy contents of Smarty's 
+	<filename>/lib</filename> directory to <filename>/lib/Smarty</filename>.
+	It can be done (including Smarty download) automatic with use of
+	<filename>/devel/smarty_install.sh</filename> script.</para></warning></para>
+    </sect1>
+    <sect1 id="install-documents">
+	<title>Documents</title>
+	    <para>LMS makes possible to generate and to store various documents
+	    i.e. invoices, receipts and non-financial documents i.e. contracts,
+	    protocols and others. Documents can be numbered with numbering plans 
+	    (patterns) defined in menu Configuration - Numbering Plans.</para>
+    <sect2 id="tax-calculation">
+	    <title>Calculation of tax value</title>
+	    <para>Below is presented method used by LMS to calculate tax value. Values of all calculations
+	    are rounded to hundredths.</para>
+	    <para>Unitary price in LMS database is brutto value (including tax).
+		    <itemizedlist>
+			    <listitem>
+				    <para>tax value = (tax rate / 100) + 1</para>
+				    <para>Example: tax rate is 22%</para>
+				    <para>tax value = (22 / 100) + 1 = 1.22</para>
+			    </listitem>
+			    <listitem>
+				    <para>unitary netto price = unitary brutto price / tax value</para>
+				    <para>Example: unitary brutto price of 1 meter of cable is $2.56, tax rate is 22%</para>
+				    <para>unitary netto price = $2.56 / 1,22 = $2.10</para>
+			    </listitem>
+			    <listitem>
+				    <para>total brutto price = unitary brutto price * count</para>
+				    <para>Example: unitary brutto price of 1 meter of cable is $2.56, number of meters is 1366, tax rate is 22%</para>
+				    <para>total brutto price = $2.56 * 1366 m = $3496.96</para>
+			    </listitem>	    
+			    <listitem>
+				    <para>total netto price = total brutto price / tax value</para>
+				    <para>Example: unitary brutto price of 1 meter of cable is $2.56, number of meters is 1366, tax rate is 22%</para>
+				    <para>total netto price = ($2.56 * 1366 m = $3496.96) / 1,22 = $2866.36</para>
+			    </listitem>
+		    </itemizedlist>
+	    </para>
+    </sect2>
+    <sect2 id="install-invoices">
+     <title>Invoices</title>
+                <para>It's possible to issue invoices in either automatic or manual way. Manual
+                invoices creation is possible in 'New Invoice' module from 'Finances' menu.
+                Automatic issue might be helpful while you have legal contracts with your users.
+                In this case invoices are created by <filename>lms-payments</filename> script or
+                <emphasis>lmsd</emphasis> daemon.</para>
+                <para>For proper work of printouts you need to define division's invoices data
+		(e.g. header, footer, default expositor, place, bank account) and configure some options 
+		in configuration section <emphasis>[invoices]</emphasis>:
+          <itemizedlist>
+	  <listitem>
+		<para>print_balance_history</para>
+		<para>If true on invoice (html) will be printed history of financial
+		operations on customer account. Default: not set.</para>
+		<para>Example: <prompt>print_balance_history = true</prompt></para>
+	  </listitem>
+	  <listitem>
+		<para>print_balance_history_limit</para>
+		<para>Records number on customer balance list on invoice. Specify 
+		last x records.	Default: 10.</para>
+		<para>Example: <prompt>print_balance_history_limit = 20000</prompt></para>
+          </listitem>
+          </itemizedlist>
+          Generated invoices can be viewed in two ways: by clicking on printer icon, in balance sheet page
+          or by clicking 'Invoices List' in 'Finances' menu. In second case, is also possible to 
+          filter invoices for printing.</para>
+                <para>When printing by default are displayed original and copy pages, it can be changed:
+          <itemizedlist>
+          <listitem>
+               <para>default_printpage</para>
+               <para>Coma-separated list of default invoice printout pages. You can use 
+	       "original", "copy", "duplicate". Default: "original,copy".</para>
+               <para>Example: <prompt>default_printpage = "original"</prompt></para>
+          </listitem>
+          </itemizedlist>
+        </para>
+         <sect3 id="install-invoices-html">
+          <title>HTML</title>
+          <para>Invoices are printed in html format by default
+          using provided template. In <emphasis>[invoices]</emphasis> section
+          you can also configure:
+          <itemizedlist>
+          <listitem>
+               <para>template_file</para>
+               <para>Invoice template, which should be placed in 
+               <filename>templates</filename> directory. Default: invoice.html.</para>
+               <para>Example: <prompt>template_file = invoice-mynet.html</prompt></para>
+          </listitem>          
+          <listitem>
+               <para>content_type</para>
+               <para>Invoice content-type. If you enter here 'application/octet-stream'
+               then browser will ask to save file on disk, instead of displaying it.
+               It's useful if you use your own template which generate eg. rtf or xls file.
+               Default: 'text/html'</para>
+               <para>Example: <prompt>content_type = application/octet-stream</prompt></para>
+          </listitem>     
+          <listitem>
+               <para>attachment_name</para>
+               <para>File name for saving finished invoice printout. WARNING: Setting attachment_name 
+               with default content_type will (in case of MSIE) print invoice + prompt for save on 
+               disk + bonus browser crash (6.0SP1 on WInXP).
+               Default: empty.</para>
+               <para>Example: <prompt>attachment_name = invoice.xls</prompt></para>
+          </listitem>
+          </itemizedlist>
+          Generated invoice in HTML format consist of originals and copies, which are separated
+          by CSS page-break markups, so every modern browser that supports CSS 
+          should print many-page invoices correctly. This behavior was tested on
+          Microsoft Internet Explorer 6.0, Opera 7.02 and Mozilla 1.3.</para>
+          <para>
+               <note><para>Almost every internet browser has printing 
+               configuration, where functions like header and footer or URL 
+               printing can be disabled.</para></note>
+          </para>
+         </sect3>     
+         <sect3 id="install-invoices-pdf">
+          <title>PDF</title>
+                 <para>It's possible to create invoices as PDF files. Setting option <filename>type</filename> in
+                 <emphasis>[invoices]</emphasis> section to 'pdf' will force invoice being created in PDF instead
+                 of html. Option <filename>template_file</filename> has the same meaning, with one difference,
+                 that it might take predefined values: 'standard' - basic invoice (invoice.html equivalent) and
+                 'FT-0100' - invoice adjusted for printing on <ulink url="http://www.polarnet.org/produkty/ft-0100/">FT-0100</ulink> paper including payment form. You can set
+                 <filename>template_file</filename> option for php file name, but this feature is meant for
+                 advanced users as it requires you to create more complicated php file than the one used with html
+                 invoices Smarty template.</para>
+         </sect3>
+ 	 <sect3 id="install-invoices-iban">
+          <title>Automatic iban account number generation</title>
+          <para>LMS allows for automatic IBAN number generation. As of now it supports fixed lenght of 26 digits 
+	  and  2 letters (letters are set fixed to PL -- POLAND). 
+	  You need to specify 8 to 20 digits, the rest is taken as as-many-leading-zeros-as-needed plus Customer-ID
+	  Be aware that for example Cyprus and Hungary also use 26 digits.
+	  More on: <ulink url="http://en.wikipedia.org/wiki/International_Bank_Account_Number">Wikipedia</ulink>
+	  </para>
+         </sect3> 
+         <sect3 id="install-invoices-cnote">
+          <title>Credit Notes</title>
+          <para>Credit notes uses invoices settings from 
+	  <emphasis>[invoices]</emphasis> section.
+	  Default invoice template include also credit notes contents, but
+	  you have possibility to define different template for credit notes
+	  (the rest of options is common for both invoices and credit notes):
+          <itemizedlist>
+          <listitem>
+               <para>cnote_template_file</para>
+               <para>Credit note template, which should be placed in 
+               <filename>templates</filename> directory. Default: invoice.html.</para>
+               <para>Example: <prompt>cnote_template_file = invoice-mynet.html</prompt></para>
+          </listitem>
+          </itemizedlist>
+          </para>
+         </sect3>
+    </sect2>
+	<sect2 id="install-transferforms">
+	<title>Transfer forms</title>
+		<para>Transfer forms it's Polish specific feature. Data for payment form printouts 
+		is get from customer's division info. The title of payment can be set using 'pay_title' option
+		in <emphasis>[finances]</emphasis> section.</para>
+	</sect2>
+	<sect2 id="install-receipts">
+     <title>Cash Receipts</title>
+                <para></para>
+         <sect3 id="install-receipts-html">
+          <title>HTML</title>
+          <para>Receipts are printed in html format by default
+          using provided template. We chave one printout template for
+	  cash-in and cash-out receipts. In <emphasis>[receipts]</emphasis> section
+          you can also configure:
+          <itemizedlist>
+          <listitem>
+               <para>template_file</para>
+               <para>Cash receipt template, which should be placed in 
+               <filename>templates</filename> directory. Default: receipt.html.</para>
+               <para>Example: <prompt>template_file = /mytemplates/receipt.html</prompt></para>
+          </listitem> 
+          <listitem>
+               <para>content_type</para>
+               <para>Printout content-type. If you enter here 'application/octet-stream'
+               then browser will ask to save file on disk, instead of displaying it.
+               It's useful if you use your own template which generate eg. rtf or xls file.
+               Default: 'text/html'</para>
+               <para>Example: <prompt>content_type = application/octet-stream</prompt></para>
+          </listitem>     
+          <listitem>
+               <para>attachment_name</para>
+               <para>File name for saving receipt printout. WARNING: Setting attachment_name 
+               with default content_type will (in case of MSIE) print document + prompt for save on 
+               disk + bonus browser crash (6.0SP1 on WinXP).
+               Default: empty.</para>
+               <para>Example: <prompt>attachment_name = receipt.xls</prompt></para>
+          </listitem>
+          </itemizedlist>
+          </para>
+        </sect3>     
+        <sect3 id="install-receipts-pdf">
+    	    <title>PDF</title>
+                <para>It's possible to create receipts as PDF files. Setting option <filename>type</filename> in
+                <emphasis>[receipts]</emphasis> section to 'pdf' will force document being created in PDF instead
+                of html. Option <filename>template_file</filename> has the same meaning, with one difference,
+                that it might take predefined value: 'standard' - basic receipt (receipt.html equivalent).
+                <filename>template_file</filename> option can be set to PHP file name, but this feature is meant for
+                advanced users as it requires you to create more complicated PHP script than the one used with html
+                receipts Smarty template.</para>
+        </sect3>
+    </sect2>
+    <sect2 id="install-documents-other" xreflabel="Other documents">
+	<title>Other documents</title>
+	    <para>Documents support is not limited to invoices. You might store 
+	    virtually any documents you want in LMS, such as contracts, protocols, 
+	    annexes and others. You can assign any number of documents to each 
+	    customer in 'Customer documents' tab in 'Customer information' panel. 
+	    Each document should have defined title, type and additionally you 
+	    might define it's time span (time until when it's valid) and description.
+	    Document files are being stored outside of database (which should be kept
+	    in mind while doing backups!) in directory defined with <filename>doc_dir</filename>
+	    in <emphasis>[directories]</emphasis> section of config file.</para>
+		<para>Documents can be uploaded to system as prepared files, but also 
+		generated from templates with use of defined wizards. Here system gives
+		great configuration possibilities. In directory 
+		<filename>documents/templates/default</filename> you can find
+		default document wizard (template and engine). You can create unlimited 
+		number of own documents wizards, which must be placed in  
+		<filename>documents/templates/</filename> directory.</para>
+		<para>Each wizard must have file <filename>info.php</filename> with
+		specified structure:
+<screen>
+&lt;?php
+$engine = array(
+    'name' => 'default', 	// wizard (directory) name, lower case letters and numbers
+    'engine' => 'default', 	// engine directory (engine.php)
+    'template' => 'template.html', 		// template file (in 'name' directory)
+    'title' => trans('Default document'), 	// description for LMS-UI
+    'content_type' => 'text/html', 		// output file type
+    'output' => 'default.html', 			// output file name
+    'plugin' => 'plugin',			// plugin file name (in 'name' directory)
+    'post-action' => 'post-action',		// action file executed after document addition (in transaction)
+)
+?&gt;
+</screen>
+		File <filename>info.php</filename> define wizard and is required.
+		To generate document is needed engine (file with name <filename>engine.php</filename>). 
+		You can create own engine or use other by setting 'engine' variable to
+		appropriate wizard name. So, there is no need to create engine for
+		each new wizard. Is enough to make 'template' template and file
+		<filename>info.php</filename>.</para>
+		<para>Member <filename>plugin</filename> specify name of php file used
+		for printing additional fields on document creation form.
+		Plugin can also consist errors handlers for those fields.
+		After document creation will be executed PHP script which name (without extension) 
+		should be specified in <filename>post-action</filename> value.</para>
+    </sect2>
+    </sect1>
+</chapter>

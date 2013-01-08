@@ -1,0 +1,61 @@
+{include file="header.html"}
+<!--// $Id: contractorgroupedit.html //-->
+<h1>{$layout.pagetitle}</h1>
+
+<form method="POST" name="contractorgroupedit" action="?m=contractorgroupedit&id={$contractorgroup.id}">
+<table width="100%" cellpadding="3">
+
+<input type="submit" class="hiddenbtn">
+	<tr class="dark">
+		<td width="1%" class="fleftu">
+			<img src="img/group.gif" alt="">
+		</td>
+		<td width="1%" class="fbt" nowrap>
+			<b>{trans("Name:")}</b>
+		</td>
+		<td width="98%" class="frightu">
+			<input type="TEXT" value="{$contractorgroup.name}" name="contractorgroupedit[name]" size="40" {tip trigger="name" bold=1}>
+			<b>&nbsp;({$contractorgroup.id|string_format:"%04d"})</b>
+		</td>
+	</tr>
+	<tr class="light"><td colspan="3" class="flr" width="100%">&nbsp;</td></tr>
+	<tr class="LIGHT">
+		<td width="1%" class="FLEFT">
+			<img src="img/info1.gif" alt="">
+		</td>
+		<td width="1%">
+			<b>{trans("Description:")}</b>
+		</td>
+		<td width="98%" class="FRIGHT">
+			<textarea ROWS="5" cols="50" name="contractorgroupedit[description]" {tip text="Enter additional information (optional)"}>{$contractorgroup.description}</textarea>
+		</td>
+	</tr>
+	
+	<tr class="light"><td colspan="3" class="flr" width="100%">&nbsp;</td></tr>
+	
+	<tr class="light">
+	    <td width="1%" class="FLEFT" colspan="2" nowrap>
+			<img src="img/group.gif" alt="">
+			<b>{trans("Contractors")}:</b>
+		</td>
+		<td width="98%" class="FRIGHT">
+		    {include file="multiselect.html" selected=$contractorgroup.groups}
+		</td>
+	</tr>
+
+	<tr class="light"><td colspan="3" class="flr" width="100%"></td></tr>
+	<tr class="dark">
+		<td width="100%" colspan="3" align="RIGHT" class="fall">
+			<a href="javascript:document.contractorgroupedit.submit();" accesskey="S">{trans("Submit")} <img src="img/save.gif" alt=""></a>
+			<a href="?m=contractorgrouplist">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a> 
+		</td>
+	</tr>
+</table>
+</form>
+
+<script type="text/javascript" language="JavaScript">
+<!--
+document.forms['contractorgroupedit'].elements['contractorgroup[name]'].focus();
+//-->
+</script>
+{include file="footer.html"}

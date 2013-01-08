@@ -1,0 +1,574 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>LMS Daemon</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Examples of use"
+HREF="mgc-example.html"><LINK
+REL="NEXT"
+TITLE="Modules"
+HREF="daemon-modules.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mgc-example.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="daemon-modules.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="DAEMON"
+></A
+>Chapter 6. LMS Daemon</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>6.1. <A
+HREF="daemon.html#DAEMON-INTRO"
+>Basics</A
+></DT
+><DD
+><DL
+><DT
+>6.1.1. <A
+HREF="daemon.html#DAEMON-REQUIREMENTS"
+>Requirements</A
+></DT
+><DT
+>6.1.2. <A
+HREF="daemon.html#DAEMON-INSTALL"
+>Installation</A
+></DT
+><DT
+>6.1.3. <A
+HREF="daemon.html#DAEMON-CONFIG"
+>Configuration</A
+></DT
+><DT
+>6.1.4. <A
+HREF="daemon.html#DAEMON-RUN"
+>Starting</A
+></DT
+></DL
+></DD
+><DT
+>6.2. <A
+HREF="daemon-modules.html"
+>Modules</A
+></DT
+><DD
+><DL
+><DT
+>6.2.1. <A
+HREF="daemon-modules.html#DAEMON-MODULESLIST"
+>Modules list</A
+></DT
+><DT
+>6.2.2. <A
+HREF="daemon-modules.html#DAEMON-SYSTEM"
+>System</A
+></DT
+><DT
+>6.2.3. <A
+HREF="daemon-modules.html#DAEMON-PAYMENTS"
+>Payments</A
+></DT
+><DT
+>6.2.4. <A
+HREF="daemon-modules.html#DAEMON-NOTIFY"
+>Notify</A
+></DT
+><DT
+>6.2.5. <A
+HREF="daemon-modules.html#DAEMON-GGNOTIFY"
+>Ggnotify</A
+></DT
+><DT
+>6.2.6. <A
+HREF="daemon-modules.html#DAEMON-CUTOFF"
+>Cutoff</A
+></DT
+><DT
+>6.2.7. <A
+HREF="daemon-modules.html#DAEMON-DHCP"
+>DHCP</A
+></DT
+><DT
+>6.2.8. <A
+HREF="daemon-modules.html#DAEMON-HOSTFILE"
+>Hostfile</A
+></DT
+><DT
+>6.2.9. <A
+HREF="daemon-modules.html#DAEMON-TRAFFIC"
+>Traffic</A
+></DT
+><DT
+>6.2.10. <A
+HREF="daemon-modules.html#DAEMON-TC"
+>Tc (HTB)</A
+></DT
+><DT
+>6.2.11. <A
+HREF="daemon-modules.html#DAEMON-DNS"
+>Dns</A
+></DT
+><DT
+>6.2.12. <A
+HREF="daemon-modules.html#DAEMON-ETHERS"
+>Ethers</A
+></DT
+><DT
+>6.2.13. <A
+HREF="daemon-modules.html#DAEMON-OIDENT"
+>Oident</A
+></DT
+><DT
+>6.2.14. <A
+HREF="daemon-modules.html#DAEMON-PINGER"
+>Pinger</A
+></DT
+><DT
+>6.2.15. <A
+HREF="daemon-modules.html#DAEMON-PARSER"
+>Parser</A
+></DT
+></DL
+></DD
+><DT
+>6.3. <A
+HREF="tscript.html"
+>T-Script</A
+></DT
+><DD
+><DL
+><DT
+>6.3.1. <A
+HREF="tscript.html#TSCRIPT-INTRO"
+>Introduction</A
+></DT
+><DT
+>6.3.2. <A
+HREF="tscript.html#TSCRIPT-SYNTAX"
+>Syntax</A
+></DT
+><DT
+>6.3.3. <A
+HREF="tscript.html#EXTENSIONS"
+>Extensions</A
+></DT
+><DT
+>6.3.4. <A
+HREF="tscript.html#EXAMPLES"
+>Example Scripts</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DAEMON-INTRO"
+>6.1. Basics</A
+></H1
+><P
+>This C daemon was developed to aid management of your services. It's responsible for
+     starting appropriate modules, each performing specific task. Each module makes configuration 
+     files based on its template and data from LMS database and manages (restarting) selected services 
+     on a server. Modules can also collect statistics, check hosts activity, account payments or
+     notify debtors about their charges.
+     </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-REQUIREMENTS"
+>6.1.1. Requirements</A
+></H2
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS Daemon</I
+></SPAN
+> requires:
+                     <UL
+><LI
+><P
+>LMS user interface installation</P
+></LI
+><LI
+><P
+><TT
+CLASS="FILENAME"
+>libmysqlclient</TT
+> shared library (included in full MySQL
+                    installation or respective "devel" package) or <TT
+CLASS="FILENAME"
+>libpq</TT
+> shared
+                    library in case of PostgreSQL database use.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FILENAME"
+>libdl</TT
+> shared library (present in every modern
+                    distribution)</P
+></LI
+><LI
+><P
+>C compiler (gcc-2.95.x or higher)</P
+></LI
+><LI
+><P
+>ggnotify module needs <TT
+CLASS="FILENAME"
+>libgadu</TT
+> library and header files</P
+></LI
+><LI
+><P
+>parser module needs <TT
+CLASS="FILENAME"
+>flex</TT
+> and <TT
+CLASS="FILENAME"
+>bison</TT
+> (version 1.875 or newer).</P
+></LI
+></UL
+>
+                     </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-INSTALL"
+>6.1.2. Installation</A
+></H2
+><P
+>You have to setup some configure options prior to compilation, that can be
+               listed with --help flag of <TT
+CLASS="FILENAME"
+>./configure</TT
+> script (default values
+               shown in brackets):
+<PRE
+CLASS="SCREEN"
+>  --help                help
+  --enable-debug0       SQL queries logging (disabled)
+  --enable-debug1       events logging (disabled)
+  --with-pgsql          enables using of PostgreSQL database (disabled)
+  --with-mysql          enables using of MySQL database (enabled)
+  --prefix=PREFIX       program and modules install directory (/usr/local)
+  --lmsbindir=DIR       sets location of target LMS binaries (PREFIX/lms/bin)
+  --lmslibdir=DIR       sets location of target LMS modules (PREFIX/lms/lib)
+  --libdir=DIR          location of database libraries (/usr/lib)
+  --incdir=DIR          location of database header files (/usr/include)
+  --inifile=FILE        configuration file - disables online configuration</PRE
+>
+               It's required to choose one database which you will use (--with-mysql or --with-pgsql) 
+	       and location of libraries supplied with database (--incdir,
+               --libdir). You can use only one database. If you change database, you have to
+               recompile your daemon. It's also possible to force daemon to use
+	       configuration files instead of database. It can't use
+	       both files and db at the same time, you'll need to choose either before
+	       compilation.
+<PRE
+CLASS="SCREEN"
+># ./configure --with-pgsql --libdir=/usr/local/pgsql/lib --incdir=/usr/local/pgsql/include</PRE
+>
+               After that you can compile and install (put daemon in directory
+               given with --prefix option):
+<PRE
+CLASS="SCREEN"
+># make &#38;&#38; make install</PRE
+>
+               Compiled modules (files with <TT
+CLASS="FILENAME"
+>.so</TT
+> extension), found in
+               directory <TT
+CLASS="FILENAME"
+>modules/module_name</TT
+> will be moved to directory
+	       PREFIX/lms/lib. Main program goes to PREFIX/lms/bin.
+               </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-CONFIG"
+>6.1.3. Configuration</A
+></H2
+><P
+>Configuration for daemon and modules configuration can be edited through Configuration -&#62; Daemon
+	       menu in <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>. Modules configuration is described later, in separate
+               chapters concerning each module. Basic daemon parameters and data for connection to
+	       database should be specified as command line options, according to following listing:
+<PRE
+CLASS="SCREEN"
+>--dbhost -h host           host database is available (default: localhost)
+--dbname -d db_name        database name (default: lms)
+--dbuser -u user           database username (default: lms)
+--dbpass -p password       database password (default: empty)
+--hostname -H hostname     host name where daemon runs; name returned by hostname command is taken
+                           as default but it can be overwritten; that name must correspond to the
+                           one specified in hosts configuration in UI
+--pidfile -P pid_file      pidfile where daemon write pid (default: none)
+--ssl -s                   use SSL connection (default: disabled)
+--command -c command       shell command to execute before every database connection (default: empty)
+--instance -i "instance[ ...]" list of instances to reload; other instances will be ignored
+--reload -q                do reload and exit
+--reload-all -r            do reload of all instances (including those with specified crontab) and exit
+--foreground -f            run in foreground (don't fork)
+--version -v               prints version and copyright info</PRE
+>
+		Database connection options can be also read from enviroment variables:
+		LMSDBPASS, LMSDBNAME, LMSDBUSER, LMSDBHOST, LMSDBPORT.
+               <DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>List of instances should contain instance names separated with 
+	       spaces. Spaces in instance name should be replaced by '\s' sequence, i.e.
+	       <SAMP
+CLASS="PROMPT"
+>lmsd -i "my\sinstance"</SAMP
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+> 
+	       </P
+><P
+>Daemon configuration is divided into hosts (which makes possible to configure
+	       and reload several different daemons installed on numerous hosts/routers) and 
+               configuration sections called as instances.</P
+><P
+>Instance configuration, besides config modules params, have to contain the following primary options:
+	       <UL
+><LI
+><P
+>Name</P
+><P
+>Instance name, unique for each daemon (host where daemon is running).</P
+><P
+>Example: system</P
+></LI
+><LI
+><P
+>Priority</P
+><P
+>Priority number, which defines instances reload sequence.</P
+><P
+>Example: 10</P
+></LI
+><LI
+><P
+>Module</P
+><P
+>Module name (with or without .so extension). If path is not specified
+			daemon will search module in PREFIX/lms/lib directory, where modules are being
+			placed after "make install".</P
+><P
+>Example: /usr/lib/system.so</P
+></LI
+><LI
+><P
+>Crontab</P
+><P
+>Module execution time specified in crontab style. All data must be numeric.
+			Following example executes instance each 5 minutes between 8 and 18 
+			hour every day. If crontab is empty, instance will be reloaded only with UI reload. 
+			Default: empty.</P
+><P
+>Example: */5 8-18 * * *</P
+></LI
+></UL
+>
+               </P
+><P
+>Configuration changes does not require restarting daemon.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-RUN"
+>6.1.4. Starting</A
+></H2
+><P
+>By default program runs in daemon mode. In this mode
+               configuration and services reload is performed on demand using 'Reload'
+               menu in <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>. Reload order and configuration
+	       checks (especially instances list and configuration of them) is done each minute. 
+	       When daemon detects reload order, it runs all enabled instances. Instances with 
+	       crontab specified will be executed at scheduled time.</P
+><P
+>Other way to run daemon is disposable reload using '-q' command line option.
+	       This is useful for tests, and in conjunction with '-i' option allows to
+	       run selected instances regardless of crontab entries for the rest of instances.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mgc-example.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="daemon-modules.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Examples of use</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Modules</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

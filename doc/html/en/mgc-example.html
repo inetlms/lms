@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Examples of use</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Configuration file generator (lms-mgc)"
+HREF="mgc.html"><LINK
+REL="PREVIOUS"
+TITLE="Configuration"
+HREF="mgc-config.html"><LINK
+REL="NEXT"
+TITLE="LMS Daemon"
+HREF="daemon.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mgc-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Configuration file generator (lms-mgc)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="daemon.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MGC-EXAMPLE"
+>5.3. Examples of use</A
+></H1
+><P
+>Configuration and implementation of lms-mgc might seem quite complex, so we provide small example. Below you can find rules to create and execute quite simple ipchains firewall.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="INSTANCE-EXAMPLE"
+></A
+><P
+><B
+>Example 5-1. Lms-mgc: Example instance</B
+></P
+><P
+>You should start with creating new mgc section in <TT
+CLASS="FILENAME"
+>lms-mgc.ini</TT
+>, with relevant name ('ipchains') and put a simple masquerade rules, per IP, inside:
+	<PRE
+CLASS="SCREEN"
+>[mgc:ipchains]
+outfile           = /etc/rc.d/rc.masq
+outfile_perm      = 700
+header            = #!/bin/sh\n/sbin/ipchains -F\n/sbin/ipchains -X\n/sbin/ipchains -P forward DENY
+grantednode_priv  = /sbin/ipchains -A forward -s %IP -j MASQ
+post_exec         = /etc/rc.d/rc.masq</PRE
+>
+	You can also add your ipchains subsection to main mgc section, so that it executes it by default:
+	<PRE
+CLASS="SCREEN"
+>[mgc]
+instances         = ipchains</PRE
+>
+	</P
+><P
+>If you run lms-mgc now, without any arguments, you should have simple script <TT
+CLASS="FILENAME"
+>/etc/rc.d/rc.masq</TT
+> generated and already executed.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mgc-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="daemon.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="mgc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>LMS Daemon</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

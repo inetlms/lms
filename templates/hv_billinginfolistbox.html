@@ -1,0 +1,149 @@
+{include file="hv_js.html"}
+
+
+<table width="100%" cellpadding="3">
+    <tr class="dark hand"><td width="1%" class="fall"><b>Zestawienie Bilingów</b></td></tr>
+    <tr class="light">
+	<td width="100%" class="fall">
+    <table width="100%" cellpadding="3" cellspacing="3">
+     <form method="GET" action="?m={$layout.module}" name="voippanelfilter">
+     <input type="submit" class="hiddenbtn">
+     <input type="hidden" name="m" value="{$layout.module}">
+     <input type="hidden" name="id" value="{$info.account.id}">
+	<tr class="dark">
+	    <td width="100%" colspan="11">
+		&nbsp;Terminal:&nbsp;
+		    <select name="pbfte" style="cursor:pointer;text-align:center;{if $pbf.te}background-color:#FFFE9F;{/if}" onchange="document.voippanelfilter.submit();" >
+			{section name=pbfte loop=$info.terminal}
+			    <option value="{$info.terminal[pbfte].username}" {if $info.terminal[pbfte].username==$pbf.te} SELECTED{/if}>{$info.terminal[pbfte].username}</option>
+			{/section}
+		</select>&nbsp;&nbsp;&nbsp;
+		&nbsp;Rok:&nbsp;<select name="pbfr" style="cursor:pointer;text-align:center;{if $pbf.r}background-color:#FFFE9F;{/if}" onchange="document.voippanelfilter.submit();" ><option value="">-- wszystkie --</option>{section name=pbfr loop=$listyear}<option value="{$listyear[pbfr].rok}" {if $listyear[pbfr].rok==$pbf.r} SELECTED{/if}>{$listyear[pbfr].rok}</option>{/section}</select>&nbsp;&nbsp;&nbsp;
+		Miesiąc:&nbsp;<select name="pbfm" style="cursor:pointer;text-align:center;{if $pbf.m}background-color:#FFFE9F;{/if}" onchange="document.voippanelfilter.submit();" ><option value="">-- wszystkie --</option><option value="1" {if $pbf.m==1} SELECTED{/if}>styczeń</option><option value="2" {if $pbf.m==2} SELECTED{/if}>luty</option><option value="3" {if $pbf.m==3} SELECTED{/if}>marzec</option><option value="4" {if $pbf.m==4} SELECTED{/if}>kwiecień</option><option value="5" {if $pbf.m==5} SELECTED{/if}>maj</option><option value="6" {if $pbf.m==6} SELECTED{/if}>czerwiec</option><option value="7" {if $pbf.m==7} SELECTED{/if}>lipiec</option><option value="8" {if $pbf.m==8} SELECTED{/if}>sierpień</option><option value="9" {if $pbf.m==9} SELECTED{/if}>wrzesień</option><option value="10" {if $pbf.m==10} SELECTED{/if}>październik</option><option value="11" {if $pbf.m==11} SELECTED{/if}>listopad</option><option value="12" {if $pbf.m==12} SELECTED{/if}>grudzień</option></select>&nbsp;&nbsp;&nbsp;
+	    </td>
+	</tr>
+	<tr><td></td></tr>
+	<tr class="dark">
+	    <td width="1%" nowrap align="left" class="ftl">&nbsp;</td>
+	    <td width="auto" nowrap align="left" class="ftop">&nbsp;</td>
+	    <td width="1%" nowrap colspan="4" align="center" class="ftl">Koszt&nbsp;Klienta</td>
+	    <td width="1%" nowrap colspan="3" align="center" class="ftl">Koszt&nbsp;Resellera</td>
+	    <td width="1%" nowrap  class="ftl">&nbsp;</td>
+	    <td width="1%" nowrap class="ftopu">&nbsp;</td>
+	</tr>
+	<tr class="dark">
+	    <td width="1%" nowrap align="left" class="fbl"><b>&nbsp;Rok&nbsp;</b></td>
+	    <td width="auto" nowrap align="left" class="fbottom"><b>&nbsp;Miesiąc&nbsp;</b></td>
+	    <td width="1%" nowrap align="right" class="fbl"><b>&nbsp;&nbsp;&nbsp;Abonament&nbsp;&nbsp;</b></td>
+	    <td width="1%" nowrap align="right" class="fbottom"><b>&nbsp;&nbsp;&nbsp;Rozmowy</b></td>
+	    <td width="1%" nowrap align="right" class="fbottom"><b>&nbsp;&nbsp;&nbsp;Połączenie</b></td>
+	    <td width="1%" nowrap align="right" class="fbottom"><b>&nbsp;&nbsp;&nbsp;Razem&nbsp;&nbsp;</b></td>
+	    <td width="1%" nowrap align="right" class="fbl"><b>&nbsp;&nbsp;&nbsp;Rozmowy</b></td>
+	    <td width="1%" nowrap align="right" class="fbottom"><b>&nbsp;&nbsp;&nbsp;Połączenie</b></td>
+	    <td width="1%" nowrap align="right" class="fbottom"><b>&nbsp;&nbsp;&nbsp;Razem&nbsp;&nbsp;</b></td>
+	    <td width="1%" nowrap align="right" class="fbl"><b>&nbsp;&nbsp;&nbsp;Przychód&nbsp;&nbsp;</b></td>
+	    <td width="1%" nowrap class="fbottomu">&nbsp;<b>LINK</b>&nbsp;</td>
+	</tr>
+	{cycle values="light,lucid" print=false}
+	{assign var='lb' value=$info.billing}
+	{assign var='sumcuscost' value=0}
+	{assign var='sumcusinit' value=0}
+	{assign var='sumrescost' value=0}
+	{assign var='sumresinit' value=0}
+	{assign var='sumsubscription' value=0}
+	{assign var='sumprzychod' value=0}
+	{section name=lb loop=$lb}
+	    {assign var='mscname' value=$lb[lb].msc}
+	    {math assign='cuscost' equation="(x+y+z)" x=$lb[lb].cost y=$lb[lb].init_charge z=$lb[lb].subscription}
+	    {math assign='rescost' equation="(x+y)" x=$lb[lb].reseller_cost y=$lb[lb].reseller_init_charge}
+	    {math assign='sumcuscost' equation="x+y" x=$sumcuscost y=$lb[lb].cost }
+	    {math assign='sumcusinit' equation="x+y" x=$sumcusinit y=$lb[lb].init_charge}
+	    {math assign='sumrescost' equation="x+y" x=$sumrescost y=$lb[lb].reseller_cost}
+	    {math assign='sumresinit' equation="x+y" x=$sumresinit y=$lb[lb].reseller_init_charge}
+	    {math assign='sumsubscription' equation="x+y" x=$sumsubscription y=$lb[lb].subscription}
+	    
+	    {if $lb[lb].subscription ne 0}{math assign='przychod' equation="(x-y)" x=$cuscost y=$rescost}{else}{math assign='przychod' equation="x*(-1)" x=$rescost}{/if}
+	    {math assign='sumprzychod' equation="x+y" x=$sumprzychod y=$przychod}
+	    <tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+		<td width="1%" nowrap align="left" class="fleft">&nbsp;{$lb[lb].rok}&nbsp;</td>
+		<td width="auto" nowrap align="left">&nbsp;{$miesiace[$mscname]}&nbsp;</td>
+		<td width="1%" nowrap align="right" class="fleft">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$lb[lb].subscription}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" >
+		    {math assign='tempek' equation="x*y" x=$stvat y=$lb[lb].cost}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;
+		</td>
+		<td width="1%" nowrap align="right">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$lb[lb].init_charge}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;
+		</td>
+		<td width="1%" nowrap align="right">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$cuscost}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" class="fleft">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$lb[lb].reseller_cost}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;
+		</td>
+		<td width="1%" nowrap align="right">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$lb[lb].reseller_init_charge}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;
+		</td>
+		<td width="1%" nowrap align="right">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$rescost}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" class="fleft" {if $przychod<0}style="color:red;"{elseif $przychod<$lb[lb].subscription}style="color:blue;"{/if}>
+		    {math assign='tempek' equation="x*y" x=$stvat y=$przychod}
+		    {$tempek|string_format:"%.04f"}&nbsp;&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" class="flr"><img src="img/box.png" border="0" {tip text="Kliknij aby otworzyć wykaz połączeń"} onclick="wyswietlbiling('{$info.account.id}','{$lb[lb].rok}','{$lb[lb].msc}','{$pbf.te}');" style="cursor:pointer;"></td>
+	    </tr>
+	{sectionelse}
+	    <tr class="light"><td colspan="11" class="fall" align="center"><BR><H2>Brak bilingów</H2></td></tr>
+	{/section}
+	{math assign='sumcus' equation="x+y+z" x=$sumcuscost y=$sumcusinit z=$sumsubscription}
+	{math assign='sumres' equation="x+y" x=$sumrescost y=$sumresinit}
+	<tr class="dark">
+		<td width="auto" nowrap align="right" colspan="2" class="fleftu"><b>RAZEM :&nbsp;</b></td>
+		<td width="1%" nowrap align="right" class="fleftu">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$sumsubscription}
+		    {$tempek|string_format:"%.04f"}&nbsp;&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" class="fbt">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$sumcuscost}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" class="fbt">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$sumcusinit}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" class="fbt">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$sumcus}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" class="fleftu">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$sumrescost}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" class="fbt">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$sumresinit}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" class="fbt">
+		    {math assign='tempek' equation="x*y" x=$stvat y=$sumres}
+		    &nbsp;{$tempek|string_format:"%.04f"}&nbsp;&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" class="fleftu"{if $sumprzychod<0} style="color:red;"{elseif $sumprzychod<$sumsubscription}style="color:blue;"{/if}>
+		    {math assign='tempek' equation="x*y" x=$stvat y=$sumprzychod}
+		    <b>{$tempek|string_format:"%.04f"}</b>&nbsp;&nbsp;
+		</td>
+		<td width="1%" nowrap align="right" class="fall">&nbsp;</td>
+	    </tr>
+     </form>
+    </table>
+	</td>
+    </tr>
+</table>

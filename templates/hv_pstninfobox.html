@@ -1,0 +1,54 @@
+<table width="100%" cellpadding="3">
+    <tr class="dark hand"  class="dark" >
+	<td width="auto" class="fleftu" ><b>Numery PSTN</b></td>
+	<td width="1%" nowrap align="right" class="frightu">
+	{if $info.terminal|@count ne 0}
+	    <a href="?m=hv_pstnadd&cusid={$info.account.id}">Dodaj numer&nbsp;&raquo;&raquo;&raquo;</a>
+	{/if}
+	</td>
+    </tr>
+    <tr class="light">
+	<td width="100%" class="fall" colspan="2">
+	    {assign var='infop' value=$info.pstn}
+	    {section name=lt loop=$infop}
+	    <table width="100%" cellpadding="3" cellspacing="0">
+		<tr class="light">
+		    <td width="33%" style="text-align:left;vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			    <tr><td width="1%" align="left" nowrap ><b>ID (Hiperus)</b></td><td width="1%"><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{$infop[lt].id}</td></tr>
+			    <tr><td width="1%" align="left" nowrap >Kod kraju</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{$infop[lt].country_code}</td></tr>
+			    <tr><td width="1%" align="left" nowrap >Nr. krajowy</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{$infop[lt].number}</td></tr>
+			    <tr><td width="1%" align="left" nowrap >Nr. międzynarodowy</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{$infop[lt].extension}</td></tr>
+			</table>
+		    </td>
+		    <td width="33%" style="text-align:left;vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			    <tr><td width="1%" align="left" nowrap ><b>Terminal</b></td><td width="1%"><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{$infop[lt].terminal_name}</td></tr>
+			    <tr><td width="1%" align="left" nowrap >Głowny numer</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{if $infop[lt].is_main=='t'}TAK{else}NIE{/if}</td></tr>
+			    <tr><td width="1%" align="left" nowrap >DISA</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{if $infop[lt].disa_enabled=='t'}TAK{else}NIE{/if}</td></tr>
+			    <tr><td width="1%" align="left" nowrap >CLIR</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{if $infop[lt].clir=='t'}TAK{else}NIE{/if}</td></tr>
+			</table>
+		    </td>
+		    <td width="auto" style="text-align:left;vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			    <tr><td width="1%" align="left" nowrap >FAX</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{if $infop[lt].virtual_fax=='t'}TAK{else}NIE{/if}</td></tr>
+			    <tr><td width="1%" align="left" nowrap >Poczta głosowa</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{if $infop[lt].voicemail_enabled=='t'}TAK{else}NIE{/if}</td></tr>
+			    <tr><td width="1%" align="left" nowrap >Utworzony</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{$infop[lt].create_date}</td></tr>
+			</table>
+		    </td>
+		</tr>
+		<tr class="dark">
+		    <td colspan="3" align="right">
+			<a href="?m=hv_pstnedit&cusid={$info.account.id}&pstnid={$infop[lt].id}">Edytuj&nbsp;numer&nbsp;&nbsp;<img src="img/edit.gif" border="0"></a>&nbsp;
+			<a href="?m=hv_pstndel&pstnid={$infop[lt].id}&account={$info.account.id}&ext={$infop[lt].extension}" onclick="return confirm('Czy napewno skasować numer PSTN ?');">Usuń <img src="img/delete.gif"></a>
+		    </td>
+		</tr>
+	    </table>
+	    {math assign='koniec' equation="y-x-1" x=$smarty.section.lt.index y=$infop|@count}
+	    {if $koniec!=0}<HR>{/if}
+	    {sectionelse}
+		<CENTER><P><H3>Brak przypisanych numerów PSTN</H3></P></CENTER>
+	    {/section}
+	</td>
+    </tr>
+</table>

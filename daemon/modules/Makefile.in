@@ -1,0 +1,10 @@
+
+
+all:
+	for i in `echo $(MODULES)`; do $(MAKE) -C $$i ; done
+
+clean:
+	for i in `echo $(MODULES)`; do $(MAKE) -C $$i clean; done
+
+install:
+	for i in `echo $(MODULES)`; do $(MAKE) install -C $$i ; done

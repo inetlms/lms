@@ -1,0 +1,3575 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Moduły</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="LMS Daemon"
+HREF="daemon.html"><LINK
+REL="PREVIOUS"
+TITLE="LMS Daemon"
+HREF="daemon.html"><LINK
+REL="NEXT"
+TITLE="T-Script"
+HREF="tscript.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="daemon.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Rozdzia&#322; 6. LMS Daemon</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="tscript.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DAEMON-MODULES"
+>6.2. Moduły</A
+></H1
+><P
+>Sam demon potrafi tylko uruchamiać moduły i to one odwalają całą robotę. 
+	Większość modułów jest przeznaczona do określonego zastosowania, jedynie 'hostfile' 
+	można używać do różnych konfigów (usług), np. różnych typów firewalli.
+	Parametry konfiguracyjne modułów umieszcza się w sekcjach instancji je wywołujących.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-MODULESLIST"
+>6.2.1. Lista dostępnych modułów</A
+></H2
+><DIV
+CLASS="TABLE"
+><A
+NAME="MODULES-LIST"
+></A
+><P
+><B
+>Tabela 6-1. Lista modułów demona lmsd</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL
+WIDTH="200"
+ALIGN="CENTER"><COL
+WIDTH="300"
+ALIGN="CENTER"><THEAD
+><TR
+><TH
+>Nazwa</TH
+><TH
+>Opis</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-SYSTEM"
+>system</A
+></TD
+><TD
+>Wywoływanie poleceń powłoki</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-PARSER"
+>parser</A
+></TD
+><TD
+>Parser uniwersalnych skryptów T-Script</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-DHCP"
+>dhcp</A
+></TD
+><TD
+>Konfiguracja serwera dhcpd</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-CUTOFF"
+>cutoff</A
+></TD
+><TD
+>Odłączanie klientów z zaległościami w opłatach</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-DNS"
+>dns</A
+></TD
+><TD
+>Konfiguracja serwera dns</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-ETHERS"
+>ethers</A
+></TD
+><TD
+>Tworzenie pliku /etc/ethers</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-HOSTFILE"
+>hostfile</A
+></TD
+><TD
+>Moduł uniwersalny (np. tworzenie reguł iptables)</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-NOTIFY"
+>notify</A
+></TD
+><TD
+>Powiadamianie klientów o zaległościach w opłatach pocztą elektroniczną</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-GGNOTIFY"
+>ggnotify</A
+></TD
+><TD
+>Powiadamianie klientów o zaległościach w opłatach przez gadu-gadu</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-PAYMENTS"
+>payments</A
+></TD
+><TD
+>Naliczanie opłat abonamentowych</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-OIDENT"
+>oident</A
+></TD
+><TD
+>Konfiguracja oident</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-TC"
+>tc</A
+></TD
+><TD
+>Tworzenie reguł TC</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-TC-NEW"
+>tc-new</A
+></TD
+><TD
+>Tworzenie reguł TC (powiązania komputerów z taryfami)</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-TRAFFIC"
+>traffic</A
+></TD
+><TD
+>Statystyki wykorzystania łącza</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-PINGER"
+>pinger</A
+></TD
+><TD
+>Badanie aktywności klientów</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-EWX-PT"
+>ewx-pt</A
+></TD
+><TD
+>Konfiguracja EtherWerX PPPoE Terminatora</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-EWX-STM"
+>ewx-stm</A
+></TD
+><TD
+>Konfiguracja EtherWerX Standalone Traffic Managera</TD
+></TR
+><TR
+><TD
+><A
+HREF="daemon-modules.html#DAEMON-EWX-STM-CHANNELS"
+>ewx-stm-channels</A
+></TD
+><TD
+>Konfiguracja EtherWerX Standalone Traffic Managera (ze rozszerzoną obsługą kanałów)</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-SYSTEM"
+>6.2.2. System</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="SYSTEM-DESC"
+>6.2.2.1. Opis</A
+></H3
+><P
+>Jedyne co robi ten moduł to wykonanie zadanego polecenia (listy poleceń)
+		    powłoki i/lub komendy SQL. Może się przydać gdy chcesz podczas przeładowania konfiguracji 
+		    wykonać jakąś komendę lub uruchomić zewnętrzny skrypt, na przykład jeden 
+		    z tych, które możesz znaleźć w katalogu <TT
+CLASS="FILENAME"
+>/bin</TT
+>.
+		    W pierwszej kolejności jest wykonywane polecenie SQL.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="SYSTEM-CONFIG"
+>6.2.2.2. Konfiguracja</A
+></H3
+><P
+>W związku z powyższym możesz zdefiniować jedynie treść polecenia SQL lub
+		    shella. Powłoka powinna sobie także poradzić z listą poleceń oddzielonych 
+		    średnikami:</P
+><UL
+><LI
+><P
+>sql</P
+><P
+>Polecenie SQL. Domyślnie: puste.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>sql = 'DELETE FROM stats WHERE dt &#60; %NOW% - 365*86400'</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Polecenie powłoki. Domyślnie: puste.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>command = 'echo -n "tu moduł "; echo "system"'</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-PAYMENTS"
+>6.2.3. Payments</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="PAYMENTS-DESC"
+>6.2.3.1. Opis</A
+></H3
+><P
+>Moduł nalicza opłaty abonamentowe klientów oraz opłaty stałe. Należy go uruchamiać 
+		    codziennie. Opłaty naliczane na podstawie przypisanych klientowi
+		    taryf zapisywane są do bazy wraz z komentarzem określonym zmienną 'comment'.
+		    Po naliczeniu opłat tworzone są faktury. Komentarz do opłaty stałej to zlepek
+		    składający się z jej nazwy oraz wierzyciela. Na końcu usuwane są z bazy nieaktualne
+		    obciążenia klientów.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="PAYMENTS-CONFIG"
+>6.2.3.2. Konfiguracja</A
+></H3
+><P
+>Dla tego modułu są dostępne następujące zmienne konfiguracyjne:</P
+><UL
+><LI
+><P
+>comment</P
+><P
+>Komentarz do operacji. '%period' zostanie zamienione na daty od-do 
+			    należnego abonamentu, np. '2003/10/10 - 2003/11/09', '%tariff' na nazwę
+			    odpowiedniej taryfy/zobowiązania, %month na pełną nazwę bieżącego
+			    miesiąca, %year na bieżący rok, a %next_mon na następny miesiąc w formacie RRRR/MM. 
+			    Domyślnie: 'Subscription: '%tariff' for period: %period'.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>comment = 'Abonament miesięczny za okres %period' </SAMP
+></P
+></LI
+><LI
+><P
+>settlement_comment</P
+><P
+>Komentarz do operacji wyrównania. '%period' zostanie zamienione na daty od-do 
+			    okresu wyrównania, np. '2003/10/20 - 2003/11/09', a '%tariff' na nazwę
+			    odpowiedniej taryfy. Domyślnie odpowiada opcji <SAMP
+CLASS="PROMPT"
+>comment</SAMP
+>.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>settlement_comment = 'Wyrównanie za okres %period'</SAMP
+></P
+></LI
+><LI
+><P
+>up_payments</P
+><P
+>"Naliczanie z góry", czyli czy okres w komentarzu ma być liczony do 
+			    przodu, czy do tyłu w stosunku do daty naliczenia opłaty. Domyślnie: yes.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>up_payments = no</SAMP
+></P
+></LI
+><LI
+><P
+>expiry_days</P
+><P
+>Określa liczbę dni od daty wygaśnięcia przypisanych klientowi zobowiązań, 
+			    po której dane tego zobowiązania zostaną usunięte z bazy. Przy ustawieniu na '0' dane
+			    zostaną usunięte natychmiast po dacie, do której obowiązywało zobowiązanie. Domyślnie: 30.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>expiry_days = 365</SAMP
+></P
+></LI
+><LI
+><P
+>deadline</P
+><P
+>Termin płatności podany w dniach. Domyślnie: 14.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>deadline = 21</SAMP
+></P
+></LI
+><LI
+><P
+>paytype</P
+><P
+>Rodzaj płatności (1-gotówka, 2-przelew, 3-przelew/gotówka,
+            4-karta, 5-kompensata, 6-barter, 7-umowa). Domyślnie: 2 (przelew).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>paytype = 1</SAMP
+></P
+></LI
+><LI
+><P
+>numberplan</P
+><P
+>ID planu numeracyjnego faktur. 
+				Domyślnie: 0 (plan domyślny).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>numberplan = 0</SAMP
+></P
+></LI
+><LI
+><P
+>check_invoices</P
+><P
+>Włącza automatyczne oznaczanie faktur jako rozliczonych
+				dla klientów z bilansem większym równym zero.
+				Domyślnie: wyłączona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>check_invoices = 1</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia.
+				Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_networks</P
+><P
+>Lista nazw sieci, które mają pominięte. Wielkość liter nie ma znaczenia.
+					Domyślnie: pusta (żadna).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>excluded_networks = "lan3 lan4"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>Lista nazw grup klientów, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia. 
+				Domyślnie: pusta (wszystkie grupy).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>customergroups = "grupa1 grupa2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_customergroups</P
+><P
+>Lista nazw grup klientów, które mają być pominięte. Wielkość liter nie ma znaczenia. 
+					Domyślnie: pusta (żadna).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>excluded_customergroups = "grupa3 grupa4"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-NOTIFY"
+>6.2.4. Notify</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="NOTIFY-DESC"
+>6.2.4.1. Opis</A
+></H3
+><P
+>Moduł 'notify' służy do informowania klientów o zaległościach
+		    w opłatach za pomocą poczty elektronicznej. Aktualne saldo klienta
+		    porównywane jest ze zmienną 'limit', jeśli jest niższe - wiadomość
+		    zostaje wysłana. Treść wiadomości pobierana jest z przygotowanego szablonu, 
+		    w którym można stosować następujące zmienne:
+		    <UL
+><LI
+><P
+>%saldo - aktualne saldo klienta (także %B)</P
+></LI
+><LI
+><P
+>%b - wartość bezwzględna aktualnego salda klienta</P
+></LI
+><LI
+><P
+>%pin - PIN klienta</P
+></LI
+><LI
+><P
+>%name - imię klienta</P
+></LI
+><LI
+><P
+>%lastname - nazwisko/nazwa klienta</P
+></LI
+><LI
+><P
+>%last_10_in_a_table - wyciąg ostatnich 10 operacji na kocie klienta</P
+></LI
+></UL
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="NOTIFY-CONFIG"
+>6.2.4.2. Konfiguracja</A
+></H3
+><P
+>Poniżej przedstawiono dostępne opcje konfiguracyjne modułu 'notify':</P
+><UL
+><LI
+><P
+>template</P
+><P
+>Lokalizacja pliku z szablonem wiadomości. Domyślnie: pusty</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>template = modules/notify/sample/mailtemplate</SAMP
+></P
+></LI
+><LI
+><P
+>file</P
+><P
+>Lokalizacja pliku tymczasowego. Domyślnie: /tmp/mail</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>file = /tmp/mail.txt</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Polecenie powłoki wysyłające e-maila. '%address' zostanie zastąpione
+			    adresem e-mail klienta. Domyślnie: 'mail -s "Liabilities Information" %address &lt; /tmp/mail'.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>command = 'mail %address -s "musisz zapłacić, bo jak nie..." &lt; /tmp/mail.txt'</SAMP
+></P
+></LI
+><LI
+><P
+>limit</P
+><P
+>Wiadomość o zaległościach zostaje wysłana jeśli saldo klienta 
+			    spadnie poniżej kwoty określonej zmienną limit. Domyślnie: 0</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>limit = -20</SAMP
+></P
+></LI
+><LI
+><P
+>debug_mail</P
+><P
+>Określa adres na który zostaną wysłane wszystkie wiadomości, przydatne
+			    podczas testów. Domyślnie: puste.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>debug_mail = localhost@moja.net</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-GGNOTIFY"
+>6.2.5. Ggnotify</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="GGNOTIFY-DESC"
+>6.2.5.1. Opis</A
+></H3
+><P
+>Odpowiednik modułu 'notify' służący do wysyłania wiadomości gadu-gadu.
+		    Aktualne saldo klienta porównywane jest ze zmienną 'limit', jeśli jest niższe 
+		    - wiadomość zostaje wysłana. Treść wiadomości pobierana jest z przygotowanego szablonu, 
+		    w którym można stosować zmienne takie jak dla modułu 'notify' (może to być też ten sam 
+		    szablon).</P
+><P
+>Moduł wymaga zainstalowanej biblioteki <TT
+CLASS="FILENAME"
+>libgadu</TT
+> oraz źródeł
+		    programu <TT
+CLASS="FILENAME"
+>ekg</TT
+>. Odpowiednie ścieżki do nich należy ustawić
+		    w <TT
+CLASS="FILENAME"
+>modules/ggnotify/Makefile</TT
+> przed kompilacją modułu.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="GGNOTIFY-CONFIG"
+>6.2.5.2. Konfiguracja</A
+></H3
+><P
+>Podobnie jak w 'notify' masz do dyspozycji następujące zmienne:</P
+><UL
+><LI
+><P
+>template</P
+><P
+>Lokalizacja pliku z szablonem wiadomości. Domyślnie: pusty.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>template = modules/ggnotify/sample/mailtemplate</SAMP
+></P
+></LI
+><LI
+><P
+>uin</P
+><P
+>Identyfikator gadu-gadu użytkownika wysyłającego wiadomości. 
+			    Domyślnie: pusty.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>uin = 1234567</SAMP
+></P
+></LI
+><LI
+><P
+>password</P
+><P
+>Hasło dla konta określonego zmienną 'uin'. Domyślnie: puste.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>password = "moje_trudne__hasło"</SAMP
+></P
+></LI
+><LI
+><P
+>limit</P
+><P
+>Wiadomość o zaległościach zostaje wysłana jeśli saldo klienta 
+			    spadnie poniżej kwoty określonej zmienną limit. Domyślnie: 0</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>limit = -20</SAMP
+></P
+></LI
+><LI
+><P
+>debug_uin</P
+><P
+>Jeśli ustawione, na to konto zostaną wysłane wszystkie wiadomości.
+			    Domyślnie: puste.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>debug_uin = 7654321</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-CUTOFF"
+>6.2.6. Cutoff</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="CUTOFF-DESC"
+>6.2.6.1. Opis</A
+></H3
+><P
+>Cutoff zmienia status komputerów na 'odłączony' i/lub włącza ostrzeżenia
+		    klientom, którzy mają na koncie zaległości większe niż określony limit. 
+		    Ponadto odłącza komputery klientów, którym wygasły wszystkie zobowiązania
+		    lub są one zawieszone. Ten moduł nie zajmuje się fizycznym blokowaniem
+		    dostępu do sieci.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="CUTOFF-CONFIG"
+>6.2.6.2. Konfiguracja</A
+></H3
+><P
+>Dla modułu 'cutoff' mamy następujące opcje:</P
+><UL
+><LI
+><P
+>limit</P
+><P
+>Odłączenie następuje jeśli saldo klienta spadnie poniżej
+			    wartości określonej jako kwota lub wartość procentowa sumy miesięcznych
+			    zobowiązań klienta (ze znakiem '%'). Domyślnie: 0.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>limit = -20</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Określa komendę systemową, która zostanie wywołana jeżeli co najmniej
+			    jeden klient zostanie odłączony lub zostanie włączone ostrzeżenie. 
+			    Domyślnie: nieustawiona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>command = 'lmsd -qi firewall'</SAMP
+></P
+></LI
+><LI
+><P
+>warning</P
+><P
+>Włącza ostrzeżenie dla odłączanego klienta i przypisuje mu 
+			    określoną w tej opcji treść. Jeżeli pusta, ostrzeżenie nie będzie włączane.
+			    Data w ostrzeżeniu ukryta jest pod zmienną '%time'. Możesz także użyć
+			    zmiennych: %B dla rzeczywistego salda klienta oraz %b dla salda bez znaku.
+			    Saldo liczone jest w chwili wykonania modułu cutoff, a nie wyświetlenia
+			    komunikatu w przeglądarce klienta.
+			    Domyślnie: 'Blocked automatically due to payment deadline override at %time".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>warning = ""</SAMP
+></P
+></LI
+><LI
+><P
+>expired_warning</P
+><P
+>Włącza ostrzeżenie dla odłączanego klienta i przypisuje mu 
+				określoną w tej opcji treść. Jeżeli pusta, ostrzeżenie nie będzie włączane.
+				Dotyczy klientów, którym wygasły zobowiązania.
+				Data w ostrzeżeniu ukryta jest pod zmienną '%time'.
+				Domyślnie: 'Blocked automatically due to tariff(s) expiration at %time".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>expired_warning = ""</SAMP
+></P
+></LI
+><LI
+><P
+>warnings_only</P
+><P
+>Ta opcja pozwala zdecydować, czy chcemy użyć naszego 
+			    modułu wyłącznie do włączania ostrzeżeń. Działa tylko w stosunku do 
+			    klientów, którzy posiadają aktywne zobowiązania. Klienci, którym 
+			    wygasły zobowiązania, zostaną odłączeni mimo włączenia tej opcji. 
+			    Domyślnie: wyłączona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>warnings_only = true</SAMP
+></P
+></LI
+><LI
+><P
+>setnodegroup_only</P
+><P
+>Ta opcja pozwala zdecydować, czy chemy przypisać do wybranej grupy 
+			komputery klienta, zamiast zmieniać jego status lub włączać ostrzeżenie. Do grupa 
+			o podanej nazwie zostaną przypisane wszystkie komputery klienta, który przekroczył
+			limit zadłużenia, albo posiada nierozliczone faktury (jeśli włączono 
+			check_invoices).
+			Domyślnie: pusta.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>setnodegroup_only = ograniczony_dostep</SAMP
+></P
+></LI
+><LI
+><P
+>use_nodeassignments</P
+><P
+>Jeśli stosujesz powiązywanie komputerów z zobowiązaniami
+				powinieneś włączyć tą opcję. W przeciwnym wypadku będą sprawdzane
+				powiązania taryf z klientami. Domyślnie: wyłączona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>use_nodeassignments = true</SAMP
+></P
+></LI
+><LI
+><P
+>use_customerassignments</P
+><P
+>Jeśli chciałbyś pominąć sprawdzanie zobowiązań klientów 
+				powinieneś włączyć tą opcję. Domyślnie: włączona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>use_customerassignments = false</SAMP
+></P
+></LI
+><LI
+><P
+>disable_suspended</P
+><P
+>Włączenie tej opcji spowoduje odłaczenie także klientów,
+				których wszystkie obowiązujące zobowiązania są zawieszone. 
+				Domyślnie: wyłączona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>disable_suspended = true</SAMP
+></P
+></LI
+><LI
+><P
+>check_invoices</P
+><P
+>Opcja włącza dodatkowe sprawdzenie czy klient posiada nierozliczone
+				faktury z dniem płatności starszym o określoną w opcji 'deadline'
+				ilość dni. Domyślnie: wyłączona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>check_invoices = true</SAMP
+></P
+></LI
+><LI
+><P
+>deadline</P
+><P
+>Określa okres w dniach (licząc od terminu płatności faktury), 
+				po którym nierozliczona faktura jest brana pod uwagę przy zastosowaniu
+				opcji 'check_invoices'. Domyślnie, klient zostanie zablokowany od razu
+				po terminie płatności. Domyślnie: 0.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>deadline = 30</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>Lista nazw grup klientów, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia. 
+					Domyślnie: pusta (wszystkie grupy).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>customergroups = "grupa1 grupa2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_customergroups</P
+><P
+>Lista nazw grup klientów, które mają być pominięte. Wielkość liter nie ma znaczenia. 
+					Domyślnie: pusta (żadna).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>excluded_customergroups = "grupa3 grupa4"</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia.
+				Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_networks</P
+><P
+>Lista nazw sieci, które mają pominięte. Wielkość liter nie ma znaczenia.
+					Domyślnie: pusta (żadna).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>excluded_networks = "lan3 lan4"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-DHCP"
+>6.2.7. Dhcp</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DHCP-DESC"
+>6.2.7.1. Opis</A
+></H3
+><P
+>Moduł zarządzający serwerem DHCP, tworzy plik konfiguracyjny oraz
+		    restartuje usługę. Zmienna 'command' umożliwia również wykonywanie innych 
+		    czynności (programów).</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DHCP-CONFIG"
+>6.2.7.2. Konfiguracja</A
+></H3
+><P
+>Większość parametrów konfiguracyjnych odpowiada fragmentom 
+		    pliku konfiguracyjnego dhcpd, które w typowych zastosowaniach
+		    nie wymagają zmiany:</P
+><UL
+><LI
+><P
+>file</P
+><P
+>Określa lokalizację pliku konfiguracyjnego serwera dhcp. 
+			    Domyślnie: /etc/dhcpd.conf.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>file = /etc/dhcpd.conf</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Polecenie wykonywane po utworzeniu pliku konfiguracyjnego. 
+			    Domyślnie: 'killall dhcpd; /usr/sbin/dhcpd'.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>command = 'service dhcp restart'</SAMP
+></P
+></LI
+><LI
+><P
+>begin</P
+><P
+>Nagłówek pliku. Domyślnie: pusty.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>begin = "authoritative;"</SAMP
+></P
+></LI
+><LI
+><P
+>end</P
+><P
+>Stopka pliku. Domyślnie: pusty.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>end = ""</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_start</P
+><P
+>Nagłówek podsieci. '%a' - nazwa, '%m' - maska, %b - broadcast. 
+			    Domyślnie: "subnet %a netmask %m {\ndefault-lease-time 86400;\nmax-lease-time 86400;".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>subnet_start = "subnet %a netmask %m {default-lease-time 3600;"</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_end</P
+><P
+>Stopka podsieci. Domyślnie: "}".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>subnet_end = '\t}'</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_gateway</P
+><P
+>Brama podsieci. '%i' zostanie zamienione na adres ip. Domyślnie: "option routers %i;".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>subnet_gateway = "option routers %i"</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_dns</P
+><P
+>DNS'y podsieci. '%i - adresy dns'ów. Domyślnie: "option domain-name-servers %i;".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>subnet_dns = "option domain-name-servers 192.168.0.1"</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_domain</P
+><P
+>Nazwa domenowa podsieci. '%n' - nazwa. Domyślnie: 'option domain-name "%n";'.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>subnet_domain = 'option domain-name "test.%n";'</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_wins</P
+><P
+>Serwery wins. '%i' - adres ip serwera. Domyślnie: "option netbios-name-servers %i;".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>subnet_wins = ""</SAMP
+></P
+></LI
+><LI
+><P
+>subnet_range</P
+><P
+>Zakres adresów podsieci. '%s' - adres początkowy, '%e' - koniec zakresu. Domyślnie: "range %s %e;".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>subnet_range = "range %s %e;"</SAMP
+></P
+></LI
+><LI
+><P
+>host</P
+><P
+>Parametry hostów, gdzie '%n' - nazwa hosta, '%m' - MAC, '%i' - adres ip. 
+			    Domyślnie: "\thost %n {\n\t\thardware ethernet %m; fixed-address %i; \n\t}".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host = "host %n {hardware ethernet %m; fixed-address %i;}"</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia.
+			    Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>Lista nazw grup klientów, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia. 
+			    Domyślnie: pusta (wszystkie grupy).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>customergroups = "grupa1 grupa2"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-HOSTFILE"
+>6.2.8. Hostfile</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="HOSTFILE-DESC"
+>6.2.8.1. Opis</A
+></H3
+><P
+>Moduł 'hostfile' jest dość uniwersalnym narzędziem. Ponieważ 
+		    wykonuje pętlę po wszystkich komputerach (oraz adresach urządzeń sieciowych)
+			w bazie rozróżniając ich status podłączenia i ostrzeżenia, adresy prywatne 
+			i publiczne, a ponadto sieć do której są podłączone oraz grupy do których 
+			należą ich właściciele. 
+			Dzięki temu możliwe jest tworzenie np. reguł
+		    dowolnego firewalla, czy też pliku /etc/hosts. Dane zapisuje do pliku 
+		    i następnie wykonuje określone polecenie powłoki.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="HOSTFILE-CONFIG"
+>6.2.8.2. Konfiguracja</A
+></H3
+><P
+>W opcjach zawierających reguły hosta można stosować specjalne 
+			zmienne, które podczas zapisu do pliku zostaną 
+		    zastąpione odpowiednimi dla danego komputera danymi:
+		    <TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+>%i - adres IP,</TD
+></TR
+><TR
+><TD
+>%ipub - publiczny adres IP,</TD
+></TR
+><TR
+><TD
+>%id - ID komputera,</TD
+></TR
+><TR
+><TD
+>%m - adres MAC,</TD
+></TR
+><TR
+><TD
+>%ms - lista adresów MAC hosta (oddzielonych przecinkiem),</TD
+></TR
+><TR
+><TD
+>%n - nazwa komputera,</TD
+></TR
+><TR
+><TD
+>%p - hasło,</TD
+></TR
+><TR
+><TD
+>%port - nr portu w urządzeniu, do którego jest podłączony komputer,</TD
+></TR
+><TR
+><TD
+>%info - opis komputera,</TD
+></TR
+><TR
+><TD
+>%l - lokalizacja komputera,</TD
+></TR
+><TR
+><TD
+>%devl - lokalizacja urządzenia, do którego podłączony jest komputer,</TD
+></TR
+><TR
+><TD
+>%domain - domena,</TD
+></TR
+><TR
+><TD
+>%net - nazwa sieci, do której należy host,</TD
+></TR
+><TR
+><TD
+>%if - interfejs sieci,</TD
+></TR
+><TR
+><TD
+>%addr - adres sieci,</TD
+></TR
+><TR
+><TD
+>%mask - maska sieci,</TD
+></TR
+><TR
+><TD
+>%prefix - maska sieci w postaci prefixu CIDR,</TD
+></TR
+><TR
+><TD
+>%gw - adres bramy,</TD
+></TR
+><TR
+><TD
+>%dns, %dns2 - adresy serwerów DNS,</TD
+></TR
+><TR
+><TD
+>%dhcps, %dhcpe - początek i koniec zakresu DHCP,</TD
+></TR
+><TR
+><TD
+>%wins - adres serwera WINS,</TD
+></TR
+><TR
+><TD
+>%i16 - ostatni oktet adresu IP w formacie szesnastkowym,</TD
+></TR
+><TR
+><TD
+>%i16pub - ostatni oktet publicznego adresu IP w formacie szesnastkowym.</TD
+></TR
+><TR
+><TD
+>%domainpub - domena sieci publicznej,</TD
+></TR
+><TR
+><TD
+>%netpub - nazwa sieci, do której należy adres publiczny,</TD
+></TR
+><TR
+><TD
+>%ifpub - interfejs sieci publicznej,</TD
+></TR
+><TR
+><TD
+>%addrpub - adres sieci publicznej,</TD
+></TR
+><TR
+><TD
+>%maskpub - maska sieci publicznej,</TD
+></TR
+><TR
+><TD
+>%prefixpub - maska sieci publicznej w postaci prefixu CIDR,</TD
+></TR
+><TR
+><TD
+>%gwpub - adres bramy w sieci publicznej,</TD
+></TR
+><TR
+><TD
+>%dnspub, %dns2pub - adresy serwerów DNS w sieci publicznej,</TD
+></TR
+><TR
+><TD
+>%dhcpspub, %dhcpepub - początek i koniec zakresu DHCP w sieci publicznej,</TD
+></TR
+><TR
+><TD
+>%winspub - adres serwera WINS w sieci publicznej,</TD
+></TR
+><TR
+><TD
+>%customer - nazwa klienta,</TD
+></TR
+><TR
+><TD
+>%cid - ID klienta</TD
+></TR
+></TBODY
+></TABLE
+></P
+><P
+>Poniżej opcje udostępniane przez ten moduł:</P
+><UL
+><LI
+><P
+>file</P
+><P
+>Lokalizacja pliku tymczasowego. Domyślnie: /tmp/hostfile</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>file = /etc/rc.d/rc.firewall</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Polecenie powłoki wyk. po utworzeniu pliku 'file'. Domyślnie: puste</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>command = '/bin/sh /etc/rc.d/rc.firewall'</SAMP
+></P
+></LI
+><LI
+><P
+>begin</P
+><P
+>Nagłówek pliku tymczasowego. Domyślnie: "/usr/sbin/iptables -F FORWARD\n"</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>begin = "IPT=/usr/sbin/iptables \n$IPT -F FORWARD\n"</SAMP
+></P
+></LI
+><LI
+><P
+>end</P
+><P
+>Stopka pliku tymczasowego. Domyślnie: "/usr/sbin/iptables -A FORWARD -J REJECT\n"</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>end = "$IPT -A FORWARD -J REJECT\n"</SAMP
+></P
+></LI
+><LI
+><P
+>host_begin</P
+><P
+>Nagłówek reguły hosta. Domyślnie: ""</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host_begin = "#%n\n"</SAMP
+></P
+></LI
+><LI
+><P
+>host_end</P
+><P
+>Stopka reguły hosta. Domyślnie: ""</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host_end = "\n"</SAMP
+></P
+></LI
+><LI
+><P
+>grantedhost</P
+><P
+>Reguła dla hosta podłączonego. Domyślnie: "/usr/sbin/iptables -A FORWARD -s %i -m mac --mac-source %m -j ACCEPT\n"</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>grantedhost = "$IPT -A FORWARD -s %i -m mac --mac-source %m -j ACCEPT\n"</SAMP
+></P
+></LI
+><LI
+><P
+>deniedhost</P
+><P
+>Reguła dla hosta odłączonego. Domyślnie: "/usr/sbin/iptables -A FORWARD -s %i -m mac --mac-source %m -j REJECT\n"</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>deniedhost = "$IPT -A FORWARD -s %i -m mac --mac-source %m -j REJECT\n"</SAMP
+></P
+></LI
+><LI
+><P
+>public_grantedhost</P
+><P
+>Reguła dla hosta podłączonego, który posiada adres publiczny. 
+				Domyślnie reguła określona opcją 'grantedhost'.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>public_grantedhost = "$IPT -A FORWARD -s %i -m mac --mac-source %m -j ACCEPT\n$IPT -t nat -A PREROUTING -p tcp -d %ipub -j DNAT --to-destination %i\n$IPT -t nat -A POSTROUTING -s %i -j SNAT --to-source %ipub\n"</SAMP
+></P
+></LI
+><LI
+><P
+>public_deniedhost</P
+><P
+>Reguła dla hosta odłączonego, który posiada adres publiczny. 
+				Domyślnie reguła określona opcją 'deniedhost'.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>public_deniedhost = ""</SAMP
+></P
+></LI
+><LI
+><P
+>warnedhost</P
+><P
+>Reguła dla hosta z włączonym ostrzeżeniem.
+				Domyślnie reguła określona opcją 'grantedhost'.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>warnedhost = "$IPT -A PREROUTING -s %i --dport 80 -p tcp -j REDIRECT --to-port 82\n"</SAMP
+></P
+></LI
+><LI
+><P
+>public_warnedhost</P
+><P
+>Reguła dla hosta z włączonym ostrzeżeniem, który posiada adres
+				publiczny. Domyślnie reguła określona opcją 'warnedhost'.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>public_warnedhost = ""</SAMP
+></P
+></LI
+><LI
+><P
+>public_replace</P
+><P
+>Określa czy reguły zdefiniowane dla adresów publicznych mają nadpisać
+				reguły główne, czy zostać dopisane do nich.	Domyślnie: włączona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>public_replace = false</SAMP
+></P
+></LI
+><LI
+><P
+>warn_replace</P
+><P
+>Określa czy reguły zdefiniowane dla komputerów z ostrzeżeniem mają nadpisać reguły główne, czy zostać dopisane do nich. Domyślnie: wyłączona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>warn_replace = true</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia.
+			    Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>Lista nazw grup klientów, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia. 
+			    Domyślnie: pusta (wszystkie grupy).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>customergroups = "grupa1 grupa2"</SAMP
+></P
+></LI
+><LI
+><P
+>nodegroups</P
+><P
+>Lista nazw grup komputerów, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia. 
+				Domyślnie: pusta (wszystkie grupy).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>nodegroups = "grupa1 grupa2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_networks</P
+><P
+>Lista nazw sieci, które nie mają być brane pod uwagę. Wielkość liter nie ma znaczenia.
+					Domyślnie: pusta.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>excluded_networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_customergroups</P
+><P
+>Lista nazw grup klientów, które nie mają być brane pod uwagę. Wielkość liter nie ma znaczenia. 
+					Domyślnie: pusta.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>excluded_customergroups = "grupa1 grupa2"</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_nodegroups</P
+><P
+>Lista nazw grup komputerów, które nie mają być brane pod uwagę. Wielkość liter nie ma znaczenia. 
+					Domyślnie: pusta.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>excluded_nodegroups = "grupa1 grupa2"</SAMP
+></P
+></LI
+><LI
+><P
+>skip_dev_ips</P
+><P
+>Jeśli ustawiona na tak (yes, true) pominięte zostaną adresy urządzeń sieciowych. Domyślnie: tak</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>skip_dev_ips = nie</SAMP
+></P
+></LI
+><LI
+><P
+>skip_host_ips</P
+><P
+>Jeśli ustawiona na tak (yes, true) pominięte zostaną adresy komputerów. Uwaga: włączenie obu opcji 'skip_*_ips' spowoduje ich zignorowanie. Domyślnie: nie</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>skip_host_ips = tak</SAMP
+></P
+></LI
+><LI
+><P
+>multi_mac</P
+><P
+>Jeśli ustawiona na tak (yes, true) utworzony zostanie osobny rekord
+				dla każdego adresu MAC. Tzn. jeśli komputer ma przypisanych
+				kilka adresów MAC, będzie utworzone tyle wpisów ile tych adresów.
+				Domyślnie: nie</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>multi_mac = tak</SAMP
+></P
+></LI
+><LI
+><P
+>share_netdev_pubip</P
+><P
+>Włączenie tej opcji (yes, true, 1) spowoduje, że wszystkim
+				adresom urządzenia sieciowego, które nie posiadają zdefiniowanego 
+				adresu publicznego zostanie przypisany jeden (ten sam) ze zdefiniowanych 
+				dla danego urządzenia adresów publicznych. Domyślnie: nie</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>share_netdev_pubip = tak</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-TRAFFIC"
+>6.2.9. Traffic</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="TRAFFIC-DESC"
+>6.2.9.1. Opis</A
+></H3
+><P
+>'Traffic' to odpowiednik perlowego lms-traffic, zapisujący do bazy statystyki
+		    wykorzystania łącza z pliku utworzonego przez użytkownika. Plik taki powinien mieć 
+		    format: ip_hosta upload download . Więcej informacji (w tym jak utworzyć taki plik)
+		    można znaleźć w rozdziale dotyczącym lms-traffic.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="TRAFFIC-CONFIG"
+>6.2.9.2. Konfiguracja</A
+></H3
+><P
+>Moduł posiada trzy opcje:</P
+><UL
+><LI
+><P
+>file</P
+><P
+>Lokalizacja pliku ze statystykami firewalla. Domyślnie: /var/log/traffic.log</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>file = /tmp/log</SAMP
+></P
+></LI
+><LI
+><P
+>begin_command</P
+><P
+>Polecenie powłoki wykonywane przed wczytaniem pliku. Domyślnie: puste</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>begin_command = 'perl /usr/local/lms/bin/traffic_ipt.pl'</SAMP
+></P
+></LI
+><LI
+><P
+>end_command</P
+><P
+>Polecenie powłoki wykonywane po wczytaniu pliku. Domyślnie: puste</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>end_command = 'rm /var/log/traffic.log'</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-TC"
+>6.2.10. Tc (HTB)</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="TC-DESC"
+>6.2.10.1. Opis</A
+></H3
+><P
+>Moduł generujący skrypt zawierający polecenia iptables i tc służące
+		    do ograniczania przepływności i limitowania połączeń klientom. Regułki dla 
+		    komputerów można dowolnie zdefiniować i wykorzystać nie tylko do "traffic 
+		    control". Zasada działania skryptu przedstawia się następująco: Najpierw z bazy
+		    pobierane są dane dla wszystkich klientów. Obliczane są sumy ograniczeń
+		    (uprate, downrate, upceil, downceil, limity połączeń) dla każdego klienta
+		    Następnie wykonywana jest pętla ze sprawdzeniem przynależności do grupy klientów
+		    i sieci (jeśli określono). Jeśli wartości ograniczeń są różne od zera następuje
+		    zapis reguł do pliku z podmianą zmiennych. W regułkach można stosować następujące
+		    zmienne: %name - nazwa hosta, %i - adres IP, %m - MAC, %if - interfejs, %uprate, %downrate, %upceil,
+		    %downceil, %plimit, %climit, %o1, %o2, %o3, %o4 - kolejne oktety adresu IP,
+		    %h1, %h2, %h3, %h4 - kolejne oktety adresu IP w zapisie szesnastkowym oraz %x - licznik o wartości początkowej 100
+		    zwiększany o jeden dla każdego komputera (lub klienta, w zależności od ustawienia
+		    opcji <SAMP
+CLASS="PROMPT"
+>one_class_per_host</SAMP
+>).</P
+><P
+>Domyślna polityka tworzenia klas htb zakłada utworzenie jednej klasy dla
+		    wszystkich komputerów klienta. Może to być zmienione za pomocą opcji
+		    'one_class_per_host'.</P
+><P
+>Konfiguracja domyślna zakłada, że twój system jest przystosowany
+		    do zastosowania htb oraz iptables z modułami limit, connlimit, mark i ipp2p.
+		    Możesz sam spatchować jądro lub skorzystać ze źródeł dostępnych na stronie
+		    <A
+HREF="http://www.inet.one.pl"
+TARGET="_top"
+>www.inet.one.pl</A
+>.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="TC-CONFIG"
+>6.2.10.2. Konfiguracja</A
+></H3
+><P
+>Masz do dyspozycji standardowe parametry takie jak customergroups, file,
+		    command, networks i dodatkowo opcje definiujące treść regułek tc i firewalla.
+		    Domyślna konfiguracja przeznaczona jest dla łącz 512/128 kbit i 100mbit.</P
+><UL
+><LI
+><P
+>file</P
+><P
+>Lokalizacja pliku tymczasowego. Domyślnie: /etc/rc.d/rc.htb.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>file = /tmp/rc.htb</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Polecenie powłoki wykonywane po utworzeniu pliku. Domyślnie: "sh /etc/rc.d/rc.htb start".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>command = "chmod 700 /tmp/rc.htb; /tmp/rc.htb start"</SAMP
+></P
+></LI
+><LI
+><P
+>begin</P
+><P
+>Nagłówek skryptu. Domyślnie:
+<PRE
+CLASS="SCREEN"
+>"#!/bin/sh
+IPT=/usr/sbin/iptables
+TC=/sbin/tc
+LAN=eth0
+WAN=eth1
+BURST="burst 30k"
+
+stop ()
+{
+$IPT -t mangle -D FORWARD -i $WAN -j LIMITS &#62;/dev/null 2&#62;&#38;1
+$IPT -t mangle -D FORWARD -o $WAN -j LIMITS &#62;/dev/null 2&#62;&#38;1
+$IPT -t mangle -F LIMITS &#62;/dev/null 2&#62;&#38;1
+$IPT -t mangle -X LIMITS &#62;/dev/null 2&#62;&#38;1
+$IPT -t mangle -F OUTPUT
+$IPT -t filter -F FORWARD
+$TC qdisc del dev $LAN root 2&#62; /dev/null
+$TC qdisc del dev $WAN root 2&#62; /dev/null
+}
+
+start ()
+{
+stop
+$IPT -t mangle -N LIMITS
+$IPT -t mangle -I FORWARD -i $WAN -j LIMITS
+$IPT -t mangle -I FORWARD -o $WAN -j LIMITS
+# incomming traffic
+$IPT -t mangle -A OUTPUT -j MARK --set-mark 1
+$TC qdisc add dev $LAN root handle 1:0 htb default 3 r2q 1
+$TC class add dev $LAN parent 1:0 classid 1:1 htb rate 99000kbit ceil 99000kbit quantum 1500
+$TC class add dev $LAN parent 1:1 classid 1:2 htb rate   500kbit ceil   500kbit
+$TC class add dev $LAN parent 1:1 classid 1:3 htb rate 98500kbit ceil 98500kbit prio 9 quantum 1500
+$TC qdisc add dev $LAN parent 1:3 esfq perturb 10 hash dst
+# priorities for ICMP, TOS 0x10 and ports 22 and 53
+$TC class add dev $LAN parent 1:2 classid 1:20 htb rate 50kbit ceil 500kbit $BURST prio 1 quantum 1500
+$TC qdisc add dev $LAN parent 1:20 esfq perturb 10 hash dst
+$TC filter add dev $LAN parent 1:0 protocol ip prio 2 u32 match ip sport 22 0xffff flowid 1:20
+$TC filter add dev $LAN parent 1:0 protocol ip prio 2 u32 match ip sport 53 0xffff flowid 1:20
+$TC filter add dev $LAN parent 1:0 protocol ip prio 1 u32 match ip tos 0x10 0xff flowid 1:20
+$TC filter add dev $LAN parent 1:0 protocol ip prio 1 u32 match ip protocol 1 0xff flowid 1:20
+# serwer -&#62; LAN
+$TC filter add dev $LAN parent 1:0 protocol ip prio 4 handle 1 fw flowid 1:3
+
+# outgoing traffic
+$TC qdisc add dev $WAN root handle 2:0 htb default 11 r2q 1
+$TC class add dev $WAN parent 2:0 classid 2:1 htb rate 120kbit ceil 120kbit
+# priorities for ACK, ICMP, TOS 0x10, ports 22 and 53
+$TC class add dev $WAN parent 2:1 classid 2:10 htb rate 60kbit ceil 120kbit prio 1 quantum 1500
+$TC qdisc add dev $WAN parent 2:10 esfq perturb 10 hash dst
+$TC filter add dev $WAN parent 2:0 protocol ip prio 1 u32 match ip protocol 6 0xff \
+match u8 0x05 0x0f at 0 match u16 0x0000 0xffc0 at 1 match u8 0x10 0xff at 33 flowid 2:10
+$TC filter add dev $WAN parent 2:0 protocol ip prio 1 u32 match ip dport 22 0xffff flowid 2:10
+$TC filter add dev $WAN parent 2:0 protocol ip prio 1 u32 match ip dport 53 0xffff flowid 2:10
+$TC filter add dev $WAN parent 2:0 protocol ip prio 1 u32 match ip tos 0x10 0xff flowid 2:10
+$TC filter add dev $WAN parent 2:0 protocol ip prio 1 u32 match ip protocol 1 0xff flowid 2:10
+# serwer -&#62; Internet
+$TC class add dev $WAN parent 2:1 classid 2:11 htb rate 30kbit ceil 120kbit prio 2 quantum 1500
+$TC qdisc add dev $WAN parent 2:11 esfq perturb 10 hash dst
+$TC filter add dev $WAN parent 2:0 protocol ip prio 3 handle 1 fw flowid 2:11
+$TC filter add dev $WAN parent 2:0 protocol ip prio 9 u32 match ip dst 0/0 flowid 2:11</PRE
+></P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>begin = "#!/bin/bash\n$TC=/usr/local/sbin/tc\n"</SAMP
+></P
+></LI
+><LI
+><P
+>end</P
+><P
+>Stopka skryptu. Domyślnie:
+<PRE
+CLASS="SCREEN"
+>}
+
+case "$1" in
+    'start')
+	start
+    ;;
+    'stop')
+	stop
+    ;;
+    'status')
+	echo "WAN Interface"
+	echo "============="
+	$TC class show dev $WAN | grep root
+	$TC class show dev $WAN | grep -v root | sort | nl
+	echo "LAN Interface"
+	echo "============="
+	$TC class show dev $LAN | grep root
+	$TC class show dev $LAN | grep -v root | sort | nl
+    ;;
+    *)
+	echo -e "\nUsage: rc.htb start|stop|status"
+    ;;
+esac</PRE
+>
+			    </P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>end = ""</SAMP
+></P
+></LI
+><LI
+><P
+>one_class_per_host</P
+><P
+>Określa politykę tworzenia klas htb. W ustawieniu domyślnym
+			    wszystkie komputery klienta zostaną wrzucone do jednej klasy.
+			    Ustawienie tej opcji na 'true' spowoduje, że reguły określone w 
+			    host_htb_up i host_htb_down zostaną wygenerowane dla wszystkich
+			    komputerów klienta (z inną wartością '%x'). Reguły z host_mark_down,
+			    host_mark_up, host_plimit i host_climit generowane są dla każdego
+			    komputera niezależnie od ustawień tej zmiennej. Domyślnie: false</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>one_class_per_host = 1</SAMP
+></P
+></LI
+><LI
+><P
+>limit_per_host</P
+><P
+>Określa politykę tworzenia limitów połączeń/pakietów dla komputerów. W ustawieniu domyślnym
+			    limit połączeń/pakietów jest dzielony przez ilość komputerów klienta.
+			    Włączenie tej opcji spowoduje, że reguły określone w 
+			    host_climit i host_plimit zostaną wygenerowane dla wszystkich
+			    komputerów klienta z wartością $climit i %plimit zdefiniowaną w taryfie (nie podzieloną przez ilość komputerów).
+				 Domyślnie: false</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>limit_per_host = 1</SAMP
+></P
+></LI
+><LI
+><P
+>host_mark_up</P
+><P
+>Reguła markująca dla każdego komputera. Domyślnie:
+<PRE
+CLASS="SCREEN"
+># %n
+$IPT -t mangle -A LIMITS -s %i -j MARK --set-mark %x</PRE
+>
+			    </P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host_mark_up = ""</SAMP
+></P
+></LI
+><LI
+><P
+>host_mark_down</P
+><P
+>Reguła markująca dla każdego komputera. Domyślnie:
+<PRE
+CLASS="SCREEN"
+>$IPT -t mangle -A LIMITS -d %i -j MARK --set-mark %x</PRE
+>
+			    </P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host_mark_down = ""</SAMP
+></P
+></LI
+><LI
+><P
+>host_htb_down</P
+><P
+>Zestaw reguł dla każdego komputera, wykonywanych
+			    gdy uprate i downrate są różne od zera. Domyślnie:
+<PRE
+CLASS="SCREEN"
+>$TC class add dev $LAN parent 1:2 classid 1:%x htb rate %downratekbit ceil %downceilkbit $BURST prio 2 quantum 1500
+$TC qdisc add dev $LAN parent 1:%x esfq perturb 10 hash dst
+$TC filter add dev $LAN parent 1:0 protocol ip prio 5 handle %x fw flowid 1:%x</PRE
+>
+			    </P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host_htb_down = ""</SAMP
+></P
+></LI
+><LI
+><P
+>host_htb_up</P
+><P
+>Zestaw reguł dla każdego komputera, wykonywanych
+			    gdy uprate i downrate są różne od zera. Domyślnie:
+<PRE
+CLASS="SCREEN"
+>$TC class add dev $WAN parent 2:1 classid 2:%x htb rate %upratekbit ceil %upceilkbit $BURST prio 2 quantum 1500
+$TC qdisc add dev $WAN parent 2:%x esfq perturb 10 hash dst
+$TC filter add dev $WAN parent 2:0 protocol ip prio 5 handle %x fw flowid 2:%x</PRE
+>
+			    </P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host_htb_up = ""</SAMP
+></P
+></LI
+><LI
+><P
+>host_climit</P
+><P
+>Regułka z ograniczeniem ilości równoczesnych połączeń tcp. Wykonywana
+			    gdy climit w bazie jest różny od zera. Domyślnie:
+<PRE
+CLASS="SCREEN"
+>$IPT -t filter -I FORWARD -p tcp -s %i -m connlimit --connlimit-above %climit -m ipp2p --ipp2p -j REJECT</PRE
+>
+			    </P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host_climit = "$IPT -t filter -I FORWARD -p tcp -s %i -m connlimit --connlimit-above -j REJECT"</SAMP
+></P
+></LI
+><LI
+><P
+>host_plimit</P
+><P
+>Regułka z ograniczeniem ilości pakietów w jednostce czasu (tutaj sekunda). Wykonywana
+			    gdy plimit w bazie jest różny od zera. Domyślnie:
+<PRE
+CLASS="SCREEN"
+>$IPT -t filter -I FORWARD -p tcp -d %i -m limit --limit %plimit/s -m ipp2p --ipp2p -j ACCEPT
+$IPT -t filter -I FORWARD -p tcp -s %i -m limit --limit %plimit/s -m ipp2p --ipp2p -j ACCEPT</PRE
+>
+			    </P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host_plimit = ""</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia.
+			    Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>Lista nazw grup klientów, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia. 
+			    Domyślnie: pusta (wszystkie grupy).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>customergroups = "grupa1 grupa2"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-TC-NEW"
+>6.2.11. Tc-new (HTB)</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="TC-NEW-DESC"
+>6.2.11.1. Opis</A
+></H3
+><P
+>Moduł generujący skrypt zawierający polecenia iptables i tc służące
+				do ograniczania przepływności i limitowania połączeń klientom. Działa podobnie
+				do modułu 'tc', lecz obsługuje funkcjonalność pozwalającą na powiązywanie
+				taryf z komputerami. Skrypt tworzy tzw. kanały dla komputerów klienta
+				przypisanych do tej samej taryfy. Przykładowo: dla klienta z dwoma 
+				komputerami przypisanymi do tej samej taryfy zostaną utworzone dwie
+				klasy (upload i download) oraz po dwa filtry dla każdego komputera. 
+				W przypadku gdy klient ma dwie taryfy i do każdej po jednym komputerze 
+				powstaną po dwie klasy dla każdej taryfy i odpowiednia ilość filtrów.
+				Wartość początkowa liczników (%x i %h w regułach) wynosi 100.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="TC-NEW-CONFIG"
+>6.2.11.2. Konfiguracja</A
+></H3
+><P
+>Wartości domyślne niektórych opcją są zgodne z modułem <A
+HREF="daemon-modules.html#DAEMON-TC"
+>tc</A
+>.
+				</P
+><UL
+><LI
+><P
+>file</P
+><P
+>Lokalizacja pliku wynikowego. Domyślnie: /etc/rc.d/rc.htb.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>file = /tmp/rc.htb</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Polecenie powłoki wykonywane po utworzeniu pliku. Domyślnie: "sh /etc/rc.d/rc.htb start".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>command = "chmod 700 /tmp/rc.htb; /tmp/rc.htb start"</SAMP
+></P
+></LI
+><LI
+><P
+>begin</P
+><P
+>Nagłówek skryptu. Domyślnie: jak w module tc</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>begin = "#!/bin/bash\n$TC=/usr/local/sbin/tc\n"</SAMP
+></P
+></LI
+><LI
+><P
+>end</P
+><P
+>Stopka skryptu. Domyślnie: jak w module tc</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>end = ""</SAMP
+></P
+></LI
+><LI
+><P
+>class_up</P
+><P
+>Definicja klasy dla uploadu, w której możemy użyć następujących 
+					zmiennych: %cid - ID klienta, %cname - nazwa klienta, %h - numer uchwytu 
+					klasy %uprate, %upceil. Domyślnie: 
+					<PRE
+CLASS="SCREEN"
+># %cname (ID:%cid)
+$TC class add dev $WAN parent 2:1 classid 2:%h htb rate %upratekbit ceil %upceilkbit $BURST prio 2 quantum 1500
+$TC qdisc add dev $WAN parent 2:%h esfq perturb 10 hash dst</PRE
+></P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>class_up = "$TC class add dev $WAN parent 2:1 classid 2:%h htb rate %upratekbit ceil %upceilkbit $BURST prio 2 quantum 1500"</SAMP
+></P
+></LI
+><LI
+><P
+>class_down</P
+><P
+>Definicja klasy dla downloadu, w której możemy użyć następujących 
+					zmiennych: %cid - ID klienta, %cname - nazwa klienta, %h - numer uchwytu 
+					klasy, %downrate, %downceil. Domyślnie: 
+					<PRE
+CLASS="SCREEN"
+>$TC class add dev $LAN parent 1:2 classid 1:%h htb rate %downratekbit ceil %downceilkbit $BURST prio 2 quantum 1500
+$TC qdisc add dev $LAN parent 1:%h esfq perturb 10 hash dst						</PRE
+></P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>class_up = "$TC class add dev $LAN parent 1:2 classid 1:%h htb rate %downratekbit ceil %ceilceilkbit $BURST prio 2 quantum 1500"</SAMP
+></P
+></LI
+><LI
+><P
+>filter_up</P
+><P
+>Definicja filtrów dla ruchu w kierunku od hosta. Dozwolone zmienne:
+					%n - nazwa hosta, %if - nazwa interfejsu sieci,
+					%i - adres, %m - mac, %ms - lista adresów MAC hosta (oddzielonych przecinkiem),
+					%o1, %o2, %o3, %o4 - oktety adresu dziesiętnie, %h1, %h2, %h3, %h4 - oktety adresu
+					w zapisie szesnastkowym, %h - uchwyt klasy, %x - uchwyt filtra (unikalny numer reguły).
+					Domyślnie:
+					<PRE
+CLASS="SCREEN"
+># %n
+$IPT -t mangle -A LIMITS -s %i -j MARK --set-mark %x
+$TC filter add dev $WAN parent 2:0 protocol ip prio 5 handle %x fw flowid 2:%h</PRE
+></P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>class_up = "%n\n$IPT -A src%o3 -s %i -j CLASSIFY --set-class 2:%h\n"</SAMP
+></P
+></LI
+><LI
+><P
+>filter_down</P
+><P
+>Definicja filtrów dla ruchu w kierunku do hosta. Dozwolone zmienne:
+					%n - nazwa hosta, %if - nazwa interfejsu sieci, %i - adres, %m - mac, 
+					%ms - lista adresów MAC hosta (oddzielonych przecinkiem),
+					%o1, %o2, %o3, %o4 - oktety adresu dziesiętnie,
+					%h1, %h2, %h3, %h4 - oktety adresu w zapisie szesnastkowym,
+					%h - uchwyt klasy, %x - uchwyt
+					filtra (unikalny numer reguły). Domyślnie: 
+					<PRE
+CLASS="SCREEN"
+>$IPT -t mangle -A LIMITS -d %i -j MARK --set-mark %x
+$TC filter add dev $LAN parent 1:0 protocol ip prio 5 handle %x fw flowid 1:%h</PRE
+></P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>class_down = "%n\n$IPT -A dst%o3 -d %i -j CLASSIFY --set-class 1:%h\n"</SAMP
+></P
+></LI
+><LI
+><P
+>climit</P
+><P
+>Definicja reguły dla limitu połączeń hosta. Dozwolone 
+					zmienne: %n - nazwa hosta, %if - nazwa interfejsu sieci, 
+					%i - adres, %m - mac, %ms - lista adresów MAC hosta (oddzielonych przecinkiem),
+					%o1, %o2, %o3, %o4 - oktety adresu dziesiętnie,
+					%h1, %h2, %h3, %h4 - oktety adresu w zapisie szesnastkowym,
+					%climit - limit połączeń. Domyślnie:
+					<PRE
+CLASS="SCREEN"
+>$IPT -t filter -I FORWARD -p tcp -s %i -m connlimit --connlimit-above %climit -j REJECT
+					</PRE
+></P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>climit = ""</SAMP
+></P
+></LI
+><LI
+><P
+>plimit</P
+><P
+>Definicja reguły dla limitu pakietów dla hosta. Dozwolone 
+					zmienne: %n - nazwa hosta, %if - nazwa interfejsu sieci, 
+				    %i - adres, %m - mac, %ms - lista adresów MAC hosta (oddzielonych przecinkiem),
+					%o1, %o2, %o3, %o4 - oktety adresu dziesiętnie,
+					%h1, %h2, %h3, %h4 - oktety adresu w zapisie szesnastkowym,
+					%plimit - limit	pakietów. Domyślnie:
+					<PRE
+CLASS="SCREEN"
+>$IPT -t filter -I FORWARD -d %i -m limit --limit %plimit/s -j ACCEPT
+$IPT -t filter -I FORWARD -s %i -m limit --limit %plimit/s -j ACCEPT										</PRE
+></P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>plimit = ""</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia.
+					Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>Lista nazw grup klientów, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia. 
+					Domyślnie: pusta (wszystkie grupy).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>customergroups = "grupa1 grupa2"</SAMP
+></P
+></LI
+><LI
+><P
+>night_hours</P
+><P
+>Zakres godzin nocnych w formacie 24-godzinnym. Np. "22-5" 
+					oznacza, że podczas uruchomienia modułu w godzinach od 22:00 do 4:59
+					brane będą wartości taryf dla godzin nocnych. Obowiązują
+					następujące ograniczenia dla formatu zakresu: nie może zawierać spacji,
+					okres nie może zaczynać się przed godziną 18.
+					Domyślnie: pusta.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>night_hours = "24-6"</SAMP
+></P
+></LI
+><LI
+><P
+>night_no_debtors</P
+><P
+>Włączenie tej opcji spowoduje sprawdzenie czy klient posiada
+					nierozliczone faktury przeterminowane. Jeśli tak, taryfa nocna nie
+					zostanie zastosowana. Domyślnie: false.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>night_no_debtors = tak</SAMP
+></P
+></LI
+><LI
+><P
+>night_deadline</P
+><P
+>Dodatkowy czas (ilość dni) po terminie płatności,
+					zanim faktura zostanie potraktowana jako przeterminowana. Opcja
+					działa w połączeniu z 'night_no_debtors'. Domyślnie: 0.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>night_deadline = 7</SAMP
+></P
+></LI
+><LI
+><P
+>multi_mac</P
+><P
+>Jeśli ustawiona na tak (yes, true) utworzony zostanie osobny rekord
+				    dla każdego adresu MAC. Tzn. jeśli komputer ma przypisanych
+				    kilka adresów MAC, będzie utworzone tyle wpisów ile tych adresów.
+				    Domyślnie: nie</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>multi_mac = tak</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-DNS"
+>6.2.12. Dns</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DNS-DESC"
+>6.2.12.1. Opis</A
+></H3
+><P
+>Moduł do konfiguracji stref serwera 'named' jest jednym z bardziej skomplikowanych.
+		    Tworzy dla każdej sieci pliki stref oraz odpowiednie wpisy w named.conf w oparciu
+		    o szablony tych plików. Przykładowe szablony znajdują się w katalogu
+		    <TT
+CLASS="FILENAME"
+>/modules/dns/sample</TT
+>.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DNS-CONFIG"
+>6.2.12.2. Konfiguracja</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>forward-patterns</P
+><P
+>Katalog z szablonami stref. Domyślnie: forward.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>forward-patterns = /dns/patterns/forward</SAMP
+></P
+></LI
+><LI
+><P
+>reverse-patterns</P
+><P
+>Katalog z szablonami stref odwrotnych. Domyślnie: reverse.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>reverse-patterns = /dns/patterns/revers</SAMP
+></P
+></LI
+><LI
+><P
+>generic-forward</P
+><P
+>Szablon domyślny. Zostanie wykorzystany jeśli w katalogu określonym
+			    'forward-patterns' nie będzie pliku odpowiadającego nazwie domenowej sieci.
+			    Domyślnie: modules/dns/sample/forward/generic.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>generic-forward = /dns/patterns/forward</SAMP
+></P
+></LI
+><LI
+><P
+>generic-reverse</P
+><P
+>Szablon domyślny. Zostanie wykorzystany jeśli w katalogu określonym
+			    'reverse-patterns' nie będzie pliku odpowiadającego numerowi IP sieci.
+			    Domyślnie: modules/dns/sample/reverse/generic.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>generic-reverse = /dns/patterns/forward</SAMP
+></P
+></LI
+><LI
+><P
+>forward-zones</P
+><P
+>Katalog na pliki wynikowe stref.
+			    Domyślnie: modules/dns/sample/out/forward.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>forward-zones = /dns/forward</SAMP
+></P
+></LI
+><LI
+><P
+>reverse-zones</P
+><P
+>Katalog na pliki wynikowe stref odwrotnych.
+			    Domyślnie: modules/dns/sample/out/reverse.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>reverse-zones = /dns/reverse</SAMP
+></P
+></LI
+><LI
+><P
+>host-reverse</P
+><P
+>Linia w pliku strefy odwr. odpowiadająca każdemu komputerowi w dane sieci.
+			    Domyślnie: "%n IN A %i\n".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host-reverse = "\t %n IN A %i\n"</SAMP
+></P
+></LI
+><LI
+><P
+>host-forward</P
+><P
+>Linia w pliku strefy odpowiadająca każdemu komputerowi w danej sieci.
+			    Domyślnie: "%c IN PTR %n.%d.\n".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host-forward = "\t %c IN PTR %n.%d.\n"</SAMP
+></P
+></LI
+><LI
+><P
+>conf-pattern</P
+><P
+>Lokalizacja szablonu głównego pliku konfiguracyjnego serwera.
+			    Domyślnie: modules/dns/sample/named.conf.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>conf-pattern = /dns/patterns/named.conf</SAMP
+></P
+></LI
+><LI
+><P
+>conf-output</P
+><P
+>Lokalizacja głównego pliku konfiguracyjnego serwera.
+			    Domyślnie: /tmp/named.conf.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>conf-output = /etc/named.conf</SAMP
+></P
+></LI
+><LI
+><P
+>conf-forward-entry</P
+><P
+>Wpis dla każdej strefy w głównym pliku konfiguracyjnym.
+			    Domyślnie: 'zone "%n" {\ntype master;\n file "forward/%n"; \nnotify yes; \n}; \n'.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>conf-forward-entry = 'zone "%n" { \n\ttype master; \n\tfile "forward/%n"; \n\tnotify yes; \n}; \n'</SAMP
+></P
+></LI
+><LI
+><P
+>conf-reverse-entry</P
+><P
+>Wpis dla każdej strefy odwr. w głównym pliku konfiguracyjnym.
+			    Domyślnie: 'zone "%c.in-addr.arpa" { \ntype master; \nfile "reverse/%c"; \nnotify yes; \n}; \n'.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>conf-revers-entry = 'zone "%c.in-addr.arpa" { \n\ttype master; \n\tfile "reverse/%c"; \n\tnotify yes; \n}; \n'</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Polecenie wykonywane po utworzeniu plików konf. Domyślnie: puste.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>command = ""</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia.
+			    Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>custmergroups</P
+><P
+>Lista nazw grup klientów, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia. 
+			    Domyślnie: pusta (wszystkie grupy).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>customergroups = "grupa1 grupa2"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-ETHERS"
+>6.2.13. Ethers</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="ETHERS-DESC"
+>6.2.13.1. Opis</A
+></H3
+><P
+>Moduł tworzący konfigurację tablicy ARP systemu. Ustawiając opcję
+		    'dummy_macs' można sprawić, aby komputerom odłączonym został przypisany 
+		    mac-adres 00:00:00:00:00:00.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="ETHERS-CONFIG"
+>6.2.13.2. Konfiguracja</A
+></H3
+><P
+>Tutaj są tylko standardowe opcje:</P
+><UL
+><LI
+><P
+>file</P
+><P
+>Lokalizacja pliku wynikowego. Domyślnie: /etc/ethers.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>file = /tmp/ethers</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Polecenie powłoki wykonywane po wygenerowaniu konfiga. Domyślnie: 'arp -f /etc/ethers'.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>command = ""</SAMP
+></P
+></LI
+><LI
+><P
+>dummy_macs</P
+><P
+>Jeśli ustawimy na 'yes', to komputerom odłączonym zostanie
+			    przypisany mac-adres '00:00:00:00:00:00'. Domyślnie: "no".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>dummy_macs = yes</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia.
+			    Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = "lan1 lan2"</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>Lista nazw grup klientów, które mają być brane pod uwagę. Wielkość liter nie ma znaczenia. 
+			    Domyślnie: pusta (wszystkie grupy).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>customergroups = "grupa1 grupa2"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-OIDENT"
+>6.2.14. Oident</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="OIDENT-DESC"
+>6.2.14.1. Opis</A
+></H3
+><P
+>Moduł do konfiguracji oidentd. W zasadzie można to zrobić modułem
+		    'hostfile', ale tutaj masz już gotowe ustawienia domyślne.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="OIDENT-CONFIG"
+>6.2.14.2. Konfiguracja</A
+></H3
+><P
+>A oto parametry modułu 'oident'</P
+><UL
+><LI
+><P
+>begin</P
+><P
+>Tekst wstawiany na początku pliku. Domyślnie: puste.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>begin = "#Generowany automatycznie\n"</SAMP
+></P
+></LI
+><LI
+><P
+>end</P
+><P
+>Tekst wstawiany na końcu pliku. Domyślnie: puste.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>end = ""</SAMP
+></P
+></LI
+><LI
+><P
+>host</P
+><P
+>Linia tekstu dla każdego komputera. Domyślnie: "%i\t%n\tUNIX".</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>host = "%i %n WINDOWS"</SAMP
+></P
+></LI
+><LI
+><P
+>file</P
+><P
+>Nazwa pliku konfiguracyjnego. Domyślnie: /etc/oidentd.conf.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>file = /etc/oident/identd.conf</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci do uwzględnienia. Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = 'lan1 lan2'</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Polecenie do wykonania po utworzeniu pliku. Domyślnie: puste.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>command = "killall -HUP midentd"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-PINGER"
+>6.2.15. Pinger</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="PINGER-DESC"
+>6.2.15.1. Opis</A
+></H3
+><P
+>Moduł pinger to odpowiednik perlowego skryptu lms-fping. Różnice są jednak
+		    zasadnicze. Nie potrzebuje zewnętrznego programu i działa przy wykorzystaniu
+		    protokołu ARP. Powodem tego jest mniej więcej dwukrotnie szybsze wykonanie
+		    skanowania sieci. Nie ma także problemów z komputerami mającymi wyłączone 
+		    odpowiadanie na pingi. Po skanowaniu, wszystkim włączonym komputerom jest
+		    ustawiany w bazie danych czas skanowania, wykorzystywany do obrazowania
+		    aktywności komputerów np. na mapie sieci.</P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Pinger rozpoznaje interfejsy sieciowe na podstawie
+		    nazwy, dlatego (np. gdy do zakładania interfejsów wirtualnych/aliasów 
+		    wykorzystujesz program <TT
+CLASS="FILENAME"
+>ip</TT
+>) musisz nadawać interfejsom etykiety 
+		    (ip addr add ... label ...). Pamiętaj także, żeby nie używać w nazwach
+		    kropek, ani myślników (mimo, że <TT
+CLASS="FILENAME"
+>ip</TT
+> na to pozwala), gdyż pinger
+		    nie rozpozna poprawnie takiego interfejsu.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="PINGER-CONFIG"
+>6.2.15.2. Konfiguracja</A
+></H3
+><P
+>Pinger udostępnia tylko jedną opcję konfiguracyjną:</P
+><UL
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci, które mają być skanowane. Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = 'lan1 lan2'</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-PARSER"
+>6.2.16. Parser</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DAEMON-PARSER-INTRO"
+>6.2.16.1. Wstęp</A
+></H3
+><P
+>Moduł parser jest oparty na skryptowym języku
+				<A
+HREF="http://silvercoders.com/index.php?page=T_Script"
+TARGET="_top"
+>T-Script</A
+>,
+				którego głównym zadaniem jest generowanie plików tekstowych. Może być
+				używany do przetwarzania szablonów z danymi pobieranymi z różnych
+				źródeł np. baz SQL lub plików tekstowych. W naszym przypadku treść
+				skryptu (szablon) jest przechowywany w bazie danych, dlatego istnieje
+				możliwość jego edycji poprzez <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>.
+				W przyszłości moduł parser może zastąpić większość modułów 
+				demona.</P
+><P
+>Opis języka T-Script znajduje się w rozdziale <A
+HREF="tscript.html"
+>T-Script</A
+>.</P
+><P
+>Przed kompilacją modułu upewnij się, że posiadasz w systemie
+				pakiety <TT
+CLASS="FILENAME"
+>bison</TT
+> (co najmniej w wersji 1.875) oraz 
+				<TT
+CLASS="FILENAME"
+>flex</TT
+>.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DAEMON-PARSER-CONFIG"
+>6.2.16.2. Konfiguracja</A
+></H3
+><P
+>Parser posiada następujące opcje:</P
+><UL
+><LI
+><P
+>script</P
+><P
+>Zawartość skryptu (szablonu). Domyślnie: pusta.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>script = '{var=1}zmienna var={var}'</SAMP
+></P
+></LI
+><LI
+><P
+>file</P
+><P
+>Lokalizacja pliku wynikowego. Domyślnie: pusta</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>file = /tmp/parser.out</SAMP
+></P
+></LI
+><LI
+><P
+>command</P
+><P
+>Polecenie powłoki do wykonania po kompilacji skryptu. Domyślnie: pusta</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>command = "sh /tmp/parser.out"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-EWX-PT"
+>6.2.17. Ewx-pt</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DAEMON-EWX-PT-INTRO"
+>6.2.17.1. Wstęp</A
+></H3
+><P
+>Moduł ewx-pt służy do zarządzania urządzeniem PPPoE
+				Terminator marki <A
+HREF="http://etherwerx.com"
+TARGET="_top"
+>EtherWerX</A
+>.
+				Komunikacja odbywa się z wykorzystaniem protokołu SNMP.</P
+><P
+>Moduł podczas pracy tworzy własną kopię konfiguracji urządzenia.
+				Konfiguracja urządzenia nie jest w żaden sposób weryfikowana, dlatego 
+				korzystając z modułu ewx-pt nie można dokonywać zmian bezpośrednio na
+				urządzeniu. W celu rekonfiguracji urządzenia należy wyczyścić konfigurację
+				na urządzeniu oraz usunąć zawartość tabeli ewx_pt_config w bazie LMSa.
+				<DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Pamiętaj o włączeniu opcji konfiguracyjnej <SAMP
+CLASS="PROMPT"
+>ewx_support</SAMP
+>
+				w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[phpui]</I
+></SPAN
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+				</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DAEMON-EWX-PT-CONFIG"
+>6.2.17.2. Konfiguracja</A
+></H3
+><P
+>Moduł ewx-pt udostępnia następujące opcje:</P
+><UL
+><LI
+><P
+>snmp_host</P
+><P
+>Adres urządzenia EtherWerX. Domyślnie: pusty.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>snmp_host = 192.168.0.1</SAMP
+></P
+></LI
+><LI
+><P
+>snmp_port</P
+><P
+>Port urządzenia dla komunikacji SNMP. Domyślnie: 161</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>snmp_port = 2161</SAMP
+></P
+></LI
+><LI
+><P
+>community</P
+><P
+>Nazwa community SNMP urządzenia. Domyślnie: private</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>community = public</SAMP
+></P
+></LI
+><LI
+><P
+>offset</P
+><P
+>Liczba całkowita o jaką będą zwiększane identyfikatory komputerów
+						podczas zapisu na urządzeniu EtherWerX. Domyślnie: 0.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>offset = 1000</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci, które mają być brane pod uwagę. 
+						Uwaga: po zmianie wartości tej opcji zalecana jest rekonfiguracja urządzenia.
+						Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = 'lan1 lan2'</SAMP
+></P
+></LI
+><LI
+><P
+>dummy_ip_networks</P
+><P
+>Lista nazw sieci, dla których komputerom zostanie
+							przypisany adres IP 0.0.0.0. Uwaga: po zmianie
+							wartości tej opcji zalecana jest rekonfiguracja urządzenia.
+							Domyślnie: pusta (żadna sieć).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>dummy_ip_networks = lan1</SAMP
+></P
+></LI
+><LI
+><P
+>dummy_mac_networks</P
+><P
+>Lista nazw sieci, dla których komputerom zostanie
+							przypisany adres MAC 00:00:00:00:00:00. Uwaga: po zmianie
+							wartości tej opcji zalecana jest rekonfiguracja urządzenia.
+							Domyślnie: pusta (żadna sieć).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>dummy_mac_networks = lan1</SAMP
+></P
+></LI
+><LI
+><P
+>skip_disabled</P
+><P
+>Wyłączenie tej opcji spowoduje, że komputery o statusie
+						odłączony nie będą pomijane. Należy ją wyłączyć w przypadku gdy
+						chcemy aby zablokowani klienci mieli możliwość zalogowania się
+						do Terminatora. Domyślnie: włączona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>skip_disabled = false</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-EWX-STM"
+>6.2.18. Ewx-stm</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DAEMON-EWX-STM-INTRO"
+>6.2.18.1. Wstęp</A
+></H3
+><P
+>Moduł ewx-stm służy do zarządzania urządzeniem Standalone Traffic
+				Manager marki <A
+HREF="http://etherwerx.com"
+TARGET="_top"
+>EtherWerX</A
+>.
+				Komunikacja odbywa się z wykorzystaniem protokołu SNMP. Do prawidłowej
+				pracy wymagany jest firmware w wersji 1.4.x lub nowszej.</P
+><P
+>Moduł podczas pracy tworzy własną kopię konfiguracji urządzenia.
+				Konfiguracja urządzenia nie jest w żaden sposób weryfikowana, dlatego 
+				korzystając z modułu ewx-stm nie można dokonywać zmian bezpośrednio na
+				urządzeniu. W celu rekonfiguracji urządzenia należy wyczyścić konfigurację
+				na urządzeniu oraz usunąć zawartość tabel ewx_stm_channels oraz
+				ewx_stm_nodes w bazie LMSa.
+				<DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Pamiętaj o włączeniu opcji konfiguracyjnej <SAMP
+CLASS="PROMPT"
+>ewx_support</SAMP
+>
+				w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[phpui]</I
+></SPAN
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+				Należy także zwrócić uwagę na to, iż moduł uwzględnia ustawienia opcji 
+				'Sprawdzanie MACa' oraz 'Half duplex' w danych komputera.
+				</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DAEMON-EWX-STM-CONFIG"
+>6.2.18.2. Konfiguracja</A
+></H3
+><P
+>Moduł ewx-stm udostępnia następujące opcje:</P
+><UL
+><LI
+><P
+>snmp_host</P
+><P
+>Adres urządzenia EtherWerX. Domyślnie: pusty.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>snmp_host = 192.168.0.1</SAMP
+></P
+></LI
+><LI
+><P
+>snmp_port</P
+><P
+>Port urządzenia dla komunikacji SNMP. Domyślnie: 161</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>snmp_port = 2161</SAMP
+></P
+></LI
+><LI
+><P
+>community</P
+><P
+>Nazwa community SNMP urządzenia. Domyślnie: private</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>community = public</SAMP
+></P
+></LI
+><LI
+><P
+>path</P
+><P
+>Numer ścieżki zdefiniowanej na urządzeniu, do której
+						zostaną dopisane komputery i kanały z LMSa. Domyślnie: nieustawiona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>path = 1</SAMP
+></P
+></LI
+><LI
+><P
+>offset</P
+><P
+>Liczba całkowita o jaką będą zwiększane identyfikatory komputerów
+						podczas zapisu na urządzeniu EtherWerX. Uwaga: po zmianie
+						wartości tej opcji zalecana jest rekonfiguracja urządzenia.
+						Domyślnie: 0.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>offset = 1000</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci, które mają być brane pod uwagę. 
+						Uwaga: po zmianie wartości tej opcji zalecana jest rekonfiguracja urządzenia.
+						Domyślnie: pusta (wszystkie sieci).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>networks = 'lan1 lan2'</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_networks</P
+><P
+>Lista nazw sieci, które mają zostać pominięte. 
+						Uwaga: po zmianie wartości tej opcji zalecana jest rekonfiguracja urządzenia.
+						Domyślnie: pusta.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>excluded_networks = 'lan3 lan4'</SAMP
+></P
+></LI
+><LI
+><P
+>dummy_ip_networks</P
+><P
+>Lista nazw sieci, dla których komputerom zostanie
+						przypisany adres IP 0.0.0.0. Wartość tej opcji może zawierać 
+						specjalny znak '*', oznaczający wszystkie sieci. Uwaga: po zmianie
+						wartości tej opcji zalecana jest rekonfiguracja urządzenia.
+						Domyślnie: pusta (żadna sieć).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>dummy_ip_networks = lan1</SAMP
+></P
+></LI
+><LI
+><P
+>dummy_mac_networks</P
+><P
+>Lista nazw sieci, dla których komputerom zostanie
+						przypisany adres MAC 00:00:00:00:00:00. Wartość tej opcji może 
+						zawierać specjalny znak '*', oznaczający wszystkie sieci.
+						Uwaga: po zmianie wartości tej opcji zalecana jest rekonfiguracja
+						urządzenia. Domyślnie: pusta (żadna sieć).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>dummy_mac_networks = lan1</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_dummy_ip_networks</P
+><P
+>Lista nazw sieci, które zostaną wyłączone z działania 
+						opcji dummy_ip_networks, w przypadku użycia w niej znaku '*'.
+						Domyślnie: pusta (żadna sieć).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>excluded_dummy_ip_networks = lan5</SAMP
+></P
+></LI
+><LI
+><P
+>excluded_dummy_mac_networks</P
+><P
+>Lista nazw sieci, które zostaną wyłączone z działania 
+						opcji dummy_mac_networks, w przypadku użycia w niej znaku '*'. Domyślnie: pusta (żadna sieć).</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>excluded_dummy_mac_networks = lan7</SAMP
+></P
+></LI
+><LI
+><P
+>skip_disabled</P
+><P
+>Przy domyślnym ustawieniu tej opcji (true) komputery o statusie
+						'odłączony' nie są brane pod uwagę. Domyślnie: włączona.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>skip_disabled = false</SAMP
+></P
+></LI
+><LI
+><P
+>night_hours</P
+><P
+>Zakres godzin nocnych w formacie 24-godzinnym. Np. "22-5" 
+						oznacza, że podczas uruchomienia modułu w godzinach od 22:00 do 4:59
+						brane będą wartości taryf dla godzin nocnych. Obowiązują
+						następujące ograniczenia dla formatu zakresu: nie może zawierać spacji,
+						okres nie może zaczynać się przed godziną 18.
+						Domyślnie: pusta.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>night_hours = "24-6"</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DAEMON-EWX-STM-CHANNELS"
+>6.2.19. Ewx-stm-channels</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DAEMON-EWX-STM-CHANNELS-INTRO"
+>6.2.19.1. Wstęp</A
+></H3
+><P
+>Moduł ewx-stm-channels to odpowiednik modułu ewx-stm (służącego do zarządzania urządzeniem Standalone Traffic
+				Manager marki <A
+HREF="http://etherwerx.com"
+TARGET="_top"
+>EtherWerX</A
+>) zawierający rozbudowaną obsługę kanałów.
+				</P
+><P
+>Różnica w pracy tych modułów jest następująca. Moduł ewx-stm tworzy kanały
+				automatycznie w zależności od ustawień zobowiązań klientów i ich przypisania
+				do komputerów. Nie obsługuje kanałów zdefiniowanych w LMS-UI. Z kolei moduł ewx-stm-channels pracuje wyłącznie z kanałami zdefiniowanymi w LMS-UI. Komputery
+				powinny być przypisane do urządzeń sieciowych, a te z kolei do kanałów o zdefiniowanych
+				parametrach. Komputery nie przypisane do żadnego kanału są pomijane. Można to zmienić
+				definiując parametry domyślnego kanału w konfiguracji modułu, do którego trafią
+				wszystkie komputery bez powiązania.
+				</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="DAEMON-EWX-STM-CHANNELS-CONFIG"
+>6.2.19.2. Konfiguracja</A
+></H3
+><P
+>Moduł ewx-stm-channels oprócz opcji dostępnych dla modułu ewx-stm udostępnia następujące opcje:</P
+><UL
+><LI
+><P
+>default_upceil</P
+><P
+>Wartość upceil dla domyślnego kanału. Domyślnie: 0.</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>default_upceil = 10000</SAMP
+></P
+></LI
+><LI
+><P
+>default_downceil</P
+><P
+>Wartość downceil dla domyślnego kanału. Domyślnie: 0</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>default_downceil = 20000</SAMP
+></P
+></LI
+><LI
+><P
+>default_halfduplex</P
+><P
+>Określa czy domyślny kanał ma pracować w trybie half duplex. Domyślnie: nie</P
+><P
+>Przykład: <SAMP
+CLASS="PROMPT"
+>default_halfduplex = tak</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="daemon.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tscript.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>LMS Daemon</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="daemon.html"
+ACCESSKEY="U"
+>Pocz&#261;tek rozdzia&#322;u</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>T-Script</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

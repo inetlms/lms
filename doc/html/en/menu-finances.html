@@ -1,0 +1,586 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Finances</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="User Interface (LMS-UI)"
+HREF="user.html"><LINK
+REL="PREVIOUS"
+TITLE="IP Networks"
+HREF="menu-networks.html"><LINK
+REL="NEXT"
+TITLE="Documents"
+HREF="menu-documents.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="menu-networks.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. User Interface (LMS-UI)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="menu-documents.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MENU-FINANCES"
+>3.7. Finances</A
+></H1
+><P
+>This is actually the whole collection of modules, that gives you
+possibility to efficiently manage finances of your network. You can define
+periodical liabilities here (subscriptions), solid liabilities (orders),
+perform accounting operations, check each account history and draw invoices
+and balance sheets.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-TARIFFS-LIST"
+>3.7.1. Tariffs List</A
+></H2
+><P
+>When you enter 'Tariffs List' panel you'll be able to see list of
+liabilities (Tariffs) that might be assigned to your customers, with basic
+information about it. When you select and click on liability you'll move to
+'Tariff' module where you're able to edit its parameters and exchange customers
+between available liabilities. In 'Number of customers'  field you can read
+number of customers who are assigned to it and two numbers in parenthesis: total
+number of assignments and number of active assignments, considered by its
+activity periods.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-TARIFFS-NEW"
+>3.7.2. New Tariff</A
+></H2
+><P
+>When defining new tariff you need to enter unique name, amount
+	    and tax rate.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-PAYMENTS-LIST"
+>3.7.3. Payments list</A
+></H2
+><P
+>This is a list of your company payments. Among standard fields
+	    you'll find 'Account this payment' icon,
+	    where you're able to charge your account. Periodical charges
+	    might be done with 'lms-payments' Perl script, or appropriate module of lmsd
+	    daemon. Select and click on chosen payment to view 'Payment Info' module, where
+	    you're able to edit its parameters or account given payment to financial
+	    database.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-PAYMENTS-NEW"
+>3.7.4. New payment</A
+></H2
+><P
+>You have to assign unique name, amount and pay date for each
+	    new payment you setup.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-BALANCE"
+>3.7.5. Balance sheet</A
+></H2
+><P
+>This is history of your financial operations with total
+incomes, expenditures, payments and customers liabilities. Printer icon allows
+you to print invoice for corresponding record.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-NEWBALANCE"
+>3.7.6. New Balance</A
+></H2
+><P
+>You can add new financial operation with this module. It's
+possible to account the same operation for multiple customers at the same
+time.</P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>It's best to use lms-payments Perl script or
+<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>lmsd</I
+></SPAN
+> daemon to automate periodical operations, such as
+subscription fees. Those modules are also able to write out appropriate
+invoices.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-INVOICES-LIST"
+>3.7.7. Invoices List</A
+></H2
+><P
+>List of invoices that has been already written out. You're
+		able to print (by selecting 'Print' icon) and check as accounted selected
+		invoices.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-INVOICES-NEW"
+>3.7.8. New Invoice</A
+></H2
+><P
+>Allows you to issue an invoice for selected customer manually.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-DEBITNOTES-LIST"
+>3.7.9. Debit Notes List</A
+></H2
+><P
+>List of debit notes that has been already written out. You're
+		able to print (by selecting 'Print' icon) and check as accounted selected
+		notes.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-DEBITNOTES-NEW"
+>3.7.10. New Debit Note</A
+></H2
+><P
+>Allows you to issue an debit note for selected customer manually.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-RECEIPTS-LIST"
+>3.7.11. Cash Registry</A
+></H2
+><P
+>Cash register can be divided on many registries like cash1, cash2,
+		main cash, bank, etc. On regirstries list are placed all information about
+		defined registries with actual balance and summary which include only
+		registries with not set "Disable summary" option.</P
+><P
+>Each registry can have own numbering of cash-in and cash-out
+		documents and access rights for users. "Write" privilage is assigned for
+		common cashiers and dismiss receipts read and addition. 
+		"Advanced" users can edit and delete documents and change number or date
+		when create new document.</P
+><P
+>Cash receipts are a proofs of payment in and out cash.
+		Receipts list, which you'll find by clicking on selected registry on registries 
+		list, can be sorted in any order and filtered like the
+		invoices list. You've got also print selected receipts.</P
+><P
+>From list you can go to receipt edition. Making changes in
+		created documents needs special care, because submitting changes
+		will delete old receipt and linked operations and insert 
+		new ones.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-RECEIPTS-NEW"
+>3.7.12. New Cash Receipt</A
+></H2
+><P
+>To create new cash document in first place you must specify registry
+		and operation type (pay in/pay out), select customer from list or search 
+		them using filter. You can select other operation type i.e. assets move or
+		operation not associated with customer. Also you can set date and number 
+		(better to leave values proposed by system). Then click 'Select' to affirm 
+		your choice. After that you can add any number of positions with value and
+		description or select them from list of not closed invoices/credit notes.
+		'Save and Print' will finish and save receipt
+		and payments in system and display receipt's printout in new window.</P
+><P
+>Printouts look configuration is desribed in chapter Installation and
+		Configuration.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-IMPORT"
+>3.7.13. Import</A
+></H2
+><P
+>If you use homebanking, and you're able to get a list of
+		financial operations (ie. from bank www or email that they send
+		you), Import module can be used to (semi)automatically load it
+		into LMS accounting database and assign to respective customers.
+		You should write (or use, if it's already in distribution) a
+		parser script, which loads data to the cashimport table. Please,
+		check example script lms-cashimport-ingbs to see how this is
+		being done. After you run it, you should get a list of pending
+		financial operations, in Import module, where you can correct
+		them and accept into LMS accounting database.</P
+><P
+>You can also load previously prepared text file using this
+		module. It will be read line by line and parsed using setup
+		regular expressions to get needed data types (ie. customer id,
+		amount, etc). After file is loaded, you will be presented with
+		the same corrections/acceptance screen as above.</P
+><P
+>To setup regular expressions, which suit to your input
+		files you should create PHP script which location you must set in
+		<TT
+CLASS="FILENAME"
+>import_config</TT
+> option in <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[phpui]</I
+></SPAN
+>
+		section. Example values and parameters descriptions are placed in
+		<TT
+CLASS="FILENAME"
+>modules/cashimportcfg.php</TT
+>.
+		Default configuration assumes that input data will be in 
+		the following format (tab separated):
+<PRE
+CLASS="SCREEN"
+>23.02.2004	Machniak Aleksander	123,45	Internet subscription - 04/2004 ID:0013
+15.02.2004	Pain Joseph	123,45	Invoice paid - LMS/34/2004</PRE
+>
+		</P
+><P
+>While import operations are being accepted it's possible to
+		enable auto-accounting of invoices. To do this enable option
+		'cashimport_checkinvoices' in section <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[finances]</I
+></SPAN
+>.
+		Invoice (and assigned credit notes) is checked when imported payment
+		(taking customer balance into account) is greater than invoice liability.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-EXPORT"
+>3.7.14. Export</A
+></H2
+><P
+>Financial data export to external systems rely on generation
+		of text files with data fetched according to defined filters.
+		For each document is created one record in text file. Record's 
+		format sets user using variables.</P
+><P
+>Export configuration is placed in file, which localization
+		is set in <TT
+CLASS="FILENAME"
+>export_config</TT
+> option of section 
+		<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[phpui]</I
+></SPAN
+>. Example values with variables description 
+		you can find in <TT
+CLASS="FILENAME"
+>modules/exportcfg.php</TT
+>. 
+		The bast way is to copy that file and there making needed changes.</P
+><P
+>For each position of Sale Registry (each invoice)
+		we have one record in result file. When exporting Cash Report one record is 
+		for each position of cash document.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MENU-FINANCES-REPORTS"
+>3.7.15. Reports</A
+></H2
+><P
+>There are several options for balance sheet printouts:
+	    <UL
+><LI
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Balance sheet for your network</I
+></SPAN
+>
+			including financial operations for given period</P
+></LI
+><LI
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Customer balance sheet</I
+></SPAN
+> for given
+			period.</P
+></LI
+><LI
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Sale Registry</I
+></SPAN
+>, which consists of
+			invoices for given period.</P
+></LI
+><LI
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Cash Report</I
+></SPAN
+>, which consists of
+			cash receipts for given period and/or given registry and cashier.</P
+></LI
+><LI
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Invoices</I
+></SPAN
+> for given
+			period or/and selected customer.</P
+></LI
+><LI
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Transfer forms</I
+></SPAN
+> for selected
+			customer or customers group and given balance limit (only for polish forms).</P
+></LI
+><LI
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Total invoiceless income</I
+></SPAN
+> for
+			given period</P
+></LI
+><LI
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Liability report</I
+></SPAN
+> for given day,
+			for all or selected user</P
+></LI
+><LI
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Cash import history</I
+></SPAN
+> for given
+			period.</P
+></LI
+></UL
+>
+	    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="menu-networks.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="menu-documents.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>IP Networks</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="user.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Documents</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

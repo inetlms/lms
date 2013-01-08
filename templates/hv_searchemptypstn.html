@@ -1,0 +1,62 @@
+{include file="header.html"}
+{include file="hv_js.html"}
+<script type="text/javascript" language="JavaScript" src="img/overlib.js"></script>
+
+{literal}
+<SCRIPT type="text/javascript" language="JavaScript">
+<!--
+    function odeslijdane(p1,p2,p3) {
+	opener.document.getElementById('id_extension').value = p1;
+	opener.document.getElementById('id_country_code').value = p2;
+	opener.document.getElementById('id_number').value = p3;
+	window.close();
+    }
+//-->
+</SCRIPT>
+{/literal}
+
+<TABLE width="100%" cellpadding="3">
+    
+    <TR class="dark">
+	<TD class="fall">
+	    <B>Pula adresów :</B>
+	    <SELECT onchange="self.location.href=this.value">
+		{section name=l3 loop=$lista.range}
+		    <OPTION value="?m=hv_searchemptypstn&id={$lista.range[l3].id}" {if $lista.range[l3].id==$lista.rangeid} SELECTED{/if}>
+			&nbsp;&nbsp;{$lista.range[l3].description}&nbsp;&nbsp;|&nbsp;&nbsp;{$lista.range[l3].range_start} - {$lista.range[l3].range_end}&nbsp;&nbsp;
+		    </OPTION>
+		{/section}
+	    </SELECT>
+	</TD>
+    </TR>
+
+    <TR>
+	<TD width="100%" class="flr" nowrap>
+	    <TABLE cellpadding="4" width="100%">
+		{cycle values="light,lucid" print=false}
+		{section name=lista loop=$lista.pstn step=8}
+		    <TR class="{cycle}">
+			{section name=l2 loop=$lista.pstn start=$smarty.section.lista.index max=8}
+			    <TD width="12%" align="center" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');" >
+				{if $lista.pstn[l2].customerid==0 || $lista.pstn[l2].extension==$lista.oldpstn}
+				    {if $lista.pstn[l2].extension==$lista.oldpstn}
+					<A HREF="javascript:odeslijdane('{$lista.pstn[l2].extension}','{$lista.pstn[l2].country_code}','{$lista.pstn[l2].number}');" {tip text="Obecny tnumer"}><FONT style="font-weight:bold;color:green;">{$lista.pstn[l2].number}</FONT></A>
+				    {else}
+					<A HREF="javascript:odeslijdane('{$lista.pstn[l2].extension}','{$lista.pstn[l2].country_code}','{$lista.pstn[l2].number}');">{$lista.pstn[l2].number}</A>
+				    {/if}
+				{else}
+				    <FONT class="blend">{$lista.pstn[l2].customer_name}</FONT>
+				{/if}
+			    </TD>
+			{/section}
+		    </TR>
+		{/section}
+	    </TABLE>
+	</TD>
+    </TR>
+    
+    <TR>
+	<TD width="100%" class="ftop"></TD>
+    </TR>
+</TABLE>
+{include file="footer.html"}

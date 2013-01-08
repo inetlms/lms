@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Dodatki</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Ograniczenia"
+HREF="devel-limits.html"><LINK
+REL="NEXT"
+TITLE="Moje konto 2"
+HREF="contrib-customer2.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="devel-limits.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="contrib-customer2.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="CONTRIB"
+></A
+>Rozdzia&#322; 8. Dodatki</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Spis tre&#347;ci</B
+></DT
+><DT
+>8.1. <A
+HREF="contrib.html#CONTRIB-CUSTOMER"
+>Moje konto</A
+></DT
+><DD
+><DL
+><DT
+>8.1.1. <A
+HREF="contrib.html#CUSTOMER-INTRO"
+>Wstęp</A
+></DT
+><DT
+>8.1.2. <A
+HREF="contrib.html#CUSTOMER-INSTALL"
+>Instalacja</A
+></DT
+></DL
+></DD
+><DT
+>8.2. <A
+HREF="contrib-customer2.html"
+>Moje konto 2</A
+></DT
+><DD
+><DL
+><DT
+>8.2.1. <A
+HREF="contrib-customer2.html#CUSTOMER2-INTRO"
+>Wstęp</A
+></DT
+><DT
+>8.2.2. <A
+HREF="contrib-customer2.html#CUSTOMER2-INSTALL"
+>Instalacja</A
+></DT
+></DL
+></DD
+><DT
+>8.3. <A
+HREF="contrib-sqlpanel.html"
+>Panel SQL</A
+></DT
+><DD
+><DL
+><DT
+>8.3.1. <A
+HREF="contrib-sqlpanel.html#SQLPANEL-INTRO"
+>Wstęp</A
+></DT
+><DT
+>8.3.2. <A
+HREF="contrib-sqlpanel.html#SQLPANEL-INSTALL"
+>Instalacja</A
+></DT
+></DL
+></DD
+><DT
+>8.4. <A
+HREF="contrib-squid.html"
+>Ostrzeżenia + squid</A
+></DT
+><DD
+><DL
+><DT
+>8.4.1. <A
+HREF="contrib-squid.html#SQUID-REDIRECTOR-INTRO"
+>Wstęp</A
+></DT
+><DT
+>8.4.2. <A
+HREF="contrib-squid.html#SQUID-REDIRECTOR-INSTALL"
+>Instalacja</A
+></DT
+></DL
+></DD
+><DT
+>8.5. <A
+HREF="contrib-antyvir.html"
+>Antywirus</A
+></DT
+><DD
+><DL
+><DT
+>8.5.1. <A
+HREF="contrib-antyvir.html#CONTRIB-ANTYVIR-INTRO"
+>Wstęp</A
+></DT
+><DT
+>8.5.2. <A
+HREF="contrib-antyvir.html#CONTRIB-ANTYVIR-CONFIG"
+>Konfiguracja</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+><P
+>W niniejszym rozdziale zostaną opisane dodatkowe moduły i rozwiązania
+     zwiększające funkcjonalność LMS'a znajdujące się w katalogu 
+     <TT
+CLASS="FILENAME"
+>contrib</TT
+>. Część z nich należy dostosować do własnych 
+     potrzeb, a niektóre integrują się z interfejsem <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>.</P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CONTRIB-CUSTOMER"
+>8.1. Moje konto</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CUSTOMER-INTRO"
+>8.1.1. Wstęp</A
+></H2
+><P
+>W katalogu <TT
+CLASS="FILENAME"
+>contrib/customer</TT
+> znajduje się
+          przykład rozwiązania, dzięki któremu każdy klient twojej sieci
+          może sprawdzić własny bilans finansowy.</P
+><P
+>Skrypt sprawdza spod jakiego adresu jest żądanie i wyświetla
+          bilans i informacje o kliencie, który jest właścicielem komputera
+          o tym adresie.</P
+><P
+>Dla osób korzystających z proxy, nie korzystających
+          z sieci tylko w domu, albo którzy nie chcą aby dzieci/małżonkowie/pracownicy 
+          mieli wgląd w dane finansowe dotyczące ich dostępu do sieci/innych 
+          usług przeznaczone jest "Moje konto 2".</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CUSTOMER-INSTALL"
+>8.1.2. Instalacja</A
+></H2
+><P
+>Pliki należy skopiować w dowolne miejsce i wystawić
+          pod adresem dostępnym dla każdego użytkownika, a następnie
+          ustawić poprawną ścieżkę do <TT
+CLASS="FILENAME"
+>lms.ini</TT
+> w pliku 
+          <TT
+CLASS="FILENAME"
+>index.php</TT
+>.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="devel-limits.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="contrib-customer2.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Ograniczenia</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Moje konto 2</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

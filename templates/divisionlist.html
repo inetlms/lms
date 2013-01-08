@@ -1,0 +1,85 @@
+{include file="header.html"}
+
+<!--// $Id$ //-->
+<H1>{$layout.pagetitle}</H1>
+<P><TABLE cellpadding="3" WIDTH="100%">
+	<tr class="dark">
+		<td width="1%" class="fleftu" align="left"nowrap><img src="img/division.gif" alt=""> <B>{trans("Name:")}</B></td>
+		<td width="1%" class="fbt" align="center" nowrap style="padding-left:10px;padding-right:10px;"><b>{trans("ID:")}</b></td>
+		<td width="1%" class="fbt" align="left" nowrap style="padding-left:10px;padding-right:10px;"><b>{trans("Long name:")}</b></td>
+		<td width="91%" class="fbt" align="left" nowrap style="padding-left:10px;padding-right:10px;"><b>{trans("Address:")}</b></td>
+		<td width="1%" class="fbt" align="center" nowrap style="padding-left:10px;padding-right:10px;"><b>{trans("Payment type:")}</b></td>
+		<td width="1%" class="fbt" align="center" nowrap style="padding-left:10px;padding-right:10px;"><b>{trans("Deadline:")}</b></td>
+		<td width="1%" class="fbt" align="center" nowrap style="padding-left:10px;padding-right:10px;"><b>{trans("Account:")}</b></td>
+		<td width="1%" class="fbt" align="center" nowrap style="padding-left:10px;padding-right:10px;"><b>{trans("TEN:")}</b></td>
+		<td width="1%" class="fbt" align="right" nowrap style="padding-left:10px;padding-right:10px;"><b>{trans("Customers:")}</b></td>
+		<td width="1%" class="frightu" align="right" nowrap><a href="?m=divisionadd">{trans("Add division")} <img src="img/save.gif" alt=""></a></td>
+	</tr>
+	{if $listdata.total != 0}
+	<tr CLASS="DARK">
+		<td colspan="10" CLASS="FALL">
+			{include file="scroller.html" loop=$divisionlist}
+		</td>
+	</tr>
+	{/if}
+	{cycle values="light,lucid" print=false}
+	{section name=list loop=$divisionlist}
+	<tr class="{cycle}{if $divisionlist[list].status} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td class="fleft" nowrap onclick="return self.location.href='?m=divisionedit&id={$divisionlist[list].id}';">
+			<img src="img/division.gif" alt=""> <B>{$divisionlist[list].shortname}</B>
+		</td>
+		<td align="right" nowrap onclick="return self.location.href='?m=divisionedit&id={$divisionlist[list].id}';">
+			({$divisionlist[list].id|string_format:"%04d"})
+		</td>
+		<td align="left" >
+			{$divisionlist[list].name}
+		</td>
+		<td align="left" >
+			{$divisionlist[list].address}, {$divisionlist[list].zip} {$divisionlist[list].city}
+		</td>
+		<td align="center"  nowrap>
+			{if !$divisionlist[list].inv_paytype}{trans("default")}{else}{foreach from=$_PAYTYPES item=item key=key}{if $divisionlist[list].inv_paytype==$key}{$item}{/if}{/foreach}{/if}
+		</td>
+		<td align="center"  nowrap>
+			{if !strlen($divisionlist[list].inv_paytime)}{trans("default<!paytime>")}{else}{$divisionlist[list].inv_paytime}{/if}
+		</td>
+		<td align="left"  nowrap>
+			{$divisionlist[list].account|format_bankaccount}&nbsp;&nbsp;&nbsp;
+		</td>
+		<td align="left" >
+			{$divisionlist[list].ten}
+		</td>
+		<td align="center" onclick="return self.location.href='?m=divisionedit&id={$divisionlist[list].id}';">
+			{$divisionlist[list].cnt|default:0}
+		</td>
+		<td class="fright" align="right" nowrap>
+			<img src="img/info.gif" style="cursor:pointer;" {tip text="Kliknij aby zobaczyć szczegóły"} onclick="divisioninfo_popup('{$divisionlist[list].id}');">
+			
+			<a href="?m=divisionedit&id={$divisionlist[list].id}&changestatus=1"><img src="img/{if $divisionlist[list].status}no{/if}access.gif" alt="[ {if $divisionlist[list].status}{trans("Unlock")}{else}{trans("Lock")}{/if} ]" title="[ {if $divisionlist[list].status}{trans("Unlock")}{else}{trans("Lock")}{/if} ]"></A>
+			<a href="?m=divisiondel&id={$divisionlist[list].id}" onclick="return confirmLink(this, '{t a=$divisionlist[list].name}Are you sure, you want to delete division \'$a\'?{/t}')"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></A>
+			<a href="?m=divisionedit&id={$divisionlist[list].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></A>
+		</td>
+	</tr>
+	{sectionelse}
+	<tr>
+		<td colspan="10" align="center" class="fall">
+			<p>&nbsp;</p>
+			<p><B>{trans("No such divisions in database.")}</B></p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>
+	{/section}
+	{if $listdata.total != 0}
+	<tr CLASS="DARK">
+		<td colspan="10" CLASS="FALL">
+			{include file="scroller.html" loop=$divisionlist}
+		</td>
+	</tr>
+	{/if}
+	<tr class="light">
+		<td colspan="10" class="fall" align="right">
+			<a href="?m=divisionadd">{trans("Add division")} <img src="img/save.gif" alt=""></a>
+		</td>
+	</tr>
+</TABLE></P>
+{include file="footer.html"}

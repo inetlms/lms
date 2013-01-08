@@ -1,0 +1,209 @@
+{include file="header.html"}
+<H1>{$layout.pagetitle}</H1>
+{literal}
+<SCRIPT type="text/javascript">
+<!--
+    function addMonitDev()
+    {
+	var id = document.getElementById('newnetdev').value;
+	if (id!=0) location.href='?{/literal}{$backto}{literal}&action=adddev&nid='+id;
+    }
+//-->
+</SCRIPT>
+{/literal}
+<TABLE width="100%" cellpadding="3">
+    <form name="choosefilter" method="GET" action="?{$backto}">
+    <input type="submit" class="hiddenbtn">
+    <input type="hidden" name="m" value="monitnodelist">
+    <input type="hidden" name="page" value="1">
+    
+    <TR class="dark">
+	<TD width="1%"  nowrap align="left" class="fleftu">
+		<a href="?{$backto}&o=name&d={if $listdata.order=='name' && $listdata.direction=='asc'}desc{else}asc{/if}">{if $node.typedev=='netdev'}Nazwa{else}Klient{/if}</a>&nbsp;<img src="img/{if $listdata.order=='name'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7"><br>
+		<a href="?{$backto}&o=location&d={if $listdata.order=='location' && $listdata.direction=='asc'}desc{else}asc{/if}">Lokalizacja</a>&nbsp;<img src="img/{if $listdata.order=='location'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7">
+	</TD>
+	<TD width="auto" nowrap align="left" class="fbt" style="padding-left:10px;padding-right:10px;vertical-align:top;">
+	    <a href="?{$backto}&o=urzname&d={if $listdata.order=='urzname' && $listdata.direction=='asc'}desc{else}asc{/if}">Urządzenie</a>&nbsp;<img src="img/{if $listdata.order=='urzname'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7"><br>
+	    <a href="?{$backto}&o=ip&d={if $listdata.order=='ip' && $listdata.direction=='asc'}desc{else}asc{/if}">IP</a>&nbsp;<img src="img/{if $listdata.order=='ip'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7">
+	</TD>
+	<td width="1%" align="left" class="fbt" nowrap style="padding-left:10px;padding-right:10px;">
+	    
+	    <a href="?{$backto}&o=testtype&d={if $listdata.order=='testtype' && $listdata.direction=='asc'}desc{else}asc{/if}">Test Type</a>&nbsp;<img src="img/{if $listdata.order=='testtype'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7">
+	</td>
+	<TD width="1%" align="center" class="fbt" nowrap>
+		<a href="?{$backto}&o=lastptime&d={if $listdata.order=='lastptime' && $listdata.direction=='asc'}desc{else}asc{/if}">Ostatni pomiar</a>&nbsp;<img src="img/{if $listdata.order=='lastptime'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7">
+		<br>
+		<a href="?{$backto}&o=lastdate&d={if $listdata.order=='lastdate' && $listdata.direction=='desc'}asc{else}desc{/if}">Data</a>&nbsp;<img src="img/{if $listdata.order=='lastdate'}{if $listdata.direction == 'desc'}desc{else}asc{/if}_order{else}empty{/if}.gif" width="7">
+	</TD>
+	<TD width="1%" align="center" class="fbt" nowrap>
+	    <a href="?{$backto}&o=min1d&d={if $listdata.order=='min1d' && $listdata.direction=='asc'}desc{else}asc{/if}">MIN 1 day</a>&nbsp;<img src="img/{if $listdata.order eq 'min1d'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7"><br>
+	    <a href="?{$backto}&o=min7d&d={if $listdata.order=='min7d' && $listdata.direction=='asc'}desc{else}asc{/if}">MIN 7 day</a>&nbsp;<img src="img/{if $listdata.order eq 'min7d'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7">
+	</TD>
+	<TD width="1%" align="center" class="fbt" nowrap>
+	    <a href="?{$backto}&o=avg1d&d={if $listdata.order=='avg1d' && $listdata.direction=='asc'}desc{else}asc{/if}">AVG 1 day</a>&nbsp;<img src="img/{if $listdata.order eq 'avg1d'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7"><br>
+	    <a href="?{$backto}&o=avg7d&d={if $listdata.order=='avg7d' && $listdata.direction=='asc'}desc{else}asc{/if}">AVG 7 day</a>&nbsp;<img src="img/{if $listdata.order eq 'avg7d'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7">
+	</TD>
+	<TD width="1%" align="center" class="fbt" nowrap>
+	    <a href="?{$backto}&o=max1d&d={if $listdata.order=='max1d' && $listdata.direction=='asc'}desc{else}asc{/if}">MAX 1 day</a>&nbsp;<img src="img/{if $listdata.order eq 'max1d'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7"><br>
+	    <a href="?{$backto}&o=max7d&d={if $listdata.order=='max7d' && $listdata.direction=='asc'}desc{else}asc{/if}">MAX 7 day</a>&nbsp;<img src="img/{if $listdata.order eq 'max7d'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7">
+	</TD>
+	<TD width="1%" align="center" class="fbt" nowrap>
+	    <a href="?{$backto}&o=lastwarn&d={if $listdata.order=='lastwarn' && $listdata.direction=='desc'}asc{else}desc{/if}">Ostatnia usterka</a>&nbsp;<img src="img/{if $listdata.order=='lastwarn'}{if $listdata.direction == 'desc'}desc{else}asc{/if}_order{else}empty{/if}.gif" width="7">
+	    <BR>trwała do
+	</TD>
+	<TD width="1%" nowrap align="right" class="frightu">
+	    Link
+	</TD>
+    </TR>
+    
+    {cycle values="light,lucid" print=false}
+    {section name=devlist loop=$monitlist}
+	{assign var='indeks' value=$smarty.section.devlist.index}
+	<TR class="{cycle} {if !$monitlist[devlist].active}blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');" >
+	    <TD width="1%" align="left" nowrap class="fleft"style="padding-left:4px;padding-right:10px;">
+		<img src="img/radar{if !$monitlist[devlist].active}off{/if}.png" style="cursor:pointer;" border="0" {if $monitlist[devlist].ptime}{tip a=$monitlist[devlist].nid dynpopup='?m=monitchartshort&type=netdev&time=-12h&id=$a' sticky=0}{else}{tip text="BRAK POMIARÓW DLA URZĄDZENIA"}{/if}>&nbsp;
+		{$monitlist[devlist].dname}&nbsp;<a href="?m={if $node.typedev=='netdev'}netdevinfo{else}customerinfo{/if}&id={$monitlist[devlist].did}" {if $node.typedev=='netdev'}{tip text="Otwórz kartę urządzenia sieciowego"}{else}{tip text="Otwórz kartę klienta"}{/if}>&raquo;&raquo;&raquo;</A><BR>
+		{$monitlist[devlist].location}
+	    </TD>
+	    <TD width="auto" nowrap align="left" style="padding-left:10px;padding-right:10px;vertical-align:top;">
+		{if $monitlist[devlist].nname}{$monitlist[devlist].nname} <a href="?m={if $node.typedev=='netdev'}netdevinfo{else}nodeinfo{/if}&id={if $node.typedev=='netdev'}{$monitlist[devlist].did}{else}{$monitlist[devlist].nid}{/if}{if $node.typedev=='netdev'}&ip={$monitlist[devlist].nid}{/if}" {tip text="Otwórz kartę urządzenia sieciowego"}>&raquo;&raquo;&raquo;</A>{else}&nbsp;{/if} <BR>
+		{if $monitlist[devlist].ipaddr} 
+		    <a href="javascript:ping_popup('{$monitlist[devlist].ipaddr}')">{$monitlist[devlist].ipaddr}</a>
+		{/if}
+	    </TD>
+	    <td width="1%" nowrap align="center" style="padding-left:10px;padding-right:10px;" >
+		<select onchange="location.href='?{$backto}&nid={$monitlist[devlist].nid}&action=settesttype&testtype='+this.value">
+		    <option value="icmp" {if $monitlist[devlist].test_type=='icmp'} SELECTED{/if}>icmp</option>
+		    <option value="http" {if $monitlist[devlist].test_type=='http'} SELECTED{/if}>http</option>
+		    <option value="https" {if $monitlist[devlist].test_type=='https'} SELECTED{/if}>https</option>
+		    <option value="ssh" {if $monitlist[devlist].test_type=='ssh'} SELECTED{/if}>ssh</option>
+		    <option value="ftp" {if $monitlist[devlist].test_type=='ftp'} SELECTED{/if}>ftp</option>
+		    <option value="telnet" {if $monitlist[devlist].test_type=='telnet'} SELECTED{/if}>telnet</option>
+		    <option value="callbook" {if $monitlist[devlist].test_type=='callbook'} SELECTED{/if}>callbook</option>
+		    <option value="rpcbind" {if $monitlist[devlist].test_type=='rpcbind'} SELECTED{/if}>rpcbind</option>
+		    <option value="pptp" {if $monitlist[devlist].test_type=='pptp'} SELECTED{/if}>pptp</option>
+		    <option value="dns" {if $monitlist[devlist].test_type=='dns'} SELECTED{/if}>dns</option>
+		    <option value="smtp" {if $monitlist[devlist].test_type=='smtp'} SELECTED{/if}>smtp</option>
+		    <option value="nfs" {if $monitlist[devlist].test_type=='nfs'} SELECTED{/if}>nfs</option>
+		    <option value="winbox" {if $monitlist[devlist].test_type=='winbox'} SELECTED{/if}>winbox</option>
+		    
+		</select>
+	    </td>
+	    <TD width="1%" nowrap align="center" style="padding-left:10px;padding-right:10px;" >
+		{if $monitlist[devlist].ptime}
+		    <b>
+		    {if $monitlist[devlist].ptime>0}
+			{$monitlist[devlist].ptime} ms
+		    {elseif $monitlist[devlist].ptime<0}
+			<font color="red">timeout</FONT>
+		    {else}
+			<font color="blue">no test</FONT>
+		    {/if}</b><BR>
+		    {$monitlist[devlist].cdate|date_format:"%Y-%m-%d %H:%M"}
+		{else}
+		    <FONT color="blue"><b>no test</b></FONT>
+		{/if}
+	    </TD>
+	    <TD width="1%" align="center"  style="padding-left:10px;padding-right:10px;" nowrap>
+		{if $monitlist[devlist].minptime}
+		    {$monitlist[devlist].minptime|string_format:"%.2f"|replace:',':'.'} ms
+		{else}
+		    ---
+		{/if}
+		<BR>
+		{if $monitlist[devlist].minptime7d}
+		    {$monitlist[devlist].minptime7d|string_format:"%.2f"|replace:',':'.'} ms
+		{else}
+		    ---
+		{/if}
+	    </TD>
+	    
+	    <TD width="1%" align="center"  style="padding-left:10px;padding-right:10px;" nowrap>
+		{if $monitlist[devlist].avgptime}
+		    {$monitlist[devlist].avgptime|string_format:"%.2f"|replace:',':'.'} ms
+		{else}
+		    ---
+		{/if}
+		<BR>
+		{if $monitlist[devlist].avgptime7d}
+		    {$monitlist[devlist].avgptime7d|string_format:"%.2f"|replace:',':'.'} ms
+		{else}
+		    ---
+		{/if}
+	    </TD>
+	    
+	    <TD width="1%" align="center"  style="padding-left:10px;padding-right:10px;" nowrap>
+	    {if $monitlist[devlist].maxptime}
+		    {assign var='czas' value=$monitlist[devlist].maxptime}
+		    {if $czas<20}<FONT>{/if}
+		    {if $czas>=20 && $czas<50}<FONT color="green" style="font-weight:bold;">{/if}
+		    {if $czas>=50 && $czas<100}<FONT color="blue" style="font-weight:bold;">{/if}
+		    {if $czas>=100 && $czas<200}<FONT color="brown" style="font-weight:bold;">{/if}
+		    {if $czas>=200 }<FONT color="red" style="font-weight:bold;text-decoration:blink;">{/if}
+		    {$czas|string_format:"%.2f"|replace:',':'.'} ms
+		    </FONT>
+		{else}
+		    ---
+		{/if}
+		<BR>
+		{if $monitlist[devlist].maxptime7d}
+		    {assign var='czas' value=$monitlist[devlist].maxptime7d}
+		    {if $czas<20}<FONT>{/if}
+		    {if $czas>=20 && $czas<50}<FONT color="green" style="font-weight:bold;">{/if}
+		    {if $czas>=50 && $czas<100}<FONT color="blue" style="font-weight:bold;">{/if}
+		    {if $czas>=100 && $czas<200}<FONT color="brown" style="font-weight:bold;">{/if}
+		    {if $czas>=200 }<FONT color="red" style="font-weight:bold;text-decoration:blink;">{/if}
+		    {$czas|string_format:"%.2f"|replace:',':'.'} ms
+		    </FONT>
+		{else}
+		    ---
+		{/if}
+	    </TD>
+	    <TD width="auto" align="center" style="padding-left:10px;padding-right:10px;vertical-align:top;" nowrap>
+		
+		{if $monitlist[devlist].warndate}
+		    {$monitlist[devlist].warndate|date_format:"%Y/%m/%d %H:%M"}
+		    <BR>
+		    {if $monitlist[devlist].backtime}
+			{$monitlist[devlist].backtime|date_format:"%Y/%m/%d %H:%M"}
+		    {else}
+			<font color="red">dead</font>
+		    {/if}
+		{else}
+		---<BR>---
+		{/if}
+		
+	    </TD>
+	    <TD width="1%" nowrap align="right" class="fright"style="padding-left:10px;padding-right:4px;">
+		<a href="?{$backto}&action=setaccess&nid={$monitlist[devlist].nid}&access={if !$monitlist[devlist].active}1{else}0{/if}" {tip text="włącz/wyłącz monitorowanie hosta"}><img src="img/{if !$monitlist[devlist].active}no{/if}access.gif" alt="access"></a>
+		<img src="img/radar{if !$monitlist[devlist].active}off{/if}.png" style="cursor:pointer;" {if $monitlist[devlist].ptime} {tip text="Kliknij aby otworzyć szczegółowe statystyki"} onclick="monitchart_popup('{$monitlist[devlist].nid}','netdev');"{else}{tip text="BRAK POMIARÓW DLA URZĄDZENIA"}{/if}>
+		<a href="?{$backto}&action=deldev&nid={$monitlist[devlist].nid}" onclick="return confirm('Potwierdź usunięcie hosta z monitoringu.\nWszyskie jego pomiary również zostaną usunięte.');"  {tip text="usuń host z monitoringu"}><img src="img/delete.gif" ></a>
+		<a href="?{$backto}&action=clearstat&nid={$monitlist[devlist].nid}" {tip text="wyszyść wszystkie staty hosta"} onclick="return confirm('Potwierdź wyczyszczenie statystyk');"><img src="img/cancel.gif" border="0"></a>
+	    </TD>
+	
+	</TR>
+	
+    {sectionelse}
+	<TR class="light">
+	    <TD width="100%" colspan="9" class="flr" align="center">
+	    <br>
+		<H1>Brak urządzeń</H1><br>
+	    </TD>
+	</TR>
+    {/section}
+
+    <TR class="dark">
+	<TD class="fall" width="100%"  colspan="9" align="right" style="padding-right:15px;">
+	    <SELECT name="newnetdev" id="newnetdev">
+		<option value="0">--- dodaj urządzenie do monitoringu ---</option>
+		{section name=devlist loop=$devlist}
+		    <option value="{$devlist[devlist].id}">{$devlist[devlist].name} ({$devlist[devlist].ipaddr})</option>
+		{/section}
+	    </SELECT>
+	    <a href="javascript:addMonitDev();">Dodaj urządzenie</A>
+	</TD>
+    </TR>
+</form>
+</TABLE>
+
+{include file="footer.html"}

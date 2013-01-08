@@ -1,0 +1,905 @@
+<!-- $Id$ -->
+  <chapter id="install">
+    <title>Instalacja i konfiguracja</title>
+    <sect1 id="install-intro">
+      <title>Wstêp</title>
+     <para>LMS sk³ada siê z kilku modu³ów, podstawowym modu³em jest <emphasis>LMS-UI</emphasis> 
+     (interfejs u¿ytkownika). Jest on w ca³o¶ci napisany w PHP i do pracy wymaga bazy danych 
+     (w³a¶ciwie to ka¿dy modu³ wymaga bazy danych). To w³a¶nie w <emphasis>LMS-UI</emphasis> wykonujemy wszystkie 
+     czynno¶ci, reszta modu³ów ma tylko za zadanie zautomatyzowaæ pracê LMS.</para>
+     <para>LMS to tak¿e zestaw skryptów w jêzyku Perl, i to w³a¶nie te skrypty wymagaj± 
+     aby¶ posiada³ interpreter tego jêzyka. Je¶li bêdziesz chcia³ u¿ywaæ tych skryptów, 
+     musisz mieæ Perl'a. Skrypty pozwalaj± m.in. na comiesiêczne naliczanie op³at abonamentowych 
+     b±d¼ wysy³anie upomnieñ. Najwiêkszy z nich - <emphasis>LMS-MGC</emphasis> jest skryptem, ale na tyle 
+     uniwersalnym ¿e potrafi wygenerowaæ praktycznie dowolny plik konfiguracyjny i zrestartowaæ 
+     us³ugê na twoim serwerze.</para>
+        <para>Jest jeszcze <emphasis>LMS Daemon</emphasis>, napisany w jêzyku C. Jest on przeznaczony 
+     (a w³a¶ciwie jego wtyczki) do generowania plików konfiguracyjnych i restartowania us³ug. 
+     Mo¿na go stosowaæ jako zamiennik lub uzupe³nienie skryptów perlowych.
+     Odpowiada on za to, aby to co zosta³o zmienione w <emphasis>LMS-UI</emphasis> zosta³o zmienione tak¿e 
+     w rzeczywisto¶ci.</para>
+    </sect1>
+    <sect1 id="install-requirements">
+            <title>Wymagania</title>
+         <sect2 id="install-req-www">
+           <title>Serwer WWW</title>
+           <para>Poniewa¿ <emphasis>LMS-UI</emphasis> jest napisane w PHP, niezbêdny jest serwer WWW z interpreterem 
+          tego jêzyka. Preferowanym serwerem jest Apache 
+          (<ulink url="http://www.apache.org">www.apache.org</ulink>).</para>
+        </sect2>
+        <sect2 id="install-req-php">
+        <title>Interpreter PHP</title>
+    		<para>Interpreter powinien byæ w wersji 5.2.x lub nowszej. PHP mo¿na ¶ci±gn±æ ze 
+    		strony <ulink url="http://www.php.net">www.php.net</ulink>.
+    		W szczególno¶ci wymagane s± nastêpuj±ce modu³y (sprawd¼ "extension"
+    		w php.ini lub wyj¶cie funkcji phpinfo()):
+		<itemizedlist>
+        		<listitem>
+				<para>pcre, posix,</para>
+			</listitem>
+			<listitem>
+				<para>zlib (dla kompresowanych backupów),</para>
+			</listitem>
+			<listitem>
+				<para>gd i/lub ming (tylko dla mapy sieci),</para>
+			</listitem>
+			<listitem>
+				<para>mysql, mysqli lub pgsql (dla bazy danych),</para>
+			</listitem>
+			<listitem>
+				<para>iconv, mbstring</para>
+			</listitem>
+			<listitem>
+				<para>PEAR::Mail (wymaga PEAR::Net_SMTP i PEAR::Net_Socket) do mailingu.</para>
+			</listitem>
+		</itemizedlist>
+		</para>
+        </sect2>
+        <sect2 id="install-req-db">
+           <title>Serwer baz danych</title>
+           <para>LMS nie bêdzie dzia³a³ prawid³owo na wersjach MySQL starszych od 5.0.</para>
+           <para>LMS wspó³pracuje tak¿e z PostgreSQL w wersji 8.2.x lub nowszych.</para>
+         </sect2>
+         <sect2 id="install-req-smarty">
+             <title>Biblioteka Smarty</title>
+             <para><emphasis>LMS-UI</emphasis> do pracy wymaga jeszcze biblioteki Smarty (<ulink url="http://www.smarty.net">http://www.smarty.net</ulink>)
+           w wersji 3.0 lub wy¿szej.</para>
+            </sect2>
+            <sect2 id="install-req-perl">
+            <title>Perl</title>
+       <para>O ile dla <emphasis>LMS-UI</emphasis> wystarczy to co powy¿ej, to ¿eby mieæ dzia³aj±cy 
+          <emphasis>LMS-MGC</emphasis> i resztê skryptów potrzebujemy 
+          tak¿e Perla i modu³y do niego, które mo¿na pobraæ z <ulink url="http://www.cpan.org">www.cpan.org</ulink>,
+          czyli:
+       <itemizedlist>
+         <listitem>
+            <para>perl w³a¶ciwy i jego podstawowe modu³y (POSIX, GetOpt::Long),</para>
+         </listitem>
+         <listitem>
+            <para>Config::IniFiles,</para>
+         </listitem>
+         <listitem>
+            <para>DBI,</para>
+         </listitem>
+         <listitem>
+            <para>DBD-mysql (Je¶li masz zamiar u¿ywaæ mysql'a),</para>
+         </listitem>
+         <listitem>
+            <para>DBD-Pg (Je¶li masz zamiar u¿ywaæ postgres'a),</para>
+         </listitem>
+       </itemizedlist></para>
+       </sect2>
+       <sect2 id="install-req-c">
+         <title>Kompilator jêzyka C</title>
+       <para>Je¶li chcesz uruchomiæ <emphasis>LMS Daemon</emphasis> bêdziesz potrzebowa³
+       dzia³aj±cy kompilator jêzyka C, gdy¿ jest on dostarczany wy³±cznie w postaci
+       kodu ¼ród³owego.</para>
+       </sect2>
+       <sect2 id="install-req-browser">
+             <title>Przegl±darka www</title>
+             <para>LMS posiada webowy interfejs, dlatego wymagana jest przegl±darka, która
+             obs³uguje javascript i ma w³±czone cookies. Z naszego do¶wiadczenia wynika, ¿e
+             najlepszym wyborem bêdzie Mozilla Firefox 1.x.</para>
+       </sect2>
+     </sect1>
+    <sect1 id="install-install">
+    <title>Instalacja LMS</title>
+        <para>LMS w postaci archiwum tar.gz mo¿na pobraæ ze strony 
+        domowej projektu (<ulink url="http://www.lms.org.pl">www.lms.org.pl</ulink>),
+        a nastêpnie rozpakowaæ i umie¶ciæ w wybranym katalogu (np. <filename>/var/www/lms
+        </filename>) dostêpnym dla serwera www:
+<screen>
+$ cd /var/www
+$ wget http://www.lms.org.pl/download/stable/lms-x.x.x.tar.gz
+$ tar zxf lms-x.x.x.tar.gz
+</screen>
+        </para>
+        <para>Biblioteka Smarty zawarta jest w paczce z LMSem. Natomiast gdy
+	u¿ywasz wersji systemu pobranej wprost z CVSu musisz sam zadbaæ
+	o jej instalacjê. Najpro¶ciej skorzystaæ ze skryptu 
+	<filename>/devel/smarty_install.sh</filename>, który pobierze
+	bibliotekê Smarty z Internetu i skopiuje zawarto¶æ katalogu 
+	<filename>/lib</filename> z pobranej paczki do katalogu <filename>/lib/Smarty</filename>.
+        </para>
+          <para><note><para>Po³o¿enie wszystkich katalogów mo¿esz zmieniæ w sekcji
+          <emphasis>[directories]</emphasis> pliku <filename>lms.ini</filename>.</para></note></para>
+          <para>Pliki z konfiguracj± (<filename>sample/lms.ini</filename> i <filename>
+          sample/lms-mgc.ini</filename>) umie¶æ w katalogu <filename>/etc/lms</filename>.
+          </para>
+          <para>Skrypty wykonywalne z katalogu <filename>bin</filename> 
+          najlepiej przenie¶æ do katalogu <filename>/usr/sbin</filename>.
+          </para>
+        <para>
+		<warning><para>Serwer www musi mieæ prawo odczytu pliku <filename>lms.ini</filename>
+		oraz prawa odczytu i zapisu do katalogu <filename>backup</filename>. 
+		Stanowi to potencjalne obni¿enie poziomu bezpieczeñstwa systemu.
+		</para></warning>
+		<warning><para>Bezwzglêdnie LMS wymaga wy³±czenia opcji PHP <filename>register_globals</filename>.
+		</para></warning>
+		<note><para>Pocz±wszy od wersji 1.6 przechowywanie konfiguracji 
+		interfejsu u¿ytkownika w <filename>lms.ini</filename> jest przestarza³e. 
+		Jedynymi koniecznymi sekcjami w tym pliku s± [database] i [directories]
+		oraz konfiguracja skryptów perlowych. Ustawienia LMS-UI
+	    	przechowywane s± w bazie danych i mog± byæ modyfikowane przez 
+		interfejs u¿ytkownika, maj± tak¿e wy¿szy priorytet od tych zawartych
+		w <filename>lms.ini</filename>.</para></note>
+	</para>
+	<para>Zalecane zmiany w php.ini (lub httpd.conf dla wirtualki LMSa):
+<screen>
+mbstring.func_overload = 7
+register_globals = off
+max_execution_time = 60 ; co najmniej
+memory_limit = 32M ; co najmniej
+</screen>
+	</para>
+	<para>Przed pierwszym uruchomieniem LMSa wymagane jest ustawienie opcji
+		konfiguracyjnych bazy danych i katalogów w pliku <filename>lms.ini</filename>. 
+		Nastêpnie po uruchomieniu <emphasis>LMS-UI</emphasis> zak³adamy konto u¿ytkownika uprzywilejowanego (zaznaczaj±c wszystkie uprawnienia).
+		Po czym mo¿emy przyst±piæ do konfiguracji podstawowej systemu. W menu Konfiguracja -> Interfejs u¿ytkownika ustawiamy podstawowe opcje
+		odnosz±ce siê do <emphasis>LMS-UI</emphasis>. Nastêpnie wymagane jest
+		zdefiniowanie przynajmniej jednej firmy (oddzia³u) oraz wskazane jest
+		zdefiniowanie stawek podatkowych, planów numeracyjnych, województw oraz hostów.</para>
+     </sect1>
+     <sect1 id="install-locale">
+     <title>Lokalizacja</title>
+          <para>Domy¶lnym jêzykiem interfejsu u¿ytkownika jest angielski,
+          a znaki s± kodowane w UTF-8. Aby znaki narodowe innych jêzyków
+          by³y poprawnie wy¶wietlane nale¿y mieæ w systemie odpowiednie
+          locale. Np. dla jêzyka polskiego bêdzie to komenda:
+      <screen>
+# localedef -v -c -i pl_PL -f UTF-8 /usr/share/locale/pl_PL.UTF-8
+</screen>
+          Je¶li w interfejsie u¿ytkownika znaki narodowe w dalszym ci±gu nie bêd± 
+          wy¶wietlane poprawnie mo¿liwe, ¿e trzeba bêdzie dodaæ do pliku 
+          konfiguracyjnego serwera www (httpd.conf) wpis:
+     <screen>
+AddDefaultCharset Off
+</screen>
+          oraz w konfiguracji PHP (php.ini) zakomentowaæ wpis:
+     <screen>
+;default_charset = "iso-8859-1"
+</screen>
+          Informacje na temat konfiguracji kodowania bazy danych w dalszej
+          czê¶ci rozdzia³u.</para>
+     </sect1>
+     <sect1 id="install-db">
+     <title>Instalacja serwera baz danych</title>
+          <sect2 id="install-mysql">
+          <title>MySQL</title>
+          <sect3 id="install-mysql-intro">
+          <title>Wstêp</title>
+               <para>Ta  bardzo  popularna  baza  jest  dostêpna  z wiêkszo¶ci± dystrybucji
+               Linuksa.  Je¿eli  jednak bêdziesz musia³ j± zainstalowaæ samodzielnie,
+               zacznij od ¶ci±gniêcia ¼róde³ z <ulink url="http://www.mysql.com">
+               www.mysql.com</ulink>.</para>
+          </sect3>
+          <sect3 id="install-mysql-server">
+          <title>Instalacja serwera MySQL</title>
+               <para>Po rozpakowaniu, wejd¼ do katalogu z naszym MySQL i wydaj kolejno
+               polecenia:
+               <screen>
+$ ./configure --prefix=/usr/local/mysql
+$ make
+$ make install
+$ /usr/local/mysql/bin/mysql_install_db
+$ chown mysql -R /usr/local/mysql/var
+$ /usr/local/mysql/bin/safe_mysqld &
+$ /usr/local/mysql/bin/mysqladmin -u root password nowe_has³o</screen>
+          </para>
+          </sect3>
+          <sect3 id="install-mysql-dbcreate">
+          <title>Utworzenie bazy danych</title>
+               <para>Konieczne to jest je¿eli uruchamiasz LMS po raz PIERWSZY. 
+               Tak wiêc, wejd¼ do katalogu w którym masz LMS'a i uruchom shell mysql'a:
+               <screen>
+mysql -u[tutaj wpisz u¿ytkownika z pe³nym dostêpem do bazy] -p
+Enter password:[podaj has³o]
+mysql> CREATE DATABASE lms CHARACTER SET utf8 COLLATE utf8_polish_ci;
+mysql> GRANT USAGE ON lms.* TO lms@localhost;
+mysql> GRANT ALL ON lms.* TO lms@localhost IDENTIFIED BY 'twoje_has³o';
+mysql> flush privileges;
+mysql> use lms;
+mysql> source doc/lms.mysql;</screen>
+          </para>
+          </sect3>
+          <sect3 id="install-mysql-lms">
+          <title>Konfiguracja LMS (lms.ini)</title>
+               <para>Poniewa¿  MySQL  jest  domy¶ln± baz± dla LMS'u, konfiguracja ogranicza
+               siê  do  podania  w  sekcji  [database] pliku /etc/lms/lms.ini has³a i u¿ytkownika:
+               <screen>
+user     = lms
+password = has³o_z_pkt.3
+</screen>
+              </para>
+	      	<para>W PHP dostêpne s± dwa rozszerzenia do obs³ugi bazy MySQL (mysql i mysqli). 
+		LMS obs³uguje oba, mo¿esz wybraæ, ktego chcesz u¿yæ ustawiaj±c odpowiednio
+		opcjê <emphasis>type</emphasis> w sekcji [database].</para>
+               <para>Po  takim  zabiegu,  o ile LMS'owi uda siê nawi±zaæ po³±czenie do bazy
+               danych,  mo¿na ju¿ bez problemu dostaæ siê do systemu. Je¿eli jednak w
+               bazie  danych  nie ma ¿adnego konta u¿ytkownika, jedyn± rzecz± jak±
+               zobaczysz bêdzie  formularz  dodania  u¿ytkownika.  Je¿eli
+               podasz  prawid³owe  dane  u¿ytkownika, LMS przeniesie Ciê na stronê
+               logowania gdzie od razu bêdziesz móg³ u¿yæ nowo utworzonego konta.
+               </para>
+               <para>Zatrzymaj siê tutaj i dodaj co¶ do crona, tak dla ¶wiêtego spokoju:
+               <screen>
+12 4 3,10,17,21,28 * * /usr/bin/mysqldump -u lms --password=Twoje-super-tajne-has³o \
+              --add-drop-table --add-locks lms > backups/lms-auto-"$(date +%s)".sql</screen>
+               </para>
+               <para>Spowoduje to wykonywanie o 4:12 rano, ka¿dego 3, 10, 17, 21 i 28 dnia
+               miesi±ca automagicznie zrzutu danych z mysqla.</para>
+          </sect3>
+          </sect2>
+          <sect2 id="install-pgsql">
+          <title>PostgreSQL</title>
+          <sect3 id="install-pgsql-intro">
+          <title>Wstêp</title>
+               <para>LMS jest testowany na PostgreSQL 8.2.x i nowszych, mo¿esz mieæ
+		problemy korzystaj±c ze starszych wersji. Je¿eli nie masz zainstalowanego serwera
+               PostgreSQL, mo¿esz np. w³asnorêcznie skompilowaæ go
+               ze ¼róde³ dostêpnych na stronie <ulink url="http://www.postgresql.org">
+               www.postgresql.org</ulink>.</para>
+          </sect3>
+          <sect3 id="install-pgsql-server">
+          <title>Instalacja</title>
+               <para>Jest to wersja skrócona instalacji, wiêcej informacji znajdziesz
+               w dokumentacji postgresa. Po ¶ci±gniêciu i rozpakowaniu wejd¼
+               do katalogu g³ównego i wpisz kolejno poni¿sze polecenia.
+               <screen>
+$ ./configure --enable-locale
+$ gmake
+$ su
+$ gmake install
+$ adduser postgres
+$ mkdir /usr/local/pgsql/data
+$ chown postgres /usr/local/pgsql/data
+$ su - postgres
+$ /usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data --locale=pl_PL.UTF-8
+$ /usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data >logfile 2>&1 &</screen>
+               </para>
+	       <para><warning><para>Dotyczy wersji <= 9.1.x: Wymagane jest dodanie wpisu w postgresql.conf: custom_variable_classes = 'lms'</para></warning></para>
+          </sect3>
+          <sect3 id="install-pgsql-dbcreate">
+          <title>Utworzenie bazy danych</title>
+               <para>Maj±c uruchomiony serwer mo¿esz przyst±piæ do tworzenia bazy o nazwie 'lms',
+               której w³a¶cicielem bêdzie u¿ytkownik z loginem 'lms'. 
+               <screen>
+$ /usr/local/pgsql/bin/createuser -DPRS lms
+$ /usr/local/pgsql/bin/createdb -E UNICODE -O lms lms
+$ /usr/local/pgsql/bin/psql -d lms -U lms -f /lms/doc/lms.pgsql</screen>
+          </para>
+          </sect3>
+          <sect3 id="install-pgsql-lms">
+          <title>Konfiguracja LMS (lms.ini)</title>
+               <para>Dla systemu LMS domy¶lnym serwerem baz danych jest MySQL, dlatego w sekcji
+               [database] pliku /etc/lms/lms.ini nale¿y ustawiæ nastêpuj±ce opcje:
+                  <screen>
+type     = postgres
+user     = lms
+password = has³o_podane_przy_tworzeniu_u¿ytkownika_lms
+</screen>
+              </para>
+               <para><note><para>Has³o jest wymagane w zale¿no¶ci od konfiguracji autentykacji
+                      u¿ytkowników postgresa w <filename>/usr/local/pgsql/data/pg_hba.conf</filename>. 
+                      Domy¶lnie has³o nie jest wymagane.</para></note></para>
+               <para>Po takim zabiegu, o ile LMS'owi uda siê nawi±zaæ po³±czenie do bazy danych,
+               mo¿na ju¿ bez problemu dostaæ siê do systemu. Je¿eli jednak w bazie danych
+               nie ma ¿adnego konta u¿ytkownika, jedyn± rzecz± jak± zobaczysz
+               bêdzie formularz dodania u¿ytkownika.</para>
+
+               <para>Zatrzymaj siê tutaj i dodaj co¶ do crona, tak dla ¶wiêtego spokoju:
+               <screen>
+12 4 3,10,17,21,28 * * /usr/bin/pg_dump -U lms --clean \
+                       --file=backups/lms-auto-"$(date +%s)".sql</screen>
+               </para>
+
+          </sect3>
+          </sect2>
+     </sect1>       
+      <sect1 id="install-config">
+               <title>Konfiguracja podstawowa</title>
+          <para>G³ównym plikiem konfiguracyjnym LMS jest <filename>lms.ini</filename>,
+         który nale¿y umie¶ciæ w katalogu <filename>/etc/lms</filename> lub w katalogu
+         g³ównym LMS'a. Zawiera on zmienne konfiguracyjne <emphasis>LMS-UI</emphasis> 
+         oraz wszystkich skryptów wykonywalnych z wyj±tkiem <emphasis>LMS-MGC</emphasis>.</para>
+         <para><note><para>Pamiêtaj o usuniêciu ¶redników na pocz±tku linii z ustawianym 
+         parametrem konfiguracyjnym.</para></note></para>
+         <sect2 id="install-config-db">
+         <title>Sekcja [database] - ustawienia bazy danych</title>
+         <para>
+         <itemizedlist>
+            <listitem>
+         <para>type</para>
+        <para>Typ drivera bazy danych. Aktualnie w 100% supportowany jest 'mysql',
+        'mysqli' oraz 'postgres'. Domy¶lnie: mysql</para>
+        <para>Przyk³ad: <prompt>type = mysql</prompt></para>
+       </listitem>
+          <listitem>
+        <para>host</para>
+        <para>Host gdzie zainstalowana jest baza danych. Najczê¶ciej, localhost, ale mo¿na tutaj 
+        wstawiæ cokolwiek (ip, domena, ¶cie¿ka do gniazda w formacie '/path/to/socket'). 
+        Domy¶lnie: localhost</para>
+        <para>Przyk³ad:     <prompt>host = localhost</prompt></para>
+       </listitem>
+          <listitem>
+        <para>user</para>
+        <para>U¿ytkownik do bazy danych. W wielu wypadkach (je¿eli postêpowa³e¶ zgodnie ze 
+        wskazówkami w dokumentacji) bêdzie to 'lms'. Je¿eli chcesz u¿ywaæ konta uprzywilejowanego, 
+        prawdopodobnie wpiszesz 'root' (MySQL na wiêkszo¶ci *nixów), 'mysql' (na PLD) b±d¼ 
+        'postgres' (PostgreSQL). Domy¶lnie: mysql</para>
+        <para>Przyk³ad:     <prompt>user = lms</prompt></para>
+       </listitem>
+          <listitem>
+        <para>password</para>
+        <para>Has³o do bazy danych. Domy¶lnie puste.</para>
+        <para>Przyk³ad:     <prompt>password = password</prompt></para>
+       </listitem>
+          <listitem>
+        <para>database</para>
+        <para>Nazwa bazy danych, domy¶lnie lms.</para>
+        <para>Przyk³ad:     <prompt>database = lms</prompt></para>
+       </listitem>
+         </itemizedlist>
+     </para>
+     </sect2>
+     <sect2 id="install-config-dir">         
+     <title>Sekcja [directories] - ustawienia katalogów</title>
+      <para>        
+     <itemizedlist>
+          <listitem>
+        <para>sys_dir</para>
+        <para>Katalog systemowy. Jest to miejsce gdzie jest ca³a zawarto¶æ UI LMS'a, czyli index.php, grafiki, 
+        szablony i reszta. Domy¶lnie, index.php stara siê sam odnale¼æ w filesystemie u¿ywaj±c getcwd(), ale 
+        lepiej by by³o gdyby mu powiedzieæ gdzie jest:</para>
+        <para>Przyk³ad:     <prompt>sys_dir = /var/www/htdocs/lms/</prompt></para>
+       </listitem>
+          <listitem>
+        <para>modules_dir</para>
+        <para>Katalog z "modu³ami" LMS'a. Czyli zawarto¶æ katalogu modules. Domy¶lnie jest to podkatalog 
+        modules w sys_dir.</para>
+        <para>Przyk³ad:     <prompt>modules_dir = /usr/share/lms/modules/</prompt></para>
+       </listitem>
+          <listitem>
+        <para>lib_dir</para>
+        <para>Katalog z "bibliotekami" LMS'a. Czyli zawarto¶æ katalogu lib. Domy¶lnie to podkatalog lib w sys_dir.</para>
+        <para>Przyk³ad:     <prompt>lib_dir = /usr/share/lms/lib/</prompt></para>
+       </listitem>
+          <listitem>
+        <para>backup_dir</para>
+        <para>Katalog z kopiami zapasowymi bazy danych - miejsce gdzie LMS zapisuje zrzuty z bazy. 
+        Domy¶lnie jest to podkatalog 'backups'.</para>
+        <para>Przyk³ad:     <prompt>backup_dir = /var/backup/lms/</prompt></para>
+        <para><warning><para>Je¶li katalog z kopiami zapasowymi bêdzie osi±galny z poziomu WWW, to ka¿dy 
+        bez autoryzacji bêdzie mia³ do nich dostêp.</para></warning></para>
+        </listitem>
+        <listitem>
+        <para>doc_dir</para>
+        <para>Katalog na archiwum dokumentów - miejsce gdzie LMS zapisuje pobrane pliki.
+        Domy¶lnie jest to podkatalog 'documents'.</para>
+        <para>Przyk³ad:     <prompt>doc_dir = /usr/share/documents/</prompt></para>
+        <para><warning><para>Je¶li ten katalog bêdzie osi±galny z poziomu WWW, to ka¿dy 
+        bez autoryzacji bêdzie mia³ do nich dostêp.</para></warning></para>
+        </listitem>
+          <listitem>
+        <para>smarty_compile_dir</para>
+        <para>Katalog kompilacji Smarty-ego. Miejsce gdzie Smarty kompiluje szablony. Domy¶lnie to 
+        <filename>templates_c</filename> w katalogu sysdir.</para>
+        <para>Przyk³ad:      <prompt>smarty_compile_dir = /var/smarty/compile/lms</prompt></para>
+       </listitem>
+          <listitem>
+        <para>smarty_templates_dir</para>
+        <para>Katalog z szablonami którymi Smarty-ego. Domy¶lnie to podkatalog templates z sys_dir'a.</para>
+        <para>Przyk³ad:     <prompt>smarty_templates_dir = /usr/share/lms/templates</prompt></para>
+       </listitem>
+         </itemizedlist>
+     </para>
+     </sect2>
+     <sect2 id="install-config-finances">
+     <title>Sekcja [finances] - konfiguracja finansów</title>
+     <para>Sekcja ta zawiera opcje dotycz±ce naliczania op³at, a tak¿e
+     dane do druków przelewu, których opis znajdziesz w rozdziale o fakturach.
+         <itemizedlist>
+          <listitem>
+        <para>suspension_percentage (opcjonalny)</para>
+        <para>Warto¶æ procentowa obci±¿enia generowana dla obci±¿eñ zawieszonych.
+        Domy¶lnie: '0'</para>
+        <para>Przyk³ad:     <prompt>suspension_percentage = 50</prompt></para>
+       </listitem>
+       </itemizedlist>
+       </para>
+     </sect2>
+    </sect1>
+    <sect1 id="install-rights" xreflabel="Prawa dostêpu">
+      <title>Prawa dostêpu</title>
+      <sect2 id="install-rights-idea">
+                <title>Idea</title>
+      <para>LMS  ma  mo¿liwo¶æ  zdefiniowania  do 256 regu³ dostêpu do systemu. Ka¿da z nich mo¿e
+      zabraniaæ, b±d¼ pozwalaæ na dostêp do konkretnych modu³ów. Ka¿demu u¿ytkownikowi mo¿na
+      przydzieliæ dowoln± kombinacjê regu³ dostêpu.</para>
+      <para>Domy¶lnie zdefiniowana jest nastêpuj±ca lista regu³ dostêpu:
+       <itemizedlist>
+     <listitem><para>pe³en dostêp</para></listitem>
+        <listitem><para>odczyt wszystkich danych (z wyj±tkiem Helpdesku)</para></listitem>
+        <listitem><para>pod³±czanie i od³±czanie komputerów</para></listitem>
+        <listitem><para>zarz±dzanie finansami</para></listitem>
+        <listitem><para>prze³adowywanie konfiguracji</para></listitem>
+        <listitem><para>zarz±dzanie klientami</para></listitem>
+        <listitem><para>zarz±dzanie komputerami</para></listitem>
+        <listitem><para>dostêp do statystyk</para></listitem>
+        <listitem><para>dostêp do korespondencji seryjnej</para></listitem>
+        <listitem><para>zarz±dzanie Helpdeskiem (RT)</para></listitem>
+        <listitem><para>obs³uga Helpdesku (RT)</para></listitem>
+        <listitem><para>zarz±dzanie hostingiem</para></listitem>
+        <listitem><para>konfiguracja interfejsu u¿ytkownika</para></listitem>
+        <listitem><para>zarz±dzanie sieciami i urz±dzeniami sieciowymi</para></listitem>
+	<listitem><para>zarz±dzanie terminarzem</para></listitem>
+	<listitem><para>zarz±dzanie i konfiguracja demona</para></listitem>
+	<listitem><para>operacje kasowe</para></listitem>
+        <listitem><para>zarz±dzanie grupami klientów</para></listitem>
+	<listitem><para>zarz±dzanie grupami komputerów</para></listitem>
+	<listitem><para>przypisywanie klientów do grup</para></listitem>
+	<listitem><para>przypisywanie komputerów do grup</para></listitem>
+	<listitem><para>zarz±dzanie kontami voip</para></listitem>
+	<listitem><para>zarz±dzanie Userpanelem</para></listitem>
+	<listitem><para>brak dostêpu do modyfikacji i zak³adania kont u¿ytkowników</para></listitem>
+        <listitem><para>brak dostêpu</para></listitem>
+       </itemizedlist>
+      Niektóre z nich zezwalaj± na dostêp do modu³ów oraz dwie zabraniaj±. Modu³y do których 
+      u¿ytkownik ma zawsze dostêp to: welcome, copyrights,  logout, chpasswd (przy czym 
+      chpasswd umo¿liwia tylko zmianê w³asnego has³a), dostêp do reszty jest zdefiniowany regu³ami.</para>
+      <note><para>Je¶li nie ustawimy u¿ytkownikowi ¿adnej regu³y dostêpu, to LMS domy¶lnie
+      przydzieli mu regu³kê 0, czyli pe³en dostêp.</para></note>
+      </sect2>
+      <sect2 id="install-rights-how">
+                <title>Jak to dzia³a?</title>
+          <para>Decyzja  czy  u¿ytkownik  ma prawo dostêpu do modu³u czy nie przebiega nastêpuj±co:
+          <simplelist>
+          <member>-  najpierw  sprawdzana  jest  lista  modu³ów, do których zawsze ma siê
+          dostêp,</member>
+          <member>-  potem  nastêpuje sprawdzenie czy modu³ pasuje do regu³ w poszczególnych
+          poziomach, do których u¿ytkownik ma dostêp,</member>
+          <member>-  na  koñcu podejmowana jest decyzja czy u¿ytkownik ma uprawnienia by
+          do  modu³u siê dobraæ. Je¿eli modu³ siê za³apa³ na którykolwiek poziom, który zabrania dostêpu,
+          dostêp  zostanie  zabroniony  nawet  je¿eli u¿ytkownik ma ustawiony poziom, który pozwala
+          na dostêp do modu³u (np.  kto¶  ma  pe³ny  dostêp oraz brak dostêpu do modu³u dodawania
+          komputerów,  nie  bêdzie  on  móg³ siê odwo³aæ do tego modu³u). Je¿eli modu³ pasuje do
+          poziomu, który pozwala na dostêp do danego modu³u LMS zezwala na dalsz± pracê.
+          Je¿eli natomiast modu³ siê nie "za³apa³" na ¿aden poziom równie¿ zostanie mu wy¶wietlony
+          komunikat o braku dostêpu.</member>
+          </simplelist>
+          </para>
+     </sect2>
+     <sect2 id="install-rights-user">
+                <title>Regu³y dostêpu definiowane przez u¿ytkownika</title>
+          <para>Zaawansowani u¿ytkownicy maj± mo¿liwo¶æ zdefiniowania dodatkowych
+          dowolnych regu³ dostêpu lub przedefiniowania istniej±cych. W tym celu
+          nale¿y utworzyæ skrypt PHP na wzór <filename>lib/accesstable.php</filename>.
+          Lokalizacjê pliku podajemy w opcji <filename>custom_accesstable</filename> sekcji [phpui].</para>
+          <para>W ten sposób mo¿na zdefiniowaæ w³asne regu³y zezwalaj±ce lub
+          zabraniaj±ce dostêpu do dowolnych modu³ów. Modu³ to nazwa pliku PHP
+          z katalogu <filename>modules</filename>, któr± w regu³ach dostêpu podajemy
+          bez rozszerzenia. Dla przyk³adu, mo¿na zdefiniowaæ uprawnienie do
+          odczytu faktur (np. na potrzeby skryptu lms-sendinvoices) w nastêpuj±cy
+          sposób:
+<screen>
+&lt;?php
+$access['table'][100]['name']      = 'odczyt faktur';
+$access['table'][100]['allow_reg'] = '^invoice$';
+?&gt;
+</screen>
+          </para>
+     </sect2>
+    </sect1>
+	<sect1 id="install-upgrade">
+	<title>Upgrade</title>
+		<para>Uaktualnienie LMS'a przebiega w kilku etapach. Zacznij od 
+		sprawdzenia wymagañ systemu, gdy¿ mog³y ulec zmianie. Je¶li
+		korzystasz z bazy MySQL powiniene¶ tak¿e zweryfikowaæ uprawnienia
+		u¿ytkownika, one te¿ ulega³y zmianie w przesz³o¶ci.
+		</para>
+	<para>Najpierw utwórz katalog z plikami nowej wersji (nie zaleca siê nadpisywania starych plików
+      nowymi) oraz usuñ zawarto¶æ katalogu <filename>templates_c</filename>.</para>
+      <para>Nastêpnie, je¶li nie masz jeszcze w systemie locali pl_PL.UTF-8, nale¿y
+      je utworzyæ komend±:
+      <screen>
+# localedef -v -c -i pl_PL -f UTF-8 /usr/share/locale/pl_PL.UTF-8
+</screen>
+     Je¶li w interfejsie u¿ytkownika znaki narodowe nie bêd± wy¶wietlane poprawnie
+     mo¿liwe, ¿e trzeba bêdzie w pliku konfiguracyjnym serwera www (httpd.conf)
+     ustawiæ:
+     <screen>
+AddDefaultCharset Off
+</screen>
+     oraz w konfiguracji PHP (php.ini) wy³±czyæ/zakomentowaæ domy¶lne kodowanie:
+     <screen>
+;default_charset = "iso-8859-1"
+</screen></para>
+	<para>Kolejnym krokiem jest dokonanie zmian w bazie. Od wersji 1.3.1 wprowadzono automatyczn±
+	procedurê aktualizacji struktury bazy danych. Nastêpuje ona za ka¿dym razem podczas
+	uruchomienia <emphasis>LMS-UI</emphasis> (jeszcze przed zalogowaniem do systemu).</para>
+	<para>Ostatni etap - konwersja danych do unicodu.
+      Pocz±wszy od wersji 1.5.4 zaleca siê przechowywanie danych zakodowanych w 
+      utf-8 (UNICODE), poni¿ej zostanie przedstawiony przyk³ad migracji z kodowania ISO-8859-2
+      do UNICODE na bazie danych PostgreSQL.</para>
+      <para>Zaczynamy od utworzenia backupu danych w LMSie. Nastêpnie przechodzimy do
+      katalogu z backupami i wykonujemy konwersjê pliku backupu.
+      <screen>
+# iconv --from-code=ISO-8859-2 --to-code=UTF-8 < plik_backupu > nowy_plik
+</screen>
+     Po czym zmieniamy nazwê nowo powsta³ego pliku na lms-xxxxxxx.sql, aby
+     plik ten by³ widoczny z poziomu <emphasis>LMS-UI</emphasis>. Teraz
+     nale¿y utworzyæ bazê danych z kodowaniem UNICODE (opis w dziale Instalacja).
+     Po czym uruchamiamy <emphasis>LMS-UI</emphasis> i odtwarzamy dane z 
+     przekonwertowanego backupu.</para>
+    <para><warning><para>Je¿eli u¿ywasz wersji pobranej z CVSu musisz dodatkowo
+    zadbaæ o instalacjê biblioteki Smarty. Do katalogu <filename>/lib/Smarty</filename>
+    wgraj zawarto¶æ katalogu <filename>/lib</filename> z paczki Smarty. Czynno¶æ
+    (wraz z pobraniem biblioteki Smarty) automatycznie wykonuje skrypt
+    <filename>/devel/smarty_install.sh</filename>.</para></warning></para>
+	<sect2 id="install-upgrade-compat">
+	<title>Zmiany w konfiguracji</title>
+	<para>Poni¿ej znajduje siê lista zmian (oraz numer wersji), które zrywaj± 
+	zgodno¶æ z wcze¶niejszymi wydaniami. Zmiany najcze¶æiej dotycz± usuniêcia
+	jakiej¶ opcji/funkcji, zmiany nazwy opcji konfiguracyjnej, zachowania.</para>
+	<table id="backward-compat">
+	<title>Lista zmian zrywaj±cych zgodno¶æ z wcze¶niejszymi wydaniami</title>
+		<tgroup cols="2" colsep="1" rowsep="1">
+		<colspec COLWIDTH="60">
+		<colspec COLWIDTH="600">
+		<thead>
+			<row>
+				<entry ALIGN="center">Wersja</entry>
+				<entry ALIGN="center">Opis zmiany</entry>
+			</row>
+		</thead>
+		<tbody>
+			<row>
+				<entry ALIGN="center">1.11.8</entry>
+				<entry ALIGN="left"><itemizedlist>
+					<listitem><para>opcje smtp_* i debug_email przeniesiono z sekcji <emphasis>[phpui]</emphasis> do sekcji <emphasis>[mail]</emphasis></para></listitem>
+					<listitem><para>lms-notify: opcjê mailtemplate zast±piono opcj± debtors_template, opcjê mailsubject zast±piono opcj± debtors_subject, usuniêto parametr --template-file (-D)</para></listitem>
+					<listitem><para>lms-notify-sms: opcjê smstemplate zast±piono opcj± debtors_template, usuniêto parametr --template-file (-D)</para></listitem>
+				</itemizedlist></entry>
+			</row>
+		</tbody>
+		</tgroup>
+	</table>
+	</sect2>
+    </sect1>
+    <sect1 id="install-documents">
+	<title>Dokumenty</title>
+	    <para>LMS umo¿liwia generowanie oraz przechowywanie przeró¿nych
+	    dokumentów tj. faktur, dowodów wp³at oraz dokumentów nie-finansowych
+	    np. umów, protoko³ów. Dokumenty mog± byæ numerowane wg wzorców (planów)
+	    numeracyjnych zdefiniowanych przy pomocy menu Konfiguracja - Plany
+	    numeracyjne.</para>
+    <sect2 id="tax-calculation">
+	    <title>Sposób wyliczania podatku VAT</title>
+	    <para>Poni¿ej przedstawiono sposób w jaki wyliczany jest podatek w LMS. Warto¶ci wszystkich dzia³añ 
+	    s± zaokr±glane do dwóch miejsc po przecinku.</para>
+            <para>W bazie LMS cena jednostkowa pozycji fakturowej jest przechowywana jako warto¶æ brutto (z podatkiem).
+	    <itemizedlist>
+	    <listitem>
+		<para>warto¶æ podatku = (stawka podatku / 100) + 1</para>
+		<para>Przyk³ad: stawka podatku VAT to 22%</para>
+		<para>warto¶æ podatku = (22 / 100) + 1 = 1,22</para>
+            </listitem>
+	    <listitem>
+		<para>cena jednostkowa netto = cena jednostkowa brutto / warto¶æ podatku</para>
+		<para>Przyk³ad: cena brutto metra kabla wynosi 2,56 z³, a stawka podatku VAT to 22%</para>
+		<para>cena jednostkowa netto = 2,56 z³ / 1,22 = 2,10 z³</para>
+            </listitem>
+	    <listitem>
+		    <para>sumaryczna cena brutto = cena jednostkowa brutto * ilo¶æ sztuk</para>
+		    <para>Przyk³ad: cena brutto metra kabla wynosi 2,56 z³, ilo¶æ metrów 1366, a stawka podatku VAT to 22%</para>
+		    <para>cena sumaryczna brutto = 2,56 z³ * 1366 m = 3496,96 z³</para>
+            </listitem>	    
+	    <listitem>
+		    <para>cena sumaryczna netto = cena sumaryczna brutto / warto¶æ podatku</para>
+		    <para>Przyk³ad: cena brutto metra kabla wynosi 2,56 z³, ilo¶æ metrów 1366, a stawka podatku VAT to 22%</para>
+		    <para>cena sumaryczna netto = (2,56 z³ * 1366 m = 3496,96 z³) / 1,22 = 2866,36 z³ </para>
+            </listitem>	    
+	    </itemizedlist>
+	    </para>
+    </sect2>
+    <sect2 id="install-invoices">
+     <title>Faktury</title>
+          <para>LMS umo¿liwia wystawianie faktur automatycznie i rêcznie. Rêczne wystawienie
+          faktury jest mo¿liwe z menu 'Nowa faktura' w panelu 'Finanse'. Automatyczne wystawianie faktur 
+          wymaga w³±czenia tej opcji podczas przypisywania taryf u¿ytkownikom. W takim wypadku
+          zapisem faktur do bazy zajmuje siê skrypt lms-payments lub demon <emphasis>lmsd</emphasis></para>
+          <para>Do poprawnego dzia³ania i tworzenia wydruków wymagane jest ustawienie podstawowych parametrów faktury takich jak nag³ówek, stopka, domy¶lny wystawca,
+	miejsce wystawienia oraz konto bankowe w definicji firmy. Ponadto mamy do dyspozycji
+          opcje sekcji <emphasis>[invoices]</emphasis> konfiguracji:
+          <itemizedlist>
+	  <listitem>
+		<para>print_balance_history</para>
+		<para>Okre¶la czy na fakturze (html) drukowaæ listê operacji finansowych 
+		na koncie klienta. Domy¶lnie: nie ustawiona.</para>
+		<para>Przyk³ad: <prompt>print_balance_history = true</prompt></para>
+          </listitem>
+	  <listitem>
+		<para>print_balance_history_limit</para>
+		<para>Liczba rekordów na li¶cie operacji finansowych na
+		fakturze. Domy¶lnie: 10.</para>
+		<para>Przyk³ad: <prompt>print_balance_history_limit = 20000</prompt></para>
+          </listitem>
+          </itemizedlist>
+          Wygenerowane faktury mo¿na obejrzeæ w dwojaki sposób: albo poprzez ikonkê drukarki 
+          na wykazie bilansu finansowego (ogólnego b±d¼ pojedynczego u¿ytkownika), albo 
+          poprzez 'Lista faktur' z menu 'Finanse'. W przypadku listy faktur, mo¿liwe jest 
+          tak¿e filtrowanie faktur do wydruku.</para>
+
+            <para>Podczas wydruku faktury domy¶lnie wy¶wietlany jest orygina³ i kopia, mo¿na to zmieniæ:
+    	    <itemizedlist>
+            <listitem>
+        	<para>default_printpage</para>
+		<para>Lista oddzielonych przecinkiem nazw stron wydruku faktur. Mo¿na u¿yæ zdefiniowane ci±gi znaków "original", "copy" i "duplicate". Domy¶lnie: "original,copy".</para>
+                <para>Przyk³ad: <prompt>default_printpage = "original"</prompt></para>
+            </listitem>
+            </itemizedlist>
+	    </para>
+         <sect3 id="install-invoices-html">
+          <title>HTML</title>
+          <para>Przy domy¶lnych ustawieniach faktury wy¶wietlane s± w
+          formacie html wg domy¶lnego szablonu. W sekcji [invoices] masz
+          do dyspozycji jeszcze nastêpuj±ce opcje:
+          <itemizedlist>
+          <listitem>
+               <para>template_file</para>
+               <para>Szablon faktury, który powinien znajdowaæ siê w
+               katalogu <filename>templates</filename>. Domy¶lnie: invoice.html.</para>
+               <para>Przyk³ad: <prompt>template_file = invoice-mynet.html</prompt></para>
+          </listitem>
+          <listitem>
+               <para>content_type</para>
+               <para>Content-type dla faktury. Je¿eli wpiszesz tutaj 'application/octet-stream'
+               to przegl±darka zechce wys³aæ plik do zapisania na dysku, zamiast go wy¶wietliæ.
+               Przydatne je¶li u¿ywasz w³asnego szablonu, który wygeneruje np.rtf'a lub xls'a.
+               Domy¶lnie: 'text/html'</para>
+               <para>Przyk³ad: <prompt>content_type = application/octet-stream</prompt></para>
+          </listitem>
+          <listitem>
+               <para>attachment_name</para>
+               <para>Mo¿na podaæ nazwê pliku, jako który ma zostaæ zapisany gotowy
+               wydruk. Domy¶lnie: pusta.</para>
+               <para>Przyk³ad: <prompt>attachment_name = faktura.xls</prompt></para>
+          </listitem>
+          </itemizedlist>
+          Wynikowy dokument HTML zawiera orygina³y 
+          i kopie, które s± oddzielone znacznikami podzia³u strony poprzez CSS. 
+          Tak wiêc ka¿da nowoczesna przegl±darka zgodna z CSS powinna bezproblemowo drukowaæ 
+          faktury ³adnie podzielone na strony. Funkcja ta by³a testowana na przegl±darkach 
+          Microsoft Internet Explorer 6.0, Opera 7.02 oraz Mozilla 1.3.</para>
+          <para>
+               <note><para>Praktycznie ka¿da przegl±darka internetowa ma mo¿liwo¶æ 
+               konfiguracji wydruku, gdzie mo¿na wy³±czyæ funkcje takie jak drukowanie
+               stopki i nag³ówka, czy te¿ adresu na wydruku.</para></note>
+          </para>
+         </sect3>     
+         <sect3 id="install-invoices-pdf">
+          <title>PDF</title>
+          <para>Mo¿liwe jest tak¿e tworzenie faktur jako pliki pdf. Przypisanie
+          opcji <filename>type</filename> z sekcji <emphasis>[invoices]</emphasis> 
+          warto¶ci 'pdf' spowoduje, ¿e faktury zamiast w html'u bêd± tworzone jako pliki 
+          "portable data format". Opcja <filename>template_file</filename> spe³nia podobn± rolê jak dla faktur html'owych,
+          z tym, ¿e posiada predefiniowane warto¶ci: 'standard' - faktura podstawowa 
+          (odpowiednik invoice.html) i 'FT-0100' - faktura przystosowana do drukowania
+          na drukach <ulink url="http://www.polarnet.org/produkty/ft-0100/">FT-0100</ulink> 
+	  zawieraj±cych druk polecenia przelewu. W opcji <filename>template_file</filename>
+          mo¿na tak¿e wstawiæ nazwê pliku php, jednak ta mo¿liwo¶æ jest przeznaczona dla
+          zaawansowanych u¿ytkowników, gdy¿ wymaga utworzenia pliku php, a nie tak jak w 
+          przypadku faktur html'owych szablonu Smarty.</para>
+         </sect3>
+         <sect3 id="install-invoices-cnote">
+          <title>Korekty</title>
+          <para>Faktury koryguj±ce korzystaj± z ustawieñ dotycz±cych
+	  pozosta³ych faktur z sekcji [invoices]. Domy¶lny szablon faktury
+	  uwzglêdnia faktury koryguj±ce. Jednak udostêpniono opcjê
+	  pozwalaj±c± na zdefiniowanie osobnego szablonu dla korekt (pozosta³e
+	  opcje s± wspólne dla faktur i dla korekt):
+          <itemizedlist>
+          <listitem>
+               <para>cnote_template_file</para>
+               <para>Szablon faktury koryguj±cej, który powinien znajdowaæ siê w
+               katalogu <filename>templates</filename>. Domy¶lnie: invoice.html.</para>
+               <para>Przyk³ad: <prompt>cnote_template_file = invoice-mynet.html</prompt></para>
+          </listitem>          
+          </itemizedlist>
+	  </para>
+         </sect3>     
+         <sect3 id="install-invoices-iban">
+          <title>Automatyczne generowanie numeru konta bankowego</title>
+          <para>LMS umo¿liwia automatyczne generowanie numeru konta bankowego w standardzie IBAN
+	  zawieraj±cego ID klienta. Funkcja ta mo¿e byæ u¿ywana do masowej identyfikacji p³atno¶ci
+	  która jako us³uga znajduje siê w ofercie wiêkszo¶ci banków. Aby masowa identyfikacja by³a
+	  mo¿liwa, nale¿y podpisaæ umowê z bankiem z której potrzebne nam bêd±:
+	  <itemizedlist>
+		<listitem>
+		    <para>Numer rozliczeniowy banku</para>
+		    <para>zawsze sta³y dla ka¿dego banku, z³o¿ony z 8 cyfr</para>
+		</listitem>
+		<listitem>
+		    <para>Identyfikator rachunku</para>
+		    <para>identyfikator naszego wirtualnego rachunku, z³o¿ony z 4 cyfr</para>
+		</listitem>
+	  </itemizedlist>
+	  Gdy mamy potrzebne dane, definiujemy konto bankowe w
+	  konfiguracji firmy (oddzia³u). System sam rozpozna (na podstawie d³ugo¶ci), 
+	  czy wprowadzono ca³y numer rachunku firmy czy prefiks do p³atno¶ci masowych.
+	  Prefix powinien sk³adaæ siê z 8 do 20 cyfr bez spacji i innych znaków.</para>
+	  <para>Od tej pory je¶li u¿ywamy faktur PDF z szablonem FT-0100, lub drukujemy bloczki przelewu/wp³aty z
+	  menu Finanse -> Wydruki -> Faktury -> Drukuj polecenia przelewu/wp³aty, ka¿dy wydruk bêdzie zawiera³
+	  unikalny numer konta z zawartym ID naszego klienta. ID klienta zostanie dodane na koñcu, oraz
+	  poprzedzone odpowiednia ilo¶ci± zer. Suma kontrolna bêdzie wyliczana automatycznie.
+	  Wiêcej o IBAN w <ulink url="http://en.wikipedia.org/wiki/International_Bank_Account_Number">Wikipedii</ulink>
+          </para>
+         </sect3>
+	</sect2>
+	<sect2 id="install-transferforms">
+	<title>Polecenia przelewu/wp³aty</title>
+		<para>Dane do druków polecenia przelewu brane s± z danych firmy do której
+		przypisany jest dany klient. Tytu³ p³atno¶ci mo¿na ustawiæ przy u¿yciu
+		opcji 'pay_title' w sekcji <emphasis>[finances]</emphasis>.
+		Dotyczy to zarówno wydruków poleceñ przelewu dostêpnych w Finanse -> Wydruki 
+		jak i wydruków faktur typu FT-0100.</para>
+	</sect2>
+	<sect2 id="install-receipts">
+	<title>Dokumenty kasowe (KP/KW)</title>
+          <para>Dokumenty kasowe, ze wzglêdu na swoj± specyfikê, posiadaj± podobne 
+	  opcje konfiguracyjne jak faktury.</para>
+         <sect3 id="install-receipts-html">
+          <title>HTML</title>
+          <para>Przy domy¶lnych ustawieniach dokumenty kasowe wy¶wietlane s± w
+          formacie html wg domy¶lnego szablonu. Dla dowodów wp³aty oraz wyp³aty
+	  przewidziano wspólny szablon wydruku. W sekcji <emphasis>[receipts]</emphasis>
+	  masz do dyspozycji jeszcze nastêpuj±ce opcje:
+          <itemizedlist>
+          <listitem>
+               <para>template_file</para>
+               <para>Szablon dowodu wp³aty/wyp³aty, który powinien znajdowaæ siê w
+               katalogu <filename>templates</filename>. Domy¶lnie: receipt.html.</para>
+               <para>Przyk³ad: <prompt>template_file = mytempl/receipt.html</prompt></para>
+          </listitem>
+          <listitem>
+               <para>content_type</para>
+               <para>Content-type dla druku. Je¿eli wpiszesz tutaj 'application/octet-stream'
+               to przegl±darka zechce wys³aæ plik do zapisania na dysku, zamiast go wy¶wietliæ.
+               Przydatne je¶li u¿ywasz w³asnego szablonu, który wygeneruje np.rtf'a lub xls'a.
+               Domy¶lnie: 'text/html'</para>
+               <para>Przyk³ad: <prompt>content_type = application/octet-stream</prompt></para>
+          </listitem>
+          <listitem>
+               <para>attachment_name</para>
+               <para>Mo¿na podaæ nazwê pliku, jako który ma zostaæ zapisany gotowy
+               wydruk. Domy¶lnie: pusta.</para>
+               <para>Przyk³ad: <prompt>attachment_name = receipt.xls</prompt></para>
+          </listitem>
+          </itemizedlist>
+	  </para>
+        </sect3>
+        <sect3 id="install-receipts-pdf">
+    	    <title>PDF</title>
+        	<para>Mo¿liwe jest tak¿e tworzenie dokumentów kasowych jako plików pdf. Przypisanie
+        	opcji <filename>type</filename> z sekcji <emphasis>[receipts]</emphasis> 
+        	warto¶ci 'pdf' spowoduje, ¿e dowody zamiast w html'u bêd± tworzone jako pliki 
+        	"portable data format". Opcja <filename>template_file</filename> spe³nia podobn± 
+		rolê jak dla wydruków html'owych z tym, ¿e posiada predefiniowan± warto¶æ: 
+		'standard' - wydruk podstawowy (odpowiednik receipt.html).
+		W opcji <filename>template_file</filename> mo¿na tak¿e wstawiæ nazwê pliku php, 
+		jednak ta mo¿liwo¶æ jest przeznaczona dla zaawansowanych u¿ytkowników, gdy¿ 
+		wymaga utworzenia pliku php, a nie tak jak w przypadku html'a szablonu Smarty.</para>
+        </sect3>
+    </sect2>
+    <sect2 id="install-debitnotes">
+	<title>Noty obci±¿eniowe</title>
+	<sect3 id="install-debitnotes-html">
+		<title>HTML</title>
+		<para>Przy domy¶lnych ustawieniach noty wy¶wietlane s± w
+		formacie html wg domy¶lnego szablonu. W sekcji <emphasis>[notes]</emphasis>
+		masz do dyspozycji nastêpuj±ce opcje:
+		<itemizedlist>
+			<listitem>
+				<para>template_file</para>
+				<para>Szablon noty, który powinien znajdowaæ siê w
+				katalogu <filename>templates</filename>. Domy¶lnie: note.html.</para>
+				<para>Przyk³ad: <prompt>template_file = mytempl/note.html</prompt></para>
+			</listitem>
+			<listitem>
+				<para>content_type</para>
+				<para>Content-type dla druku. Je¿eli wpiszesz tutaj 'application/octet-stream'
+				to przegl±darka zechce wys³aæ plik do zapisania na dysku, zamiast go wy¶wietliæ.
+				Przydatne je¶li u¿ywasz w³asnego szablonu, który wygeneruje np.rtf'a lub xls'a.
+				Domy¶lnie: 'text/html'</para>
+				<para>Przyk³ad: <prompt>content_type = application/octet-stream</prompt></para>
+			</listitem>
+			<listitem>
+				<para>attachment_name</para>
+				<para>Mo¿na podaæ nazwê pliku, jako który ma zostaæ zapisany gotowy
+				wydruk. Domy¶lnie: pusta.</para>
+				<para>Przyk³ad: <prompt>attachment_name = receipt.xls</prompt></para>
+			</listitem>
+		</itemizedlist>
+		</para>
+        </sect3>
+	</sect2>
+    <sect2 id="install-documents-other" xreflabel="Dokumenty pozosta³e">
+	<title>Dokumenty pozosta³e</title>
+		<para>Oprócz dokumentów finansowych w LMSie mo¿na przechowywaæ
+	    	dokumenty takie jak umowy, protoko³y, aneksy i inne. Ka¿emu klientowi
+	    	mo¿na przypisaæ dowoln± liczbê dokumentów na zak³adce 'Dokumenty klienta'
+	    	w panelu 'Informacje o kliencie' lub poprzez menu 'Dokumenty'. 
+	    	Pliki z dokumentami przechowywane s± poza baz± danych 
+	    	(o czym nale¿y pamiêtaæ robi±c backupy) w katalogu 
+	    	okre¶lonym zmienn± 'doc_dir' w sekcji
+	    	<emphasis>[directories]</emphasis> pliku konfiguracyjnego.
+	    	</para>
+		<para>Dokumenty mog± byæ importowane do systemu jako gotowe pliki, ale 
+		tak¿e tworzone wed³ug szablonów przy u¿yciu zdefiniowanych kreatorów. Tutaj 
+		system daje du¿e mo¿liwo¶ci konfiguracji. W katalogu 
+		<filename>documents/templates/default</filename>
+		znajduje siê domy¶lny kreator dokumentu (szablon i silnik). U¿ytkownik mo¿e utworzyæ
+		dowoln± liczbê w³asnych kreatorów dokumentów, które nale¿y 
+		umie¶ciæ w katalogu <filename>documents/templates/</filename>.</para>
+	    	<para>Ka¿dy kreator powinien zawieraæ plik <filename>info.php</filename> o
+		okre¶lonej strukturze:
+<screen>
+&lt;?php
+$engine = array(
+	'name' => 'default', 	// nazwa (katalogu) kreatora, ma³e litery i cyfry
+	'engine' => 'default', 	// katalog z silnikiem (engine.php)
+				// mo¿na u¿ywaæ silników z innych kreatorów
+	'template' => 'template.html', 		// plik szablonu (w katalogu 'name')
+	'title' => trans('Default document'), 	// opis, który bêdzie wy¶wietlany w LMS-UI
+	'content_type' => 'text/html', 		// typ pliku wynikowego
+	'output' => 'default.html', 		// nazwa pliku wynikowego
+	'plugin' => 'plugin',			// nazwa pliku pluginu (w katalogu 'name')
+	'post-action' => 'post-action',         // plik PHP wykonywany po dodaniu dokumentu (w transakcji)
+);
+?&gt;
+</screen>
+		Plik <filename>info.php</filename> opisuje kreatora i jest jedynym wymaganym
+		plikiem. Do utworzenia dokumentu potrzebny jest silnik (plik o nazwie
+		<filename>engine.php</filename>). Mo¿na utworzyæ w³asny silnik lub
+		skorzystaæ z innego, ustawiaj±c zmienn± 'engine' na nazwê kreatora, którego
+		silnik chcemy wykorzystaæ. Nie ma zatem wymogu tworzenia w³asnego silnika
+		dla ka¿dego nowego kreatora, wystarczy utworzyæ szablon 'template' i plik
+		<filename>info.php</filename>.</para>
+		<para>Zmienna <filename>plugin</filename> okre¶la nazwê pliku php
+		odpowiedzialnego za wy¶wietlenie dodatkowych pól w formularzu tworzenia
+		nowego dokumentu. Plugin mo¿e ponadto zawieraæ obs³ugê b³êdów dla
+		tych pól. Po dodaniu dokumentu wykonywany jest skrypt PHP okre¶lony w 
+		zmiennej <filename>post-action</filename>.
+		Prosty przyk³ad pluginu i post-akcji przedstawiono w przyk³adowym 
+		domy¶lnym dokumencie.</para>
+    	</sect2>
+    </sect1>
+    <sect1 id="install-teryt" xreflabel="Baza TERYT">
+	<title>Baza podzia³u terytorialnego (TERYT)</title>
+	<para>LMS obs³uguje bazê podzia³u terytorialnego TERYT w sposób umo¿liwiaj±cy przypisanie
+	adresów zgodnych z zawarto¶ci± tej bazy do komputerów oraz urz±dzeñ sieciowych.
+	Aby mieæ mo¿liwo¶æ wyboru adresów z listy nale¿y zaimportowaæ bazê TERYT.
+	S³u¿y do tego skrypt <xref linkend="lms-teryt">.
+	</para>
+    </sect1>
+</chapter>

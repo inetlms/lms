@@ -1,0 +1,379 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Instalacja i konfiguracja</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Informacje dodatkowe"
+HREF="moreinfo.html"><LINK
+REL="NEXT"
+TITLE="Wymagania"
+HREF="install-requirements.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="moreinfo.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="install-requirements.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="INSTALL"
+></A
+>Rozdzia&#322; 2. Instalacja i konfiguracja</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Spis tre&#347;ci</B
+></DT
+><DT
+>2.1. <A
+HREF="install.html#INSTALL-INTRO"
+>Wstęp</A
+></DT
+><DT
+>2.2. <A
+HREF="install-requirements.html"
+>Wymagania</A
+></DT
+><DD
+><DL
+><DT
+>2.2.1. <A
+HREF="install-requirements.html#INSTALL-REQ-WWW"
+>Serwer WWW</A
+></DT
+><DT
+>2.2.2. <A
+HREF="install-requirements.html#INSTALL-REQ-PHP"
+>Interpreter PHP</A
+></DT
+><DT
+>2.2.3. <A
+HREF="install-requirements.html#INSTALL-REQ-DB"
+>Serwer baz danych</A
+></DT
+><DT
+>2.2.4. <A
+HREF="install-requirements.html#INSTALL-REQ-SMARTY"
+>Biblioteka Smarty</A
+></DT
+><DT
+>2.2.5. <A
+HREF="install-requirements.html#INSTALL-REQ-PERL"
+>Perl</A
+></DT
+><DT
+>2.2.6. <A
+HREF="install-requirements.html#INSTALL-REQ-C"
+>Kompilator języka C</A
+></DT
+><DT
+>2.2.7. <A
+HREF="install-requirements.html#INSTALL-REQ-BROWSER"
+>Przeglądarka www</A
+></DT
+></DL
+></DD
+><DT
+>2.3. <A
+HREF="install-install.html"
+>Instalacja LMS</A
+></DT
+><DT
+>2.4. <A
+HREF="install-locale.html"
+>Lokalizacja</A
+></DT
+><DT
+>2.5. <A
+HREF="install-db.html"
+>Instalacja serwera baz danych</A
+></DT
+><DD
+><DL
+><DT
+>2.5.1. <A
+HREF="install-db.html#INSTALL-MYSQL"
+>MySQL</A
+></DT
+><DT
+>2.5.2. <A
+HREF="install-db.html#INSTALL-PGSQL"
+>PostgreSQL</A
+></DT
+></DL
+></DD
+><DT
+>2.6. <A
+HREF="install-config.html"
+>Konfiguracja podstawowa</A
+></DT
+><DD
+><DL
+><DT
+>2.6.1. <A
+HREF="install-config.html#INSTALL-CONFIG-DB"
+>Sekcja [database] - ustawienia bazy danych</A
+></DT
+><DT
+>2.6.2. <A
+HREF="install-config.html#INSTALL-CONFIG-DIR"
+>Sekcja [directories] - ustawienia katalogów</A
+></DT
+><DT
+>2.6.3. <A
+HREF="install-config.html#INSTALL-CONFIG-FINANCES"
+>Sekcja [finances] - konfiguracja finansów</A
+></DT
+></DL
+></DD
+><DT
+>2.7. <A
+HREF="install-rights.html"
+>Prawa dostępu</A
+></DT
+><DD
+><DL
+><DT
+>2.7.1. <A
+HREF="install-rights.html#INSTALL-RIGHTS-IDEA"
+>Idea</A
+></DT
+><DT
+>2.7.2. <A
+HREF="install-rights.html#INSTALL-RIGHTS-HOW"
+>Jak to działa?</A
+></DT
+><DT
+>2.7.3. <A
+HREF="install-rights.html#INSTALL-RIGHTS-USER"
+>Reguły dostępu definiowane przez użytkownika</A
+></DT
+></DL
+></DD
+><DT
+>2.8. <A
+HREF="install-upgrade.html"
+>Upgrade</A
+></DT
+><DT
+>2.9. <A
+HREF="install-documents.html"
+>Dokumenty</A
+></DT
+><DD
+><DL
+><DT
+>2.9.1. <A
+HREF="install-documents.html#TAX-CALCULATION"
+>Sposób wyliczania podatku VAT</A
+></DT
+><DT
+>2.9.2. <A
+HREF="install-documents.html#INSTALL-INVOICES"
+>Faktury</A
+></DT
+><DT
+>2.9.3. <A
+HREF="install-documents.html#INSTALL-TRANSFERFORMS"
+>Polecenia przelewu/wpłaty</A
+></DT
+><DT
+>2.9.4. <A
+HREF="install-documents.html#INSTALL-RECEIPTS"
+>Dokumenty kasowe (KP/KW)</A
+></DT
+><DT
+>2.9.5. <A
+HREF="install-documents.html#INSTALL-DEBITNOTES"
+>Noty obciążeniowe</A
+></DT
+><DT
+>2.9.6. <A
+HREF="install-documents.html#INSTALL-DOCUMENTS-OTHER"
+>Dokumenty pozostałe</A
+></DT
+></DL
+></DD
+><DT
+>2.10. <A
+HREF="install-teryt.html"
+>Baza podziału terytorialnego (TERYT)</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INSTALL-INTRO"
+>2.1. Wstęp</A
+></H1
+><P
+>LMS składa się z kilku modułów, podstawowym modułem jest <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+> 
+     (interfejs użytkownika). Jest on w całości napisany w PHP i do pracy wymaga bazy danych 
+     (właściwie to każdy moduł wymaga bazy danych). To właśnie w <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+> wykonujemy wszystkie 
+     czynności, reszta modułów ma tylko za zadanie zautomatyzować pracę LMS.</P
+><P
+>LMS to także zestaw skryptów w języku Perl, i to właśnie te skrypty wymagają 
+     abyś posiadał interpreter tego języka. Jeśli będziesz chciał używać tych skryptów, 
+     musisz mieć Perl'a. Skrypty pozwalają m.in. na comiesięczne naliczanie opłat abonamentowych 
+     bądź wysyłanie upomnień. Największy z nich - <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-MGC</I
+></SPAN
+> jest skryptem, ale na tyle 
+     uniwersalnym że potrafi wygenerować praktycznie dowolny plik konfiguracyjny i zrestartować 
+     usługę na twoim serwerze.</P
+><P
+>Jest jeszcze <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS Daemon</I
+></SPAN
+>, napisany w języku C. Jest on przeznaczony 
+     (a właściwie jego wtyczki) do generowania plików konfiguracyjnych i restartowania usług. 
+     Można go stosować jako zamiennik lub uzupełnienie skryptów perlowych.
+     Odpowiada on za to, aby to co zostało zmienione w <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+> zostało zmienione także 
+     w rzeczywistości.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="moreinfo.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="install-requirements.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Informacje dodatkowe</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Wymagania</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,15 @@
+$Id$
+
+wersja 0.4 (2005/06/13):
+
+    - updated to current LMS release
+
+wersja 0.3 (2004/11/17):
+
+    - uzupełniony plik README
+    - patch dodany do contrib/multiip_patch
+
+wersja 0.2 (2004/11/16):
+
+    - dodałem ChangeLog
+    - zmieniłem wpisy tak aby patch działał również z innymi wersjami

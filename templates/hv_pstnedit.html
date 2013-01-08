@@ -1,0 +1,96 @@
+{include file="header.html"}
+{include file="hv_js.html"}
+
+
+<h3>{$layout.pagetitle}</h3>
+<table width="100%" cellpadding="3">
+    <form name="pstnedit" method="post" action="?m=hv_pstnedit&cusid={$cusid}&pstnid={$pstnid}">
+    <input type="hidden" name="pstnedit[oldpstn]" value="{$pstninfo.extension}">
+    <input type="hidden" name="pstnedit[id]" value="{$pstninfo.id}">
+    <tr class="dark"><td width="1%" class="fall">&nbsp;<b>Edycja numeru : {$pstninfo.number}</b></td></tr>
+    <tr class="light">
+	<td width="100%" class="flr">
+	    <table width="100%" cellpadding="0" cellspacing="0">
+		<tr class="light">
+		    <td width="33%" style="text-align:left;vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			    <tr>
+				<td width="1%" align="left" nowrap /><b>ID (Hiperus)</b></td>
+				<td width="1%"><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >{$pstninfo.id}</td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap />Kod kraju</td>
+				<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" ><input type="text" name="pstnedit[country_code]" value="{$pstninfo.country_code}" id="id_country_code" {if !get_conf('hiperus_c5.number_manually')}readonly{/if}></td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap />Nr. krajowy</td>
+				<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" ><input type="text" name="pstnedit[number]" value="{$pstninfo.number}" id="id_number" {if !get_conf('hiperus_c5.number_manually')}readonly{/if}></td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap />Nr. międzynarodowy</td>
+				<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left">
+				    <input type="text" name="pstnedit[extension]" value="{$pstninfo.extension}" id="id_extension" {if !get_conf('hiperus_c5.number_manually')}readonly{/if}>&nbsp;&nbsp;
+				    <a href="javascript:searchemptypstn('{$pstninfo.extension}')" {tip text="Wybierz nowy numer"}>&raquo;&raquo;&raquo;</a>
+				</td>
+			    </tr>
+			</table>
+		    </td>
+		    <td width="33%" style="text-align:left;vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			    <tr>
+				<td width="1%" align="left" nowrap /><b>Terminal</b></td>
+				<td width="1%"><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				    <select name="pstnedit[terminal_name]">
+					{section name=l1 loop=$terminallist}
+					    <option value="{$terminallist[l1].username}" {if $terminallist[l1].username==$pstninfo.terminal_name} SELECTED{/if}>{$terminallist[l1].username}</option>
+					{/section}
+				    </select>&nbsp;( {$pstninfo.terminal_name} )
+				</td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap />Głowny numer</td>
+				<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				    <SELECT name="pstnedit[is_main]">
+					<OPTION value='t' {if $pstninfo.is_main=='t'} SELECTED{/if}>TAK</OPTION>
+					<OPTION value='f' {if $pstninfo.is_main=='f'} SELECTED{/if}>NIE</OPTION>
+				    </SELECT>&nbsp;( {if $pstninfo.is_main=='t'}TAK{else}NIE{/if} )
+				</td>
+			    </tr>
+			    <tr><td width="1%" align="left" nowrap />DISA</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><SELECT name="pstnedit[disa_enabled]"><OPTION value='t' {if $pstninfo.disa_enabled=='t'} SELECTED{/if}>TAK</OPTION><OPTION value='f' {if $pstninfo.disa_enabled=='f'} SELECTED{/if}>NIE</OPTION></SELECT>&nbsp;( {if $pstninfo.disa_enabled=='t'}TAK{else}NIE{/if} )</td></tr>
+			    <tr><td width="1%" align="left" nowrap />CLIR</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><SELECT name="pstnedit[clir]"><OPTION value='t' {if $pstninfo.clir=='t'} SELECTED{/if}>TAK</OPTION><OPTION value='f' {if $pstninfo.clir=='f'} SELECTED{/if}>NIE</OPTION></SELECT>&nbsp;( {if $pstninfo.clir=='t'}TAK{else}NIE{/if} )</td></tr>
+			</table>
+		    </td>
+		    <td width="auto" style="text-align:left;vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			    <tr><td width="1%" align="left" nowrap />FAX</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><SELECT name="pstnedit[virtual_fax]"><OPTION value='t' {if $pstninfo.virtual_fax=='t'} SELECTED{/if}>TAK</OPTION><OPTION value='f' {if $pstninfo.virtual_fax=='f'} SELECTED{/if}>NIE</OPTION></SELECT>&nbsp;( {if $pstninfo.virtual_fax=='t'}TAK{else}NIE{/if} )</td></tr>
+			    <tr><td width="1%" align="left" nowrap />Poczta głosowa</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><SELECT name="pstnedit[voicemail_enabled]"><OPTION value='t' {if $pstninfo.voicemail_enabled=='t'} SELECTED{/if}>TAK</OPTION><OPTION value='f' {if $pstninfo.voicemail_enabled=='f'} SELECTED{/if}>NIE</OPTION></SELECT>&nbsp;( {if $pstninfo.voicemail_enabled=='t'}TAK{else}NIE{/if} )</td></tr>
+			    <tr><td width="1%" align="left" nowrap />Utworzony</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{$pstninfo.create_date}</td></tr>
+			</table>
+
+		    </td>
+		</tr>
+	    </table>
+	</td>
+    </tr>
+    <tr class="dark">
+	<td width="100%" align="right" class="fall">
+	    <a href="javascript:document.pstnedit.submit();">Zapisz zmiany&nbsp;<img src="img/save.gif" border="0"></a>&nbsp;&nbsp;&nbsp;
+	    <a href="?m=hv_accountinfo&id={$cusid}">Anuluj&nbsp;<img src="img/cancel.gif" border="0"></a>
+	</td>
+    </tr>
+    </form>
+</table>
+{include file="footer.html"}
+{if $blad}
+<SCRIPT type="text/javascript" language="JavaScript">
+<!--
+    alert('Nie można zapisać danych !!!');
+//-->
+</SCRIPT>
+{/if}

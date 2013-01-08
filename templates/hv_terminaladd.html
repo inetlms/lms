@@ -1,0 +1,237 @@
+{include file="header.html"}
+{include file="calendar_js.html"}
+{include file="hv_js.html"}
+
+
+<h3>{$layout.pagetitle}</h3>
+
+{literal}
+<script type="text/javascript">
+<!--
+    function hideshowsiplocation() {
+
+	if ( document.getElementById('skipsiplocation').checked == true && confirm('Konfiguracja lokalizacji dla połączeń alarmowych jest wymagana ustawowo !!!.\n\nPotwierdź że jesteś pewien swojej decyzji') ) {
+	    document.getElementById('skipsiplocation').checked = true;
+	    document.getElementById('alarmlocal').style.display = 'none';
+	} else {
+	    document.getElementById('skipsiplocation').checked = false;
+	    document.getElementById('alarmlocal').style.display = 'block';
+	}
+    }
+    
+    function dodajterminal() {
+	var dok = document.terminaladd;
+	var blad = false;
+	
+	if( dok.elements['terminaladd[username]'].value == '') {
+	    blad = true;
+	    addClass(dok.elements['terminaladd[username]'],'alert');
+	} else removeClass(dok.elements['terminaladd[username]'],'alert');
+	
+	if (dok.elements['terminaladd[password]'].value=='') {
+	    blad=true;
+	    addClass(dok.elements['terminaladd[password]'],'alert');
+	} else removeClass(dok.elements['terminaladd[password]'],'alert');
+	
+	if(document.getElementById('skipsiplocation').checked==false) {
+
+	    if(dok.elements['terminaladd[id_terminal_location]'].value=='') {
+
+		addClass(dok.elements['terminaladd[id_terminal_location]'],'alert');
+		addClass(dok.elements['terminaladd[province]'],'alert');
+		addClass(dok.elements['terminaladd[county]'],'alert');
+		addClass(dok.elements['terminaladd[borough]'],'alert');
+
+	    } else {
+
+		removeClass(dok.elements['terminaladd[id_terminal_location]'],'alert');
+		removeClass(dok.elements['terminaladd[province]'],'alert');
+		removeClass(dok.elements['terminaladd[county]'],'alert');
+		removeClass(dok.elements['terminaladd[borough]'],'alert');
+
+	    }
+	} else { 
+
+	    removeClass(dok.elements['terminaladd[id_terminal_location]'],'alert');
+	    removeClass(dok.elements['terminaladd[province]'],'alert');
+	    removeClass(dok.elements['terminaladd[county]'],'alert');
+	    removeClass(dok.elements['terminaladd[borough]'],'alert');
+
+	} 
+	
+	if (blad) alert('Proszę wypełnić wymagane pola');
+	    else {
+		dok.method="post";dok.action="?m=hv_terminaladd&cusid={/literal}{$account.id}{literal}";dok.submit();
+	    }
+    }
+    
+    function GenPasswdTerminal() {
+	
+	var passwd = new Array();
+	var items = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	var length = 10;
+	
+	for( var i=0; i<length; i++) {
+	    n = Math.floor(Math.random()*items.length);
+	    passwd[i] = items.substring(n,n+1);
+	}
+	
+	document.terminaladd.elements['terminaladd[password]'].value = passwd.join("");
+    }
+    
+//-->
+</script>
+{/literal}
+<form name="terminaladd" method="post" action="?m=terminaladd">
+
+    <input type="hidden" name="terminaladd[customer_id]" value="{$account.id}">
+    <table width="100%" cellpadding="3" cellspacing="0">
+	<tr class="dark">
+	    <td width="100%" colspan="3" class="fall">
+		<b>Nowy terminal</b>
+	    </td>
+	</tr>
+	<tr class="light">
+	
+	    <td width="33%" style="text-align:left;vertical-align:top;" class="fleft">
+		<table width="100%" cellpadding="3">
+		    <tr>
+			<td width="1%" align="left" nowrap>Nazwa</td>
+			<td width="1%" align="left" nowrap><b>&nbsp;:&nbsp;</b></td>
+			<td width="98%" align="left"><input type="text" name="terminaladd[username]" value="{$dane.username}"></td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap>Hasło</td>
+			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="98%" align="left" ><input type="text" name="terminaladd[password]" value="{$dane.password}">&nbsp;<a href="javascript:GenPasswdTerminal();" {tip text="Generuj 10 zankowe hasło dla terminala"}>&raquo;&raquo;&raquo;</a></td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap>Widoczny numer</td>
+			<td width="1%" align="left" nowrap><b>&nbsp;:&nbsp;</b></td>
+			<td width="98%" align="left" >
+			    <select name="terminaladd[screen_numbers]">
+				<option value='t'>TAK</option>
+				<option value='f'>NIE</option>
+			    </select>
+			</td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap>FAX T.38</td>
+			<td width="1%" align="left" nowrap><b>&nbsp;:&nbsp;</b></td>
+			<td width="98%" align="left" >
+			    <select name="terminaladd[t38_fax]">
+				<option value='f'>NIE</option>
+				<option value='t'>TAK</option>
+				
+			    </select>
+			</td>
+		    </tr>
+		    <tr><td colspan="3">&nbsp;</td></tr>
+		</table>
+	    </td>
+	
+	    <td width="33%" style="text-align:left;vertical-align:top;">
+		<table width="100%" cellpadding="3">
+		    <tr>
+			<td width="1%" align="left" nowrap>Cennik</td>
+			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="98%" align="left" >
+			    {$infot[lt].pricelist_name}
+			    <select name="terminaladd[id_pricelist]">
+				{section name=lista loop=$price}
+				    <option value="{$price[lista].id}" {if $account.id_default_pricelist==$price[lista].id} SELECTED{/if}>{$price[lista].name}</option>
+				{/section}
+			    </select>
+			</td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap>Abonament</td>
+			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="98%" align="left" >
+			    {$infot[lt].subscriptions}
+			    <select name="terminaladd[id_subscription]">
+				{section name=lista2 loop=$subscription}
+				    <option value="{$subscription[lista2].id}">{$subscription[lista2].name}</option>
+				{/section}
+			    </select>
+			</td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap>Abonament od</td>
+			<td width="1%"><B>&nbsp;:&nbsp;</B></td>
+			<td width="98%" align="left" >
+			    <input readonly type="text" name="terminaladd[subscription_from]" size="12" value="{$dane.subscription_from}">&nbsp;<img src="img/calendar.gif" border="0" {tip text="Kliknij aby otworzyć kalendarz"} onclick="tncal1.popup();" style="cursor:pointer;">&nbsp;<img src="img/delete.gif" onclick="javascript:document.terminaladd.elements['terminaladd[subscription_from]'].value='';" style="cursor:pointer;" {tip text="Wyczyść datę"}>
+			</td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap>Abonament do</td>
+			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="98%" align="left" >
+			    <input type="text" readonly name="terminaladd[subscription_to]" size="12" value="{$dane.subscription_to}">&nbsp;<img src="img/calendar.gif" border="0" {tip text="Kliknij aby otworzyć kalendarz"} onclick="tncal2.popup();" style="cursor:pointer;">&nbsp;<img src="img/delete.gif" onclick="javascript:document.terminaladd.elements['terminaladd[subscription_to]'].value='';" style="cursor:pointer;" {tip text="Wyczyść datę"}>
+			</td>
+		    </tr>
+		</table>
+	    </td>
+
+	    <td width="auto" style="text-align:left;vertical-align:top;" class="fright">
+			<table width="100%" cellpadding="3" id="alarmlocal">
+			    <tr><td width="100%" colspan="3" align="left"><a href="javascript:searchterminallocation()"><b>Wybierz lokalizację dla połączeń alarmowych</b></A></td></tr>
+			    <tr>
+				<td width="1%" align="left" nowrap />Województwo</td>
+				<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				    <input type="text" readonly name="terminaladd[province]" id="id_province" value="{$dane.province}">
+				</td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap />Powiat</td>
+				<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				    <input type="text" readonly name="terminaladd[county]" id="id_county" value="{$dane.county}">
+				</td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap />Gmina</td>
+				<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				    <input type="text" readonly name="terminaladd[borough]" id="id_borough" value="{$dane.borough}">
+				</td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap />ID Lokalizacja</td>
+				<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
+				<td width="98%" align="left" >
+				    <input type="text" readonly name="terminaladd[id_terminal_location]" id="id_id_terminal_location" value="{$dane.id_terminal_location}">
+				</td>
+			    </tr>
+			</table>
+	    </td>
+	</tr>
+	
+	<tr class="dark">
+	    <td width="1%" class="fleftu" nowrap>
+		<input type="checkbox" name="skipsiplocation" value="1" id="skipsiplocation" onclick="hideshowsiplocation();"> Pomiń konfigurację lokalizacji terminala dla połączeń alarmowych
+	    </td>
+	    <td colspan="2" width="100%" class="frightu" align="right">
+		<a href="javascript:dodajterminal();">Dodaj terminal <img src="img/save.gif"></a>&nbsp;
+		<a href="?m=hv_accountinfo&id={$account.id}">Anuluj <img src="img/cancel.gif"></a>
+	    </td>
+	</tr>
+
+    </table>
+
+</form>
+<script type="text/javascript" language="JavaScript">
+    var tncal1 = new calendar(document.forms['terminaladd'].elements['terminaladd[subscription_from]']);
+    tncal1.time_comp = false;
+    var tncal2 = new calendar(document.forms['terminaladd'].elements['terminaladd[subscription_to]']);
+    tncal2.time_comp = false;
+</script>
+{include file="footer.html"}
+{if $blad}
+<script type="text/javascript">
+<!--
+    alert('Nie można utworzyć nowego terminalu !!!\nPrawdopodobnie nazwa terminala jest już zajęta');
+//-->
+</script>
+{/if}

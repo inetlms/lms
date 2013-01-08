@@ -1,0 +1,507 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Basic Configuration</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Installation and configuration"
+HREF="install.html"><LINK
+REL="PREVIOUS"
+TITLE="Database Server Installation"
+HREF="install-db.html"><LINK
+REL="NEXT"
+TITLE="Access rights"
+HREF="install-rights.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="install-db.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Installation and configuration</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="install-rights.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INSTALL-CONFIG"
+>2.6. Basic Configuration</A
+></H1
+><P
+>Main configuration file of LMS is <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>, which must be placed
+         in directory <TT
+CLASS="FILENAME"
+>/etc/lms</TT
+> or in LMS root directory (not recommended, see
+         <A
+HREF="install-install.html"
+>Section 2.3</A
+>!!!). It contains configuration options for <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>
+         and for all scripts with exception of <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-MGC</I
+></SPAN
+>.</P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Remember to remove semicolons (comments sign) from beginning of line with
+         parameter that you set.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Note"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>As of version 1.6 and later storing config 
+	 in <TT
+CLASS="FILENAME"
+>lms.ini</TT
+> is beeing treaded as obsolete. 
+	 The only required values there are from [database] and [directories]
+	 sections. Other settings are stored in database and could be changed by 
+	 user interface.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-CONFIG-DB"
+>2.6.1. Section [database] - Database Settings</A
+></H2
+><P
+>            <UL
+><LI
+><P
+>type</P
+><P
+>Database driver type. Currently are supported 'mysql' or 'mysqli' 
+		    and 'postgres'. Default: mysql</P
+><P
+>Example: <SAMP
+CLASS="PROMPT"
+>type = mysql</SAMP
+></P
+></LI
+><LI
+><P
+>host</P
+><P
+>Host where database is running. Usually 'localhost', but you can set anything here     
+	            (IP, domain or path to socket in 'localhost:/path/to/socket' format).                       
+	            Default: localhost</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>host = localhost</SAMP
+></P
+></LI
+><LI
+><P
+>user</P
+><P
+>Database user account name. In many cases (if you follow this documentation) that will
+	            be 'lms'. If you want to use privileged account, you can enter 'root' (MySQL on most of
+	            *nixes), 'mysql' (on PLD) or 'postgres' (PostgreSQL). Default: mysql</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>user = lms</SAMP
+></P
+></LI
+><LI
+><P
+>password</P
+><P
+>Database user password. Default: empty.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>password = password</SAMP
+></P
+></LI
+><LI
+><P
+>database</P
+><P
+>Database name. Default: lms</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>database = lms</SAMP
+></P
+></LI
+></UL
+>
+    	    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-CONFIG-DIR"
+>2.6.2. Section [directories] - Directories Settings</A
+></H2
+><P
+>        
+     <UL
+><LI
+><P
+>sys_dir</P
+><P
+>System directory. It is a place where the entire content of LMS UI is placed, that
+        means index.php, graphics, templates and the rest. By default index.php tries to guess where
+        is it located using getcwd(), but it's better to say it where it is:</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>sys_dir = /var/www/htdocs/lms/</SAMP
+></P
+></LI
+><LI
+><P
+>modules_dir</P
+><P
+>Directory with LMS "modules". That is content of /modules directory. By default it is
+        <TT
+CLASS="FILENAME"
+>modules</TT
+> subdirectory of sys_dir.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>modules_dir = /usr/share/lms/modules/</SAMP
+></P
+></LI
+><LI
+><P
+>lib_dir</P
+><P
+>Directory with LMS "libraries". That is content of /lib directory. By default it is
+        <TT
+CLASS="FILENAME"
+>lib</TT
+> subdirectory of sys_dir.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>lib_dir = /usr/share/lms/lib/</SAMP
+></P
+></LI
+><LI
+><P
+>backup_dir</P
+><P
+>Directory for database backup files - it's a place where LMS can write its database
+        snapshots. By default it is <TT
+CLASS="FILENAME"
+>backups</TT
+> subdirectory of sys_dir.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>backup_dir = /var/backup/lms/</SAMP
+></P
+><P
+><DIV
+CLASS="WARNING"
+><TABLE
+CLASS="WARNING"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/warning.gif"
+HSPACE="5"
+ALT="Warning"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>If directory with backups is accessible from WWW
+        level (within Web Server DocumentRoot), anybody can access them without
+        authentication.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></LI
+><LI
+><P
+>doc_dir</P
+><P
+>Directory for documents archive - it's a place where LMS can write uploaded files.
+        By default it is <TT
+CLASS="FILENAME"
+>documents</TT
+> subdirectory of sys_dir.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>doc_dir = /usr/share/lms/docs/</SAMP
+></P
+><P
+><DIV
+CLASS="WARNING"
+><TABLE
+CLASS="WARNING"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/warning.gif"
+HSPACE="5"
+ALT="Warning"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>If that directory is accessible from WWW
+        level (within Web Server DocumentRoot), anybody can access them without
+        authentication.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></LI
+><LI
+><P
+>smarty_compile_dir</P
+><P
+>Compilation directory for Smarty. It's a place where Smarty compile its templates. By
+        default it is <TT
+CLASS="FILENAME"
+>templates_c</TT
+> subdirectory of sys_dir.</P
+><P
+>Example:      <SAMP
+CLASS="PROMPT"
+>smarty_compile_dir = /var/smarty/compile/lms</SAMP
+></P
+></LI
+><LI
+><P
+>smarty_templates_dir</P
+><P
+>Directory with templates for Smarty. By default it is <TT
+CLASS="FILENAME"
+>templates</TT
+>
+        subdirectory of sys_dir.</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>smarty_templates_dir = /usr/share/lms/templates</SAMP
+></P
+></LI
+></UL
+>
+     </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-CONFIG-FINANCES"
+>2.6.3. Section [finances] - Finances Settings</A
+></H2
+><P
+>This section consist options for financial system and for payment
+        forms. You can read more about that in chapter 'Documents'.
+        <UL
+><LI
+><P
+>suspension_percentage (optional)</P
+><P
+>Percentage for suspended liabilities. Default: '0'</P
+><P
+>Example:     <SAMP
+CLASS="PROMPT"
+>suspension_percentage = '50'</SAMP
+></P
+></LI
+></UL
+>
+        </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install-db.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="install-rights.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Database Server Installation</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="install.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Access rights</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

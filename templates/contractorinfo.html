@@ -1,0 +1,25 @@
+{include file="header.html"}
+{include file="calendar_js.html"}
+<!--// $Id$ //-->
+<h1>{$layout.pagetitle}</h1>
+{include file="calendar_js.html"}
+<TABLE WIDTH="100%" CELLPADDING="3">
+	<TR>
+		<TD WIDTH="100%">
+			{include file="contractorinfobox.html"}
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="100%">
+			{include file="contractorgroupsbox.html"}
+		</TD>
+	</TR>
+	{if check_modules(160)}
+	<TR>
+		<TD WIDTH="100%">
+			{include file="contractorbalancebox.html" limit=-10}
+		</TD>
+	</TR>
+	{/if}
+</TABLE>
+{include file="footer.html"}

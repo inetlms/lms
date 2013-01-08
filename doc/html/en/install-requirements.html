@@ -1,0 +1,327 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Requirements</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Installation and configuration"
+HREF="install.html"><LINK
+REL="PREVIOUS"
+TITLE="Installation and configuration"
+HREF="install.html"><LINK
+REL="NEXT"
+TITLE="LMS Installation"
+HREF="install-install.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=ISO-8859-1"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="install.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Installation and configuration</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="install-install.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INSTALL-REQUIREMENTS"
+>2.2. Requirements</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-REQ-WWW"
+>2.2.1. Web Server</A
+></H2
+><P
+>Because <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+> is written in PHP,
+            it needs Web server to work. Apache is preferred (<A
+HREF="http://www.apache.org"
+TARGET="_top"
+>www.apache.org</A
+>).</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-REQ-PHP"
+>2.2.2. PHP Interpreter</A
+></H2
+><P
+>Interpreter version should be 5.2.x or higher.
+            PHP can be downloaded from <A
+HREF="http://www.php.net"
+TARGET="_top"
+>www.php.net</A
+>.
+            At least following PHP modules needs to be installed (look for "extension" in
+            php.ini or in output of phpinfo function):
+		<UL
+><LI
+><P
+>pcre, posix,</P
+></LI
+><LI
+><P
+>zlib (for compressed backups),</P
+></LI
+><LI
+><P
+>gd and/or ming (network map only),</P
+></LI
+><LI
+><P
+>mysql or mysqli or pgsql (for db support),</P
+></LI
+><LI
+><P
+>iconv, mbstring (LMS uses unicode)</P
+></LI
+><LI
+><P
+>PEAR::Mail (which require PEAR::Net_SMTP and PEAR::Net_Sockets) for mailing.</P
+></LI
+></UL
+>
+	    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-REQ-DB"
+>2.2.3. Database Server</A
+></H2
+><P
+>MySQL server in version 5.x is supported. Probably LMS won't work correctly
+           with older versions.</P
+><P
+>PostgreSQL in version 8.2.x or higher is supported.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-REQ-SMARTY"
+>2.2.4. Smarty Library</A
+></H2
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+> requires Smarty library (<A
+HREF="http://www.smarty.net"
+TARGET="_top"
+>http://www.smarty.net</A
+>) in version 3.0
+            or higher. Newer versions of Smarty requires that
+            you have not enabled "magic_quotes_runtime" (set to Off) option in <A
+HREF="http://www.php.net/manual/en/configuration.php"
+TARGET="_top"
+>PHP configuration</A
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-REQ-PERL"
+>2.2.5. Perl</A
+></H2
+><P
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-MGC</I
+></SPAN
+> and the rest of Perl scripts requires 
+          also Perl interpreter and some modules:
+       <UL
+><LI
+><P
+>Perl and its basic modules (POSIX, GetOpt::Long),</P
+></LI
+><LI
+><P
+>Config::IniFiles,</P
+></LI
+><LI
+><P
+>DBI,</P
+></LI
+><LI
+><P
+>DBD-mysql (if you use MySQL),</P
+></LI
+><LI
+><P
+>DBD-Pg (if you use Postgres),</P
+></LI
+></UL
+></P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-REQ-C"
+>2.2.6. C Compiler</A
+></H2
+><P
+>If you intend to run <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS Daemon</I
+></SPAN
+> you will need
+       working C compiler, because daemon will be provided in source code form only.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="INSTALL-REQ-BROWSER"
+>2.2.7. Web Browser</A
+></H2
+><P
+>LMS has web user interface, so you'll need web browser with javascript and
+           cookies enabled. Our exparience says that Mozilla Firefox 1.x will be a good 
+           choice.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="install-install.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Installation and configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="install.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>LMS Installation</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,721 @@
+<!-- $Id$ -->
+<sect1 id="tscript" xreflabel="T-Script">
+<title>T-Script</title>
+	<sect2 id="tscript-intro">
+	<title>Wstêp</title>
+		<para>G³ównym przeznaczeniem jêzyka skryptowego <ulink url="http://silvercoders.com/index.php?page=T_Script">T-Script</ulink>,
+		jest generowanie plików tekstowych. Mo¿e byæ
+		u¿ywany do przetwarzania szablonów z danymi pobieranymi z ró¿nych
+		¼róde³ np. baz SQL lub plików tekstowych.</para>
+		<para>Przed kompilacj± T-Scripta upewnij siê, ¿e posiadasz w systemie
+		pakiety <filename>bison</filename> (co najmniej w wersji 1.875) oraz 
+		<filename>flex</filename>.</para>
+	</sect2>
+	<sect2 id="tscript-syntax">
+	<title>Sk³adnia</title>
+		<para>Sk³adnia jêzyka T-Script jest podobna do sk³adni innych popularnych
+		jêzyków takich jak C czy JavaScript, ale dokonano pewnych zmian
+		maj±cych na celu u³atwienie tworzenia szablonów. 
+		Wszystkie podane polecenia powinny byæ zapisywane wewn±trz klamer { }.
+		Dane poza klamrami zostan± zapisane do pliku wyj¶ciowego (lub je¶li go
+		nie zdefiniowano, pominiête). Wielko¶æ liter ma znaczenie. Do oddzielenia
+		poleceñ s³u¿y znak ¶rednika.</para>
+		<sect3 id="expr">
+		<title>Wyra¿enia i operatory</title>
+			<itemizedlist>
+			<listitem>
+				<para>Ci±g znaków. Obowi±zuj± tutaj zasady jêzyka C dotycz±ce u¿ycia znaków formatuj±cych (\t, \n, \\). </para>
+				<para>Przyk³ad: <prompt>"jaki¶ ci±g znaków"</prompt></para>
+			</listitem>
+			<listitem>
+				<para>Liczba.</para>
+				<para>Przyk³ad: <prompt>1234</prompt></para>
+			</listitem>
+			<listitem>
+				<para>Warto¶æ zmiannej "var".</para>
+				<para>Przyk³ad: <prompt>var</prompt></para>
+			</listitem>
+			<listitem>
+				<para>N-ty element tablicy "var".</para>
+				<para>Przyk³ad: <prompt>var[n]</prompt></para>
+			</listitem>
+			<listitem>
+				<para>Podzmienna "n" zmiennej "var".</para>
+				<para>Przyk³ad: <prompt>var.n</prompt></para>
+			</listitem>
+			<listitem>
+				<para>Warto¶æ wyra¿enia w nawiasach.</para>
+				<para>Przyk³ad: <prompt>( wyra¿enie )</prompt></para>
+			</listitem>
+			<listitem>
+				<para>S³owo kluczowe "null". Okre¶la warto¶æ niezdefiniowan±.
+				Przydatne do sprawdzania, czy jaka¶ zmienna (warto¶æ) jest
+				zdefiniowana.</para>
+				<para>Przyk³ad: <prompt>zmienna = null</prompt></para>
+			</listitem>
+			<listitem>
+				<para>Porównania. Zwraca wynik logiczny porównania.</para>
+				<para>Przyk³ad: 
+<screen>
+wyra¿enie1 == wyra¿enie2;
+wyra¿enie1 != wyra¿enie2;
+wyra¿enie1 &lt; wyra¿enie2;
+wyra¿enie1 &gt; wyra¿enie2;
+wyra¿enie1 &lt;= wyra¿enie2;
+wyra¿enie1 &gt;= wyra¿enie2;
+</screen></para>
+			</listitem>
+			<listitem>
+				<para>Operatory binarne. Suma i iloczyn bitowy.</para>
+				<para>Przyk³ad: <prompt>wyra¿enie1 | wyra¿enie2</prompt></para>
+				<para>Przyk³ad: <prompt>wyra¿enie1 & wyra¿enie2</prompt></para>
+			</listitem>
+			<listitem>
+				<para>Operatory logiczne.</para>
+				<para>Przyk³ad: <prompt>wyra¿enie1 || wyra¿enie2</prompt></para>
+				<para>Przyk³ad: <prompt>wyra¿enie1 && wyra¿enie2</prompt></para>
+				<para>Przyk³ad: <prompt>! wyra¿enie1</prompt></para>
+			</listitem>
+			<listitem>
+				<para>£±czenie ci±gów znaków. Gdy oba wyra¿enia nie s± liczbami 
+				traktuje je jako ci±gi znaków i dokonuje ich po³±czenia.</para>
+				<para>Przyk³ad: <prompt>wyra¿enie1 + wyra¿enie2</prompt></para>
+			</listitem>
+			<listitem>
+				<para>Operatory arytmetyczne. Zwraca wynik operacji arytmetycznej na dwóch wyra¿eniach.</para>
+				<para>Przyk³ad: 
+<screen>
+wyra¿enie1 + wyra¿enie2;
+wyra¿enie1 - wyra¿enie2;
+wyra¿enie1 * wyra¿enie2;
+wyra¿enie1 / wyra¿enie2;
+wyra¿enie1 % wyra¿enie2;
+</screen></para>
+			</listitem>
+			<listitem>
+				<para>Jednoargumentowe operatory inkrementacji/dekrementacji.</para>
+				<para>Przyk³ad: <prompt>wyra¿enie++</prompt></para>
+				<para>Przyk³ad: <prompt>wyra¿enie--</prompt></para>
+				<para>Przyk³ad: <prompt>++wyra¿enie</prompt></para>
+				<para>Przyk³ad: <prompt>--wyra¿enie</prompt></para>
+			</listitem>
+			<listitem>
+				<para>Przesuniêcie bitowe.</para>
+				<para>Przyk³ad: <prompt>wyra¿enie1 &gt;&gt; wyra¿enie2</prompt></para>
+				<para>Przyk³ad: <prompt>wyra¿enie1 &lt;&lt; wyra¿enie2</prompt></para>
+			</listitem>
+			<listitem>
+				<para>Porównanie ci±gu do z wyra¿eniem regularnym. Zwraca 1 gdy <prompt>wyra¿enie</prompt>
+				pasuje do wzorca po prawej stronie, w przeciwnym wypadku zwraca 0.</para>
+				<para>Przyk³ad: <prompt>wyra¿enie =~ wzorzec</prompt></para>
+			</listitem>
+			</itemizedlist>
+		</sect3>
+		<sect3 id="comments">	
+		<title>Komentarze</title>
+			<itemizedlist>
+				<listitem>
+					<para>Komentarz w stylu jêzyka C.</para>
+					<para>Przyk³ad: <prompt>/* to jest komentarz - mo¿e byæ wieloliniowy */</prompt></para>
+				</listitem>
+			</itemizedlist>
+		</sect3>
+		<sect3 id="commands">
+		<title>Polecenia</title>
+			<itemizedlist>
+				<listitem>
+					<para>Przypisanie. Przypisanie warto¶ci wyra¿enia do podanej zmiennej.</para>
+					<para>Przyk³ad: <prompt>zmienna = wyra¿enie</prompt></para>
+				</listitem>
+				<listitem>
+					<para>Wyra¿enie warunkowe. Wykonanie polecenia tylko wtedy gry wyra¿enie jest prawd±. 
+					Druga forma wykonuje polecenie1 gdy wyra¿enie jest prawd± lub polecenie2
+					gdy jest fa³szem.</para> 
+					<para>Przyk³ad: <screen>
+if ( wyra¿enie ) polecenia /if
+if ( wyra¿enie ) polecenie1 else polecenie2 /if
+</screen></para>
+				    	<para>Tekst miêdzy blokami jest traktowany jako polecenia
+				    	dlatego nastêpuj±cy przyk³ad jest prawid³owy: <screen>
+Jaki¶ tekst
+{if (a==1)} 
+a równe jest 1
+{else} 
+a nie jest równe 1
+{/if} 
+</screen>
+					Mo¿na wstawiæ backslash (\) pomiêdzy poleceniem a koñcem wiersza aby
+					pozbyæ siê znaku koñca linii i zachowaæ normalny (bez za³amania linii w tym miejscu)
+					przep³yw tekstu. Na przyk³ad: <screen>
+Jaki¶ tekst
+{if (a==1)}\ 
+a równa siê 1 
+{else}\ 
+a nie równa siê 1 
+{/if}\
+</screen></para>
+				</listitem>
+				<listitem>
+					<para>Pêtla iteracyjna. Wykonuje wyra¿enie <prompt>wyra¿enie1</prompt> jako
+					polecenie inicjalizuj±ce pêtlê. Nastêpnie wykonywane jest 
+					<prompt>wyra¿enie3</prompt> i <prompt>polecenie</prompt> dopóki 
+					<prompt>wyra¿enie2</prompt> jest prawdziwe.</para>
+					<para>Przyk³ad: <screen>for ( wyra¿enie1 ; wyra¿enie2 ; wyra¿enie3 ) polecenie /for</screen></para>
+				</listitem>
+				<listitem>
+					<para>Konstrukcja <prompt>foreach</prompt>. Pozwala na iteracjê po wszystkich
+					elementach danej tablicy. Wykunuje <prompt>polecenia</prompt> tyle razy ile 
+					jest w tablicy elementów podstawiaj±c za ka¿dym razem warto¶æ odpowiedniego 
+					elementu tablicy pod <prompt>element</prompt>.</para>
+					<para>Przyk³ad: <screen>foreach ( element in tablica ) polecenia /foreach</screen></para>
+				</listitem>
+				<listitem>
+					<para>Pêtla <prompt>while</prompt>. Wykonanuje <prompt>polecenie</prompt>
+					tak d³ugo jak d³ugo <prompt>wyra¿enie</prompt>  jest prawdziwe. Warto¶æ wyra¿enia
+					jest sprawdzana za ka¿dym razem na pocz±tku pêtli, wiêc nawet gdy warto¶æ 
+					ta zmieni siê podczas wykonywania poleceñ, wykonywanie pêtli nie zostanie 
+					przerwane a¿ do jej zakoñczenia.</para>
+					<para>Przyk³ad: <screen>while ( wyra¿enie ) polecenie /while</screen></para>
+				</listitem>
+				<listitem>
+					<para><prompt>break</prompt>. Polecenie to koñczy wykonywanie
+					aktualnej instrukcji pêtli.</para>
+					<para>Przyk³ad: 
+<screen>
+{for (i = 0; i &lt; 10; i++)}\
+{if (i == 5)}{break}{/if}\
+: {i}
+{/for}\
+</screen></para>
+				</listitem>
+				<listitem>
+					<para><prompt>continue</prompt>. Polecenie <prompt>continue</prompt>
+					u¿ywane jest wewn±trz instrukcji pêtli do przerwania wykonania
+					danej iteracji pêtli i rozpoczêcia kolejnej iteracji.</para>
+					<para>Przyk³ad: 
+<screen>
+{for (i = 0; i &lt; 10; i++)}\
+{if (i == 5)}{continue}{/if}\
+: {i}
+{/for}\
+</screen></para>
+				</listitem>
+				<listitem>
+					<para><prompt>exit</prompt>. Polecenie to s³u¿y po prostu do
+					przerwania wykonywania skryptu.</para>
+					<para>Przyk³ad: 
+<screen>
+{if (zmienna &gt; 0)
+    exit;
+/if}
+</screen></para>
+				</listitem>
+			</itemizedlist>
+		</sect3>
+		<sect3 id="functions">
+		<title>Funkcje</title>
+			<para>Funkcje mog± byæ u¿ywane zarówno w sk³adni z nawiasem
+			(<prompt>{funkcja(zmienna)}</prompt>) jak i bez nawiasu 
+			(<prompt>{funkcja {zmienna}}</prompt>).
+			<itemizedlist>
+				<listitem>
+					<para><prompt>string(liczba)</prompt></para>
+					<para>Zamiana warto¶ci liczbowej na ci±g znaków.</para>
+					<para>Przyk³ad: <prompt>string(zmienna)</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>number(ci±g_znaków)</prompt></para>
+					<para>Zamiana ci±gu znaków na liczbê. Dla tablic zwraca ilo¶æ elementów w tablicy.</para>
+					<para>Przyk³ad: <prompt>number("123")</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>typeof(zmienna)</prompt></para>
+					<para>Sprawdzenie typu. Zwraca nazwê typu zmiennej np.string, 
+					number, array, null.</para>
+					<para>Przyk³ad: <prompt>typeof(zmienna)</prompt></para>
+				</listitem>
+			</itemizedlist>
+			W skrypcie powy¿sze funkcje mog± byæ u¿yte w nastêpuj±cy sposób:
+<screen>
+{x = 5}x = {x}
+{var = "3"}var = {var}
+x + var = {x + var}
+x + var = {number(var) + x}
+x + var = {string(x) + var}
+x jest typu {typeof(x)}
+var jest typu {typeof(var)}
+</screen></para>
+		</sect3>
+	</sect2>
+	<sect2 id="extensions">
+	<title>Rozszerzenia</title>
+		<para>Rozszerzenia (extensions) to dodatki do biblioteki <emphasis>tscript</emphasis>. S± to funkcje i predefiniowane 
+		zmienne (sta³e), które mo¿na stosowaæ w skryptach.</para>
+		<sect3 id="exec">
+		<title>Exec</title>
+			<para>Wykonywanie poleceñ pow³oki umo¿liwia funkcja 
+			<prompt>exec()</prompt>.
+			Mo¿liwe jest wykonanie wielu poleceñ oddzielonych ¶rednikami
+			w jednym wywo³aniu tej funkcji.</para>
+			<itemizedlist>
+				<listitem>
+					<para><prompt>exec(polecenie)</prompt></para>
+					<para>Wykonywanie poleceñ pow³oki.</para>
+					<para>Przyk³ad: <prompt>exec("rm -f /")</prompt></para>
+				</listitem>
+			</itemizedlist>
+		</sect3>
+		<sect3 id="string">
+		<title>String</title>
+			<para><prompt>String</prompt> zawiera podstawowe funkcje do operowania
+			na ci±gach znaków.</para>
+			<itemizedlist>
+				<listitem>
+					<para><prompt>trim(ci±g_znaków)</prompt></para>
+					<para>Usuniêcie "bia³ych" znaków z pocz±tku i koñca 
+					ci±gu znaków.</para>
+					<para>Przyk³ad: <prompt>trim("   aaa   ")</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>len(ci±g_znaków)</prompt></para>
+					<para>Zwraca d³ugo¶æ ci±gu (odpowiednik funkcji strlen() z jêzyka C).</para>
+					<para>Przyk³ad: <prompt>length = len(string)</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>replace(wzorzec, zamiennik, ci±g_znaków)</prompt></para>
+					<para>Funkcja przeszukuje ci±g_znaków w poszukiwaniu fragmentów pasuj±cych
+					do wzorca i wstawia w jego miejsce zamiennik. Wzorzec mo¿e byæ
+					wyra¿eniem regularnym zgodnym z POSIX.</para>
+					<para>Przyk³ad: <prompt>replace(":", "-", mac)</prompt></para>
+					<para>Przyk³ad: <prompt>replace("[a-z]", "-", "teksty")</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>explode(separator, ci±g_znaków)</prompt></para>
+					<para>Zwraca tablicê ci±gów, powsta³ych z podzia³u ci±gu_znaków
+					wg okre¶lonego separatora. Separator mo¿e byæ POSIX'owym wyra¿eniem
+					regularnym.</para>
+					<para>Przyk³ad: <prompt>explode(":", "aaa:bbb:ccc")</prompt></para>
+					<para>Przyk³ad: <prompt>explode("[ ]+", "aaa bbb ccc")</prompt></para>
+				</listitem>
+			</itemizedlist>
+		</sect3>
+		<sect3 id="sysinfo">
+			<title>Sysinfo</title>
+			<para>Rozszerzenie o nazwie <prompt>Sysinfo</prompt> zawiera 
+			funkcje pobieraj±ce dane z systemu.</para>
+			<itemizedlist>
+				<listitem>
+					<para><prompt>date([ci±g_formatuj±cy])</prompt></para>
+					<para>Bie¿±ca data i czas wg zadanego formatu.
+					Domy¶lnie funkcja zwraca datê w formacie %Y/%m/%d. 
+					Znaczenie poszczególnych specyfikatorów konwersji mo¿na
+					znale¼æ w <prompt>`man strftime`</prompt>.</para>
+					<para>Zwracany obiekt zawiera predefiniowane podzmienne
+					<prompt>year</prompt>, <prompt>month</prompt>, <prompt>day</prompt>, 
+					<prompt>hour</prompt>, <prompt>minute</prompt>, <prompt>second</prompt></para> 
+					<para>Przyk³ad: 
+<screen>
+{date("%s") / zwraca bie¿±cy czas w formacie unix timestamp */}
+{a = date()}
+{a.month /* zwraca numer bie¿±cego miesi±ca */ }
+</screen></para>
+				</listitem>
+				<listitem>
+					<para><prompt>systype</prompt></para>
+					<para>Typ systemu. Sta³a zwracaj±ca "unix" lub "win32" 
+					w zale¿no¶ci od systemu na jakim dzia³a program.</para>
+					<para>Przyk³ad: 
+<screen>
+{if (systype == "unix")}\
+{exec echo wykonujemy polecenie pow³oki}\
+{else}\
+tu nie mamy pow³oki
+{/if}\
+</screen></para>
+				</listitem>
+			</itemizedlist>
+		</sect3>
+		<sect3 id="file">
+			<title>File</title>
+			<para>To rozszerzenie udostêpnia podstawowe operacje na plikach.
+			<itemizedlist>
+				<listitem>
+					<para><prompt>file(nazwa_pliku)</prompt></para>
+					<para>Przekierowanie wyj¶cia. Dane zostan± dopisane
+					do podanego pliku.</para>
+					<para>Przyk³ad: <screen>{file nazwa_pliku} polecenia {/file}</screen></para>
+				</listitem>
+				<listitem>
+					<para><prompt>fileexists(nazwa_pliku)</prompt></para>
+					<para>Je¶li plik istnieje zwraca 1, w przeciwnym wypadku 0.</para>
+					<para>Przyk³ad: <screen>{if fileexists(plik)}{deletefile(plik)}{/if}</screen></para>
+				</listitem>
+				<listitem>
+					<para><prompt>deletefile(nazwa_pliku)</prompt></para>
+					<para>Usuniêcie pliku.</para>
+					<para>Przyk³ad: <prompt>deletefile("/tmp/plik.txt")</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>readfile(nazwa_pliku)</prompt></para>
+					<para>Zapisuje w tablicy zawarto¶æ pliku tak, ¿e ka¿da
+					linia pliku to osobny element tablicy.</para>
+					<para>Przyk³ad: <prompt>readfile("/tmp/plik.txt")</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>getfile(nazwa_pliku)</prompt></para>
+					<para>Zwraca ca³± zawarto¶æ pliku.</para>
+					<para>Przyk³ad: <prompt>getfile("/tmp/plik.txt")</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>listdir(katalog)</prompt></para>
+					<para>Zwraca listê plików (i podkatalogów) w tablicy. Ka¿dy
+					element tablicy zawiera podzmienn± 'size', w której zapisany
+					jest rozmiar pliku w bajtach.</para>
+					<para>Przyk³ad: <prompt>listdir("/home/alec")</prompt></para>
+				</listitem>
+			</itemizedlist>
+			Poni¿szy listing prezentuje przyk³adowy skrypt z u¿yciem wszystkich funkcji
+			rozszerzenia <prompt>File</prompt>.
+<screen>
+{list = listdir("/home/alec/lms/doc")}
+{for (x = 0; x &lt; number(list); x++) }\
+{list[x]}--{list[x].size}
+{/for}\
+{file "/home/alec/plik.txt"}
+Linia 1
+Linia 2
+{/file}\
+{f = readfile /home/alec/plik.txt}\
+{for (i = 0; i &lt; number(f); i++) }\
+linia {i}: {f[i]}\
+{/for}\
+{f = getfile /home/alec/plik.txt}\
+{f}
+{deletefile /home/alec/plik.txt}\
+</screen></para>
+		</sect3>
+		<sect3 id="syslog">
+			<title>Syslog</title>
+			<para>Rozszerzenie o nazwie <prompt>Syslog</prompt> zawiera 
+			funkcjê pozwalaj±c± na zapisywanie komunikatów do logów systemowych.
+			Wprowadza róznie¿ definicje poziomów wa¿no¶ci komunikatów.</para>
+			<itemizedlist>
+				<listitem>
+					<para><prompt>syslog(ci±g [, poziom])</prompt></para>
+					<para>Funkcja zapisuje do logów systemowych komunikat
+					okre¶lony przez argument <prompt>ci±g</prompt>. Drugi 
+					argument funkcji jest opcjonalny i definiuje poziom
+					wa¿no¶ci komunikatu, który domy¶lnie ustawiony jest 
+					na <prompt>LOG_INFO</prompt>
+					(patrz <prompt>man 3 syslog</prompt>).</para>
+					<para>Przyk³ad: 
+<screen>
+syslog("Komunikat", LOG_ERR);
+syslog("Komunikat");
+</screen></para>
+				</listitem>
+			</itemizedlist>
+		</sect3>
+		<sect3 id="net">
+			<title>Net</title>
+			<para>W tym rozszerzeniu zawarte s± funkcje (nazwy pisane ma³ymi literami)
+				przeznaczone do operowania na adresach IP i maskach. Jest to rozszerzenie
+				dodane w LMS.</para>
+			<itemizedlist>
+				<listitem>
+					<para><prompt>mask2prefix(ci±g_znaków)</prompt></para>
+					<para>Zamiana maski sieciowej w formacie xxx.xxx.xxx.xxx
+						na liczbê (bitów).</para>
+					<para>Przyk³ad: <prompt>mask2prefix("255.255.255.0")</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>ip2long(ci±g_znaków)</prompt></para>
+					<para>Zamiana adresu IP w formacie 4-oktetowym na
+						liczbê.</para>
+					<para>Przyk³ad: <prompt>ip2long("192.168.0.1")</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>long2ip(liczba)</prompt></para>
+					<para>Zamiana adresu IP podanego jako liczba
+						na format xxx.xxx.xxx.xxx.</para>
+					<para>Przyk³ad: <prompt>long2ip(zmienna)</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>broadcast(adres, maska)</prompt></para>
+					<para>Obliczenie adresu broadcast dla podanego
+					adresu IP oraz maski (format maski dowolny).</para>
+					<para>Przyk³ad: <prompt>broadcast("192.168.0.1", "255.255.255.0")</prompt></para>
+				</listitem>
+			</itemizedlist>
+		</sect3>
+		<sect3 id="sql">
+		<title>SQL</title>
+			<para>Rozszerzenie SQL udostêpnia podstawowe funkcje zwi±zane
+			z obs³ug± bazy danych. Pozwala na wykonywanie poleceñ SQL.</para>
+			<itemizedlist>
+				<listitem>
+					<para>Polecenia SQL: <prompt>SELECT</prompt>, <prompt>INSERT</prompt>,
+					<prompt>DELETE</prompt>, <prompt>UPDATE</prompt>, <prompt>CREATE</prompt>, 
+					<prompt>DROP</prompt>.</para>
+					<para>Przyk³ad: <screen>
+{SELECT * FROM tabela}
+{INSERT INTO tabela VALUES(1)}
+{DELETE FROM tabela}
+{UPDATE tabela SET kolumna=1}
+{CREATE TABLE foo (bar integer)}
+{DROP TABLE foo}</screen></para>
+				</listitem>
+				<listitem>
+					<para><prompt>rows(zapytanie)</prompt></para>
+		        		<para>Liczba wierszy, których dotyczy zapytanie.</para>
+		        		<para>Przyk³ad: <prompt>rows("SELECT * FROM tabela")</prompt></para>
+				</listitem>
+				<listitem>
+					<para><prompt>escape(ci±g_znaków)</prompt></para>
+				        <para>Zabezpieczenie znaków specjalnych w celu u¿ycia
+					w zapytaniu SQL. W szczególno¶ci chodzi o apostrofy 
+					i backslashe. Je¶li nie znasz zawarto¶ci zmiennej
+					powiniene¶ j± przepu¶ciæ przez escape().</para>
+				        <para>Przyk³ad: <prompt>SELECT * FROM tabela WHERE name={escape(zmienna)}</prompt></para>
+				</listitem>
+			</itemizedlist>
+		</sect3>
+		<sect3 id="consts">
+		<title>Sta³e</title>
+			<para>Rozszerzenie ¶ci¶le zwi±zane z LMS-em. Umo¿liwia
+			tworzenie skryptów bez znajomo¶ci struktury bazy danych.
+			Zawiera predefiniowane sta³e, które zawieraj± dane z bazy.
+			Zdefiniowane w programie zapytanie jest wykonywane w momencie
+			pierwszego u¿ycia sta³ej. Nazwy sta³ych nale¿y pisaæ
+			du¿ymi literami. Ka¿da sta³a to tablica zawieraj±ca wiersze
+			numerowane od zera, a ka¿dy wiersz posiada podzmienne dostêpne
+			poprzez nazwê (pisan± ma³ymi literami).</para>
+			<itemizedlist>
+				<listitem>
+					<para>CUSTOMERS - lista klientów:
+					<simplelist>
+					<member>id - ID klienta</member>
+					<member>lastname - nazwa/nazwisko klienta</member>
+					<member>name - imiê klienta</member>
+					<member>status - status</member>
+					<member>address - adres klienta</member>
+					<member>zip - kod pocztowy</member>
+					<member>city - miasto</member>
+					<member>email - adres e-mail</member>
+					<member>ten - numer NIP</member>
+					<member>ssn - numer PESEL</member>
+					<member>regon - numer REGON</member>
+					<member>icn - numer dowodu osobistego</member>
+					<member>rbe - numer EDG/KRS</member>
+					<member>info - informacje o kliencie</member>
+					<member>message - tre¶æ ostrze¿enia</member>
+					<member>warning - status ostrze¿enia (suma statusów wszystkich komputerów klienta)</member>
+					<member>access - status dostêpno¶ci (suma statusów wszystkich komputerów klienta)</member>
+					<member>balance - bilans klienta</member>
+					</simplelist>
+					</para>
+				</listitem>
+				<listitem>
+					<para>NODES - lista komputerów (i adresów urz±dzeñ sieciowych):
+					<simplelist>
+					<member>id - ID komputera</member>
+					<member>owner - nazwa/nazwisko i imiê 	klienta</member>
+					<member>ownerid - ID klienta ('0' w przypadku urz±dzeñ)</member>
+					<member>name - nazwa komputera (adresu urz±dzenia)</member>
+					<member>access - status: w³±czony/wy³±czony (1/0)</member>
+					<member>warning - status ostrze¿eñ: w³±czone/wy³±czone (1/0)</member>
+					<member>netdev - ID urz±dzenia, do którego jest pod³±czony</member>
+					<member>lastonline - czas ostatniej aktywno¶ci</member>
+					<member>info - dodatkowe 	informacje</member>
+					<member>message - tre¶æ ostrze¿enia</member>
+					<member>mac - adres MAC</member>
+					<member>passwd - has³o</member>
+					<member>ip - adres IP</member>
+					<member>ip_pub - publiczny adres IP</member>
+					<member>linktype - typ po³±czenia (0-kabel, 1-radio)</member>
+					<member>port - numer portu urz±dzenia, do którego pod³±czony jest komputer</member>
+					<member>chkmac - sprawdzanie MAC'a: w³±czone/wy³±czone (1/0)</member>
+					<member>halfduplex - rodzaj komunikacji (0-full, 1-half)</member>
+					</simplelist>
+					</para>
+				</listitem>
+				<listitem>
+		        		<para>NETWORKS - lista sieci:
+					<simplelist>
+					<member>id - ID sieci</member>
+					<member>name - nazwa sieci</member>
+					<member>address - adres IP</member>
+					<member>mask - maska 	(xxx.xxx.xxx.xxx)</member>
+					<member>prefix - liczba jedynek w masce</member>
+					<member>size - rozmiar sieci (ilo¶æ adresów)</member>
+					<member>interface - nazwa interfejsu</member>
+					<member>gateway - adres bramy</member>
+					<member>dns - adres pierwszego serwera DNS</member>
+					<member>dns2 - adres drugiego serwera DNS</member>
+					<member>wins - adres WINS</member>
+					<member>domain - nazwa domenowa</member>
+					<member>dhcpstart - pocz±tek zakresu DHCP</member>
+					<member>dhcpend - koniec zakresu DHCP</member>
+					</simplelist>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</sect3>
+	</sect2>
+	<sect2 id="examples">
+	<title>Przyk³adowe skrypty</title>
+		<para>Zacznijmy od bardzo prostego skryptu, który tworzy plik
+		<filename>/etc/hosts</filename> z list± adresów i nazw komputerów 
+		(oraz urz±dzeñ).
+		<example id="tscript-example-hosts">
+		<title>Parser: Tworzenie pliku /etc/hosts</title>
+<screen>
+{result = SELECT name, inet_ntoa(ipaddr) AS ip FROM nodes}\
+127.0.0.1    localhost
+{for (r=0; r&lt;number(result); r++)}\
+{result[r].name}{"\t"}{result[r].ip}
+{/for}\
+</screen>
+		</example></para>
+		<para>Utworzenie listy d³u¿ników jest bardzo proste, zw³aszcza
+		gdy zastosujemy jedn± z predefiniowanych sta³ych.
+		<example id="tscript-example-debtors">
+		<title>Parser: Lista d³u¿ników</title>
+<screen>
+{
+for (r=0; r&lt;number(CUSTOMERS); r++)
+    if (CUSTOMERS[r].balance < 0)
+}\
+{CUSTOMERS[r].lastname} {CUSTOMERS[r].name}{"\t"}{CUSTOMERS[r].balance}
+{
+    /if
+/for}\
+</screen>
+		</example></para>
+		<para>Utworzenie listy z opisami komputerów dla programu iptraf. Charakterystyczne dla tego
+		programu jest to, ¿e adresy MAC komputerów musz± byæ zapisane bez dwukropków oddzielaj±cych
+		poszczególne cz³ony adresu.
+		<example id="tscript-example-iptraf">
+		<title>Parser: Opisy komputerów dla iptrafa.</title>
+<screen>
+{list = SELECT LOWER(mac) AS mac, UPPER(name) AS name, inet_ntoa(ipaddr) AS ip from nodes}\
+{for(i=0; i&lt;number(list); i++)}\
+{replace(":","",list[i].mac)}:{list[i].name} {list[i].ip}
+{/for}
+</screen>
+		</example></para>
+		<para>W nastêpnym przyk³adzie tworzymy plik z przypisanymi adresami IP do adresów sprzêtowych
+		hostów, u¿ywany przez program <filename>arp</filename>. Hostom z wy³±czonym dostêpem
+		zostan± przypisane "puste" MACi.
+		<example id="tscript-example-ethers">
+			<title>Parser: Plik "ethers" dla programu arp.</title>
+			<screen>
+{if (number(NODES))
+       if (fileexists("/etc/ethers"))
+               deletefile("/etc/ethers");
+       /if; 
+       for (i=0; i&lt;number(NODES); i++)
+               if (number(NODES[i].access))
+                      }{NODES[i].mac}{"\t"}{NODES[i].ip}{"\n"}{
+               else
+                      }00:00:00:00:00:00{"\t"}{NODES[i].ip}{"\n"}{
+               /if;
+      /for;
+/if}\
+</screen>
+		</example>
+		</para>
+		<para>Kolejny trochê d³u¿szy przyk³ad, w którym wykorzystujemy g³ównie
+		<prompt>exec</prompt>. Skrypt wysy³a wiadomo¶ci do klientów z bilansem ni¿szym od
+		zadanego limitu.
+		<example id="tscript-example-notify">
+		<title>Parser: Zamiennik modu³u notify</title>
+<screen>
+{limit = 0;
+dt = date();
+customers = SELECT customers.id AS id, email, pin, name, lastname,
+        SUM((type * -2 +7) * cash.value) AS balance
+        FROM customers
+        LEFT JOIN cash ON customers.id = cash.customerid AND (cash.type = 3 OR cash.type = 4)
+        WHERE deleted = 0 AND email!=''
+        GROUP BY customers.id, name, lastname, email, pin
+        HAVING SUM((type * -2 +7) * cash.value) &lt; {limit}
+}
+{for(i=0; i&lt;number(customers); i++)}
+
+    {exec echo "UWAGA: Niniejsza wiadomo¶æ zosta³a wygenerowana automatycznie.
+
+Uprzejmie informujemy, i¿ na Pani/Pana koncie figuruje zaleg³o¶æ w op³atach za 
+Internet w kwocie {customers[i].balance*-1} z³.
+
+Je¿eli nale¿no¶æ za bie¿±cy miesi±c, to jest {dt.month}-{dt.year}, zosta³a ju¿
+uregulowana prosimy zignorowaæ tê wiadomo¶æ.
+
+W przypadku gdy uwa¿a Pani/Pan, ¿e zaleg³o¶æ ta jest nieporozumieniem
+prosimy o jak najszybszy kontakt z Biurem Obs³ugi Klienta.
+
+Wiêcej informacji na temat p³atno¶ci mo¿na uzyskaæ pod adresem:
+http://naszasiec.pl/mojekonto/
+
+W celu uregulowania nale¿no¶ci prosimy o kontakt:
+
+Nasz Siec ASK - Biuro Obs³ugi Klienta
+Gwidon Mniejwa¿ny
+telefon: 0-606031337
+e-mail: gwidonm@naszasiec.pl
+
+PS. Poni¿ej za³±czamy ostatnie 10 operacji na Pañstwa koncie.
+--------------+--------------+-----------------------------
+     Data     |    Kwota     |           Komentarz
+--------------+--------------+-----------------------------" &gt; /tmp/mail}
+
+    {last10 = SELECT comment, time, CASE WHEN type=4 THEN value*-1 ELSE value END AS value
+            FROM cash WHERE customerid = {customers[i].id}
+            ORDER BY time DESC LIMIT 10}
+    
+    {for(j=0; j&lt;number(last10); j++)}
+    
+        {exec echo "{last10[j].time}|{"\t"}{last10[j].value}|{"\t"}{last10[j].comment}" &gt;&gt; /tmp/mail}
+    
+    {/for}
+
+    {exec mail -s "Powiadomienie o zaleglosciach" -r lms@domain.tld {customers[i].email} &lt; /tmp/mail}
+
+{/for}
+</screen>
+		</example>
+		</para>
+		<para>Kolejny rozbudowany przyk³ad to odpowiednik modu³u traffic.
+		Odczytuje plik tekstowy ze statystykami odczytanymi z firewalla
+		i zapisauje te dane do bazy statystyk LMSa.
+		<example id="tscript-example-traffic">
+			<title>Parser: Statystyki.</title>
+			<screen>
+{
+log = "/var/log/traffic.log";
+nodes = SELECT id, INET_NTOA(ipaddr) AS ip, INET_NTOA(ipaddr_pub) AS ip_pub FROM nodes;
+if(! fileexists(log))
+    exit;
+/if;
+lines = readfile(log);
+n = number(nodes);
+for (i=0; i&lt;number(lines); i++)
+    line = explode("[[:blank:]]+", lines[i]); /* file format: IP upload download */
+    if ( number(line) == 3  && (line[1] &gt; 0 || line[2] &gt; 0) )
+        for (x=0; x&lt;n; x++)
+            if (nodes[x].ip == line[0] || nodes[x].ip_pub == line[0] )
+                id = nodes[x].id;
+                break;
+            /if;
+        /for;
+        if (x &lt; n)
+            INSERT INTO stats (nodeid, dt, download, upload) VALUES ({id}, %NOW%, {line[2]}, {line[1]});
+        /if;
+    /if;
+/for;
+}	
+</screen>
+		</example>
+		</para>
+	</sect2>
+</sect1>

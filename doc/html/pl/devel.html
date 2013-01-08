@@ -1,0 +1,659 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Dla dociekliwych</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="T-Script"
+HREF="tscript.html"><LINK
+REL="NEXT"
+TITLE="Struktura bazy danych"
+HREF="devel-db.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="tscript.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="devel-db.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="DEVEL"
+></A
+>Rozdzia&#322; 7. Dla dociekliwych</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Spis tre&#347;ci</B
+></DT
+><DT
+>7.1. <A
+HREF="devel.html#DEVEL-CATALOGS"
+>Drzewo katalogów</A
+></DT
+><DT
+>7.2. <A
+HREF="devel-db.html"
+>Struktura bazy danych</A
+></DT
+><DD
+><DL
+><DT
+>7.2.1. <A
+HREF="devel-db.html#USERS"
+>Użytkownicy ('users')</A
+></DT
+><DT
+>7.2.2. <A
+HREF="devel-db.html#CUSTOMERS"
+>Klienci ('customers')</A
+></DT
+><DT
+>7.2.3. <A
+HREF="devel-db.html#CUSTOMERGROUPS"
+>Grupy klientów ('customergroups')</A
+></DT
+><DT
+>7.2.4. <A
+HREF="devel-db.html#CUSTOMERASSIGNMENTS"
+>Grupy klientów - powiązania ('customerassignments')</A
+></DT
+><DT
+>7.2.5. <A
+HREF="devel-db.html#EXCLUDEDGROUPS"
+>Grupy klientów - dostęp użytkowników ('excludedgroups')</A
+></DT
+><DT
+>7.2.6. <A
+HREF="devel-db.html#NETWORKS"
+>Sieci ('networks')</A
+></DT
+><DT
+>7.2.7. <A
+HREF="devel-db.html#NETDEVICES"
+>Sprzęt sieciowy ('netdevices')</A
+></DT
+><DT
+>7.2.8. <A
+HREF="devel-db.html#NETLINKS"
+>Połączenia sieciowe ('netlinks')</A
+></DT
+><DT
+>7.2.9. <A
+HREF="devel-db.html#NODES"
+>Komputery i adresy IP urządzeń sieciowych ('nodes')</A
+></DT
+><DT
+>7.2.10. <A
+HREF="devel-db.html#MACS"
+>Adresy MAC ('macs')</A
+></DT
+><DT
+>7.2.11. <A
+HREF="devel-db.html#NODEGROUPS"
+>Grupy komputerów ('nodegroups')</A
+></DT
+><DT
+>7.2.12. <A
+HREF="devel-db.html#NODEGROUPASSIGNMENTS"
+>Grupy komputerów - powiązania ('nodegroupassignments')</A
+></DT
+><DT
+>7.2.13. <A
+HREF="devel-db.html#NASTYPES"
+>Typy NAS ('nastypes')</A
+></DT
+><DT
+>7.2.14. <A
+HREF="devel-db.html#CASH"
+>Operacje finansowe ('cash')</A
+></DT
+><DT
+>7.2.15. <A
+HREF="devel-db.html#CASHIMPORT"
+>Import operacji finansowych ('cashimport')</A
+></DT
+><DT
+>7.2.16. <A
+HREF="devel-db.html#CASHSOURCES"
+>Żródła importu ('cashsources')</A
+></DT
+><DT
+>7.2.17. <A
+HREF="devel-db.html#SOURCEFILES"
+>Paczki importu ('sourcefiles')</A
+></DT
+><DT
+>7.2.18. <A
+HREF="devel-db.html#TAXES"
+>Stawki podatkowe ('taxes')</A
+></DT
+><DT
+>7.2.19. <A
+HREF="devel-db.html#TARIFFS"
+>Taryfy ('tariffs')</A
+></DT
+><DT
+>7.2.20. <A
+HREF="devel-db.html#PROMOTIONS"
+>Promocje ('promotions')</A
+></DT
+><DT
+>7.2.21. <A
+HREF="devel-db.html#PROMOTIONSCHEMAS"
+>Schematy promocji ('promotionschemas')</A
+></DT
+><DT
+>7.2.22. <A
+HREF="devel-db.html#PROMOTIONASSIGNMENTS"
+>Powiązania schematów z taryfami ('promotionassignments')</A
+></DT
+><DT
+>7.2.23. <A
+HREF="devel-db.html#LIABILITIES"
+>Zobowiązania ('liabilities')</A
+></DT
+><DT
+>7.2.24. <A
+HREF="devel-db.html#PAYMENTS"
+>Opłaty stałe ('payments')</A
+></DT
+><DT
+>7.2.25. <A
+HREF="devel-db.html#ASSIGNMENTS"
+>Powiązania ('assignments')</A
+></DT
+><DT
+>7.2.26. <A
+HREF="devel-db.html#NODEASSIGNMENTS"
+>Powiązania komputer-taryfa ('nodeassignments')</A
+></DT
+><DT
+>7.2.27. <A
+HREF="devel-db.html#NUMBERPLANS"
+>Plany (szablony) numeracyjne dokumentów ('numberplans')</A
+></DT
+><DT
+>7.2.28. <A
+HREF="devel-db.html#NUMBERPLANASSIGNMENTS"
+>Powiązania planów num. z firmami ('numberplanassignments')</A
+></DT
+><DT
+>7.2.29. <A
+HREF="devel-db.html#CASHREGS"
+>Rejestry kasowe ('cashregs')</A
+></DT
+><DT
+>7.2.30. <A
+HREF="devel-db.html#CASHRIGHTS"
+>Rejestry kasowe - uprawnienia ('cashrights')</A
+></DT
+><DT
+>7.2.31. <A
+HREF="devel-db.html#CASHREGLOG"
+>Cash registries - cash history ('cashreglog')</A
+></DT
+><DT
+>7.2.32. <A
+HREF="devel-db.html#DOCUMENTS"
+>Dokumenty: faktury, KP, umowy, etc. ('documents')</A
+></DT
+><DT
+>7.2.33. <A
+HREF="devel-db.html#DOCUMENTCONTENTS"
+>Dokumenty niefinansowe ('documentcontents')</A
+></DT
+><DT
+>7.2.34. <A
+HREF="devel-db.html#INVOICECONTENTS"
+>Faktury ('invoicecontents')</A
+></DT
+><DT
+>7.2.35. <A
+HREF="devel-db.html#DEBITNOTECONTENTS"
+>Noty obciążeniowe ('debitnotecontents')</A
+></DT
+><DT
+>7.2.36. <A
+HREF="devel-db.html#RECEIPTCONTENTS"
+>Potwierdzenia wpłaty - KP ('receiptcontents')</A
+></DT
+><DT
+>7.2.37. <A
+HREF="devel-db.html#DOCRIGHTS"
+>Dokumenty - uprawnienia ('docrights')</A
+></DT
+><DT
+>7.2.38. <A
+HREF="devel-db.html#IMESSENGERS"
+>Identyfikatory internetowe ('imessengers')</A
+></DT
+><DT
+>7.2.39. <A
+HREF="devel-db.html#CUSTOMERCONTACTS"
+>Kontakty ('customercontacts')</A
+></DT
+><DT
+>7.2.40. <A
+HREF="devel-db.html#DOMAINS"
+>Domeny ('domains')</A
+></DT
+><DT
+>7.2.41. <A
+HREF="devel-db.html#RECORDS"
+>Rekordy DNS ('records')</A
+></DT
+><DT
+>7.2.42. <A
+HREF="devel-db.html#PASSWD"
+>Konta ('passwd')</A
+></DT
+><DT
+>7.2.43. <A
+HREF="devel-db.html#ALIASES"
+>Aliasy ('aliases')</A
+></DT
+><DT
+>7.2.44. <A
+HREF="devel-db.html#ALIASASSIGNMENTS"
+>Powiązania aliasów z kontami ('aliasassignments')</A
+></DT
+><DT
+>7.2.45. <A
+HREF="devel-db.html#VOIPACCOUNTS"
+>Konta VoIP ('voipaccounts')</A
+></DT
+><DT
+>7.2.46. <A
+HREF="devel-db.html#STATS"
+>Statystyki wykorzystania łącza ('stats')</A
+></DT
+><DT
+>7.2.47. <A
+HREF="devel-db.html#RTQUEUES"
+>Helpdesk - kolejki ('rtqueues')</A
+></DT
+><DT
+>7.2.48. <A
+HREF="devel-db.html#RTTICKETS"
+>Helpdesk - zgłoszenia ('rttickets')</A
+></DT
+><DT
+>7.2.49. <A
+HREF="devel-db.html#RTMESSAGES"
+>Helpdesk - wiadomości ('rtmessages')</A
+></DT
+><DT
+>7.2.50. <A
+HREF="devel-db.html#RTATTACHMENTS"
+>Helpdesk - załączniki ('rtattachments')</A
+></DT
+><DT
+>7.2.51. <A
+HREF="devel-db.html#RTNOTES"
+>Helpdesk - notatki ('rtnotes')</A
+></DT
+><DT
+>7.2.52. <A
+HREF="devel-db.html#RTRIGHTS"
+>Helpdesk - uprawnienia ('rtrights')</A
+></DT
+><DT
+>7.2.53. <A
+HREF="devel-db.html#UICONFIG"
+>Konfiguracja LMS-UI ('uiconfig')</A
+></DT
+><DT
+>7.2.54. <A
+HREF="devel-db.html#EVENTS"
+>Terminarz - zdarzenia ('events')</A
+></DT
+><DT
+>7.2.55. <A
+HREF="devel-db.html#EVENTASSIGNMENTS"
+>Terminarz - powiązania ('eventassignments')</A
+></DT
+><DT
+>7.2.56. <A
+HREF="devel-db.html#HOSTS"
+>Hosty ('hosts')</A
+></DT
+><DT
+>7.2.57. <A
+HREF="devel-db.html#DAEMONINSTANCES"
+>Konfiguracja demona - instancje ('daemoninstances')</A
+></DT
+><DT
+>7.2.58. <A
+HREF="devel-db.html#DAEMONCONFIG"
+>Konfiguracja demona - opcje ('daemonconfig')</A
+></DT
+><DT
+>7.2.59. <A
+HREF="devel-db.html#SESSIONS"
+>Sesje ('sessions')</A
+></DT
+><DT
+>7.2.60. <A
+HREF="devel-db.html#STATES"
+>Województwa ('states')</A
+></DT
+><DT
+>7.2.61. <A
+HREF="devel-db.html#ZIPCODES"
+>Kody pocztowe ('zipcodes')</A
+></DT
+><DT
+>7.2.62. <A
+HREF="devel-db.html#COUNTRIES"
+>Kraje ('countries')</A
+></DT
+><DT
+>7.2.63. <A
+HREF="devel-db.html#DIVISIONS"
+>Firmy/Oddziały ('divisions')</A
+></DT
+><DT
+>7.2.64. <A
+HREF="devel-db.html#MESSAGES"
+>Wiadomości - lista ('messages')</A
+></DT
+><DT
+>7.2.65. <A
+HREF="devel-db.html#MESSAGESITEMS"
+>Wiadomości - szczegóły ('messageitems')</A
+></DT
+><DT
+>7.2.66. <A
+HREF="devel-db.html#DBINFO"
+>Informacje o bazie danych ('dbinfo')</A
+></DT
+></DL
+></DD
+><DT
+>7.3. <A
+HREF="devel-ini.html"
+>Format pliku konfiguracyjnego</A
+></DT
+><DD
+><DL
+><DT
+>7.3.1. <A
+HREF="devel-ini.html#INI-COMMENTS"
+>Komentarze</A
+></DT
+><DT
+>7.3.2. <A
+HREF="devel-ini.html#INI-PARAMS"
+>Sekcje, klucze, wartości</A
+></DT
+><DT
+>7.3.3. <A
+HREF="devel-ini.html#INI-PERL"
+>Zmienne dla skryptów perlowych</A
+></DT
+></DL
+></DD
+><DT
+>7.4. <A
+HREF="devel-genfake.html"
+>Generowanie danych losowych</A
+></DT
+><DT
+>7.5. <A
+HREF="devel-rights.html"
+>Poziomy dostępu</A
+></DT
+><DT
+>7.6. <A
+HREF="devel-limits.html"
+>Ograniczenia</A
+></DT
+><DD
+><DL
+><DT
+>7.6.1. <A
+HREF="devel-limits.html#DEVEL-LIMITS-LMS"
+>Wynikające z naszego projektu</A
+></DT
+><DT
+>7.6.2. <A
+HREF="devel-limits.html#DEVEL-LIMITS-DB"
+>Wynikające z używanego DBMS</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DEVEL-CATALOGS"
+>7.1. Drzewo katalogów</A
+></H1
+><DIV
+CLASS="TABLE"
+><A
+NAME="CATALOG-TREE"
+></A
+><P
+><B
+>Tabela 7-1. Drzewo katalogów LMS</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL
+WIDTH="200"
+ALIGN="CENTER"><COL
+WIDTH="300"
+ALIGN="CENTER"><THEAD
+><TR
+><TH
+>Nazwa</TH
+><TH
+>Opis</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>backups</TD
+><TD
+>Kopie zapasowe bazy danych</TD
+></TR
+><TR
+><TD
+>bin</TD
+><TD
+>Skrypty wykonywalne lms-...</TD
+></TR
+><TR
+><TD
+>contrib</TD
+><TD
+>Dodatki stworzone przez użytkowników LMS</TD
+></TR
+><TR
+><TD
+>daemon</TD
+><TD
+>A.L.E.C's LMS Daemon</TD
+></TR
+><TR
+><TD
+>devel</TD
+><TD
+>Skrypty przydatne dla developerów</TD
+></TR
+><TR
+><TD
+>doc</TD
+><TD
+>Dokumentacja</TD
+></TR
+><TR
+><TD
+>documents</TD
+><TD
+>Archiwum dokumentów</TD
+></TR
+><TR
+><TD
+>img</TD
+><TD
+>Obrazki do Interfejsu Użytkownika</TD
+></TR
+><TR
+><TD
+>lib</TD
+><TD
+>LMS'owy zbiór bibliotek PHP oraz Smarty</TD
+></TR
+><TR
+><TD
+>modules</TD
+><TD
+>Moduły Interfejsu Użytkownika</TD
+></TR
+><TR
+><TD
+>sample</TD
+><TD
+>Przykładowe skrypty i inne dodatki</TD
+></TR
+><TR
+><TD
+>templates</TD
+><TD
+>Szablony Smarty dla Interfejsu Użytkownika</TD
+></TR
+><TR
+><TD
+>templates_c</TD
+><TD
+>Pliki tymczasowe</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tscript.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="devel-db.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>T-Script</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Struktura bazy danych</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

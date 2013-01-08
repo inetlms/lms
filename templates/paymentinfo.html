@@ -1,0 +1,74 @@
+{include file="header.html"}
+<!-- $Id$ -->
+<H1>{$layout.pagetitle}</H1>
+<TABLE WIDTH="100%" CELLPADDING="3">
+	<TR CLASS="DARK">
+		<TD WIDTH="1%" CLASS="fleftu">
+			<IMG SRC="img/payment.gif" ALT="">
+		</TD>
+		<TD WIDTH="98%" COLSPAN="2" CLASS="frightu">
+			<B>{$payment.name} ({$payment.id|string_format:"%04d"})</B>
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD WIDTH="1%" CLASS="fleft">
+			<IMG SRC="img/creditor.gif" ALT="">
+		</TD>
+		<TD WIDTH="1%">
+			<B>{trans("Creditor:")}</B>
+		</TD>
+		<TD WIDTH="98%" CLASS="fright">
+			{$payment.creditor}
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD WIDTH="1%" CLASS="fleft">
+			<IMG SRC="img/value.gif" ALT="">
+		</TD>
+		<TD WIDTH="1%" NOWRAP>
+			<B>{trans("Value:")}</B> 
+		</TD>
+		<TD WIDTH="98%" CLASS="fright">
+			{$payment.value|money_format} 
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD WIDTH="1%" CLASS="fleft">
+			<IMG SRC="img/calendar.gif" ALT="">
+		</TD>
+		<TD WIDTH="1%" NOWRAP>
+			<B>{trans("Payment day:")}</B>
+		</TD>
+		<TD WIDTH="98%" CLASS="fright">								
+			{$payment.payday}
+		</TD>
+	</TR>	
+	{if $payment.description}
+	<TR CLASS="light">	
+		<TD WIDTH="1%" CLASS="fleft">
+			<IMG SRC="img/info1.gif" ALT="">
+		</TD>
+		<TD WIDTH="98%" CLASS="fright" COLSPAN="2">
+			<TABLE WIDTH="100%" CELLPADDING="5"> 
+			    <TR><TD CLASS="fall superlight">
+				    {$payment.description|replace:"\n":"<BR>"}
+			    </TD></TR>
+			</TABLE>
+		</TD>
+	</TR>
+	{/if}
+	<TR CLASS="LIGHT">
+		<TD WIDTH="100%" COLSPAN="3" CLASS="FBOTTOMU" ALIGN="RIGHT">
+			<FORM NAME="addbalance" METHOD="POST" ACTION="?m=balanceadd">
+			<INPUT type="submit" class="hiddenbtn">
+			<INPUT TYPE="HIDDEN" NAME="m" VALUE="balanceadd">
+			<INPUT TYPE="HIDDEN" NAME="addbalance[value]" VALUE="{math equation="x*-1" x=$payment.value}">
+			<INPUT TYPE="HIDDEN" NAME="addbalance[comment]" VALUE="{$payment.name} / {$payment.creditor}">
+			<A HREF="javascript:document.addbalance.submit();">{trans("Account payment")} <IMG SRC="img/pay.gif" alt=""></A>
+			<A HREF="?m=paymentedit&id={$payment.id}">{trans("Edit")} <IMG SRC="img/edit.gif" alt=""></A>
+			<A HREF="?m=paymentdel&id={$payment.id}" OnClick="return confirmLink(this, '{trans("Are you sure, you want to delete that payment?")}');">{trans("Delete")} <IMG SRC="img/delete.gif" ALT=""></A> 
+			</FORM>
+		</TD>
+	</TR>
+</TABLE>
+{include file="footer.html"}

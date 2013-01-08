@@ -1,0 +1,92 @@
+{include file="header.html"}
+
+<h3>{$layout.pagetitle}</h3>
+
+<table width="100%" cellpadding="5" cellspacing="3">
+    <tr class="dark">
+	<td colspan="6" class="fleftu" align="left" width="99%">
+	    Cennik: 
+	    <select name="hvprice" onchange="javascript:location.href=this.value;" style="text-align:center;{if $filtr.hvtlprice}background-color:#FFFE9F;{/if}min-width:110px;">
+		<option value="?m=hv_terminallist&hvtlprice=" {if !$filtr.hvtlprice} SELECTED{/if}>-- wszystkie --</option>
+		<option value="?m=hv_terminallist&hvtlprice=noprice" {if $filtr.hvtlprice=='noprice'} SELECTED{/if}>bez cennika</option>
+		{section name=pricelist loop=$pricelist}
+		    <option value="?m=hv_terminallist&hvtlprice={$pricelist[pricelist].id}" {if $filtr.hvtlprice==$pricelist[pricelist].id} SELECTED{/if}>&nbsp;{$pricelist[pricelist].name}&nbsp;</option>
+		{/section}
+	    </select>&nbsp;&nbsp;&nbsp;
+	    
+	    Abonament: 
+	    <select name="hvprice" onchange="javascript:location.href=this.value;" style="text-align:center;{if $filtr.hvtlsubscription}background-color:#FFFE9F;{/if}min-width:110px;">
+		<option value="?m=hv_terminallist&hvtlsubscription=" {if !$filtr.hvtlsubscription} SELECTED{/if}>-- wszystkie --</option>
+		<option value="?m=hv_terminallist&hvtlsubscription=nosubscription" {if $filtr.hvtlsubscription=='nosubscription'} SELECTED{/if}>bez abonamentu</option>
+		{section name=subscriptionlist loop=$subscriptionlist}
+		    <option value="?m=hv_terminallist&hvtlsubscription={$subscriptionlist[subscriptionlist].id}" {if $filtr.hvtlsubscription==$subscriptionlist[subscriptionlist].id} SELECTED{/if}>&nbsp;{$subscriptionlist[subscriptionlist].name}&nbsp;</option>
+		{/section}
+	    </select>&nbsp;&nbsp;&nbsp;
+	    
+	    
+	</td>
+	<td width="1%" class="frightu" align="right" nowrap>
+	    <b>RAZEM:&nbsp;{$terminallist|@count}</b>&nbsp;
+	</td>
+    </tr>
+
+    
+    <tr class="dark">
+	<td width="1%" class="fleftu" align="left" style="padding-left:5px;padding-right:5px;" nowrap><a href="?m=hv_terminallist&hvtls={if $filtr.hvtls=='id,asc'}id,desc{elseif $filtr.hvtls=='id,desc'}id,asc{else}id,asc{/if}">ID<a>&nbsp;{if $filtr.hvtls=='id,asc'}<img src="img/desc_order.gif">{elseif $filtr.hvtls=='id,desc'}<img src="img/asc_order.gif">{/if}</td>
+	<td width="1%" class="fbt" align="left" style="padding-left:5px;padding-right:5px;" nowrap><a href="?m=hv_terminallist&hvtls={if $filtr.hvtls=='numbers,asc'}numbers,desc{elseif $filtr.hvtls=='numbers,desc'}numbers,asc{else}numbers,asc{/if}">Numer</a>&nbsp;{if $filtr.hvtls=='numbers,asc'}<img src="img/desc_order.gif">{elseif $filtr.hvtls=='numbers,desc'}<img src="img/asc_order.gif">{/if}</td>
+	<td width="1%" class="fbt" align="left" style="padding-left:5px;padding-right:5px;" nowrap><a href="?m=hv_terminallist&hvtls={if $filtr.hvtls=='username,asc'}username,desc{elseif $filtr.hvtls=='username,desc'}username,asc{else}username,asc{/if}">Nazwa (login)</a>&nbsp;{if $filtr.hvtls=='username,asc'}<img src="img/desc_order.gif">{elseif $filtr.hvtls=='username,desc'}<img src="img/asc_order.gif">{/if}</td>
+	
+	<td width="5%" class="fbt" align="left" style="padding-left:5px;padding-right:5px;" nowrap><a href="?m=hv_terminallist&hvtls={if $filtr.hvtls=='customername,asc'}customername,desc{elseif $filtr.hvtls=='customername,desc'}customername,asc{else}customername,asc{/if}">Konto VoIP</a>&nbsp;{if $filtr.hvtls=='customername,asc'}<img src="img/desc_order.gif">{elseif $filtr.hvtls=='customername,desc'}<img src="img/asc_order.gif">{/if}</td>
+	<td width="1%" class="fbt" align="left" style="padding-left:5px;padding-right:5px;" nowrap>Cennik</td>
+	<td width="1%" class="fbt" align="left" style="padding-left:5px;padding-right:5px;" nowrap>Abonament</td>
+	<td width="1%" class="frightu" align="left" style="padding-left:5px;padding-right:5px;" nowrap {tip text="S.N. -> screen numbers<br>FAX -> T.38 FAX"}>S.N / FAX</td>
+	
+	
+    </tr>
+    {if $terminallist|@count !=0 }
+	<tr class="dark">
+	    <td colspan="7" width="100%" class="fall">
+		{include file="scroller.html" loop=$terminallist}
+	    </td>
+	</tr>
+    {/if}
+    {cycle values="light,lucid" print=false}
+    {section name=terminallist loop=$terminallist start=$start max=$pagelimit}
+    
+	<tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');" style="cursor:pointer;" onclick="javascript:location.href='?m=hv_accountinfo&id={$terminallist[terminallist].customerid}';">
+	
+	    <td width="1%" class="fleft" align="left" style="padding-left:5px;padding-right:5px;" nowrap>{$terminallist[terminallist].id|string_format:"%06d"}</td>
+	    <td width="1%" align="left" style="padding-left:5px;padding-right:5px;" nowrap>{$terminallist[terminallist].extensions|nl2br}</td>
+	    <td width="1%" align="left" style="padding-left:5px;padding-right:5px;" nowrap>{$terminallist[terminallist].username}</td>
+	    
+	    <td width="5%" align="left" style="padding-left:5px;padding-right:5px;" nowrap>{$terminallist[terminallist].customer_name}</td>
+	    <td width="1%" align="left" style="padding-left:5px;padding-right:5px;" nowrap>{$terminallist[terminallist].pricelist_name}</td>
+	    <td width="1%" align="left" style="padding-left:5px;padding-right:5px;" nowrap>{$terminallist[terminallist].subscriptions}</td>
+	    <td width="1%" align="left" style="padding-left:5px;padding-right:5px;" nowrap class="fright">
+		{if $terminallist[terminallist].screen_numbers=='t'}TAK{else}---{/if} / {if $terminallist[terminallist].t38_fax=='t'}TAK{else}&nbsp;{/if}
+	    </td>
+	</tr>
+    
+    {sectionelse}
+	<tr class="light">
+	    <td colspan="7" width="100%" class="flr">
+		<center>
+		<p><h4>Brak terminali pasujących do reguł filtrowania lub lista jest pusta</h4></p>
+		</center>
+	    </td>
+	</tr>
+    {/section}
+    {if $terminallist|@count !=0 }
+	<tr class="dark">
+	    <td colspan="7" width="100%" class="fall">
+		{include file="scroller.html" loop=$terminallist}
+	    </td>
+	</tr>
+    {else}
+    <tr class="dark">
+	    <td colspan="7" width="100%" class="fall">&nbsp;</td>
+	</tr>
+    {/if}
+
+</table>
+{include file="footer.html"}

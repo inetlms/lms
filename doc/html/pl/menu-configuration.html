@@ -1,0 +1,1154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Konfiguracja</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interfejs Użytkownika (LMS-UI)"
+HREF="user.html"><LINK
+REL="PREVIOUS"
+TITLE="Terminarz"
+HREF="menu-timetable.html"><LINK
+REL="NEXT"
+TITLE="Skrypty"
+HREF="scripts.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="menu-timetable.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Rozdzia&#322; 3. Interfejs Użytkownika (LMS-UI)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="scripts.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MENU-CONFIGURATION"
+>3.15. Konfiguracja</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-UI"
+>3.15.1. Interfejs Użytkownika</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="CONFIG-BASIC"
+>3.15.1.1. Podstawy</A
+></H3
+><P
+>Począwszy od wersji 1.5.3 możliwa jest konfiguracja interfejsu
+		użytkownika także poprzez <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+>. Opcje przechowywane 
+        	są w bazie danych i należy je przenieść z pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>.
+		W celu automatycznego przeniesienia konfiguracji do bazy danych kliknij na
+    	        linku znajdującym się na pustej liście opcji konfiguracyjnych.</P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Opcje konfigurowane w <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>LMS-UI</I
+></SPAN
+> mają
+    		większy priorytet od tych zapisanych w <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>, co
+    		oznacza, że plik konfiguracyjny jest także odczytywany, ale wartości 
+    		zmiennych z tego pliku nadpisywane są wartościami zapisanymi
+    		w bazie danych.</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+    		<DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Demon odczytuje niektóre opcje konfiguracyjne UI tylko z bazy
+    		danych, dlatego zaleca się przechowywanie konfiguracji w bazie zamiast w pliku 
+    		ini.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><P
+>Aby dodać nową opcję kliknij link 'Dodaj opcję'.
+    		Aby wyedytować parametry opcji kliknij na jej rekord. Zostaniesz przeniesiony 
+    		do formularza edycyjnego. Zmiana statusu
+    		opcji oznacza włączenie/wyłączenie jej działania, co polega na przypisaniu
+    		jej wartości domyślnej (jeżeli taką posiada).</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="CONFIG-OPTIONS"
+>3.15.1.2. Lista opcji konfiguracyjnych</A
+></H3
+><P
+>Poniżej przedstawiamy listę opcji konfiguracyjnych interfejsu
+	    użytkownika. Opcje te należy umieścić w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[phpui]</I
+></SPAN
+>.
+	    Pozostałe opcje zostały omówione w odpowiednich rozdziałach ich dotyczących.
+    <UL
+><LI
+><P
+>lang</P
+><P
+>Ustawia język interfejsu użytkownika. Jeśli nie podano, język
+            zostanie ustawiony na podstawie ustawień przeglądarki. Domyślnie: en.</P
+><P
+>Przykład:          <SAMP
+CLASS="PROMPT"
+>lang = pl</SAMP
+></P
+></LI
+><LI
+><P
+>allow_from</P
+><P
+>Lista sieci i adresów IP które mają dostęp do LMS. Jeżeli puste, każdy adres IP ma dostęp do LMS'a, 
+            jeżeli wpiszemy tutaj listę adresów bądź pul adresowych, LMS odrzuci błędem HTTP 403 każdego 
+            niechcianego użytkownika.</P
+><P
+>Przykład:          <SAMP
+CLASS="PROMPT"
+>allow_from = 192.168.0.0/16, 213.25.209.224/27, 213.241.77.29</SAMP
+></P
+></LI
+><LI
+><P
+>timeout</P
+><P
+>Timeout sesji www. Po tym czasie (w sekundach) użytkownik zostanie wylogowany jeżeli nie 
+            podejmie żadnej akcji. Domyślnie 600 sekund.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>timeout = 900</SAMP
+></P
+><P
+><DIV
+CLASS="WARNING"
+><TABLE
+CLASS="WARNING"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/warning.gif"
+HSPACE="5"
+ALT="Ostrze&#380;enie"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Nie ma możliwości ustawienia braku timeoutu. Jeżeli ustawisz tą wartość na zero, nie 
+            będziesz mógł korzystać z LMS!</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></LI
+><LI
+><P
+>default_module</P
+><P
+>Nazwa modułu startowego (nazwa pliku z katalogu <TT
+CLASS="FILENAME"
+>/modules</TT
+>
+		bez rozszerzenia .php). Domyślnie: welcome.</P
+><P
+>Przykład:          <SAMP
+CLASS="PROMPT"
+>default_module = copyrights</SAMP
+></P
+></LI
+><LI
+><P
+>customerlist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście klientów. Domyślnie: 100.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>customerlist_pagelimit = 10</SAMP
+></P
+></LI
+><LI
+><P
+>nodelist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście komputerów. Domyślnie: 100.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>nodelist_pagelimit = 10</SAMP
+></P
+></LI
+><LI
+><P
+>balancelist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie na rachunku klienta. Domyślnie: 100.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>balancelist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>invoicelist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście faktur. Domyślnie: 100</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>invoicelist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>ticketlist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście zgłoszeń. Domyślnie: 100</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>ticketlist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>networkhosts_pagelimit</P
+><P
+>Ilość komputerów wyświetlanych na jednej stronie w informacjach 
+            o sieci. Domyślnie: 256.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>networkhosts_pagelimit = 1024</SAMP
+></P
+></LI
+><LI
+><P
+>accountlist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście kont. Domyślnie: 100.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>accountlist_pagelimit = 25</SAMP
+></P
+></LI
+><LI
+><P
+>domainlist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście domen. Domyślnie: 100.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>domainlist_pagelimit = 25</SAMP
+></P
+></LI
+><LI
+><P
+>aliaslist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście aliasów. Domyślnie: 100.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>aliaslist_pagelimit = 25</SAMP
+></P
+></LI
+><LI
+><P
+>configlist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście opcji konfiguracyjnych. Domyślnie: 100.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>configlist_pagelimit = 50</SAMP
+></P
+></LI
+><LI
+><P
+>taxratelist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście stawek podatkowych. Domyślnie: 100.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>taxratelist_pagelimit = 10</SAMP
+></P
+></LI
+><LI
+><P
+>numberplanlist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście planów numeracyjnych. Domyślnie: 100.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>numberplanlist_pagelimit = 10</SAMP
+></P
+></LI
+><LI
+><P
+>divisionlist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście firm. Domyślnie: 100.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>divisionlist_pagelimit = 10</SAMP
+></P
+></LI
+><LI
+><P
+>documentlist_pagelimit</P
+><P
+>Limit wyświetlanych pozycji na stronie w liście dokumentów. Domyślnie: 100.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>documentlist_pagelimit = 10</SAMP
+></P
+></LI
+><LI
+><P
+>reload_type</P
+><P
+>Typ reloadu. Dozwolone wartości:</P
+><P
+>exec - wywoływanie jakiejś komendy (najczęściej coś przez sudo, jakiś skrypt lub coś, konfigurowalny
+            poniżej)</P
+><P
+>sql  - zrobienie wpisów w SQL'u (też można ustawić konkretne query SQL'a)</P
+><P
+>Domyślna wartość to 'sql'.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>reload_type = exec</SAMP
+></P
+></LI
+><LI
+><P
+>reload_execcmd</P
+><P
+>Komenda do wykonania podczas reloadu jeżeli reload_type jest ustawione na 'exec'. Domyślnie
+            <TT
+CLASS="FILENAME"
+>/bin/true</TT
+>. String ten puszczany do komendy system() więc proponuję rozwagę 
+            i pomyślenie co się robi i jak :) Generalnie średniki powinny być parsowane przez bash'a, ale z paru 
+            względów LMS sam dzieli poniższy ciąg pod względem średników i wykonuje komendy pojedynczo.
+	    W poleceniach można używać zmiennej '%host', która zostanie zamieniona na nazwę
+	    zdefiniowanego hosta (Konfiguracja -&#62; Hosty).</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>reload_execcmd = "sudo /usr/bin/reload_lms.sh"</SAMP
+></P
+></LI
+><LI
+><P
+>reload_sqlquery</P
+><P
+>Zapytanie SQL wykonywane podczas reloadu, jeśli <SAMP
+CLASS="PROMPT"
+>reload_type = sql</SAMP
+>.  
+            Domyślnie zapytanie ustawia w bazie polecenie przeładowania dla demona
+	    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>lmsd</I
+></SPAN
+>. W zapytaniu można użyć zmiennej '%host' oraz
+            '%TIME%' jako podstawki pod aktualny timestamp unixowy. UWAGA! Znak średnika jest 
+            traktowany jako separator kwerend, tzn. oddzielając znakiem średnika możesz wpisać kilka zapytań SQL.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>reload_sqlquery = "INSERT INTO reload VALUES ('1','%TIME%')"</SAMP
+></P
+></LI
+><LI
+><P
+>force_ssl</P
+><P
+>Wymuszanie SSL'a. Ustawienie tej zmiennej na 1 spowoduje że LMS będzie wymuszał połączenie 
+            SSL powodując redirect do 'https://'.$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI] przy każdej 
+            próbie dostępu bez SSL. Domyślnie wyłączone.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>force_ssl = 0</SAMP
+></P
+></LI
+><LI
+><P
+>allow_mac_sharing</P
+><P
+>Przyzwolenie na dodawanie rekordów komputerów z adresami MAC już istniejącymi (nie sprawdza 
+            czy jakiś inny komputer posiada taki adres MAC). Domyślnie wyłączone</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>allow_mac_sharing     = 1</SAMP
+></P
+></LI
+><LI
+><P
+>smarty_debug</P
+><P
+>Włączenie konsoli debugowej Smarty-ego, przydatne do śledzenia wartości przekazywanych z PHP 
+            do Smarty-ego. Domyślnie wyłączone.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>smarty_debug = 1</SAMP
+></P
+></LI
+><LI
+><P
+>default_zip, default_city, default_address</P
+><P
+>Domyślny kod pocztowy, miasto, ulica, stosowane podczas wstawiania nowego
+            klienta. Przydatne gdy mamy do wpisania wielu klientów z tej samej ulicy.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>default_zip = 39-300</SAMP
+></P
+></LI
+><LI
+><P
+>use_current_payday</P
+><P
+>Określa, czy ma być użyta aktualna data jako dzień zapłaty podczas
+            przypisywania zobowiązań klientom. Domyślnie wyłączone.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>use_current_payday = 1</SAMP
+></P
+></LI
+><LI
+><P
+>default_monthly_payday</P
+><P
+>Określa domyślny dzień miesiąca odpowiadający dniom zapłaty podczas
+            przypisywania zobowiązań klientom. Domyślnie niezdefiniowany.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>default_monthly_payday = 1</SAMP
+></P
+></LI
+><LI
+><P
+>use_invoices</P
+><P
+>Powoduje zaznaczenie opcji "z fakturą" w formularzu dodawania zobowiązania. Domyślnie wyłączona.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>use_invoices = tak</SAMP
+></P
+></LI
+><LI
+><P
+>lastonline_limit</P
+><P
+>Określa czas (w sekundach), po którym komputer zostaje uznany za
+            nieaktywny. Powinien odpowiadać częstotliwości uruchamiania skryptu
+            badającego aktywność komputerów (np.lms-fping). Domyślnie: 600.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>lastonline_limit = 300</SAMP
+></P
+></LI
+><LI
+><P
+>timetable_days_forward</P
+><P
+>Określa ilość dni (łącznie z bieżącym) jaka ma być wyświetlana 
+            w terminarzu. Domyślnie: 7.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>timetable_days_forward = 2</SAMP
+></P
+></LI
+><LI
+><P
+>arpd_servers</P
+><P
+>Lista serwerów arpd do sczytywania MAC'adresów z odległych sieci.
+            Lista ta powinna zawierać wpisy w postaci adresIP[:port] oddzielone
+            spacjami. Domyślnie pusta.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>arpd_servers = 192.168.1.1 192.168.2.1</SAMP
+></P
+></LI
+><LI
+><P
+>helpdesk_backend_mode</P
+><P
+>Włączenie tej opcji spowoduje, że wszystkie wiadomości w systemie 
+            helpdesk (oprócz tych skierowanych do zgłaszającego) 
+            będą wysyłane do serwera pocztowego na adres odpowiedniej kolejki.
+            Na serwerze tym powinien być uruchomiony skrypt lms-rtparser, który zajmie
+            się zapisem wiadomości do bazy danych. Domyślnie: wyłączona.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>helpdesk_backend_mode = 1</SAMP
+></P
+></LI
+><LI
+><P
+>helpdesk_sender_name</P
+><P
+>Nazwa nadawcy wiadomości albo predefiniowane wartości: 'queue'
+            - nazwa kolejki do której należy zgłoszenie, 'user' - nazwa zalogowanego
+            użytkownika (nadawcy). Domyślnie: pusta.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>helpdesk_sender_name = Helpdesk</SAMP
+></P
+></LI
+><LI
+><P
+>newticket_notify</P
+><P
+>Włączenie tej opcji spowoduje, że wszyscy użytkownicy z prawami
+            do kolejki dostaną powiadomienie (mailem i/lub smsem) o dodaniu do niej nowego
+            zgłoszenia. Domyślnie: wyłączona.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>newticket_notify = 1</SAMP
+></P
+></LI
+><LI
+><P
+>helpdesk_stats</P
+><P
+>Dodaje statystyki przyczyn zgłoszeń na stronie informacji o zgłoszeniu
+		oraz na jego wydruku. Domyślnie: włączona.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>helpdesk_stats = 0</SAMP
+></P
+></LI
+><LI
+><P
+>helpdesk_customerinfo</P
+><P
+>Dodaje podstawowe informacje o kliencie na stronie informacji o zgłoszeniu
+		oraz w treści powiadomienia. Domyślnie: włączona.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>helpdesk_customerinfo = 0</SAMP
+></P
+></LI
+><LI
+><P
+>ticketlist_status</P
+><P
+>Domyślne ustawienie filtra statusu na liście zgłoszeń. Dozwolonych
+		wartości szukaj w kodzie strony html. Domyślnie: nie ustawiona.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>ticketlist_status = -1</SAMP
+></P
+></LI
+><LI
+><P
+>ticket_template_file</P
+><P
+>Szablon wydruku zgłoszenia. Domyślnie: rtticketprint.html.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>ticket_template_file = ../mytemplates/ticket.html</SAMP
+></P
+></LI
+><LI
+><P
+>to_words_short_version</P
+><P
+>Określa format reprezentacji słownej kwot (na fakturach). Dla wartości "1"
+            rozwinięciem kwoty 123,15 będzie "jed dwa trz 15/100". Domyślnie: 0.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>to_words_short_version = 1</SAMP
+></P
+></LI
+><LI
+><P
+>nodepassword_length</P
+><P
+>Domyślna długość hasła (generowanego automatycznie) dla komputera. 
+            Maksymalnie 32. Domyślnie: 16.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>nodepassword_length = 8</SAMP
+></P
+></LI
+><LI
+><P
+>gd_translate_to</P
+><P
+>Kodowanie danych dla biblioteki GD (przydatne jeśli GD wymaga ISO-8859-2 zamiast UTF-8 dla funkcji imagetext). Domyślnie: ISO-8859-2.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>gd_translate_to = </SAMP
+></P
+></LI
+><LI
+><P
+>check_for_updates_period</P
+><P
+>Jak często sprawdzać czy są dostępne poprawki LMS-a (w sekundach). Domyślnie: 86400.</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>check_for_updates_period = 604800</SAMP
+></P
+></LI
+><LI
+><P
+>default_taxrate</P
+><P
+>Określa wartość (nie etykietę) stawki podatkowej, która
+	    będzie domyślnie zaznaczona na listach wyboru. Domyślnie: 22</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>default_taxrate = 7</SAMP
+></P
+></LI
+><LI
+><P
+>big_networks</P
+><P
+>Wsparcie dla dużych ISPów, np. ukrywanie list wyboru klientów. 
+		Domyślnie: wyłączona</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>big_networks = true</SAMP
+></P
+></LI
+><LI
+><P
+>short_pagescroller</P
+><P
+>Zmienia wygląd pól wyboru strony, ułatwiając nawigację na listach z 
+		bardzo dużą liczbą stron. Domyślnie: wyłączona</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>short_pagescroller = tak</SAMP
+></P
+></LI
+><LI
+><P
+>ewx_support</P
+><P
+>Wsparcie dla urządzeń <A
+HREF="http://etherwerx.com"
+TARGET="_top"
+>EtherWerX</A
+>.
+		Domyślnie: wyłączona</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>ewx_support = tak</SAMP
+></P
+></LI
+><LI
+><P
+>account_type</P
+><P
+>Zmienia domyślnego zaznaczenie checkboxów w dodwaniu kont.
+		shell = 1 (0000000000000001)
+		mail = 2  (0000000000000010)
+		www = 4   (0000000000000100)
+		ftp = 8   (0000000000001000)
+		sql = 16  (0000000000010000)
+		Domyślnie: 32767</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>account_type = 2</SAMP
+></P
+></LI
+><LI
+><P
+>default_assignment_period</P
+><P
+>Domyślnie wybrana z listy rozwijanej wartość okresu obciążenia, przy dodawaniu zobowiązania dla klienta.
+			Możliwe wartości:
+			
+			jednorazowo - 0
+			codziennie  - 1
+			co tydzień  - 2
+			co miesiąc  - 3 
+			co kwartał  - 4
+			co rok	    - 5			
+			Domyślnie: 0</P
+><P
+>Przykład:     <SAMP
+CLASS="PROMPT"
+>default_assignment_period = 3</SAMP
+></P
+></LI
+></UL
+>
+	</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-TAXES"
+>3.15.2. Stawki podatkowe</A
+></H2
+><P
+>Przed rozpoczęciem pracy z systemem finansowym należy zdefiniować
+		stawki podatkowe jakich będziemy używać. Na liście znajdują się wszystkie
+		dane stawek. Możliwa jest edycja stawki podatkowej, przy czym należy pamiętać,
+		że system nie pozwoli na zmianę wartości stawki, jeżeli została ona
+		użyta w przeszłości. Nie możliwe jest także usunięcie takiej stawki.</P
+><P
+>Link 'Dodaj stawkę' przenosi do formularza definiowania nowej stawki
+		procentowej. Etykieta stawki jest wyświetlana na listach wyboru oraz
+		w szablonie faktury. Wartość stawki to liczba od 0 do 100 z dokładnością
+		do dwóch miejsc po przecinku. Status opodatkowania jest wykorzystywany
+		do wyróżnienia stawki zwolnionej z podatku, czyli wszystkie pozostałe
+		stawki powinny mieć włączone 'opodatkowanie'.</P
+><P
+>Stawkę, która będzie domyślnie zaznaczona na listach wyboru
+		można zdefiniować przy pomocy opcji <TT
+CLASS="FILENAME"
+>default_taxrate</TT
+>
+		w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[phpui]</I
+></SPAN
+></P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-NUMBERPLANS"
+>3.15.3. Plany numeracyjne</A
+></H2
+><P
+>Wszystkim dokumentom generowanym przez system LMS można nadawać
+		dowolną numerację wg zdefiniowanych wzorów (planów). Możliwe jest
+		używanie różnych numeracji w obrębie jednego typu dokumentów. Dla
+		każdego typu można zdefiniować jeden plan domyślny (ważne w przypadku
+		faktur wystawianych automatycznie, skrypty/demon muszą wiedzieć na jakiej
+		numeracji mają być oparte nowo tworzone dokumenty).</P
+><P
+>Do każdego planu należy przypisać także okres numeracyjny, czyli
+		przedział czasowy w jakim zachowywana jest ciągłość numeracji. Przy
+		przejściu do nowego okresu numeracja zostanie wyzerowana. Można zdefiniować
+		numerację jednodniową, tygodniową (od poniedziałku do niedzieli), miesięczną, 
+		kwartalną oraz roczną.</P
+><P
+>Na liście planów numeracyjnych znajdują się wszystkie niezbędne 
+		informacje o planach wraz z przykładowym numerem oraz liczbą dokumentów
+		utworzonych przy ich użyciu. Poprzez link 'Dodaj plan' przechodzi się 
+		do interfejsu dodawania planu. Edycji można dokonać klikając na wybrany 
+		rekord na liście. Usunięcie planu numeracyjnego jest możliwe tylko
+		wtedy gdy nie dotyczy on żadnego istniejącego dokumentu.</P
+><P
+>Szablon numeru to dowolny ciąg znaków, który zawiera specjalne
+		symbole (specyfikatory) znane z funkcji strftime. Szczegóły użycia oraz
+		wykaz wszystkich symboli można znaleźć w <A
+HREF="http://www.php.net/manual/pl/function.strftime.php"
+TARGET="_top"
+>manualu PHP</A
+>.
+		Podstawowym i jedynym wymaganym symbolem w szablonie jest symbol '%N', za
+		który zostanie podstawiony numer wewnętrzny dokumentu. Pozostałe symbole
+		wynikają z daty wystawienia dokumentu. A oto najczęściej używane z nich:
+		<UL
+><LI
+><P
+>%N - liczba dziesiętna określająca numer dokumentu</P
+></LI
+><LI
+><P
+>%[1-9]N - j.w. ale z zerami wiodącymi, np. '%4N' dla liczby 12 zwróci '0012'</P
+></LI
+><LI
+><P
+>%I - dodatkowy numer (działa tylko z dokumentami kasowymi)</P
+></LI
+><LI
+><P
+>%Y - rok jako liczba dziesiętna z wiekiem włącznie</P
+></LI
+><LI
+><P
+>%y - rok jako liczba dziesiętna bez uwzględnienia wieku (00 do 99)</P
+></LI
+><LI
+><P
+>%m - miesiąc jako liczba dziesiętna (01 do 12)</P
+></LI
+><LI
+><P
+>%b - skrótowa nazwa miesiąca zgodnie z lokalizacją</P
+></LI
+></UL
+>
+		</P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Jeżeli w systemie nie zdefiniowano planów numeracyjnych
+		dokumenty będą numerowane wg wzorca '%N/LMS/%Y' z okresem rocznym.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-DIVISIONS"
+>3.15.4. Firmy (Oddziały)</A
+></H2
+><P
+>Firmy (Oddziały) służą do grupowania klientów. Powinieneś zdefiniować
+		przynajmniej jedną firmę. Masz możliwość podania nazwy skróconej i pełnej
+		firmy, jej adresu, konta bankowego (lub prefiksu konta płatności masowych) 
+		oraz danych do fakturowania. Zablokowanie firmy uniemożliwia jej przypisanie
+		do klienta. 
+		</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-HOSTS"
+>3.15.5. Hosty</A
+></H2
+><P
+>Tutaj definiuje się hosty które będą współpracowały
+		z LMSem, czyli komputery (routery, serwery) pobierające 
+		konfigurację z bazy LMSa, na których będą uruchamiane
+		skrypty lub demon <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>lmsd</I
+></SPAN
+>.</P
+><P
+>Nazwa każdego hosta musi być unikalna i zaleca się
+		aby odpowiadała rzeczywistej nazwie maszyny, którą można
+		uzyskać uruchamiając polecenie <SAMP
+CLASS="PROMPT"
+>hostname</SAMP
+>
+		na każdej z tych maszyn (zakładając, że są to komputery
+		z u*ixem).</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-DAEMON"
+>3.15.6. Demon</A
+></H2
+><P
+>Po zdefiniowaniu hostów można rozpocząć konfigurację
+		demona <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>lmsd</I
+></SPAN
+>. Konfiguracja jest bardziej
+		szczegółowo opisana w rozdziale dotyczącym demona.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-SOURCES"
+>3.15.7. Źródła importu</A
+></H2
+><P
+>Import płatności może odbywać się z wielu źródeł (banków).
+		W tym miejscu definiuje się ich nazwy, co umożliwia późniejsze
+		przeszukiwanie wpłat wg źródła. Źródło można ustawić również
+                dla wpłat klientów poza importem. Dokonując importu płatności
+		masz możliwość wyboru źródła. Możliwe jest automatyczne określenie
+		źródła, w tym celu należy przypisać identyfikator źródła do
+		wzorca w konfiguracji importu.
+		</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CONFIG-PROMOTIONS"
+>3.15.8. Promocje</A
+></H2
+><P
+>W tym miejscu mamy możliwość definiowania schematów promocji.
+		Schemat określa kwotę oraz sposób płatności abonamentu przez cały okres
+		trwania promocji. Definiujemy tutaj jeden lub wiele okresów o dowolnej długości
+		i mamy możliwość określenia kwoty abonamentu oraz sposobu naliczania.
+		Po okresie promocyjnym abonament będzie naliczany w normalnej (określonej
+		w taryfie) kwocie. Ponadto możemy określić kwotę opłaty aktywacyjnej oraz
+		dodatkowej taryfy doliczanej do abonamentu po okresie promocyjnym.
+		</P
+><P
+>Zdefiniowane schematy/promocje będą widoczne na liście wyboru
+		w formularzu nowego zobowiązania. Wybranie schematu i taryfy spowoduje
+		utworzenie odpowiedniej liczby zobowiązań wynikającej ze zdefiniowanych
+		w schemacie okresów.
+		</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="menu-timetable.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="scripts.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Terminarz</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="user.html"
+ACCESSKEY="U"
+>Pocz&#261;tek rozdzia&#322;u</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Skrypty</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

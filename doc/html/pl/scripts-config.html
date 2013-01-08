@@ -1,0 +1,2886 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Opis i konfiguracja</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="LMS - LAN Management System 1.11-cvs"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Skrypty"
+HREF="scripts.html"><LINK
+REL="PREVIOUS"
+TITLE="Lista dostępnych skryptów"
+HREF="scripts-list.html"><LINK
+REL="NEXT"
+TITLE="Generator plików konfiguracyjnych (lms-mgc)"
+HREF="mgc.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="../images/style.css"><META
+HTTP-EQUIV="Content-Type"
+CONTENT="text/html; charset=UTF-8"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#EBE4D6"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>LMS - LAN Management System 1.11-cvs</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="scripts-list.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Rozdzia&#322; 4. Skrypty</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mgc.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SCRIPTS-CONFIG"
+>4.3. Opis i konfiguracja</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-NOTIFY"
+>4.3.1. lms-notify</A
+></H2
+><P
+>lms-notify jest dobrym sposobem przypominania ludziom o tym że do pracy sieci 
+		i łącz konieczne są ich pieniążki. Pozwala on na napisanie kilku[-nastu] plików 
+		tekstowych i traktowania ich jako szablonów do mailingu. Skrypt jest 
+		wielofunkcyjny, włączenie określonego zadania następuje poprzez
+		zdefiniowanie lokalizacji pliku z szablonem wiadomości. Do wysyłania poczty
+		został zastosowany moduł Mail::Sender.</P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="LMS-NOTIFY-TEMPLATES"
+>4.3.1.1. Szablony</A
+></H3
+><P
+>W szablonach można używać następujących zmiennych:</P
+><UL
+><LI
+><P
+>%date-m - zostanie zastąpione aktualnym miesiącem, licząc od 1 poprzedzone 0, np. 02</P
+></LI
+><LI
+><P
+>%date-y - zostanie zastąpione aktualnym rokiem, np. 2003</P
+></LI
+><LI
+><P
+>%date_month_name - zostanie zastąpione nazwą bieżącego miesiąca, np. marzec</P
+></LI
+><LI
+><P
+>%saldo - zostanie zastąpione aktualnym saldem klienta, np. 535</P
+></LI
+><LI
+><P
+>%abonament - zostanie zastąpione kwotą abonamentu jaka 
+					jest do danego klienta przypisana, np. 107</P
+></LI
+><LI
+><P
+>%b - saldo z zanegowanym znakiem, np. 107</P
+></LI
+><LI
+><P
+>%B - saldo z prawdziwym znakiem, np. -107</P
+></LI
+><LI
+><P
+>%pin - numer PIN klienta</P
+></LI
+><LI
+><P
+>%cid - ID klienta</P
+></LI
+><LI
+><P
+>%number - numer dokumentu (tylko w powiadomieniu o fakturze lub nocie obciążeniowej)</P
+></LI
+><LI
+><P
+>%value - wartość brutto na fakturze (tylko w powiadomieniu o fakturze)</P
+></LI
+><LI
+><P
+>%last_10_in_a_table - wyciąg ostatnich 10 operacji kasowych na koncie klienta (tylko wiadomości e-mail), np.:</P
+></LI
+></UL
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="NOTIFY-EXAMPLE"
+></A
+><P
+><B
+>Przyk&#322;ad 4-1. Lms-notify: Przykładowy wyciąg 10 ostatnich operacji kasowych</B
+></P
+><PRE
+CLASS="SCREEN"
+>-----------+------------------------------------------------------+---------
+2003-02-02 | Abonament za miesiąc 2003/02                         |  107.00
+2003-02-01 | Wpłata                                               | -107.00
+2003-02-01 | Abonament za miesiąc 2003/02                         |  107.00
+2003-02-01 | Wpłata                                               | -321.00
+2003-01-31 | Abonament za miesiąc 2003/01                         |  107.00
+2003-01-31 | Abonament za miesiąc 2003/01                         |  107.00
+2003-01-31 | Abonament za miesiąc 2003/01                         |  107.00
+-----------+------------------------------------------------------+---------</PRE
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="NOTIFY-TEMPLATE"
+></A
+><P
+><B
+>Przyk&#322;ad 4-2. Lms-notify: Przykład szablonu</B
+></P
+><PRE
+CLASS="SCREEN"
+>UWAGA! Ta wiadomość została wygenerowana automatycznie.
+
+Uprzejmie informujemy iż na Pani/Pana koncie figuruje zaległość w opłatach za
+internet w wysokości %B zł.
+
+Jeżeli porozumieli się już Państwo z administratorami w kwestii opłaty za
+bieżący miesiąc czyli %date-m %date-y roku, prosimy o
+zignorowanie tej wiadomości.
+
+W wypadku gdy uważają Państwo iż zaległość ta jest nieporozumieniem prosimy o
+jak najszybszy kontakt.
+
+Wszelkie informacje na temat Państwa rozliczeń mogą Państwo znaleźć pod
+adresem http://www.naszasiec.pl/mojekonto/
+
+Jeżeli chcieliby Państwo uregulować zaległości prosimy o kontakt:
+
+Dział Rozliczeń ASK NaszaSiec
+
+Gwidon Mniejważny
+telefon: 0-606666666
+e-mail: gwidonm@naszasiec.pl
+
+ps. załączamy ostatnie 10 operacji jakie zostało zarejestrowane przez nasz
+system billingowy na Państwa koncie:
+
+Data       | Opis                                                 | Wartość
+%last_10_in_a_table
+
+--
+Amatorska Sieć Komputerowa NaszaSiec
+http://www.naszasiec.pl/</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="LMS-NOTIFY-CONFIG"
+>4.3.1.2. Konfiguracja</A
+></H3
+><P
+>Konfigurację dla lms-notify można ustalić w pliku 
+			<TT
+CLASS="FILENAME"
+>lms.ini</TT
+> w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[notify]</I
+></SPAN
+>. 
+			Możesz tam ustawić następujące parametry, które mają zastosowanie
+			również dla skryptów <A
+HREF="scripts-config.html#LMS-NOTIFY-SMS"
+>lms-notify-sms</A
+> i <A
+HREF="scripts-config.html#LMS-NOTIFY-MESSAGES"
+>lms-notify-messages</A
+>:</P
+><UL
+><LI
+><P
+>debtors_template (opcjonalny)</P
+><P
+>Lokalizacja pliku z szablonem wiadomości wysyłanej do 
+				zadłużonych klientów. Pozostawienie tej opcji pustej wyłączy
+				powiadomienia o zadłużeniu. Domyślnie: pusta</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>debtors_template = /etc/lms/debtors.txt</SAMP
+></P
+></LI
+><LI
+><P
+>debtors_subject (opcjonalny)</P
+><P
+>Temat wiadomości o zadłużeniu. Domyślnie: 'Debtors notification'</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>debtors_subject = 'Powiadomienie o zadłużeniu'</SAMP
+></P
+></LI
+><LI
+><P
+>invoices_template (opcjonalny)</P
+><P
+>Lokalizacja pliku z szablonem wiadomości z informacją o 
+				wystawieniu faktury. Pod uwagę brane są faktury wystawione
+				w ciągu ostatnich 24 godzin od uruchomienia skryptu.	
+				Pozostawienie tej opcji pustej wyłączy
+				powiadomienia o nowych fakturach. Domyślnie: pusta</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>invoices_template = /etc/lms/new_invoice.txt</SAMP
+></P
+></LI
+><LI
+><P
+>invoices_subject (opcjonalny)</P
+><P
+>Temat wiadomości o nowej fakturze. Domyślnie: 'New invoice notification'</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>invoices_subject = 'Powiadomienie o wystawieniu faktury'</SAMP
+></P
+></LI
+><LI
+><P
+>notes_template (opcjonalny)</P
+><P
+>Lokalizacja pliku z szablonem wiadomości z informacją o 
+				wystawieniu noty obciążeniowej. Pod uwagę brane są noty wystawione
+				w ciągu ostatnich 24 godzin od uruchomienia skryptu.	
+				Pozostawienie tej opcji pustej wyłączy
+				powiadomienia o nowych notach. Domyślnie: pusta</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>notes_template = /etc/lms/new_note.txt</SAMP
+></P
+></LI
+><LI
+><P
+>notes_subject (opcjonalny)</P
+><P
+>Temat wiadomości o nowej nocie obciążeniowej. Domyślnie: 'New debit note notification'</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>notes_subject = 'Powiadomienie o wystawieniu noty obciążeniowej'</SAMP
+></P
+></LI
+><LI
+><P
+>deadline_template (opcjonalny)</P
+><P
+>Lokalizacja pliku z szablonem wiadomości wysyłanej do 
+				zadłużonych klientów, posiadających przeterminowane 
+				(nierozliczone) faktury. Pozostawienie tej opcji pustej wyłączy
+				powiadomienia. Domyślnie: pusta</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>deadline_template = /etc/lms/deadline.txt</SAMP
+></P
+></LI
+><LI
+><P
+>deadline_subject (opcjonalny)</P
+><P
+>Temat wiadomości o przeterminowanych fakturach. Domyślnie: 'Invoice deadline notification'</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>deadline_subject = 'Powiadomienie o zaległości'</SAMP
+></P
+></LI
+><LI
+><P
+>limit (opcjonalny)</P
+><P
+>Pozwala na ustalenie limitu bilansu poniżej którego do klienta 
+				zostanie wysłana wiadomość z informacją o zadłużeniu. Domyślnie: 0</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>limit = -20</SAMP
+></P
+></LI
+></UL
+><P
+>Poniżej przedstawiono opcje dotyczące wyłącznie wiadomości e-mail.</P
+><UL
+><LI
+><P
+>mailfrom (wymagana)</P
+><P
+>Adres e-mail z którego zostanie wysłany e-mail. Proszę pamiętać, że na niektórych MTA (np. exim) konto to musi istnieć w systemie. Domyślnie: pusta.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>mailfrom = staff@domain.pl</SAMP
+></P
+></LI
+><LI
+><P
+>mailfname</P
+><P
+>Nazwa nadawcy maila. Domyślnie: pusta.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>mailfname = Administratorzy</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_host</P
+><P
+>Serwer SMTP, przez który ma zostać wysłana wiadomość. Domyślnie: localhost</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_host = smtp.mydomain.pl</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_auth</P
+><P
+>Sposób autoryzacji. Dozwolone wartości: LOGIN, PLAIN, CRAM-MD5, NTLM.
+				Domyślnie: pusta (brak autoryzacji)</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_auth = LOGIN</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_user</P
+><P
+>Login do autoryzacji SMTP. Domyślnie: pusty</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_user = admin</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_pass</P
+><P
+>Hasło do konta zdefiniowanego w opcji smtp_user. Domyślnie: puste</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_pass = password</SAMP
+></P
+></LI
+><LI
+><P
+>debug_email (opcjonalny)</P
+><P
+>Adres e-mail do debugowania. Gdy ustawiony, cała poczta 
+				zostaje wysłana na dany email zamiast do klientów. Przydatne do 
+				debugowania i sprawdzania czy wszystko działa OK. Domyślnie: 
+				nie ustawiony.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>debug_email = lexx@domain.pl</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-NOTIFY-SMS"
+>4.3.2. lms-notify-sms</A
+></H2
+><P
+>lms-notify-sms to odpowiednik <A
+HREF="scripts-config.html#LMS-NOTIFY"
+>lms-notify</A
+>,
+		służący do wysyłania smsów. Obecnie skrypt wspiera dwie usługi, smstools oraz gnokii.
+		Wyboru usługi dokonuje się w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[sms]</I
+></SPAN
+>. Skrypt jest 
+		wielofunkcyjny, włączenie określonego zadania następuje poprzez
+		zdefiniowanie lokalizacji pliku z szablonem wiadomości.</P
+><P
+>Konfigurację dla lms-notify-sms można ustalić w pliku 
+		<TT
+CLASS="FILENAME"
+>lms.ini</TT
+> 
+		w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[notify-sms]</I
+></SPAN
+>, oprócz opcji dostępnych w
+		<A
+HREF="scripts-config.html#LMS-NOTIFY"
+>lms-notify</A
+> masz do dyspozycji następujące opcje:
+		<UL
+><LI
+><P
+>service (opcjonalny)</P
+><P
+>Pozwala na wybranie usługi SMS niezależnie od tej,
+			którą podano w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[sms]</I
+></SPAN
+>. Domyślnie: pusta</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>service = smstools</SAMP
+></P
+></LI
+></UL
+>
+		</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-NOTIFY-MESSAGES"
+>4.3.3. lms-notify-messages</A
+></H2
+><P
+>lms-notify-messages to odpowiednik <A
+HREF="scripts-config.html#LMS-NOTIFY"
+>lms-notify</A
+>,
+		służący do ustawiania powiadomień, które będą pojawiać się
+		w przeglądarkach internetowych klientów. Skrypt jest 
+		wielofunkcyjny, włączenie określonego zadania następuje poprzez
+		zdefiniowanie lokalizacji pliku z szablonem wiadomości.</P
+><P
+>Konfigurację dla lms-notify-messages przeprowadza się w pliku 
+		<TT
+CLASS="FILENAME"
+>lms.ini</TT
+> w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[notify-messages]</I
+></SPAN
+>.
+		</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-CUTOFF"
+>4.3.4. lms-cutoff</A
+></H2
+><P
+>Skrypt pozwala na odłączenie (a raczej zmianę w bazie danych stanu komputerów na wyłączony) klientów których bilans jest poniżej zadanej wartości. Właściwe odłączanie powinno być realizowane przez generator plików konfiguracyjnych.</P
+><P
+>Konfigurację dla lms-cutoff możemy ustalić w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+> w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[cutoff]</I
+></SPAN
+>. Możemy tam ustawić następujące parametry:</P
+><UL
+><LI
+><P
+>limit (opcjonalny)</P
+><P
+>Pozwala na ustalenie limitu bilansu poniżej którego do bazy danych zostanie zapisany stan odłączony. Domyślnie: 0</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>limit = -20</SAMP
+></P
+></LI
+><LI
+><P
+>message (optional)</P
+><P
+>Jeśli nie jest pusta, wiadomość ta po dołączeniu użytkownika zostanie 
+	   zapisana do jego rekordu w polu wiadomości administracyjnej. W treści wiadomości
+	   można użyć zmiennej %now, która zostanie zamieniona na bieżącą datę oraz
+	   zmiennych %b i %B tak jak w skrypcie lms-notify.
+	   Domyślnie: 'Automatic cutoff caused by exceeding of liabilities limit on %now'</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>message = ''</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-PAYMENTS"
+>4.3.5. lms-payments</A
+></H2
+><P
+>Skrypt służący do naliczania opłat abonamentowych przypisanych
+	 klientom oraz opłat stałych. Ponadto zapisuje dane do faktur.
+	 Aby działał poprawnie powinien być uruchamiany codziennie.</P
+><P
+>Skrypt ten udostępnia trzy opcje do fakturowania, które można ustawić
+	 w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[payments]</I
+></SPAN
+> pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>:
+	  <UL
+><LI
+><P
+>deadline (opcjonalny)</P
+><P
+>Pozwala na ustalenie terminu płatności w dniach. Domyślnie: 14</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>deadline = 7</SAMP
+></P
+></LI
+><LI
+><P
+>paytype (opcjonalny)</P
+><P
+>Identyfikator rodzaju płatności (1-gotówka, 2-przelew, 3-przelew/gotówka,
+	   4-karta, 5-kompensata, 6-barter, 7-umowa). Domyślnie: 2 (przelew)</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>paytype = 1</SAMP
+></P
+></LI
+><LI
+><P
+>comment (opcjonalny)</P
+><P
+>Opis pozycji na fakturze za naliczane zobowiązanie</P
+><P
+>Domyślnie: 'Tariff %tariff subscription for period %period'</P
+><P
+>Niektóre ze słów kluczowych są zastępowane:</P
+><P
+>%tariff - nazwa taryfy</P
+><P
+>%period - okres (liczony od dziś do ostatniego dnia cyklu rozliczeniowego, w formacie RRRR/MM/DD)</P
+><P
+>%current_month - okres od pierwszego dnia bieżącego miesiąca do jego końca</P
+><P
+>%current_period - bieżący miesiąc w formacie MM/RRRR</P
+><P
+>%next_period - następny miesiąc w formacie MM/RRRR</P
+><P
+>%prev_period - poprzedni miesiąc w formacie MM/RRRR</P
+><P
+>%desc - opis taryfy</P
+><P
+>Przykład:       <SAMP
+CLASS="PROMPT"
+>comment = 'Abonament za %current_month w/g taryfy %tariff'</SAMP
+></P
+></LI
+><LI
+><P
+>settlement_comment (opcjonalny)</P
+><P
+>Opis pozycji z tytułu wyrównania niepełnego okresu zobowiązania.</P
+><P
+>Domyślnie odpowiada opcji <SAMP
+CLASS="PROMPT"
+>comment</SAMP
+></P
+><P
+>Przykład:       <SAMP
+CLASS="PROMPT"
+>settlement_comment = 'Wyrównanie za okres %period'</SAMP
+></P
+></LI
+><LI
+><P
+>suspension_description (opcjonalny)</P
+><P
+>Tekst dodawany na końcu opisu operacji dla obciążeń zawieszonych. 
+	   Domyślnie: ''</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>suspension_description = (zawieszenie)</SAMP
+></P
+></LI
+><LI
+><P
+>saledate_next_month (opcjonalny)</P
+><P
+>Włączenie tej opcji spowoduje, że data sprzedaży na fakturze zostanie ustawiona
+	   na pierwszy dzień następnego miesiąca. 
+	   Domyślnie: 0</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>saledate_next_month = 1</SAMP
+></P
+></LI
+></UL
+>
+	 </P
+><P
+>Ponadto mamy do dyspozycji jeden przydatny parametr wiersza poleceń
+	 <SAMP
+CLASS="PROMPT"
+>--fakedate</SAMP
+> (<SAMP
+CLASS="PROMPT"
+>-f</SAMP
+>). Przy jego użyciu można 
+	 sprawić, aby skrypt działał z podmienioną datą systemową (w formacie YYYY/MM/DD),
+	 na przykład <SAMP
+CLASS="PROMPT"
+>--fakedate=2004/10/10</SAMP
+>.
+	 </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-TRAFFIC"
+>4.3.6. lms-traffic</A
+></H2
+><P
+>Skrypt służy do logowania informacji o ilości danych pobranych i wysłanych
+	przez każdy komputer w sieci lokalnej. W bazie danych zapisywana jest ilość
+	danych w bajtach, numer komputera z bazy lms i znacznik czasu. 
+	Od klienta zależy w jakich odstępach dane będą odczytywane.
+	Ponieważ dane odczytywane są z pliku utworzonego przez klienta, nie ma
+	znaczenia z jakiego źródła pochodzą, może to być iptables, ipchains lub
+	program zewnętrzny np. ipfm.
+    </P
+><P
+>Przeglądanie wykresów wykorzystania łącza oraz definiowanie filtrów
+	dostępne jest z głównego menu 'Statystyki'.
+    </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="LMS-TRAFFIC-CONFIG"
+>4.3.6.1. Instalacja</A
+></H3
+><P
+>Przed uruchomieniem lms-traffic należy zadbać o utworzenie
+	    pliku z danymi. Zawartość pliku powinna mieć następujący format:</P
+><PRE
+CLASS="SCREEN"
+>&lt;adres IP&gt; &lt;n_spacji&gt; &lt;upload&gt; &lt;n_spacji&gt; &lt;download&gt;
+&lt;adres IP&gt; &lt;n_spacji&gt; &lt;upload&gt; &lt;n_spacji&gt; &lt;download&gt;
+...</PRE
+><P
+>Skrypt tworzący statystyki należy uruchamiać z taką samą częstotliwością 
+	    co lms-traffic.</P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Przykład takiego skryptu dla iptables znajduje się w 
+	    pliku <TT
+CLASS="FILENAME"
+>/sample/traffic_ipt.pl</TT
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><P
+>Następnie instalujemy skrypt dopisując do crontaba.
+	    Oprócz standardowych opcji wiersza poleceń możliwe jest
+	    zdefiniowanie lokalizacji pliku z logiem</P
+><PRE
+CLASS="SCREEN"
+>-f=/plik 	położenie i nazwa pliku ze statystykami domyślnie /var/log/traffic.log</PRE
+><P
+>		<DIV
+CLASS="WARNING"
+><TABLE
+CLASS="WARNING"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/warning.gif"
+HSPACE="5"
+ALT="Ostrze&#380;enie"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Częstotliwość zapisywania danych do bazy ustala użytkownik.
+		Ustawienie jej poniżej 10 minut, może spowodować szybki przyrost ilości rekordów w
+		bazie danych, a co za tym idzie zwiększyć czas oczekiwania na wyświetlenie
+		wyników.</P
+></TD
+></TR
+></TABLE
+></DIV
+>
+	    </P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-TRAFFIC-LOGIPTABLES"
+>4.3.7. lms-traffic-logiptables</A
+></H2
+><P
+>Skrypt służy do logowania informacji o ilości danych pobranych i wysłanych
+	przez każdy komputer z sieci lokalnej, na podstawie liczników iptables. Dane 
+	sczytuje z firewalla, tworząc jednocześnie odpowiednie reguły. Zatem, nie jest 
+	konieczne ręczne tworzenie reguł iptables, ani wywoływanie skryptu  
+	<TT
+CLASS="FILENAME"
+>lms-traffic</TT
+>.
+	</P
+><P
+>Konfigurację należy umieścić w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[traffic-logiptables]</I
+></SPAN
+>:
+	    <UL
+><LI
+><P
+>outfile</P
+><P
+>Lokalizacja skryptu z regułami iptables. Domyślnie: /etc/rc.d/rc.stat</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>outfile = /etc/rc.d/rc.stat</SAMP
+></P
+></LI
+><LI
+><P
+>iptables_binary</P
+><P
+>Lokalizacja programu iptables. Domyślnie: /usr/sbin/iptables</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>iptables_binary = /usr/local/sbin/iptables</SAMP
+></P
+></LI
+><LI
+><P
+>wan_interfaces</P
+><P
+>Nazwy interfejsów, na których dane mają być zliczane. Domyślnie: niezdefiniowane.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>wan_interfaces = eth0</SAMP
+></P
+></LI
+><LI
+><P
+>local_ports</P
+><P
+>Lista portów (źródłowych i docelowych) dla zliczanych pakietów. Domyślnie: niezdefiniowane.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>local_ports = 80</SAMP
+></P
+></LI
+><LI
+><P
+>script_owneruid</P
+><P
+>UID właściciela skryptu określonego w 'outfile'. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>script_owneruid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>script_ownergid</P
+><P
+>GID właściciela skryptu określonego w 'outfile'. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>script_ownergid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>script_permission</P
+><P
+>Uprawnienia skryptu określonego w 'outfile'. Domyślnie: 700 (rwx------).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>script_permission = 700</SAMP
+></P
+></LI
+><LI
+><P
+>networks</P
+><P
+>Lista nazw sieci (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony konfig dla wszystkich sieci.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>networks = public-custa public-custb</SAMP
+></P
+></LI
+></UL
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-MAKEDHCPCONF"
+>4.3.8. lms-makedhcpconf</A
+></H2
+><P
+>Tworzenie pliku konfiguracyjnego serwera DHCP - dhcpd.conf. Konfigurację
+	skryptu umieszcza się w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[dhcp]</I
+></SPAN
+>:
+	    <UL
+><LI
+><P
+>config_file</P
+><P
+>Lokalizacja pliku wynikowego. Domyślnie: /etc/dhcpd.conf</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_file = /tmp/dhcpd.conf</SAMP
+></P
+></LI
+><LI
+><P
+>networks </P
+><P
+>Lista nazw sieci (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony konfig dla wszystkich sieci.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>networks = public-custa public-custb</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>Lista nazw grup (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony konfig dla wszystkich grup.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>customergroups = grupa1 grupa2</SAMP
+></P
+></LI
+><LI
+><P
+>default_lease_time</P
+><P
+>Domyślny czas dzierżawy. Domyślnie: 86400.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>default_lease_time = 43200</SAMP
+></P
+></LI
+><LI
+><P
+>max_lease_time</P
+><P
+>Maksymalny czas dzierżawy. Domyślnie: 86400.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>max_lease_time = 43200</SAMP
+></P
+></LI
+><LI
+><P
+>ignore_ddns</P
+><P
+>Nie generuj wpisu 'ddns-update-style none;' na początku pliku.
+		    Przydatne przy starszych (2.2) wersjach demona dhcpd. Domyślnie: wyłączone.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>ignore_ddns = 1</SAMP
+></P
+></LI
+><LI
+><P
+>log_facility</P
+><P
+>Ustawienie trybu logowania daemona dhcp. Jeżeli puste to tryb domyślny.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>log_facility = 7</SAMP
+></P
+></LI
+><LI
+><P
+>authoritative</P
+><P
+>Dodanie wpisu 'authoritative;' na początku pliku.
+		    Domyślnie: wyłączone.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>authoritative = 1</SAMP
+></P
+></LI
+><LI
+><P
+>script_owneruid</P
+><P
+>UID właściciela skryptu określonego w 'config_file'. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>script_owneruid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>script_ownergid</P
+><P
+>GID właściciela skryptu określonego w 'config_file'. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>script_ownergid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>script_permission</P
+><P
+>Uprawnienia skryptu określonego w 'config_file'. Domyślnie: 600 (rwx------).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>script_permission = 700</SAMP
+></P
+></LI
+></UL
+>
+	</P
+><P
+>Możesz podać czasy dzierżawy dla konkretnych sieci poprzez stworzenie
+	sekcji <SAMP
+CLASS="PROMPT"
+>[dhcp:nazwasieci]</SAMP
+> np.:
+<PRE
+CLASS="SCREEN"
+>[dhcp:public-custa] # nazwa sieci małymi literami!
+default_lease_time = 3600
+max_lease_time     = 3600</PRE
+>
+
+Możesz podać gateway, serwer dns, nazwę domeny i wins dla konkretnego
+hosta poprzez stworzenie sekcji <SAMP
+CLASS="PROMPT"
+>[dhcp:adresip]</SAMP
+> np.:
+<PRE
+CLASS="SCREEN"
+>[dhcp:213.25.209.216]
+domain  = anotherdomain.pl
+gateway = 213.25.209.251
+dns     = 213.25.209.8
+wins    = 213.25.209.10</PRE
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-MAKEIPTABLES"
+>4.3.9. lms-makeiptables, lms-makeipchains</A
+></H2
+><P
+>Para skryptów służących do generowania plików zawierających
+	    reguły firewalla. Do utworzonego pliku możesz dołączyć inne wcześniej
+	    utworzone pliki, a w końcu nadać mu odpowiednie uprawnienia. Skrypty nie
+	    uruchamiają wygenerowanych plików.</P
+><P
+>Konfigurację dla tych skryptów możesz ustalić w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+> w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[iptables]</I
+></SPAN
+>
+	    (i odpowiednio <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[ipchains]</I
+></SPAN
+>). Oba skrypty posiadają te same
+	    opcje: </P
+><UL
+><LI
+><P
+>networks </P
+><P
+>Lista nazw sieci (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku firewalla. Jeśli nie ustawiono, zostanie stworzony konfig dla wszystkich sieci.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>networks = public-custa public-custb</SAMP
+></P
+></LI
+><LI
+><P
+>iptables_binary (ipchains_binary)</P
+><P
+>Lokalizacja programu iptables (ipchains). Domyślnie: /usr/sbin/iptables (/usr/sbin/ipchains)</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>iptables_binary = /usr/local/sbin/iptables</SAMP
+></P
+></LI
+><LI
+><P
+>script_file</P
+><P
+>Plik, do którego zapisujemy reguły firewalla. Domyślnie: /etc/rc.d/rc.masq</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>script_file = /etc/rc.d/rc.firewall</SAMP
+></P
+></LI
+><LI
+><P
+>pre_script</P
+><P
+>Plik wykonywany PO wyczyszczeniu regułek, ale PRZED ustawieniem nowych. 
+		    Domyślnie: niezdefiniowany.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>pre_script = /etc/rc.d/rc.masq-pre</SAMP
+></P
+></LI
+><LI
+><P
+>post_script</P
+><P
+>Plik wykonywany PO ustawieniu regułek. Domyślnie: niezdefiniowany.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>post_script = /etc/rc.d/rc.masq-post</SAMP
+></P
+></LI
+><LI
+><P
+>forward_to</P
+><P
+>Lista sieci, dla których włączamy forwarding. Możliwe wartości: "" - pełny forward, 
+		    "dowolny ciąg" - wyłącz forward, "siec1 siec2" - lista sieci z włączonym forwardingiem.  
+		    Domyślnie: pełny forward.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>forward_to = public-custa public-custb</SAMP
+></P
+></LI
+><LI
+><P
+>script_owneruid</P
+><P
+>UID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>script_owneruid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>script_ownergid</P
+><P
+>GID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>script_ownergid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>script_permission</P
+><P
+>Uprawnienia pliku skryptu. Domyślnie: 700 (rwx------).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>script_permission = 700</SAMP
+></P
+></LI
+><LI
+><P
+>snat_address</P
+><P
+>Adres SNAT. Jeśli nie ustawiono, dla hostów z adresami publicznymi będzie
+		    użyte "-j MASQUERADE". Jeśli ustawiono zostanie użyte "-j SNAT --to xxx.xxx.xxx.xxx".
+		    Dotyczy lms-makeiptables. Domyślnie: nie ustawiony.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>snat_address = 123.123.123.123</SAMP
+></P
+></LI
+><LI
+><P
+>tcp_redirect_ports (udp_redirect_ports)</P
+><P
+>Konfiguracja przekierowań w formie port_źródłowy:port_docelowy dla
+		    przekierowań na lokalną maszynę dla połączeń wychodzących. Dotyczy lms-makeipchains.
+		    Domyślnie: nie ustawione.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>tcp_redirect_ports = 80:3128 25:25</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-ETHERDESC"
+>4.3.10. lms-etherdesc</A
+></H2
+><P
+>Skrypt służący do generowania pliku zawierającego MAC adresy oraz
+	    nazwy hostów pobierane z bazy lms'a. Adresy zapisywane są w formacie 'stripped mac',
+	    czyli bez ":". Tego typu plik wykorzystywany jest przez pakiet <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>iptraf</I
+></SPAN
+>.
+	    </P
+><P
+>Konfigurację tego skryptu zawiera sekcja <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[ether]</I
+></SPAN
+>
+	    w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>: </P
+><UL
+><LI
+><P
+>networks </P
+><P
+>Lista nazw sieci (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony konfig dla wszystkich sieci.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>networks = public-custa public-custb</SAMP
+></P
+></LI
+><LI
+><P
+>etherdesc_owneruid</P
+><P
+>UID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>etherdesc_owneruid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>etherdesc_file</P
+><P
+>Lokalizacja pliku. Domyślnie: /var/lib/iptraf/ethernet.desc.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>etherdesc_file = /etc/ethernet.desc</SAMP
+></P
+></LI
+><LI
+><P
+>etherdesc_ownergid</P
+><P
+>GID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>etherdesc_ownergid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>etherdesc_permission</P
+><P
+>Uprawnienia pliku skryptu. Domyślnie: 600 (rw-------).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>etherdesc_permission = 600</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-SENDINVOICES"
+>4.3.11. lms-sendinvoices, lms-sendinvoices-proforma</A
+></H2
+><P
+>Skrypt służy do wysyłania pocztą elektroniczną faktur, jako załączników
+	do wiadomości. Faktury generowane są na podstawie szablonu dostępnego w lms-ui,
+	dlatego wymagane jest podanie klienta i hasła do interfejsu www lms-ui.</P
+><P
+>W odróżnieniu od pozostałych skryptów ten wymaga dodatkowych modułów perla:
+	LWP::UserAgent, MIME::QuotedPrint oraz Mail::Sender.</P
+
+><P
+>	skrypt lms-sendinvoices-proforma korzysta domyślnie z konfiguracji [sendinvoices],<br>
+	 jeżeli chcemy np. wysyłac proformy przez inną skrzynkę, lub z innym nagłówkiem,
+	to należy utworzyć sekcję [sendinvoicesproforma], wpisując tylko te opcje które sa inne niż w [sendinvoices]</P
+><P
+>Konfigurację należy umieścić w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[sendinvoices]</I
+></SPAN
+>:
+	    <UL
+><LI
+><P
+>lms_url</P
+><P
+>Adres do lms-ui. Domyślnie: http://localhost/lms/</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>lms_url = http://lms.mynet.pl</SAMP
+></P
+></LI
+><LI
+><P
+>lms_user</P
+><P
+>Login użytkownika. Domyślnie: pusty</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>lms_user = admin</SAMP
+></P
+></LI
+><LI
+><P
+>lms_password</P
+><P
+>Hasło do lms-ui. Domyślnie: puste</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>lms_password = moje_hasło</SAMP
+></P
+></LI
+><LI
+><P
+>debug_email</P
+><P
+>Konto pocztowe do testów. Domyślnie: niezdefiniowane.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>debug_email = admin@mynet.pl</SAMP
+></P
+></LI
+><LI
+><P
+>sender_name</P
+><P
+>Nadawca listu. Domyślnie: niezdefiniowany.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>sender_name = ASK MyNet</SAMP
+></P
+></LI
+><LI
+><P
+>sender_email</P
+><P
+>Adres nadawcy listu. Domyślnie: niezdefiniowany.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>sender_email = admin@mynet.pl</SAMP
+></P
+></LI
+><LI
+><P
+>mail_subject</P
+><P
+>Temat wiadomości. Można użyć zmiennej %invoice zastępowanej numerem faktury. 
+		    Domyślnie: 'Invoice No. %invoice'.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>mail_subject = 'Nowa faktura'</SAMP
+></P
+></LI
+><LI
+><P
+>mail_body</P
+><P
+>Treść wiadomości. Można użyć zmiennej %invoice, która zostanie zastąpiona numerem faktury. 
+		    Domyślnie: 'Attached file with Invoice No. %invoice'.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>mail_body = ''</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups</P
+><P
+>Lista nazw grup (oddzielonych spacjami), które mają być uwzględnione 
+		podczas wysyłki. Domyślnie: nie ustawiona - wszystkie grupy.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>customergroups = grupa1 grupa2</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_host</P
+><P
+>Serwer SMTP, przez który ma zostać wysłana wiadomość. Domyślnie: localhost</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_host = smtp.mydomain.pl</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_auth</P
+><P
+>Sposób autoryzacji. Dozwolone wartości: LOGIN, PLAIN, CRAM-MD5, NTLM. Domyślnie: pusta (brak autoryzacji)</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_auth = LOGIN</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_user</P
+><P
+>Login do autoryzacji SMTP. Domyślnie: pusty</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_user = admin</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_pass</P
+><P
+>Hasło do konta zdefiniowanego w opcji smtp_user. Domyślnie: puste</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_pass = password</SAMP
+></P
+></LI
+></UL
+>
+	 Ponadto mamy do dyspozycji jeden przydatny parametr wiersza poleceń
+	 <SAMP
+CLASS="PROMPT"
+>--fakedate</SAMP
+> (<SAMP
+CLASS="PROMPT"
+>-f</SAMP
+>). Przy jego użyciu można 
+	 sprawić, aby skrypt działał z podmienioną datą systemową (w formacie YYYY/MM/DD),
+	 na przykład <SAMP
+CLASS="PROMPT"
+>--fakedate=2004/10/10</SAMP
+>.
+	 </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-MAKEMACS"
+>4.3.12. lms-makemacs</A
+></H2
+><P
+>Skrypt służący do generowania pliku zawierającego reguły netfiltra filtrujące ruch
+	    klientów na bazie testu adresu źródłowego MAC. Dla każdego komputera generowana jest
+	    jedna reguła dla tablicy nat, zadanego łańcucha, testująca adres źródłowy IP pakietu oraz adres
+	    źródłowy MAC ramki. Jeśli testy zakończą się pozytywnie następuje powrót do łańcucha nadrzędnego
+	    za pomocą decyzji RETURN. Na końcu listy reguł dodawane są 2 reguły przekierowujące ruch http
+	    oraz webcache na podany w konfiguracji adres IP oraz port (z wykorzystaniem decyzji DNAT).
+	    Przekierowanie może odbywać się na wirtualny host www z zawiadomieniem klienta
+	    o zaległościach finansowych bez możliwości wyłączenia zawiadomienia. Na końcu dodawana jest 
+	    reguła blokująca jakikolwiek inny ruch.
+	    </P
+><P
+>Konfigurację tego skryptu zawiera sekcja <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[macs]</I
+></SPAN
+>
+	    w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>: </P
+><UL
+><LI
+><P
+>networks </P
+><P
+>Lista nazw sieci (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony plik konfiguracyjny dla wszystkich sieci.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>networks = public-custa public-custb</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups </P
+><P
+>Lista nazw grup klientów (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony plik konfiguracyjny dla wszystkich grup klientów.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>customergroups = osiedle1 osiedle2</SAMP
+></P
+></LI
+><LI
+><P
+>iptables_binary</P
+><P
+>Lokalizacja programu iptables. Domyślnie: /sbin/iptables</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>iptables_binary = /usr/local/sbin/iptables</SAMP
+></P
+></LI
+><LI
+><P
+>config_owneruid</P
+><P
+>UID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_owneruid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>config_file</P
+><P
+>Lokalizacja pliku. Domyślnie: /etc/rc.d/rc.macs.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_file = /etc/conf.d/rc.macs</SAMP
+></P
+></LI
+><LI
+><P
+>config_ownergid</P
+><P
+>GID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_ownergid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>config_permission</P
+><P
+>Uprawnienia pliku skryptu. Domyślnie: 700 (rwx------).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_permission = 700</SAMP
+></P
+></LI
+><LI
+><P
+>chain</P
+><P
+>Łańcuch do którego będą dodawane generowane reguły. Domyślnie: MACS.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>chain = TESTY_MACOW</SAMP
+></P
+></LI
+><LI
+><P
+>redirect_address</P
+><P
+>Adres IP + port na który będzie przekierowywany niesklasyfikowany ruch http i webcache. Domyślnie: 127.0.0.1:80.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>redirect_address = 192.168.1.1:3000</SAMP
+></P
+></LI
+><LI
+><P
+>lock_noaccess</P
+><P
+>Czy generować regułki testujące z decyzją RETURN dla komputerów, które są odłączone. Domyślnie: 0 (reguły są generowane)</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>lock_noaccess = 1</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-MAKEHOSTS"
+>4.3.13. lms-makehosts</A
+></H2
+><P
+>Skrypt służący do generowania pliku /etc/hosts zawierającego odwzorowania nazw komputerów
+	    na adresy IP.
+	    </P
+><P
+>Konfigurację tego skryptu zawiera sekcja <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[hosts]</I
+></SPAN
+>
+	    w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>: </P
+><UL
+><LI
+><P
+>networks </P
+><P
+>Lista nazw sieci (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony plik konfiguracyjny dla wszystkich sieci.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>networks = public-custa public-custb</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups </P
+><P
+>Lista nazw grup klientów (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony plik konfiguracyjny dla wszystkich grup klientów.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>customergroups = osiedle1 osiedle2</SAMP
+></P
+></LI
+><LI
+><P
+>config_owneruid</P
+><P
+>UID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_owneruid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>config_file</P
+><P
+>Lokalizacja pliku. Domyślnie: /etc/hosts.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_file = /etc/hosts</SAMP
+></P
+></LI
+><LI
+><P
+>config_ownergid</P
+><P
+>GID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_ownergid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>config_permission</P
+><P
+>Uprawnienia pliku skryptu. Domyślnie: 644 (rw-r--r--).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_permission = 600</SAMP
+></P
+></LI
+><LI
+><P
+>config_header</P
+><P
+>Pierwsza linia w pliku /etc/hosts. Domyślnie: 127.0.0.1 localhost localhost.localdomain.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_header = 192.168.1.1 serwer serwer.nasza-siec</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-MAKEWARNINGS"
+>4.3.14. lms-makewarnings</A
+></H2
+><P
+>Skrypt służący do generowania pliku zawierającego reguły netfiltra przekierowujące ruch http i webcache
+	    klientów o saldzie mniejszym lub równym od zadanego na zadany adres IP i port (wykorzystywana
+	    jest tablica nat, testy adresów źródłowych IP oraz decyzja DNAT).
+	    </P
+><P
+>Konfigurację tego skryptu zawiera sekcja <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[warnings]</I
+></SPAN
+>
+	    w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>: </P
+><UL
+><LI
+><P
+>networks </P
+><P
+>Lista nazw sieci (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony plik konfiguracyjny dla wszystkich sieci.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>networks = public-custa public-custb</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups </P
+><P
+>Lista nazw grup klientów (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony plik konfiguracyjny dla wszystkich grup klientów.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>customergroups = osiedle1 osiedle2</SAMP
+></P
+></LI
+><LI
+><P
+>iptables_binary</P
+><P
+>Lokalizacja programu iptables. Domyślnie: /sbin/iptables</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>iptables_binary = /usr/local/sbin/iptables</SAMP
+></P
+></LI
+><LI
+><P
+>config_owneruid</P
+><P
+>UID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_owneruid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>config_file</P
+><P
+>Lokalizacja pliku. Domyślnie: /etc/rc.d/rc.warnings.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_file = /etc/conf.d/rc.warnings</SAMP
+></P
+></LI
+><LI
+><P
+>config_ownergid</P
+><P
+>GID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_ownergid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>config_permission</P
+><P
+>Uprawnienia pliku skryptu. Domyślnie: 700 (rwx------).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_permission = 700</SAMP
+></P
+></LI
+><LI
+><P
+>chain</P
+><P
+>Łańcuch do którego będą dodawane generowane reguły. Domyślnie: WARNINGS.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>chain = OSTRZEZENIA</SAMP
+></P
+></LI
+><LI
+><P
+>redirect_address</P
+><P
+>Adres IP + port na który będzie przekierowywany ruch http i webcache pochodzący z hostów dla których ma być włączone ostrzeżenie o zaległościach finansowych. Domyślnie: 127.0.0.1:80.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>redirect_address = 192.168.1.1:3001</SAMP
+></P
+></LI
+><LI
+><P
+>limit</P
+><P
+>Saldo klienta przy którym dla wszystkich komputerów klienta generowane są regułki przekierowujące ruch. Domyślnie: 0 </P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>limit = -85</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-MAKEMESSAGES"
+>4.3.15. lms-makemessages</A
+></H2
+><P
+>Skrypt służący do generowania pliku zawierającego reguły netfiltra przekierowujące ruch http i webcache
+	    klientów dla których zostało włączone przekazywanie wiadomości administracyjnej (ostrzeżenia) na zadany adres IP i port (wykorzystywana
+	    jest tablica nat, testy adresów źródłowych IP oraz decyzja DNAT).
+	    </P
+><P
+>Konfigurację tego skryptu zawiera sekcja <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[messages]</I
+></SPAN
+>
+	    w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>: </P
+><UL
+><LI
+><P
+>networks </P
+><P
+>Lista nazw sieci (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony plik konfiguracyjny dla wszystkich sieci.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>networks = public-custa public-custb</SAMP
+></P
+></LI
+><LI
+><P
+>customergroups </P
+><P
+>Lista nazw grup klientów (oddzielonych spacjami), które mają być uwzględnione podczas generowania
+		    pliku. Jeśli nie ustawiono, zostanie stworzony plik konfiguracyjny dla wszystkich grup klientów.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>customergroups = osiedle1 osiedle2</SAMP
+></P
+></LI
+><LI
+><P
+>iptables_binary</P
+><P
+>Lokalizacja programu iptables. Domyślnie: /sbin/iptables</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>iptables_binary = /usr/local/sbin/iptables</SAMP
+></P
+></LI
+><LI
+><P
+>config_owneruid</P
+><P
+>UID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_owneruid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>config_file</P
+><P
+>Lokalizacja pliku. Domyślnie: /etc/rc.d/rc.messages.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_file = /etc/conf.d/rc.messages</SAMP
+></P
+></LI
+><LI
+><P
+>config_ownergid</P
+><P
+>GID właściciela pliku. Domyślnie: 0 (root).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_ownergid = 0</SAMP
+></P
+></LI
+><LI
+><P
+>config_permission</P
+><P
+>Uprawnienia pliku skryptu. Domyślnie: 700 (rwx------).</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>config_permission = 700</SAMP
+></P
+></LI
+><LI
+><P
+>chain</P
+><P
+>Łańcuch do którego będą dodawane generowane reguły. Domyślnie: MESSAGES.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>chain = WIADOMOSCI</SAMP
+></P
+></LI
+><LI
+><P
+>redirect_address</P
+><P
+>Adres IP + port na który będzie przekierowywany ruch http i webcache pochodzący z hostów dla których ma być włączona wiadomość administracyjna. Domyślnie: 127.0.0.1:80.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>redirect_address = 192.168.1.1:3002</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-FPING"
+>4.3.16. lms-fping</A
+></H2
+><P
+>Skrypt zapisuje do bazy informacje o aktywności komputerów. 
+	    Do skanowania wykorzystywany jest szybki program fping (z opcjami -ar1). 
+	    Najpierw tworzona jest lista hostów, a następnie, po wywołaniu fping'a, 
+	    komputerom włączonym zostaje przypisana data i czas skanowania. Dzięki temu 
+	    mamy w bazie informacje kiedy dany komputer był ostatnio włączony.</P
+><P
+>Konfigurację tego skryptu zawiera sekcja <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[fping]</I
+></SPAN
+>
+	    w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>: </P
+><UL
+><LI
+><P
+>networks </P
+><P
+>Lista nazw sieci (oddzielonych spacjami), które mają być uwzględnione podczas skanowania.
+		    Jeśli nie ustawiono przeskanowane zostaną wszystkie komputery.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>networks = public-custa public-custb</SAMP
+></P
+></LI
+><LI
+><P
+>fping_binary</P
+><P
+>Lokalizacja programu fping. Domyślnie: /usr/sbin/fping</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>fping_binary = /usr/local/sbin/fping</SAMP
+></P
+></LI
+><LI
+><P
+>temp_file</P
+><P
+>Lokalizacja pliku tymczasowego na listę hostów, który
+		    po wykonaniu skryptu zostaje usunięty. Domyślnie: /tmp/fping_hosts.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>temp_file = /tmp/hosts</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-REMINDER"
+>4.3.17. lms-reminder</A
+></H2
+><P
+>Skrypt służy do przypominania klientom o zaplanowanych na dany dzień 
+	  zadaniach. Lista zdarzeń przypisanych w Terminarzu danemu klientowi w bieżącym
+	  dniu zostaje wysłana na jego adres e-mail.</P
+><P
+>Konfigurację dla lms-reminder umieszcza się w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+> 
+	  w sekcji <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[reminder]</I
+></SPAN
+>. Możesz tam ustawić następujące parametry:</P
+><UL
+><LI
+><P
+>mailsubject (wymagany)</P
+><P
+>Pozwala na ustalenie tematu e-maila wysyłanego do klienta. Domyślnie: nie ustawione.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>mailsubject = 'Terminarz z LMSa'</SAMP
+></P
+></LI
+><LI
+><P
+>mailfrom (wymagany)</P
+><P
+>Adres e-mail z którego zostanie wysłany e-mail. Proszę pamiętać, że na 
+	    	    niektórych MTA (np. exim) konto to musi istnieć w systemie. 
+	    	    Domyślnie nieustawione.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>mailfrom = staff@domain.pl</SAMP
+></P
+></LI
+><LI
+><P
+>mailfname (wymagany)</P
+><P
+>Nazwa nadawcy maila.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>mailfname = LMS</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_host</P
+><P
+>Serwer SMTP, przez który ma zostać wysłana wiadomość. Domyślnie: localhost</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_host = smtp.mydomain.pl</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_auth</P
+><P
+>Sposób autoryzacji. Dozwolone wartości: LOGIN, PLAIN, CRAM-MD5, NTLM.
+		    Domyślnie: pusta (brak autoryzacji)</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_auth = LOGIN</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_user</P
+><P
+>Login do autoryzacji SMTP. Domyślnie: pusty</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_user = admin</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_pass</P
+><P
+>Hasło do konta zdefiniowanego w opcji smtp_user. Domyślnie: puste</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_pass = password</SAMP
+></P
+></LI
+><LI
+><P
+>debug_email (opcjonalny)</P
+><P
+>Adres e-mail do debugowania. Gdy ustawiony, cała poczta zostaje 
+	    	    wysłana na dany email zamiast do klientów. Przydatne do debugowania 
+	    	    i sprawdzania czy wszystko działa OK. Domyślnie: nie ustawiony.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>debug_email = alec@domain.pl</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-RTPARSER"
+>4.3.18. lms-rtparser</A
+></H2
+><P
+>Jest to tzw. backend dla systemu Helpdesk, czyli skrypt który współpracując
+	    z serwerem pocztowym zapisuje do bazy danych wszystkie wiadomości skierowane na
+	    adresy Helpdesk'a. Skrypt pobiera z wejścia wiadomość pocztową, parsuje zawartość
+	    i umieszcza zgłoszenie w kolejce, wysyłając do zgłaszających
+	    potwierdzenie przyjęcia wiadomości. W temacie potwierdzenia znajduje się symbol
+	    zgłoszenia. Podczas parsowania wiadomości następuje, na 
+	    podstawie tematu wiadomości, próba rozpoznania czy wiadomość nie jest odpowiedzią na inną wiadomość z już
+	    przypisanym numerem zgłoszenia. Od wiadomości zostają odłączone załączniki
+	    i umieszczone w katalogu zdefiniowanym w opcji <TT
+CLASS="FILENAME"
+>mail_dir</TT
+>.</P
+><P
+>Oprócz modułów Perla standardowo wymaganych przez resztę skryptów, należy 
+	    zainstalować także moduły <TT
+CLASS="FILENAME"
+>MIME::Parser</TT
+> i <TT
+CLASS="FILENAME"
+>MIME::Words</TT
+> z 
+	    pakietu MIME-Tools oraz <TT
+CLASS="FILENAME"
+>Mail::Sender</TT
+> i <TT
+CLASS="FILENAME"
+>Text::Iconv</TT
+>.</P
+><P
+>Skrypt można uruchamiać na wiele sposobów. Jednym z nich jest
+	    stworzenie skryptu powłoki, który odczytując skrzynkę pocztową wywoła lms-rtparser
+	    dla każdego maila. Wygodniejszym zastosowaniem jest jednak zintegrowanie
+	    go z serwerem pocztowym. Poniżej przedstawiono sposób podłączenia go do
+	    postfixa przy użyciu opcji header_checks.
+<PRE
+CLASS="SCREEN"
+># plik main.cf:
+header_checks = regexp:/etc/postfix/header_checks
+
+# plik header_checks
+/^To:.*adres@domena.*/ FILTER filter:dummy
+
+# plik master.cf:
+filter unix - n n - 10 pipe
+      -flags=Rq user=nobody argv=/path/to/lms-rtparser</PRE
+>
+	    Powyższy sposób działa dla postfixa w wersjach nowszych od 2.0.
+	    Wcześniejsze wersje nie obsługują FILTER w header_checks. Z tym
+	    problemem można sobie poradzić używając procmaila:
+<PRE
+CLASS="SCREEN"
+># plik main.cf
+mailbox_command = /usr/bin/procmail
+
+# w katalogu domowym klienta, którego maile mają być obsługiwane przez HelpDesk:
+# plik .forward
+"|IFS=' ' &#38;&#38; exec /usr/bin/procmail -f - || exit 75 #YOUR_USERNAME"
+
+# plik .procmailrc
+:0 c
+   * ^To.*adres@domena
+   | /bin/lms-rtparser
+
+:0 A
+$DEFAULT</PRE
+></P
+><P
+>Kolejny listing to przykład podłączenia parsera do Exima 
+	    przy użyciu filtrów systemowych:
+<PRE
+CLASS="SCREEN"
+># plik exim.conf
+
+system_filter_pipe_transport = address_pipe
+
+# plik system_filter.txt
+
+if $recipients is "adres_kolejki@domena.pl"
+then 
+     pipe "/sciezka/do/lms-rtparser -q id_kolejki"
+endif</PRE
+></P
+><P
+><DIV
+CLASS="NOTE"
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/note.gif"
+HSPACE="5"
+ALT="Notatka"></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Jeżeli chcesz aby wiadomości wprowadzane poprzez <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>lms-ui</I
+></SPAN
+>
+	    były kierowane do parsera, zamiast bezpośrednio zapisywane do bazy, powinieneś włączyć
+	    opcję konfiguracyjną <TT
+CLASS="FILENAME"
+>helpdesk_backend_mode</TT
+> w sekcji
+	    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[phpui]</I
+></SPAN
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><P
+>Konfigurację tego skryptu zawiera sekcja <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[rt]</I
+></SPAN
+>
+	    w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>: </P
+><UL
+><LI
+><P
+>default_queue</P
+><P
+>Numer ID kolejki, do której trafią zgłoszenia. Jeśli nie
+		    podano, Kolejka zostanie odszukana na podstawie adresu odbiorcy maila.
+		    Opcja ta może zostać nadpisana przy pomocy parametru -q przy
+		    uruchomieniu skryptu. Domyślnie: niezdefiniowana.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>default_queue = </SAMP
+></P
+></LI
+><LI
+><P
+>mail_from</P
+><P
+>Nadawca potwierdzenia (adres). Jeśli nie zdefiniowano, zostanie użyty adres
+		    kolejki do której zapisano zgłoszenie. Domyślnie: pusty.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>mail_from = rt@net.pl</SAMP
+></P
+></LI
+><LI
+><P
+>mail_from_name</P
+><P
+>Nadawca potwierdzenia (nazwa). Domyślnie: niezdefiniowana.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>mail_from_name = 'BOK SuperLAN'</SAMP
+></P
+></LI
+><LI
+><P
+>autoreply_subject</P
+><P
+>Temat potwierdzenia. Tu można korzystać ze zmiennych %tid - 
+		    identyfikator zgłoszenia i %subject - temat zgłoszenia.
+		    Domyślnie: "[RT#%tid] Receipt of request '%subject'".</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>autoreply_subject = "[RT#%tid] Potwierdzenie odbioru zgłoszenia o temacie '%subject'"</SAMP
+></P
+></LI
+><LI
+><P
+>autoreply_body</P
+><P
+>Treść potwierdzenia. Tu można korzystać ze zmiennych: %tid - 
+		    identyfikator zgłoszenia i %subject - temat zgłoszenia.
+		    Domyślnie: "Your request was registered in our system.\nTo this request was assigned ticket identifier RT#%tid.\nPlease, place string [RT#%tid] in subject field of any\nmail relating to this request.\n."</P
+><P
+>Example:	<SAMP
+CLASS="PROMPT"
+>autoreply_body = "Państwa zgłoszenie zostało zarejestrowane w naszym systemie.\nZgłoszeniu został nadany numer: RT#%tid.\nW korespondencji związanej z tym zgłoszeniem prosimy podawać w temacie ciąg znaków [RT#%tid].\n"</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_host</P
+><P
+>Serwer SMTP, przez który ma zostać wysłana wiadomość. Domyślnie: localhost</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_host = smtp.mydomain.pl</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_auth</P
+><P
+>Sposób autoryzacji. Dozwolone wartości: LOGIN, PLAIN, CRAM-MD5, NTLM.
+		    Domyślnie: pusta (brak autoryzacji)</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_auth = LOGIN</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_user</P
+><P
+>Login do autoryzacji SMTP. Domyślnie: pusty</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_user = admin</SAMP
+></P
+></LI
+><LI
+><P
+>smtp_pass</P
+><P
+>Hasło do konta zdefiniowanego w opcji smtp_user. Domyślnie: puste</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>smtp_pass = password</SAMP
+></P
+></LI
+><LI
+><P
+>mail_dir</P
+><P
+>Katalog w którym zostaną zapisane załączniki. Katalog ten powinien być
+		    dostępny dla apache'a i klienta uruchamiającego lms-rtparser. Gdy nie ustawiono, 
+		    załączniki zostaną utracone. Domyślnie: niezdefiniowany.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>mail_dir = /usr/local/lms/mail</SAMP
+></P
+></LI
+><LI
+><P
+>tmp_dir</P
+><P
+>Katalog tymczasowy. Domyślnie zostanie użyty katalog 
+		    zdefiniowany w zmiennej systemowej lub <TT
+CLASS="FILENAME"
+>/tmp</TT
+>.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>tmp_dir = /home/user/tmp</SAMP
+></P
+></LI
+><LI
+><P
+>auto_open</P
+><P
+>Włączenie tej opcji spowoduje, że w momencie odebrania
+		    wiadomości dotyczącej zgłoszenia zamkniętego (lub martwego)
+		    zgłoszenie to zostanie otwarte. Domyślnie: wyłączone.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>auto_open = 1</SAMP
+></P
+></LI
+><LI
+><P
+>newticket_notify</P
+><P
+>Włączenie tej opcji spowoduje wysyłanie powiadomień o
+		    nowych zgłoszeniach do użytkowników którzy mają prawa do
+		    konkretnej kolejki. Domyślnie: wyłączone.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>newticket_notify = 1</SAMP
+></P
+></LI
+><LI
+><P
+>lms_url</P
+><P
+>Do powiadomienia o nowym zgłoszeniu zostaje załączony link 
+		    do tego zgłoszenia w LMS-UI, aby użytkownik mógł szybko przejść do
+		    tego zgłoszenia. Domyślnie: http://localhost/lms/.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>lms_url = https://lms.domena.pl/</SAMP
+></P
+></LI
+><LI
+><P
+>include_customerinfo</P
+><P
+>Do powiadomienia o nowym zgłoszeniu zostają załączone podstawowe 
+			dane klienta, jeżeli został on rozpoznany po adresie mailowym. 
+			Domyślnie: włączona.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>include_customerinfo = 0</SAMP
+></P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LMS-TERYT"
+>4.3.19. lms-teryt</A
+></H2
+><P
+>Skrypt służący do importu i aktualizacji danych bazy TERYT. Zawiera również możliwość
+	pobrania plików bazy z Internetu, a także procedurę przypisywania identyfikatorów
+	TERYT do istniejących komputerów, które mają zdefiniowany adres ale nie mają przypisanego TERYTu.
+	</P
+><P
+>Skrypt zawiera następujące opcje uruchomieniowe, które można łączyć:</P
+><UL
+><LI
+><P
+><SAMP
+CLASS="PROMPT"
+>-f, --fetch</SAMP
+></P
+><P
+>Włącza procedurę pobierania (i rozpakowania) plików bazy TERYT z Internetu.
+			Wymagane jest umożliwienie połączenia HTTP z serwerem określonych w opcji 'url'
+			oraz zainstalowanie programu unzip.</P
+></LI
+><LI
+><P
+><SAMP
+CLASS="PROMPT"
+>-l, --list=&lt;lista&gt;</SAMP
+></P
+><P
+>Zawęża działanie opcji importu/aktualizacji do określonych województw.
+			Podobnie jak w opcji konfiguracyjnej 'state_list' podajemy tutaj numeryczne identyfikatory
+			oddzielone przecinkami. Ze względu na duży rozmiar całej bazy, wskazane jest ograniczenie się
+			tylko do wybranych województw. Identyfikatory można znaleźć w pliku TERC.xml.
+			<TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+>2 - dolnośląskie</TD
+></TR
+><TR
+><TD
+>4 - kujawsko-pomorskie</TD
+></TR
+><TR
+><TD
+>6 - lubelskie</TD
+></TR
+><TR
+><TD
+>8 - lubuskie</TD
+></TR
+><TR
+><TD
+>10 - łódzkie</TD
+></TR
+><TR
+><TD
+>12 - małopolskie</TD
+></TR
+><TR
+><TD
+>14 - mazowieckie</TD
+></TR
+><TR
+><TD
+>16 - opolskie</TD
+></TR
+><TR
+><TD
+>18 - podkarpackie</TD
+></TR
+><TR
+><TD
+>20 - podlaskie</TD
+></TR
+><TR
+><TD
+>22 - pomorskie</TD
+></TR
+><TR
+><TD
+>24 - śląskie</TD
+></TR
+><TR
+><TD
+>26 - świętokrzyskie</TD
+></TR
+><TR
+><TD
+>28 - warmiśko-mazurskie</TD
+></TR
+><TR
+><TD
+>30 - wielkopolskie</TD
+></TR
+><TR
+><TD
+>32 - zachodniopomorskie</TD
+></TR
+></TBODY
+></TABLE
+>
+			</P
+></LI
+><LI
+><P
+><SAMP
+CLASS="PROMPT"
+>-u, --update</SAMP
+></P
+><P
+>Import danych do bazy LMSa. Jeśli baza była już wcześniej importowana,
+			nastąpi aktualizacja bazy.</P
+></LI
+><LI
+><P
+><SAMP
+CLASS="PROMPT"
+>-m, --merge</SAMP
+></P
+><P
+>Przypisanie identyfikatorów TERYT dla komputerów/urządzeń, które
+			nie zostały jaszcze przypisane, ale posiadają wpisany adres lokalizacji.
+			Algorytm jest dość prosty i nie ma pewności, że wszystkie adresy
+			zostaną rozpoznane.</P
+></LI
+></UL
+><P
+>Konfigurację tego skryptu zawiera sekcja <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>[teryt]</I
+></SPAN
+>
+	w pliku <TT
+CLASS="FILENAME"
+>lms.ini</TT
+>: </P
+><UL
+><LI
+><P
+>url</P
+><P
+>Adres strony pobierania plików bazy TERYT. Domyślnie zawiera poniższy link.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>url = http://www.stat.gov.pl/broker/access/prefile/listPreFiles.jspa</SAMP
+></P
+></LI
+><LI
+><P
+>dir</P
+><P
+>Katalog w którym, są przechowywane rozpakowane pliki (xml) bazy TERYT.
+			W tym katalogu zostaną też zapisane pobrane pliki. Domyślnie: katalog uruchomienia skryptu.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>dir = /var/lib/teryt</SAMP
+></P
+></LI
+><LI
+><P
+>unzip_binary</P
+><P
+>Lokalizacja programu unzip. Domyślnie: /usr/bin/unzip.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>unzip_binary = /sbin/unzip</SAMP
+></P
+></LI
+><LI
+><P
+>state_list</P
+><P
+>Lista identyfikatorów województw, oddzielonych przecinkami, które
+			będą brane pod uwagę podczas importu. W celu minimalizacji rozmiaru bazy danych i czasu
+			działania skryptu najlepiej ograniczyć się do wybranych województw.</P
+><P
+>Przykład:	<SAMP
+CLASS="PROMPT"
+>state_list = 2</SAMP
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="scripts-list.html"
+ACCESSKEY="P"
+>Poprzedni</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Spis tre&#347;ci</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mgc.html"
+ACCESSKEY="N"
+>Nast&#281;pny</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Lista dostępnych skryptów</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="scripts.html"
+ACCESSKEY="U"
+>Pocz&#261;tek rozdzia&#322;u</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Generator plików konfiguracyjnych (lms-mgc)</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
