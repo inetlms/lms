@@ -456,7 +456,7 @@ class LMS {
 
 	function UserUpdate($user) {
 	
-		if (SYSLOG) $diff['old'] = $this->GetUserInfo($user['id']);
+//		if (SYSLOG) $diff['old'] = $this->GetUserInfo($user['id']);
 		$return = $this->DB->Execute('UPDATE users SET login=?, name=?, email=?, rights=?,
 				hosts=?, position=?, ntype=?, phone=?, passwdexpiration=?, access=?, accessfrom=?, accessto=?, gadugadu=?, modules=? WHERE id=?', array($user['login'],
 						$user['name'],
@@ -476,8 +476,8 @@ class LMS {
 				));
 		if ($return && SYSLOG) 
 		{
-		    $diff['type'] = 'up';
-		    $diff['card'] = 'users';
+//		    $diff['type'] = 'up';
+//		    $diff['card'] = 'users';
 		    addlogs('aktualizacja danych użytkownika: '.$user['login'],'e=up;m=admin;');
 		}
 		
@@ -606,14 +606,14 @@ class LMS {
 		
 		if (SYSLOG) {
 		
-		    $diff['old']['customerassignments'] = $this->DB->GetAll('SELLECT * FROM customerassignments WHERE customerid=? ;',array($id));
-		    $diff['old']['assignments'] = $this->DB->GetAll('SELECT * FROM assignments WHERE customerid=? ;',array($id));
-		    $diff['old']['nodegroupassignments'] = $this->DB->GetAll('SELECT * FROM nodegroupassignments WHERE nodeid IN (' .join(',', $nodes). ')');
-		    $diff['old']['nodes'] = $this->DB->GetAll('SELECT * FROM nodes WHERE ownerid = ? ',array($id));
-		    $diff['old']['up_rights_assignments'] = $this->DB->GetAll('SELECT * FROM up_rights_assignments WHERE customerid = ? ;',array($id));
-		    $diff['type'] = 'del';
-		    $diff['card'] = 'customers';
-		    addlogs('skasowano klienta: '.$this->GetCustomerName($id),'e=rm;m=cus;c='.$id,$diff);
+//		    $diff['old']['customerassignments'] = $this->DB->GetAll('SELLECT * FROM customerassignments WHERE customerid=? ;',array($id));
+//		    $diff['old']['assignments'] = $this->DB->GetAll('SELECT * FROM assignments WHERE customerid=? ;',array($id));
+//		    $diff['old']['nodegroupassignments'] = $this->DB->GetAll('SELECT * FROM nodegroupassignments WHERE nodeid IN (' .join(',', $nodes). ')');
+//		    $diff['old']['nodes'] = $this->DB->GetAll('SELECT * FROM nodes WHERE ownerid = ? ',array($id));
+//		    $diff['old']['up_rights_assignments'] = $this->DB->GetAll('SELECT * FROM up_rights_assignments WHERE customerid = ? ;',array($id));
+//		    $diff['type'] = 'del';
+//		    $diff['card'] = 'customers';
+		    addlogs('skasowano klienta: '.$this->GetCustomerName($id),'e=rm;m=cus;c='.$id);
 		
 		}
 
@@ -645,10 +645,10 @@ class LMS {
 	function CustomerUpdate($customerdata) {
 	
 		if (SYSLOG) {
-			    $diff['old'] = $this->getcustomer($customerdata['id']);
-			    $diff['type'] = 'up';
-			    $diff['card'] = 'customers';
-			    addlogs('aktualizacja danych klienta: '.$customerdata['name'].' '.$customerdata['lastname'],'e=up;m=cus;c='.$customerdata['id'],$diff);
+//			    $diff['old'] = $this->getcustomer($customerdata['id']);
+//			    $diff['type'] = 'up';
+//			    $diff['card'] = 'customers';
+			    addlogs('aktualizacja danych klienta: '.$customerdata['name'].' '.$customerdata['lastname'],'e=up;m=cus;c='.$customerdata['id']);
 		}
 		
 		$res = $this->DB->Execute('UPDATE customers SET status=?, type=?, address=?,
@@ -1282,10 +1282,10 @@ class LMS {
 	function CustomergroupUpdate($customergroupdata) {
 	
 		if (SYSLOG) {
-		    $diff['old'] = $this->DB->GetRow('SELECT * FROM customergroups WHERE id=? ;',array($customergroupdata['id']));
-		    $diff['type'] = 'up';
-		    $diff['card'] = 'customersgroup';
-		    addlogs('aktualizacja danych grupy: '.$customergroupdata['name'].' dla klientów','e=up;m=cus;',$diff);
+//		    $diff['old'] = $this->DB->GetRow('SELECT * FROM customergroups WHERE id=? ;',array($customergroupdata['id']));
+//		    $diff['type'] = 'up';
+//		    $diff['card'] = 'customersgroup';
+		    addlogs('aktualizacja danych grupy: '.$customergroupdata['name'].' dla klientów','e=up;m=cus;');
 		}
 		
 		return $this->DB->Execute('UPDATE customergroups SET name=?, description=? 
@@ -1300,8 +1300,8 @@ class LMS {
 			
 			if (SYSLOG) {
 			    $diff['old'] = $this->DB->GetRow('SELECT * FROM customergroups WHERE id=?',array($id));
-			    $diff['type'] = 'del';
-			    $diff['card'] = 'customersgroup';
+//			    $diff['type'] = 'del';
+//			    $diff['card'] = 'customersgroup';
 			    addlogs('skasowano grupę: '.$diff['old']['name'].' dla klientów','e=rm;m=cus;');
 			}
 			
@@ -1488,7 +1488,7 @@ class LMS {
 
 	 function ContractorUpdate($customerdata) {
 
-		if (SYSLOG) $diff['old'] = $this->getcontractor($customerdata['id']);
+//		if (SYSLOG) $diff['old'] = $this->getcontractor($customerdata['id']);
 
 		$res = $this->DB->Execute('UPDATE customers SET lastname=UPPER(?), name=?, address=?, zip=?, city=?, countryid=?, post_name=?, post_address=?, post_zip=?, post_city=?, 
 				post_countryid=?, email=?, account=?, ten=?, regon=?, rbe=?, pin=?, paytime=?, paytype=?, info=?, notes=?, moddate=?NOW?, modid=?, deleted=0,
@@ -1511,9 +1511,9 @@ class LMS {
 				$this->UpdateCountryState($customerdata['post_zip'], $customerdata['post_stateid']);
 			}
 			if (SYSLOG) {
-			    $diff['type'] = 'up';
-			    $diff['dbtable'] = 'customers';
-			    addlogs('Aktualizacja danych, kontrahent: '.strtoupper($customerdata['lastname']).' '.$customerdata['name'],'e=up;m=con;c='.$customerdata['id'],$diff);
+//			    $diff['type'] = 'up';
+//			    $diff['dbtable'] = 'customers';
+			    addlogs('Aktualizacja danych, kontrahent: '.strtoupper($customerdata['lastname']).' '.$customerdata['name'],'e=up;m=con;c='.$customerdata['id']);
 			}
 			
 		}
@@ -1665,9 +1665,9 @@ class LMS {
 	    if (SYSLOG) {
 	    
 		$diff['old'] = $this->getcontractor($id);
-		$diff['type'] = 'del';
-		$diff['dbtable'] = 'customers';
-		addlogs('Skasowano kontrahenta: '.strtoupper($diff['old']['lastname']).' '.$diff['old']['name'],'e=del;m=con;c='.$id,$diff);
+//		$diff['type'] = 'del';
+//		$diff['dbtable'] = 'customers';
+		addlogs('Skasowano kontrahenta: '.strtoupper($diff['old']['lastname']).' '.$diff['old']['name'],'e=del;m=con;c='.$id);
 	    
 	    }
 	    
@@ -2004,9 +2004,9 @@ class LMS {
 		    
 		    unset($diff['new']);
 		    if (!empty($nodedata['ownerid']))
-			addlogs('aktualizacja danych komputera: '.$nodedata['name'].', klient: '.$cusname,'e=up;m=node;n='.$nodedata['id'].';c='.$nodedata['ownerid'].';',$diff);
+			addlogs('aktualizacja danych komputera: '.$nodedata['name'].', klient: '.$cusname,'e=up;m=node;n='.$nodedata['id'].';c='.$nodedata['ownerid'].';');
 		    else
-			addlogs('aktualizacja danych urządzenia sieciowego: '.$nodedata['name'],'e=up;m=netdev;n='.$nodedata['netdev'].';',$diff);
+			addlogs('aktualizacja danych urządzenia sieciowego: '.$nodedata['name'],'e=up;m=netdev;n='.$nodedata['netdev'].';');
 		    unset($cusname);
 		    unset($diff);
 		}
@@ -2664,7 +2664,7 @@ class LMS {
 		    $diff['card']['assignments'];
 		    if (isset($diff['old']['liabilities']['name'])) $nazwa = ': '.$diff['old']['liabilities']['name'];
 			else $nazwa = 'w.g. taryfy: '.$this->gettariffname($diff['old']['assignments']['tariffid']);
-		    addlogs('skasowano zobowiązanie '.$nazwa.', klient: '.$this->getcustomername($diff['old']['assignments']['customerid']),'e=rm;m=fin;c='.$diff['old']['assignments']['customerid'],$diff);
+		    addlogs('skasowano zobowiązanie '.$nazwa.', klient: '.$this->getcustomername($diff['old']['assignments']['customerid']),'e=rm;m=fin;c='.$diff['old']['assignments']['customerid']);
 		}
 		
 		$this->DB->Execute('DELETE FROM assignments WHERE id=?', array($id));
@@ -2999,7 +2999,7 @@ class LMS {
 		    }
 		    else
 			$tekst = trans('Credit Note No. $a', $number);
-		    addlogs('Skasowano dokument: '.$tekst.', Klient: '.$this->getcustomername($invoice['customerid']),'e=del;m=fin;c='.$invoice['customerid'],$diff);
+		    addlogs('Skasowano dokument: '.$tekst.', Klient: '.$this->getcustomername($invoice['customerid']),'e=del;m=fin;c='.$invoice['customerid']);
 		    unset($tekst);
 		    unset($invoice);
 		    unset($number);
@@ -3029,7 +3029,7 @@ class LMS {
 			    $diff['old'] = $this->DB->GetRow('SELECT * FROM invoicecontents WHERE docid=? AND itemid=?', array($invoiceid, $itemid));
 			    $diff['type'] = 'del';
 			    $diff['card'] = 'invoicecontents';
-			    addlogs('Skasowano pozycję: '.$diff['old']['description'].' ('.$diff['old']['value'].'), dokument: '.$tekst.', klient: '.$this->getcustomername($invoice['customerid']),'e=del;m=fin;c='.$invoice['customerid'],$diff);
+			    addlogs('Skasowano pozycję: '.$diff['old']['description'].' ('.$diff['old']['value'].'), dokument: '.$tekst.', klient: '.$this->getcustomername($invoice['customerid']),'e=del;m=fin;c='.$invoice['customerid']);
 			}
 			
 			$this->DB->Execute('DELETE FROM invoicecontents WHERE docid=? AND itemid=?', array($invoiceid, $itemid));
@@ -3341,7 +3341,7 @@ class LMS {
 		    $diff['old'] = $this->DB->GetRow('SELECT * FROM tariffs WHERE id = ?', array($id));
 		    $diff['type'] = 'del';
 		    $diff['card'] = 'tariff';
-		    addlogs('Skasowano taryfę: '.$diff['old']['name'],'e=del;m=fin;',$diff);
+		    addlogs('Skasowano taryfę: '.$diff['old']['name'],'e=del;m=fin;');
 		}
 		
 		return $this->DB->Execute('DELETE FROM tariffs WHERE id=?', array($id));
