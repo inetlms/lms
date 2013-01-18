@@ -70,7 +70,10 @@ if(!empty($_POST['inv']))
 		if(isset($invoice['invoice']))
 			$SMARTY->display($CONFIG['invoices']['cnote_template_file']);
 		else
+		
 			$SMARTY->display($CONFIG['invoices']['template_file']);
+			
+		
 	}
 
 	$SMARTY->display('clearfooter.html');
@@ -78,7 +81,6 @@ if(!empty($_POST['inv']))
 }
 
 $invoice = $LMS->GetInvoiceContent($_GET['id']);
-
 if($invoice['customerid'] != $SESSION->id)
 {
 	die;
@@ -89,9 +91,12 @@ $invoice['type'] = $type;
 
 $number = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
 
-if(!isset($invoice['invoice']))
-	$layout['pagetitle'] = trans('Invoice No. $a', $number);
-else
+if(!isset($invoice['invoice'])) {
+	if ($invoice['type'] == DOC_INVOICE_PRO)
+	    $layout['pagetitle'] = trans('Faktura Pro Froma No. $a',$number);
+	else
+	    $layout['pagetitle'] = trans('Invoice No. $a', $number);
+} else
 	$layout['pagetitle'] = trans('Credit Note No. $a', $number);
 
 $SMARTY->display('invoiceheader.html');

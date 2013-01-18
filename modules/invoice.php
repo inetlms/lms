@@ -210,10 +210,10 @@ elseif($invoice = $LMS->GetInvoiceContent($_GET['id']))
 
 	$number = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
 	if(!isset($invoice['invoice'])) {
-		if ($invoice['type'] == DOC_INVOICE)
-		    $layout['pagetitle'] = trans('Invoice No. $a', $number);
+		if ($invoice['type'] == DOC_INVOICE_PRO)
+		    $layout['pagetitle'] = 'Faktura Pro Forma Nr.'.$number;
 		else
-		    $layout['pagetitle'] = trans('Invoice Pro Forma No. $a', $number);
+		    $layout['pagetitle'] = trans('Invoice No. $a', $number);
 	}
 	else
 		$layout['pagetitle'] = trans('Credit Note No. $a', $number);

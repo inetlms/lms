@@ -327,20 +327,21 @@ function invoice_title() {
 	if (isset($invoice['invoice']))
 		$title = trans('Credit Note No. $a', $docnumber);
 	else {
-		if ($invoice['type'] == DOC_INVOICE)
-		    $title = trans('Invoice No. $a', $docnumber);
-		else
+		if ($invoice['type'] == DOC_INVOICE_PRO)
 		    $title = trans('Pro Forma Invoice No. $a', $docnumber);
+		else
+		    $title = trans('Invoice No. $a', $docnumber);
 	}
 	$pdf->Write(0, $title, '', 0, 'C', true, 0, false, false, 0);
 
 	if (isset($invoice['invoice'])) {
 		$pdf->SetFont('arial', 'B', 12);
 		$docnumber = docnumber($invoice['invoice']['number'], $invoice['invoice']['template'], $invoice['invoice']['cdate']);
-		if ($invoice['type'] == DOC_INVOICE)
-		    $title = trans('for Invoice No. $a', $docnumber);
-		else
+		if ($invoice['type'] == DOC_INVOICE_PRO)
+		    
 		    $title = trans('for Pro Forma Invoice No. $a', $docnumber);
+		else
+		    $title = trans('for Invoice No. $a', $docnumber);
 		$pdf->Write(0, $title, '', 0, 'C', true, 0, false, false, 0);
 	}
 
@@ -510,7 +511,10 @@ function invoice_body_standard() {
 	invoice_expositor();
 	invoice_footnote();
 	$docnumber = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
-	$pdf->SetTitle(trans('Invoice No. $a', $docnumber));
+	if ($invoice['type'] == DOC_INVOICE_PRO)
+	    $pdf->SetTitle(trans('Faktura Pro Forma. $a', $docnumber));
+	else
+	    $pdf->SetTitle(trans('Invoice No. $a', $docnumber));
 	$pdf->SetAuthor($invoice['division_name']);
 	$pdf->setBarcode($docnumber);
 
@@ -519,6 +523,14 @@ function invoice_body_standard() {
 	$key = 'file://' . LIB_DIR . '/tcpdf/config/lms.key';
 
 	/* setup signature additional information */
+	if ($invoice['type'] == DOC_INVOICE_PRO)
+	$info = array(
+			'Name' => $invoice['division_name'],
+			'Location' => trans('Invoices'),
+			'Reason' => 'Faktura Pro Forma Nr. '.$docnumber,
+			'ContactInfo' => $invoice['division_author']
+	);
+	else
 	$info = array(
 			'Name' => $invoice['division_name'],
 			'Location' => trans('Invoices'),
@@ -555,7 +567,10 @@ function invoice_body_ft0100() {
 	invoice_main_form_fill();
 
 	$docnumber = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
-	$pdf->SetTitle(trans('Invoice No. $a', $docnumber));
+	if ($invoice['type'] == DOC_INVOICE_PRO)
+	    $pdf->SetTitle('Faktura Pro Forma Nr. '.$docnumber);
+	else
+	    $pdf->SetTitle(trans('Invoice No. $a', $docnumber));
 	$pdf->SetAuthor($invoice['division_name']);
 
 	/* setup your cert & key file */
@@ -563,6 +578,14 @@ function invoice_body_ft0100() {
 	$key = 'file://' . LIB_DIR . '/tcpdf/config/lms.key';
 
 	/* setup signature additional information */
+	if ($invoice['type'] == DOC_INVOICE_PRO)
+	$info = array(
+			'Name' => $invoice['division_name'],
+			'Location' => trans('Invoices'),
+			'Reason' => 'Faktura Pro Forma Nr. '.$docnumber,
+			'ContactInfo' => $invoice['division_author']
+	);
+	else
 	$info = array(
 			'Name' => $invoice['division_name'],
 			'Location' => trans('Invoices'),

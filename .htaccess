@@ -1,6 +1,3 @@
-RewriteEngine On
-Options +FollowSymlinks
-
 <Files .htaccess>
 Deny from all
 </Files>
