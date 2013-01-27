@@ -1973,8 +1973,12 @@ class LMS {
 		));
 		
 		
-		if (!empty($nodedata['monitoring']))
-		    $this->SetMonit($nodedata['id']);
+               if (!empty($nodedata['monitoring'])){
+                   $this->SetMonit($nodedata['id']);
+                   }
+               else {
+                   $this->SetMonit($nodedata['id'],0);
+               }
 
 		$this->DB->Execute('DELETE FROM macs WHERE nodeid=?', array($nodedata['id']));
 		foreach ($nodedata['macs'] as $mac) {
