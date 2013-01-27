@@ -40,7 +40,7 @@
 			{$netdevips[list].mac|replace:",":"<BR>"}
 		</TD>
 		<td width="1%" nowrap align="right">
-			<img src="img/radar{if !$netdevips[list].monitoring}off{/if}.png" {tip a=$netdevips[list].id dynpopup='?m=monitchartshort&type=netdev&time=-1d&id=$a' sticky=0}>&nbsp;
+			<img src="img/radar{if $netdevips[list].monitoring}.png" {tip a=$netdevips[list].id dynpopup='?m=monitchartshort&type=netdev&time=-1d&id=$a' sticky=0}{else}off.png"{/if}>&nbsp;
 			<a href="?m=netdevedit&id={if $netdevinfo.id}{$netdevinfo.id}{else}{$netdevedit.id}{/if}&action=ipset&ip={$netdevips[list].id}"><IMG src="img/{if ! $netdevips[list].access}no{/if}access.gif" ALT="" {if ! $netdevips[list].access}{tip text="Connect"}{else}{tip text="Disconnect"}{/if}></A>
 			<a href="?m=netdevedit&action=ipdel&id={$netdevinfo.id}&ip={$netdevips[list].id}" onClick="return confirmLink(this, '{t a=$netdevips[list].name}Are you sure, you want to delete address \'$a\' from database?{/t}')"><IMG SRC="img/delete.gif" ALT="" {tip text="Delete"}></A>
 			<a href="?m=netdevedit&action=editip&id={$netdevinfo.id}&ip={$netdevips[list].id}"><IMG SRC="img/edit.gif" ALT="" {tip text="Edit"}></A>
