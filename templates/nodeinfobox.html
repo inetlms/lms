@@ -295,7 +295,7 @@
 		</TD>
 	</TR>
 {/if}
-	{if check_modules(110)}
+	{if check_modules(110) && $nodeinfo.monitoring}
 	<TR CLASS="LIGHT">
 		<TD style="width:100%;" colspan="3">
 		<img src="?m=monitchartimg&chart=ping&chartsize=small&type=nodes&id={$nodeinfo.id}&time=-1d" alt="">
