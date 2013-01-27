@@ -158,13 +158,15 @@
 			{if $nodeipdata.moddate}{$nodeipdata.modifiedby}, {$nodeipdata.moddateh}{else}-{/if}
 		</TD>
 	</TR>
-	
+
+{if check_modules(110) && $nodeipdata.monitoring}
 	<tr class="light">
 	    <td colspan="3" width="100%">
 		<img src="?m=monitchartimg&chart=ping&chartsize=small&type=netdev&id={$nodeipdata.id}$time=-1d" alt="">
 	    </td>
 	</tr>
-                                                </TABLE>
+{/if}
+						</TABLE>
 					</TD>
 				</TR>
 			</TABLE>
