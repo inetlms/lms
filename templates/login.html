@@ -21,7 +21,7 @@
 					</td>
 					<td align="center" class="loginform light" width="300">
 						<b>{$layout.lmsv} LMS {$layout.lmsvr}</b><br><br>
-						<b>&copy; 2012 LMS iNET Developers</b><br><br><br>
+						<b>&copy;2012-{$smarty.now|date_format:"Y"} iNET LMS Developers</b><br><br><br>
 						{if $error}<font class="alert bold">{$error}</font>{else}&nbsp;{/if}<br>
 						<br>
 						<form method="post" name="loginform" action="{$target}">
@@ -59,8 +59,7 @@
 						<br>
 						<br>
 						<a href="doc/html/{$_ui_language}/"><font class="blend">{trans("Documentation")}</font></a><br>
-						<a href="http://www.lms.org.pl/"><font class="blend">{trans("LMS Project Homepage")}</font></a><br>
-						<font class="blend">&copy; 2001 - 2012 LMS Developers</b></font>
+						<a href="http://www.inetlms.pl" target="_blank"><font class="blend">{trans("iNET LMS Project Homepage")}</font></a><br>
 						{if get_conf('phpui.installation_name')}<br><br><b>{get_conf('phpui.installation_name')}</b>{/if}
 					</td>
 				</tr>
@@ -75,6 +74,10 @@
 		</td>
 	</tr>
 </table>
+<div style="left:20%;bottom:1%;width:60%;position:absolute;border:solid 1px #888888;padding:5px;background-color:#F4F0E8;">
+Informujemy, że projekt iNET LMS to autorska inicjatywa Daniela Kuleszy prezesa iNET Media group sp. z o.o. z siedzibą w Karlinie. Projekt nie jest powiązany<br>w żaden sposób z iNET group sp. z o.o. z siedzibą w Wodzisławiu Śląskim. Wszelkie pytania prosimy kierować na adres email {protect_email('inetlms@inetmediagroup.pl')}
+
+</div>
 <script type="text/javascript">
 <!--
 document.forms['loginform'].elements['loginform[login]'].focus();
