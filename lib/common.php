@@ -1043,4 +1043,14 @@ function check_modules($mod = NULL)
     return $return;
 }
 
+function protect_email($email)
+{
+    $output = '';
+    if ($email !='')
+	for ($i=0; $i<strlen($email); $i++)
+	    $output .= '&#'.ord($email[$i]).';';
+    return $output;
+}
+
+
 ?>
