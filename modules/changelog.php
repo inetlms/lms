@@ -44,7 +44,10 @@ $changelog = array(
 	    3 - doszedł nowy edytowalny box z wiadomością widoczną pod menu w module informacje,<br>
 	    4 - doszła możliwość pingowania komputerów przez klienta w zależności od uprawnień,<br>
 	    5 - doszła możliwość wydrukowania statystyk obciążenia łącza przez klienta w zależności od nadanych uprwnień,<br>
-	    6 - dopisano skrypt wysyłający przypomnienie o ID i PIN, wcześniej był tylko formularz. Klient musi podać adres e-mail i PESEL lub NIP',
+	    6 - dopisano skrypt wysyłający przypomnienie o ID i PIN, wcześniej był tylko formularz. Klient musi podać adres e-mail i PESEL lub NIP<br>
+	    7 - doszły nowe uprawnienia dla klientów w konfiguracji Userpanlu,<br>
+	    &nbsp;&nbsp;&nbsp;a) PING - klient może przeprowadzić test ping swoich komputerów<br>
+	    &nbsp;&nbsp;&nbsp;b) Wydruk statystyk obciążenia łącza',
 	),
 	array(
 	    'data'	=> '2013/01/28',
