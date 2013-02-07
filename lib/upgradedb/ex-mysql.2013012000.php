@@ -64,7 +64,7 @@ $DB->addconfig('monit','node_test_type',$tmp['node_test_type'],'icmp');
 $DB->addconfig('monit','owner_test',$tmp['owner_test'],1);
 $DB->addconfig('monit','owner_test_type',$tmp['owner_test_type'],'icmp');
 $DB->addconfig('monit','packetsize',$tmp['packetsize'],'32');
-$DB->addconfig['monit','rrdtool_dir','/usr/bin/rrdtool');
+$DB->addconfig('monit','rrdtool_dir','/usr/bin/rrdtool');
 $DB->addconfig('monit','signal_test','0');
 $DB->addconfig('monit','step_test_netdev',$tmp['step_test_netdev'],5);
 $DB->addconfig('monit','step_test_nodes',$tmp['step_test_nodes'],10);
