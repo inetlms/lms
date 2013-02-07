@@ -1,2 +1,2 @@
-iNET LMS 1.0.0
+iNET LMS 1.0.1
 ===
