@@ -54,10 +54,10 @@ $tmp = array(
 );
 
 $DB->Execute('DELETE FROM uiconfig WHERE section=? ;',array('monit'));
-$DB->addconfig('monit','active_monitoring',$tmp['active_monitoring',0);
+$DB->addconfig('monit','active_monitoring',$tmp['active_monitoring'],0);
 $DB->addconfig('monit','display_chart_in_node_box','1');
 $DB->addconfig('monit','live_ping','1');
-$DB->addconfig('monit','netdev_test',$tmp['netdev_test',1);
+$DB->addconfig('monit','netdev_test',$tmp['netdev_test'],1);
 $DB->addconfig('monit','netdev_test_type',$tmp['netdev_test-type'],'icmp');
 $DB->addconfig('monit','node_test',$tmp['node_test'],1);
 $DB->addconfig('monit','node_test_type',$tmp['node_test_type'],'icmp');
