@@ -94,12 +94,7 @@ if($invoice['customerid'] != $SESSION->id)
 $number = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
 
 if(!isset($invoice['invoice']))
-{
-        if ($invoice['type'] == DOC_INVOICE_PRO)
-	    $title = 'Faktura Pro Froma Nr. '.$number;
-	else
-	    $title = trans('Invoice No. $a', $number);
-}
+        $title = trans('Invoice No. $a', $number);
 else
         $title = trans('Credit Note No. $a', $number);
 

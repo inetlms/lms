@@ -2,7 +2,7 @@
 {assign var=today value=$smarty.now|date_format:"%x 00:00:00"}{assign var=today value=$today|date_format:"%s"}
 <TABLE style="width: 100%;" CELLPADDING="3">
 	<TR CLASS="DARK">
-		<TD style="width: 99%; white-space: nowrap; text-align: left;" class="fleftu hand" onClick="showOrHide('customerassignments');">
+		<TD style="width: 99%; white-space: nowrap; text-align: left;" class="fleftu hand" onClick="ShowOrHideBox('customerassignmentsbox');">
 			<IMG src="img/money.gif" alt="">
 			<span class="bold">{trans("Customer Liabilities:")}</span>
 		</TD>
@@ -17,7 +17,7 @@
 			{/if}
 		</TD>
 	</TR>
-	<TR id="customerassignments" style="display: none;">
+	<TR id="customerassignmentsbox" style="display: none;">
 		<TD style="width: 100%;" class="fall" colspan="2">
 			<TABLE cellpadding="5" cellspacing="0" style="width: 100%;">
 				<TR class="dark">
@@ -112,11 +112,10 @@
 		</TD>
 	</TR>
 </TABLE>
+{if get_profile('customerassignmentsbox')}
 <SCRIPT type="text/javascript">
 <!--
-if(getCookie('customerassignments')=='1')
-{
-	document.getElementById('customerassignments').style.display = '';
-}
+	document.getElementById('customerassignmentsbox').style.display = '';
 //-->
 </SCRIPT>
+{/if}

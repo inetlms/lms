@@ -46,6 +46,8 @@ $CONFIG = (array) parse_ini_file($CONFIG_FILE, true);
 // Check for configuration vars and set default values
 $CONFIG['directories']['sys_dir'] = (!isset($CONFIG['directories']['sys_dir']) ? getcwd() : $CONFIG['directories']['sys_dir']);
 $CONFIG['directories']['lib_dir'] = (!isset($CONFIG['directories']['lib_dir']) ? $CONFIG['directories']['sys_dir'].'/lib' : $CONFIG['directories']['lib_dir']);
+$CONFIG['directories']['tmp_dir'] = (!isset($CONFIG['directories']['tmp_dir']) ? $CONFIG['directories']['sys_dir'].'/tmp' : $CONFIG['directories']['tmp_dir']);
+$CONFIG['directories']['rrd_dir'] = (!isset($CONFIG['directories']['rrd_dir']) ? $CONFIG['directories']['sys_dir'].'/rrd' : $CONFIG['directories']['rrd_dir']);
 $CONFIG['directories']['doc_dir'] = (!isset($CONFIG['directories']['doc_dir']) ? $CONFIG['directories']['sys_dir'].'/documents' : $CONFIG['directories']['doc_dir']);
 $CONFIG['directories']['modules_dir'] = (!isset($CONFIG['directories']['modules_dir']) ? $CONFIG['directories']['sys_dir'].'/modules' : $CONFIG['directories']['modules_dir']);
 $CONFIG['directories']['backup_dir'] = (!isset($CONFIG['directories']['backup_dir']) ? $CONFIG['directories']['sys_dir'].'/backups' : $CONFIG['directories']['backup_dir']);
@@ -54,6 +56,8 @@ $CONFIG['directories']['smarty_compile_dir'] = (!isset($CONFIG['directories']['s
 $CONFIG['directories']['smarty_templates_dir'] = (!isset($CONFIG['directories']['smarty_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/templates' : $CONFIG['directories']['smarty_templates_dir']);
 
 define('SYS_DIR', $CONFIG['directories']['sys_dir']);
+define('TMP_DIR', $CONFIG['directories']['tmp_dir']);
+define('RRD_DIR', $CONFIG['directories']['rrd_dir']);
 define('LIB_DIR', $CONFIG['directories']['lib_dir']);
 define('DOC_DIR', $CONFIG['directories']['doc_dir']);
 define('BACKUP_DIR', $CONFIG['directories']['backup_dir']);
@@ -140,6 +144,7 @@ require_once(LIB_DIR.'/common.php');
 require_once(LIB_DIR.'/checkip.php');
 require_once(LIB_DIR.'/LMS.class.php');
 require_once(LIB_DIR.'/Auth.class.php');
+require_once(LIB_DIR.'/Profiles.class.php');
 require_once(LIB_DIR.'/accesstable.php');
 require_once(LIB_DIR.'/Session.class.php');
 require_once(LIB_DIR.'/GaduGadu.class.php');
@@ -149,10 +154,13 @@ require_once(LIB_DIR.'/LMS.Hiperus.class.php');
 
 $SESSION = new Session($DB, $CONFIG['phpui']['timeout']);
 $AUTH = new Auth($DB, $SESSION);
+$PROFILE = new Profile($DB,$AUTH);
 $LMS = new LMS($DB, $AUTH, $CONFIG);
 $LMS->ui_lang = $_ui_language;
 $LMS->lang = $_language;
 $GG = new rfGG(GG_VER_77);
+
+
 // Set some template and layout variables
 
 $SMARTY->template_dir = SMARTY_TEMPLATES_DIR;
@@ -167,7 +175,7 @@ $layout['smarty_version'] = SMARTY_VERSION;
 $layout['hostname'] = hostname();
 $layout['lmsv'] = 'iNET';
 $layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
-$layout['lmsvr'] = '1.0.0';
+$layout['lmsvr'] = '1.0.1';
 $layout['dberrors'] =& $DB->errors;
 $layout['dbdebug'] = $_DBDEBUG;
 $layout['popup'] = isset($_GET['popup']) ? true : false;
@@ -191,6 +199,10 @@ header('X-Powered-By: LMS/'.$layout['lmsv']);
 
 // Check privileges and execute modules
 if ($AUTH->islogged) {
+	
+	// initialize and load profile settings
+	
+	
 	// Load plugin files and register hook callbacks
 	$plugins = preg_split('/[;,\s\t\n]+/', $CONFIG['phpui']['plugins'], -1, PREG_SPLIT_NO_EMPTY);
 	if (!empty($plugins))
@@ -259,7 +271,10 @@ if ($AUTH->islogged) {
 		$SMARTY->assign('server', $_SERVER);
 		$SMARTY->display('notfound.html');
 	}
-
+	
+	if (!$PROFILE->autosave) 
+		$PROFILE->saveProfiles();
+	
 	if($SESSION->get('lastmodule') != $module)
 		$SESSION->save('lastmodule', $module);
 }
@@ -269,6 +284,7 @@ else
 	$SMARTY->assign('target','?'.$_SERVER['QUERY_STRING']);
 	$SMARTY->display('login.html');
 }
+
 
 $SESSION->close();
 $DB->Destroy();

@@ -137,7 +137,7 @@ function Traffic($from = 0, $to = 0, $owner = 0, $order = '')
 
 		foreach ($traffic['download']['data'] as $data)
 		{
-			$down = round($data * 150 / $maximum);
+			$down = round($data * 300 / $maximum);
 			$traffic['download']['bar'][] = $down ? $down : 1;
 			list($traffic['download']['data'][$x], $traffic['download']['unit'][$x]) = setunits($data);
 			$x++;
@@ -146,7 +146,7 @@ function Traffic($from = 0, $to = 0, $owner = 0, $order = '')
 
 		foreach ($traffic['upload']['data'] as $data)
 		{
-			$up = round($data * 150 / $maximum);
+			$up = round($data * 300 / $maximum);
 			$traffic['upload']['bar'][] = $up ? $up : 1;
 			list($traffic['upload']['data'][$x], $traffic['upload']['unit'][$x]) = setunits($data);
 			$x++;
@@ -205,6 +205,11 @@ function module_main()
 
     $SMARTY->assign('bar', $bar ? $bar : 'month');
     $SMARTY->display('module:stats.html');
+}
+
+function module_ping()
+{
+//    include('ping.php');
 }
 
 ?>

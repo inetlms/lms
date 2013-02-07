@@ -1,6 +1,5 @@
 <?php
 
-
 /*
  * LMS iNET
  *

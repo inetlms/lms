@@ -111,6 +111,8 @@ else
 
 $langs = explode(',', $langs);
 
+$_ui_language = NULL;
+
 foreach ($langs as $val)
 {
 	$val = substr($val, 0, 2);
@@ -127,6 +129,8 @@ foreach ($langs as $val)
 	}
 }
 
+// poprawka chorego ustawiana lang
+/*
 // System language
 if(!empty($CONFIG['phpui']['lang']))
 	$_language = $CONFIG['phpui']['lang'];
@@ -139,6 +143,10 @@ else
 // or browser langs aren't set
 if (empty($_ui_language))
 	$_ui_language = $_language;
+*/
+
+$_ui_language = $_language = get_conf('phpui.lang',($_ui_language ? $_ui_language : 'pl'));
+
 $_LANG = array();
 
 if (@is_readable(LIB_DIR.'/locale/'.$_ui_language.'/strings.php'))

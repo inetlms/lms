@@ -1052,5 +1052,4 @@ function protect_email($email)
     return $output;
 }
 
-
 ?>

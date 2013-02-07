@@ -82,7 +82,6 @@ $menu[] = array(
 	'link' => '?m=userpanel',
 	'tip' => trans('Userpanel'),
 	'prio' => '80',
-	'index' => 5000,
 	'submenu' => $submenu,
 );
 

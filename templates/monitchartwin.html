@@ -1,24 +1,51 @@
 {include file="header.html"}
-<p class="light">
-<table width="100%">
+{$xajax}
+<style type="text/css">
+    body { background-color:#dddddd;margin:0;padding:0;}
+</style>
 
-<tr>
-    <td align="center" width="100%">
-	<img src="?m=monitchartimg&chart=ping&chartsize=normal&type={$chart.type}&id={$chart.id}&from={$chart.from}&to={$chart.to}">
-    </td>
-</tr>
-<form name="pingwin" method="GET" action="?m=monitchartwin">
-<input type="hidden" name="id" value="{$chart.id}">
-<input type="submit" class="hiddenbtn">
-<input type="hidden" name="m" value="monitchartwin">
-<tr>
-    <td width="100%" align="left" style="padding-top:10px;padding-bottom:10px;">
-	Pokaż wykres od dnia: <input type="text" name="from" size="10" value="{$chart.from|date_format:"Y/m/d"}">
-	do dnia: <input type="text" name="to" size="10" value="{$chart.to|date_format:"Y/m/d"}">
-	<input type="submit" value="Pokaż">
-    </td>
-</tr>
-</form>
+<div style="width:100%;height:100%;margin:0;padding-top:4px;">
 
-</table>
-</p>
+	<table width="100%" cellpadding="0" cellspacing"0">
+	    <tr>
+		<td width="99%" align="center">
+		    {if $chart.ping_test}
+			<input type="radio" name="chart" value="ping" {if $chart.chart == 'ping'}checked{/if} id="id_ping" onclick="xajax_genImage('ping');"><label for="id_ping" onclick="xajax_genImage('ping');"><b>Ping</b></label>
+		    {/if}
+		    {if $chart.signal_test}
+			<input type="radio" name="chart" value="signal" {if $chart.chart == 'signal'}checked{/if} id="id_signal" onclick="xajax_genImage('signal');"><label for="id_signal" onclick="xajax_genImage('signal');"><b>{trans('Signal')}</b></label>
+		    {/if}
+		    {if $chart.transfer_test}
+			<input type="radio" name="chart" value="packets" {if $chart.chart == 'packets'}checked{/if} id="id_packets" onclick="xajax_genImage('packets');"><label for="id_packets" onclick="xajax_genImage('packets');"><b>{trans('Packets')}</b></label>
+			<input type="radio" name="chart" value="bits" {if $chart.chart == 'bits'}checked{/if} id="id_bits" onclick="xajax_genImage('bits');"><label for="id_bits" onclick="xajax_genImage('bits');"><b>{trans('Bits')}</b></label>
+		    {/if}
+		<td>
+		<td width="1%" style="padding-right:5px;cursor:pointer;" nowrap onclick="window.parent.popclick();" {tip text="Close"}>
+		    <img src="img/Exit.png">
+		</td>
+	    </tr>
+	</table>
+    
+    <br>
+    <div id="id_wykres" style="width:100%;text-align:center;"><center><br><br><br><br><br><h1>{trans('Chart not available')}</h1></center></div>
+</div>
+</body>
+
+{if $chart.ping_test || $chart.signal_test || $chart/transfer_test}
+<script type="text/javascript">
+<!--
+    xajax.callback.global.onRequest = function()
+    {
+	document.getElementById('id_wykres').innerHTML = 
+	'<div style="width:80px;height:50px;position:fixed;top:40%;left:47%;"><b>Loading...</b></div>';
+    }
+    function hideloading()
+    {
+	document.getElementById('id_wykres').innerHTML = '';
+ }
+xajax.callback.global.onComplete=hideloading();
+    xajax_genImage('{$chart.chart}');
+//-->
+</script>
+
+{/if}

@@ -50,7 +50,7 @@ $DB->Execute('INSERT INTO uiconfig (section,var,value) VALUES (?,?,?), (?,?,?), 
 $DB->Execute('DELETE FROM uiconfig WHERE section=? AND var=?;',array('monit','step_test'));
 
 if ($DB->GetOne('SELECT 1 FROM uiconfig WHERE section = ? AND var = ? LIMIT 1;',array('phpui','default_module')))
-    $DB->Execute('UPDATE uiconfig SET value = ? WHERE section = ? AND var = ?;',array('welcome_new','phpui','default_module'));
+    $DB->Execute('UPDATE uiconfig SET value = ? WHERE section = ? AND var = ? ;',array('welcome_new','phpui','default_module'));
 else
     $DB->Execute('INSERT INTO uiconfig (section,var,value) VALUES (?,?,?);',array('phpui','default_module','welcome_new'));
 

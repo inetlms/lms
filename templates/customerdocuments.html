@@ -1,7 +1,7 @@
 <!--// $Id$ //-->
 <TABLE WIDTH="100%" CELLPADDING="3">
 	<TR CLASS="DARK">
-		<TD width="99%" class="fleftu hand" onclick="showOrHide('docpanel');">
+		<TD width="99%" class="fleftu hand" onclick="ShowOrHideBox('docpanelbox');">
 			<IMG src="img/docum.gif" alt="">
 			<B>{trans("Customer's Documents:")}</B> ({t a=$limit}last $a documents{/t})
 		</TD>
@@ -10,7 +10,7 @@
 			<A href="?m=documentlist&c={$customerinfo.id}">{trans("All Documents")} &raquo;</A>&nbsp;
 		</TD>
 	</TR>
-	<TR id="docpanel" style="display:none;">
+	<TR id="docpanelbox" style="display:none;">
 		<TD WIDTH="100%" class="fall" colspan="2">
 			<TABLE cellpadding="5" cellspacing="0" WIDTH="100%">
 				<TR class="dark">
@@ -62,11 +62,10 @@
 		</TD>
 	</TR>
 </TABLE>
+{if get_profile('docpanelbox')}
 <SCRIPT type="text/javascript">
 <!--
-	if (getCookie('docpanel') == '1')
-	{
-		document.getElementById('docpanel').style.display = '';
-	}
+		document.getElementById('docpanelbox').style.display = '';
 //-->
 </SCRIPT>
+{/if}

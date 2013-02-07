@@ -49,6 +49,7 @@ $allnodegroups = $LMS->GetNodeGroupNames();
 $messagelist = $LMS->GetMessages($customerid, 10);
 $eventlist = $LMS->EventSearch(array('customerid' => $customerid), 'date,desc', true);
 $customernodes = $LMS->GetCustomerNodes($customerid);
+//$monit['ping_test'] = $monit['signal_test'] = false;
 
 //if (isset($_GET['alltopic'])) $limit = NULL; else $limit = 10;
 
@@ -76,6 +77,27 @@ $SMARTY->assign(array(
 	'sourceid' => $SESSION->get('addsource'),
 ));
 
+/*
+//echo "<pre>"; print_r($customernodes); echo "</pre>"; die;
+if (check_modules(110) && $customernodes) // sprawdzamy czy moduł monitoringu jest włączony i klient ma kompy
+{
+    $count = sizeof($customernodes);
+    for ($i=0; $i<$count; $i++)
+    {
+	if (file_exists(RRD_DIR.'/ping.node.'.$customernodes[$i]['id'].'.rrd'))
+	{
+//	    $monit['ping_nodeid'][$i] = $customernodes[$i]['id'];
+	    $monit['ping_test'] = true;
+	}
+	if (file_exists(RRD_DIR.'/signal.node.'.$customernodes[$i]['id'].'.rrd')) 
+	{
+//	    $monit['signal_nodeid'][$i] = $customernodes[$i]['id'];
+	    $monit['signal_test'] = true;
+	}
+    }
+}
+*/
+$SMARTY->assign('monit',$monit);
 $SMARTY->assign('sourcelist', $DB->GetAll('SELECT id, name FROM cashsources ORDER BY name'));
 $SMARTY->assignByRef('customernodes', $customernodes);
 $SMARTY->assignByRef('assignments', $assignments);

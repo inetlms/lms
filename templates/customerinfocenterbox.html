@@ -2,7 +2,7 @@
 
 <table width="100%" cellpadding="3">
     <tr class="dark" >
-	<td width="99%" class="fleftu" align="left" onclick="showOrHide('customercallcenter');" style="cursor:pointer;">
+	<td width="99%" class="fleftu" align="left" onclick="ShowOrHideBox('customercallcenterbox');" style="cursor:pointer;">
 	    <img src="img/info2.gif" alt="">&nbsp;<b>{trans('Call Center')} ( {$openedcallcenter} ): </b>
 	</td>
 	<td width="1%" class="frightu" align="right" nowrap>
@@ -10,8 +10,8 @@
 	    <a href="?m=infocenterlist&backto={$layout.module}&cid={$customerinfo.id}&s=&st=&datefrom=&dateto=">Wszystkie zdarzenia &raquo;</a>
 	</td>
     </tr>
-    <tr class="light" id="customercallcenter" style="display:none;">
-	<td width="100%" class="fall" colspan="4">
+    <tr class="light" id="customercallcenterbox" style="display:none;">
+	<td width="100%" class="fall" colspan="2">
 	    <table width="100%" cellpadding="0">
 		<tr class="LIGHT">
 		    <td width="50%" style="vertical-align:top;">
@@ -87,16 +87,11 @@
 	</td>
     </tr>
 </table>
-			
-			
 
-
-
+{if get_profile('customercallcenterbox')}
 <script type="text/javascript">
 <!--
-	if (getCookie('customercallcenter') == '1')
-	{
-		document.getElementById('customercallcenter').style.display = '';
-	}
+	document.getElementById('customercallcenterbox').style.display = '';
 //-->
 </script>
+{/if}

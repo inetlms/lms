@@ -24,6 +24,33 @@
  *  $Id$
  */
  
+// tablica z nazwami tabel które nie posiadają auto_increment / sequence
+// tablica wykorzystywana przy dumpie bazy oraz przy tworzeniu dodatkowego pliku naprawy indexów dla pgsql
+// cel: ułatwić życie jak robimy import danych dla pgsql z shell
+$TABLENAME_NOINDEX = array(
+			'rtattachments',
+			'dbinfo',
+			'invoicecontents',
+			'receiptcontents',
+			'documentcontents',
+			'stats',
+			'eventassignments',
+			'monitnodes',
+			'monituser',
+			'hv_county',
+			'hv_province',
+			'hv_borough',
+			'hv_pcb',
+			'hv_pricelist',
+			'hv_pstn',
+			'hv_pstnrange',
+			'hv_pstnusage',
+			'hv_subscriptionlist',
+			'hv_terminal',
+			'hv_customers',
+			'hv_enduserlist',
+			'sessions');
+
 define('MONIT_NONE',0);
 define('MONIT_NODES',1);
 define('MONIT_NETDEV',2);

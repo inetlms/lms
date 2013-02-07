@@ -172,6 +172,29 @@ function showOrHide(elementslist)
 	}
 }
 
+function ShowOrHideBox(elementslist)
+{
+	var elements_array = elementslist.split(" ");
+	var part_num = 0;
+	while (part_num < elements_array.length)
+	{
+		var elementid = elements_array[part_num];
+		if(document.getElementById(elementid).style.display != 'none')
+		{
+			document.getElementById(elementid).style.display = 'none';
+//			setCookie(elementid, '0');
+			sendPOST('?m=profiles','action=setprofile&variable='+elementid+'&content=0');
+		}
+		else
+		{
+			document.getElementById(elementid).style.display = '';
+//			setCookie(elementid, '1');
+			sendPOST('?m=profiles','action=setprofile&variable='+elementid+'&content=1');
+		}
+		part_num += 1;
+	}
+}
+
 timer_now = new Date();
 timer_start = timer_now.getTime();
 
@@ -509,9 +532,17 @@ function ping_popup(ip, type)
 function monitchart_popup(id,type)
 {
 	popup('?m=monitchartwin&id=' + id + '&type=' + type, 1, 1, 30, 30);
-	autoiframe_setsize('autoiframe', 645,340);
+	autoiframe_setsize('autoiframe', 608,360);
 }
 
+
+
+function message_search_template(formfield1,formfield2)
+{
+	//return openSelectWindow2('?m=messagesearchtemplate', 'messagesearchtemplate', 600, 300, 'true', formfield,formfield2)
+	popup_scroll('?m=messagesearchtemplate&idtheme=' + formfield1 + '&idmess=' + formfield2, 1, 1, 30, 30);
+	autoiframe_setsize('autoiframe', 600,300);
+}
 
 function divisioninfo_popup(id)
 {
@@ -561,26 +592,77 @@ function changeMacFormat(id)
 function ShowAjaxLoadingImage()
 {
     document.getElementById('id_loadajax_img').innerHTML = 
-	'<div style="width:80px;height:80px;position:fixed;top:40%;left:49%;"><img src="img/loadajax3.gif"> alt="Czekaj..."></div>';
+	'<div style="width:80px;height:80px;position:fixed;top:40%;left:49%;"><img src="img/preload.gif" alt="Czekaj..."></div>';
 }
 
 function HideAjaxLoadingImage()
 {
     document.getElementById('id_loadajax_img').innerHTML = '';
 }
+
 function loadAjax(idel,strona)
 {
     if (strona=='empty') {
 	$("#"+idel+"").empty();
     } else {
-	ShowAjaxLoadingImage();
+//	ShowAjaxLoadingImage();
 	$.ajax({ 
 		url:strona, 
 		success:function(html){$("#"+idel+"").empty().append(html);
-		HideAjaxLoadingImage();
+//		HideAjaxLoadingImage();
 		}
 		
 	});
 	
     }
+}
+
+function AjaxObjectCreateGeneral() {
+    var req;
+    try {
+	req = new XMLHttpRequest();
+    }
+    catch (e) {
+	try {
+	    req = new ActiveXObject("Msxml2.XMLHTTP");
+	} 
+	catch(e) {
+	    try {
+		req = new ActiveXObject("Microsoft.XMLHTTP");
+	    } 
+	    catch(e) {
+		return false;
+	    }
+	}
+    }
+    return req;
+}
+
+function sendPOST(plik,dane) {
+    var xml = AjaxObjectCreateGeneral();
+    var wynik = null;
+    if ( xml != false ) {
+	xml.onreadystatechange = function() {
+	    if ( xml.readyState == 4 ) {
+		if ( xml.status == 200 ) {
+		    wynik = xml.responseText;
+		    if ( xml.responseText == "true" ) wynik = true;
+		    if ( xml.responseText == "false" ) wynik = false;
+		    if ( xml.responseText == "null" ) wynik = null;
+		} 
+		else wynik = null;
+	    } 
+	    else wynik = null;
+	}
+	xml.open('POST',plik,false);
+	xml.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	xml.send(dane);
+    }
+    return wynik;
+}
+
+function setProfile(variable,content) {
+
+    sendPOST('?m=profiles','action=setprofile&variable='+variable+'&content='+content);
+
 }

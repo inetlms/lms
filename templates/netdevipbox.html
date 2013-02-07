@@ -40,7 +40,8 @@
 			{$netdevips[list].mac|replace:",":"<BR>"}
 		</TD>
 		<td width="1%" nowrap align="right">
-			<img src="img/radar{if !$netdevips[list].monitoring}off{/if}.png" {tip a=$netdevips[list].id dynpopup='?m=monitchartshort&type=netdev&time=-1d&id=$a' sticky=0}>&nbsp;
+			<img src="img/radar.png" {tip a=$netdevips[list].id dynpopup='?m=monitchartshort&chart=ping&type=netdev&time=-1d&id=$a' sticky=0}>&nbsp;
+			{if get_conf('monit.live_ping')} <img src="img/ping.gif" {tip text="Pinguj urzadzenie"} style="cursor:pointer;" onclick="window.open('?m=nodeping&packetsize=64&ip={$netdevips[list].ip}&netdev={$netdevips[list].id}','pingnode{$netdevips[list].ip}','width=400,height=450')">{/if}
 			<a href="?m=netdevedit&id={if $netdevinfo.id}{$netdevinfo.id}{else}{$netdevedit.id}{/if}&action=ipset&ip={$netdevips[list].id}"><IMG src="img/{if ! $netdevips[list].access}no{/if}access.gif" ALT="" {if ! $netdevips[list].access}{tip text="Connect"}{else}{tip text="Disconnect"}{/if}></A>
 			<a href="?m=netdevedit&action=ipdel&id={$netdevinfo.id}&ip={$netdevips[list].id}" onClick="return confirmLink(this, '{t a=$netdevips[list].name}Are you sure, you want to delete address \'$a\' from database?{/t}')"><IMG SRC="img/delete.gif" ALT="" {tip text="Delete"}></A>
 			<a href="?m=netdevedit&action=editip&id={$netdevinfo.id}&ip={$netdevips[list].id}"><IMG SRC="img/edit.gif" ALT="" {tip text="Edit"}></A>

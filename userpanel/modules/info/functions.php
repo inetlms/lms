@@ -45,6 +45,17 @@ function module_main()
 
     $fields_changed = $LMS->DB->GetRow('SELECT id FROM up_info_changes WHERE customerid = ?', 
     	array($SESSION->id));
+    	
+    	$yearstart = date('Y', (int) $LMS->DB->GetOne('SELECT MIN(dt) FROM stats'));
+		$yearend = date('Y', (int) $LMS->DB->GetOne('SELECT MAX(dt) FROM stats'));
+		for($i=$yearstart; $i<$yearend+1; $i++)
+			$statyears[] = $i;
+		for($i=1; $i<13; $i++)
+			$months[$i] = strftime('%B', mktime(0,0,0,$i,1));
+		$SMARTY->assign('currmonth', date('n'));
+		$SMARTY->assign('curryear', date('Y'));
+		$SMARTY->assign('statyears', $statyears);
+		$SMARTY->assign('months', $months);
 
     $SMARTY->assign('userinfo',$userinfo);
     $SMARTY->assign('usernodes',$usernodes);
@@ -54,9 +65,19 @@ function module_main()
     $SMARTY->display('module:info.html');
 } 
 
+function module_trafficprint()
+{
+    include 'trafficprint.php';
+}
+
 function module_docview()
 {
 	include 'docview.php';
+}
+
+function module_nodeping()
+{
+	include 'nodeping.php';
 }
 
 function module_updateuserform()
@@ -78,8 +99,7 @@ function module_updateuserform()
     $userinfo['skype'] = isset($userinfo['messengers'][IM_SKYPE]) ? $userinfo['messengers'][IM_SKYPE]['uid'] : '';
     
     $SMARTY->assign('userinfo',$userinfo);
-    $SMARTY->assign('usernodes',$usernodes);
-    $SMARTY->assign('documents',$documents);
+
     $SMARTY->display('module:updateuser.html');
 }
 

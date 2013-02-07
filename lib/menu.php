@@ -1,7 +1,7 @@
 <?php
 
 /*
- * LMS version 1.11-git (EXPANDED)
+ * iNET LMS 
  *
  * (C) Copyright 2001-2012 LMS Developers
  *
@@ -659,6 +659,14 @@ $menu = array(
 					'tip' => trans('Allows you to send messages to customers'),
 					'prio' => 20,
 				),
+/*
+				array(
+					'name' => trans('Templates'),
+					'link' => '?m=messagetemplate',
+					'tip' => trans('Messages managing templates'),
+					'prio' => 21,
+				),
+*/
 			),
 		),
 

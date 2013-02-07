@@ -27,7 +27,7 @@
 unset($access);
 // last 46
 // modules with access for everyone
-$access['allow'] = '^(welcome|welcome_new|copyrights|logout|chpasswd|quicksearch|calendar|changelog|calculator)$';
+$access['allow'] = '^(welcome|welcome_new|copyrights|logout|chpasswd|quicksearch|calendar|changelog|calculator|nodeping)$';
 
 $access['table'][0]['name']		= trans('full access');
 $access['table'][0]['allow_reg']	= '^.*$';

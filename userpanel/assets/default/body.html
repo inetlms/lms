@@ -1,0 +1,18 @@
+<div class="row-fluid">
+    <div class="span12">
+        <div class="page-header">
+        <table width="100%" cellpadding="0" cellspacing="0">
+	    {if get_conf('userpanel.logourl')}
+		<tr>
+		    <td align="left" width="1%" nowrap class="pad">
+			<img src="{get_conf('userpanel.logourl')}" alt="">
+		    </td>
+		</tr>
+	    {/if}
+        </table>
+        </div>
+        <ul class="nav nav-tabs">
+        {foreach from=$modules item=menuitem}
+            <li {if strpos($smarty.get.m, $menuitem.module) !== false && strlen($smarty.get.m)==strlen($menuitem.module) } class="active" {/if}><a href="?m={$menuitem.module}" {userpaneltip text=$menuitem.tip}><b>{$smarty.get.page} {$menuitem.name|replace:" ":"&nbsp;"}</b></a></li>
+        {/foreach}
+        </ul>

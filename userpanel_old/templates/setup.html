@@ -1,0 +1,88 @@
+{include file="header.html"}
+<!--// $Id$ //-->
+<H1>{$layout.pagetitle}</H1>
+<FORM NAME="config" METHOD="POST" ACTION="?m=userpanel&f=submit_setup">
+<TABLE cellpadding="3" width="100%">
+    <TR class="dark">
+	<TD class="fall" colspan="2">
+	    <B>{trans("Basic Configuration:")}</B>
+	</TD>
+    </TR>
+    <TR class="light">
+	<TD class="fleft" width="1%" NOWRAP>
+	    {trans("Userpanel style:")}
+	</TD>
+	<TD class="fright" width="99%">
+	    <SELECT name="style" SIZE="1" {tip text="Userpanel design style"}>
+		{foreach from=$stylelist item=styleitem}
+		<OPTION value="{$styleitem}"{if ($styleitem == $style) || ($styleitem=="default" && $style == "")} SELECTED{/if}>{$styleitem}</OPTION>
+		{/foreach}
+	    </SELECT>
+	</TD>
+    </TR>
+    <TR class="light">
+	<TD class="fleft" width="1%" NOWRAP>
+	    {trans("Hint style:")}
+	</TD>
+	<TD class="fright" width="99%">
+	    <SELECT name="hint" SIZE="1" {tip text="Userpanel hints style. Chose modern for animated assistant, classic for tips in LMS style, or none to disable hints displaying"}>
+		<OPTION value="modern"{if $hint == 'modern'} SELECTED{/if}>{trans("modern")}</OPTION>
+		<OPTION value="classic"{if $hint == 'classic'} SELECTED{/if}>{trans("classic")}</OPTION>
+		<OPTION value="none"{if $hint == 'none'} SELECTED{/if}>{trans("none")}</OPTION>
+	    </SELECT>
+	</TD>
+    </TR>
+    <TR class="light">
+	<TD class="fleft" width="1%" NOWRAP>
+	    <label for="hide_nodes_modules">{trans("Disabling modules:")}</label>
+	</TD>
+	<TD class="fright" width="99%">
+	    <INPUT class="box light" type="checkbox" name="hide_nodes_modules" ID="hide_nodes_modules" value="1" {if $hide_nodes_modules} CHECKED{/if} {tip text="Hiding some modules useless when customer hasn't got any nodes"}>
+	</TD>
+    </TR>
+    <TR class="light">
+	<TD class="fbottomu" align="right" colspan="2">
+	    <A HREF="javascript:document.config.submit();" ACCESSKEY="S">{trans("Submit")} <IMG SRC="img/save.gif" ALT=""></A>
+	</TD>
+</TABLE>
+<BR>
+<TABLE cellpadding="3" width="100%">
+    <TR class="dark">
+	<TD class="fleftu" align="center"><B>{trans("Module")}</B></TD>
+	<TD class="fbt" align="center"><B>{trans("Display name")}</B></TD>
+	<TD class="fbt" align="center"><B>{trans("Prio")}</B></TD>
+	<TD class="fbt" align="center"><B>{trans("Database version")}</B></TD>
+	<TD class="fbt" align="center"><B>{trans("Tip")}</B></TD>
+	<TD class="frightu" align="center"><B>{trans("Description")}</B></TD>
+    </tr>
+    {cycle values="light,lucid" print=false}
+    {foreach from=$menu item=menuitem}
+    <TR class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td class="fleft" onClick="return self.location.href='?m=userpanel&module={$menuitem.module}';">
+	    {$menuitem.module}
+	</td>
+	<td onClick="return self.location.href='?m=userpanel&module={$menuitem.module}';">
+	    {$menuitem.name}
+	</td>
+	<td onClick="return self.location.href='?m=userpanel&module={$menuitem.module}';" align="center">
+	    {$menuitem.prio}
+	</td>
+	<td onClick="return self.location.href='?m=userpanel&module={$menuitem.module}';" align="center">
+	    {if $menuitem.dbver>0}{$menuitem.dbver}{else}{trans("-")}{/if}
+	</td>
+	<td onClick="return self.location.href='?m=userpanel&module={$menuitem.module}';">
+	    {t}{$menuitem.tip}{/t}
+	</td>
+	<td class="fright" onClick="return self.location.href='?m=userpanel&module={$menuitem.module}';">
+	    {t}{$menuitem.description}{/t}
+	</td>
+    </tr>
+    {/foreach}
+    <TR CLASS="light">
+	<TD WIDTH="98%" COLSPAN="6" CLASS="fall" ALIGN="right">
+	    <B>{trans("Total:")} {$total}</B>
+	</TD>
+    </TR>
+</table>
+</FORM>
+{include file="footer.html"}

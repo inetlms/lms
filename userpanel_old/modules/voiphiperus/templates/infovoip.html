@@ -1,0 +1,45 @@
+<!--//
+/*********************************************\
+*                                             *
+*    LMS Hiperus C5 v.1.0.0                   *
+*    (c)2012 by Sylwester Kondracki           *
+*    Gadu-Gadu : 6164816                      *
+*    E-mail : sylwek@sylwester-kondracki.eu   *
+*                                             *
+\*********************************************/
+//-->
+{include file="header.html"}
+<table width="100%" cellpadding="10">
+	<tr>
+		<td valign="top" width="100%">
+			{include file="module:main.html"}
+		</td>
+	</tr>
+	{if $voipallinfo}
+	<tr>
+	    <td valign="top" width="100%">
+		{box a=$cusname title="DANE SZCZEGÓŁOWE DLA KONTA VoIP : $cusname"}
+		<table width="100%">
+		    <tr>
+			<td valign="top" width="100%">
+			    {include file="module:billinginfo.html"}
+			</td>
+		    </tr>
+		    <tr>
+			<td valign="top" width="100%">
+			    {include file="module:terminalinfo.html"}
+			</td>
+		    </tr>
+		    <tr>
+			<td valign="top" width="100%">
+			    {include file="module:pstninfo.html"}
+			</td>
+		    </tr>
+		    
+		</table>
+		{/box}
+	    </td>
+	</tr>
+	{/if}
+</table>
+{include file="footer.html"}

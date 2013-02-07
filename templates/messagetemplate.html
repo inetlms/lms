@@ -1,0 +1,117 @@
+{include file="header.html"}
+<h1>{$layout.pagetitle}</h1>
+
+{literal}
+<script type="text/javascript">
+<!--
+    function edytujtemplate(id)
+    {
+	document.location.href='?m=messagetemplate&e&id='+id;
+    }
+    
+    function kasujtemplate(id)
+    {
+	if(confirm('Czy napewno skasować szablon ?'))
+	    document.location.href='?m=messagetemplate&d&id='+id;
+    }
+    
+    function dodajtemplate()
+    {
+	var blad=false;
+	
+	if ( document.getElementById('names').value.length == 0 || document.getElementById('temat').value.length == 0 || document.getElementById('wiadomosc').value.length == 0)
+	    blad=true;
+	
+	if(blad)
+	    alert('Nazwa, temat i treść wiadomości jest wymagana.\nProszę uzupełnić pola.');
+	else
+	{
+	    document.messtempedit.method="POST";
+	    document.messtempedit.action="?m=messagetemplate&addnew";
+	    document.messtempedit.submit();
+	}
+    }
+    
+    function zapisztemplate()
+    {
+	var blad=false;
+	if ( document.getElementById('names').value.length==0 || document.getElementById('temat').value.length==0||document.getElementById('wiadomosc').value.length==0)
+	    blad=true;
+	
+	if(blad)
+	    alert('Nazwa, temat i treść wiadomości jest wymagana.\nProszę uzupełnić pola.');
+	else
+	{
+	    document.messtempedit.method="POST";
+	    document.messtempedit.action="?m=messagetemplate&save";
+	    document.messtempedit.submit();
+	}
+    }
+//-->
+</script>
+{/literal}
+
+<form name="messtempedit">
+{if $akcja=='edycja'}<input type="hidden" name="messtemp[id]" value="{$messtemp.id}">{/if}
+<table width="100%" cellpadding="5" class="light">
+    <tr class="dark">
+	<td colspan="2" class="fall"></td>
+    </tr>
+    <tr>
+	<td width="1%" class="fleft" nowrap><b>Nazwa: </b></td>
+	<td width="auto" class="fright">
+	    <input type="text" style="width:400px;" id="names" name="messtemp[names]" value="{$messtemp.name}">
+	</td>
+    </tr>
+    <tr>
+	<td width="1%" class="fleft" nowrap><b>Temat: </b></td>
+	<td width="auto" class="fright">
+	    <input type="text" style="width:400px;" id="temat" name="messtemp[theme]" value="{$messtemp.theme}">
+	</td>
+    </tr>
+    <tr>
+	<td width="1%" class="fleft" nowrap><b>Wiadomość:&nbsp;</b></td>
+	<td width="auto" class="fright">
+	    <textarea id="wiadomosc" style="width:400px;border: 1px solid #000;" rows="4" name="messtemp[message]">{$messtemp.message}</textarea>
+	</td>
+    </tr>
+    <tr class="dark">
+	<td width="100%" colspan="2" class="fall" align="right">
+	    {if $akcja=='edycja'}<a href="javascript:zapisztemplate();">Zapisz <img src="img/save.gif"></a>&nbsp;{/if}
+	    {if $akcja=='none'}<a href="javascript:dodajtemplate();">Dodaj szablon <img src="img/add.gif"></a>&nbsp;{/if}
+	    <a href="?m=messagetemplate">Anuluj <img src="img/cancel.gif"></a>
+	</td>
+    </tr>
+</table>
+</form>
+    
+<br>
+<table width="100%" cellpadding="3">
+    <tr class="dark">
+	<td width="10%" class="fleftu"><b>Nazwa</b></td>
+	<td width="10%" class="fbt"><b>Temat</b></td>
+	<td width="auto" class="fbt" ><b>Wiadomość</b></td>
+	<td width="1%" nowrap class="frightu"><b>Link</b></td>
+    </tr>
+    
+    {cycle values="light,lucid" print=false}
+    {section name="messlist" loop=$messlist}
+	
+	
+	<tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	    <td width="10%" align="left" class="fleft">{$messlist[messlist].name}</td>
+	    <td width="10%" align="left">{$messlist[messlist].theme}</td>
+	    <td width="auto" align="left">{$messlist[messlist].message|nl2br}</td>
+	    <td width="1%"  class="fright" nowrap>
+		<img src="img/edit.gif" title="[ EDYCJA ]" style="cursor:pointer" border="0" onClick="edytujtemplate('{$messlist[messlist].id}');">
+		<img src="img/delete.gif" title="[ KASUJ ]" style="cursor:pointer;" border="0" onClick="kasujtemplate('{$messlist[messlist].id}');">
+	    </td>
+	</tr>
+    {sectionelse}
+	<tr class="lucid"><td colspan="4" width="100%" align="center" class="flr"><br><h2><b>Brak szablonów dla wiadomości</b></h2><br></td></tr>
+    {/section}
+    
+    <tr class="dark"><td width="100%" colspan="4" class="fall" >&nbsp;</td></tr>
+</table>
+
+{include file="footer.html"}

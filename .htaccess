@@ -1,7 +1,3 @@
-<Files .htaccess>
-Deny from all
-</Files>
-
 <Files lms.ini>
 Order Deny,Allow
 Deny From All
@@ -10,10 +6,7 @@ Deny From All
 php_flag register_globals Off
 php_flag display_errors Off
 php_flag display_startup_errors Off
-php_value memory_limit 256M
 php_value post_max_size 128M
 php_value upload_max_filesize 128M 
-php_value max_execution_time 60
-php_value max_input_time 120
 php_value default_mimetype text/html
 

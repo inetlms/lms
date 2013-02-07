@@ -21,8 +21,24 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  *
- *  $Id: monitnodelist.php,v 1.00 2012/12/20 22:01:35 Sylwester Kondracki Exp $
+ *  $Id: monitnodelist.php,v 1.01 2013/01/20 22:01:35 Sylwester Kondracki Exp $
  */
+
+if (isset($_POST['settesttype']))
+{
+    $LMS->SetTestTypeByMonit(intval($_POST['id']),$_POST['settesttype']);
+    die;
+}
+if (isset($_POST['setpingtest']))
+{
+    $LMS->SetPingTestMonit(intval($_POST['id']),intval($_POST['setpingtest']));
+    die;
+}
+if (isset($_POST['setsignaltest']))
+{
+    $LMS->SetSignalTestMonit(intval($_POST['id']),intval($_POST['setsignaltest'])); 
+    die;
+}
 
 if (!isset($_GET['td']))
     $SESSION->restore('mltd',$node['typedev']);
@@ -56,13 +72,14 @@ if (isset($_GET['action']))
 {
     switch ($_GET['action'])
     {
-	case 'setaccess'	: $LMS->SetMonit($_GET['nid'],$_GET['access']); $SESSION->redirect('?'.$SESSION->get('backto'));break;
-	case 'settesttype'	: $LMS->SetTestTypeByMonit($_GET['nid'],$_GET['testtype']);  $SESSION->redirect('?'.$SESSION->get('backto'));break;
-	case 'adddev'		: $LMS->SetMonit($_GET['nid'],1); $SESSION->redirect('?'.$SESSION->get('backto')); break;
-	case 'deldev'		: $LMS->DelMonit($_GET['nid'],'netdev'); $SESSION->redirect('?'.$SESSION->get('backto')); break;
-	case 'clearstat'	: $LMS->ClearStatMonit($_GET['nid'],'netdev'); $SESSION->redirect('?'.$SESSION->get('backto')); break;
+	case 'setaccess'	: $LMS->SetMonit(intval($_GET['nid']),$_GET['access']); $SESSION->redirect('?'.$SESSION->get('backto'));break;
+	case 'adddev'		: $LMS->SetMonit(intval($_GET['nid']),1); $SESSION->redirect('?'.$SESSION->get('backto')); break;
+	case 'deldev'		: $LMS->DelMonit(intval($_GET['nid']),'netdev'); $SESSION->redirect('?'.$SESSION->get('backto')); break;
+	case 'clearstat'	: $LMS->ClearStatMonit(intval($_GET['nid']),'netdev'); $SESSION->redirect('?'.$SESSION->get('backto')); break;
     }
 }
+
+
 
 $SMARTY->assign('devlist',$LMS->GetListNodesNotMonit(($node['typedev'] == 'netdev' ? false : true)));
 $SMARTY->assign('monitlist',$LMS->GetListNodesMonit(($node['typedev'] == 'netdev' ? false : true),$listdata['order'].','.$listdata['direction']));

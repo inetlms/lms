@@ -23,7 +23,12 @@
  *
  *  $Id$
  */
-
+ 
+$_LANG['The customer can print the link stats'] = 'Klient może wydrukować statystyki wykorzystania łącza';
+$_LANG['The client can PING test computers'] = 'Klient może przeprowadzić test PING komputerów';
+$_LANG['DOWNLOAD'] = 'Pobrano';
+$_LANG['UPLOAD'] = 'Wysłano';
+$_LANG['Online Customer Service'] = 'Internetowe Biuro Obsługi Klienta';
 $_LANG['Access denied!'] = 'Brak dostępu!';
 $_LANG['and'] = 'i';
 $_LANG['Cancel'] = 'Anuluj';
@@ -77,5 +82,4 @@ $_LANG['yearly'] = 'rocznie';
 $_LANG['Rights'] = 'Uprawnienia';
 $_LANG['Hiding some modules useless when customer hasn\'t got any nodes'] = 'Ukrycie niektórych modułów, bezużytecznych gdy klient nie posiada komputerów';
 $_LANG['Disabling modules:'] = 'Wyłączenie modułów:';
-
 ?>

@@ -1,5 +1,5 @@
 <!--// $Id toolbar.html v.1.000 2012/09/19 00:56:12 sylwek Exp $ //-->
-<hr>
+
 {literal}
 <script type="text/javascript">
 <!--
@@ -11,9 +11,10 @@ function showcalculator()
 //-->
 </script>
 {/literal}
+<hr>
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr>
-    <td width="99%" nowrap align="left">
+    <td width="98%" nowrap align="left">
 	<span style="padding-right:15px;">
 	    <a href="?m={get_conf('phpui.default_module','welcome')}" {tip text="Basic system information"}><img src="img/home.png" border="0" width="20"></a>
 	    <img src="img/Calculator.png" style="cursor:pointer;" {tip text="Kalkulator"} onclick="showcalculator();" width="18">
@@ -64,3 +65,4 @@ function showcalculator()
     </td>
 </tr>
 </table>
+<hr>

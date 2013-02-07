@@ -80,7 +80,7 @@
 <INPUT type="submit" class="hiddenbtn">
 <TABLE WIDTH="100%" CELLPADDING="3">
 	<TR CLASS="DARK">
-	<TD {if $limit}class="fleftu hand" onCLick="showOrHide('customerbalance');" {else}class="fleftu" {/if}nowrap>
+	<TD {if $limit}class="fleftu hand" onCLick="ShowOrHideBox('customerbalancebox');" {else}class="fleftu" {/if}nowrap>
 			<IMG src="img/pay.gif" alt="">
 			<B>{trans("Customer Account:")}</B> 
 			{if $limit}
@@ -108,7 +108,7 @@
 			</SELECT>
 		</TD>
 	</TR>
-	<TR id="customerbalance">
+	<TR id="customerbalancebox">
 		<TD width="100%" colspan="2" class="fall">
 			<TABLE cellpadding="5" cellspacing="0" width="100%">
 				<TR class="dark">
@@ -240,11 +240,10 @@
 <SCRIPT type="text/javascript">
 <!--
 var cal3 = new calendar(document.forms['addbalance'].elements['addbalance[time]']);
-{if $limit}
-if (getCookie('customerbalance') == '0')
-{
-	document.getElementById('customerbalance').style.display = 'none';
-}
+{if !get_profile('customerbalancebox')}
+    {if $limit}
+	document.getElementById('customerbalancebox').style.display = 'none';
+    {/if}
 {/if}
 //-->
 </SCRIPT>

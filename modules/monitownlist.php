@@ -58,11 +58,11 @@ if (isset($_GET['action']))
     }
 }
 
-$monitdevlist = $LMS->GetOwnerMonitList();
+$LMSdevlist = $LMS->GetOwnerMonitList();
 $SMARTY->assign('error',$error);
 $SMARTY->assign('akcja',$akcja);
 $SMARTY->assign('devlist',$devlist);
-$SMARTY->assign('monitdevlist',$monitdevlist);
+$SMARTY->assign('monitdevlist',$LMSdevlist);
 $SMARTY->display('monitownlist.html');
 
 ?>
