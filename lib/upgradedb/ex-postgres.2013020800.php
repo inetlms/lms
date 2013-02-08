@@ -21,18 +21,9 @@
  *
  */
 
-
 $DB->BeginTrans();
 
-
-if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE table_name = ? LIMIT 1",array('hv_config'))) {
-
-include('ex-mysql-hiperus.inc.php');
-
-}//end if not exists table
-
-$DB->Execute("UPDATE dbinfo SET keyvalue=? WHERE keytype=?",array('2012122900','dbvex'));
+$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2013020800', 'dbvex'));
 
 $DB->CommitTrans();
-
 ?>
