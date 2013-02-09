@@ -23,7 +23,8 @@
 
 $DB->BeginTrans();
 
-if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE table_name = ? AND table_schema = ? LIMIT 1",array('hv_config',$DB->_dbname))) {
+if (!$tmp = $DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE table_name = ? AND table_schema = ? LIMIT 1",array('hv_customers',$DB->_dbname))) 
+{
     include('ex-mysql-hiperus.inc.php');
 }
 
