@@ -113,7 +113,7 @@ class LMS {
 	    .' AND a.dateto!=0'
 	    .' AND a.dateto<='.$dateto
 	    .' AND a.dateto>'.time()
-	    .' AND NOT EXISTS (SELECT 1 FROM assignments aa WHERE aa.customerid=a.customerid AND aa.datefrom>a.dateto AND aa.discount>0 LIMIT 1)'
+	    .' AND NOT EXISTS (SELECT 1 FROM assignments aa WHERE aa.customerid=a.customerid AND aa.datefrom>a.dateto LIMIT 1)'
 	    ;
 	}
 	elseif ($dni=='-2')
