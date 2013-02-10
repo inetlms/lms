@@ -2,3 +2,6 @@ templates_c/*
 userpanel/templates_c/*
 backups/*
 lms.ini
+*~
+*.swp
+*.swo

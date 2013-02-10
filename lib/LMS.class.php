@@ -4964,11 +4964,13 @@ class LMS {
 		}
 
 		$error = $mail_object = & Mail::factory('smtp', $params);
-		if (PEAR::isError($error))
+//		if (PEAR::isError($error))
+		if (is_a($error,'PEAR::_Error'))
 			return $error->getMessage();
 
 		$error = $mail_object->send($recipients, $headers, $buf);
-		if (PEAR::isError($error))
+//		if (PEAR::isError($error))
+		if (is_a($error,'PEAR::_Error'))
 			return $error->getMessage();
 		else
 			return MSG_SENT;
@@ -6343,42 +6345,16 @@ class LMS {
 	return $devices;
     }
 // ********************************************************           RRD CREATE FILE        ****************************************
-/*
-    function RRD_CreatePingFile($file,$step)
-    {
-	$count_record_1week = ceil(604800 / $step);
-	$count_record_2week = ceil((1209600 / $step) / 6);
-	$count_record_1month = ceil((2562000 / $step) / 12);
-	$count_record_3month = ceil((7776000 / $step) / 24);
-	$count_record_1year = ceil((31622400 / $step) / 72);
-	$count_record_2year = ceil((63244800 / $step) / 144);
 
-	exec("rrdtool create ".$file." \
-	    --step=".$step." \
-	    --start=".(time()-15642000)." \
-	    DS:ping:GAUGE:".($step*2).":0:U \
-	    DS:loss:GAUGE:".($step*2).":0:U \
-	    RRA:AVERAGE:0.5:1:".$count_record_1week." \
-	    RRA:AVERAGE:0.5:6:".$count_record_2week." \
-	    RRA:AVERAGE:0.5:12:".$count_record_1month." \
-	    RRA:AVERAGE:0.5:24:".$count_record_3month." \
-	    RRA:AVERAGE:0.5:72:".$count_record_1year." \
-	    RRA:AVERAGE:0.5:144:".$count_record_2year." \
-	    RRA:MAX:0.5:1:".$count_record_1week." \
-	    RRA:MAX:0.5:12:".$count_record_1month." \
-	    RRA:LAST:0.5:1:".$count_record_1week." \
-	    RRA:LAST:0.5:12:".$count_record_1month." \
-	");
-    }
-*/
     function RRD_CreatePingFile($file,$step)
     {
 	$count_record_2week = ceil((1209600 / $step));
 	$count_record_1month = ceil((2562000 / $step) / 12);
 	$count_record_3month = ceil((7776000 / $step) / 24);
 	$count_record_1year = ceil((31622400 / $step) / 72);
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 
-	exec("rrdtool create ".$file." \
+	exec("$rrdtool create ".$file." \
 	    --step=".$step." \
 	    --start=".(time()-600)." \
 	    DS:ping:GAUGE:".($step*2).":0:U \
@@ -6400,8 +6376,9 @@ class LMS {
 	$count_record_1month = ceil((2562000 / $step) / 12);
 	$count_record_3month = ceil((7776000 / $step) / 24);
 	$count_record_1year = ceil((31622400 / $step) / 72);
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	
-	exec("rrdtool create ".$file." \
+	exec("$rrdtool create ".$file." \
 	    --step=".$step." \
 	    --start=".(time()-600)." \
 	    DS:rx_signal:GAUGE:".($step*2).":U:U \
@@ -6426,8 +6403,9 @@ class LMS {
 	$count_record_1month = ceil((2562000 / $step) / 12);
 	$count_record_3month = ceil((7776000 / $step) / 24);
 	$count_record_1year = ceil((31622400 / $step) / 72);
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	
-	exec("rrdtool create ".$file." \
+	exec("$rrdtool create ".$file." \
 	    --step=".$step." \
 	    --start=".(time()-600)." \
 	    DS:tx_signal:GAUGE:".($step*2).":U:U \
@@ -6453,8 +6431,9 @@ class LMS {
 	$count_record_1month = ceil((2562000 / $step) / 12);
 	$count_record_3month = ceil((7776000 / $step) / 24);
 	$count_record_1year = ceil((31622400 / $step) / 72);
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	
-	exec("rrdtool create ".$file." \
+	exec("$rrdtool create ".$file." \
 	    --step=".$step." \
 	    --start=".(time()-600)." \
 	    DS:tx_packets:COUNTER:".($step*2).":0:U \
@@ -6480,6 +6459,7 @@ class LMS {
 
     function RRD_UpdatePingFile($file, $ptime = NULL, $cdate = NULL, $step = 5)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	if ($step < 5) $step = 5;
 	
 	$step = $step * 60;
@@ -6496,11 +6476,12 @@ class LMS {
 	if (!file_exists(RRD_DIR."/ping.".$file.".rrd")) 
 	    $this->RRD_CreatePingFile(RRD_DIR."/ping.".$file.".rrd",$step);
 	
-	exec("rrdtool update ".RRD_DIR."/ping.".$file.".rrd ".$cdate.":".str_replace(' ','',$ping).":".str_replace(' ','',$loss)." ");
+	exec("$rrdtool update ".RRD_DIR."/ping.".$file.".rrd ".$cdate.":".str_replace(' ','',$ping).":".str_replace(' ','',$loss)." ");
     }
 
     function RRD_UpdateSignalFile($file,$rx_signal = NULL, $tx_rate = NULL, $rx_rate = NULL, $cdate = NULL, $step = 5)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	if ($step < 5) $step = 5;
 	
 	$step = $step * 60;
@@ -6511,9 +6492,6 @@ class LMS {
 	if (!file_exists(RRD_DIR."/signal.".$file.".rrd")) 
 	    $this->RRD_CreateSignalFile(RRD_DIR."/signal.".$file.".rrd",$step);
 	
-//	if ($rx_signal < 0 ) 
-//	    $rx_signal = ($rx_signal * (-1));
-	
 	$rx_signal = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$rx_signal)))));
 	$tx_rate = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$tx_rate)))));
 	$rx_rate = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$rx_rate)))));
@@ -6522,11 +6500,12 @@ class LMS {
 	if (is_null($tx_rate) || empty($tx_rate)) $tx_rate = 0;
 	if (is_null($rx_rate) || empty($rx_rate)) $rx_rate = 0;
 	
-	exec("rrdtool update ".RRD_DIR."/signal.".$file.".rrd ".$cdate.":".$rx_signal.":".$tx_rate.":".$rx_rate." ");
+	exec("$rrdtool update ".RRD_DIR."/signal.".$file.".rrd ".$cdate.":".$rx_signal.":".$tx_rate.":".$rx_rate." ");
     }
 
     function RRD_UpdateSignalExpandedFile($file, $tx_signal = NULL, $signal_noise = NULL, $tx_ccq = NULL, $rx_ccq = NULL, $ack_timeout = NULL, $cdate = NULL, $step = 5)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	if ($step < 5) $step = 5;
 	
 	$step = $step * 60;
@@ -6536,9 +6515,6 @@ class LMS {
 	
 	if (!file_exists(RRD_DIR."/signal.exp.".$file.".rrd")) 
 	    $this->RRD_CreateSignalExpandedFile(RRD_DIR."/signal.exp.".$file.".rrd",$step);
-	
-//	if ($tx_signal < 0 ) 
-//	    $tx_signal = ($tx_signal * (-1));
 	
 	$tx_signal = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$tx_signal)))));
 	$signal_noise = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$signal_noise)))));
@@ -6553,12 +6529,13 @@ class LMS {
 	if (is_null($ack_timeout) || empty($ack_timeout)) $ack_timeout = 0;
 	
 	
-	exec("rrdtool update ".RRD_DIR."/signal.exp.".$file.".rrd \
+	exec("$rrdtool update ".RRD_DIR."/signal.exp.".$file.".rrd \
 	".$cdate.":".$tx_signal.":".$signal_noise.":".$tx_ccq.":".$rx_ccq.":".$ack_timeout);
     }
 
     function RRD_UpdateTransferFile($file, $tx_packets = NULL, $rx_packets = NULL, $tx_bytes = NULL, $rx_bytes = NULL, $cdate = NULL, $step = 5)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	$step = $step * 60;
 	
 	if (is_null($cdate)) 
@@ -6577,7 +6554,7 @@ class LMS {
 	if (is_null($tx_bytes) || empty ($tx_bytes)) $tx_bytes = 0;
 	if (is_null($rx_bytes) || empty ($rx_bytes)) $rx_bytes = 0;
 	
-	exec("rrdtool update ".RRD_DIR."/transfer.".$file.".rrd ".$cdate.":".$tx_packets.":".$rx_packets.":".$tx_bytes.":".$rx_bytes." ");
+	exec("$rrdtool update ".RRD_DIR."/transfer.".$file.".rrd ".$cdate.":".$tx_packets.":".$rx_packets.":".$tx_bytes.":".$rx_bytes." ");
     }
 
 
@@ -6586,6 +6563,7 @@ class LMS {
 
     function RRD_CreatePingImage($file,$title = NULL, $start = NULL, $end = NULL, $width = NULL, $height = NULL, $name = NULL)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	$INPUT = RRD_DIR."/ping.".$file.".rrd";
 	
 	if (is_null($title) || empty($title)) 
@@ -6612,7 +6590,7 @@ class LMS {
 	else
 	    $OUTPUT = TMP_DIR.'/'.$name.'.png';
 	
-	exec("rrdtool graph ".$OUTPUT." \
+	exec("$rrdtool graph ".$OUTPUT." \
 	    --start=".$start." \
 	    --title='$title' \
 	    --end=".$end." \
@@ -6637,6 +6615,7 @@ class LMS {
     
     function RRD_CreateSmallPingImage($file, $start = NULL, $end = NULL, $name = NULL)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	$INPUT = RRD_DIR."/ping.".$file.".rrd";
 	
 	
@@ -6651,7 +6630,7 @@ class LMS {
 	else
 	    $OUTPUT = TMP_DIR.'/'.$name.'.png';
 	
-	exec("rrdtool graph ".$OUTPUT." \
+	exec("$rrdtool graph ".$OUTPUT." \
 	    --start=".$start." \
 	    --end=".$end." \
 	    --width=470 \
@@ -6671,6 +6650,7 @@ class LMS {
 
     function RRD_CreateSignalImage($file, $title = NULL, $start = NULL, $end = NULL, $width = NULL, $height = NULL, $name = NULL, $exp = false)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	$INPUT = RRD_DIR."/signal.".$file.".rrd";
 	
 	if (!is_bool($exp)) $exp= false;
@@ -6707,7 +6687,7 @@ class LMS {
 	    $OUTPUT = TMP_DIR.'/'.$name.'.png';
 	
 	if (!$exp)
-	exec("rrdtool graph ".$OUTPUT." \
+	exec("$rrdtool graph ".$OUTPUT." \
 	    --start=".$start." \
 	    --title='$title' \
 	    --end=".$end." \
@@ -6740,7 +6720,7 @@ class LMS {
 	    GPRINT:rx_rate:MIN:'Min\: %3.0lf\\n' \
 	");
 	else
-	exec("rrdtool graph ".$OUTPUT." \
+	exec("$rrdtool graph ".$OUTPUT." \
 	    --start=".$start." \
 	    --title='$title' \
 	    --end=".$end." \
@@ -6811,6 +6791,7 @@ class LMS {
     
     function RRD_CreateSmallSignalImage($file, $start = NULL, $end = NULL, $name = NULL, $exp = false)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	$INPUT1 = RRD_DIR."/signal.".$file.".rrd";
 	
 	if (!is_bool($exp)) $exp= false;
@@ -6835,7 +6816,7 @@ class LMS {
 	
 	if ($exp)
 	{
-		exec("rrdtool graph ".$OUTPUT." \
+		exec("$rrdtool graph ".$OUTPUT." \
 		    --start=".$start." \
 		    --title='$title' \
 		    --end=".$end." \
@@ -6871,7 +6852,7 @@ class LMS {
 		    LINE1:signalnoise#FF00FF:'Signal Noise\\n' \
 		");
 	} else {
-		exec("rrdtool graph ".$OUTPUT." \
+		exec("$rrdtool graph ".$OUTPUT." \
 		    --start=".$start." \
 		    --title='$title' \
 		    --end=".$end." \
@@ -6898,6 +6879,7 @@ class LMS {
 
     function RRD_CreatePacketsImage($file, $title = NULL, $start = NULL, $end = NULL, $width = NULL, $height = NULL, $name = NULL)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	$INPUT = RRD_DIR."/transfer.".$file.".rrd";
 	
 	if (is_null($title) || empty($title)) 
@@ -6924,7 +6906,7 @@ class LMS {
 	else
 	    $OUTPUT = TMP_DIR.'/'.$name.'.png';
 
-	exec("rrdtool graph ".$OUTPUT." \
+	exec("$rrdtool graph ".$OUTPUT." \
 	    --start=".$start." \
 	    --title='$title' \
 	    --end=".$end." \
@@ -6958,6 +6940,7 @@ class LMS {
 
     function RRD_CreateBitsImage($file, $title = NULL, $start = NULL, $end = NULL, $width = NULL, $height = NULL, $name = NULL)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	$INPUT = RRD_DIR."/transfer.".$file.".rrd";
 	
 	if (is_null($title) || empty($title)) 
@@ -6983,40 +6966,8 @@ class LMS {
 	    $OUTPUT = TMP_DIR."/bits.".$file.".".$width.".".$height.".png";
 	else
 	    $OUTPUT = TMP_DIR.'/'.$name.'.png';
-/*
-	exec("rrdtool graph ".$OUTPUT." \
-	    --start=".$start." \
-	    --title='$title' \
-	    --end=".$end." \
-	    --width=".$width." \
-	    --lazy \
-	    --full-size-mode \
-	    --height=".$height." \
-	    -v 'bits per sec.' \
-	    --slope-mode \
-	    DEF:input=".$INPUT.":tx_bytes:AVERAGE \
-	    DEF:output=".$INPUT.":rx_bytes:AVERAGE \
-	    CDEF:total=input,output,+ \
-	    CDEF:in=input,8,* \
-	    CDEF:out=output,8,* \
-	    CDEF:all=total,8,* \
-	    AREA:in#00CF0033:'' \
-	    LINE1:in#00CF00FF:'Input ' \
-	    GPRINT:in:LAST:'Last\: %5.1lf %sbbs' \
-	    GPRINT:in:MAX:'Max\: %5.1lf %sbps' \
-	    GPRINT:in:AVERAGE:'Avg\: %5.1lf %sbps\\n' \
-	    AREA:out#00519933:'' \
-	    LINE1:out#005199FF:'Output' \
-	    GPRINT:out:LAST:'Last\: %5.1lf %sbps' \
-	    GPRINT:out:MAX:'Max\: %5.1lf %sbps' \
-	    GPRINT:out:AVERAGE:'Avg\: %5.1lf %sbps\\n' \
-	    LINE0:all#B8860B:'Total ' \
-	    GPRINT:all:LAST:'Last\: %5.1lf %sbps' \
-	    GPRINT:all:MAX:'Max\: %5.1lf %sbps' \
-	    GPRINT:all:AVERAGE:'Avg\: %5.1lf %sbps\\n' \
-	");
-*/
-	exec("rrdtool graph ".$OUTPUT." \
+	
+	exec("$rrdtool graph ".$OUTPUT." \
 	    --start=".$start." \
 	    --title='$title' \
 	    --end=".$end." \
@@ -7062,15 +7013,17 @@ class LMS {
 
     function RRD_FirstTime($filename)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	$plik = RRD_DIR."/".$filename.".rrd";
-	return exec("rrdtool first $plik");
+	return exec("$rrdtool first $plik");
     }
 
 
     function RRD_LastTime($filename)
     {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
 	$plik = RRD_DIR."/".$filename.".rrd";
-	return exec("rrdtool last $plik");
+	return exec("$rrdtool last $plik");
     }
 
 

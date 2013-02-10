@@ -32,15 +32,15 @@
             {if $balancelist.type[balancelist] == 4}
                 -
             {/if}
-            {$balancelist.value[balancelist]|money_format}          
+            {$balancelist.value[balancelist]|money_format}
         </td>
-        {/if}        
+        {/if}
         
         <td>{if $balancelist.after[balancelist] < 0}<strong>{/if}{$balancelist.after[balancelist]|money_format}{if $balancelist.after[balancelist] < 0}<strong>{/if}</td>
 	<td >{$balancelist.comment[balancelist]}</td>
 	{if !$disable_invoices}
 	<td>
-            {if $balancelist.doctype[balancelist]==1 || $balancelist.doctype[balancelist]==3}
+            {if $balancelist.doctype[balancelist]==1 || $balancelist.doctype[balancelist]==3 || $balancelist.doctype[balancelist]==6}
                 <a href="?m=finances&amp;f=invoice&amp;id={$balancelist.docid[balancelist]}" target="_blank">Wydrukuj</a> <input type="checkbox" name="inv[{$balancelist.docid[balancelist]}]" value="1" />
             {else}
                 &nbsp;
