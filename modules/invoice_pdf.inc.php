@@ -302,6 +302,7 @@ function invoice_data($x, $y, $width, $font_size, $margin)
 				if ($tmp_width > $tt_width[$v])
 					$tt_width[$v] = $tmp_width;
 			}
+			if (!empty($invoice['pdiscount']) || !empty($invoice['vdiscount']))
 			$v++;
 			$tt_width[$v++] = $pdf->getTextWidth($font_size, iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['basevalue']))) + 6;
 			$tt_width[$v++] = $pdf->getTextWidth($font_size, iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['totalbase']))) + 6;
@@ -321,7 +322,7 @@ function invoice_data($x, $y, $width, $font_size, $margin)
 			$tt_width[$v++] = $pdf->getTextWidth($font_size, $item['prodid']);
 			$tt_width[$v++] = $pdf->getTextWidth($font_size, $item['content']);
 			$tt_width[$v++] = $pdf->getTextWidth($font_size, sprintf('%.2f', $item['count']));
-			if(!empty($invoice['pdiscount']))
+			if (!empty($invoice['pdiscount']))
 				$tt_width[$v] = $pdf->getTextWidth($font_size, sprintf('%.2f %%', $item['pdiscount']));
 			if (!empty($invoice['vdiscount']))
 			{
@@ -329,6 +330,7 @@ function invoice_data($x, $y, $width, $font_size, $margin)
 				if ($tmp_width > $tt_width[$v])
 					$tt_width[$v] = $tmp_width;
 			}
+			if (!empty($invoice['pdiscount']) || !empty($invoice['vdiscount']))
 			$v++;
 			$tt_width[$v++] = $pdf->getTextWidth($font_size, iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['basevalue']))) + 6;
 			$tt_width[$v++] = $pdf->getTextWidth($font_size, iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['totalbase']))) + 6;
@@ -370,6 +372,8 @@ function invoice_data($x, $y, $width, $font_size, $margin)
 					$t_data[$v++] = sprintf('%.2f %%', $item['pdiscount']);
 				elseif (!empty($item['vdiscount']))
 					$t_data[$v++] = iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['vdiscount']));
+				elseif (!empty($invoice['pdiscount']) || !empty($invoice['vdiscount'))
+				    $t_data[$v++] = '';
 				$t_data[$v++] = iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['basevalue']));
 				$t_data[$v++] = iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['totalbase']));
 				$t_data[$v++] = iconv("UTF-8", "ISO-8859-2//TRANSLIT", $item['taxlabel']);
@@ -438,6 +442,8 @@ function invoice_data($x, $y, $width, $font_size, $margin)
 				$t_data[$v++] = sprintf('%.2f %%',$item['pdiscount']);
 			elseif (!empty($item['vdiscount']))
 				$t_data[$v++] = iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['vdiscount']));
+			elseif (!empty($invoice['pdiscount']) || !empty($invoice['vdiscount']))
+				$t_data[$v++] = '';
 			$t_data[$v++] = iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['basevalue']));
 			$t_data[$v++] = iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['totalbase']));
 			$t_data[$v++] = iconv("UTF-8", "ISO-8859-2//TRANSLIT", $item['taxlabel']);

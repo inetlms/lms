@@ -84,7 +84,7 @@ class xajaxPluginManager
 		object : a reference to the one and only instance of the
 			plugin manager.
 	*/
-	function &getInstance()
+	public static function &getInstance()
 	{
 		static $obj;
 		if (!$obj) {
@@ -283,7 +283,7 @@ class xajaxPluginManager
 		foreach ($aKeys as $sKey)
 		{
 			$objPlugin =& $this->aRegistrars[$sKey];
-			$mResult =& $objPlugin->register($aArgs);
+			$mResult = $objPlugin->register($aArgs);
 			if (is_a($mResult, 'xajaxRequest'))
 				return $mResult;
 			if (is_array($mResult))

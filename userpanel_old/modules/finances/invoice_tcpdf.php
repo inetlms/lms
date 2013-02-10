@@ -61,7 +61,7 @@ require_once(MODULES_DIR.'/invoice_tcpdf.inc.php');
 // handle multi-invoice print
 if(!empty($_POST['inv']))
 {
-	$pdf =& init_pdf('A4', 'portrait', trans('Invoices'));
+	$pdf = init_pdf('A4', 'portrait', trans('Invoices'));
 
 	$count = count($_POST['inv']);
         $i = 0;
@@ -105,7 +105,7 @@ if(!isset($invoice['invoice']))
 else
         $title = trans('Credit Note No. $a', $number);
 
-$pdf =& init_pdf('A4', 'portrait', $title);
+$pdf = init_pdf('A4', 'portrait', $title);
 
 $invoice['last'] = TRUE;
 //$invoice['type'] = $type;
