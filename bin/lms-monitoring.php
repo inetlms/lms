@@ -649,11 +649,11 @@ if ($test_owner)
 if (get_conf('monit.signal_test') && $test_signal)
 {
 	$no_signal_test = $DB->GetCol('SELECT UPPER(mac) AS mac FROM monit_vnodes WHERE signaltest = 0 AND netdev = 0 ;');
-	
 	if (!$no_signal_test) 
 		$no_signal_test = array();
 	
 	$n_list = $DB->GetAll('SELECT id, UPPER(mac) AS mac, ipaddr FROM monit_vnodes WHERE signaltest = 1 ;');
+	
 	$n_list_ip = array();
 	
 	if ($n_list) 
@@ -671,7 +671,6 @@ if (get_conf('monit.signal_test') && $test_signal)
 	}
 	else 
 		$n_list = array();
-	
 	$nd_list = $DB->GetAll('SELECT mv.id AS nid, mv.ipaddr AS ipaddr, 
 		    nd.monit_nastype AS nastype, nd.monit_login AS login, nd.monit_passwd AS passwd, nd.monit_port AS port, n.netdev AS netdevid 
 		    FROM monit_vnodes mv 
@@ -679,7 +678,6 @@ if (get_conf('monit.signal_test') && $test_signal)
 		    JOIN netdevices nd ON (nd.id = n.netdev) 
 		    WHERE mv.netdev = 1 AND mv.signaltest = 1 AND (nd.monit_nastype = 1 OR nd.monit_nastype = 14 OR nd.monit_nastype = 15) ;'
 	);
-	
 	if ($nd_list) 
 	{
 		$n_count = sizeof($n_list);
@@ -709,7 +707,7 @@ if (get_conf('monit.signal_test') && $test_signal)
 			
 			if ($nastype === 14 ) 
 			{
-				$MT->debug = true;
+				$MT->debug = false;
 				$MT->port = $nd_list[$i]['port'];
 				
 				if ($connect = $MT->connect($nd_list[$i]['ipaddr'],$nd_list[$i]['login'],$nd_list[$i]['passwd'])) 
@@ -803,7 +801,6 @@ if (get_conf('monit.signal_test') && $test_signal)
 				else 
 					$data = array();
 			}
-			
 			if (!empty($data))
 			{
 				$d_count = sizeof($data);
@@ -815,48 +812,51 @@ if (get_conf('monit.signal_test') && $test_signal)
 					if (!$DB->GetOne('SELECT 1 FROM monitnodes WHERE id = ? '.$DB->Limit(1).' ;',array($idek)))
 					{
 						$idek = $DB->GetOne('SELECT nodeid FROM macs WHERE UPPER(mac) = ? LIMIT 1;',array(strtoupper($data[$j]['mac'])));
-						$LMS->SetMonit($idek,1);
-						$DB->Execute('UPDATE monitnodes SET pingtest = ? , signaltest = ? WHERE id = ? ;',array(0,1,$idek));
+						if (!empty($idek))
+						{
+							$LMS->SetMonit($idek,1);
+							$DB->Execute('UPDATE monitnodes SET pingtest = ? , signaltest = ? WHERE id = ? ;',array(0,1,$idek));
+						}
 						
 					}
-					
-					$rx_signal = ceil(abs(intval(str_replace(' ','',str_replace(',','.',($data[$j]['rx_signal'] ? $data[$j]['rx_signal'] : 0))))));
-					$tx_rate = ceil(intval(str_replace(' ','',str_replace(',','.',($data[$j]['tx_rate'] ? $data[$j]['tx_rate'] : 0)))));
-					$rx_rate = ceil(abs(intval(str_replace(' ','',str_replace(',','.',($data[$j]['rx_rate'] ? $data[$j]['rx_rate'] : 0))))));
-					$tx_packets = str_replace(' ','',$data[$j]['tx_packets']);
-					$rx_packets = str_replace(' ','',$data[$j]['rx_packets']);
-					$tx_bytes = str_replace(' ','',$data[$j]['tx_bytes']);
-					$rx_bytes = str_replace(' ','',$data[$j]['rx_bytes']);
-					
-					$LMS->RRD_UpdateSignalFile('node.'.$idek,$rx_signal,$tx_rate,$rx_rate,$currenttime, STEP_SIGNAL);
-					$LMS->RRD_UpdateTransferFile('node.'.$idek,$tx_packets,$rx_packets,$tx_bytes,$rx_bytes,$currenttime,STEP_SIGNAL);
-					
-					if ($nd_list[$i]['nastype'] == '14')
+					if (!empty($idek))
 					{
-						$tx_signal = ceil(abs(intval(str_replace(' ','',str_replace(',','.',($data[$j]['tx_signal'] ? $data[$j]['tx_signal'] : 0))))));
-						$signal_noise = ceil(intval(str_replace(' ','',str_replace(',','.',($data[$j]['signal_noise'] ? $data[$j]['signal_noise'] : 0)))));
-						$tx_ccq = ceil(intval(str_replace(' ','',str_replace(',','.',($data[$j]['tx_ccq'] ? $data[$j]['tx_ccq'] : 0)))));
-						$rx_ccq = ceil(intval(str_replace(' ','',str_replace(',','.',($data[$j]['rx_ccq'] ? $data[$j]['rx_ccq'] : 0)))));
-						$ack_timeout = ceil(intval(str_replace(' ','',str_replace(',','.',($data[$j]['ack_timeout'] ? $data[$j]['ack_timeout'] : 0)))));
+						$rx_signal = ceil(abs(intval(str_replace(' ','',str_replace(',','.',($data[$j]['rx_signal'] ? $data[$j]['rx_signal'] : 0))))));
+						$tx_rate = ceil(intval(str_replace(' ','',str_replace(',','.',($data[$j]['tx_rate'] ? $data[$j]['tx_rate'] : 0)))));
+						$rx_rate = ceil(abs(intval(str_replace(' ','',str_replace(',','.',($data[$j]['rx_rate'] ? $data[$j]['rx_rate'] : 0))))));
+						$tx_packets = str_replace(' ','',$data[$j]['tx_packets']);
+						$rx_packets = str_replace(' ','',$data[$j]['rx_packets']);
+						$tx_bytes = str_replace(' ','',$data[$j]['tx_bytes']);
+						$rx_bytes = str_replace(' ','',$data[$j]['rx_bytes']);
 						
-						$DB->Execute('INSERT INTO monitsignal (cdate, nodeid, rx_signal, tx_signal, 
-							    signal_noise, tx_rate, rx_rate, rx_ccq, tx_ccq, ack_timeout) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
-							array($currenttime, $idek, $rx_signal, $tx_signal, $signal_noise, $tx_rate, $rx_rate, $rx_ccq, $tx_ccq, $ack_timeout ));
+						$LMS->RRD_UpdateSignalFile('node.'.$idek,$rx_signal,$tx_rate,$rx_rate,$currenttime, STEP_SIGNAL);
+						$LMS->RRD_UpdateTransferFile('node.'.$idek,$tx_packets,$rx_packets,$tx_bytes,$rx_bytes,$currenttime,STEP_SIGNAL);
 						
-						$LMS->RRD_UpdateSignalExpandedFile('node.'.$idek, $tx_signal, $signal_noise, $tx_ccq, $rx_ccq, $ack_timeout, $currenttime, STEP_SIGNAL);
-						$LMS->RRD_CreateSmallSignalImage('node.'.$idek,'-1d','now',NULL,true);
+						if ($nd_list[$i]['nastype'] == '14')
+						{
+							$tx_signal = ceil(abs(intval(str_replace(' ','',str_replace(',','.',($data[$j]['tx_signal'] ? $data[$j]['tx_signal'] : 0))))));
+							$signal_noise = ceil(intval(str_replace(' ','',str_replace(',','.',($data[$j]['signal_noise'] ? $data[$j]['signal_noise'] : 0)))));
+							$tx_ccq = ceil(intval(str_replace(' ','',str_replace(',','.',($data[$j]['tx_ccq'] ? $data[$j]['tx_ccq'] : 0)))));
+							$rx_ccq = ceil(intval(str_replace(' ','',str_replace(',','.',($data[$j]['rx_ccq'] ? $data[$j]['rx_ccq'] : 0)))));
+							$ack_timeout = ceil(intval(str_replace(' ','',str_replace(',','.',($data[$j]['ack_timeout'] ? $data[$j]['ack_timeout'] : 0)))));
+							
+							$DB->Execute('INSERT INTO monitsignal (cdate, nodeid, rx_signal, tx_signal, 
+								    signal_noise, tx_rate, rx_rate, rx_ccq, tx_ccq, ack_timeout) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
+								array($currenttime, $idek, $rx_signal, $tx_signal, $signal_noise, $tx_rate, $rx_rate, $rx_ccq, $tx_ccq, $ack_timeout ));
+							
+							$LMS->RRD_UpdateSignalExpandedFile('node.'.$idek, $tx_signal, $signal_noise, $tx_ccq, $rx_ccq, $ack_timeout, $currenttime, STEP_SIGNAL);
+							$LMS->RRD_CreateSmallSignalImage('node.'.$idek,'-1d','now',NULL,true);
+						}
+						else
+						{
+							$LMS->RRD_CreateSmallSignalImage('node.'.$idek,'-1d','now', NULL, false);
+							$DB->Execute('INSERT INTO monitsignal (cdate, nodeid, rx_signal, tx_rate, rx_rate) VALUES (?, ?, ?, ?, ?) ',
+								array($currenttime, $idek, $rx_signal,$tx_rate,$rx_rate));
+						}
+						
+						$DB->Execute('UPDATE monitnodes SET src_netdev = ? WHERE id = ? ;',array($nd_list[$i]['netdevid'],$idek));
 					}
-					else
-					{
-						$LMS->RRD_CreateSmallSignalImage('node.'.$idek,'-1d','now', NULL, false);
-						$DB->Execute('INSERT INTO monitsignal (cdate, nodeid, rx_signal, tx_rate, rx_rate) VALUES (?, ?, ?, ?, ?) ',
-							array($currenttime, $idek, $rx_signal,$tx_rate,$rx_rate));
-					}
-					
-					$DB->Execute('UPDATE monitnodes SET src_netdev = ? WHERE id = ? ;',array($nd_list[$i]['netdevid'],$idek));
-					
 				}
-				
 			}
 		}
 	} 
@@ -881,6 +881,8 @@ if ( (time() >= ($data + 7200)) && (time() <= ($data + 10800)) )
 		$DB->Execute('DELETE FROM monittime WHERE ownid IN ('.implode(',',$ideki).')');
 	}
 }
+
+if ($test_netdev || $test_nodes || $test_owner || $test_signal) exec("beep");
 
 if (!$quiet) 
 	printf("\n\nKONIEC TESTU\n\n");

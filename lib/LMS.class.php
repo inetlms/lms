@@ -5971,8 +5971,9 @@ class LMS {
 	
 	return $this->DB->GetAll('SELECT n.id, inet_ntoa(n.ipaddr) AS ipaddr, '.($nodes ? 'n.name' : 'd.name')
 			    .' FROM nodes n '.($nodes ? '' : 'JOIN netdevices d ON (d.id = n.netdev) ')
-			    .' WHERE n.netdev '.($nodes ? '=' : '!=').' 0 '.(!empty($tmp) ? ' AND n.id NOT IN ('.$tmp.') ' : '')
-			    .($nodes ? '' : ' AND n.ownerid = 0 ')
+			    .' WHERE 1=1 '
+			    .(!empty($tmp) ? ' AND n.id NOT IN ('.$tmp.') ' : '')
+			    .($nodes ? ' AND n.ownerid != 0 ' : ' AND n.ownerid = 0 ')
 			    .' ORDER BY '.($nodes ? 'n.name' : 'd.name').' ;');
 	
     }
