@@ -24,6 +24,7 @@
  *  $Id$
  */
 
+$_LANG['select a template'] = 'wybierz szablon';
 $_LANG['Messages managing templates'] = 'Zarządzanie szablonami wiadomości';
 $_LANG['Templates'] = 'Szablony';
 $_LANG['from day'] = 'od dnia';

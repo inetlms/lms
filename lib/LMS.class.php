@@ -7073,9 +7073,9 @@ class LMS {
     }
 
 
-    function GetListThemeTemplate()
+    function GetListThemeTemplate($name = true)
     {
-	return $this->DB->GetAll('SELECT id, name, theme FROM messagestemplate ORDER BY theme ASC');
+	return $this->DB->GetAll('SELECT id, '.($name ? 'name, ' : '').' theme FROM messagestemplate ORDER BY theme ASC');
     }
 
 

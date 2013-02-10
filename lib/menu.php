@@ -659,14 +659,14 @@ $menu = array(
 					'tip' => trans('Allows you to send messages to customers'),
 					'prio' => 20,
 				),
-/*
+
 				array(
 					'name' => trans('Templates'),
 					'link' => '?m=messagetemplate',
 					'tip' => trans('Messages managing templates'),
 					'prio' => 21,
 				),
-*/
+
 			),
 		),
 

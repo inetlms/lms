@@ -882,7 +882,7 @@ if ( (time() >= ($data + 7200)) && (time() <= ($data + 10800)) )
 	}
 }
 
-if ($test_netdev || $test_nodes || $test_owner || $test_signal) exec("beep");
+if (get_conf('monit.beep','0') && $test_netdev || $test_nodes || $test_owner || $test_signal) exec("beep");
 
 if (!$quiet) 
 	printf("\n\nKONIEC TESTU\n\n");
