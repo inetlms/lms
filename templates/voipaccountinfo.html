@@ -27,6 +27,13 @@
 			{include file="customernodesbox.html"}
 		</TD>
 	</TR>
+	{if check_modules(110)}
+	<tr>
+		<td width="100%">
+			{include file="customermonit.html"}
+		</td>
+	</tr>
+	{/if}
 	<TR>
 		<TD WIDTH="100%">
 			{include file="customervoipaccountsbox.html"}

@@ -27,10 +27,10 @@ $DB->Execute("DROP VIEW monit_vnodes;");
 
 $DB->Execute("ALTER TABLE monitnodes ADD pingtest SMALLINT NOT NULL DEFAULT '1'");
 $DB->Execute("ALTER TABLE monitnodes ADD signaltest SMALLINT NOT NULL DEFAULT '0'");
-$DB->Execute("ALTER TABLE netdevices ADD monit_nastype INTEGER NOT NULL DEFAULT '0'");
+$DB->Execute("ALTER TABLE netdevices ADD monit_nastype integer NOT NULL DEFAULT '0'");
 $DB->Execute("ALTER TABLE netdevices ADD monit_login VARCHAR( 60 ) NOT NULL DEFAULT ''");
 $DB->Execute("ALTER TABLE netdevices ADD monit_passwd VARCHAR( 60 ) NOT NULL DEFAULT ''");
-$DB->Execute("ALTER TABLE netdevices ADD monit_port SMALLINT NOT NULL DEFAULT ''");
+$DB->Execute("ALTER TABLE netdevices ADD monit_port SMALLINT NOT NULL DEFAULT '0';");
 $DB->Execute("ALTER TABLE users ADD profiles TEXT NOT NULL DEFAULT '';");
 $DB->Execute("ALTER TABLE up_customers ADD content TEXT NOT NULL DEFAULT '';");
 
