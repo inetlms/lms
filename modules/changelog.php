@@ -34,8 +34,28 @@ $changelog = array(
 	
 */
 	array(
-	    'data'	=> '2013/02/06',
+	    'data'	=> '2013/01/10',
+	    'status'	=> 'add',
+	    'opis'	=> 'Doszła możliwość utworzenia szablonów wiadomości które możemy potem wykorzystać przy tworzeniu nowej wiadomości do klienta(ów).',
+	),
+	array(
+	    'data'	=> '2013/02/10',
+	    'status'	=> 'up',
+	    'opis'	=> 'Aktualizacja tcpdf i html2pdf',
+	),
+	array(
+	    'data'	=> '2013/02/10',
+	    'status'	=> 'up',
+	    'opis'	=> 'Poprawiono błąd w skrypcie lms-monitoring.php',
+	),
+	array(
+	    'data'	=> '2013/02/08',
 	    'status'	=> '',
+	    'opis'	=> '<b><font color="blue">******************** iNET LMS 1.0.1 ********************</font></b>',
+	),
+	array(
+	    'data'	=> '2013/02/06',
+	    'status'	=> 'add',
 	    'opis'	=> '
 	    Dodano nowy Userpanel w oparciu o rozwiązanie firmy ALFA-SYSTEM M.Piwowarski, A. Widera spółka jawna z siedzibą w Knurowie,<br>
 	    który będzie rozwijany wraz z iNET LMS, w UP znalazły się między innymi takie zmiany:<br>
