@@ -46,7 +46,7 @@ $changelog = array(
 	array(
 	    'data'	=> '2013/01/10',
 	    'status'	=> 'add',
-	    'opis'	=> 'Doszła możliwość utworzenia szablonów wiadomości które możemy potem wykorzystać przy tworzeniu nowej wiadomości do klienta(ów).',
+	    'opis'	=> 'wprowadzono możliwość tworzenia szablonów wiadomości, które możemy potem wykorzystać przy tworzeniu nowej wiadomości do klienta(ów) dostępne w Wiadomości/Szablony.',
 	),
 	array(
 	    'data'	=> '2013/02/10',
