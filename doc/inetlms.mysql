@@ -182,7 +182,7 @@ CREATE TABLE syslog (
     INDEX uid (uid),
     INDEX module (module),
     INDEX event (event)
-) ENGINE=MyISSAM;
+) ENGINE=MyISAM;
 
 
 
