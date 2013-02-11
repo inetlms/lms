@@ -23,6 +23,16 @@
  *
  *  $Id$
  */
+
+$_LANG['select a template'] = 'wybierz szablon';
+$_LANG['Messages managing templates'] = 'Zarządzanie szablonami wiadomości';
+$_LANG['Templates'] = 'Szablony';
+$_LANG['from day'] = 'od dnia';
+$_LANG['to day'] = 'do dnia';
+$_LANG['Chart not available'] = 'Wykres niedostępny';
+$_LANG['Bits'] = 'Bity';
+$_LANG['Packets'] = 'Pakiety';
+$_LANG['Signal'] = 'Sygnał';
 $_LANG['Last entry'] = 'Ostatni wpis';
 $_LANG['Information Center'] = 'Centrum Informacji';
 $_LANG['Account:'] = 'Konto:';
@@ -289,7 +299,6 @@ $_LANG['compressed'] = 'skompresowaną';
 $_LANG['Computers found:'] = 'Znalezione komputery:';
 $_LANG['Configuration'] = 'Konfiguracja';
 $_LANG['configuration'] = 'konfiguracja';
-
 $_LANG['Configuration of Instance: $a/$b'] = 'Konfiguracja instancji: $a/$b';
 $_LANG['configuration reload'] = 'przeładowanie konfiguracji';
 $_LANG['Configuration Reload'] = 'Przeładowanie konfiguracji';
@@ -779,7 +788,6 @@ $_LANG['Invoice have no items!'] = 'Brak pozycji na fakturze!';
 $_LANG['Invoice have no items. Use form below for items addition.'] = 'Faktura nie ma żadnych pozycji. Użyj poniższego formularza aby je dodać.';
 $_LANG['Invoice No.'] = 'Numer faktury';
 $_LANG['Invoice No. $a'] = 'Faktura VAT Nr $a';
-
 $_LANG['Invoice number:'] = 'Nr faktury:';
 $_LANG['Invoice number $a already exists!'] = 'Faktura o numerze $a już istnieje!';
 $_LANG['Invoice number must be integer!'] = 'Numer faktury musi być liczbą całkowitą!';
@@ -851,7 +859,7 @@ $_LANG['Link to:'] = 'Przypisz do:';
 $_LANG['List'] = 'Lista';
 $_LANG['List of arpd servers for MAC addresses retrieval from remote networks. That list should include IP[:port] items separated with spaces. Default: empty.'] = 'Lista serwerów arpd dla czytania adresów MAC ze zdalnych sieci. Ta lista powinna zawierać pozycje IP[:port] oddzielone spacjami. Domyślnie: pusta.';
 $_LANG['List of Customers'] = 'Lista klientów';
-$_LANG['List of Customers Groups'] = 'Lista grup komputerów';
+$_LANG['List of Customers Groups'] = 'Lista grup klientów';
 $_LANG['List of Hosts'] = 'Lista hostów';
 $_LANG['List of invoices'] = 'Lista faktur';
 $_LANG['List of IP pools'] = 'Lista sieci IP';
@@ -866,6 +874,7 @@ $_LANG['LMS Developers'] = 'Twórcy LMS-a';
 $_LANG['LMS developers (in alphabetical order):'] = 'Twórcy LMS-a (w porządku alfabetycznym):';
 $_LANG['LMS include elements of other software:'] = 'LMS zawiera fragmenty innego oprogramowania:';
 $_LANG['LMS Project Homepage'] = 'Strona domowa projektu LMS';
+$_LANG['iNET LMS Project Homepage'] = 'Strona domowa projektu iNET LMS';
 $_LANG['LMS uses Smarty Template Engine - http://www.smarty.net/'] = 'LMS używa silnika szablonów Smarty - http://www.smarty.net';
 $_LANG['LMS version'] = 'LMS wersja';
 $_LANG['LMS version:'] = 'Wersja LMS:';
@@ -2573,7 +2582,6 @@ $_LANG['House number is required!'] = 'Numer domu jest wymagany!';
 $_LANG['House number is too long (max. 8 characters)!'] = 'Numer domu jest za długi (max. 8 znaków)!';
 $_LANG['links hiding'] = 'ukrywanie użytecznych linków';
 $_LANG['system information hiding'] = 'ukrywanie informacji systemowych';
-
 $_LANG['Enter category name'] = 'Podaj nazwę kategorii';
 $_LANG['Owners:'] = 'Właściciele:';
 $_LANG['Are you sure, you want to remove category \\\'$a\\\'?'] = 'Jesteś pewien, że chcesz usunąć kategorię \\\'$a\\\'?';
@@ -2592,7 +2600,6 @@ $_LANG['Category Info: $a'] = 'Informacje o kategorii: $a';
 $_LANG['Categories List'] = 'Lista kategorii';
 $_LANG['List of categories'] = 'Lista kategorii';
 $_LANG['Add new category'] = 'Utworzenie nowej kategorii';
-
 $_LANG['Enter device latitude (optional)'] = 'Podaj szerokość geograficzną dla urządzenia (opcjonalne)';
 $_LANG['Enter device longitude (optional)'] = 'Podaj długość geograficzną dla urządzenia (opcjonalne)';
 $_LANG['GPS coordinates:'] = 'Współrzędne geograficzne:';
@@ -2602,7 +2609,6 @@ $_LANG['Click to select gps coordinates from map'] = 'Kliknij w celu wybrania ws
 $_LANG['Select gps coordinates'] = 'Wybierz współrzędne geograficzne';
 $_LANG['Select gps coordinates:'] = 'Wybierz współprzędne geograficzne:';
 $_LANG['Show on map'] = 'Pokaż na mapie';
-
 $_LANG['$a bytes from $b: icmp_req=$c ttl=$d time=$e'] = '$a bajtów od $b: icmp_req=$c ttl=$d czas=$e';
 $_LANG['Unicast reply from $a [$b]: time=$c'] = 'Odpowiedź unicast od $a [$b]: czas=$c';
 $_LANG['Destination Host Unreachable'] = 'Urządzenie docelowe jest nieosiągalne';
@@ -2611,7 +2617,6 @@ $_LANG['Auto Scroll'] = 'Automatyczne przewijanie';
 $_LANG['Enter IP address:'] = 'Podaj adres IP:';
 $_LANG['Ping to $a'] = 'Ping do $a';
 $_LANG['Enabled'] = 'Włączony';
-
 $_LANG['any sms'] = 'dowolny sms';
 $_LANG['Enter phone numbers separated by commas'] = 'Podaj numery telefonów oddzielone przecinkami';
 $_LANG['Specified phone number is not correct!'] = 'Podany numer telefonu nie jest poprawny!';
@@ -2624,9 +2629,7 @@ $_LANG['arp'] = 'arp';
 $_LANG['icmp'] = 'icmp';
 $_LANG['Start'] = 'Uruchom';
 $_LANG['Stop'] = 'Zatrzymaj';
-
 $_LANG['Backup MX support:'] = 'Obsługa zapasowego MX:';
-
 $_LANG['Mon'] = 'pn.';
 $_LANG['Tue'] = 'wt.';
 $_LANG['Thu'] = 'śr.';
@@ -2639,21 +2642,16 @@ $_LANG['Locks:'] = 'Blokady:';
 $_LANG['Add new lock'] = 'Dodaj nową blokadę';
 $_LANG['Remove lock'] = 'Usuń blokadę';
 $_LANG['Days:'] = 'Dni:';
-
 $_LANG['UKE report'] = 'Raport do UKE';
 $_LANG['Allows you to prepare SIIS v2 report for UKE'] = 'Wygenerowanie raportu SIIS w wersji 2 do UKE';
-
 $_LANG['Link speed:'] = 'Szybkość łącza:';
 $_LANG['Select link speed'] = 'Wybierz szybkość łącza';
-
 $_LANG['phone'] = 'telefon';
 $_LANG['tv'] = 'telewizja';
 $_LANG['Change connection properties'] = 'Zmień właściwości połączenia';
-
 $_LANG['Check a host ...'] = 'Sprawdź łączność z hostem ...';
 $_LANG['Center map around network elements ...'] = 'Wyśrodkuj mapę wokół jej elementów ...';
 $_LANG['Refresh network state ...'] = 'Odśwież stan sieci ...';
-
 $_LANG['municipal commune'] = 'gm. miejska';
 $_LANG['rural commune'] = 'gm. wiejska';
 $_LANG['municipal-rural commune'] = 'gm. miejsko-wiejska';
@@ -2663,21 +2661,17 @@ $_LANG['estate in Warsaw-Centre commune'] = 'dzielnica gminy Warszawa-Centrum';
 $_LANG['estate'] = 'dzielnica';
 $_LANG['Commune'] = 'Gmina';
 $_LANG['Select commune'] = 'Wybierz gminę';
-
 $_LANG['Operation:'] = 'Czynność:';
 $_LANG['Connect to device'] = 'Podłączenie do urządzenia';
 $_LANG['Previous operation has not been finished yet!'] = 'Poprzednia czynność nie została jeszcze zakończona!';
 $_LANG['You haven\\\'t selected any nodes!'] = 'Nie wybrałeś żadnego komputera!';
-
 $_LANG['Your balance on date of invoice issue:'] = 'Saldo w dniu wystawienia faktury:';
-
 $_LANG['Remove management URL'] = 'Usuń adres URL do zarządzania';
 $_LANG['Enter management URL'] = 'Podaj adres URL do zarządzania';
 $_LANG['No management URL\'s.'] = 'Brak adresów URL do zarządzania.';
 $_LANG['Management URL\'s:'] = 'Adresy URL do zarządzania';
 $_LANG['Enter URL comment'] = 'Podaj komentarz adresu URL do zarządzania';
 $_LANG['Add new management URL'] = 'Dodaj nowy adres URL do zarządzania';
-
 $_LANG['only automatically issued'] = 'tylko wystawione automatycznie';
 $_LANG['Password expiration:'] = 'Wygasanie hasła:';
 $_LANG['Last password change:'] = 'Ostatnia zmiana hasła:';
@@ -2693,9 +2687,7 @@ $_LANG['year'] = 'rok';
 $_LANG['Select password expiration period'] = 'Ustal czas po którym hasło wygasa';
 $_LANG['New password is the same as old password!'] = 'Nowe hasło jest takie same jak stare hasło!';
 $_LANG['The password should contain at least one capital letter, one lower case letter, one digit and should consist of at least 8 characters!'] = 'Hasło powinno zawierać co najmniej jedną dużą literę, jedną małą literę, jedną cyfrę oraz składać się z co najmniej 8 znaków!';
-
 $_LANG['reports'] = 'raporty';
-
 $_LANG['Active from:'] = 'Aktywne od:';
 $_LANG['Active to:'] = 'Aktywne do:';
 $_LANG['Account active:'] = 'Konto aktywne:';
@@ -2705,5 +2697,11 @@ $_LANG['Enter access start date in YYYY/MM/DD format. If you don\'t want to defi
 $_LANG['Enter access end date in YYYY/MM/DD format. If you don\'t want to define \'To\' date leave this field empty'] = 'Wprowadź datę do której ważność konta powinna obowiązywać lub zostaw to pole puste. Data powinna być w formacie RRRR/MM/DD';
 $_LANG['Last modification time:'] = 'Czas ostatniej modyfikacji:';
 $_LANG['Last modified by:'] = 'Ostatnio zmodyfikował:';
+$_LANG['Enter SIP account and press Enter'] = 'Wprowadź nazwę konta SIP i naciśnij Enter';
+$_LANG['SIP Search Results'] = 'Wyniki wyszukiwania kont SIP';
+$_LANG['No such SIP matching search criteria.'] = 'Brak kont SIP spełniających warunki wyszukiwania.';
+$_LANG['Are you sure, you want to delete SIP \\\'$0\\\' from database?'] = 'Jesteś pewien, że chcesz usunąć konto SIP \\\'$0\\\' z bazy danych?';
+$_LANG['Disk usage'] = 'Użycie przestrzeni dyskowej';
+$_LANG['current:'] = 'aktualnie:';
 
 ?>

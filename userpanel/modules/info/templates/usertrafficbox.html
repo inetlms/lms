@@ -1,0 +1,27 @@
+<form method="POST" name="printcustomertraffic" id="printcustomertraffic"  action="?m=info&f=trafficprint&type=customertraffic" target="_blank">
+<input type="submit" style="display:none;">
+<input type="hidden" name="customer" value="{$userinfo.id}">
+
+    <tr class="success alert-success">
+	
+	<td style="text-align:right;"><strong>{trans('Stats')}: </strong></td>
+	<td style="text-align:center;border-left:0;">
+		<SELECT name="year" style="width:120px;margin:0;height:24px;padding:0;>
+		<OPTION value=""></OPTION>
+		    {foreach item=year from=$statyears}
+			<OPTION value="{$year}"{if $year == $curryear} SELECTED{/if}>{$year}</OPTION>
+		    {/foreach}
+		</SELECT>
+	</td>
+	<td style="text-align:center;border-left:0;">
+	    <SELECT name="month" style="width:120px;padding:0;height:24px;margin:0;">
+		{foreach item=month key=id from=$months}
+			<OPTION value="{$id}"{if $id == $currmonth} SELECTED{/if}>{$month}</OPTION>
+		{/foreach}
+	</SELECT>
+	</td>
+	<td style="text-align:center;border-left:0;">
+		<a href="javascript:document.printcustomertraffic.submit();">{img src="agt_print.png" width="24"}</a>
+	</td>
+    </tr>
+</form>

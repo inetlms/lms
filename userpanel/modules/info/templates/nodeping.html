@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="pl">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+{literal}
+<style type="text/css">
+body {background-color:#F5F5F5;font:normal 8pt Tahoma,Vardana,Arial;color:#222222;}
+TD {font: normal 9pt Tahoma,Arial;}
+.info {background-color:#d9edf7;border:0;}
+.warning {background-color:#fcf8e3;border:0;}
+</style>
+{/literal}
+<form name="nping">
+<input type="hidden" name="ipek" value="{$ipek}">
+<input type="hidden" name="netdevid" value="{$netdevid}">
+
+{literal}
+    <script type="text/javascript">
+    <!--
+	function zmien()
+	{
+	    var dok = document.nping;
+	    dok.method="POST";
+	    dok.action='?m=info&f=nodeping&packetsize='+dok.packetsize.value+'&ip='+dok.ipek.value{/literal}{if $netdevid}{literal}+'&netdev='+dok.netdevid{/literal}{/if}{literal};
+	    dok.submit();
+	}
+    //-->
+    </script>
+{/literal}
+{literal}
+<style type="text/css">
+body {margin:0;padding:0;left;top;}
+</style>
+{/literal}
+<table width="100%" cellpadding="0" style="padding:0;" cellspacing="0">
+<tr class="info">
+    <td width="99%" align="left" style="padding:5px;">
+	<table width="100%" cellpadding="0" cellspacing="0">
+	    {if $typenode=="nodes"}
+	    <tr>
+		<td width="1%" NOWRAP /><b>Klient</b></td>
+		<td width="auto">&nbsp;:&nbsp;&nbsp;{$klient}</td>
+	    </tr>
+	    <tr>
+		<td width="1%" NOWRAP /><b>Komputer</b></td>
+		<td width="auto">&nbsp;:&nbsp;&nbsp;{$komputer}</td>
+	    </tr>
+	    {else}
+	    <tr>
+		<td width="1%" NOWRAP /><b>Urządzenie</b></td>
+		<td width="auto">&nbsp;:&nbsp;&nbsp;{$klient}</td>
+	    </tr>
+	    <tr>
+		<td width="1%" NOWRAP /><b>Lokalizacja</b></td>
+		<td width="auto">&nbsp;:&nbsp;&nbsp;{$location}</td>
+	    </tr>
+	    {/if}
+	    <tr>
+		<td width="1%" NOWRAP /><b>IP</b></td>
+		<td width="auto">&nbsp;:&nbsp;&nbsp;{$ipek}</td>
+	    </tr>
+	</table>
+    </td>
+    <td width="1%" align="right" style="padding:5px;" nowrap>
+	<span onclick="javascript:window.close();"> {img src="Exit.png" style="cursor:pointer;width:20px;"}</span>
+    </td>
+    
+</tr>
+<tr class="info">
+
+    <td class="fleftu " width="auto" align="left" colspan="2" style="padding:2px 2px 5px 2px;">
+    &nbsp;<b>Pakiet</b>: <select name="packetsize" style="width:80px;" {tip text="Ustaw wielkość pakietu dla pinga"} onChange="zmien();">
+	<option value="32" {if $packetsize=='32'}SELECTED{/if}>32</option>
+	<option value="64" {if $packetsize=='64'}SELECTED{/if}>64</option>
+	<option value="128" {if $packetsize=='128'}SELECTED{/if}>128</option>
+	<option value="256" {if $packetsize=='256'}SELECTED{/if}>256</option>
+	<option value="512" {if $packetsize=='512'}SELECTED{/if}>512</option>
+	<option value="1024" {if $packetsize=='1024'}SELECTED{/if}>1024</option>
+    </select>&nbsp;&nbsp;
+    <b>Usługa:</b> 
+    <select name="typtest" style="width:80px;" onchange="zmien();">
+	<option value="icmp" {if $typtest=='icmp'}SELECTED{/if}>icmp</option>
+	<option value="http" {if $typtest=='http'}SELECTED{/if}>http</option>
+	<option value="https" {if $typtest=='https'}SELECTED{/if}>https</option>
+	<option value="ssh" {if $typtest=='ssh'}SELECTED{/if}>ssh</option>
+	<option value="ftp" {if $typtest=='ftp'}SELECTED{/if}>ftp</option>
+	<option value="telnet" {if $typtest=='telnet'}SELECTED{/if}>telnet</option>
+	<option value="callbook" {if $typtest=='callbook'}SELECTED{/if}>callbook</option>
+	<option value="rpcbind" {if $typtest=='rpcbind'}SELECTED{/if}>rpcbind</option>
+	<option value="pptp" {if $typtest=='pptp'}SELECTED{/if}>pptp</option>
+	<option value="smtp" {if $typtest=='smtp'}SELECTED{/if}>smtp</option>
+	<option value="dns" {if $typtest=='dns'}SELECTED{/if}>dns</option>
+	<option value="winbox" {if $typtest=='winbox'}SELECTED{/if}>winbox</option>
+    </select>
+    
+    <div style="margin-top:10px;">
+	<div style="float:left;width:90px;background:#84FF8c;text-align:center;color:#000000;border:solid 1pt #888888;font:bold 12px Tahoma;height:15px;text-align:center;">20-50</div>
+	<div style="float:left;width:90px;background:#84FFFA;text-align:center;color:#000000;border:solid 1pt #888888;font:bold 12px Tahoma;height:15px;text-align:center;margin-left:5px;">50-100</div>
+	<div style="float:left;width:90px;background:#FFFF84;text-align:center;color:#000000;border:solid 1pt #888888;font:bold 12px Tahoma;height:15px;text-align:center;margin-left:5px;">100-200</div>
+	<div style="float:left;width:90px;background:#EA0000;text-align:center;color:#FFFFFF;border:solid 1pt #888888;font:bold 12px Tahoma;height:15px;text-align:center;margin-left:5px;">200 i więcej</div>
+    </div>
+    <div style="clear:both;"></div>
+    </td>
+</tr>
+</table>
+</form>
+<iframe src="?m=info&f=nodeping&refresh&packetsize={$packetsize}&ip={$ipek}&typtest={$typtest}" width="392" height="400" frameborder="0" scrolling="no"></iframe>
+</body>
+</html>

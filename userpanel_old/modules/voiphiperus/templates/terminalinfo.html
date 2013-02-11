@@ -1,0 +1,70 @@
+<!--//
+/*********************************************\
+*                                             *
+*    LMS Hiperus C5 v.1.0.0                   *
+*    (c)2012 by Sylwester Kondracki           *
+*    Gadu-Gadu : 6164816                      *
+*    E-mail : sylwek@sylwester-kondracki.eu   *
+*                                             *
+\*********************************************/
+//-->
+{box title="terminale"}
+<table width="100%" cellpadding="3">
+    
+    <tr class="light"  id="voippanelterminal">
+	<td width="100%" class="fall" colspan="2">
+	    {assign var='infot' value=$info.terminal}
+	    {section name=lt loop=$infot}
+	    <table width="100%" cellpadding="0" cellspacing="0">
+		<tr class="light">
+		    <td width="33%" style="text-align:left;vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			    
+			    <tr>
+				<td width="1%" align="left" nowrap><b>Nazwa</b></td>
+				<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+				<td width="98%" align="left" ><b>{$infot[lt].username}</b></td>
+			    </tr>
+			    <tr>
+				<td width="1%" align="left" nowrap>Hasło</td>
+				<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+				<td width="98%" align="left" >{$infot[lt].password}</td>
+			    </tr>
+			    <tr><td width="1%" align="left" nowrap>Widoczny numer</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{if $infot[lt].screen_numbers=='t'}TAK{else}NIE{/if}</td></tr>
+			    <tr><td width="1%" align="left" nowrap>FAX T.38</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{if $infot[lt].t38_fax=='t'}TAK{else}NIE{/if}</td></tr>
+			    <tr><td width="1%" align="left" nowrap>Cennik</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$infot[lt].pricelist_name}</td></tr>
+			    
+			</table>
+		    </td>
+		    <td width="33%" style="text-align:left;vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			<tr><td width="1%" align="left" nowrap>Środki (prepaid)</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$infot[lt].balance_value}</td></tr>
+			    <tr><td width="1%" align="left" nowrap>Abonament</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$infot[lt].subscriptions}</td></tr>
+			    <tr><td width="1%" align="left" nowrap>Abonament od</td><td width="1%"><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$infot[lt].subscription_from}</td></tr>
+			    <tr><td width="1%" align="left" nowrap>Abonament do</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$infot[lt].subscription_to}</td></tr>
+			    <tr><td width="1%" align="left" nowrap>Środki (postpaid)</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$infot[lt].value_left}</td></tr>
+			    
+			</table>
+		    </td>
+		    <td width="auto" style="text-align:left;vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			    <tr><td width="1%" align="left" nowrap>SIP Proxy</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$infot[lt].sip_proxy}</td></tr>
+			    <tr><td width="1%" align="left" nowrap>Numery</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$infot[lt].extensions}</td></tr>
+			    <tr><td width="1%" align="left" nowrap>Gmina</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$infot[lt].borough}</td></tr>
+			    <tr><td width="1%" align="left" nowrap>Powiat</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$infot[lt].county}</td></tr>
+			    <tr><td width="1%" align="left" nowrap>Województwo</td><td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" >{$infot[lt].province}</td></tr>
+			</table>
+		    </td>
+		</tr>
+		
+	    </table>
+	    {math assign='koniec' equation="y-x-1" x=$smarty.section.lt.index y=$infot|@count}
+	    {if $koniec!=0}<hr>{/if}
+	    {sectionelse}
+		<center><p><h3>Brak przypisanych terminali VoIP</h3></p></center>
+	    {/section}
+	</td>
+    </tr>
+</table>
+
+{/box}

@@ -161,6 +161,104 @@
 			{if check_modules(110)}<label for="monit">Monitoruj:</label><INPUT TYPE="checkbox" NAME="monit" ID="monit" VALUE="1" {if $nodeinfo.monitoring} checked{/if} onchange="monit_change();">{/if}
 		</TD>
 	</TR>
+{if $node_monit.signal || $node_monit.ping}
+	<tr class="light">
+	    <td style="width:1%;vertical-align:top;" nowrap>
+		<img src="img/radar.png" alt="">
+	    </td>
+	    <td style="width:99%; white-space: nowrap;" colspan="2">
+		<table width="100%" cellpadding="2">
+		    {if $node_monit.ping}
+			<tr>
+			    <td width="1%" nowrap>Ping</td>
+			    <td width="1%" class="pad"><b>:</b></td>
+			    <td width="98%" align="left" class="pad"><b>{if $node_monit.ping_time!='-1'}{$node_monit.ping_time} ms{else}<font color="red">timeout</font>{/if}</b> ({$node_monit.ping_date|date_format:"Y/m/d H:i"})</td>
+			</tr>
+		    {/if}
+		    {if $node_monit.signal}
+			    <tr>
+				<td width="1%" nowrap>Ostatni pomiar sygnału</td>
+				<td width="1%" class="pad"><b>:</b></td>
+				<td width="99%" align="left" class="pad">{$node_monit.signal_date|date_format:"Y/m/d H:i"}</td>
+			    </tr>
+			
+			{if $node_monit.rx_signal || $node_monit.tx_signal}
+			    <tr>
+				<td width="1%" nowrap>
+				    {if $node_monit.rx_signal}RX{/if}
+				    {if $node_monit.rx_signal && $node_monit.tx_signal}&nbsp;/&nbsp;{/if}
+				    {if $node_monit.tx_signal}TX{/if}
+				     &nbsp;Signal
+				</td>
+				<td width="1%" class="pad"><b>:</b></td>
+				<td width="99%" align="left" class="pad">
+				    {if $node_monit.rx_signal}-{$node_monit.rx_signal} dBm{/if}
+				    {if $node_monit.rx_signal && $node_monit.tx_signal}/{/if}
+				    {if $node_monit.tx_signal}-{$node_monit.tx_signal} dBm{/if}
+				</td>
+			    </tr>
+			{/if}
+			
+			{if $node_monit.rx_rate || $node_monit.tx_rate}
+			    <tr>
+				<td width="1%" nowrap>
+				    {if $node_monit.rx_rate}RX{/if}
+				    {if $node_monit.rx_rate && $node_monit.tx_rate}/{/if}
+				    {if $node_monit.tx_rate}TX{/if}
+				     &nbsp;Rate
+				</td>
+				<td width="1%" class="pad"><b>:</b></td>
+				<td width="99%" align="left" class="pad">
+				    {if $node_monit.rx_rate}{$node_monit.rx_rate} Mbps{/if}
+				    {if $node_monit.rx_rate && $node_monit.tx_rate}&nbsp;/&nbsp;{/if}
+				    {if $node_monit.tx_rate}{$node_monit.tx_rate} Mbps{/if}
+				</td>
+			    </tr>
+			{/if}
+			
+			{if $node_monit.rx_ccq || $node_monit.tx_ccq}
+			    <tr>
+				<td width="1%" nowrap>
+				    {if $node_monit.rx_ccq}RX{/if}
+				    {if $node_monit.rx_ccq && $node_monit.tx_ccq}/{/if}
+				    {if $node_monit.tx_ccq}TX{/if}
+				     &nbsp;CCQ
+				</td>
+				<td width="1%" class="pad"><b>:</b></td>
+				<td width="99%" align="left" class="pad">
+				    {if $node_monit.rx_ccq}{$node_monit.rx_ccq} %{/if}
+				    {if $node_monit.rx_ccq && $node_monit.tx_ccq}&nbsp;/&nbsp;{/if}
+				    {if $node_monit.tx_ccq}{$node_monit.tx_ccq} %{/if}
+				</td>
+			    </tr>
+			{/if}
+			
+			{if $node_monit.signal_noise}
+			    <tr>
+				<td width="1%" nowrap>Signal Noise</td>
+				<td width="1%" class="pad"><b>:</b></td>
+				<td width="98%" align="left" class="pad">
+				    {$node_monit.signal_noise} dB
+				</td>
+			    </tr>
+			{/if}
+			
+			{if $node_monit.ack_timeout}
+			    <tr>
+				<td width="1%" nowrap>ACK Timeout</td>
+				<td width="1%" class="pad"><b>:</b></td>
+				<td width="98%" align="left" class="pad">
+				    {$node_monit.ack_timeout} us
+				</td>
+			    </tr>
+			{/if}
+		    {/if}
+		    
+		</table>
+	    </td>
+	</tr>
+	
+{/if}
 					</TABLE>
 				</TD>
 				<TD style="width: 50%; vertical-align: top;">
@@ -254,7 +352,7 @@
 			{if $nodeinfo.moddate}{$nodeinfo.modifiedby}, {$nodeinfo.moddateh}{else}-{/if}
 		</TD>
 	</TR>
-{if $nodestats.month.download.data || $nodestats.month.upload.data}
+{if ($nodestats.month.download.data || $nodestats.month.upload.data)}
 	<TR CLASS="LIGHT">
 		<TD style="width: 1%;">
 			<IMG SRC="img/traffic.gif" ALT="">
@@ -291,26 +389,64 @@
 						{$nodestats.month.download.data|string_format:"%.2f"} {$nodestats.month.download.units} ({$nodestats.month.downavg|string_format:"%d"} kbit/s) / {$nodestats.month.upload.data|string_format:"%.2f"} {$nodestats.month.upload.units} ({$nodestats.month.upavg|string_format:"%d"} kbit/s)
 					</TD>
 				</TR>
+				{if get_conf('phpui.live_traffic_helper')}
+				<TR>
+					<TD style="width: 1%; white-space: nowrap;">
+						<span class="bold">{trans("current:")}</span>
+					</TD>
+					<TD style="width: 99%; white-space: nowrap;" ID="livetraffic">
+					</TD>
+				</TR>
+				<SCRIPT TYPE="text/javascript">
+				<!--
+					function live_traffic_start() {
+						xajax_getThroughput('{$nodeinfo.ip}');
+					}
+
+					function live_traffic_finished() {
+						setTimeout("live_traffic_start()", 3000);
+					}
+
+					live_traffic_start();
+				//-->
+				</SCRIPT>
+				{/if}
 			</TABLE>
 		</TD>
 	</TR>
 {/if}
-	{if check_modules(110)}
-	<TR CLASS="LIGHT">
-		<TD style="width:100%;" colspan="3">
-		<img src="?m=monitchartimg&chart=ping&chartsize=small&type=nodes&id={$nodeinfo.id}&time=-1d" alt="">
-		</TD>
-		
-	</TR>
-	{/if}
 						</TABLE>
 					</TD>
 				</TR>
 			</TABLE>
 		</TD>
 	</TR>
-	<TR CLASS="LIGHT">
+{if get_conf('monit.display_chart_in_node_box')}
+	<tr class="light">
+	    <td width="100%" align="left" class="flr pad" colspan="3">
+		<table width="100%" cellpadding="2">
+		<tr>
+		
+		    {if $node_monit.signal}
+		    <td align="left" class="pad" width="{if $node_monit.ping && $node_monit.signal}50{else}100{/if}%">
+			<b>&nbsp;Jakość i siła sygnału radiowego, ostatnie 24 godziny od dnia {$node_monit.signal_date|date_format:"Y/m/d H:i"}</b><br><img src="tmp/signal.node.{$nodeinfo.id}.small.png">
+		    </td>
+		    {/if}
+		    
+		    {if $node_monit.ping}
+		    <td align="left" class="pad" width="{if $node_monit.ping && $node_monit.signal}50{else}100{/if}%">
+		    <b>&nbsp;Czasy odpowiedzi dla testu Ping, ostatnie 24 godziny od dnia {$node_monit.ping_date|date_format:"Y/m/d H:i"}</b><br><img src="tmp/ping.node.{$nodeinfo.id}.small.png">
+		    </td>
+		    {/if}
+		
+		</tr>
+		</table>
+	    </td>
+	<tr>
+{/if}
+	<TR CLASS="dark">
 		<TD style="width: 100%; text-align: right;" CLASS="FBOTTOMU" COLSPAN="3">
+		{if get_conf('monit.live_ping')}<a href="javascript:void(0);" onclick="window.open('?m=nodeping&packetsize=64&ip={$nodeinfo.ip}','pingnode{$nodeinfo.ip}','width=400,height=450')" {tip text="Pinguj urzadzenie"}>Live Ping <img src="img/ping.gif" alt=""></a>&nbsp;{/if}
 			<A HREF="?m=nodeedit&id={$nodeinfo.id}" ACCESSKEY="E">{trans("Edit")} <IMG SRC="img/edit.gif" ALT=""></A>
 			<A HREF="?m=nodedel&id={$nodeinfo.id}" onClick="return confirmLink(this, '{t a=$nodeinfo.name}Are you sure, you want to remove node \'$a\' from database?{/t}')">{trans("Delete")} <IMG SRC="img/delete.gif" ALT=""></A>
 		</TD>

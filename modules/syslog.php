@@ -36,10 +36,11 @@ if (!isset($_GET['sl_dt']))	$SESSION->restore('sl_dt',$filter['dt']);	else $filt
 if (!isset($_GET['sl_mod']))	$SESSION->restore('sl_mod',$filter['mod']);	else $filter['mod'] = $_GET['sl_mod'];	$SESSION->save('sl_mod',$filter['mod']);
 if (!isset($_GET['sl_ev']))	$SESSION->restore('sl_ev',$filter['ev']);	else $filter['ev'] = $_GET['sl_ev'];	$SESSION->save('sl_ev',$filter['ev']);
 if (!isset($_GET['sl_us']))	$SESSION->restore('sl_us',$filter['us']);	else $filter['us'] = $_GET['sl_us'];	$SESSION->save('sl_us',$filter['us']);
-if (!isset($_GET['sl_dus']))	$SESSION->restore('sl_dus',$filter['dus']);	else $filter['dus'] = $_GET['sl_dus'];	$SESSION->save('sl_dus',$filter['dus']);
+//if (!isset($_GET['sl_dus']))	$SESSION->restore('sl_dus',$filter['dus']);	else $filter['dus'] = $_GET['sl_dus'];	$SESSION->save('sl_dus',$filter['dus']);
 
 
 $syslog = $DB->GetAll('SELECT s.*, u.login FROM syslog AS s LEFT JOIN users AS u ON (u.id = s.uid) WHERE 1=1 '
+    .(get_conf('privileges.hide_syslog') ? ' AND uid='.$AUTH->id : '')
     .($filter['mod'] ? ' AND s.module='.$filter['mod'] : '')
     .($filter['ev'] ? ' AND s.event='.$filter['ev'] : '')
     .($filter['us'] ? ' AND s.uid='.$filter['us'] : '')

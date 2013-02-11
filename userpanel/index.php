@@ -51,10 +51,17 @@ if(empty($CONFIG['directories']['sys_dir']) || !file_exists($CONFIG['directories
 	die('System directory is not set or not exists!');
 else
 	$CONFIG['directories']['sys_dir'] = $CONFIG['directories']['sys_dir'];
-$CONFIG['directories']['lib_dir'] = (!isset($CONFIG['directories']['lib_dir']) ? $CONFIG['directories']['sys_dir'].'/lib' : $CONFIG['directories']['lib_dir']);
+
+$CONFIG['directories']['lib_dir'] = (!isset($CONFIG['directories']['lib_dir']) ? $CONFIG['directories']['sys_dir'].'lib' : $CONFIG['directories']['lib_dir']);
 $CONFIG['directories']['modules_dir'] = (!isset($CONFIG['directories']['modules_dir']) ? $CONFIG['directories']['sys_dir'].'/modules' : $CONFIG['directories']['modules_dir']);
 $CONFIG['directories']['userpanel_dir'] = (!isset($CONFIG['directories']['userpanel_dir']) ? getcwd() : $CONFIG['directories']['userpanel_dir']);
 $CONFIG['directories']['smarty_compile_dir'] = $CONFIG['directories']['userpanel_dir'].'/templates_c';
+$CONFIG['directories']['tmp_dir'] = (!isset($CONFIG['directories']['tmp_dir']) ? $CONFIG['directories']['sys_dir'].'/tmp' : $CONFIG['directories']['tmp_dir']);
+$CONFIG['directories']['rrd_dir'] = (!isset($CONFIG['directories']['rrd_dir']) ? $CONFIG['directories']['sys_dir'].'/rrd' : $CONFIG['directories']['rrd_dir']);
+$CONFIG['directories']['doc_dir'] = (!isset($CONFIG['directories']['doc_dir']) ? $CONFIG['directories']['sys_dir'].'/documents' : $CONFIG['directories']['doc_dir']);
+$CONFIG['directories']['backup_dir'] = (!isset($CONFIG['directories']['backup_dir']) ? $CONFIG['directories']['sys_dir'].'/backups' : $CONFIG['directories']['backup_dir']);
+$CONFIG['directories']['config_templates_dir'] = (!isset($CONFIG['directories']['config_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/config_templates' : $CONFIG['directories']['config_templates_dir']);
+$CONFIG['directories']['smarty_templates_dir'] = (!isset($CONFIG['directories']['smarty_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/templates' : $CONFIG['directories']['smarty_templates_dir']);
 
 define('USERPANEL_DIR', $CONFIG['directories']['userpanel_dir']);
 define('USERPANEL_LIB_DIR', USERPANEL_DIR.'/lib/');
@@ -70,7 +77,6 @@ define('SMARTY_COMPILE_DIR', $CONFIG['directories']['smarty_compile_dir']);
 
 require_once(USERPANEL_LIB_DIR.'/checkdirs.php');
 require_once(LIB_DIR.'/config.php');
-
 // Initialize database
 $_DBTYPE = $CONFIG['database']['type'];
 $_DBHOST = $CONFIG['database']['host'];
@@ -146,8 +152,12 @@ $LMS->lang = $_language;
 // Initialize modules
 
 $dh  = opendir(USERPANEL_MODULES_DIR);
-while (false !== ($filename = readdir($dh))) {
-    if ((preg_match('/^[a-zA-Z0-9]/',$filename)) && (is_dir(USERPANEL_MODULES_DIR.$filename)) && file_exists(USERPANEL_MODULES_DIR.$filename.'/configuration.php'))
+
+$nomod = unserialize(get_conf('userpanel.disable_modules','a:0:{}'));
+
+while (false !== ($filename = readdir($dh))) 
+{
+    if (!in_array($filename,$nomod) && (preg_match('/^[a-zA-Z0-9]/',$filename)) && (is_dir(USERPANEL_MODULES_DIR.$filename)) && file_exists(USERPANEL_MODULES_DIR.$filename.'/configuration.php'))
     {
 	@include(USERPANEL_MODULES_DIR.$filename.'/locale/'.$_ui_language.'/strings.php');
 	include(USERPANEL_MODULES_DIR.$filename.'/configuration.php');
@@ -240,6 +250,53 @@ if($SESSION->islogged)
 }
 else
 {
+	if (isset($_POST['recovery']))
+	{
+	    $recovery['error'] = 'OK';
+
+	    $dane = $_POST['recovery'];
+	    $recovery['email'] = ($dane['email'] ? $dane['email'] : '');
+	    $recovery['pesel'] = ($dane['pesel'] ? $dane['pesel'] : '');
+
+	    if (empty($recovery['email']) || empty($recovery['pesel'])) $recovery['error'] = 'NODATA';
+	    
+	    if ($recovery['error'] === 'OK') { // czeszemy bazę
+		$referer = str_replace('/?m=','',$_SERVER['HTTP_REFERER']);
+		if ($tmp = $DB->GetRow('SELECT id, pin FROM customers WHERE UPPER(email) = ? AND (ten = ? OR ssn = ?) '.$DB->Limit(1).' ;',array(strtoupper($recovery['email']),$recovery['pesel'],$recovery['pesel'])))
+		{
+		    $customer = $LMS->GetCustomer($tmp['id']);
+		    $division = $DB->GetOne('SELECT name FROM divisions WHERE id = ? '.$DB->Limit(1).' ;',array($customer['divisionid']));
+		    $body = "\n";
+		    $body .="Witaj ".$customer['customername']."\n\n";
+		    $body .="Drogi Abonencie firmy ".$division."\n";
+		    $body .="Twoje dane do Inernetowego Biura Obsługi Klienta to:\n\n";
+		    $body .="ID : ".$tmp['id']."\n";
+		    $body .="PIN: ".$tmp['pin']."\n\n";
+		    $body .="Otrzymałeś(aś) ten e-mail pnieważ ktoś skorzystał z formularza przypomnienia loginu i hasła\n";
+		    $body .=" na stronie ".$referer."\n\n";
+		    $body .="Wiadomość została wygenerowana automatycznie, prosimy nie odpowiadać.\n";
+		    $head = array(
+			'From'	=> '"Automatyczny System Powiadomień" <'.$CONFIG['mail']['smtp_username'].'>',
+			'Subject' => "Przypomnienie ID i PIN",
+			'Reply-To' => 'No-Reply',
+			'To' => ''
+		    );
+		    if ($LMS->SendMail($recovery['email'],$head,$body))
+			$recovery['error'] = 'OK';
+		    else 
+			$recovery['error'] = 'ERROR';
+		}
+		else $recovery['error'] = 'ERROR';
+	    }
+	    
+	    if ($recovery['error'] === 'OK') 
+		$recovery['email'] = $recovery['pesel'] = NULL;
+	
+	    $SMARTY->assign('recovery',$recovery);
+	}
+	else
+	    $SMARTY->assign('recovery',array());
+
         $SMARTY->assign('error', $SESSION->error);
         $SMARTY->assign('target','?'.$_SERVER['QUERY_STRING']);
         $SMARTY->display('login.html');

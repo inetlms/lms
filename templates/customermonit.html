@@ -1,0 +1,171 @@
+<!--// $Id$ //-->
+
+{if !$layout.x_ajax}
+<script type="text/javascript">
+<!--
+    function switch_view()
+    {
+	if (document.getElementById('customermonitbox').style.display != 'none')
+	{
+	    document.getElementById('wykres_ping').innerHTML = '';
+	    document.getElementById('wykres_signal').innerHTML = '';
+	    document.getElementById('wykres_packets').innerHTML = '';
+	    document.getElementById('wykres_bits').innerHTML = '';
+	    document.getElementById('id_chart_type').innerHTML = '';
+	    ShowOrHideBox('customermonitbox');
+	}
+	else
+	{
+	    ShowOrHideBox('customermonitbox');
+	    loadAjax('id_customermonitbox','?m=customermonit&cid={$customerinfo.id}');
+	}
+    }
+//-->
+</script>
+
+    <table width="100%" cellpadding="3">
+	<tr class="dark" >
+	    <td width="100%" class="fleftu" align="left" onclick="switch_view();" style="cursor:pointer;">
+		<img src="img/radar.png" alt="">&nbsp;<b>{trans('Monitoring')}</b>
+	    </td>
+	</tr>
+
+	<tr class="light" id="customermonitbox" style="display:none;">
+	    <td width="100%" class="fall">
+		<table width="100%" cellpadding="3">
+		    <tr class="dark">
+			<td width="1%" nowrap class="fleftu pad">
+			    <b>{trans("Node:")}&nbsp;</b>
+			    <select id="monit_node" onchange="javascript:loadAjax('id_customermonitbox','?m=customermonit&cid={$customerinfo.id}&nid='+this.value);">
+				{section name=ln1 loop=$customernodes}
+				    <option value="{$customernodes[ln1].id}">&nbsp;{$customernodes[ln1].name} ({$customernodes[ln1].id})&nbsp;&nbsp;</option>
+				{/section}
+			    </select>
+			</td>
+			<td width="1%" align="left" class="fbt pad" nowrap>
+			    <div id="id_chart_type"></div>
+			</td>
+			
+			<td width="98%" align="left" class="frightu pad" style="padding-left:10px;">
+			    <b>{trans('from day')}:</b> <input type="text" class="tcal" style="width:90px;" id="id_from_date" value="" readonly>
+			    <b>{trans('to day')}:</b> <input type="text" class="tcal" style="width:90px;" id="id_to_date" value="" readonly>
+			    &nbsp;<a href="javascript:ustaw_daty();"><b>ustaw datę</b></a>
+			</td>
+		    </tr>
+		    <tr>
+			<td colspan="3" width="100%" align="center">
+			    <div id="id_customermonitbox"></div>
+			</td>
+		    </tr>
+		</table>
+	    </td>
+	</tr>
+    </table>
+    
+    {if get_profile('customermonitbox')}
+	{literal}
+	<script type="text/javascript">
+	<!--
+	    document.getElementById('customermonitbox').style.display='';
+	    loadAjax('id_customermonitbox','?m=customermonit&cid={/literal}{$customerinfo.id}{literal}');
+	//-->
+	</script>
+	{/literal}
+    {/if}
+
+{else}
+
+{$xajax}
+
+<table width="100%" cellpadding="3">
+    <tr>
+	<td width="100%" class="pad" align="left">
+	    <div id="wykres_ping" style="text-align:center;"></div>
+	    <div id="wykres_signal" style="text-align:center;"></div>
+	    <div id="wykres_packets" style="text-align:center;"></div>
+	    <div id="wykres_bits" style="text-align:center;"></div>
+	</td>
+    </tr>
+</table>
+{literal}
+<script type="text/javascript">
+<!--
+    function ustaw_daty()
+    {
+	pokaz_wykres('ping');
+	pokaz_wykres('signal');
+	pokaz_wykres('packets');
+	pokaz_wykres('bits');
+    }
+
+    function pokaz_wykres(nazwa)
+    {
+	var from_date = document.getElementById('id_from_date').value;
+	var to_date = document.getElementById('id_to_date').value;
+	
+	if (from_date != '')
+	{
+	    from_date = from_date.replace(/-/g,'/');
+	    from_date = new Date(from_date).getTime()/1000;
+	}
+	
+	if (to_date != '')
+	{
+	    to_date = to_date.replace(/-/g,'/');
+	    to_date = new Date(to_date).getTime()/1000;
+	    to_date = to_date + 86400;
+	}
+	
+	if (document.getElementById('id_'+nazwa).checked == true)
+	{
+	    setProfile('cusmonitbox_view'+nazwa,'1');
+	    xajax_gen_chart('wykres_'+nazwa,{/literal}{$chart.nid}{literal},nazwa,from_date,to_date);
+	}
+	else
+	{
+	    setProfile('cusmonitbox_view'+nazwa,'0');
+	    document.getElementById('wykres_'+nazwa).innerHTML = '';
+	}
+    }
+//-->
+</script>
+{/literal}
+
+<script type="text/javascript">
+<!--
+	var tempek;
+
+	tempek = '';
+	
+	{if $chart.ping_test}
+	    tempek = tempek + '<input type="checkbox" name="chart_ping" value="ping" id="id_ping" {if get_profile("cusmonitbox_viewping")} checked {/if} onchange="pokaz_wykres(\'ping\');"><label for="id_ping"><b>Ping</b></label>';
+	{/if}
+	
+	{if $chart.signal_test}
+	    tempek = tempek + '<input type="checkbox" name="chart_signal" value="signal" id="id_signal" {if get_profile("cusmonitbox_viewsignal")} checked {/if} onchange="pokaz_wykres(\'signal\');"><label for="id_signal"><b>{trans("Signal")}</b></label>';
+	{/if}
+	{if $chart.transfer_test}
+	    tempek = tempek + '<input type="checkbox" name="chart_packets" value="packets" id="id_packets" {if get_profile("cusmonitbox_viewpackets")} checked {/if} onchange="pokaz_wykres(\'packets\');"><label for="id_packets"><b>{trans("Packets")}</b></label>';
+	    tempek = tempek + '<input type="checkbox" name="chart_bits" value="bits" id="id_bits" {if get_profile("cusmonitbox_viewbits")} checked {/if} onchange="pokaz_wykres(\'bits\');"><label for="id_bits"><b>{trans("Bits")}</b></label>';
+	{/if}
+	
+	document.getElementById('id_chart_type').innerHTML = tempek;
+	
+	{if $chart.ping_test && get_profile('cusmonitbox_viewping')}
+		xajax_gen_chart('wykres_ping','{$chart.nid}','ping');
+	{/if}
+	
+	{if $chart.signal_test && get_profile('cusmonitbox_viewsignal')}
+		xajax_gen_chart('wykres_signal','{$chart.nid}','signal');
+	{/if}
+	
+	{if $chart.transfer_test && get_profile('cusmonitbox_viewpackets')}
+		xajax_gen_chart('wykres_packets','{$chart.nid}','packets');
+	{/if}
+	
+	{if $chart.transfer_test && get_profile('cusmonitbox_viewbits')}
+		xajax_gen_chart('wykres_bits','{$chart.nid}','bits');
+	{/if}
+//-->
+</script>
+{/if}

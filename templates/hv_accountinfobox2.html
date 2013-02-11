@@ -1,14 +1,14 @@
 {include file="hv_js.html"}
 <table width="100%" cellpadding="3">
     <tr class="dark hand">
-	<td width="99%" class="fleftu hand" onclick="showOrHide('voipaccounthiperus');">
+	<td width="99%" class="fleftu hand" onclick="ShowOrHideBox('voipaccounthiperusbox');">
 	    <img src="img/voip.gif" alt=""><B>Konta VoIP Hiperus C5 ({$hiperusaccountcustomerlist|@count})</B> 
 	</td>
 	<td width="1%" class="frightu" align="right" nowrap>
 		{if $customerinfo.status neq "1" and ! $customerinfo.deleted}<A HREF="?m=hv_accountadd&cusid={$customerinfo.id}">Dodaj nowe konto VoIP &raquo;</A>&nbsp;{/if}
 	</td>
     </tr>
-    <tr id="voipaccounthiperus" style="display:none;">
+    <tr id="voipaccounthiperusbox" style="display:none;">
 	<td width="100%" colspan="2" class="fall">
 	    <table width="100%" cellpadding="3" cellspacing="0">
 		<tr class="dark">
@@ -37,7 +37,7 @@
 		{sectionelse}
 		<tr>
 		    <td colspan="6" align="center" class="fall">
-			<p><h4>Brak kont VoIP dla klienta<br><A HREF="?m=hv_accountadd&cusid={$customerinfo.id}">Kliknij tutaj aby dodać nowe konto VoIP </A></h4></p>
+			<p><h4>Brak kont VoIP dla klienta<br><a href="?m=hv_accountadd&cusid={$customerinfo.id}">Kliknij tutaj aby dodać nowe konto VoIP </a></h4></p>
 	    
 		    </td>
 		</tr>
@@ -52,10 +52,10 @@
 	</td>
     </tr>
 </table>
-{literal}
+{if get_profile('voipaccounthiperusbox')}
 <script type="text/javascript">
 <!--
-if(getCookie('voipaccounthiperus')=='1'){document.getElementById('voipaccounthiperus').style.display = '';}
+	document.getElementById('voipaccounthiperusbox').style.display = '';
 //-->
 </script>
-{/literal}
+{/if}

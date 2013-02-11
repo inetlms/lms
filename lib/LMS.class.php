@@ -113,7 +113,7 @@ class LMS {
 	    .' AND a.dateto!=0'
 	    .' AND a.dateto<='.$dateto
 	    .' AND a.dateto>'.time()
-	    .' AND NOT EXISTS (SELECT 1 FROM assignments aa WHERE aa.customerid=a.customerid AND aa.datefrom>a.dateto AND aa.discount>0 LIMIT 1)'
+	    .' AND NOT EXISTS (SELECT 1 FROM assignments aa WHERE aa.customerid=a.customerid AND aa.datefrom>a.dateto LIMIT 1)'
 	    ;
 	}
 	elseif ($dni=='-2')
@@ -165,48 +165,63 @@ class LMS {
 	 *  Database functions (backups)
 	 */
 
-	function DBDump($filename = NULL, $gzipped = FALSE, $stats = FALSE) { // dump database to file
+	function DBDump($filename = NULL, $gzipped = FALSE, $stats = FALSE)  // dump database to file
+	{
+		
+		global $TABLENAME_NOINDEX;
+		
 		if (!$filename)
 			return FALSE;
-
+		
 		if ($gzipped && extension_loaded('zlib'))
+		{
+			$filename_seq = str_replace('.sql.gz','',$filename);
+			$filename_seq .= '.setval.pgsql.gz';
 			$dumpfile = gzopen($filename, 'w');
+			$dumpfile_seq = gzopen($filename_seq, 'w');
+		}
 		else
+		{
+			$filename_seq = str_replace('.sql','',$filename);
+			$filename_seq .= '.setval.pgsql';
 			$dumpfile = fopen($filename, 'w');
-
+			$dumpfile_seq = fopen($filename_seq, 'w');
+		}
+		
 		if ($dumpfile) {
 			$tables = $this->DB->ListTables();
-
+			
 			foreach ($tables as $tablename) {
 				// skip sessions table for security
 				if ($tablename == 'sessions' || ($tablename == 'stats' && $stats == FALSE))
 					continue;
-
+				
 				fputs($dumpfile, "DELETE FROM $tablename;\n");
 			}
-
+			
 			if ($this->CONFIG['database']['type'] == 'postgres')
 				fputs($dumpfile, "SET CONSTRAINTS ALL DEFERRED;\n");
-
+			
 			// Since we're using foreign keys, order of tables is important
 			// Note: add all referenced tables to the list
-			$order = array('users', 'customers', 'customergroups', 'nodes', 'numberplans',
+			$order = array('location_states','location_districts','location_boroughs','location_cities','location_street_types',
+					'location_streets','users', 'customers', 'customergroups', 'nodes', 'numberplans',
 					'assignments', 'rtqueues', 'rttickets', 'rtmessages', 'domains',
 					'cashsources', 'sourcefiles', 'ewx_channels','info_center','hv_customers','contractorgroups');
-
+			
 			foreach ($tables as $idx => $table) {
 				if (in_array($table, $order)) {
 					unset($tables[$idx]);
 				}
 			}
-
+			
 			$tables = array_merge($order, $tables);
-
+			
 			foreach ($tables as $tablename) {
 				// skip sessions table for security
 				if ($tablename == 'sessions' || ($tablename == 'stats' && $stats == FALSE))
 					continue;
-
+				
 				$this->DB->Execute('SELECT * FROM ' . $tablename);
 				while ($row = $this->DB->_driver_fetchrow_assoc()) {
 					fputs($dumpfile, "INSERT INTO $tablename (");
@@ -225,11 +240,24 @@ class LMS {
 					unset($values);
 				}
 			}
+			
+//			foreach ($DB->ListTables() as $tablename)
+//			    if (!in_array($table
+			fputs($dumpfile_seq,"/* naprawa index'ow dla pgsql przy recznym imporcie danych z shell */\n\n");
+			foreach ($this->DB->ListTables() as $tablename)
+			    if (!in_array($tablename, $TABLENAME_NOINDEX))
+				fputs($dumpfile_seq,"SELECT setval('".$tablename."_id_seq',max(id)) FROM ".$tablename." ;\n");
 
 			if ($gzipped && extension_loaded('zlib'))
+			{
 				gzclose($dumpfile);
+				gzclose($dumpfile_seq);
+			}
 			else
+			{
 				fclose($dumpfile);
+				fclose($dumpfile_seq);
+			}
 			
 			return $filename;
 		}
@@ -624,6 +652,7 @@ class LMS {
 		// nodes
 		$nodes = $this->DB->GetCol('SELECT id FROM nodes WHERE ownerid=?', array($id));
 		if ($nodes) {
+		/*
 			$this->DB->Execute('DELETE FROM nodegroupassignments WHERE nodeid IN (' . join(',', $nodes) . ')');
 			$plugin_data = array();
 			foreach ($nodes as $node)
@@ -631,6 +660,8 @@ class LMS {
 			$this->ExecHook('node_del_before', $plugin_data);
 			$this->DB->Execute('DELETE FROM nodes WHERE ownerid=?', array($id));
 			$this->ExecHook('node_del_after', $plugin_data);
+		*/
+		    for ($i=0; $i< sizeof($nodes); $i++) $this->DeleteNode($nodes[$i]);
 		}
 		// hosting
 		$this->DB->Execute('UPDATE passwd SET ownerid=0 WHERE ownerid=?', array($id));
@@ -810,7 +841,7 @@ class LMS {
 					if ($types)
 						$result['contacts'][$idx]['typestr'] = implode('/', $types);
 				}
-
+			
 			return $result;
 		}
 		else
@@ -918,6 +949,7 @@ class LMS {
 			case 12: $indebted3 = 1;
 				break;
 		}
+		
 
 		if ($network)
 			$net = $this->GetNetworkParams($network);
@@ -1218,6 +1250,8 @@ class LMS {
 			$saldolist['balance'] = 0;
 			$saldolist['total'] = 0;
 			$i = 0;
+			
+			
 
 			foreach ($tslist as $row) {
 				// old format wrapper
@@ -1975,6 +2009,13 @@ class LMS {
 		
 		if (!empty($nodedata['monitoring']))
 		    $this->SetMonit($nodedata['id']);
+		else
+		    $this->SetPingTestMonit($nodedata['id'],0);
+		
+		if (!empty($nodedata['monitoringsignal']))
+		    $this->SetSignalTestMonit($nodedata['id'],1);
+		else
+		    $this->SetSignalTestMonit($nodedata['id'],0);
 
 		$this->DB->Execute('DELETE FROM macs WHERE nodeid=?', array($nodedata['id']));
 		foreach ($nodedata['macs'] as $mac) {
@@ -2083,7 +2124,9 @@ class LMS {
 	function GetNode($id) {
 		if ($result = $this->DB->GetRow('SELECT n.*,
 		    inet_ntoa(n.ipaddr) AS ip, inet_ntoa(n.ipaddr_pub) AS ip_pub,
-		    lc.name AS city_name, (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active = 1) AS monitoring,
+		    lc.name AS city_name, 
+		    (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active = 1) AS monitoring,
+		    (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active = 1 AND monitnodes.signaltest=1) AS monitoringsignal,
 				(CASE WHEN ls.name2 IS NOT NULL THEN ' . $this->DB->Concat('ls.name2', "' '", 'ls.name') . ' ELSE ls.name END) AS street_name, lt.name AS street_type
 			FROM vnodes n
 			LEFT JOIN location_cities lc ON (lc.id = n.location_city)
@@ -2189,7 +2232,7 @@ class LMS {
 
 		if ($nodelist = $this->DB->GetAll('SELECT n.id AS id, n.ipaddr, inet_ntoa(n.ipaddr) AS ip, n.ipaddr_pub,
 				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.mac, n.name, n.ownerid, n.access, n.warning,
-				n.netdev, n.lastonline, n.info, (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active = 1) AS monitoring, '
+				n.netdev, n.lastonline, n.info, (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id LIMIT 1) AS monitoring, '
 				. $this->DB->Concat('c.lastname', "' '", 'c.name') . ' AS owner '
 				.(!$search ? ', nd.name AS devname, nd.location AS devlocation ' : '')
 				.' FROM vnodes n 
@@ -2286,7 +2329,7 @@ class LMS {
 
 	function NodeSetWarn($id, $warning = FALSE) {
 		
-		$this->DB->BeginTrans();
+//		$this->DB->BeginTrans();
 		if (SYSLOG) {
 		    if (is_array($id)) {
 			for ($i=0;$i<sizeof($id);$i++) {
@@ -2300,7 +2343,7 @@ class LMS {
 		}
 		$return = $this->DB->Execute('UPDATE nodes SET warning = ? WHERE id IN ('
 			. (is_array($id) ? implode(',', $id) : $id) . ')', array($warning ? 1 : 0));
-		$this->DB->CommitTrans();
+//		$this->DB->CommitTrans();
 		return $return;
 	}
 
@@ -4097,12 +4140,13 @@ class LMS {
 	}
 
 	function GetNetDev($id) {
-		$result = $this->DB->GetRow('SELECT d.*, t.name AS nastypename, c.name AS channel,
+		$result = $this->DB->GetRow('SELECT d.*, t.name AS nastypename, tt.name AS monit_nastypename, c.name AS channel,
 		        lc.name AS city_name,
 				(CASE WHEN ls.name2 IS NOT NULL THEN ' . $this->DB->Concat('ls.name2', "' '", 'ls.name') . ' ELSE ls.name END) AS street_name, lt.name AS street_type
 			FROM netdevices d
-			LEFT JOIN nastypes t ON (t.id = d.nastype)
-			LEFT JOIN ewx_channels c ON (d.channelid = c.id)
+			LEFT JOIN nastypes t ON (t.id = d.nastype) 
+			LEFT JOIN nastypes tt ON (tt.id = d.monit_nastype) 
+			LEFT JOIN ewx_channels c ON (d.channelid = c.id) 
 			LEFT JOIN location_cities lc ON (lc.id = d.location_city)
 			LEFT JOIN location_streets ls ON (ls.id = d.location_street)
 			LEFT JOIN location_street_types lt ON (lt.id = ls.typeid)
@@ -4139,8 +4183,8 @@ class LMS {
 				description, producer, model, serialnumber,
 				ports, purchasetime, guaranteeperiod, shortname,
 				nastype, clients, secret, community, channelid,
-				longitude, latitude)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($data['name'],
+				longitude, latitude, monit_nastype, monit_login, monit_passwd,  monit_port )
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)', array($data['name'],
 						$data['location'],
 						$data['location_city'] ? $data['location_city'] : null,
 						$data['location_street'] ? $data['location_street'] : null,
@@ -4160,7 +4204,11 @@ class LMS {
 						$data['community'],
 						!empty($data['channelid']) ? $data['channelid'] : NULL,
 						!empty($data['longitude']) ? str_replace(',', '.', $data['longitude']) : NULL,
-						!empty($data['latitude']) ? str_replace(',', '.', $data['latitude']) : NULL
+						!empty($data['latitude']) ? str_replace(',', '.', $data['latitude']) : NULL,
+						$data['monit_nastype'],
+						$data['monit_login'],
+						$data['monit_passwd'],
+						$data['monit_port']
 				))) {
 			$id = $this->DB->GetLastInsertID('netdevices');
 
@@ -4192,7 +4240,8 @@ class LMS {
 		$this->DB->Execute('UPDATE netdevices SET name=?, description=?, producer=?, location=?,
 				location_city=?, location_street=?, location_house=?, location_flat=?,
 				model=?, serialnumber=?, ports=?, purchasetime=?, guaranteeperiod=?, shortname=?,
-				nastype=?, clients=?, secret=?, community=?, channelid=?, longitude=?, latitude=? 
+				nastype=?, clients=?, secret=?, community=?, channelid=?, longitude=?, latitude=?,
+				monit_nastype = ?, monit_login = ?, monit_passwd = ?, monit_port = ? 
 				WHERE id=?', array($data['name'],
 				$data['description'],
 				$data['producer'],
@@ -4214,6 +4263,10 @@ class LMS {
 				!empty($data['channelid']) ? $data['channelid'] : NULL,
 				!empty($data['longitude']) ? str_replace(',', '.', $data['longitude']) : null,
 				!empty($data['latitude']) ? str_replace(',', '.', $data['latitude']) : null,
+				$data['monit_nastype'],
+				$data['monit_login'],
+				$data['monit_passwd'],
+				$data['monit_port'],
 				$data['id']
 		));
 	}
@@ -4245,7 +4298,9 @@ class LMS {
 
 	function GetNetDevIPs($id) {
 		return $this->DB->GetAll('SELECT id, name, mac, ipaddr, inet_ntoa(ipaddr) AS ip, 
-			ipaddr_pub, inet_ntoa(ipaddr_pub) AS ip_pub, access, info, port , (SELECT 1 FROM monitnodes WHERE monitnodes.id = vnodes.id and monitnodes.active=1) AS monitoring 
+			ipaddr_pub, inet_ntoa(ipaddr_pub) AS ip_pub, access, info, port , 
+			(SELECT 1 FROM monitnodes WHERE monitnodes.id = vnodes.id and monitnodes.active=1) AS monitoring ,
+			(SELECT 1 FROM monitnodes WHERE monitnodes.id = vnodes.id and monitnodes.active=1 AND monitnodes.signaltest=1) AS monitoringsignal 
 			FROM vnodes 
 			WHERE ownerid = 0 AND netdev = ?', array($id));
 	}
@@ -4909,11 +4964,13 @@ class LMS {
 		}
 
 		$error = $mail_object = & Mail::factory('smtp', $params);
-		if (PEAR::isError($error))
+//		if (PEAR::isError($error))
+		if (is_a($error,'PEAR::_Error'))
 			return $error->getMessage();
 
 		$error = $mail_object->send($recipients, $headers, $buf);
-		if (PEAR::isError($error))
+//		if (PEAR::isError($error))
+		if (is_a($error,'PEAR::_Error'))
 			return $error->getMessage();
 		else
 			return MSG_SENT;
@@ -5658,309 +5715,6 @@ class LMS {
 	}
 	
 	
-	/*************************************************************\
-	|                         MONITORING                          *
-	\*************************************************************/
-	
-	function CheckExistsMonitNodes($id)
-	{
-		return ($this->DB->GetOne('SELECT 1 FROM monitnodes WHERE id=? LIMIT 1;',array($id)) ? TRUE : FALSE);
-	}
-
-	function SetMonit($nid,$status=1,$type=NULL ,$port=NULL, $sendtimeout=NULL, $sendptime=NULL, $maxptime=NULL)
-	{
-		$nid = (int)$nid;
-		$status = (int)$status;
-		$this->DB->BeginTrans();
-		
-		if (SYSLOG) 
-		{
-			$tmp = $this->DB->GetRow('SELECT name, ownerid, netdev FROM nodes WHERE id = ? LIMIT 1;',array($nid));
-			if (!empty($tmp['ownerid'])) 
-			{
-				$cus = $this->DB->GetRow('SELECT lastname, name FROM customers WHERE id = ? LIMIT 1;',array($tmp['ownerid']));
-				addlogs(($status ? 'włączono' : 'wyłączono').' monitorowanie komputera: '.$tmp['name'].', klient: '.strtoupper($cus['lastname']).' '.$cus['name'],'e=up;m=node;c='.$tmp['ownerid'].';n='.$nid);
-			} 
-			elseif (!empty($tmp['netdev'])) 
-			{
-				addlogs(($status ? 'włączono' : 'wyłączono').' monitorowanie urządzenia sieciowego: '.$tmp['name'],'e=up;m=netdev;n='.$nid);
-			}
-		}
-		
-		if ( $status === 1 ) 
-		{
-			if ($this->CheckExistsMonitNodes($nid))
-			{
-				$this->DB->Execute('UPDATE monitnodes SET active=1 WHERE id=?;',array($nid));
-			}
-			else 
-			{
-				$netdev = ($this->DB->GetOne('SELECT 1 FROM nodes WHERE ownerid = ? AND netdev != ? LIMIT 1;',array(0,0)) ? TRUE : FALSE);
-				if ($netdev) 
-				{
-					$type = (!empty($type) ? strtolower($type) : strtolower(get_conf('monit.netdev_test_type','icmp')));
-					
-					if ($type !== 'tcp') $port = NULL;
-						else $port = (!empty($port) ? strtolower($port) : strtolower(get_conf('monit.netdev_test_port','80')));
-					
-					$sendtimeout = (!empty($sendtimeout) ? strtolower($sendtimeout) : strtolower(get_conf('monit.netdev_timeout_send',1)));
-					$sendptime = (!empty($sendptime) ? strtolower($sendptime) : strtolower(get_conf('monit.netdev_time_send',1)));
-					$maxptime = (!empty($maxptime) ? strtolower($maxptime) : strtolower(get_conf('monit.netdev_time_max',100)));
-				}
-				else
-				{
-					$type = (!empty($type) ? strtolower($type) : strtolower(get_conf('monit.nodes_test_type','icmp')));
-					if ($type !== 'tcp') $port = NULL;
-						else $port = (!empty($port) ? strtolower($port) : strtolower(get_conf('monit.nodes_test_port','80')));
-					
-					$sendtimeout = (!empty($sendtimeout) ? strtolower($sendtimeout) : strtolower(get_conf('monit.nodes_timeout_send',1)));
-					$sendptime = (!empty($sendptime) ? strtolower($sendptime) : strtolower(get_conf('monit.nodes_time_send',1)));
-					$maxptime = (!empty($maxptime) ? strtolower($maxptime) : strtolower(get_conf('monit.nodes_time_max',100)));
-				}
-				$this->DB->Execute('INSERT INTO monitnodes (id, test_type, test_port, active, send_timeout, send_ptime, maxptime) 
-					VALUES (?, ?, ?, ?, ?, ?, ?) ;',array($nid,$type,$port,1,$sendtimeout,$sendptime,$maxptime));
-			}
-			
-		
-		} 
-		else 
-		{
-			$this->DB->Execute('UPDATE monitnodes SET active=0 WHERE id=?;',array($nid));
-		}
-		$this->DB->Committrans();
-		return true;
-	}
-
-
-	function GetListNodesNotMonit($nodes = TRUE)
-	{
-	    if ($tmp = $this->DB->GetCol('SELECT id FROM monitnodes ;'))
-		$tmp = implode(',',$tmp);
-	    else $tmp = NULL;
-	    
-	    return $this->DB->GetAll('SELECT n.id, inet_ntoa(n.ipaddr) AS ipaddr, '.($nodes ? 'n.name' : 'd.name')
-				    .' FROM nodes n '.($nodes ? '' : 'JOIN netdevices d ON (d.id = n.netdev) ')
-				    .' WHERE n.netdev '.($nodes ? '=' : '!=').' 0 '.(!empty($tmp) ? ' AND n.id NOT IN ('.$tmp.') ' : '')
-				    .($nodes ? '' : ' AND n.ownerid = 0 ')
-				    .' ORDER BY '.($nodes ? 'n.name' : 'd.name').' ;');
-	}
-	
-	function SetTestTypeByMonit($nid,$testtype='icmp')
-	{
-	    if ($this->DB->Execute('UPDATE monitnodes SET test_type = ? WHERE id = ? ;',array($testtype,$nid)))
-	    return true;
-	    else return false;
-	}
-	
-	function DelMonit($id,$typ='nodes')
-	{
-	    $id = (int)$id;
-	    if (in_array($typ,array('nodes','netdev')) && $this->CheckExistsMonitNodes($id))
-	    {
-		if (SYSLOG) {
-		    $tmpstr = '';
-		    switch ($typ)
-		    {
-			case 'netdev'	: $tmpstr = 'urządzenia sieciowego'; break;
-			case 'nodes'	: $tmpstr = 'urządzenia klienta'; break;
-		    }
-		    $tmp = $this->DB->GetRow('SELECT ipaddr, name FROM monit_vnodes WHERE id = ? LIMIT 1 ;',array($id));
-		    addlogs('Usunięcie '.$tmpstr.' z monitoringu: '.$tmp['name'].' ('.$tmp['ipaddr'].')','e=rm;m=mon;');
-		}
-		$this->DB->BeginTrans();
-		
-		$this->DB->Execute('DELETE FROM monitwarn WHERE nodeid = ?',array($id));
-		$this->DB->Execute('DELETE FROM monittime WHERE nodeid = ?',array($id));
-		$this->DB->Execute('DELETE FROM monitnodes WHERE id = ?',array($id));
-		
-		$this->DB->CommitTrans();
-	    }
-	}
-	
-	function ClearStatMonit($id,$typ='nodes')
-	{
-	    $id = (int)$id;
-	    if ( (in_array($typ,array('netdev','nodes')) && $this->CheckExistsMonitNodes($id)) || $typ=='owner' ) 
-	    {
-	    $this->DB->BeginTrans();
-		if (SYSLOG) {
-		    $tmpstr = '';
-		    switch ($typ)
-		    {
-			case 'netdev'	: $tmpstr = 'urządzenia sieciowego'; break;
-			case 'nodes'	: $tmpstr = 'urządzenia klienta'; break;
-			case 'owner'	: $tmpstr = 'własne urządzenie'; break;
-		    }
-		    if ($typ !='owner')
-			$tmp = $this->DB->GetRow('SELECT ipaddr, name FROM monit_vnodes WHERE id = ? LIMIT 1 ;',array($id));
-		    else
-			$tmp = $this->DB->GetRow('SELECT ipaddr, name FROM monitown WHERE id = ? LIMIT 1 ;',array($id));
-		    addlogs('Wyczyszczenie statystyk dla '.$tmpstr.': '.$tmp['name'].' ('.$tmp['ipaddr'].')','e=rm;m=mon;');
-		}
-	    
-		if ($typ != 'owner')
-		{
-		    $this->DB->Execute('DELETE FROM monitwarn WHERE nodeid = ?',array($id));
-		    $this->DB->Execute('DELETE FROM monittime WHERE nodeid = ?',array($id));
-		}
-		else
-		{
-		    $this->DB->Execute('DELETE FROM monitwarn WHERE ownid = ?',array($id));
-		    $this->DB->Execute('DELETE FROM monittime WHERE ownid = ?',array($id));
-		}
-		$this->DB->CommitTrans();
-	    }
-	}
-	
-	function GetListNodesMonit($nodes = TRUE, $order = 'n.name,asc')
-	{
-	    if (!is_bool($nodes)) $nodes = TRUE;
-	    
-	    $lefttime1d = time() - 86400;
-	    $lefttime7d = time() - 604800;
-	    
-	    
-	    list($order,$direction) = sscanf($order,'%[^,],%s');
-	    ($direction != 'desc') ? $direction = 'asc' : $direction = 'desc';
-	    switch ($order) 
-	    {
-		case 'name'		: $sqlord = 'ORDER BY dname '.$direction;	break;
-		case 'urzname'		: $sqlord = 'ORDER BY n.name '.$direction;	break;
-		case 'ip'		: $sqlord = 'ORDER BY n.ipaddr '.$direction;	break;
-		case 'location'		: $sqlord = 'ORDER BY location '.$direction;	break;
-		case 'testtype'		: $sqlord = 'ORDER BY mn.test_type '.$direction;break;
-		case 'lastptime'	: $sqlord = 'ORDER BY m.ptime '.$direction;	break;
-		case 'lastdate'		: $sqlord = 'ORDER BY m.cdate '.$direction;	break;
-		case 'min1d'		: $sqlord = 'ORDER BY mm.minptime '.$direction; break;
-		case 'avg1d'		: $sqlord = 'ORDER BY mm.avgptime '.$direction; break;
-		case 'max1d'		: $sqlord = 'ORDER BY mm.maxptime '.$direction; break;
-		case 'min7d'		: $sqlord = 'ORDER BY mm7d.minptime '.$direction; break;
-		case 'avg7d'		: $sqlord = 'ORDER BY mm7d.avgptime '.$direction; break;
-		case 'max7d'		: $sqlord = 'ORDER BY mm7d.maxptime '.$direction; break;
-		
-	    }
-	    
-	    if (!$nodes) // urządzenia sieciowe
-	    {
-		$zap = '
-		SELECT 
-		n.id AS nid, n.name AS nname, inet_ntoa(n.ipaddr) AS ipaddr, 
-		d.id AS did, d.name AS dname, d.location AS location, 
-		mn.test_type, mn.test_port, mn.active, mn.send_timeout, mn.send_ptime, mn.maxptime AS limitptime, 
-		m.id AS mid, m.cdate AS cdate, m.ptime AS ptime,
-		mm.minptime AS minptime, mm.maxptime AS maxptime, mm.avgptime AS avgptime, 
-		mm7d.minptime AS minptime7d, mm7d.maxptime AS maxptime7d, mm7d.avgptime AS avgptime7d, 
-		mw.cdate AS warndate , mw.backtime 
-		FROM nodes n 
-		JOIN netdevices d ON (d.id = n.netdev) 
-		JOIN monitnodes mn ON (mn.id = n.id) 
-		LEFT JOIN monittime m ON (m.id = (SELECT MAX(id) FROM monittime WHERE monittime.nodeid = n.id AND monittime.ptime != 0)) 
-		LEFT JOIN monitwarn mw ON (mw.id = (SELECT MAX(mwt.id) FROM monitwarn mwt WHERE nodeid = n.id))
-		LEFT JOIN (SELECT nodeid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime, AVG(ptime) AS avgptime FROM monittime WHERE cdate >= '.$lefttime1d.' AND ptime>0 GROUP BY nodeid) mm ON (mm.nodeid = n.id) 
-		LEFT JOIN (SELECT nodeid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime, AVG(ptime) AS avgptime FROM monittime WHERE cdate >= '.$lefttime7d.' AND ptime>0 GROUP BY nodeid) mm7d ON (mm7d.nodeid = n.id) '
-		.' WHERE n.ownerid = 0 '
-		.$sqlord
-		.' ;';
-		
-		
-		
-	    }
-	    else // komputery klienta
-	    {
-	    $zap = '
-		SELECT 
-		n.id AS nid, n.name AS nname, inet_ntoa(n.ipaddr) AS ipaddr, 
-		c.id AS did, '. $this->DB->Concat('c.lastname', "' '", 'c.name') . ' AS dname, '.$this->DB->Concat('c.address',"' '",'c.zip',"' '",'c.city').' AS location,
-		mn.test_type, mn.test_port, mn.active, mn.send_timeout, mn.send_ptime, mn.maxptime AS limitptime, 
-		m.id AS mid, m.cdate AS cdate, m.ptime AS ptime,
-		mm.minptime AS minptime, mm.maxptime AS maxptime, mm.avgptime AS avgptime, 
-		mm7d.minptime AS minptime7d, mm7d.maxptime AS maxptime7d, mm7d.avgptime AS avgptime7d, 
-		mw.cdate AS warndate , mw.backtime 
-		FROM nodes n 
-		JOIN customers c  ON (c.id = n.ownerid) 
-		JOIN monitnodes mn ON (mn.id = n.id) 
-		LEFT JOIN monittime m ON (m.id = (SELECT MAX(id) FROM monittime WHERE monittime.nodeid = n.id AND monittime.ptime != 0)) 
-		LEFT JOIN monitwarn mw ON (mw.id = (SELECT MAX(mwt.id) FROM monitwarn mwt WHERE nodeid = n.id))
-		LEFT JOIN (SELECT nodeid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime, AVG(ptime) AS avgptime FROM monittime WHERE cdate >= '.$lefttime1d.' AND ptime>0 GROUP BY nodeid) mm ON (mm.nodeid = n.id) 
-		LEFT JOIN (SELECT nodeid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime, AVG(ptime) AS avgptime FROM monittime WHERE cdate >= '.$lefttime7d.' AND ptime>0 GROUP BY nodeid) mm7d ON (mm7d.nodeid = n.id) '
-		.' WHERE n.ownerid != 0 '
-		.$sqlord
-		.' ;';
-	    }
-	    return $this->DB->GetAll($zap);
-	}
-	
-	
-	function GetOwnerMonitList()
-	{
-	    // ostatnie 24h
-	    $lefttime = time()-86400;
-	    $lefttime7d = time()-(86400*7);
-	    $zap = 'SELECT 
-	    n.id AS nid, n.name AS nname, n.ipaddr AS ipaddr, n.description AS description, n.active AS active, n.test_type AS test_type, 
-	    m.id as mid, m.cdate AS cdate, m.ptime AS ptime , 
-	    mw.cdate AS warndate, mw.backtime , 
-	    mm.minptime AS minptime, mm.maxptime AS maxptime , mm.avgptime AS avgptime ,
-	    mm7d.minptime AS minptime7d, mm7d.maxptime AS maxptime7d , mm7d.avgptime AS avgptime7d 
-	    FROM monitown n 
-	    LEFT JOIN monittime m ON(m.id = (SELECT MAX(id) FROM monittime WHERE monittime.ownid=n.id AND monittime.ptime != 0)) 
-	    LEFT JOIN monitwarn mw ON (mw.id = (SELECT MAX(mwt.id) FROM monitwarn mwt WHERE mwt.ownid=n.id)) 
-	    LEFT JOIN (SELECT ownid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime , AVG(ptime) AS avgptime FROM monittime WHERE cdate>='.$lefttime.' AND ptime>0 GROUP BY ownid) mm ON (mm.ownid = n.id)
-	    LEFT JOIN (SELECT ownid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime , AVG(ptime) AS avgptime FROM monittime WHERE cdate>='.$lefttime7d.' AND ptime>0 GROUP BY ownid) mm7d ON (mm7d.ownid = n.id)
-	    ORDER BY UPPER(n.name) ASC ;';
-	return $this->DB->GetAll($zap);
-	}
-	
-	function SetMonitOwner($id,$active)
-	{
-	    $this->DB->Execute('UPDATE monitown SET active=? WHERE id=? ;',array($active,$id));
-	}
-    
-    function addOwnerMonit($dane)
-    {
-	$this->DB->Execute('INSERT INTO monitown (ipaddr, name, description, test_type, test_port, active, send_timeout, maxptime, send_ptime)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ;',array($dane['ipaddr'],$dane['nazwa'],$dane['description'],$dane['type'],NULL,1,NULL,NULL,NULL));
-	if (SYSLOG)
-	{
-	    addlogs('Dodano własne urządzenie do monitoringu: '.$dnae['nazwa'].' Host: '.$dane['ipaddr'],'e=add;m=mon;');
-	}
-	
-	return $this->DB->GetLastInsertId('monitown');
-    }
-    
-    function updateOwnerMonit($dane)
-    {
-	if (SYSLOG)
-	{
-	    addlogs('Aktualizacja danych monitorowanego własnego urządzenia: '.$dane['nazwa'].' ('.$dane['ipaddr'].')','e=up;m=mon;');
-	}
-	$this->DB->Execute('UPDATE monitown SET name=?, description=?, ipaddr=? , test_type=? WHERE id=? ;',array($dane['nazwa'],$dane['description'],$dane['ipaddr'],$dane['type'],$dane['id']));
-    }
-    
-    function getOwnerMonit($id)
-    {
-	return $this->DB->GetRow('SELECT id,name,description,ipaddr,test_type FROM monitown WHERE id = ? LIMIT 1 ;',array(intval($id)));
-    }
-    
-    function settesttypeowner($id,$type)
-    {
-	return $this->DB->Execute('UPDATE monitown SET test_type = ? where id = ? ',array($type,$id));
-    }
-    
-    function DeleteOwnerMonit($id)
-    {
-    
-	if (SYSLOG) {
-	    $tmp = $this->DB->GetRow('SELECT ipaddr, name FROM monitown WHERE id =? LIMIT 1;',array($id));
-	    addlogs('Usunięto Host z monitoringu :'.$tmp['name'].' ('.$tmp['ipaddr'].')','e=rm;m=mon;');
-	    unset($tmp);
-	}
-	$this->DB->Execute('DELETE FROM monitwarn WHERE ownid = ?',array($id));
-	$this->DB->Execute('DELETE FROM monittime WHERE ownid = ?',array($id));
-	$this->DB->Execute('DELETE FROM monitown WHERE id = ? ;',array($id));
-    }
-    
-        
     /***********************************************************************************\
     *                                                                                   *
     *                               INFO CENTER (callcenter)                            *
@@ -6105,6 +5859,1225 @@ class LMS {
     {
 	$this->DB->Execute('DELETE FROM info_center_post WHERE id =?',array($id));
     }
+    
+    
+    
+    /***********************************************************************************\
+    *                                                                                   *
+    *                               MONITORING                                          *
+    *                                                                                   *
+    \***********************************************************************************/
+    
+    
+    function CheckExistsMonitNodes($id) 
+    {
+	
+	return ($this->DB->GetOne('SELECT 1 FROM monitnodes WHERE id=? LIMIT 1;',array($id)) ? TRUE : FALSE);
+	
+    }
+
+
+    function SetMonit($nid, $status = 1, $type = NULL , $port = NULL, $sendtimeout = NULL, $sendptime = NULL, $maxptime = NULL) 
+    {
+	
+	$nid = intval($nid);
+	$status = intval($status);
+	
+	if (SYSLOG) 
+	{
+	    $tmp = $this->DB->GetRow('SELECT name, ownerid, netdev FROM nodes WHERE id = ? LIMIT 1;',array($nid));
+	    if (!empty($tmp['ownerid'])) 
+	    {
+		$cus = $this->DB->GetRow('SELECT lastname, name FROM customers WHERE id = ? LIMIT 1;',array($tmp['ownerid']));
+		addlogs(($status ? 'włączono' : 'wyłączono').' monitorowanie komputera: '.$tmp['name'].', klient: '.strtoupper($cus['lastname']).' '.$cus['name'],
+			'e=up;m=node;c='.$tmp['ownerid'].';n='.$nid);
+	    } 
+	    elseif (!empty($tmp['netdev'])) 
+	    {
+		addlogs(($status ? 'włączono' : 'wyłączono').' monitorowanie urządzenia sieciowego: '.$tmp['name'],'e=up;m=netdev;n='.$nid);
+	    }
+	}
+	
+	if ( $status === 1 ) 
+	{
+	    if ($this->CheckExistsMonitNodes($nid))
+	    {
+		$this->DB->Execute('UPDATE monitnodes SET active=1 WHERE id=?;',array($nid));
+	    }
+	    else 
+	    {
+		$netdev = ($this->DB->GetOne('SELECT 1 FROM nodes WHERE ownerid = ? AND netdev != ? LIMIT 1;',array(0,0)) ? TRUE : FALSE);
+		if ($netdev) 
+		{
+		    $type = (!empty($type) ? strtolower($type) : strtolower(get_conf('monit.netdev_test_type','icmp')));
+		
+		    if ($type !== 'tcp') 
+			$port = NULL;
+		    else 
+			$port = (!empty($port) ? strtolower($port) : strtolower(get_conf('monit.netdev_test_port','80')));
+		
+		    $sendtimeout = (!empty($sendtimeout) ? strtolower($sendtimeout) : strtolower(get_conf('monit.netdev_timeout_send',1)));
+		    $sendptime = (!empty($sendptime) ? strtolower($sendptime) : strtolower(get_conf('monit.netdev_time_send',1)));
+		    $maxptime = (!empty($maxptime) ? strtolower($maxptime) : strtolower(get_conf('monit.netdev_time_max',100)));
+		}
+		else
+		{
+		    $type = (!empty($type) ? strtolower($type) : strtolower(get_conf('monit.nodes_test_type','icmp')));
+		
+		    if ($type !== 'tcp') 
+			$port = NULL;
+		    else 
+			$port = (!empty($port) ? strtolower($port) : strtolower(get_conf('monit.nodes_test_port','80')));
+		
+		    $sendtimeout = (!empty($sendtimeout) ? strtolower($sendtimeout) : strtolower(get_conf('monit.nodes_timeout_send',1)));
+		    $sendptime = (!empty($sendptime) ? strtolower($sendptime) : strtolower(get_conf('monit.nodes_time_send',1)));
+		    $maxptime = (!empty($maxptime) ? strtolower($maxptime) : strtolower(get_conf('monit.nodes_time_max',100)));
+		}
+		
+		$this->DB->Execute('INSERT INTO monitnodes (id, test_type, test_port, active, send_timeout, send_ptime, maxptime) 
+			VALUES (?, ?, ?, ?, ?, ?, ?) ;',array($nid,$type,$port,1,$sendtimeout,$sendptime,$maxptime));
+	    }
+	
+	} 
+	else 
+	{
+	    $this->DB->Execute('UPDATE monitnodes SET active=0 WHERE id=?;',array($nid));
+	}
+	return true;
+    }
+
+
+    function SetSignalTestMonit($nid,$status)
+    {
+	
+	$this->DB->Execute('UPDATE monitnodes SET signaltest = ? WHERE id = ? ',array($status,$nid));
+	
+    }
+
+
+    function SetPingTestMonit($nid,$status)
+    {
+	
+	$this->DB->Execute('UPDATE monitnodes SET pingtest = ? WHERE id = ? ',array($status,$nid));
+	
+    }
+
+
+    function GetListNodesNotMonit($nodes = TRUE)
+    {
+	
+	if ($tmp = $this->DB->GetCol('SELECT id FROM monitnodes ;'))
+	    $tmp = implode(',',$tmp);
+	else 
+	    $tmp = NULL;
+	
+	return $this->DB->GetAll('SELECT n.id, inet_ntoa(n.ipaddr) AS ipaddr, '.($nodes ? 'n.name' : 'd.name')
+			    .' FROM nodes n '.($nodes ? '' : 'JOIN netdevices d ON (d.id = n.netdev) ')
+			    .' WHERE 1=1 '
+			    .(!empty($tmp) ? ' AND n.id NOT IN ('.$tmp.') ' : '')
+			    .($nodes ? ' AND n.ownerid != 0 ' : ' AND n.ownerid = 0 ')
+			    .' ORDER BY '.($nodes ? 'n.name' : 'd.name').' ;');
+	
+    }
+
+
+    function SetTestTypeByMonit($nid,$testtype='icmp')
+    {
+	
+	if ($this->DB->Execute('UPDATE monitnodes SET test_type = ? WHERE id = ? ;',array($testtype,$nid)))
+	    return true;
+	else 
+	    return false;
+	
+    }
+
+
+    function DelMonit($id,$typ='nodes')
+    {
+	
+	$id = intval($id);
+	
+	if (in_array($typ,array('nodes','netdev')) && $this->CheckExistsMonitNodes($id))
+	{
+	    if (SYSLOG) 
+	    {
+		$tmpstr = '';
+		
+		switch ($typ)
+		{
+		    case 'netdev'	: $tmpstr = 'urządzenia sieciowego'; break;
+		    case 'nodes'	: $tmpstr = 'urządzenia klienta'; break;
+		}
+		
+		$tmp = $this->DB->GetRow('SELECT ipaddr, name FROM monit_vnodes WHERE id = ? LIMIT 1 ;',array($id));
+		addlogs('Usunięcie '.$tmpstr.' z monitoringu: '.$tmp['name'].' ('.$tmp['ipaddr'].')','e=rm;m=mon;');
+	    }
+	
+	    $this->DB->Execute('DELETE FROM monitsignal WHERE nodeid = ?',array($id));
+	    $this->DB->Execute('DELETE FROM monitwarn WHERE nodeid = ?',array($id));
+	    $this->DB->Execute('DELETE FROM monittime WHERE nodeid = ?',array($id));
+	    $this->DB->Execute('DELETE FROM monitnodes WHERE id = ?',array($id));
+	    @unlink(RRD_DIR."/ping.node.".$id.".rrd");
+	    @unlink(RRD_DIR."/signal.node.".$id.".rrd");
+	    @unlink(RRD_DIR."/signal.exp.node.".$id.".rrd");
+	    @unlink(RRD_DIR."/transfer.node.".$id.".rrd");
+	}
+    }
+
+
+    function ClearStatMonit($id,$typ='nodes')
+    {
+	
+	$id = intval($id);
+	
+	if ( (in_array($typ,array('netdev','nodes')) && $this->CheckExistsMonitNodes($id)) || $typ=='owner' ) 
+	{
+	    if (SYSLOG) 
+	    {
+		$tmpstr = '';
+		
+		switch ($typ)
+		{
+		    case 'netdev'	: $tmpstr = 'urządzenia sieciowego'; break;
+		    case 'nodes'	: $tmpstr = 'urządzenia klienta'; break;
+		    case 'owner'	: $tmpstr = 'własne urządzenie'; break;
+		}
+		
+		if ($typ !='owner')
+		    $tmp = $this->DB->GetRow('SELECT ipaddr, name FROM monit_vnodes WHERE id = ? LIMIT 1 ;',array($id));
+		else
+		    $tmp = $this->DB->GetRow('SELECT ipaddr, name FROM monitown WHERE id = ? LIMIT 1 ;',array($id));
+		
+		addlogs('Wyczyszczenie statystyk dla '.$tmpstr.': '.$tmp['name'].' ('.$tmp['ipaddr'].')','e=rm;m=mon;');
+	    }
+
+	    if ($typ != 'owner')
+	    {
+		$this->DB->Execute('DELETE FROM monitsignal WHERE nodeid = ?',array($id));
+		$this->DB->Execute('DELETE FROM monitwarn WHERE nodeid = ?',array($id));
+		$this->DB->Execute('DELETE FROM monittime WHERE nodeid = ?',array($id));
+		@unlink(RRD_DIR."/ping.node.".$id.".rrd");
+		@unlink(RRD_DIR."/signal.node.".$id.".rrd");
+		@unlink(RRD_DIR."/transfer.node.".$id.".rrd");
+	    }
+	    else
+	    {
+		$this->DB->Execute('DELETE FROM monitwarn WHERE ownid = ?',array($id));
+		$this->DB->Execute('DELETE FROM monittime WHERE ownid = ?',array($id));
+		@unlink(RRD_DIR."/ping.owner.".$id.".rrd");
+	    }
+	}
+    }
+
+
+    function GetListNodesMonit($nodes = TRUE, $order = 'n.name,asc')
+    {
+	if (!is_bool($nodes)) $nodes = TRUE;
+	
+	$lefttime1d = time() - 86400;
+	$lefttime7d = time() - 604800;
+	
+	
+	list($order,$direction) = sscanf($order,'%[^,],%s');
+	($direction != 'desc') ? $direction = 'asc' : $direction = 'desc';
+	switch ($order) 
+	{
+		case 'name'		: $sqlord = 'ORDER BY dname '.$direction;	break;
+		case 'urzname'		: $sqlord = 'ORDER BY n.name '.$direction;	break;
+		case 'ip'		: $sqlord = 'ORDER BY n.ipaddr '.$direction;	break;
+		case 'location'		: $sqlord = 'ORDER BY location '.$direction;	break;
+		case 'testtype'		: $sqlord = 'ORDER BY mn.test_type '.$direction;break;
+		case 'lastptime'	: $sqlord = 'ORDER BY m.ptime '.$direction;	break;
+		case 'lastdate'		: $sqlord = 'ORDER BY m.cdate '.$direction;	break;
+		case 'min1d'		: $sqlord = 'ORDER BY mm.minptime '.$direction; break;
+		case 'avg1d'		: $sqlord = 'ORDER BY mm.avgptime '.$direction; break;
+		case 'max1d'		: $sqlord = 'ORDER BY mm.maxptime '.$direction; break;
+		case 'min7d'		: $sqlord = 'ORDER BY mm7d.minptime '.$direction; break;
+		case 'avg7d'		: $sqlord = 'ORDER BY mm7d.avgptime '.$direction; break;
+		case 'max7d'		: $sqlord = 'ORDER BY mm7d.maxptime '.$direction; break;
+		
+	}
+	
+	if (!$nodes) // urządzenia sieciowe
+	{
+		$zap = '
+		SELECT 
+		n.id AS nid, n.name AS nname, inet_ntoa(n.ipaddr) AS ipaddr, 
+		d.id AS did, d.name AS dname, d.location AS location, d.monit_nastype, 
+		mn.test_type, mn.test_port, mn.active, mn.send_timeout, mn.send_ptime, mn.maxptime AS limitptime, mn.pingtest AS pingtest, mn.signaltest AS signaltest, 
+		m.id AS mid, m.cdate AS cdate, m.ptime AS ptime,
+		mm.minptime AS minptime, mm.maxptime AS maxptime, mm.avgptime AS avgptime, 
+		mm7d.minptime AS minptime7d, mm7d.maxptime AS maxptime7d, mm7d.avgptime AS avgptime7d, 
+		mw.cdate AS warndate , mw.backtime 
+		FROM nodes n 
+		JOIN netdevices d ON (d.id = n.netdev) 
+		JOIN monitnodes mn ON (mn.id = n.id) 
+		LEFT JOIN monittime m ON (m.id = (SELECT MAX(id) FROM monittime WHERE monittime.nodeid = n.id AND monittime.ptime != 0)) 
+		LEFT JOIN monitwarn mw ON (mw.id = (SELECT MAX(mwt.id) FROM monitwarn mwt WHERE nodeid = n.id))
+		LEFT JOIN (SELECT nodeid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime, AVG(ptime) AS avgptime FROM monittime WHERE cdate >= '.$lefttime1d.' AND ptime>0 GROUP BY nodeid) mm ON (mm.nodeid = n.id) 
+		LEFT JOIN (SELECT nodeid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime, AVG(ptime) AS avgptime FROM monittime WHERE cdate >= '.$lefttime7d.' AND ptime>0 GROUP BY nodeid) mm7d ON (mm7d.nodeid = n.id) '
+		.' WHERE n.ownerid = 0 '
+		.$sqlord
+		.' ;';
+	}
+	else // komputery klienta
+	{
+		$zap = '
+		SELECT 
+		n.id AS nid, n.name AS nname, inet_ntoa(n.ipaddr) AS ipaddr, 
+		c.id AS did, '. $this->DB->Concat('c.lastname', "' '", 'c.name') . ' AS dname, '.$this->DB->Concat('c.address',"' '",'c.zip',"' '",'c.city').' AS location,
+		mn.test_type, mn.test_port, mn.active, mn.send_timeout, mn.send_ptime, mn.maxptime AS limitptime, mn.pingtest AS pingtest, mn.signaltest AS signaltest, 
+		m.id AS mid, m.cdate AS cdate, m.ptime AS ptime,
+		mm.minptime AS minptime, mm.maxptime AS maxptime, mm.avgptime AS avgptime, 
+		mm7d.minptime AS minptime7d, mm7d.maxptime AS maxptime7d, mm7d.avgptime AS avgptime7d, 
+		mw.cdate AS warndate , mw.backtime 
+		FROM nodes n 
+		JOIN customers c  ON (c.id = n.ownerid) 
+		JOIN monitnodes mn ON (mn.id = n.id) 
+		LEFT JOIN monittime m ON (m.id = (SELECT MAX(id) FROM monittime WHERE monittime.nodeid = n.id AND monittime.ptime != 0)) 
+		LEFT JOIN monitwarn mw ON (mw.id = (SELECT MAX(mwt.id) FROM monitwarn mwt WHERE nodeid = n.id))
+		LEFT JOIN (SELECT nodeid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime, AVG(ptime) AS avgptime FROM monittime WHERE cdate >= '.$lefttime1d.' AND ptime>0 GROUP BY nodeid) mm ON (mm.nodeid = n.id) 
+		LEFT JOIN (SELECT nodeid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime, AVG(ptime) AS avgptime FROM monittime WHERE cdate >= '.$lefttime7d.' AND ptime>0 GROUP BY nodeid) mm7d ON (mm7d.nodeid = n.id) '
+		.' WHERE n.ownerid != 0 '
+		.$sqlord
+		.' ;';
+	}
+	return $this->DB->GetAll($zap);
+    }
+
+
+    function GetOwnerMonitList()
+    {
+	// ostatnie 24h
+	$lefttime = time()-86400;
+	$lefttime7d = time()-(86400*7);
+	$zap = 'SELECT 
+	n.id AS nid, n.name AS nname, n.ipaddr AS ipaddr, n.description AS description, n.active AS active, n.test_type AS test_type, 
+	m.id as mid, m.cdate AS cdate, m.ptime AS ptime , 
+	mw.cdate AS warndate, mw.backtime , 
+	mm.minptime AS minptime, mm.maxptime AS maxptime , mm.avgptime AS avgptime ,
+	mm7d.minptime AS minptime7d, mm7d.maxptime AS maxptime7d , mm7d.avgptime AS avgptime7d 
+	FROM monitown n 
+	LEFT JOIN monittime m ON(m.id = (SELECT MAX(id) FROM monittime WHERE monittime.ownid=n.id AND monittime.ptime != 0)) 
+	LEFT JOIN monitwarn mw ON (mw.id = (SELECT MAX(mwt.id) FROM monitwarn mwt WHERE mwt.ownid=n.id)) 
+	LEFT JOIN (SELECT ownid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime , AVG(ptime) AS avgptime FROM monittime WHERE cdate>='.$lefttime.' AND ptime>0 GROUP BY ownid) mm ON (mm.ownid = n.id)
+	LEFT JOIN (SELECT ownid, MIN(ptime) AS minptime, MAX(ptime) AS maxptime , AVG(ptime) AS avgptime FROM monittime WHERE cdate>='.$lefttime7d.' AND ptime>0 GROUP BY ownid) mm7d ON (mm7d.ownid = n.id)
+	ORDER BY UPPER(n.name) ASC ;';
+	return $this->DB->GetAll($zap);
+    }
+
+
+    function SetMonitOwner($id,$active)
+    {
+	$this->DB->Execute('UPDATE monitown SET active=? WHERE id=? ;',array($active,$id));
+    }
+
+
+    function addOwnerMonit($dane)
+    {
+	$this->DB->Execute('INSERT INTO monitown (ipaddr, name, description, test_type, test_port, active, send_timeout, maxptime, send_ptime)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ;',array($dane['ipaddr'],$dane['nazwa'],$dane['description'],$dane['type'],NULL,1,NULL,NULL,NULL));
+	if (SYSLOG)
+	{
+	    addlogs('Dodano własne urządzenie do monitoringu: '.$dnae['nazwa'].' Host: '.$dane['ipaddr'],'e=add;m=mon;');
+	}
+	
+	return $this->DB->GetLastInsertId('monitown');
+    }
+
+
+    function updateOwnerMonit($dane)
+    {
+	if (SYSLOG)
+	{
+	    addlogs('Aktualizacja danych monitorowanego własnego urządzenia: '.$dane['nazwa'].' ('.$dane['ipaddr'].')','e=up;m=mon;');
+	}
+	$this->DB->Execute('UPDATE monitown SET name=?, description=?, ipaddr=? , test_type=? WHERE id=? ;',array($dane['nazwa'],$dane['description'],$dane['ipaddr'],$dane['type'],$dane['id']));
+    }
+
+
+    function getOwnerMonit($id)
+    {
+	return $this->DB->GetRow('SELECT id,name,description,ipaddr,test_type FROM monitown WHERE id = ? LIMIT 1 ;',array(intval($id)));
+    }
+
+
+    function settesttypeowner($id,$type)
+    {
+	return $this->DB->Execute('UPDATE monitown SET test_type = ? where id = ? ',array($type,$id));
+    }
+
+
+    function DeleteOwnerMonit($id)
+    {
+    
+	if (SYSLOG) {
+	    $tmp = $this->DB->GetRow('SELECT ipaddr, name FROM monitown WHERE id =? LIMIT 1;',array($id));
+	    addlogs('Usunięto Host z monitoringu :'.$tmp['name'].' ('.$tmp['ipaddr'].')','e=rm;m=mon;');
+	    unset($tmp);
+	}
+	$this->DB->Execute('DELETE FROM monitwarn WHERE ownid = ?',array($id));
+	$this->DB->Execute('DELETE FROM monittime WHERE ownid = ?',array($id));
+	$this->DB->Execute('DELETE FROM monitown WHERE id = ? ;',array($id));
+	@unlink(RRD_DIR."/ping.owner.".$id.".rrd");
+    }
+
+
+    function WIFI_GetSignal($ip, $mac_node, $community)
+    {
+	$devices = array(
+	    'mac'	=> $mac_node,
+	    'rssi'	=> NULL,
+	    'tx'	=> NULL,
+	    'rx'	=> NULL
+	);
+	
+	$mac = explode(':', $mac_node);
+	
+	$oid_rssi = '.1.3.6.1.4.1.14988.1.1.1.2.1.3';
+	$oid_tx = '.1.3.6.1.4.1.14988.1.1.1.2.1.8';
+	$oid_rx = '.1.3.6.1.4.1.14988.1.1.1.2.1.9';
+	
+	for ($x = 0;$x < 6;$x++) 
+	{
+	    $oid_rssi.= '.' . hexdec($mac[$x]);
+	    $oid_tx.= '.' . hexdec($mac[$x]);
+	    $oid_rx.= '.' . hexdec($mac[$x]);
+	}
+	
+	@snmp_set_oid_numeric_print(TRUE);
+	@snmp_set_quick_print(TRUE);
+	@snmp_set_enum_print(TRUE);
+	
+	if ($sn = @snmpwalk($ip, $community, $oid_rssi))
+	{
+	    foreach($sn as $a => $x) $devices['rssi'] = $x;
+	
+	    $sntx = @snmpwalk($ip, $community, $oid_tx);
+	    foreach($sntx as $a => $x) $devices['tx'] = $x / 1000000;
+	
+	    $snrx = @snmpwalk($ip, $community, $oid_rx);
+	    foreach($snrx as $a => $x) $devices['rx'] = $x / 1000000;
+	}
+	
+	return $devices;
+    }
+
+    function WIFI_GetAllSignal($ip, $community) 
+    {
+	$tx_bytes_snmp = @snmpwalkoid($ip, $community, ".1.3.6.1.4.1.14988.1.1.1.2.1.3");
+	$i = 0;
+	$devices = array();
+	
+	if (is_array($tx_bytes_snmp)) 
+	{
+	    $oid_tx_rate = '.1.3.6.1.4.1.14988.1.1.1.2.1.8';
+	    $oid_rx_rate = '.1.3.6.1.4.1.14988.1.1.1.2.1.9';
+	    $oid_tx_packets = '.1.3.6.1.4.1.14988.1.1.1.2.1.6';
+	    $oid_rx_packets = '.1.3.6.1.4.1.14988.1.1.1.2.1.7';
+	    $oid_tx_bytes = '.1.3.6.1.4.1.14988.1.1.1.2.1.4';
+	    $oid_rx_bytes = '.1.3.6.1.4.1.14988.1.1.1.2.1.5';
+	
+	    while (list($indexOID, $rssi) = each($tx_bytes_snmp)) 
+	    {
+		$oidarray = explode(".", $indexOID);
+		$end_num = count($oidarray);
+		$mac = "";
+		
+		for ($counter=2; $counter<8; $counter++) 
+		{
+		    $temp = dechex($oidarray[$end_num - $counter]);
+		
+		    if ($oidarray[$end_num - $counter] < 16) $temp = "0" . $temp;
+		
+		    if ($counter == 7) $mac = $temp . $mac;
+		    else $mac = ":" . $temp . $mac;
+		}
+		
+		if ($txr = @snmpwalk($ip, $community, $oid_tx_rate))
+		{
+		    $txr = str_replace("Gauge32:","",$txr[$i]);
+		    $devices[$i]['tx_rate'] = $txr / 1000000;
+		}
+		else $devices[$i]['tx_rate'] = 0;
+		
+		if ($rxr = @snmpwalk($ip, $community, $oid_rx_rate))
+		{
+		    $rxr = str_replace("Gauge32:", "",$rxr[$i]);
+		    $devices[$i]['rx_rate'] = $rxr / 1000000;
+		}
+		else $devices[$i]['rx_rate'] = 0;
+		
+		if ($txp = @snmpwalk($ip, $community, $oid_tx_packets))
+		{
+		    $txp = str_replace("Counter32:", "",$txp[$i]);
+		    $devices[$i]['tx_packets'] = $txp;
+		}
+		else $devices[$i]['tx_packets'] = 0;
+		
+		if ($rxp = @snmpwalk($ip, $community, $oid_rx_packets))
+		{
+		    $rxp = str_replace("Counter32:", "",$rxp[$i]);
+		    $devices[$i]['rx_packets'] = $rxp;
+		}
+		else $devices[$i]['rx_packets'] = 0;
+		
+		if ($txb = @snmpwalk($ip, $community, $oid_tx_bytes))
+		{
+		    $txb = str_replace("Counter32:", "",$txb[$i]);
+		    $devices[$i]['tx_bytes'] = $txb;
+		}
+		else $devices[$i]['tx_bytes'] = 0;
+		
+		if ($rxb = @snmpwalk($ip, $community, $oid_rx_bytes))
+		{
+		    $rxb = str_replace("Counter32:", "",$rxb[$i]);
+		    $devices[$i]['rx_bytes'] = $rxb;
+		}
+		else $devices[$i]['rx_bytes'] = 0;
+		
+		$devices[$i]['rx_signal'] = str_replace("INTEGER:", "",$rssi);
+		$devices[$i]['mac'] = strtoupper($mac);
+		
+		$i++;
+	    }
+	}
+	return $devices;
+    }
+// ********************************************************           RRD CREATE FILE        ****************************************
+
+    function RRD_CreatePingFile($file,$step)
+    {
+	$count_record_2week = ceil((1209600 / $step));
+	$count_record_1month = ceil((2562000 / $step) / 12);
+	$count_record_3month = ceil((7776000 / $step) / 24);
+	$count_record_1year = ceil((31622400 / $step) / 72);
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+
+	exec("$rrdtool create ".$file." \
+	    --step=".$step." \
+	    --start=".(time()-600)." \
+	    DS:ping:GAUGE:".($step*2).":0:U \
+	    DS:loss:GAUGE:".($step*2).":0:100 \
+	    RRA:AVERAGE:0.5:1:".$count_record_2week." \
+	    RRA:AVERAGE:0.5:12:".$count_record_1month." \
+	    RRA:AVERAGE:0.5:24:".$count_record_3month." \
+	    RRA:AVERAGE:0.5:72:".$count_record_1year." \
+	    RRA:MAX:0.5:1:".$count_record_2week." \
+	    RRA:MAX:0.5:12:".$count_record_1month." \
+	    RRA:LAST:0.5:1:".$count_record_2week." \
+	    RRA:LAST:0.5:12:".$count_record_1month." \
+	");
+    }
+    
+    function RRD_CreateSignalFile($file,$step)
+    {
+	$count_record_2week = ceil((1209600 / $step));
+	$count_record_1month = ceil((2562000 / $step) / 12);
+	$count_record_3month = ceil((7776000 / $step) / 24);
+	$count_record_1year = ceil((31622400 / $step) / 72);
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	
+	exec("$rrdtool create ".$file." \
+	    --step=".$step." \
+	    --start=".(time()-600)." \
+	    DS:rx_signal:GAUGE:".($step*2).":U:U \
+	    DS:tx_rate:GAUGE:".($step*2).":0:U \
+	    DS:rx_rate:GAUGE:".($step*2).":0:U \
+	    RRA:AVERAGE:0.5:1:".$count_record_2week." \
+	    RRA:AVERAGE:0.5:12:".$count_record_1month." \
+	    RRA:AVERAGE:0.5:24:".$count_record_3month." \
+	    RRA:AVERAGE:0.5:72:".$count_record_1year." \
+	    RRA:MIN:0.5:1:".$count_record_2week." \
+	    RRA:MIN:0.5:12:".$count_record_1month." \
+	    RRA:MAX:0.5:1:".$count_record_2week." \
+	    RRA:MAX:0.5:12:".$count_record_1month." \
+	    RRA:LAST:0.5:1:".$count_record_2week." \
+	    RRA:LAST:0.5:12:".$count_record_1month." \
+	");
+    }
+    
+    function RRD_CreateSignalExpandedFile($file,$step)
+    {
+	$count_record_2week = ceil((1209600 / $step));
+	$count_record_1month = ceil((2562000 / $step) / 12);
+	$count_record_3month = ceil((7776000 / $step) / 24);
+	$count_record_1year = ceil((31622400 / $step) / 72);
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	
+	exec("$rrdtool create ".$file." \
+	    --step=".$step." \
+	    --start=".(time()-600)." \
+	    DS:tx_signal:GAUGE:".($step*2).":U:U \
+	    DS:signal_noise:GAUGE:".($step*2).":0:U \
+	    DS:tx_ccq:GAUGE:".($step*2).":0:U \
+	    DS:rx_ccq:GAUGE:".($step*2).":0:U \
+	    DS:ack_timeout:GAUGE:".($step*2).":0:U \
+	    RRA:AVERAGE:0.5:1:".$count_record_2week." \
+	    RRA:AVERAGE:0.5:12:".$count_record_1month." \
+	    RRA:AVERAGE:0.5:24:".$count_record_3month." \
+	    RRA:AVERAGE:0.5:72:".$count_record_1year." \
+	    RRA:MIN:0.5:1:".$count_record_2week." \
+	    RRA:MIN:0.5:12:".$count_record_1month." \
+	    RRA:MAX:0.5:1:".$count_record_2week." \
+	    RRA:MAX:0.5:12:".$count_record_1month." \
+	    RRA:LAST:0.5:1:".$count_record_2week." \
+	    RRA:LAST:0.5:12:".$count_record_1month." \
+	");
+    }
+    function RRD_CreateTransferFile($file,$step)
+    {
+	$count_record_2week = ceil((1209600 / $step));
+	$count_record_1month = ceil((2562000 / $step) / 12);
+	$count_record_3month = ceil((7776000 / $step) / 24);
+	$count_record_1year = ceil((31622400 / $step) / 72);
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	
+	exec("$rrdtool create ".$file." \
+	    --step=".$step." \
+	    --start=".(time()-600)." \
+	    DS:tx_packets:COUNTER:".($step*2).":0:U \
+	    DS:rx_packets:COUNTER:".($step*2).":0:U \
+	    DS:tx_bytes:COUNTER:".($step*2).":0:U \
+	    DS:rx_bytes:COUNTER:".($step*2).":0:U \
+	    RRA:AVERAGE:0.5:1:".$count_record_2week." \
+	    RRA:AVERAGE:0.5:12:".$count_record_1month." \
+	    RRA:AVERAGE:0.5:24:".$count_record_3month." \
+	    RRA:AVERAGE:0.5:72:".$count_record_1year." \
+	    RRA:MIN:0.5:1:".$count_record_2week." \
+	    RRA:MIN:0.5:12:".$count_record_1month." \
+	    RRA:MAX:0.5:1:".$count_record_2week." \
+	    RRA:MAX:0.5:12:".$count_record_1month." \
+	    RRA:LAST:0.5:1:".$count_record_2week." \
+	    RRA:LAST:0.5:12:".$count_record_1month." \
+	    
+	");
+    }
+
+
+// *****************************************************             RRD UPDATE FILE               *****************************************
+
+    function RRD_UpdatePingFile($file, $ptime = NULL, $cdate = NULL, $step = 5)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	if ($step < 5) $step = 5;
+	
+	$step = $step * 60;
+	$ping = $loss = 0;
+	
+	if (is_null($cdate)) 
+	    $cdate = time();
+	
+	if ($ptime > 0) 
+	    $ping = $ptime; 
+	else 
+	    $loss = 100;
+	
+	if (!file_exists(RRD_DIR."/ping.".$file.".rrd")) 
+	    $this->RRD_CreatePingFile(RRD_DIR."/ping.".$file.".rrd",$step);
+	
+	exec("$rrdtool update ".RRD_DIR."/ping.".$file.".rrd ".$cdate.":".str_replace(' ','',$ping).":".str_replace(' ','',$loss)." ");
+    }
+
+    function RRD_UpdateSignalFile($file,$rx_signal = NULL, $tx_rate = NULL, $rx_rate = NULL, $cdate = NULL, $step = 5)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	if ($step < 5) $step = 5;
+	
+	$step = $step * 60;
+	
+	if (is_null($cdate)) 
+	    $cdate = time();
+	
+	if (!file_exists(RRD_DIR."/signal.".$file.".rrd")) 
+	    $this->RRD_CreateSignalFile(RRD_DIR."/signal.".$file.".rrd",$step);
+	
+	$rx_signal = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$rx_signal)))));
+	$tx_rate = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$tx_rate)))));
+	$rx_rate = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$rx_rate)))));
+	
+	if (is_null($rx_signal) || empty($rx_signal)) $rx_signal = 0;
+	if (is_null($tx_rate) || empty($tx_rate)) $tx_rate = 0;
+	if (is_null($rx_rate) || empty($rx_rate)) $rx_rate = 0;
+	
+	exec("$rrdtool update ".RRD_DIR."/signal.".$file.".rrd ".$cdate.":".$rx_signal.":".$tx_rate.":".$rx_rate." ");
+    }
+
+    function RRD_UpdateSignalExpandedFile($file, $tx_signal = NULL, $signal_noise = NULL, $tx_ccq = NULL, $rx_ccq = NULL, $ack_timeout = NULL, $cdate = NULL, $step = 5)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	if ($step < 5) $step = 5;
+	
+	$step = $step * 60;
+	
+	if (is_null($cdate)) 
+	    $cdate = time();
+	
+	if (!file_exists(RRD_DIR."/signal.exp.".$file.".rrd")) 
+	    $this->RRD_CreateSignalExpandedFile(RRD_DIR."/signal.exp.".$file.".rrd",$step);
+	
+	$tx_signal = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$tx_signal)))));
+	$signal_noise = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$signal_noise)))));
+	$tx_ccq = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$tx_ccq)))));
+	$rx_ccq = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$rx_ccq)))));
+	$ack_timeout = ceil(abs(intval(str_replace(' ','',str_replace(',','.',$ack_timeout)))));
+	
+	if (is_null($tx_signal) || empty($tx_signal)) $tx_signal = 0;
+	if (is_null($signal_noise) || empty($signal_noise)) $signal_noise = 0;
+	if (is_null($tx_ccq) || empty($tx_ccq)) $tx_ccq = 0;
+	if (is_null($rx_ccq) || empty($rx_ccq)) $rx_ccq = 0;
+	if (is_null($ack_timeout) || empty($ack_timeout)) $ack_timeout = 0;
+	
+	
+	exec("$rrdtool update ".RRD_DIR."/signal.exp.".$file.".rrd \
+	".$cdate.":".$tx_signal.":".$signal_noise.":".$tx_ccq.":".$rx_ccq.":".$ack_timeout);
+    }
+
+    function RRD_UpdateTransferFile($file, $tx_packets = NULL, $rx_packets = NULL, $tx_bytes = NULL, $rx_bytes = NULL, $cdate = NULL, $step = 5)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	$step = $step * 60;
+	
+	if (is_null($cdate)) 
+	    $cdate = time();
+	
+	if (!file_exists(RRD_DIR."/transfer.".$file.".rrd")) 
+	    $this->RRD_CreateTransferFile(RRD_DIR."/transfer.".$file.".rrd",$step);
+	
+	$tx_packets = str_replace(' ','',$tx_packets);
+	$rx_packets = str_replace(' ','',$rx_packets);
+	$tx_bytes = str_replace(' ','',$tx_bytes);
+	$rx_bytes = str_replace(' ','',$rx_bytes);
+	
+	if (is_null($tx_packets) || empty ($tx_packets)) $tx_packets = 0;
+	if (is_null($rx_packets) || empty ($rx_packets)) $rx_packets = 0;
+	if (is_null($tx_bytes) || empty ($tx_bytes)) $tx_bytes = 0;
+	if (is_null($rx_bytes) || empty ($rx_bytes)) $rx_bytes = 0;
+	
+	exec("$rrdtool update ".RRD_DIR."/transfer.".$file.".rrd ".$cdate.":".$tx_packets.":".$rx_packets.":".$tx_bytes.":".$rx_bytes." ");
+    }
+
+
+// **************************************      RRD CREATE IMAGE            *******************************
+
+
+    function RRD_CreatePingImage($file,$title = NULL, $start = NULL, $end = NULL, $width = NULL, $height = NULL, $name = NULL)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	$INPUT = RRD_DIR."/ping.".$file.".rrd";
+	
+	if (is_null($title) || empty($title)) 
+	    $title = 'PING';
+	
+	if (is_null($start) || empty($start)) 
+	    $start = time() - 86400;
+	
+	if (is_null($end) || empty($end)) 
+	    $end = time();
+	
+	if (is_null($width) || empty($width)) 
+	    $width = 600;
+	else
+	    $width = intval($width);
+	
+	if (is_null($height) || empty($height)) 
+	    $height = 250;
+	else
+	    $height = intval($height);
+	
+	if (is_null($name) || empty($name))
+	    $OUTPUT = TMP_DIR."/ping.".$file.".".$width.".".$height.".png";
+	else
+	    $OUTPUT = TMP_DIR.'/'.$name.'.png';
+	
+	exec("$rrdtool graph ".$OUTPUT." \
+	    --start=".$start." \
+	    --title='$title' \
+	    --end=".$end." \
+	    --width=".$width." \
+	    --height=".$height." \
+	    --full-size-mode \
+	    --slope-mode \
+	    -v 'Ping' \
+	    'DEF:ping=".$INPUT.":ping:AVERAGE' \
+	    'DEF:loss=".$INPUT.":loss:AVERAGE' \
+	    'AREA:ping#CCF5CC' \
+	    'LINE1:ping#00AA00:Ping' \
+	    COMMENT:'ms' \
+	    'GPRINT:ping:LAST:last\: %4.2lf' \
+	    'GPRINT:ping:MAX:Max\: %4.2lf' \
+	    'GPRINT:ping:AVERAGE:Avg\: %4.2lf' \
+	    'GPRINT:ping:MIN:Min\: %4.2lf\\n' \
+	    'AREA:loss#FF0000:Timeout \\n' \
+	");
+	
+    }
+    
+    function RRD_CreateSmallPingImage($file, $start = NULL, $end = NULL, $name = NULL)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	$INPUT = RRD_DIR."/ping.".$file.".rrd";
+	
+	
+	if (is_null($start) || empty($start)) 
+	    $start = time() - 86400;
+	
+	if (is_null($end) || empty($end)) 
+	    $end = time();
+	
+	if (is_null($name) || empty($name))
+	    $OUTPUT = TMP_DIR."/ping.".$file.".small.png";
+	else
+	    $OUTPUT = TMP_DIR.'/'.$name.'.png';
+	
+	exec("$rrdtool graph ".$OUTPUT." \
+	    --start=".$start." \
+	    --end=".$end." \
+	    --width=470 \
+	    --height=230 \
+	    --full-size-mode \
+	    --slope-mode \
+	    -v 'Ping' \
+	    'DEF:ping=".$INPUT.":ping:AVERAGE' \
+	    'DEF:loss=".$INPUT.":loss:AVERAGE' \
+	    'AREA:ping#CCF5CC' \
+	    'LINE1:ping#00AA00:Success' \
+	    'AREA:loss#FF0000:Timeout' \
+	");
+	
+    }
+
+
+    function RRD_CreateSignalImage($file, $title = NULL, $start = NULL, $end = NULL, $width = NULL, $height = NULL, $name = NULL, $exp = false)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	$INPUT = RRD_DIR."/signal.".$file.".rrd";
+	
+	if (!is_bool($exp)) $exp= false;
+	
+	if ($exp)
+	{
+		$INPUT2 = RRD_DIR."/signal.exp.".$file.".rrd";
+		if (!file_exists($INPUT2)) 
+			$exp = false;
+	}
+	
+	if (is_null($title) || empty($title)) 
+	    $title = 'Wi-Fi Signal';
+	
+	if (is_null($start) || empty($start)) 
+	    $start = time() - 86400;
+	
+	if (is_null($end) || empty($end)) 
+	    $end = time();
+	
+	if (is_null($width) || empty($width)) 
+	    $width = 600;
+	else
+	    $width = intval($width);
+	
+	if (is_null($height) || empty($height)) 
+	    $height = 310;
+	else
+	    $height = intval($height);
+	
+	if (is_null($name) || empty($name))
+	    $OUTPUT = TMP_DIR."/signal.".$file.".".$width.".".$height.".png";
+	else
+	    $OUTPUT = TMP_DIR.'/'.$name.'.png';
+	
+	if (!$exp)
+	exec("$rrdtool graph ".$OUTPUT." \
+	    --start=".$start." \
+	    --title='$title' \
+	    --end=".$end." \
+	    --width=".$width." \
+	    --lazy \
+	    --full-size-mode \
+	    --height=".$height." \
+	    --slope-mode \
+	    -v 'Signal quality' \
+	    DEF:rx_signal=".$INPUT.":rx_signal:AVERAGE \
+	    DEF:rx_rate=".$INPUT.":rx_rate:AVERAGE \
+	    DEF:tx_rate=".$INPUT.":tx_rate:AVERAGE \
+	    LINE1:rx_signal#006600:'TX Signal' \
+	    COMMENT:'dBm ' \
+	    GPRINT:rx_signal:LAST:'Last\: -%2.0lf' \
+	    GPRINT:rx_signal:MIN:'Max\: -%2.0lf' \
+	    GPRINT:rx_signal:AVERAGE:'Avg\: -%2.0lf' \
+	    GPRINT:rx_signal:MAX:'Min\: -%2.0lf\\n' \
+	    LINE1:tx_rate#FF9933:'RX Rate' \
+	    COMMENT:'  Mbps' \
+	    GPRINT:tx_rate:LAST:'Last\: %3.0lf' \
+	    GPRINT:tx_rate:MAX:'Max\: %3.0lf' \
+	    GPRINT:tx_rate:AVERAGE:'Avg\: %3.0lf' \
+	    GPRINT:tx_rate:MIN:'Min\: %3.0lf\\n' \
+	    LINE1:rx_rate#FF0033:'TX Rate' \
+	    COMMENT:'  Mbps' \
+	    GPRINT:rx_rate:LAST:'Last\: %3.0lf' \
+	    GPRINT:rx_rate:MAX:'Max\: %3.0lf' \
+	    GPRINT:rx_rate:AVERAGE:'Avg\: %3.0lf' \
+	    GPRINT:rx_rate:MIN:'Min\: %3.0lf\\n' \
+	");
+	else
+	exec("$rrdtool graph ".$OUTPUT." \
+	    --start=".$start." \
+	    --title='$title' \
+	    --end=".$end." \
+	    --width=".$width." \
+	    --lazy \
+	    --full-size-mode \
+	    --height=".$height." \
+	    --slope-mode \
+	    -v 'Signal quality' \
+	    DEF:rx_signal=".$INPUT.":rx_signal:AVERAGE \
+	    DEF:rx_rate=".$INPUT.":rx_rate:AVERAGE \
+	    DEF:tx_rate=".$INPUT.":tx_rate:AVERAGE \
+	    DEF:tx_signal=".$INPUT2.":tx_signal:AVERAGE \
+	    DEF:tx_ccq=".$INPUT2.":tx_ccq:AVERAGE \
+	    DEF:rx_ccq=".$INPUT2.":rx_ccq:AVERAGE \
+	    DEF:signal_noise=".$INPUT2.":signal_noise:AVERAGE \
+	    DEF:ack_timeout=".$INPUT2.":ack_timeout:AVERAGE \
+	    LINE1:tx_signal#00FF00:'RX Signal' \
+	    COMMENT:'   dBm ' \
+	    GPRINT:tx_signal:LAST:'Last\: -%2.0lf' \
+	    GPRINT:tx_signal:MIN:'Max\: -%2.0lf' \
+	    GPRINT:tx_signal:AVERAGE:'Avg\: -%2.0lf' \
+	    GPRINT:tx_signal:MAX:'Min\: -%2.0lf\\n' \
+	    LINE1:rx_signal#006600:'TX Signal' \
+	    COMMENT:'   dBm ' \
+	    GPRINT:rx_signal:LAST:'Last\: -%2.0lf' \
+	    GPRINT:rx_signal:MIN:'Max\: -%2.0lf' \
+	    GPRINT:rx_signal:AVERAGE:'Avg\: -%2.0lf' \
+	    GPRINT:rx_signal:MAX:'Min\: -%2.0lf\\n' \
+	    LINE1:tx_ccq#1E90FF:'RX CCQ' \
+	    COMMENT:'      %   ' \
+	    GPRINT:tx_ccq:LAST:'Last\: %3.0lf' \
+	    GPRINT:tx_ccq:MAX:'Max\: %3.0lf' \
+	    GPRINT:tx_ccq:AVERAGE:'Avg\: %3.0lf' \
+	    GPRINT:tx_ccq:MIN:'Min\: %3.0lf\\n' \
+	    LINE1:rx_ccq#0000FF:'TX CCQ' \
+	    COMMENT:'      %   ' \
+	    GPRINT:rx_ccq:LAST:'Last\: %3.0lf' \
+	    GPRINT:rx_ccq:MAX:'Max\: %3.0lf' \
+	    GPRINT:rx_ccq:AVERAGE:'Avg\: %3.0lf' \
+	    GPRINT:rx_ccq:MIN:'Min\: %3.0lf\\n' \
+	    LINE1:tx_rate#FF9933:'RX Rate' \
+	    COMMENT:'     Mbps' \
+	    GPRINT:tx_rate:LAST:'Last\: %3.0lf' \
+	    GPRINT:tx_rate:MAX:'Max\: %3.0lf' \
+	    GPRINT:tx_rate:AVERAGE:'Avg\: %3.0lf' \
+	    GPRINT:tx_rate:MIN:'Min\: %3.0lf\\n' \
+	    LINE1:rx_rate#FF0033:'TX Rate' \
+	    COMMENT:'     Mbps' \
+	    GPRINT:rx_rate:LAST:'Last\: %3.0lf' \
+	    GPRINT:rx_rate:MAX:'Max\: %3.0lf' \
+	    GPRINT:rx_rate:AVERAGE:'Avg\: %3.0lf' \
+	    GPRINT:rx_rate:MIN:'Min\: %3.0lf\\n' \
+	    LINE1:ack_timeout#B8860B:'ACK Timeout' \
+	    COMMENT:' us  ' \
+	    GPRINT:ack_timeout:LAST:'Last\: %3.0lf' \
+	    GPRINT:ack_timeout:MAX:'Max\: %3.0lf' \
+	    GPRINT:ack_timeout:AVERAGE:'Avg\: %3.0lf' \
+	    GPRINT:ack_timeout:MIN:'Min\: %3.0lf\\n' \
+	    LINE1:signal_noise#FF00FF:'Signal Noise' \
+	    COMMENT:'dB  ' \
+	    GPRINT:signal_noise:LAST:'Last\: %3.0lf' \
+	    GPRINT:signal_noise:MAX:'Max\: %3.0lf' \
+	    GPRINT:signal_noise:AVERAGE:'Avg\: %3.0lf' \
+	    GPRINT:signal_noise:MIN:'Min\: %3.0lf\\n' \
+	");
+    }
+    
+    function RRD_CreateSmallSignalImage($file, $start = NULL, $end = NULL, $name = NULL, $exp = false)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	$INPUT1 = RRD_DIR."/signal.".$file.".rrd";
+	
+	if (!is_bool($exp)) $exp= false;
+	
+	if ($exp)
+	{
+		$INPUT2 = RRD_DIR."/signal.exp.".$file.".rrd";
+		if (!file_exists($INPUT2)) 
+			$exp = false;
+	}
+	
+	if (is_null($start) || empty($start)) 
+	    $start = time() - 86400;
+	
+	if (is_null($end) || empty($end)) 
+	    $end = time();
+	
+	if (is_null($name) || empty($name))
+	    $OUTPUT = TMP_DIR."/signal.".$file.".small.png";
+	else
+	    $OUTPUT = TMP_DIR.'/'.$name.'.png';
+	
+	if ($exp)
+	{
+		exec("$rrdtool graph ".$OUTPUT." \
+		    --start=".$start." \
+		    --title='$title' \
+		    --end=".$end." \
+		    --width=470 \
+		    --height=230 \
+		    --lazy \
+		    --full-size-mode \
+		    --slope-mode \
+		    -v 'Signal quality' \
+		    DEF:rx_signal=".$INPUT1.":rx_signal:AVERAGE \
+		    DEF:tx_rate=".$INPUT1.":rx_rate:AVERAGE \
+		    DEF:rx_rate=".$INPUT1.":tx_rate:AVERAGE \
+		    DEF:tx_signal=".$INPUT2.":tx_signal:AVERAGE \
+		    DEF:tx_ccq=".$INPUT2.":tx_ccq:AVERAGE \
+		    DEF:rx_ccq=".$INPUT2.":rx_ccq:AVERAGE \
+		    DEF:signal_noise=".$INPUT2.":signal_noise:AVERAGE \
+		    DEF:ack_timeout=".$INPUT2.":ack_timeout:AVERAGE \
+		    CDEF:signalnoise=signal_noise,0.98,* \
+		    CDEF:acktimeout=ack_timeout,0.98,* \
+		    CDEF:rxsignal=rx_signal,0.98,* \
+		    CDEF:txsignal=tx_signal,0.98,* \
+		    CDEF:txrate=tx_rate,0.98,* \
+		    CDEF:rxrate=rx_rate,0.98,* \
+		    CDEF:txccq=tx_ccq,0.98,* \
+		    CDEF:rxccq=rx_ccq,0.98,* \
+		    LINE1:txsignal#00FF00:'RX Signal ' \
+		    LINE1:txccq#1E90FF:'RX CCQ    ' \
+		    LINE1:txrate#FF9933:'RX Rate' \
+		    LINE1:acktimeout#B8860B:'ACK Timeout\\n' \
+		    LINE1:rxsignal#006600:'TX Signal ' \
+		    LINE1:rxccq#0000FF:'TX CCQ    ' \
+		    LINE1:rxrate#FF0033:'TX Rate' \
+		    LINE1:signalnoise#FF00FF:'Signal Noise\\n' \
+		");
+	} else {
+		exec("$rrdtool graph ".$OUTPUT." \
+		    --start=".$start." \
+		    --title='$title' \
+		    --end=".$end." \
+		    --width=470 \
+		    --height=230 \
+		    --lazy \
+		    --full-size-mode \
+		    --slope-mode \
+		    -v 'Signal quality' \
+		    DEF:rx_signal=".$INPUT1.":rx_signal:AVERAGE \
+		    DEF:tx_rate=".$INPUT1.":rx_rate:AVERAGE \
+		    DEF:rx_rate=".$INPUT1.":tx_rate:AVERAGE \
+		    CDEF:txrate=tx_rate,0.98,* \
+		    CDEF:rxrate=rx_rate,0.98,* \
+		    CDEF:rxsignal=rx_signal,0.98,* \
+		    LINE1:txrate#FF9933:'RX Rate' \
+		    LINE1:rxrate#FF0033:'TX Rate' \
+		    LINE1:rxsignal#006600:'TX Signal ' \
+		");
+	}
+	
+    }
+
+
+    function RRD_CreatePacketsImage($file, $title = NULL, $start = NULL, $end = NULL, $width = NULL, $height = NULL, $name = NULL)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	$INPUT = RRD_DIR."/transfer.".$file.".rrd";
+	
+	if (is_null($title) || empty($title)) 
+	    $title = 'pakietów na sek.';
+	
+	if (is_null($start) || empty($start)) 
+	    $start = time() - 86400;
+	
+	if (is_null($end) || empty($end)) 
+	    $end = time();
+	
+	if (is_null($width) || empty($width)) 
+	    $width = 600;
+	else
+	    $width = intval($width);
+	
+	if (is_null($height) || empty($height)) 
+	    $height = 250;
+	else
+	    $height = intval($height);
+	
+	if (is_null($name) || empty($name))
+	    $OUTPUT = TMP_DIR."/packets.".$file.".".$width.".".$height.".png";
+	else
+	    $OUTPUT = TMP_DIR.'/'.$name.'.png';
+
+	exec("$rrdtool graph ".$OUTPUT." \
+	    --start=".$start." \
+	    --title='$title' \
+	    --end=".$end." \
+	    --width=".$width." \
+	    --lazy \
+	    --full-size-mode \
+	    --height=".$height." \
+	    -v 'packets per sec.' \
+	    --slope-mode \
+	    DEF:input=".$INPUT.":tx_packets:AVERAGE \
+	    DEF:output=".$INPUT.":rx_packets:AVERAGE \
+	    CDEF:total=input,output,+ \
+	    COMMENT:'                 Last          Max           Avg \\n' \
+	    AREA:input#00CF0033:'' \
+	    LINE1:input#00CF00FF:'Input ' \
+	    GPRINT:input:LAST:'%7.1lf pps' \
+	    GPRINT:input:MAX:'%7.1lf pps' \
+	    GPRINT:input:AVERAGE:'%7.1lf pps\\n' \
+	    AREA:output#00159933:'' \
+	    LINE1:output#005199FF:'Output' \
+	    GPRINT:output:LAST:'%7.1lf pps' \
+	    GPRINT:output:MAX:'%7.1lf pps' \
+	    GPRINT:output:AVERAGE:'%7.1lf pps\\n' \
+	    LINE0:total#B8860B:'Total ' \
+	    GPRINT:total:LAST:'%7.1lf pps' \
+	    GPRINT:total:MAX:'%7.1lf pps' \
+	    GPRINT:total:AVERAGE:'%7.1lf pps\\n' \
+	");
+    }
+
+
+    function RRD_CreateBitsImage($file, $title = NULL, $start = NULL, $end = NULL, $width = NULL, $height = NULL, $name = NULL)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	$INPUT = RRD_DIR."/transfer.".$file.".rrd";
+	
+	if (is_null($title) || empty($title)) 
+	    $title = 'bitów na sek.';
+	
+	if (is_null($start) || empty($start)) 
+	    $start = time() - 86400;;
+	
+	if (is_null($end) || empty($end)) 
+	    $end = time();
+	
+	if (is_null($width) || empty($width)) 
+	    $width = 600;
+	else
+	    $width = intval($width);
+	
+	if (is_null($height) || empty($height)) 
+	    $height = 250;
+	else
+	    $height = intval($height);
+	
+	if (is_null($name) || empty($name))
+	    $OUTPUT = TMP_DIR."/bits.".$file.".".$width.".".$height.".png";
+	else
+	    $OUTPUT = TMP_DIR.'/'.$name.'.png';
+	
+	exec("$rrdtool graph ".$OUTPUT." \
+	    --start=".$start." \
+	    --title='$title' \
+	    --end=".$end." \
+	    --width=".$width." \
+	    --lazy \
+	    --full-size-mode \
+	    --height=".$height." \
+	    -v 'bits per sec.' \
+	    --slope-mode \
+	    DEF:input=".$INPUT.":tx_bytes:AVERAGE \
+	    DEF:output=".$INPUT.":rx_bytes:AVERAGE \
+	    CDEF:total=input,output,+ \
+	    CDEF:in=input,8,* \
+	    CDEF:out=output,8,* \
+	    CDEF:all=total,8,* \
+	    VDEF:intotal=input,TOTAL \
+	    VDEF:outtotal=output,TOTAL \
+	    VDEF:alltotal=total,TOTAL \
+	    COMMENT:'                Last     Maximum      Average     Minimum       Weight \\n' \
+	    AREA:in#00CF0033:'' \
+	    LINE1:in#00CF00FF:'Input ' \
+	    GPRINT:in:LAST:'%7.1lf %sb' \
+	    GPRINT:in:MAX:'%7.1lf %sb' \
+	    GPRINT:in:AVERAGE:'%7.1lf %sb' \
+	    GPRINT:in:MIN:'%7.1lf %sb' \
+	    GPRINT:intotal:'%7.1lf %sB\\n' \
+	    AREA:out#00519933:'' \
+	    LINE1:out#005199FF:'Output' \
+	    GPRINT:out:LAST:'%7.1lf %sb' \
+	    GPRINT:out:MAX:'%7.1lf %sb' \
+	    GPRINT:out:AVERAGE:'%7.1lf %sb' \
+	    GPRINT:out:MIN:'%7.1lf %sb' \
+	    GPRINT:outtotal:'%7.1lf %sB\\n' \
+	    LINE0:all#B8860B:'Total ' \
+	    GPRINT:all:LAST:'%7.1lf %sb' \
+	    GPRINT:all:MAX:'%7.1lf %sb' \
+	    GPRINT:all:AVERAGE:'%7.1lf %sb' \
+	    GPRINT:all:MIN:'%7.1lf %sb' \
+	    GPRINT:alltotal:'%7.1lf %sB\\n' \
+	");
+    }
+
+
+    function RRD_FirstTime($filename)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	$plik = RRD_DIR."/".$filename.".rrd";
+	return exec("$rrdtool first $plik");
+    }
+
+
+    function RRD_LastTime($filename)
+    {
+	$rrdtool = get_conf('monit.rrdtool_dir','/usr/bin/rrdtool');
+	$plik = RRD_DIR."/".$filename.".rrd";
+	return exec("$rrdtool last $plik");
+    }
+
+
+/********************************************************\
+*                                                        *
+*                  SZABLONY WIADOMOŚCI                   *
+*                                                        *
+\********************************************************/
+
+    function GetListMessagesTemplate($filtr=NULL)
+    {
+	return $this->DB->GetAll('SELECT id, name, theme, message FROM messagestemplate ORDER BY theme ASC;');
+    }
+
+
+    function AddMessageTemplate($dane=NULL)
+    {
+	if (!empty($dane) && is_array($dane) && count($dane)==3) 
+	    $this->DB->Execute('INSERT INTO messagestemplate (name, theme, message) VALUES (?, ?, ?);',array($dane['names'], $dane['theme'],$dane['message']));
+    }
+
+
+    function DeleteMessageTemplate($id=NULL)
+    {
+	$id = (int)$id;
+	
+	if (!empty($id)) 
+	    $this->DB->Execute('DELETE FROM messagestemplate WHERE id = ?',array($id));
+    }
+
+    function GetMessageTemplate($id = NULL)
+    {
+	$id = (int)$id;
+	
+	if (!empty($id)) 
+	    return $this->DB->GetRow('SELECT * FROM messagestemplate WHERE id = ?',array($id));
+	else 
+	    return false;
+    }
+
+
+    function UpdateMessageTemplate($dane=NULL)
+    {
+	if (!empty($dane) && is_array($dane) && count($dane)==4) 
+	    $this->DB->Execute('UPDATE messagestemplate SET name = ?, theme = ?, message = ? WHERE id = ?',
+				array($dane['names'], $dane['theme'],$dane['message'],$dane['id']));
+    }
+
+
+    function GetListThemeTemplate($name = true)
+    {
+	return $this->DB->GetAll('SELECT id, '.($name ? 'name, ' : '').' theme FROM messagestemplate ORDER BY theme ASC');
+    }
+
 
 }
 

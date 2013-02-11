@@ -71,6 +71,9 @@ require_once(LIB_DIR.'/definitions.php');
 require_once(LIB_DIR.'/common.php');
 require_once(LIB_DIR.'/LMS.class.php');
 
+if($CONFIG['voip']['enabled'] == 1)
+	require_once(LIB_DIR.'/LMSVOIP.class.php');
+
 $AUTH = NULL;
 
 $LMS = new LMS($DB, $AUTH, $CONFIG);

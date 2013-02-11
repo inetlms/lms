@@ -1,5 +1,7 @@
 templates_c/*
 userpanel/templates_c/*
 backups/*
-.htaccess
 lms.ini
+*~
+*.swp
+*.swo

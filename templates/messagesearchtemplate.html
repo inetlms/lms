@@ -1,0 +1,28 @@
+{include file="header.html"}
+
+<table width="100%" cellpadding="4" cellspacing="4">
+{$idtheme} - {$idmess}
+    {cycle values="lucid,light" print=false}
+    {section name=list loop=$listtemplate}
+    
+	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')" style="cursor:pointer;">
+	    <td width="1%" nowrap onclick="wyslij('{$listtemplate[list].theme}','misiek');">
+		{$listtemplate[list].theme}
+	    </td>
+	    <td width="19%" onclick="wyslij('{$listtemplate[list].theme}','{$listtemplate[list].message}');">
+		{$listtemplate[list].message|nl2br}
+	    </td>
+	</tr>
+    {/section}
+
+</table>
+
+<script type="text/javascript">
+<!--
+    function wyslij(temat,message)
+    {
+	window.parent.document.getElementById('{$idtheme}').value = temat;
+	window.parent.document.getElementById('{$idmess}').value = message;
+    }
+//-->
+</script>

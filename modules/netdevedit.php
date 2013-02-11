@@ -154,6 +154,11 @@ switch ($action) {
 		$LMS->SetMonit($_GET['ip'],$_GET['monit']);
 		$SESSION->redirect('?m=netdevinfo&id=' . $_GET['id'] . '&ip=' . $_GET['ip']);
 	break;
+	
+	case 'monitsignal':
+		$LMS->SetSignalTestMonit($_GET['ip'],$_GET['monit']);
+		$SESSION->redirect('?m=netdevinfo&id=' . $_GET['id'] . '&ip=' . $_GET['ip']);
+	break;
 
 	case 'nas':
 		$DB->Execute('UPDATE nodes SET nas=? WHERE id=?', array($_GET['nas'], $_GET['ip']));
@@ -442,12 +447,18 @@ switch ($action) {
 
 		if (!isset($nodeipdata['chkmac']))
 			$nodeipdata['chkmac'] = 0;
+		
 		if (!isset($nodeipdata['halfduplex']))
 			$nodeipdata['halfduplex'] = 0;
+		
 		if (!isset($nodeipdata['nas']))
 			$nodeipdata['nas'] = 0;
+		
 		if (!isset($nodeipdata['monitoring']))
 			$nodeipdata['monitoring'] = 0;
+		
+		if (!isset($nodeipdata['monitoringsignal']))
+			$nodeipdata['monitoringsignal'] = 0;
 
 		if (!$error) {
 			$nodeipdata['warning'] = 0;

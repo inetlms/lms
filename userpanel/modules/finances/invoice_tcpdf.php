@@ -34,7 +34,7 @@ function invoice_body()
 	    $template = $CONFIG['invoices']['cnote_template_file'];
     else
 	    $template = $CONFIG['invoices']['template_file'];
-echo $template.'<br><br>';
+	    
     switch ($template)
     {
 	case "standard":
@@ -61,7 +61,7 @@ require_once(MODULES_DIR.'/invoice_tcpdf.inc.php');
 // handle multi-invoice print
 if(!empty($_POST['inv']))
 {
-	$pdf =& init_pdf('A4', 'portrait', trans('Invoices'));
+	$pdf = init_pdf('A4', 'portrait', trans('Invoices'));
 
 	$count = count($_POST['inv']);
         $i = 0;
@@ -69,7 +69,6 @@ if(!empty($_POST['inv']))
 	foreach (array_keys($_POST['inv']) as $key)
 	{
 		$invoice = $LMS->GetInvoiceContent(intval($key));
-//		$invoice['type'] = $type;
 		$i++;
 
 		if($invoice['customerid'] != $SESSION->id)
@@ -98,17 +97,16 @@ $number = docnumber($invoice['number'], $invoice['template'], $invoice['cdate'])
 if(!isset($invoice['invoice']))
 {
         if ($invoice['type'] == DOC_INVOICE_PRO)
-    	    $title = 'Faktura Pro Froma Nr. '.$number;
+	    $title = 'Faktura Pro Froma Nr. '.$number;
 	else
 	    $title = trans('Invoice No. $a', $number);
 }
 else
         $title = trans('Credit Note No. $a', $number);
 
-$pdf =& init_pdf('A4', 'portrait', $title);
+$pdf = init_pdf('A4', 'portrait', $title);
 
 $invoice['last'] = TRUE;
-//$invoice['type'] = $type;
 
 invoice_body();
 

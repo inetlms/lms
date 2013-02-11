@@ -3,12 +3,17 @@
 <head>
     <meta http-equiv="Content-Language" content="pl">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="{get_conf('phpui.style', 'img/style.css')}" rel="stylesheet" type="text/css">
 </head>
 <body onload="javascript:skocz();">
 {literal}
     <script type="text/javascript">
     <!--
-	function skocz(){setTimeout("odswierz()",1000);}
+	function skocz()
+	{
+	    setTimeout("odswierz()",3000);
+	}
+	
 	function odswierz()
 	{
 	    var dok=document.pinger;
@@ -27,17 +32,18 @@
 <input type="hidden" name="stats[wyslano]" value="{$stats.wyslano}">
 <input type="hidden" name="stats[odebrano]" value="{$stats.odebrano}">
 <input type="hidden" name="packetsize" value="{$packetsize}">
+<input type="hidden" name="typtest" value="{$typtest}">
 
 <table width="100%" cellpadding="0">
     <tr style="background:#ffffff;font:normal 8pt verdana;">
 	<td width="33%" align="center" >
-	    Min: {$stats.min|string_format:"%.3f"} ms
+	    Min: {if $stats.min!='-1'}{$stats.min|string_format:"%.2f"} ms{else}---{/if}
 	</td>
 	<td width="33%" align="center" >
-	    Avg: {$stats.avg|string_format:"%.3f"} ms
+	    Avg: {if $stats.avg}{$stats.avg|string_format:"%.2f"} ms{else}---{/if}
 	</td>
 	<td width="34%" align="center" >
-	    Max: {$stats.max|string_format:"%.3f"} ms 
+	    Max: {if $stats.max}{$stats.max|string_format:"%.2f"} ms {else}---{/if}
 	</td>
     </tr>
     <tr style="background:#ffffff;font:normal 8pt verdana;"">
@@ -55,23 +61,25 @@
     </tr>
 </table>
 <table width="100%" cellpadding="0">
-    <tr>
-	<td style="font:normal 9pt verdana;" width="160">Godzina</td>
-	<td style="font:normal 9pt verdana;" >Czas odpowiedzi</td>
-    </tr>
+
+    {cycle values="lucid,light" print=false}
     {section name=l1 loop=$czasy}
 	{assign var='indeks' value=$smarty.section.l1.index}
-	<tr
-	    {if $czasy[l1]=='timeout'}style="background:#EA0000;color:#FFFFFF;font:bold 8pt verdana;"{/if} 
-	    {if $czasy[l1]>200}style="background:#EA0000;color:#FFFFFF;font:bold 8pt verdana;"{/if} 
-	    {if $czasy[l1]>100 && $czasy[l1]<=200}style="background:#FFff84;font:normal 8pt verdana;"{/if} 
-	    {if $czasy[l1]>50 && $czasy[l1]<=100}style="background:#84fffa;font:normal 8pt verdana;"{/if} 
-	    {if $czasy[l1]>=20 && $czasy[l1]<=50 }style="background:#84ff8c;font:normal 8pt verdana;"{/if} 
-	    {if $czasy[l1]<20}style="font:normal 8pt verdana;"{/if} >
-	    <td>&nbsp;{$godzina[l1]|date_format:"%Y/%m/%d %H:%M:%S"}</td>
-	    <td>&nbsp;{$czasy[l1]}{if $czasy[l1]!='timeout'}&nbsp;ms{/if}</td>
-	<input type="hidden" name="czas[{$indeks}]" value="{$czasy[l1]}">
-	<input type="hidden" name="godzina[{$indeks}]" value="{$godzina[l1]}">
+	<tr class="{cycle}" style=" 
+	    {if $czasy[l1]=='-1'}background-color:#EA0000;color:#FFFFFF;font:bold 8pt verdana;{/if} 
+	    {if $czasy[l1]>200}background-color:#EA0000;color:#FFFFFF;font:bold 8pt verdana;{/if} 
+	    {if $czasy[l1]>100 && $czasy[l1]<=200}background-color:#FFff84;font:normal 8pt verdana;{/if} 
+	    {if $czasy[l1]>50 && $czasy[l1]<=100}background-color:#84fffa;font:normal 8pt verdana;{/if} 
+	    {if $czasy[l1]>=20 && $czasy[l1]<=50 }background-color:#84ff8c;font:normal 8pt verdana;{/if} 
+	    {if $czasy[l1]<20}font:normal 8pt Arial;{/if}">
+	    <td>
+		
+		{$typtest} - pakiet {$packetsize} bajtów 
+	    </td>
+	    <td>
+		&nbsp;{if $czasy[l1] == '-1'}timeout{else}{$czasy[l1]|string_format:"%.2f"}&nbsp;ms{/if}
+	    </td>
+	    <input type="hidden" name="czas[{$indeks}]" value="{$czasy[l1]}">
 	</tr>
 	
     {/section}

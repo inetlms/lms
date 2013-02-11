@@ -45,7 +45,8 @@
 				<option value="{$keys}" {if $filter.ev == $keys}SELECTED{/if}>{$items}</option>
 			    {/foreach}
 			</select>
-
+			
+			{if !get_conf('privileges.hide_syslog')}
 			{trans('user')}: <select name="sl_us" style="width:100px;" onchange="document.syslog.submit();" {if $filter.us != ''}class="active"{/if}>
 			    <option value="">-- all --</option>
 			    <option value="0" {if $filter.us == '0'}SELECTED{/if}>- automat -</option>
@@ -53,6 +54,7 @@
 				<option value="{$users[luser].id}" {if $users[luser].deleted}class="blend"{/if} {if $filter.us == $users[luser].id}SELECTED{/if}>{$users[luser].login}</option>
 			    {/section}
 			</select>
+			{/if}
 			&nbsp;&nbsp;
 			<img src="img/search.gif" style="border:0;cursor:pointer;" {tip text="Ustaw filtr"} onclick="document.syslog.submit();">&nbsp;
 			<img src="img/cancel.gif" style="border:0;cursor:pointer;" {tip text="Wyczyść filtr"} onclick="czysc_filtr();">&nbsp;

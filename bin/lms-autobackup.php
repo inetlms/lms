@@ -173,6 +173,8 @@ if (get_conf('autobackup.db_backup'))
     if (get_conf('autobackup.db_ftpsend') && $filename_sql && $FTP->connect($ssl)) // wysyłamy baze na serwer
     {
 	$filename = str_replace(get_conf('directories.backup_dir').'/','',$filename_sql);
+	$tmp = str_replace('.sql','',$filename_sql);
+//	$tmp = .'
 	
 	$FTP->chdir(get_conf('autobackup.db_ftppath'),true);
 	

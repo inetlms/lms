@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="pl">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body onload="javascript:skocz();">
+{literal}
+    <script type="text/javascript">
+    <!--
+	function skocz()
+	{
+	    setTimeout("odswierz()",3000);
+	}
+	
+	function odswierz()
+	{
+	    var dok=document.pinger;
+	    dok.method="POST";
+	    dok.action='?m=info&f=nodeping&refresh&packetsize='+dok.packetsize.value+'&ip='+dok.ipek.value;
+	    dok.submit();
+	}
+    //-->
+    </script>
+{/literal}
+<form name="pinger" method="POST">
+<input type="hidden" name="ipek" value="{$ipek}">
+<input type="hidden" name="stats[min]" value="{$stats.min}">
+<input type="hidden" name="stats[max]" value="{$stats.max}">
+<input type="hidden" name="stats[avg]" value="{$stats.avg}">
+<input type="hidden" name="stats[wyslano]" value="{$stats.wyslano}">
+<input type="hidden" name="stats[odebrano]" value="{$stats.odebrano}">
+<input type="hidden" name="packetsize" value="{$packetsize}">
+<input type="hidden" name="typtest" value="{$typtest}">
+
+<table width="100%" cellpadding="0">
+    <tr style="background:#ffffff;font:normal 8pt verdana;">
+	<td width="33%" align="center" >
+	    Min: {if $stats.min!='-1'}{$stats.min|string_format:"%.2f"} ms{else}---{/if}
+	</td>
+	<td width="33%" align="center" >
+	    Avg: {if $stats.avg}{$stats.avg|string_format:"%.2f"} ms{else}---{/if}
+	</td>
+	<td width="34%" align="center" >
+	    Max: {if $stats.max}{$stats.max|string_format:"%.2f"} ms {else}---{/if}
+	</td>
+    </tr>
+    <tr style="background:#ffffff;font:normal 8pt verdana;"">
+	<td width="33%" align="center" class="boxtop2">
+	    Wysł: {$stats.wyslano}
+	</td>
+	<td width="33%" align="center" >
+	    Odebr: {$stats.odebrano}
+	</td>
+	{math assign="zgubione" equation="x-y" x=$stats.wyslano y=$stats.odebrano}
+	{math assign="procent" equation="(x*100)/y" x=$zgubione y=$stats.wyslano}
+	<td width="34%" align="center" >
+	    Zgub.: {$zgubione} ({$procent|string_format:"%.2f"}%)
+	</td>
+    </tr>
+</table>
+<table width="100%" cellpadding="0">
+
+    {cycle values="lucid,light" print=false}
+    {section name=l1 loop=$czasy}
+	{assign var='indeks' value=$smarty.section.l1.index}
+	<tr class="{cycle}" style=" 
+	    {if $czasy[l1]=='-1'}background-color:#EA0000;color:#FFFFFF;font:bold 8pt Tahoma;{/if} 
+	    {if $czasy[l1]>200}background-color:#EA0000;color:#FFFFFF;font:bold 8pt Tahoma;{/if} 
+	    {if $czasy[l1]>100 && $czasy[l1]<=200}background-color:#FFff84;font:normal 8pt Tahoma;{/if} 
+	    {if $czasy[l1]>50 && $czasy[l1]<=100}background-color:#84fffa;font:normal 8pt Tahoma;{/if} 
+	    {if $czasy[l1]>=20 && $czasy[l1]<=50 }background-color:#84ff8c;font:normal 8pt Tahoma;{/if} 
+	    {if $czasy[l1]<20}font:normal 8pt Tahoma;{/if}">
+	    <td>
+		
+		{$typtest} - pakiet {$packetsize} bajtów 
+	    </td>
+	    <td>
+		&nbsp;{if $czasy[l1] == '-1'}timeout{else}{$czasy[l1]|string_format:"%.2f"}&nbsp;ms{/if}
+	    </td>
+	    <input type="hidden" name="czas[{$indeks}]" value="{$czasy[l1]}">
+	</tr>
+    {/section}
+</table>
+</form>
+</body>
+</html>

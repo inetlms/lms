@@ -37,12 +37,6 @@ if(isset($balance['docid']))
 			if($number = $LMS->docnumber($val))
 				$balance['number'][$idx] = trans('Invoice No. $a', $number);
 		}
-		
-		if($balance['doctype'][$idx] == 2)
-		{
-			if($number = $LMS->docnumber($val))
-				$balance['number'][$idx] = 'Faktura Pro Forma Nr. '.$number;
-		}
 	}
 
 $SMARTY->assign('userinfo', $userinfo);

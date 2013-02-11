@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
+<meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
+</head>
+<body{if $landscape} class="landscape"{/if}{if preg_match('/report/i', get_conf('phpui.printer_window'))} onload="window.print()"{/if}>
+
+{literal}
+<style type="text/css">
+BODY		{ font-size: 8pt; font-family: Arial, Helvetica; padding: 0pt; background-color: #FFFFFF; }
+BODY.landscape	{ font-size: 8pt; font-family: Arial, Helvetica; padding: 0pt; background-color: #FFFFFF; size: landscape; }
+TABLE		{ border-collapse: collapse; border-color: #000000; }
+TD		{ font-size: 8pt; padding: 2px; padding-right: 6px; }
+TD.fleft	{ border-left-width: 1pt; border-left-style: solid; }
+TD.fright	{ border-right-width: 1pt; border-right-style: solid; }
+TD.ftop		{ border-top-width: 1pt; border-top-style: solid; }
+TD.fbottom	{ border-bottom-width: 1pt; border-bottom-style: solid; }
+TD.fleftu	{ border-top-width: 1pt; border-top-style: solid; border-bottom-width: 1pt; border-bottom-style: solid; border-left-width: 1pt; border-left-style: solid; }
+TD.frightu	{ border-top-width: 1pt; border-top-style: solid; border-bottom-width: 1pt; border-bottom-style: solid; border-right-width: 1pt; border-right-style: solid; }
+TD.ftopu	{ border-top-width: 1pt; border-top-style: solid; border-left-width: 1pt; border-left-style: solid; border-right-width: 1pt; border-right-style: solid; }
+TD.fbottomu	{ border-bottom-width: 1pt; border-bottom-style: solid; border-left-width: 1pt; border-left-style: solid; border-right-width: 1pt; border-right-style: solid; }
+TD.fall		{ border-width: 1pt; border-style: solid; }
+TD.fbt		{ border-bottom-width: 1pt; border-bottom-style: solid; border-top-width: 1pt; border-top-style: solid; }
+TD.flr		{ border-left-width: 1pt; border-left-style: solid; border-right-width: 1pt; border-right-style: solid; }
+TD.head		{ color: white; background-color: black; font-weight: bold; border-width: 1pt; border-style: solid; }
+TD.headgrey	{ color: black; background-color: #A9A9A9; font-weight: bold; border-width: 1pt; border-style: solid; }
+TD.bb		{ border-color: black; }
+A		{ text-decoration: none; }
+P		{ font-size:  8pt; font-family: Arial, Helvetica; }
+P.nor		{ font-size:  8pt; font-family: Arial, Helvetica; }
+P.txt		{ font-size:  8pt; font-family: Arial, Helvetica; text-align: justify }
+P.separated	{ font-size:  8pt; font-family: Arial, Helvetica; margin-top: 5; margin-bottom: 5 }
+H1		{ font-size: 14pt; font-family: Arial, Helvetica; }
+.shdf		{ font-size: 20pt; font-weight: bold; }
+.hdf		{ font-size: 14pt; }
+.mdf		{ font-size: 12pt; }
+.sdr		{ font-size: 10pt; }
+.small		{ font-size: 6pt; }
+.blend		{ color: #888888; }
+.blendbg	{ background-color: #888888; }
+.white		{ background-color: #FFFFFF; }
+.grey		{ background-color: #EEEEEE; }
+.alert          { color: #FF0000; }
+.bold           { font-weight: bold; }
+</style>
+{/literal}
+
+<TABLE WIDTH="100%" CELLPADDING="3" ALIGN="CENTER">
+	<TR>
+		<TD WIDTH="535" VALIGN="TOP">
+			{$layout.pagetitle}
+		</TD>
+		<TD WIDTH="180" ALIGN="RIGHT" NOWRAP>
+			{$smarty.now|date_format:"%A, %x"}<BR>
+		</TD>
+	</TR>
+</TABLE>
+<BR>
+<TABLE WIDTH="100%" CELLPADDING="3" BORDER="1" ALIGN="CENTER">
+	<TR>
+		<TD WIDTH="100" CLASS="HEAD" ALIGN="CENTER" NOWRAP>
+			{trans("Day")}
+		</TD>
+		<TD WIDTH="80" CLASS="HEAD" ALIGN="CENTER" NOWRAP>
+			{trans("Download")}
+		</TD>
+		<TD WIDTH="150" CLASS="HEAD" ALIGN="CENTER" NOWRAP>
+			{trans("Avg. download speed")}
+		</TD>
+		<TD WIDTH="80" CLASS="HEAD" ALIGN="CENTER" NOWRAP>
+			{trans("Upload")}
+		</TD>
+		<TD WIDTH="150" CLASS="HEAD" ALIGN="CENTER" NOWRAP>
+			{trans("Avg. upload speed")}
+		</TD>
+	</TR>
+	{cycle values="white,grey" print=false}
+	{foreach from=$stats item=stat}
+	<TR class="{cycle}">
+		<TD ALIGN="LEFT" NOWRAP>
+			{$stat.date|date_format:"%d.%m.%Y (%A)"}
+		</TD>
+		<TD ALIGN="RIGHT" NOWRAP>
+			{$stat.download|string_format:"%.2f"} {$stat.downloadunit}
+		</TD>
+		<TD ALIGN="RIGHT" NOWRAP>
+			{$stat.downavg|string_format:"%d"} kbit/s
+		</TD>
+		<TD ALIGN="RIGHT" NOWRAP>
+			{$stat.upload|string_format:"%.2f"} {$stat.uploadunit}
+		</TD>
+		<TD ALIGN="RIGHT" NOWRAP>
+			{$stat.upavg|string_format:"%d"} kbit/s
+		</TD>
+	</TR>
+	{foreachelse}
+	<TR>
+		<TD ALIGN="center" WIDTH="100%" COLSPAN="5">
+			<P>&nbsp;</P>
+			<P><B>{trans("No such stats for selected period.")}</B></P>
+			<P>&nbsp;</P>
+		</TD>
+	</TR>
+	{/foreach}
+	<TR>
+		<TD CLASS="HEADGREY" ALIGN="RIGHT">
+			<B>{trans("Total:")}</B>
+		</TD>
+		<TD CLASS="HEADGREY" ALIGN="RIGHT" NOWRAP>
+			<B>{$listdata.download|string_format:"%.2f"} {$listdata.downloadunit|default:"KB"}</B>
+		</TD>
+		<TD CLASS="HEADGREY" ALIGN="RIGHT" NOWRAP>
+			<B>{$listdata.downavg|string_format:"%d"} kbit/s</B>
+		</TD>
+		<TD CLASS="HEADGREY" ALIGN="RIGHT" NOWRAP>
+			<B>{$listdata.upload|string_format:"%.2f"} {$listdata.uploadunit|default:"KB"}</B>
+		</TD>
+		<TD CLASS="HEADGREY" ALIGN="RIGHT" NOWRAP>
+			<B>{$listdata.upavg|string_format:"%d"} kbit/s</B>
+		</TD>
+	</TR>
+</TABLE>
+</body>
+</html>

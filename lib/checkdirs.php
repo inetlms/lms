@@ -42,4 +42,16 @@ if(!is_dir(DOC_DIR))
 if(!is_writable(DOC_DIR))
 	die('Can\'t write to directory <B>'.DOC_DIR.'</B>. Run: <BR><PRE>chown '.posix_geteuid().':'.posix_getegid().' '.DOC_DIR."\nchmod 755 ".DOC_DIR.'</PRE>This helps me to work. Thanks.');
 
+if(!is_dir(TMP_DIR))
+	die('Missing directory <B>'.TMP_DIR.'</B>. Can anybody make them?');
+	
+if(!is_writable(TMP_DIR))
+	die('Can\'t write to directory <B>'.TMP_DIR.'</B>. Run: <BR><PRE>chown '.posix_geteuid().':'.posix_getegid().' '.TMP_DIR."\nchmod 755 ".TMP_DIR.'</PRE>This helps me to work. Thanks.');
+
+if(!is_dir(RRD_DIR))
+	die('Missing directory <B>'.RRD_DIR.'</B>. Can anybody make them?');
+	
+if(!is_writable(RRD_DIR))
+	die('Can\'t write to directory <B>'.RRD_DIR.'</B>. Run: <BR><PRE>chown '.posix_geteuid().':'.posix_getegid().' '.RRD_DIR."\nchmod 755 ".RRD_DIR.'</PRE>This helps me to work. Thanks.');
+
 ?>

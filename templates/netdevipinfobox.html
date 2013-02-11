@@ -32,6 +32,16 @@
 		else
 			location.href = '?m=netdevedit&id={$netdevinfo.id}&ip={$nodeipdata.id}&action=monit&monit=0';
 	}
+	
+	function monit_signal_change()
+	{
+		if(document.getElementById('monit_signal').checked)
+			location.href = '?m=netdevedit&id={$netdevinfo.id}&ip={$nodeipdata.id}&action=monitsignal&monit=1';
+		else
+			location.href = '?m=netdevedit&id={$netdevinfo.id}&ip={$nodeipdata.id}&action=monitsignal&monit=0';
+	}
+	
+
 //-->
 </SCRIPT>
 <TABLE WIDTH="100%" CELLPADDING="3">
@@ -98,7 +108,10 @@
 			&nbsp;
 			<label for="chknas">{trans("NAS")}:</label><INPUT TYPE="checkbox" NAME="nas" ID="chknas" VALUE="1" {if $nodeipdata.nas} checked{/if} onchange="nas_change();">
 			{/if}
-			<label for="monit">Monitoruj:</label><INPUT TYPE="checkbox" NAME="monit" ID="monit" VALUE="1" {if $nodeipdata.monitoring} checked{/if} onchange="monit_change();">
+			<label for="monit">Monitoruj: </label><INPUT TYPE="checkbox" NAME="monit" ID="monit" VALUE="1" {if $nodeipdata.monitoring} checked{/if} onchange="monit_change();">
+			{if $nodeipdata.monitoring && ($netdevinfo.monit_nastype=='1' || $netdevinfo.monit_nastype=='14' || $netdevinfo.monit_nastype=='15')}
+			<label for="monit_signal">Pobieraj inf. o sygnałach Wi-Fi:</label><input type="checkbox" NAME="monit_signal" ID="monit_signal" VALUE="1" {if $nodeipdata.monitoringsignal} checked{/if} onchange="monit_signal_change();">
+			{/if}
 		</TD>
 	</TR>
 	<TR CLASS="LIGHT">
@@ -172,7 +185,8 @@
 	</TR>
 	<TR CLASS="LIGHT">
 		<TD WIDTH="100%" CLASS="FBOTTOMU" COLSPAN="3" ALIGN="RIGHT">
-			<A HREF="?m=netdevedit&id={$netdevinfo.id}&action=editip&ip={$nodeipdata.id}" ACCESSKEY="E">{trans("Edit")} <IMG SRC="img/edit.gif" ALT=""></A>
+			{if get_conf('monit.live_ping')}<a href="javascript:void(0);" onclick="window.open('?m=nodeping&packetsize=64&ip={$nodeipdata.ip}&netdev={$nodeipdata.id}','pingnode{$nodeipdata.ip}','width=400,height=450')" {tip text="Pinguj urzadzenie"}>Live Ping <img src="img/ping.gif" alt=""></a>&nbsp;{/if}
+			<A HREF="?m=netdevedit&id={$netdevinfo.id}&action=editip&ip={$nodeipdata.id}" ACCESSKEY="E">{trans("Edit")} <IMG SRC="img/edit.gif" ALT=""></A>&nbsp;
 			<A HREF="?m=netdevedit&id={$netdevinfo.id}&action=ipdel&ip={$nodeipdata.id}" onClick="return confirmLink(this, '{t a=$nodeipdata.name}Are you sure, you want to delete address \'$a\' from database?{/t}')">{trans("Delete")} <IMG SRC="img/delete.gif" ALT=""></A>
 		</TD>
 	</TR>	

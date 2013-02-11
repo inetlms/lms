@@ -66,6 +66,9 @@ if (isset($_GET['devid'])) {
 	$SMARTY->assign('netdevice', $_GET['devid']);
 }
 
+if (check_modules(110))
+    include(MODULES_DIR.'/nodemonit.inc.php');
+
 $nodeinfo = $LMS->GetNode($nodeid);
 $nodegroups = $LMS->GetNodeGroupNamesByNode($nodeid);
 $othernodegroups = $LMS->GetNodeGroupNamesWithoutNode($nodeid);

@@ -39,7 +39,7 @@ class ULMS extends LMS
 			return NULL;
 	}
 	
-	function GetCustomer($id)
+	function GetCustomer($id,$short = false)
 	{
 		if($result = $this->DB->GetRow('SELECT c.*, '.$this->DB->Concat('UPPER(c.lastname)',"' '",'c.name').' AS customername
 	                                FROM customers c WHERE c.id = ?', array($id)))
@@ -59,6 +59,11 @@ class ULMS extends LMS
 	{
 		return $this->DB->GetOne('SELECT message FROM customers WHERE id=?', array($id));
 	}
+        
+	function GetCustomerIDandPIN($email,$pesel)
+	{
+		return $this->DB->GetAll('SELECT id,pin FROM customers WHERE email=? AND ssn=?', array($email,$pesel));
+	}        
 	
 	function GetCustomerTickets($id)
 	{

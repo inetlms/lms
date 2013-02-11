@@ -89,7 +89,7 @@
 	{assign var='monit' value=$monitdevlist[devlist].active}
 	<tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');" {if !$monit}style="color:#666;font-style:italic;"{/if}>
 	    <td width="1%" align="left" nowrap class="fleft"style="padding-left:4px;padding-right:10px;">
-		<img src="img/radar{if !$monit}off{/if}.png" style="cursor:pointer;" border="0" {if $monitdevlist[devlist].ptime}{tip a=$monitdevlist[devlist].nid dynpopup='?m=monitchartshort&type=owner&time=-12h&id=$a' sticky=0}{else}{tip text="BRAK POMIARÓW DLA URZĄDZENIA"}{/if}>&nbsp;
+		<img src="img/radar{if !$monit}off{/if}.png" style="cursor:pointer;" border="0" {if $monitdevlist[devlist].ptime}{tip a=$monitdevlist[devlist].nid dynpopup='?m=monitchartshort&chart=ping&type=owner&id=$a' sticky=0}{else}{tip text="BRAK POMIARÓW DLA URZĄDZENIA"}{/if}>&nbsp;
 		{$monitdevlist[devlist].nname}<BR>
 		<img src="img/empty.gif" width="16">&nbsp;
 		<a href="javascript:ping_popup('{$monitdevlist[devlist].ipaddr}');">{$monitdevlist[devlist].ipaddr}</a>

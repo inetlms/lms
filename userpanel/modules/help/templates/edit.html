@@ -1,40 +1,54 @@
 {include file="header.html"}
-<!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
-<TABLE width="100%">
-<TR class="dark">
-<TD width="100%" class="fall">
-<b>{trans("Edit item")}</b>
-</TD>
-</TR>
-<TR class="light">
-<TD width="100%" class="fall">
-<form name="helpcenter" action="?m=userpanel&module=help&f=postedit" method="post">
-<input name="id" value="{$solution.id}" type="hidden">
-<TABLE WIDTH="100%">
-<TR>
-<TD WIDTH="1%" NOWRAP>
-{trans("Title:")}
-</TD>
-<TD WIDTH="99%" NOWRAP>
-<input name="title" value="{$solution.title}" style="width:99%" {tip text="Enter title" trigger="title" bold=1}><br/>
-</TD>
-</TR>
-<TR>
-<TD WIDTH="1%" NOWRAP>
-{trans("Body:")}
-</TD>
-<TD WIDTH="99%" NOWRAP>
-<textarea name="body" style="width:99%" {tip text="Enter body" trigger="body"}>{$solution.body}</textarea>
-</TR>
-</TABLE>
-</form>
-<p align="right">
-        <A HREF="?m=userpanel&module=help">{trans("Cancel")} <IMG SRC="img/cancel.gif" ALT=""></A>
-        <A HREF="javascript:document.helpcenter.submit();" ACCESSKEY="S">{trans("Submit")} <IMG SRC="img/save.gif" ALT=""></A>
-</p>
-</TD>
-</TR>
-</TABLE>
-{include file="footer.html"}
 
+<h1>{$layout.pagetitle}</h1>
+<table width="100%">
+
+    <tr class="dark">
+	<td width="100%" class="fall">
+	    <b>{trans("Edit item")}</b>
+	</td>
+    </tr>
+
+    <tr class="light">
+	<td width="100%" class="fall">
+	<form name="helpcenter" action="?m=userpanel&module=help&f=postedit" method="post">
+	    <input name="id" value="{$solution.id}" type="hidden">
+	    <table width="100%">
+		<tr>
+		    <td width="1%" nowrap>
+			{trans("Title:")}
+		    </td>
+		    <td width="99%" nowrap>
+			<input name="title" value="{$solution.title}" style="width:800;background-color:#FFFFFF;" {tip text="Enter title" trigger="title" bold=1}><br>
+		    </td>
+		</tr>
+		<tr>
+		    <td width="1%" nowrap>
+			{trans("Body:")}
+		    </td>
+		    <td width="99%">
+			<textarea name="body" id="id_body">{$solution.body}</textarea>
+		    </td>
+		</tr>
+	    </table>
+	</form>
+
+	<p align="right">
+	    <a href="?m=userpanel&module=help">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a>
+	    <a href="javascript:document.helpcenter.submit();">{trans("Submit")} <img src="img/save.gif" alt=""></a>
+	</p>
+	</td>
+    </tr>
+</table>
+
+{literal}
+<script type="text/javascript">
+<!--
+    $(document).ready(function() {
+	$("#id_body").cleditor({width:800, height:300, fonts:'Tahoma,Arial,Verdana', useCSS:true});
+    });
+//-->
+</script>
+{/literal}
+
+{include file="footer.html"}

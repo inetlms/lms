@@ -121,7 +121,7 @@
 				</TR>
 				<TR CLASS="LIGHT">
 					<TD WIDTH="50%" ALIGN="RIGHT" CLASS="FLEFT">
-						<B><A HREF="?m=customerlist&s=3">{trans("Connected:")}</A></B>
+						<B><A HREF="?m=customerlist&page=1&fletter=&s=3&st=0&ce=&d=&n=0&g=&ng=">{trans("Connected:")}</A></B>
 					</TD>
 					<TD WIDTH="50%" CLASS="FRIGHT">
 						{$customerstats.connected}
@@ -129,7 +129,7 @@
 				</TR>
 				<TR CLASS="LIGHT">
 					<TD WIDTH="50%" ALIGN="RIGHT" CLASS="FLEFT">
-						<B><A HREF="?m=customerlist&s=2">{trans("Waiting:")}</A></B>
+						<B><A HREF="?m=customerlist&page=1&fletter=&s=2&st=0&ce=&d=&n=0&g=&ng=">{trans("Waiting:")}</A></B>
 					</TD>
 					<TD WIDTH="50%" CLASS="FRIGHT">
 						{$customerstats.awaiting}
@@ -137,7 +137,7 @@
 				</TR>
 				<TR CLASS="LIGHT">
 					<TD WIDTH="50%" ALIGN="RIGHT" CLASS="FLEFT">
-						<B><A HREF="?m=customerlist&s=1">{trans("Interested:")}</A></B>
+						<B><A HREF="?m=customerlist&page=1&fletter=&s=1&st=0&ce=&d=&n=0&g=&ng=">{trans("Interested:")}</A></B>
 					</TD>
 					<TD WIDTH="50%" CLASS="FRIGHT">
 						{$customerstats.interested}
@@ -145,9 +145,9 @@
 				</TR>
 				<TR CLASS="LIGHT">
 					<TD WIDTH="50%" ALIGN="RIGHT" CLASS="FLEFTU">
-						<B><A HREF="?m=customerlist&s=0">{trans("Total:")}</A><br>
+						<B><A HREF="?m=customerlist&page=1&fletter=&s=0&st=0&ce=&d=&n=0&g=&ng=">{trans("Total:")}</A><br>
 						{if !check_conf('privileges.hide_finances')}
-							<nobr><a href="?m=customerlist&s=6">{trans("Total Dues:")}</A></B></nobr>
+							<nobr><a href="?m=customerlist&page=1&fletter=&s=0&st=6&ce=&d=&n=0&g=&ng=">{trans("Total Dues:")}</A></B></nobr>
 						{/if}
 					</TD>
 					<TD WIDTH="50%" CLASS="FRIGHTU">

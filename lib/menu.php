@@ -1,7 +1,7 @@
 <?php
 
 /*
- * LMS version 1.11-git (EXPANDED)
+ * iNET LMS 
  *
  * (C) Copyright 2001-2012 LMS Developers
  *
@@ -69,6 +69,12 @@ $menu = array(
 					'link' =>'?m=changelog',
 					'tip' => '',
 					'prio' => 60,
+				),
+				array(
+					'name' => 'Sponsorzy',
+					'link' =>'?m=sponsorzy',
+					'tip' => 'Lista firm które przyczyniły się do rozwoju iNET LMS',
+					'prio' => 70,
 				),
 				array(
 					'name' => trans('Copyrights'),
@@ -375,7 +381,7 @@ $menu = array(
 			'name' => trans('Contractors'),
 			'img' =>'customer.gif',
 			'link' =>'?m=customerlist',
-			'tip' => trans('Customers Management'),
+			'tip' => trans('Contractors Management'),
 			'accesskey' =>'u',
 			'prio' => 23,
 			'index' => 140,
@@ -659,6 +665,14 @@ $menu = array(
 					'tip' => trans('Allows you to send messages to customers'),
 					'prio' => 20,
 				),
+
+				array(
+					'name' => trans('Templates'),
+					'link' => '?m=messagetemplate',
+					'tip' => trans('Messages managing templates'),
+					'prio' => 21,
+				),
+
 			),
 		),
 

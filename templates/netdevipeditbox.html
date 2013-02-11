@@ -95,6 +95,9 @@
 			<label for="chknas">{trans("NAS")}:</label><INPUT TYPE="checkbox" NAME="ipadd[nas]" VALUE="1" ID="chknas" {tip text="Select NAS on or off" trigger="nas"}{if $nodeipdata.nas} checked{/if}>
 			{/if}
 			<label for="monit">Monitoruj:</label><INPUT TYPE="checkbox" NAME="ipadd[monitoring]" VALUE="1" ID="monit" {tip text="Monitoruj urządzenie sieciowe"}{if $nodeipdata.monitoring} checked{/if}>&nbsp;
+			{if $netdevinfo.monit_nastype=='1' || $netdevinfo.monit_nastype=='14' || $netdevinfo.monit_nastyp=='15'}
+			<label for="monit_signal"  {tip text="Wymaga włączenia monitorowania !!!"}>Pobieraj inf. o sygnałach Wi-Fi:</label><input type="checkbox" name="ipadd[monitoringsignal]" id="monit_signal" value="1" {if $nodeipdata.monitoringsignal} checked{/if} {tip text="Wymaga włączenia monitorowania !!!"}>
+			{/if}
 		</TD>
 	</TR>
 	<TR CLASS="LIGHT">

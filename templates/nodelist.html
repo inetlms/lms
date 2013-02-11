@@ -109,8 +109,10 @@
 		</TD>
 		<TD class="fright" width="1%" align="right">
 			<nobr>
-
-			<img src="img/radar{if !$nodelist[nodelist].monitoring}off{/if}.png" {tip a={$nodelist[nodelist].id} dynpopup='?m=monitchartshort&type=nodes&time=-1d&id=$a' sticky=0}>&nbsp;
+			{if $nodelist[nodelist].monitoring}
+			<img src="img/radar.png" style="cursor:pointer;" {tip text="Kliknij aby otworzyć szczegółowe statystyki"} onclick="monitchart_popup('{$nodelist[nodelist].id}','node');">
+			{/if}
+			{if get_conf('monit.live_ping')}<img src="img/ping.gif" {tip text="Pinguj urzadzenie"} style="cursor:pointer;" onclick="window.open('?m=nodeping&packetsize=64&ip={$nodelist[nodelist].ip}','pingnode{$nodelist[nodelist].ip}','width=400,height=450')">{/if}
 			<a href="?m=nodeset&id={$nodelist[nodelist].id}"><img src="img/{if ! $nodelist[nodelist].access}no{/if}access.gif" alt="[ {if ! $nodelist[nodelist].access}{trans("Connect")}{else}{trans("Disconnect")}{/if} ]" title="[ {if ! $nodelist[nodelist].access}{trans("Connect")}{else}{trans("Disconnect")}{/if} ]"></A>
                         <a href="?m=nodewarn&id={$nodelist[nodelist].id}"><img src="img/warning{if ! $nodelist[nodelist].warning}off{else}on{/if}.gif" alt="[ {if ! $nodelist[nodelist].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]" title="[ {if ! $nodelist[nodelist].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]"></A>
 			<a onClick="return confirmLink(this, '{t a=$nodelist[nodelist].name}Are you sure, you want to remove node \'$a\' from database?{/t}')" href="?m=nodedel&id={$nodelist[nodelist].id}"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></A>

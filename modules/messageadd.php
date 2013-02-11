@@ -24,6 +24,17 @@
  *  $Id$
  */
 
+function selecttemplates($idtheme,$idfield,$idtemplate)
+{
+    global $DB;
+    $template = $DB->GetRow('SELECT theme, message FROM messagestemplate WHERE id = ? '.$DB->limit(1).' ;',array(intval($idtemplate)));
+    if (!$template) $template['theme'] = $template['message'] = "";
+    $obj = new xajaxResponse();
+    $obj->assign($idtheme,'value',$template['theme']);
+    $obj->assign($idfield,'value',$template['message']);
+    return $obj;
+}
+
 function GetRecipients($filter, $type=MSG_MAIL)
 {
 	global $LMS;
@@ -372,6 +383,12 @@ else if (!empty($_GET['customerid']))
 	$SMARTY->assign('message', $message);
 }
 
+$LMS->InitXajax();
+$LMS->RegisterXajaxFunction('selecttemplates');
+$SMARTY->assign('xajax',$LMS->RunXajax());
+
+
+$SMARTY->assign('templatelist',$LMS->GetListThemeTemplate(false));
 $SMARTY->assign('networks', $LMS->GetNetworks());
 $SMARTY->assign('customergroups', $LMS->CustomergroupGetAll());
 $SMARTY->assign('nodegroups', $LMS->GetNodeGroupNames());

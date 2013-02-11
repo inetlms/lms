@@ -187,6 +187,57 @@
 		</TD>
 	</TR>
 {/if}
+
+	<tr class="light">
+	    <td width="1%">
+		<img src="img/radar.png" alt="">
+	    </td>
+	    <td width="1%" nowrap>
+		<b>Typ:</b>
+	    </td>
+	    <td width="98%">
+		<select name="netdev[monit_nastype]" {tip text="Select type (optional)"} {tip text="wybierz typ"}>
+			<option value="0"></option>
+			{foreach from=$nastype item=item key=key}
+			    <option value="{$key}" {if $key==$netdev.monit_nastype} selected{/if}>{$item.name}</option>
+			{/foreach}
+			</select>
+	    </td>
+	</tr>
+	
+	<tr class="light">
+		<td width="1%">
+			<img src="img/radar.png" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<b>Login:</b>
+		</td>
+		<td width="98%">
+			<input type="text" name="netdev[monit_login]" value="{$netdev.monit_login}" {tip text="Podaj nazwę użytkownika"}>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/radar.png" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<b>Hasło:</b>
+		</td>
+		<td width="98%">
+			<input type="text" name="netdev[monit_passwd]" value="{$netdev.monit_passwd}" {tip text="podaj hasło (opcja)"}>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/radar.png" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<b>Port</b>
+		</td>
+		<td width="98%">
+			<input type="text" name="netdev[monit_port]" value="{if $netdev.monit_port}{$netdev.monit_port}{/if}" {tip text="podaj numer portu do komunikacji (opcja)"}>
+		</td>
+	</tr>
                                         </TABLE>
 				</TD>
 				<TD WIDTH="50%" style="vertical-align:top;">

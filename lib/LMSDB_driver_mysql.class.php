@@ -44,7 +44,7 @@ class LMSDB_driver_mysql extends LMSDB_common
 
 	    //$this->_version .= ' ('.preg_replace('/^.Revision: ([0-9.]+).*/','\1',$this->_revision).'/'.preg_replace('/^.Revision: ([0-9.]+).*/','\1','$Revision$').')';
 		$this->_version .= '';
-		$this->Connect($dbhost, $dbuser, $dbpasswd, $dbname);
+		$this->connect($dbhost, $dbuser, $dbpasswd, $dbname);
 	}
 
 	function _driver_dbversion()

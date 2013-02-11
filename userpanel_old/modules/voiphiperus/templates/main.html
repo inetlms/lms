@@ -1,0 +1,44 @@
+<!--//
+/*********************************************\
+*                                             *
+*    LMS Hiperus C5 v.1.0.0                   *
+*    (c)2012 by Sylwester Kondracki           *
+*    Gadu-Gadu : 6164816                      *
+*    E-mail : sylwek@sylwester-kondracki.eu   *
+*                                             *
+\*********************************************/
+//-->
+{box title="Twoje Konta VoIP"}
+<table width="100%" cellpadding="3" cellspacing="0">
+
+    <tr class="dark">
+	<td width="auto" class="fleftu" style="padding-right:10px;" nowrap>Konto&nbsp;VoIP</td>
+	
+	<td width="1%" class="fbt" align="center">&nbsp;Numerów&nbsp;<br>&nbsp;Terminali&nbsp;</td>
+	<td width="1%" class="fbt" align="center" valign="bottom">Cennik</td>
+	<td width="1%" class="fbt" align="center" valign="bottom">&nbsp;Płatność&nbsp;</td>
+	<td width="1%" class="fbt" align="right">&nbsp;</td>
+    </tr>
+
+    {cycle values="light,darkest" print=false}
+    {section name=hiperusaccountcustomerlist loop=$hiperusaccountcustomerlist}
+	<tr class="{cycle}">
+	    <td class="fleft" style="padding-right:10px;" nowrap ><b>{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].name}</b><br>{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].address} {$hiperusaccountcustomerlist[hiperusaccountcustomerlist].street_number}{if $hiperusaccountcustomerlist[hiperusaccountcustomerlist].apartment_number}/{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].apartment_number}{/if}&nbsp;&nbsp;{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].postcode} {$hiperusaccountcustomerlist[hiperusaccountcustomerlist].city}</td>
+	    
+	    <td width="1%" align="center" nowrap >{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].pstncount}&nbsp;/&nbsp;{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].terminalcount}</td>
+	    <td width="1%" align="center" nowrap >&nbsp;{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].price_name}&nbsp;</td>
+	    <td width="1%" align="center" nowrap >{if $hiperusaccountcustomerlist[hiperusaccountcustomerlist].payment_type=='postpaid'}abonament{else}przedpłata{/if}</td>
+	    <td width="1%" align="center" nowrap ><a href="?m=voiphiperus&voipid={$hiperusaccountcustomerlist[hiperusaccountcustomerlist].id}">szczegóły</a></td>
+	    
+	</tr>
+    {sectionelse}
+	<tr><td colspan="6" align="center" class="fall">
+	    
+	    <p><h4>Niestety nie posiadają Państwo telefonu VoIP<br>zapraszamy do zapoznania sią z naszą ofertą Tanie telefonowanie<br>dostępnej na naszej stronie www</h4><br></p>
+	    
+	    </td></tr>
+    {/section}
+
+    <tr class="dark"><td colspan="6" class="fall">&nbsp;</td></tr>
+</table>
+{/box}

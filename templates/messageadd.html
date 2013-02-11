@@ -1,4 +1,5 @@
 {include file="header.html"}
+{$xajax}
 <!--// $Id$ //-->
 <H1>{$layout.pagetitle}</H1>
 <FORM name="message" id="message" method="post" action="?m=messageadd" enctype="multipart/form-data">
@@ -52,6 +53,23 @@
 	}
 -->
 </SCRIPT>
+{literal}
+<script type="text/javascript">
+<!--
+    function select_template()
+    {
+	var idtpl = document.getElementById('templates').value;
+	
+	if (document.getElementById('typemail').checked == true)
+	    xajax_selecttemplates('id_theme','mailtext',idtpl);
+	
+	if (document.getElementById('typesms').checked == true || document.getElementById('typeanysms').checked == true)
+	    xajax_selecttemplates('id_theme','smstext',idtpl);
+    }
+//-->
+</script>
+{/literal}
+
 <TABLE style="width: 100%;" CELLPADDING="3">
 {if $message.customerid}
 	<TR CLASS="DARK">
@@ -157,6 +175,7 @@
 		</TD>
 		<TD CLASS="FRIGHT" style="width: 98%;">
 			<INPUT type="text" NAME="message[sender]" SIZE="40" value="{if $message.sender}{$message.sender}{elseif $userinfo.email}{$userinfo.email}{/if}" {tip trigger="sender" text="Enter sender e-mail address"}>
+			
 		</TD>
 	</TR>
 	<TR CLASS="LIGHT" ID="mailfrom"{if $message.type > $smarty.const.MSG_MAIL} style="display: none;"{/if}>
@@ -199,6 +218,23 @@
 		</TD>
 	</TR>
 {/if}
+	<tr class="light">
+		<TD CLASS="FLEFT" style="width: 1%;">
+			<IMG SRC="img/tip.gif" alt=""> 
+		</TD>
+		<TD style="width: 1%;">
+			<span class="bold">{trans("Template:")}</span>
+		</TD>
+		<TD CLASS="FRIGHT" style="width: 98%;">
+			<select name="templates" id="templates" style="width:370px;cursor:pointer;">
+			<option value="">--- {trans('select a template')} ---</option>
+			{section name=ltpl loop=$templatelist}
+			    <option value="{$templatelist[ltpl].id}">{$templatelist[ltpl].theme}</option>
+			{/section}
+			</select>&nbsp;&nbsp;<a href="javascript:select_template();" {tip text="select a template"}><b>&raquo;&raquo;&raquo;&raquo;&raquo;</b></a>
+			
+		</TD>
+	</TR>
 	<TR CLASS="LIGHT">
 		<TD CLASS="FLEFT" style="width: 1%;">
 			<IMG SRC="img/mail.gif" ALT=""> 
@@ -207,9 +243,11 @@
 			<span class="bold">{trans("Subject:")}</span>
 		</TD>
 		<TD CLASS="FRIGHT" style="width: 98%;">
-			<INPUT type="text" NAME="message[subject]" SIZE="60" VALUE="{$message.subject}" {tip trigger="subject" text="Enter message subject"}>
+			<INPUT type="text" NAME="message[subject]" id="id_theme" SIZE="60" VALUE="{$message.subject}" {tip trigger="subject" text="Enter message subject"}>
+			
 		</TD>
 	</TR>
+	<!--// mail //-->
 	<TR CLASS="LIGHT" ID="mailbody"{if $message.type > $smarty.const.MSG_MAIL} style="display: none"{/if}>
 		<TD CLASS="FLEFT" style="width: 1%;">
 			<IMG SRC="img/edit.gif" ALT=""> 
@@ -218,9 +256,10 @@
 			<span class="bold">{trans("Message body:")}</span>
 		</TD>
 		<TD CLASS="FRIGHT" style="width: 98%;">
-			<TEXTAREA NAME="message[mailbody]" COLS="80" ROWS="20" {tip text="Use carriage return for indentation only. LMS will reformat paragraphs and break long lines." trigger="body"}>{$message.body}</TEXTAREA>
+			<TEXTAREA NAME="message[mailbody]" id="mailtext" COLS="80" ROWS="15" {tip text="Use carriage return for indentation only. LMS will reformat paragraphs and break long lines." trigger="body"}>{$message.body}</TEXTAREA>
 		</TD>
 	</TR>
+	<!--// sms //-->
 	<TR CLASS="LIGHT" ID="smsbody"{if $message.type < $smarty.const.MSG_SMS || $message.type > $smarty.const.MSG_ANYSMS} style="display: none"{/if}>
 		<TD CLASS="FLEFT" style="width: 1%;">
 			<IMG SRC="img/edit.gif" ALT=""> 
@@ -229,7 +268,7 @@
 			<span class="bold">{trans("Message body:")}</span>
 		</TD>
 		<TD CLASS="FRIGHT" style="width: 98%;">
-			<TEXTAREA NAME="message[smsbody]" ID="smstext" COLS="60" ROWS="5" onkeydown="countChars(this)" onkeyup="countChars(this)" onmouseout="countChars(this)" {tip text="Enter message body" trigger="body"}>{$message.body}</TEXTAREA>
+			<TEXTAREA NAME="message[smsbody]" ID="smstext" COLS="80" ROWS="15" onkeydown="countChars(this)" onkeyup="countChars(this)" onmouseout="countChars(this)" {tip text="Enter message body" trigger="body"}>{$message.body}</TEXTAREA>
 		</TD>
 	</TR>
 	<TR CLASS="LIGHT" ID="charscount"{if $message.type < $smarty.const.MSG_SMS || $message.type > $smarty.const.MSG_ANYSMS} style="display: none"{/if}>

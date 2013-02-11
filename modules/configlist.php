@@ -43,7 +43,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 	}
 
 	$config = $DB->GetAll('SELECT id, section, var, value, description as usercomment, disabled 
-			FROM uiconfig WHERE section != \'userpanel\''
+			FROM uiconfig WHERE section != \'userpanel\' AND section !=\'inetlms\''
 			.($section ? ' AND section = '.$DB->Escape($section) : '')
 			.($search ? ' AND var ?LIKE? '.$DB->Escape('%'.$search.'%') : '')
 			.$sqlord);
@@ -528,6 +528,11 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'paytype':
 						$config[$idx]['description'] = trans('Default invoices paytype. Default: "1" (cash)');
 					break;
+					
+					case 'default_type_of_documents':
+						$config[$idx]['description'] = 'zmienna określa nam domyślny typ dokumentu przy dodawaniu nowego zobowiązania/taryfy dla klienta, DEFAULT: <br>dozwolone wartości: <Br>invoice - faktura<br>proforma - faktura proforma<br>pusta wartość - tylko naliczenie opłat';
+					break;
+					
 
 					default:
 						$config[$idx]['description'] = trans('Unknown option. No description.');
@@ -679,19 +684,20 @@ function GetConfigList($order='var,asc', $section='', $search='')
 			case 'monit':
 				switch($item['var'])
 				{
-					case 'active_monitoring'	: $config[$idx]['description'] = 'czy monitorować hosty,wartość globalna, jeżeli ustawimy 0 to nie będą przeprowadzane testy. DEFAULT.:1';break;
-					case 'lms_password'		: $config[$idx]['description'] = 'Hasło użytkownika';break;
-					case 'lms_url'			: $config[$idx]['description'] = 'Adres URL do LMS, Domyślnie: http://localhost/lms ';break;
-					case 'lms_user'			: $config[$idx]['description'] = 'Nazwa użytkownika (login)';break;
-					case 'netdev_clear'		: $config[$idx]['description'] = 'Ilość dni trzymanych statystyk testów, starsze wpisy będą kasowane'; break;
+					case 'active_monitoring'	: $config[$idx]['description'] = 'czy monitorować hosty,wartość globalna, jeżeli ustawimy 0 to nie będą przeprowadzane testy.<br><b>DEFAULT: 1</b>';break;
+					case 'display_chart_in_node_box'	: $config[$idx]['description'] = 'Wyświetlaj wykres testu ping i statystyk syngałów w karcie komputera.<br><b>DEFAULT: 1</b>';break;
+//					case 'lms_password'		: $config[$idx]['description'] = 'Hasło użytkownika';break;
+//					case 'lms_url'			: $config[$idx]['description'] = 'Adres URL do LMS, Domyślnie: http://localhost/lms ';break;
+//					case 'lms_user'			: $config[$idx]['description'] = 'Nazwa użytkownika (login)';break;
+//					case 'netdev_clear'		: $config[$idx]['description'] = 'Ilość dni trzymanych statystyk testów, starsze wpisy będą kasowane'; break;
 					case 'netdev_test'		: $config[$idx]['description'] = 'Włącz testowanie hostów (urządzeń) sieciowych'; break;
 					case 'netdev_test_port'		: $config[$idx]['description'] = 'Domyślny port dla protokołu tcp'; break;
-					case 'netdev_test_type'		: $config[$idx]['description'] = 'Domyślny protokół lub usługa jaka będzie użyta do testów dla urządzeń sieciowych. DEFAULT: icmp<br>dozwolone wartości : icmp, http, https, ssh, ftp, telnet, callbook, rpcbind, samba, pptp, mysql, smtp, dns, nfs, postgresql'; break;
+					case 'netdev_test_type'		: $config[$idx]['description'] = 'Domyślny protokół lub usługa jaka będzie użyta do testów dla urządzeń sieciowych.<br>dozwolone wartości : icmp, http, https, ssh, ftp, telnet, callbook, rpcbind, samba, pptp, mysql, smtp, dns, nfs, postgresql<br><b>DEFAULT: icmp</b>'; break;
 					case 'netdev_time_max'		: $config[$idx]['description'] = 'Wartość maksymalna czasu odpowiedzi w ms dla testowanych urządzeń sieciowych. Po przekroczeniu tej wartości podczas testu, zostanie wysłana odpowiednia informacja. DEFAULT: 100'; break;
 					case 'netdev_time_send'		: $config[$idx]['description'] = 'Wyślij informację o przekroczonych czasach odpowiedzi dla urządzeń sieciowych. Wartość domyślna , DEFAULT: 1'; break;
 					case 'netdev_timeout_level'	: $config[$idx]['description'] = 'Poziom wysyłąnia informacji o braku aktywności<br>low - informuj przy drugim przebiegu testu jeżeli urządzenie dalej nie odpowiada<br>high - informuj natychmiast jeżeli urządzenie jest nieaktywne DEFAULT: low<br>Ustawienie domyślne '; break;
 					case 'netdev_timeout_send'	: $config[$idx]['description'] = 'Wyślij informację o braku aktywności urządzenia sieciowego, wartość domyślna dla testowanych urządzeń. DEFAULT: 1 '; break;
-					case 'nodes_clear'		: $config[$idx]['description'] = 'Ilość dni trzymanych statystyk testów, starsze wpisy będą kasowane'; break;
+//					case 'nodes_clear'		: $config[$idx]['description'] = 'Ilość dni trzymanych statystyk testów, starsze wpisy będą kasowane'; break;
 					case 'nodes_test'		: $config[$idx]['description'] = 'Włącz testowanie hostów (urządzeń) klientów'; break;
 					case 'nodes_test_port'		: $config[$idx]['description'] = 'Domyślny port dla protokołu tcp'; break;
 					case 'nodes_test_type'		: $config[$idx]['description'] = 'Domyślny protokół lub usługa jaka będzie użyta do testów dla urządzeń klientów. DEFAULT: icmp<br>dozwolone wartości : icmp, http, https, ssh, ftp, telnet, callbook, rpcbind, samba, pptp, mysql, smtp, dns, nfs, postgresql'; break;
@@ -699,7 +705,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'nodes_time_send'		: $config[$idx]['description'] = 'Wyślij informację o przekroczonych czasach odpowiedzi dla urządzeń klientów. Wartość domyślna , DEFAULT: 1'; break;
 					case 'nodes_timeout_level'	: $config[$idx]['description'] = 'Poziom wysyłąnia informacji o braku aktywności<br>low - informuj przy drugim przebiegu testu jeżeli urządzenie dalej nie odpowiada<br>high - informuj natychmiast jeżeli urządzenie jest nieaktywne DEFAULT: low<br>Ustawienie domyślne '; break;
 					case 'nodes_timeout_send'	: $config[$idx]['description'] = 'Wyślij informację o braku aktywności urządzenia sieciowego, wartość domyślna dla testowanych urządzeń. DEFAULT: 1 '; break;
-					case 'owner_clear'		: $config[$idx]['description'] = 'Ilość dni trzymanych statystyk testów, starsze wpisy będą kasowane'; break;
+//					case 'owner_clear'		: $config[$idx]['description'] = 'Ilość dni trzymanych statystyk testów, starsze wpisy będą kasowane'; break;
 					case 'owner_test'		: $config[$idx]['description'] = 'Włącz testowanie własnych hostów'; break;
 					case 'owner_test_port'		: $config[$idx]['description'] = 'Domyślny port dla protokołu tcp'; break;
 					case 'owner_test_type'		: $config[$idx]['description'] = 'Domyślny protokół lub usługa jaka będzie użyta do testów dla własnych urządzeń. DEFAULT: icmp<br>dozwolone wartości : icmp, http, https, ssh, ftp, telnet, callbook, rpcbind, samba, pptp, mysql, smtp, dns, nfs, postgresql'; break;
@@ -717,18 +723,24 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'send_to_gg'		: $config[$idx]['description'] = 'Pozwól na wysyłanie wiadomości przez komunikator Gadu-Gadu. DEFAULT.: 1. Ustawienie globalne'; break;
 					case 'send_to_sms'		: $config[$idx]['description'] = 'Pozwól na wysyłanie informacji poprzez sms. DEFAULT.: 1. Ustawienie Globalne'; break;
 					case 'test_script_dir'		: $config[$idx]['description'] = 'ścieżka do skryptu lms-monitoring.pl<BR><B>DEFAULT:</B> /usr/local/sbin/lms-monitoring.pl';break;
-					case 'img_gen'			: $config[$idx]['description'] = 'automatycznie generuj wykres do obrazka w formacie IP_HOSTA.png, wygenerowane wykresy możemy potem wykorzystać we własnych stronach.<BR>LMS na swoje potrzeby generuje w "locie" wykresy i nie są one powiązane z tą zmienną.<BR><B>DEFAULT:</B> false';break;
-					case 'img_dir'			: $config[$idx]['description'] = 'ścieżka gdzie mają być generowane wykresy dla poszczególnych urządzeń.<BR><B>DEFAULT:</B> /var/www/lms/img/monit';break;
-					case 'img_time'			: $config[$idx]['description'] = 'przedział czasowy wykresu od kiedy ma być wygenerowany do "teraz", podajemy w formacie : -1h -6h -12 -1d -3d itd..<BR><B>DEFAULT:</B> -1d';break;
-					case 'img_width'		: $config[$idx]['description'] = 'szerokość generowanego obrazka w px.<BR><B>DEFAULT:</B> 360';break;
-					case 'img_height'		: $config[$idx]['description'] = 'wysokość generowanego obrazka w px.<BR><B>DEFAULT:</B> 180';break;
-					case 'rrd_dir'			: $config[$idx]['description'] = 'ścieżka zapisu danych dla rrdtool.<BR><B>DEFAULT:</B> /var/www/lms/rrd';break;
-					case 'rrdtool_dir'		: $config[$idx]['description'] = 'ścieżka do skryptu rrdtool<BR><B>DEFAULT:</B> /usr/bin/rrdtool';break;
-					case 'grep_dir'			: $config[$idx]['description'] = 'ścieżka do binarki grep.<BR><B>DEFAULT:</B> /bin/grep';break;
-					case 'awk_dir'			: $config[$idx]['description'] = 'ścieżka do binarki awk.<BR><B>DEFAULT:</B> /usr/bin/awk';break;
-					case 'step_test_netdev'		: $config[$idx]['description'] = 'czas w minutach co ile jest robiony test dla urządzeń sieciowych, czas ten <b>musi</b> pokrywać się z czasem odpalania testu przez cron, w przypadku zmiany czasu należy wyczyścić statystyki pomiarów inaczej będą błędy na wykresach<BR><B>DEFAULT:</B> 5';break;
-					case 'step_test_nodes'		: $config[$idx]['description'] = 'czas w minutach co ile jest robiony test dla urządzeń klientów, czas ten <b>musi</b> pokrywać się z czasem odpalania testu przez cron, w przypadku zmiany czasu należy wyczyścić statystyki pomiarów inaczej będą błędy na wykresach<BR><B>DEFAULT:</B> 5';break;
-					case 'step_test_owner'		: $config[$idx]['description'] = 'czas w minutach co ile jest robiony test dla własnych urządzeń, czas ten <b>musi</b> pokrywać się z czasem odpalania testu przez cron, w przypadku zmiany czasu należy wyczyścić statystyki pomiarów inaczej będą błędy na wykresach<BR><B>DEFAULT:</B> 5';break;
+//					case 'img_gen'			: $config[$idx]['description'] = 'automatycznie generuj wykres do obrazka w formacie IP_HOSTA.png, wygenerowane wykresy możemy potem wykorzystać we własnych stronach.<BR>LMS na swoje potrzeby generuje w "locie" wykresy i nie są one powiązane z tą zmienną.<BR><B>DEFAULT:</B> false';break;
+//					case 'img_dir'			: $config[$idx]['description'] = 'ścieżka gdzie mają być generowane wykresy dla poszczególnych urządzeń.<BR><B>DEFAULT:</B> /var/www/lms/img/monit';break;
+//					case 'img_time'			: $config[$idx]['description'] = 'przedział czasowy wykresu od kiedy ma być wygenerowany do "teraz", podajemy w formacie : -1h -6h -12 -1d -3d itd..<BR><B>DEFAULT:</B> -1d';break;
+//					case 'image_width'		: $config[$idx]['description'] = 'szerokość generowanego obrazka w px. widocznego w karcie komputera/urządzenia sieciowego<BR><B>DEFAULT:</B> 450';break;
+//					case 'image_height'		: $config[$idx]['description'] = 'wysokość generowanego obrazka w px. widocznego w karcie komputera/urządzenia sieciowego<BR><B>DEFAULT:</B> 250';break;
+//					case 'image_width'		: $config[$idx]['description'] = 'szerokość generowanego obrazka w px. widocznego w karcie komputera/urządzenia sieciowego<BR><B>DEFAULT:</B> 530';break;
+//					case 'image_height'		: $config[$idx]['description'] = 'wysokość generowanego obrazka w px. widocznego w karcie klienta sieciowego<BR><B>DEFAULT:</B> 320';break;
+//					case 'rrd_dir'			: $config[$idx]['description'] = 'ścieżka zapisu danych dla rrdtool.<BR><B>DEFAULT:</B> /var/www/lms/rrd';break;
+					case 'rrdtool_dir'		: $config[$idx]['description'] = 'pełna ścieżka do  rrdtool<BR><B>DEFAULT:</B> /usr/bin/rrdtool';break;
+//					case 'grep_dir'			: $config[$idx]['description'] = 'ścieżka do binarki grep.<BR><B>DEFAULT:</B> /bin/grep';break;
+//					case 'awk_dir'			: $config[$idx]['description'] = 'ścieżka do binarki awk.<BR><B>DEFAULT:</B> /usr/bin/awk';break;
+					case 'step_test_netdev'		: $config[$idx]['description'] = 'czas w minutach co ile jest robiony test dla urządzeń sieciowych, w przypadku interwału należy wyczyścić statystyki pomiarów inaczej będą błędy na wykresach<BR><B>DEFAULT:</B> 5';break;
+					case 'step_test_nodes'		: $config[$idx]['description'] = 'czas w minutach co ile jest robiony test dla urządzeń klientów, w przypadku zmiany interwału  należy wyczyścić statystyki pomiarów inaczej będą błędy na wykresach<BR><B>DEFAULT:</B> 10';break;
+					case 'step_test_owner'		: $config[$idx]['description'] = 'czas w minutach co ile jest robiony test dla własnych urządzeń, w przypadku zmiany interwału należy wyczyścić statystyki pomiarów inaczej będą błędy na wykresach<BR><B>DEFAULT:</B> 10';break;
+					case 'live_ping'		: $config[$idx]['description'] = 'włącz dodatek LIVE PING.<br><b>DEFAULT: 1</b>';break;
+					
+					case 'step_test_signal'		: $config[$idx]['description'] = 'czas w minutach co ile jest robiony test sygnałów Wi-Fi, w przypadku zmiany wartości należy wyczyścić statystyki pomiarów inaczej będą błędy na wykresach<BR><B>DEFAULT:</B> 15';break;
+					case 'signal_test'		: $config[$idx]['description'] = 'włącz pomiary sygnałów Wi-Fi';break;
 					
 					default				: $config[$idx]['description'] = 'Nieznana opcja lub brak opisu';break;
 				} //end: monit

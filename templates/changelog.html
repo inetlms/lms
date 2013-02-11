@@ -12,7 +12,7 @@
     {section name='changelist' loop=$changelog}
     {math assign='lp' equation="x-y" x=$max y=$smarty.section.changelist.index}
     <tr class="{cycle}"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-	<td style="width:30px;vertical-align:top;" align="center" class="fleft" nowrap>{$lp|string_format:"%03d"}</td>
+	<td style="width:30px;" align="center" class="fleft" nowrap>{$lp|string_format:"%03d"}</td>
 	<td width="1%" class="pad" nowrap>{$changelog[changelist].data}</td>
 	<td width="auto" align="left" class="fright">{$changelog[changelist].opis}</td>
     </tr>

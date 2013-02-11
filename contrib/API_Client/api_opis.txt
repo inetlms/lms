@@ -1,0 +1,48 @@
+/*
+ * LMS iNET
+ *
+ *  (C) Copyright 2012 LMS iNET Developers
+ *
+ *  Please, see the doc/AUTHORS for more information about authors!
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License Version 2 as
+ *  published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+ *  USA.
+ *
+ *  $Id: v 1.00 2012/12/20 22:01:35 Sylwester Kondracki Exp $
+ */
+
+
+
+WYMAGANIA : curl dla php
+
+
+
+Tworzenie requestów :
+
+w lib/api_request tworzymy plik o nazwie dokłanie takiej samej jak ma nazywać się request
+
+np. getcustomer.php odpowiada nam req. getcustomer
+
+możemy wykorzystać klasy między innymi DB, LMS , GG oraz funkcje z plików lib/common.php , stałe z lib/definitons.php
+
+
+w lib/api_request jest klika przykładów które wykorzystują funkcje z LMS.class.php, 
+
+Każdy request to osobny plik !!!
+
+
+Autoryzacja :
+w lib/api_auth_list.php definijemy konta api klientów którzy mogą się łączyć z naszym serwerem
+Każda transmisja jest szyfrowana indywidualnym kluczem dla danego konta
+

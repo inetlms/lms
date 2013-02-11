@@ -8,13 +8,13 @@
 *                                             *
 \*********************************************/
 //-->
-{box title="bilingi dla terminalu : $terminal"}
+<h4>Szczegółowe informacje dla konta VoIP: {$cusname}</h4><br>
 <form name="billingext" method="get" action="?m=voiphiperus" >
     <input type="hidden" name="m" value="voiphiperus">
     <input type="hidden" name="voipid" value="{$voipid}">
-    <table width="100%" cellpadding="2" cellspacing="0">
-	<tr class="dark">
-	    <td width="auto" class="fleftu" align="left">
+    <table width="100%" cellpadding="2" cellspacing="0" class="table table-bordered">
+	<tr class="info">
+	    <td width="99%" align="left">
 		&nbsp;Terminal:&nbsp;
 		<select name="terminal" style="cursor:pointer;text-align:center;nim-width:100px;" onchange="document.billingext.submit();" >
 			{section name=pbfte loop=$terminallist}
@@ -45,42 +45,45 @@
 		</select>&nbsp;&nbsp;&nbsp;
 		{/if}
 	    </td>
-	    <td width="1%" style="text-align:right;vertical-align:top;" nowrap class="frightu">
-		<a href="?m=voiphiperus&print&&voipid={$voipid}&rok={$rok}&msc={$msc}&terminal={$terminal}" target="_blank">
-		{img src="print.gif" text="Drukuj wykaz połączeń"}</a>&nbsp;&nbsp;
+	    <td width="1%" style="text-align:right;vertical-align:top;border-left:0;" nowrap>
+		<a href="?m=voiphiperus&print&voipid={$voipid}&rok={$rok}&msc={$msc}&terminal={$terminal}" target="_blank">
+		{img src="agt_print.png" width="32" text="Drukuj wykaz połączeń"}</a>&nbsp;&nbsp;
 	    </td>
 	</tr>
     </table>
 </FORM>
 {if $billing|@count ne 0}
-<table width="100%" cellpadding="3" cellspacing="0">
-	<tr class="dark">
-	    <td width="1%" nowrap align="center"</td>
-	    <td width="1%" nowrap align="center"><B>czas</B></td>
-	    <td width="1%" nowrap align="center"></td>
-	    <td width="1%" nowrap align="center"><b>Numer</b></td>
-	    <td width="1%" nowrap align="center"><b>Numer</b></td>
-	    <td width="1%" nowrap align="center"></td>
-	    <td width="1%" colspan="3" nowrap ></td>
-	    <td width="1%" align="center" nowrap  style="cursor:pointer;min-width:250px;" colspan="3" ><B>Koszty Klienta</B></td>
+<table width="100%" cellpadding="3" cellspacing="0" class="table table-bordered table-striped">
+	<tr class="info">
+	    <td colspan="13">
+	    <strong>Terminal: {$terminal}</strong>
+	    </td>
+	</tr>
+	<tr class="warning">
+	    <td width="1%" nowrap>&nbsp;</td>
+	    <td width="1%" nowrap style="text-align:center;"><B>czas</B></td>
+	    <td width="1%" nowrap>&nbsp;</td>
+	    <td width="1%" nowrap style="text-align:center;"><b>Numer</b></td>
+	    <td width="1%" nowrap style="text-align:center;"><b>Numer</b></td>
+	    <td width="1%" nowrap style="text-align:center;">&nbsp;</td>
+	    <td width="1%" colspan="3" nowrap>&nbsp;</td>
+	    <td width="1%" nowrap  style="min-width:250px;text-align:center;" colspan="3" ><B>Koszty Klienta</B></td>
 
 	    <td width="1%" nowrap  ><B></B></td>
 	</tr>
-	<tr class="dark">
-	    <td width="1%" nowrap align="center"><B>data</B></td>
-	    <td width="1%" nowrap align="center"><B>rozmowy</B></td>
-	    <td width="1%" nowrap align="center"><B>kieru.</B></td>
-	    <td width="1%" nowrap align="center"><b>Inicjujcy</b></td>
-	    <td width="1%" nowrap align="center"><b>Odbiorcy</b></td>
-	    <td width="1%" nowrap align="center"><b>kraj</b></td>
-	    <td width="1%" colspan="3" nowrap ><B>kierunek - operator</B></td>
+	<tr class="warning">
+	    <td width="1%" nowrap style="border-top:0;text-align:center;"><B>data</B></td>
+	    <td width="1%" nowrap style="border-top:0;text-align:center;"><B>rozmowy</B></td>
+	    <td width="1%" nowrap style="border-top:0;text-align:center;"><B>kieru.</B></td>
+	    <td width="1%" nowrap style="border-top:0;text-align:center;"><b>Inicjujcy</b></td>
+	    <td width="1%" nowrap style="border-top:0;text-align:center;"><b>Odbiorcy</b></td>
+	    <td width="1%" nowrap style="border-top:0;text-align:center;"><b>kraj</b></td>
+	    <td width="1%" colspan="3" nowrap style="border-top:0;text-align:center;"><B>kierunek - operator</B></td>
 	    <td width="1%" align="right" nowrap>rozmowy</td>
 	    <td width="1%" align="right" nowrap>połączenia</td>
 	    <td width="1%" align="right" nowrap>cena/min&nbsp;&nbsp;&nbsp;</td>
-
-	    <td width="1%" nowrap  ><B>zrealizowane</B></td>
+	    <td width="1%" nowrap style="border-top:0;text-align:center;"><B>zrealizowane</B></td>
 	</tr>
-    {cycle values="darkest,light" print=false}
     {assign var='sumduration' value=0}
     {assign var='sumcost' value=0}
     {assign var='suminit_charge' value=0}
@@ -95,16 +98,16 @@
 	{math assign='sumreseller_init_charge' equation="x+y" x=$sumreseller_init_charge y=$billing[l].reseller_init_charge}
 	{math assign='summargin' equation="x+y" x=$summargin y=$billing[l].margin}
 	{assign var='ctn' value=$billing[l].calltype}
-	<tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	<tr>
 	    <td width="1%" nowrap {userpaneltip text="Data i godzina rozpoczęcia rozmowy"}>{$billing[l].start_time}</td>
-	    <td width="1%" nowrap  align="center"{userpaneltip text="Czas trwania rozmowy HH:MM:SS"} align="right">&nbsp;{$billing[l].duration|seconds_to_hours}&nbsp;</td>
-	    <td width="1%" nowrap  align="center"{userpaneltip text="Typ połączenia"}>&nbsp;{$ctypename[$ctn]}&nbsp;</td>
-	    <td width="1%" nowrap  {userpaneltip text="Numer z którego dzwoniono"}>{if $billing[l].caller=='unknown'}nieznany{else}{$billing[l].caller}{/if}</td>
-	    <td width="1%" nowrap  {userpaneltip text="Numer na który dzwoniono"}>{$billing[l].bill_cpb}</td>
-	    <td width="1%"  {userpaneltip text="Kierunek - kraj"}>{$billing[l].country}</td>
-	    <td width="1%"   {userpaneltip text="Opis kierunku"}>{$billing[l].description}</td>
+	    <td width="1%" nowrap {userpaneltip text="Czas trwania rozmowy HH:MM:SS"} style="text-align:center;">&nbsp;{$billing[l].duration|seconds_to_hours}&nbsp;</td>
+	    <td width="1%" nowrap {userpaneltip text="Typ połączenia"} style="text-align:left;">&nbsp;{$ctypename[$ctn]}&nbsp;</td>
+	    <td width="1%" nowrap {userpaneltip text="Numer z którego dzwoniono"}>{if $billing[l].caller=='unknown'}nieznany{else}{$billing[l].caller}{/if}</td>
+	    <td width="1%" nowrap {userpaneltip text="Numer na który dzwoniono"}>{$billing[l].bill_cpb}</td>
+	    <td width="1%" {userpaneltip text="Kierunek - kraj"}>{$billing[l].country}</td>
+	    <td width="1%"  {userpaneltip text="Opis kierunku"}>{$billing[l].description}</td>
 	    <td width="auto" {userpaneltip text="Operator kierunku"}>{$billing[l].operator}</td>
-	    <td width="1%" nowrap  {userpaneltip text="Typ kierunku"}>{$billing[l].type}</td>
+	    <td width="1%" nowrap {userpaneltip text="Typ kierunku"}>{$billing[l].type}</td>
 	    
 	    
 	    <td width="1%" align="right" nowrap  style="cursor:pointer;"{userpaneltip text="Koszt rozmowy"}>
@@ -124,7 +127,7 @@
 	</tr>
     {/section}
     {if $billing|@count ne 0}
-	<tr class="dark" >
+	<tr class="warning" >
 	    <td width="1%" nowrap ><B>ŁĄCZNIE:</B></td>
 	    <td width="1%" nowrap  {userpaneltip text="Czas trwania rozmowy HH:MM:SS"} align="right">&nbsp;<B>{$sumduration|seconds_to_hours}</b>&nbsp;</td>
 	    <td width="auto" colspan="7">&nbsp;</td>
@@ -142,16 +145,13 @@
 
 	    <td width="1%" nowrap  colspan="2">&nbsp;</td>
 	</tr>
-	<tr class="dark" >
+	<tr class="alert-success" >
 	    <td width="1%" nowrap ><B>ABONAMENT :</B></td>
 	    
 	    <td width="1%" nowrap >
 		{math assign='tempek' equation="x*y" x=$stvat y=$subscription}
 		&nbsp;<b>{$tempek|money_format}</b>
 	    </td>
-	    
-	    
-	    
 	    <td width="auto" align="right" colspan="12">
 		{math assign='sumacost' equation="x+y+z" x=$sumcost y=$suminit_charge z=$subscription}
 		{math assign='tempek' equation="x*y" x=$stvat y=$sumacost}
@@ -162,10 +162,9 @@
 </table>
 {else}
 <table width="100%" cellpadding="3" cellspacing="0">
-    <tr>
-	<td width="100%">
-	    <center><h4>Brak bilingów spełniających kryteria lub lista jest pusta</h4></center>
+    <tr class="alert alert-error">
+	<td width="100%" style="padding-top:20px;padding-bottom:20px;text-align:center;font-weight:bold;">
+	    <h4>Brak bilingów spełniających kryteria lub lista jest pusta</h4>
 	</td>
 </table>
 {/if}
-{/box}

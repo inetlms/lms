@@ -9,6 +9,7 @@
     <link href="{get_conf('phpui.style', 'img/style.css')}" rel="stylesheet" type="text/css">
     <link href="img/map.css" rel="stylesheet" type="text/css">
     <link href="img/tcal.css" rel="stylesheet" type="text/css">
+    <link href="img/jquery.cleditor.css" rel="stylesheet" type="text/css">
     <link href="img/lms-net.gif" rel="shortcut icon">
     <script type="text/javascript" src="img/common.js"> </script>
     <script type="text/javascript" src="img/ClickShowHideMenu.js"> </script>
@@ -17,15 +18,18 @@
     <script type="text/javascript" src="img/jquery-ui.js"> </script>
     <script type="text/javascript" src="img/jquery.validate.js"> </script>
     <script type="text/javascript" src="img/messages_pl.js"> </script>
-    <script type="text/javascript" src="img/wysiwyg.js"> </script>
+    <script type="text/javascript" src="img/jquery.cleditor.js"> </script>
     <script type="text/javascript" src="img/tcal.js"> </script>
 </head>
 <body onload="start_login_timeout({get_conf('phpui.timeout')})">
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:100;"></div>
 <script type="text/javascript" language="JavaScript" src="img/overlib.js"></script>
 {if !$layout.popup}
-{if 1==0}{include file="menu-top.html"}{/if}
+<div id="id_loadajax_img"></div>
 <div style="clear:both;"></div>
+
+
+
 <div id="pagecontainer">
     <div id="pageleftbar">
 	<table width="100%">
@@ -76,9 +80,12 @@
 	</script>
     </div>
     <div id="pagecontent">
+	{include file="toolbar.html"}
     	<div id="autosuggest"><ul></ul></div>
+    	
     	<form method="post" name="quicksearch" action="?m=quicksearch" id="quicksearch">
 	<table width="100%" cellpadding="0" cellspacing="0">
+	    
 		<tr>
 		    <td width="1%" nowrap>
 			{trans("Search:")}
@@ -106,8 +113,8 @@
 		</tr>
 	</table>
 	</form>
-	{include file="toolbar.html"}
-	<hr>
+	
+	
 <SCRIPT type="text/javascript">
 <!--//
 document.forms['quicksearch'].elements['customerinput'].focus();

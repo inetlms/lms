@@ -1,68 +1,79 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<!--// $Id$ //-->
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$_ui_language}">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta content="text/html; charset={$LANGDEFS.$_ui_language.charset}" http-equiv="content-type" />
-  <title>{trans("Virtual Customer Service")}</title>
-<link type="text/css" rel="stylesheet" href="{stylefile}" />
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <title>{trans('Online Customer Service')}</title>
+    <!-- TWITTER BOOTSTRAP RESPONSIVE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- TWITTER BOOTSTRAP CSS -->
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="login">
-<table style="vertical-align: middle; width:100%; height: 100%; margin:auto">
-    <tr>
-	<td align="center">
-	    <table>
-		<tr>
-		    <td>
-			{img src="logo.jpg" alt=""}
-		    </td>
-		    <td>&nbsp;</td>
-		    <td align="center">
-			{box title="VCS"}
-			<div style="white-space: nowrap; text-align: center;"><b>{trans("Virtual Customer Service")}</b></div><br/>
-			{if $error}<div style="color:red;text-align: center;"><b>{$error}</b></div>{else}&nbsp;{/if}
-			<br/><br/>
-			<form id="login" method="post" action="{$target}">
-			<table style="height: 100%; width: 100%;">
-			    <tr>
-				<td align="right" style="white-space: nowrap;">
-				    <b>{trans("Customer ID:")}</b>
-				</td>
-				<td align="left">
-				    <input type="text" name="loginform[login]" style="width: 50pt" />
-				</td>
-			    </tr>
-			    <tr>
-				<td align="right" style="white-space: nowrap;">
-				    <b>{trans("PIN:")}</b>
-				</td>
-				<td align="left">
-				    <input type="password" name="loginform[pwd]" style="width: 50pt" />
-				</td>
-			    </tr>
-			    <tr>
-				<td colspan="2" align="center">
-				    <br/><input type="submit" name="loginform[submit]" style="font-weight: bold;" value="{trans("Login")}"/>
-				</td>
-			    </tr>
-			</table>
-			</form>
-			{/box}
-		    </td>
-    		</tr>
-	    </table>
-	    <div class="copyrights"><b>LMS Userpanel {$layout.upv}</b><br/>
-	    {trans("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 2.")}<br/>
-	    {trans("For more information see")} <a href="doc/COPYING">doc/COPYING</a> {trans("and")} <a href="doc/AUTHORS">doc/AUTHORS</a>
-	    </div>
-	</td>
-    </tr>
-</table>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+    	    
+	    {if get_conf('userpanel.logourl')}
+            <div class="page-header"><img src="{get_conf('userpanel.logourl')}" alt=""></div>
+            {/if}
+            
+            <div class="row-fluid">
+                <div class="span4">
+                    <fieldset>
+                        <legend>{trans('Online Customer Service')}</legend>
+                        <form id="login" method="post" action="{$target}" class="well">
+                            <label>{t}Customer ID:{/t}</label>
+                            <input type="text" name="loginform[login]" />
+                            <label>{t}PIN:{/t}</label>
+                            <input type="password" name="loginform[pwd]" />
+                            <br/>
+                            <input type="submit" name="loginform[submit]" class="btn" value="{t}Login{/t}"/>
+                        </form>
+                    </fieldset>
+                    {if $error}<div class="alert alert-error"><b>{$error}</b></div>{else}&nbsp;{/if}
+                </div>
+      
+                <div class="span4">
+                    <fieldset>
+                        <legend>Przypomnienie ID i PIN</legend>
+                        <form id="recovery" method="post" action="{$target}" class="well" name="recovery">
+                            <label>{t}E-mail:{/t}</label>
+                            <input type="email" name="recovery[email]" value="{$recovery.email}" autocomplete="off">
+                            <label>PESEL lub NIP:</label>
+                            <input type="text" name="recovery[pesel]" value="{$recovery.pesel}" autocomplete="off">
+                            <br/>
+                            <input type="submit" class="btn" value="Wyślij przypomnienie">
+                        </form>
+                    </fieldset>
+                    {if $recovery.error eq 'OK'}
+                        <div class="alert alert-success"><b>Dane do logowanie zostały pomyślnie wysłane.</b></div>
+                    {elseif $recovery.error eq 'ERROR'}
+                        <div class="alert alert-error"><b>Wystąpił błąd. Prawdopodobną przyczyną są niepoprawne dane lub brak uzupełnionych danych w panelu użytkownika.</b></div>
+                    {elseif $recovery.error eq 'NODATA'}
+                        <div class="alert alert-error"><b>Wystąpił błąd. Proszę prawidłowo wypełnić formularz.</b></div>
+                    {/if}          
+                </div>
+
+                <div class="span4">
+                    <fieldset>
+                        <legend>Informacje:</legend>
+
+                        <div class="alert alert-info">{if get_conf('userpanel.boxinfo1') != '<br>' && get_conf('userpanel.boxinfo1') != ''}{get_conf('userpanel.boxinfo1')}{else}Dopisz swój adres e-mail, aby co miesiąc otrzymywać faktury VAT drogą elekroniczą.{/if}</div>
+                        <div class="alert alert-success">{if get_conf('userpanel.boxinfo2') != '<br>' && get_conf('userpanel.boxinfo2') != ''}{get_conf('userpanel.boxinfo2')}{else}Faktury VAT do rozlicznia podatkowego oraz druki do wpłat dostępne są po zalogowaniu do IBOK.{/if}</div>
+                        {if get_conf('userpanel.boxinfo3')!='<br>' && get_conf('userpanel.boxinfo3')!=''}<div class="alert alert-block">{get_conf('userpanel.boxinfo3')}</div>{/if}
+                    </fieldset>
+                </div>   
+            </div>        
+
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
 <!--
 document.forms['login'].elements['loginform[login]'].focus();
 //-->
 </script>
-</div>
+<!-- TWITTER BOOTSTRAP JS -->
 </body>
 </html>
