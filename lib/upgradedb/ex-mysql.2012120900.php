@@ -38,7 +38,7 @@ $DB->Execute("CREATE TABLE syslog (
     INDEX uid (uid),
     INDEX module (module),
     INDEX event (event)
-    ) ENGINE=MyISSAM;
+    ) ENGINE=MyISAM;
 ");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2012120900', 'dbvex'));
