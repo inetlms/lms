@@ -34,6 +34,16 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2013/01/11',
+	    'status'	=> 'add',
+	    'opis'	=> 'dodano listę firm które wsparły projekt iNET LMS, lista dostępna w Administracja -> sponsorzy<br>Dane są automatycznie aktualizowane co 7 dni.',
+	),
+	array(
+	    'data'	=> '2013/01/11',
+	    'status'	=> 'up',
+	    'opis'	=> 'poprawka invoice_tcpdf.inc.php, jeżeli klient nie ma podanego numeru NIP wtedy na fakturze umieszczany jest numer PESEL',
+	),
+	array(
 	    'data'	=> '2013/01/10',
 	    'status'	=> 'add',
 	    'opis'	=> 'Doszła możliwość utworzenia szablonów wiadomości które możemy potem wykorzystać przy tworzeniu nowej wiadomości do klienta(ów).',
