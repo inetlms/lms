@@ -1,0 +1,33 @@
+{include file="header.html"}
+{$xajax}
+
+<h1>Sponsorzy</h1>
+
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr class="light">
+    <td class="fall" width="100%" style="padding:2px;font-weight:bold;" align="center">
+    <div id="spons" style="width:100%;"></div>
+    </td>
+</tr>
+</table>
+
+
+{literal}
+<script type="text/javascript">
+<!--
+    xajax.callback.global.onRequest = function()
+    {
+	document.getElementById('spons').innerHTML = 
+	'<div style="width:80px;height:50px;"><img src="img/preload.gif" alt="Loading..." border="0"></div>';
+    }
+    function hideloading()
+    {
+	document.getElementById('spons').innerHTML = '';
+    }
+    xajax.callback.global.onComplete=hideloading();
+    xajax_viewsponsorzy();
+//-->
+</script>
+{/literal}
+
+{include file="footer.html"}

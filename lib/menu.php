@@ -71,6 +71,12 @@ $menu = array(
 					'prio' => 60,
 				),
 				array(
+					'name' => 'Sponsorzy',
+					'link' =>'?m=sponsorzy',
+					'tip' => 'Lista firm które przyczyniły się do rozwoju iNET LMS',
+					'prio' => 70,
+				),
+				array(
 					'name' => trans('Copyrights'),
 					'link' =>'?m=copyrights',
 					'tip' => trans('Copyrights, authors, etc.'),
