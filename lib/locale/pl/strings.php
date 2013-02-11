@@ -65,6 +65,7 @@ $_LANG['Contractor Remove: $a'] = 'Usunięcie Kontrahenta: $a';
 $_LANG['No such contractors matching search criteria or list is empty.'] = 'Brak kontrahentów pasujących do reguł filtrowania lub lista jest pusta.';
 $_LANG['Contractors List'] = 'Lista Kontrahentów';
 $_LANG['contractors management'] = 'zarządzanie kontrahentami';
+$_LANG['Contractors management'] = 'Zarządzanie Kontrahentami';
 $_LANG['contractors groups management'] = 'zarządzanie grupami kontrahentów';
 $_LANG['Contractor Groups List'] = 'Lista Grup Kontrahentów';
 $_LANG['Contractors'] = 'Kontrahenci';
