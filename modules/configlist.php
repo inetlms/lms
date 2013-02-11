@@ -43,7 +43,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 	}
 
 	$config = $DB->GetAll('SELECT id, section, var, value, description as usercomment, disabled 
-			FROM uiconfig WHERE section != \'userpanel\''
+			FROM uiconfig WHERE section != \'userpanel\' AND section != \'inetlms\''
 			.($section ? ' AND section = '.$DB->Escape($section) : '')
 			.($search ? ' AND var ?LIKE? '.$DB->Escape('%'.$search.'%') : '')
 			.$sqlord);
