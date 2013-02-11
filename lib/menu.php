@@ -381,7 +381,7 @@ $menu = array(
 			'name' => trans('Contractors'),
 			'img' =>'customer.gif',
 			'link' =>'?m=customerlist',
-			'tip' => trans('Customers Management'),
+			'tip' => trans('Contractors Management'),
 			'accesskey' =>'u',
 			'prio' => 23,
 			'index' => 140,
