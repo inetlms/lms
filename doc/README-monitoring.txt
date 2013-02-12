@@ -1,9 +1,11 @@
 Monitoring How-To
-Wymagania:
 
-Dla prawidłowego działania monitoringu wymagane są pakiety :
+Dla prawidłowego działania monitoringu wymagane są:
 
-PERL - Perl::Ping , Perl::Net , Bundle::LWP , Lwp , Lwp::UserAgent , Net::SNMP , Net::Tetlen::Cisco , Net::SSH::Perl
+PHP ver. 5.3 (long options w getopt)
+
+pakiety RERL:
+Perl::Ping , Perl::Net , Bundle::LWP , Lwp , Lwp::UserAgent , Net::SNMP , Net::Tetlen::Cisco , Net::SSH::Perl
 
 Przykładowa instalacja (sprawdzone pod debianem)
 
