@@ -25,7 +25,7 @@
  */
 
 define('DBVERSION', '2012111100'); // here should be always the newest version of database!
-define('DBVEX','2013021200'); // wersja bazy LMS iNET
+define('DBVEX','2013021201'); // wersja bazy LMS iNET
 				 // it placed here to avoid read disk every time when we call this file.
 
 /*
@@ -53,17 +53,14 @@ if($dbversion = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ?',arra
 		set_time_limit(0);
 		$lastupgrade = $dbversion;
 		$_dbtype = $CONFIG['database']['type'] == 'mysqli' ? 'mysql' : $CONFIG['database']['type'];
-
 		$upgradelist = getdir(LIB_DIR.'/upgradedb/', '^'.$_dbtype.'.[0-9]{10}.php$');
 		if(sizeof($upgradelist))
 			foreach($upgradelist as $upgrade)
 			{
 				$upgradeversion = preg_replace('/^'.$_dbtype.'\.([0-9]{10})\.php$/','\1',$upgrade);
-
 				if($upgradeversion > $dbversion && $upgradeversion <= DBVERSION)
 					$pendingupgrades[] = $upgradeversion;
 			}
-
 		if(sizeof($pendingupgrades))
 		{
 			sort($pendingupgrades);
@@ -78,35 +75,36 @@ if($dbversion = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ?',arra
 		}
 	}
 }
+$layout['dbschversion'] = isset($lastupgrade) ? $lastupgrade : DBVERSION;
 
-//$layout['dbschversion'] = isset($lastupgrade) ? $lastupgrade : DBVERSION;
 
-$dbversion = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ?',array('dbvex'));
 
-if (!$dbversion) 
+if ($layout['dbschversion'] == '2012111100')
 {
-    $DB->Execute('INSERT INTO dbinfo (keytype, keyvalue) VALUES (?,?) ;',array('dbvex','2012120600'));
-    $dbversion = '2012120600';
-}
+    $dbex = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ?',array('dbvex'));
 
-if($dbversion) 
-{
-	if(DBVEX > $dbversion)
+    if (!$dbex) 
+    {
+	$DB->Execute('INSERT INTO dbinfo (keytype, keyvalue) VALUES (?,?) ;',array('dbvex','2012120600'));
+	$dbex = '2012120600';
+    }
+
+    if($dbex)
+    {
+	if(DBVEX > $dbex)
 	{
+		$pendingupgrades = array();
 		set_time_limit(0);
-		$lastupgrade = $dbversion;
+		$lastupgradeex = $dbex;
 		$_dbtype = $CONFIG['database']['type'] == 'mysqli' ? 'mysql' : $CONFIG['database']['type'];
-
 		$upgradelist = getdir(LIB_DIR.'/upgradedb/', '^ex-'.$_dbtype.'.[0-9]{10}.php$');
 		if(sizeof($upgradelist))
 			foreach($upgradelist as $upgrade)
 			{
 				$upgradeversion = preg_replace('/^ex-'.$_dbtype.'\.([0-9]{10})\.php$/','\1',$upgrade);
-
-				if($upgradeversion > $dbversion && $upgradeversion <= DBVEX)
+				if($upgradeversion > $dbex && $upgradeversion <= DBVEX)
 					$pendingupgrades[] = $upgradeversion;
 			}
-
 		if(sizeof($pendingupgrades))
 		{
 			sort($pendingupgrades);
@@ -114,17 +112,16 @@ if($dbversion)
 			{
 				include(LIB_DIR.'/upgradedb/ex-'.$_dbtype.'.'.$upgrade.'.php');
 				if(!sizeof($DB->errors))
-					$lastupgrade = $upgrade;
+					$lastupgradeex = $upgrade;
 				else
 					break;
 			}
 		}
 	}
+    }
 }
 
-
-$layout['dbschversion'] = isset($lastupgrade) ? $lastupgrade : DBVERSION;
-$layout['dbschversionex'] = isset($lastupgrade) ? $lastupgrade : DBVEX;
+$layout['dbschversionex'] = isset($lastupgradeex) ? $lastupgradeex : DBVEX;
 
 } // end if defined no check
 ?>
