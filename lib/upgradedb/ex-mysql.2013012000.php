@@ -29,12 +29,12 @@ $DB->Execute("ALTER TABLE monittime  ENGINE = InnoDB ;");
 $DB->Execute("ALTER TABLE iphistory  ENGINE = InnoDB ;");
 $DB->Execute("ALTER TABLE monitwarn  ENGINE = InnoDB ;");
 $DB->Execute("ALTER TABLE syslog  ENGINE = InnoDB ;");
-$DB->Execute("ALTER TABLE monitnodes ADD pingtest TINYINT( 1 ) NOT NULL DEFAULT '1'");
-$DB->Execute("ALTER TABLE monitnodes ADD signaltest TINYINT( 1 ) NOT NULL DEFAULT '0'");
-$DB->Execute("ALTER TABLE netdevices ADD monit_nastype INT NOT NULL DEFAULT '0'");
-$DB->Execute("ALTER TABLE netdevices ADD monit_login VARCHAR( 60 ) NOT NULL DEFAULT ''");
-$DB->Execute("ALTER TABLE netdevices ADD monit_passwd VARCHAR( 60 ) NOT NULL DEFAULT ''");
-$DB->Execute("ALTER TABLE netdevices ADD monit_port SMALLINT NOT NULL DEFAULT '0'");
+$DB->Execute("ALTER TABLE monitnodes ADD pingtest TINYINT( 1 ) NOT NULL DEFAULT '1';");
+$DB->Execute("ALTER TABLE monitnodes ADD signaltest TINYINT( 1 ) NOT NULL DEFAULT '0';");
+$DB->Execute("ALTER TABLE netdevices ADD monit_nastype INT NOT NULL DEFAULT '0';");
+$DB->Execute("ALTER TABLE netdevices ADD monit_login VARCHAR( 60 ) NOT NULL DEFAULT '';");
+$DB->Execute("ALTER TABLE netdevices ADD monit_passwd VARCHAR( 60 ) NOT NULL DEFAULT '';");
+$DB->Execute("ALTER TABLE netdevices ADD monit_port SMALLINT NOT NULL DEFAULT '0';");
 $DB->Execute("ALTER TABLE users ADD profiles TEXT NOT NULL DEFAULT '';");
 $DB->Execute("ALTER TABLE up_customers ADD content TEXT NOT NULL DEFAULT '' ;");
 
