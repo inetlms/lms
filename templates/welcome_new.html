@@ -8,10 +8,10 @@
 		<TD WIDTH="50%" style="vertical-align: top;" COLSPAN="5">
 			<TABLE WIDTH="100%" CELLPADDING="3">
 				<tr class="dark">
-					<TD ALIGN="CENTER" COLSPAN="2" CLASS="FALL">
+					<td align="center" COLSPAN="2" class="fall">
 						<IMG SRC="img/logo-ico.gif" ALT=""> <B>{trans("About LMS:")}</B>
-					</TD>
-				</TR>
+					</td>
+				</tr>
 				<TR CLASS="LIGHT">
 					<TD WIDTH="50%" ALIGN="RIGHT" CLASS="FLEFT">
 						<B><A HREF="http://www.lms.org.pl" target="_BLANK">{trans("LMS version:")}</A></B>
@@ -60,7 +60,7 @@
 			</TABLE>
 		</TD>
 		<TD WIDTH="50%" style="vertical-align: top;" COLSPAN="6">
-			<TABLE WIDTH="100%" CELLPADDING="3">
+			<TABLE WIDTH="100%" CELLPADDING="3" class="table">
 				<TR CLASS="DARK">
 					<TD HEIGHT="24" ALIGN="CENTER" COLSPAN="2" CLASS="FALL" NOWRAP>
 						<IMG SRC="img/info1.gif" ALT=""> <B>{trans("About system:")}</B>
@@ -113,7 +113,7 @@
 	<TR>
 		{if !check_conf('privileges.hide_summaries')}
 		<TD WIDTH="50%" style="vertical-align: top;" COLSPAN="5">
-			<TABLE WIDTH="100%" CELLPADDING="3">
+			<TABLE WIDTH="100%" CELLPADDING="3" class="table">
 				<TR CLASS="DARK">
 					<TD COLSPAN="2" ALIGN="CENTER" CLASS="FALL">
 						<IMG SRC="img/customer.gif"> <B>{trans("Customers:")}</B>
@@ -176,7 +176,7 @@
 			</TABLE>
 		</TD>
 		<TD WIDTH="50%" style="vertical-align: top;" COLSPAN="6">
-			<TABLE WIDTH="100%" CELLPADDING="3">
+			<TABLE WIDTH="100%" CELLPADDING="3" class="table">
 				<TR CLASS="DARK">
 					<TD COLSPAN="2" ALIGN="CENTER" CLASS="FALL">
 						<IMG SRC="img/node.gif"> <B>{trans("Nodes:")}</B>
@@ -220,7 +220,7 @@
 	</TR>
 	<TR>
 		<TD WIDTH="50%" style="vertical-align: top;" COLSPAN="5">
-			<TABLE WIDTH="100%" CELLPADDING="3">
+			<TABLE WIDTH="100%" CELLPADDING="3"  class="table">
 			{counter start=0 skip=1 assign=rtstatscounter print=false}
 			{foreach from=$rtstats item=rtcategorystats}
 				{if $rtstatscounter is div by 5}
@@ -228,7 +228,7 @@
 				{/if}
 					<TD WIDTH="20%">
 
-			<TABLE CELLPADDING="2">
+			<TABLE CELLPADDING="2" class="table">
 				<TR CLASS="DARK">
 					<TD COLSPAN="2" ALIGN="CENTER" CLASS="FALL" NOWRAP>
 						<B><A href="?m=rtticketadd&catid={$rtcategorystats.id}" {tip text="Add new ticket" trigger="newticket"}><IMG SRC="img/ticket.gif"></A>&nbsp;{trans("Helpdesk:")}&nbsp;<A href="?m=rtqueueview&catid={$rtcategorystats.id}">{$rtcategorystats.name}</A></B>
@@ -303,7 +303,7 @@
 		</TD>
 		{if !check_conf('privileges.hide_links')}
 		<TD WIDTH="50%" style="vertical-align: top;" COLSPAN="6">
-		    <TABLE WIDTH="100%" CELLPADDING="3">
+		    <TABLE WIDTH="100%" CELLPADDING="3" class="table">
 				<TR CLASS="DARK">
 					<TD ALIGN="CENTER" CLASS="FALL">
 						<IMG SRC="img/tip.gif"> <B>{trans("Useful Links:")}</B>
@@ -316,6 +316,7 @@
 							<a href="https://github.com/inetlms" TARGET="_BLANK">{trans("GIT Repository")}</A><BR>
 							
 							<hr>
+							<A HREF="http://www.inetlms.pl" TARGET="_BLANK">Strona domowa projektu iNET LMS</A><BR>
 							<A HREF="http://www.lms.org.pl" TARGET="_BLANK">{trans("LMS Project Homepage")}</A><BR>
 							<!--
 							<A HREF="{$_dochref}" TARGET="_BLANK">{trans("Online Documentation")}</A><BR>
@@ -339,7 +340,7 @@
 </P>
 {if $layout.fortune}
 <P>
-<TABLE width="100%" cellpadding="10">
+<TABLE width="100%" cellpadding="10" class="table">
 	<TR class="superlight">
 		<TD class="fleftu" width="1%">
 			<IMG SRC="img/totd.gif" ALT="">
