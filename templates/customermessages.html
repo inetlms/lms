@@ -35,11 +35,18 @@
 						{$item.cdate|date_format:"%Y/%m/%d"}
 					</td>
 					<td width="97%" onclick="return self.location.href='?m=messageinfo&id={$item.id}'">
-						<img src="img/{if $item.type == $smarty.const.MSG_SMS}sms{else}mail{/if}.gif" alt="">
+						<img src="img/{if $item.type == $smarty.const.MSG_SMS}sms{elseif $item.type==$smarty.const.MSG_MAIL}mail{elseif $item.type==$smarty.const.MSG_GADUGADU}gg{elseif $item.type==$smarty.const.MSG_USERPANEL}cms{/if}.gif" alt="">
 						<B>{$item.subject}</B>
+						{if $item.type == $smarty.const.MSG_USERPANEL}
+						<br><img src="img/empty.gif" width="16" border="0" alt="">
+						Pierwszy odczyt: {if $item.firstread}{$item.firstread|date_format:"Y/m/d H:i"}{else}-----{/if}&nbsp;&nbsp;&nbsp;
+						Ostatni odczyt: {if $item.lastread}{$item.lastread|date_format:"Y/m/d H:i"}{else}-----{/if}&nbsp;&nbsp;&nbsp;
+						Potwierdzone:  {if $item.isread}TAK{else}NIE{/if}
+						{/if}
 					</td>
 					<td width="1%" nowrap align="right" onclick="return self.location.href='?m=messageinfo&id={$item.id}'">
-						{$item.destination}
+						{if $item.type == $smarty.const.MSG_GADUGADU}GG:{/if}
+						{if $item.type != $smarty.const.MSG_USERPANEL}{$item.destination}{else}userpanel{/if}
 					</td>
 					<td width="1%" align="right" nowrap>
 					</td>

@@ -421,19 +421,19 @@
 			</TABLE>
 		</TD>
 	</TR>
-{if get_conf('monit.display_chart_in_node_box')}
+{if get_conf('monit.display_chart_in_node_box') && ($node_monit.signaltest || $node_monit.pingtest)}
 	<tr class="light">
 	    <td width="100%" align="left" class="flr pad" colspan="3">
 		<table width="100%" cellpadding="2">
 		<tr>
 		
-		    {if $node_monit.signal}
+		    {if $node_monit.signaltest && $node_monit.signal}
 		    <td align="left" class="pad" width="{if $node_monit.ping && $node_monit.signal}50{else}100{/if}%">
 			<b>&nbsp;Jakość i siła sygnału radiowego, ostatnie 24 godziny od dnia {$node_monit.signal_date|date_format:"Y/m/d H:i"}</b><br><img src="tmp/signal.node.{$nodeinfo.id}.small.png">
 		    </td>
 		    {/if}
 		    
-		    {if $node_monit.ping}
+		    {if $node_monit.pingtest && $node_monit.ping}
 		    <td align="left" class="pad" width="{if $node_monit.ping && $node_monit.signal}50{else}100{/if}%">
 		    <b>&nbsp;Czasy odpowiedzi dla testu Ping, ostatnie 24 godziny od dnia {$node_monit.ping_date|date_format:"Y/m/d H:i"}</b><br><img src="tmp/ping.node.{$nodeinfo.id}.small.png">
 		    </td>

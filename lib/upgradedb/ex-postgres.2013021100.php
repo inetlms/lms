@@ -23,9 +23,12 @@
 
 $DB->BeginTrans();
 
-$DB->Execute('DELETE FROM monitnodes WHERE id = ? ;',array('0'));
+$DB->Execute("DELETE FROM monitnodes WHERE id = '0' ;");
+$DB->Execute("DELETE FROM monitsignal WHERE nodeid = '0';");
+$DB->Execute("DELETE FROM monittime WHERE nodeid = '0' AND ownid = '0';");
+$DB->Execute("DELETE FROM monitwarn WHERE nodeid = '0' AND ownid = '0';");
 
-$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2013021000', 'dbvex'));
+$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2013021100', 'dbvex'));
 
 $DB->CommitTrans();
 ?>

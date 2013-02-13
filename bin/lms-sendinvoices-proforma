@@ -32,6 +32,7 @@ use LWP::UserAgent;
 use Time::Local;
 use MIME::QuotedPrint;
 use Mail::Sender;
+use IO::Socket::SSL;
 
 my $_version = '1.11-cvs';
 
@@ -230,6 +231,10 @@ while(my $row = $dbq->fetchrow_hashref())
 {
 	my $sender;
 	my $ua = LWP::UserAgent->new;
+	my %ssl_opts;
+	$ssl_opts{'verify_hostname'} = 0;
+	$ssl_opts['SSL_verify_mode'} = SSL_VERIFY_NONE;
+	$us->ssl_opts(%ssl_opts);
 	my $response = $ua->get($lms_url.'/?m=invoice&override=1&original=1&id='.$row->{'id'}.'&loginform[login]='.$lms_user.'&loginform[pwd]='.$lms_password);
 	
 	if ($response->is_success)
@@ -256,6 +261,7 @@ while(my $row = $dbq->fetchrow_hashref())
 			authid => $smtp_user,
 			authpwd => $smtp_pass,
 			on_errors => undef,
+			tls_allowed => 0,
 #			debug_level => 4,
 #			debug => './log.txt',
 	        })) {
@@ -278,7 +284,7 @@ while(my $row = $dbq->fetchrow_hashref())
 				        encoding => $fencoding,
 #					disposition => 'inline; filename="invoice_'.$row->{'id'}.'.'.$fext.'"',
 					disposition => 'attachment; filename="invoice_'.$row->{'id'}.'.'.$fext.'"',
-					charset => 'UTF-8',
+#					charset => 'UTF-8',
 					msg => $response->content,
 				});
 				$sender->EndPart($ftype);

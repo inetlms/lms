@@ -175,7 +175,8 @@ define('MSG_DRAFT', 4);
 define('MSG_MAIL', 1);
 define('MSG_SMS', 2);
 define('MSG_ANYSMS', 3);
-define('MSG_GADUGADU',4);
+define('MSG_GADUGADU',10);
+define('MSG_USERPANEL',11);
 
 // Account types
 define('ACCOUNT_SHELL', 1);

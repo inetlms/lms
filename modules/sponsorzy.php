@@ -56,6 +56,12 @@ function aktualizacja($dane)
 	    $DB->Execute('INSERT INTO uiconfig (section, var, value) VALUES (?, ?, ?) ;',array('inetlms','sponsorzy',$dane));
 }
 
+if (isset($_GET['update']) && $_GET['update'] == '1')
+{
+    $tmp = pobierzdane();
+    if ($tmp) aktualizacja($tmp);
+}
+
 $info = get_conf('inetlms.sponsorzy',NULL);
 
 if (!$info)

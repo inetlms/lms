@@ -26,7 +26,8 @@
 			document.getElementById('attachment').style.display = 'none';
 			{if !$message.customerid}
 			var users = document.getElementById('users');
-			if (elem == 'typeanysms') {
+			if (elem == 'typeanysms') 
+			{
 				document.getElementById('phonenumber').style.display = '';
 				if (users) users.style.display = '';
 			} else {
@@ -36,14 +37,55 @@
 			{/if}
 			document.getElementById('smsbody').style.display = '';
 			document.getElementById('charscount').style.display = '';
-		} else {
+			document.getElementById('gadugadubody').style.display = 'none';
+			document.getElementById('userpanelbody').style.display = 'none';
+		} 
+		if (elem == 'typemail')
+		{
 			document.getElementById('mailbody').style.display = '';
 			document.getElementById('mailfrom').style.display = '';
 			document.getElementById('mailsender').style.display = '';
 			document.getElementById('attachment').style.display = '';
+			{if !$message.customerid}
 			document.getElementById('phonenumber').style.display = 'none';
+			{/if}
 			document.getElementById('smsbody').style.display = 'none';
 			document.getElementById('charscount').style.display = 'none';
+			document.getElementById('gadugadubody').style.display = 'none';
+			document.getElementById('userpanelbody').style.display = 'none';
+		}
+		if (elem == 'typegadugadu')
+		{
+			document.getElementById('mailbody').style.display = 'none';
+			document.getElementById('mailfrom').style.display = 'none';
+			document.getElementById('mailsender').style.display = 'none';
+			document.getElementById('attachment').style.display = 'none';
+			{if !$message.customerid}
+			var users = document.getElementById('users');
+			document.getElementById('phonenumber').style.display = 'none';
+			if (users) users.style.display = 'none';
+			{/if}
+			document.getElementById('smsbody').style.display = 'none';
+			
+			document.getElementById('charscount').style.display = '';
+			document.getElementById('gadugadubody').style.display = '';
+			document.getElementById('userpanelbody').style.display = 'none';
+		}
+		if (elem == 'typeuserpanel')
+		{
+			document.getElementById('mailbody').style.display = 'none';
+			document.getElementById('mailfrom').style.display = 'none';
+			document.getElementById('mailsender').style.display = 'none';
+			document.getElementById('attachment').style.display = 'none';
+			{if !$message.customerid}
+			var users = document.getElementById('users');
+			document.getElementById('phonenumber').style.display = 'none';
+			if (users) users.style.display = 'none';
+			{/if}
+			document.getElementById('smsbody').style.display = 'none';
+			document.getElementById('charscount').style.display = 'none';
+			document.getElementById('gadugadubody').style.display = 'none';
+			document.getElementById('userpanelbody').style.display = '';
 		}
 	}
 
@@ -62,6 +104,12 @@
 	
 	if (document.getElementById('typemail').checked == true)
 	    xajax_selecttemplates('id_theme','mailtext',idtpl);
+	
+	if (document.getElementById('typegadugadu').checked == true)
+	    xajax_selecttemplates('id_theme','gadugadutext',idtpl);
+	    
+	if (document.getElementById('typeuserpanel').checked == true)
+	    xajax_selecttemplates('id_theme','userpaneltext',idtpl);
 	
 	if (document.getElementById('typesms').checked == true || document.getElementById('typeanysms').checked == true)
 	    xajax_selecttemplates('id_theme','smstext',idtpl);
@@ -164,9 +212,11 @@
 			{if !$message.customerid}
 			<INPUT type="radio" NAME="message[type]" id="typeanysms" value="{$smarty.const.MSG_ANYSMS}"{if $message.type == $smarty.const.MSG_ANYSMS} CHECKED{/if} {tip trigger="type" text="Select message type"} onclick="typesel(this.id)"><label for="typeanysms"><span class="bold">{trans("any sms")}</span></label>
 			{/if}
+			<INPUT type="radio" NAME="message[type]" id="typegadugadu" value="{$smarty.const.MSG_GADUGADU}"{if $message.type == $smarty.const.MSG_GADUGADU} CHECKED{/if} {tip trigger="type" text="Select message type"} onclick="typesel(this.id)"><label for="typegadugadu"><span class="bold">Gadu-Gadu</span></label>
+			<INPUT type="radio" NAME="message[type]" id="typeuserpanel" value="{$smarty.const.MSG_USERPANEL}"{if $message.type == $smarty.const.MSG_USERPANEL} CHECKED{/if} {tip trigger="type" text="Select message type"} onclick="typesel(this.id)"><label for="typeuserpanel"><span class="bold">Userpanel</span></label>
 		</TD>
 	</TR>
-	<TR CLASS="LIGHT" ID="mailsender"{if $message.type > $smarty.const.MSG_MAIL} style="display: none;"{/if}>
+	<TR CLASS="LIGHT" ID="mailsender" {if $message.type == $smarty.const.MSG_SMS || $message.type == $smarty.const.MSG_ANYSMS || $message.type == $smarty.const.MSG_GADUGADU || $message.type == $smarty.const.MSG_USERPANEL} style="display: none;"{/if}>
 		<TD CLASS="FLEFT" style="width: 1%;">
 			<IMG SRC="img/email.gif" ALT=""> 
 		</TD>
@@ -178,7 +228,7 @@
 			
 		</TD>
 	</TR>
-	<TR CLASS="LIGHT" ID="mailfrom"{if $message.type > $smarty.const.MSG_MAIL} style="display: none;"{/if}>
+	<TR CLASS="LIGHT" ID="mailfrom" {if $message.type == $smarty.const.MSG_SMS || $message.type == $smarty.const.MSG_ANYSMS || $message.type == $smarty.const.MSG_GADUGADU || $message.type == $smarty.const.MSG_USERPANEL} style="display: none;"{/if}>
 		<TD CLASS="FLEFT" style="width: 1%;">
 			<IMG SRC="img/users.gif" ALT=""> 
 		</TD>
@@ -248,7 +298,8 @@
 		</TD>
 	</TR>
 	<!--// mail //-->
-	<TR CLASS="LIGHT" ID="mailbody"{if $message.type > $smarty.const.MSG_MAIL} style="display: none"{/if}>
+	<TR CLASS="LIGHT" ID="mailbody" {if $message.type == $smarty.const.MSG_SMS || $message.type == $smarty.const.MSG_ANYSMS || $message.type == $smarty.const.MSG_GADUGADU || $message.type == $smarty.const.MSG_USERPANEL} style="display: none"{/if}>
+	
 		<TD CLASS="FLEFT" style="width: 1%;">
 			<IMG SRC="img/edit.gif" ALT=""> 
 		</TD>
@@ -260,7 +311,7 @@
 		</TD>
 	</TR>
 	<!--// sms //-->
-	<TR CLASS="LIGHT" ID="smsbody"{if $message.type < $smarty.const.MSG_SMS || $message.type > $smarty.const.MSG_ANYSMS} style="display: none"{/if}>
+	<TR CLASS="LIGHT" ID="smsbody" {if $message.type == $smarty.const.MSG_MAIL || $message.type == $smarty.const.MSG_GADUGADU || $message.type == $smarty.const.MSG_USERPANEL} style="display: none"{/if}>
 		<TD CLASS="FLEFT" style="width: 1%;">
 			<IMG SRC="img/edit.gif" ALT=""> 
 		</TD>
@@ -271,14 +322,40 @@
 			<TEXTAREA NAME="message[smsbody]" ID="smstext" COLS="80" ROWS="15" onkeydown="countChars(this)" onkeyup="countChars(this)" onmouseout="countChars(this)" {tip text="Enter message body" trigger="body"}>{$message.body}</TEXTAREA>
 		</TD>
 	</TR>
-	<TR CLASS="LIGHT" ID="charscount"{if $message.type < $smarty.const.MSG_SMS || $message.type > $smarty.const.MSG_ANYSMS} style="display: none"{/if}>
+	<!--// gadugadu //-->
+	<TR CLASS="LIGHT" ID="gadugadubody" {if $message.type == $smarty.const.MSG_MAIL || $message.type == $smarty.const.MSG_SMS || $message.type == $smarty.const.MSG_ANYSMS || $message.type == $smarty.const.MSG_USERPANEL} style="display: none"{/if}>
+		<TD CLASS="FLEFT" style="width: 1%;">
+			<IMG SRC="img/edit.gif" ALT=""> 
+		</TD>
+		<TD style="width: 1%; white-space: nowrap;">
+			<span class="bold">{trans("Message body:")}</span>
+		</TD>
+		<TD CLASS="FRIGHT" style="width: 98%;">
+			<TEXTAREA NAME="message[gadugadubody]" ID="gadugadutext" COLS="80" ROWS="15" onkeydown="countChars(this)" onkeyup="countChars(this)" onmouseout="countChars(this)" {tip text="Enter message body" trigger="body"}>{$message.body}</TEXTAREA>
+		</TD>
+	</TR>
+	<!--// userpanel //-->
+	<TR CLASS="LIGHT" ID="userpanelbody" {if $message.type == $smarty.const.MSG_MAIL || $message.type == $smarty.const.MSG_SMS || $message.type == $smarty.const.MSG_ANYSMS || $message.type == $smarty.const.MSG_GADUGADU} style="display: none"{/if}>
+		<TD CLASS="FLEFT" style="width: 1%;">
+			<IMG SRC="img/edit.gif" ALT=""> 
+		</TD>
+		<TD style="width: 1%; white-space: nowrap;">
+			<span class="bold">{trans("Message body:")}</span>
+		</TD>
+		<TD CLASS="FRIGHT" style="width: 98%;">
+			<TEXTAREA NAME="message[userpanelbody]" ID="userpaneltext" COLS="80" ROWS="15" onkeydown="countChars(this)" onkeyup="countChars(this)" onmouseout="countChars(this)" {tip text="Enter message body" trigger="body"}>{$message.body}</TEXTAREA>
+		</TD>
+	</TR>
+	
+	
+	<TR CLASS="LIGHT" ID="charscount" {if $message.type == $smarty.const.MSG_MAIL || $message.type == $smarty.const.MSG_USERPANEL} style="display: none"{/if}>
 		<TD CLASS="FLEFT" style="width: 1%;"></TD>
 		<TD style="width: 1%; white-space: nowrap;">
 			<span class="bold">{trans("Characters:")}</span>
 		</TD>
 		<TD CLASS="FRIGHT" style="width: 98%;" ID="charscounttext">0</TD>
 	</TR>
-	<TR CLASS="LIGHT" ID="attachment"{if $message.type > $smarty.const.MSG_MAIL} style="display: none"{/if}>
+	<TR CLASS="LIGHT" ID="attachment" {if $message.type == $smarty.const.MSG_SMS || $message.type == $smarty.const.MSG_ANYSMS || $message.type == $smarty.const.MSG_GADUGADU || $message.type == $smarty.const.MSG_USERPANEL} style="display: none"{/if}>
 		<TD style="width: 1%;" CLASS="fleft">
 			<IMG src="img/attach.gif" alt="">
 		</TD>
@@ -298,6 +375,7 @@
 </FORM>
 <SCRIPT type="text/javascript">
 <!--
+typesel('typemail');
 document.forms['message'].elements['message[sender]'].focus();
 countChars(document.getElementById('smstext'));
 

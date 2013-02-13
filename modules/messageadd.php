@@ -1,7 +1,7 @@
 <?php
 
 /*
- * LMS version 1.11-git
+ * iNET LMS  version 1.0.2
  *
  *  (C) Copyright 2001-2012 LMS Developers
  *
@@ -71,17 +71,26 @@ function GetRecipients($filter, $type=MSG_MAIL)
 				GROUP BY customerid
 			) x ON (x.customerid = c.id)';
 	}
+	
+	if ($type == MSG_GADUGADU)
+	{
+	    $gadutable = 'JOIN (SELECT uid AS gadugadu, customerid FROM imessengers WHERE type=\'0\' GROUP BY uid,customerid) x ON (x.customerid = c.id) ';
+	}
 
 	$recipients = $LMS->DB->GetAll('SELECT c.id, email, pin, '
 		.($type==MSG_SMS ? 'x.phone, ': '')
-		.$LMS->DB->Concat('c.lastname', "' '", 'c.name').' AS customername,
-		COALESCE(b.value, 0) AS balance
+		.($type==MSG_GADUGADU ? 'x.gadugadu, ' : '')
+		.$LMS->DB->Concat('c.lastname', "' '", 'c.name').' AS customername, '
+		.$LMS->DB->Concat('c.address', "' '", 'c.zip',"' '",'c.city').' AS address, '
+		.$LMS->DB->Concat('c.post_address', "' '", 'c.post_zip',"' '",'c.post_city').' AS postaddress, '
+		.'COALESCE(b.value, 0) AS balance
 		FROM customersview c 
 		LEFT JOIN (
 			SELECT SUM(value) AS value, customerid
 			FROM cash GROUP BY customerid
 		) b ON (b.customerid = c.id) '
 		.(!empty($smstable) ? $smstable : '')
+		.(!empty($gadutable) ? $gadutable : '')
 		.'WHERE deleted = '.$deleted
 		.($type == MSG_MAIL ? ' AND email != \'\'' : '')
 		.($group!=0 ? ' AND status = '.$group : '')
@@ -117,13 +126,20 @@ function GetRecipient($customerid, $type=MSG_MAIL)
 				ORDER BY phone LIMIT 1
 			) x ON (x.customerid = c.id)';
 	}
+	
+	if ($type == MSG_GADUGADU)
+	{
+	    $gadutable = 'JOIN (SELECT uid AS gadugadu, customerid FROM imessengers WHERE type=\'0\' GROUP BY uid,customerid) x ON (x.customerid = c.id) ';
+	}
 
 	return $LMS->DB->GetAll('SELECT c.id, email, pin, '
 		.($type==MSG_SMS ? 'x.phone, ': '')
+		.($type==MSG_GADUGADU ? 'x.gadugadu, ' : '')
 		.$LMS->DB->Concat('c.lastname', "' '", 'c.name').' AS customername,
 		COALESCE((SELECT SUM(value) FROM cash WHERE customerid = c.id), 0) AS balance
 		FROM customersview c '
 		.(!empty($smstable) ? $smstable : '')
+		.(!empty($gadutable) ? $gadutable : '')
 		.'WHERE c.id = '.$customerid
 		.($type == MSG_MAIL ? ' AND email != \'\'' : ''));
 }
@@ -131,13 +147,62 @@ function GetRecipient($customerid, $type=MSG_MAIL)
 function BodyVars(&$body, $data)
 {
 	global $LMS, $LANGDEFS;
+	
+	    if (!empty($data['customername'])) 
+		$body = str_replace('%customer', $data['customername'], $body);
+	    else
+		$body = str_replace('%customer','', $body);
+	    
+	    if (!empty($data['balance'])) 
+		$body = str_replace('%balance', $data['balance'], $body);
+	    else
+		$body = str_replace('%balance','', $body);
+	
+	    if (!empty($data['id'])) 
+		$body = str_replace('%cid', $data['id'], $body);
+	    else
+		$body = str_replace('%cid','', $body);
+		
+	    if (!empty($data['pin'])) 
+		$body = str_replace('%pin', $data['pin'], $body);
+	    else
+		$body = str_replace('%pin', '', $body);
+	    
+	    if (!empty($data['address'])) 
+		$body = str_replace('%address', $data['address'], $body);
+	    else
+		$body = str_replace('%address','', $body);
+	    
+	    if (!empty($data['postaddress'])) 
+		$body = str_replace('%postaddress', $data['postaddress'], $body);
+	    else
+		$body = str_replace('%postaddress','', $body);
 
-	$body = str_replace('%customer', $data['customername'], $body);
-	$body = str_replace('%balance', $data['balance'], $body);
-	$body = str_replace('%cid', $data['id'], $body);
-	$body = str_replace('%pin', $data['pin'], $body);
-	if (strpos($body, '%bankaccount') !== false)
-		$body = str_replace('%bankaccount', format_bankaccount(bankaccount($data['id']), $body));
+	    if (bankaccount($data['id'])!='') 
+	    {
+		if (strpos($body, '%bankaccount') !== false)
+		$body = str_replace('%bankaccount', format_bankaccount(bankaccount($data['id'])), $body);
+	    }
+	    else
+		$body = str_replace('%bankaccount','', $body);
+	
+	
+	if(!(strpos($body, '%last_3_in_a_table') === FALSE))
+	{
+		$last3 = '';
+		if($last3_array = $LMS->DB->GetAll('SELECT comment, time, value 
+			FROM cash WHERE customerid = ?
+			ORDER BY time DESC LIMIT 3', array($data['id'])))
+		{
+			foreach($last3_array as $r)
+			{
+				$last3 .= date("Y/m/d | ", $r['time']);
+				$last3 .= sprintf("%20s | ", sprintf($LANGDEFS[$LMS->ui_lang]['money_format'], $r['value']));
+				$last3 .= $r['comment']."\n";
+			}
+		}
+		$body = str_replace('%last_3_in_a_table', $last3, $body);
+	}
 
 	if(!(strpos($body, '%last_10_in_a_table') === FALSE))
 	{
@@ -163,7 +228,7 @@ if(isset($_POST['message']))
 {
 	$message = $_POST['message'];
 
-	$message['type'] = $message['type'] == MSG_MAIL ? MSG_MAIL : ($message['type'] == MSG_SMS ? MSG_SMS : MSG_ANYSMS);
+//	$message['type'] = $message['type'] == MSG_MAIL ? MSG_MAIL : ($message['type'] == MSG_SMS ? MSG_SMS : MSG_ANYSMS);
 
 	if(empty($message['customerid']) && ($message['group'] < 0 || $message['group'] > 7))
 		$error['group'] = trans('Incorrect customers group!');
@@ -180,7 +245,7 @@ if(isset($_POST['message']))
 		if($message['from']=='')
 			$error['from'] = trans('Sender name is required!');
 	}
-	else
+	if ($message['type'] == MSG_SMS || $message['type'] == MSG_ANYSMS)
 	{
 		$message['body'] = $message['smsbody'];
 		$message['sender'] = '';
@@ -196,6 +261,19 @@ if(isset($_POST['message']))
 			if (empty($phonenumbers))
 				$error['phonenumber'] = trans('Specified phone number is not correct!');
 		}
+	}
+	if ($message['type'] == MSG_GADUGADU)
+	{
+	    $message['body'] = $message['gadugadubody'];
+	    $message['sender'] = '';
+	    $message['from'] = '';
+	}
+	
+	if ($message['type'] == MSG_USERPANEL)
+	{
+		$message['body'] = $message['userpanelbody'];
+		$message['sender']='';
+		$message['from']='';
 	}
 
 	if($message['subject']=='')
@@ -232,7 +310,7 @@ if(isset($_POST['message']))
 	{
 		$recipients = array();
 		if(empty($message['customerid']))
-			if ($message['type'] == MSG_SMS || $message['type'] == MSG_MAIL)
+			if ($message['type'] == MSG_SMS || $message['type'] == MSG_MAIL || $message['type'] == MSG_GADUGADU || $message['type'] == MSG_USERPANEL)
 				$recipients = GetRecipients($message, $message['type']);
 			else
 				foreach($phonenumbers as $phone)
@@ -258,6 +336,8 @@ if(isset($_POST['message']))
 		$SMARTY->display('messagesend.html');
 
 		$DB->BeginTrans();
+		
+//		if ($message['type'] == MSG_USERPANEL) $messbody = base64_encode($message['body']); else $messbody = $message['body'];
 
 		$DB->Execute('INSERT INTO messages (type, cdate, subject, body, userid, sender)
 			VALUES (?, ?NOW?, ?, ?, ?, ?)', array(
@@ -272,10 +352,10 @@ if(isset($_POST['message']))
 
 		foreach($recipients as $key => $row)
 		{
-			if($message['type'] == MSG_MAIL)
-				$recipients[$key]['destination'] = $row['email'];
-			else
-				$recipients[$key]['destination'] = $row['phone'];
+			if($message['type'] == MSG_MAIL) $recipients[$key]['destination'] = $row['email'];
+			if($message['type'] == MSG_SMS || $message['type'] == MSG_ANYSMS) $recipients[$key]['destination'] = $row['phone'];
+			if($message['type'] == MSG_GADUGADU) $recipients[$key]['destination'] = $row['gadugadu'];
+			if($message['type'] == MSG_USERPANEL) $recipients[$key]['destination'] = $row['id'];
 
 			$DB->Execute('INSERT INTO messageitems (messageid, customerid,
 				destination, status)
@@ -306,10 +386,21 @@ if(isset($_POST['message']))
 			$headers['Subject'] = $message['subject'];
 			$headers['Reply-To'] = $headers['From'];
 		}
-		else {
+		elseif ($message['type'] == MSG_SMS || $message['type'] == MSG_ANYSMS)
+		{
 			if (!empty($CONFIG['sms']['debug_phone']))
 				echo '<B>'.trans('Warning! Debug mode (using phone $a).',$CONFIG['sms']['debug_phone']).'</B><BR>';
 		}
+		elseif ($message['type'] == MSG_GADUGADU)
+		{
+		    if (!empty($CONFIG['gadugadu']['gg_number']))
+				echo '<b>UWAGA! Wysyłanie wiadomości z numeru '.$CONFIG['gadugadu']['gg_number'].'</b><br>';
+		}
+		
+		if ($message['type'] == MSG_GADUGADU)
+		    $gg_connect = $LMS->ConnectGaduGadu();
+		else
+		    $gg_connect = FALSE;
 
 		foreach($recipients as $key => $row)
 		{
@@ -322,10 +413,20 @@ if(isset($_POST['message']))
 				$headers['To'] = '<'.$row['destination'].'>';
 				echo '<img src="img/mail.gif" border="0" align="absmiddle" alt=""> ';
 			}
-			else
+			elseif($message['type'] == MSG_SMS || $message['type'] == MSG_ANYSMS)
 			{
 				$row['destination'] = preg_replace('/[^0-9]/', '', $row['destination']);
 				echo '<img src="img/sms.gif" border="0" align="absmiddle" alt=""> ';
+			}
+			elseif($message['type'] == MSG_GADUGADU)
+			{
+				$row['destination'] = preg_replace('/[^0-9]/', '', $row['destination']);
+				echo '<img src="img/gg.gif" border="0" align="absmiddle" alt=""> ';
+			}
+			else
+			{
+				$row['destination'] = preg_replace('/[^0-9]/', '', $row['destination']);
+				echo '<img src="img/cms.gif" border="0" align="absmiddle" alt=""> ';
 			}
 
 			echo trans('$a of $b ($c) $d:', ($key+1), sizeof($recipients),
@@ -333,10 +434,10 @@ if(isset($_POST['message']))
 				$row['customername'].' &lt;'.$row['destination'].'&gt;');
 			flush();
 
-			if($message['type'] == MSG_MAIL)
-				$result = $LMS->SendMail($row['destination'], $headers, $body, $files);
-			else
-				$result = $LMS->SendSMS($row['destination'], $body, $msgid);
+			if($message['type'] == MSG_MAIL) $result = $LMS->SendMail($row['destination'], $headers, $body, $files);
+			elseif($message['type'] == MSG_SMS || $message['type'] == MSG_ANYSMS) $result = $LMS->SendSMS($row['destination'], $body, $msgid);
+			elseif($message['type'] == MSG_GADUGADU) $result = $LMS->SendGaduGadu($row['destination'], $body, $gg_connect);
+			elseif($message['type'] == MSG_USERPANEL) $result = MSG_SENT;
 
 			if (is_string($result))
 				echo " <font color=red>$result</font>";
@@ -357,7 +458,8 @@ if(isset($_POST['message']))
 						$row['id'],
 					));
 		}
-
+		
+		if ($gg_connect) $LMS->DisConnectGaduGadu($gg_connect);
 		$SMARTY->display('footer.html');
 		$SESSION->close();
 		die;

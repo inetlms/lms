@@ -1,0 +1,53 @@
+{include file="header.html"}
+<TABLE width="100%" cellpadding="10">
+    <TR>
+	<TD>
+	    {if $archiwum }
+		<A href="?m=wiadomosci"><B>Ukryj wiadomości archiwalne</B></A>
+	    {else}
+		<A href="?m=wiadomosci&ar"><B>Pokaż również wiadomości archiwalne</B></A>
+	    {/if}
+	</TD>
+    </TR>
+    <TR>
+	<TD>
+	    {if $message }
+		{section name="message" loop=$message }
+		{assign var="data" value=$message[message].cdate|date_format:"Y/m/d H:i"}
+		{assign var="tytul" value=$message[message].subject}
+		
+		<TABLE width="100%" cellpadding="3" cellspacing="2" class="table table-bordered">
+			<tr class="{if $message[message].isread}success{else}info{/if}">
+			    <td width="100%" style="font-weight:bold;">
+				{$data} | {$tytul}
+			    </td>
+			</tr>
+			<TR>
+			    <TD width="100%" nowrap style="text-align:left;vertical-align:top;">
+				{$message[message].body|nl2br}
+			    </TD>
+			</TR>
+			{if !$message[message].isread}
+			<TR class="warning">
+			    <TD width="100%" nowrap style="text-align:right;padding:right:10px;">
+				<A href="?m=wiadomosci&p={$message[message].id}{if $archiwum}&ar{/if}" >Przeczytałem {img src="save.gif"}</A>
+			    </TD>
+			</TR>
+			{/if}
+		    
+		    <TR>
+		</TABLE>
+		
+		<BR>
+		{/section}
+	    {else}
+		{box title=""}
+		<P>&nbsp;</P>
+		<P align="center"><B>Brak nowych wiadomości</B></P>
+		<P>&nbsp;</P>
+		{/box}
+	    {/if}
+	</TD>
+    </TR>
+</TABLE>
+{include file="footer.html"}

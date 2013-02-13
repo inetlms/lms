@@ -1,0 +1,24 @@
+{include file="header.html"}
+
+
+{if $message}
+<table class="table">
+	<tr>
+		<td>
+			{$message}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="?m=messages&amp;confirm=1">{trans("I confirm reading of message")} {img src="save.gif" alt=""}</a>
+		</td>
+	</tr>
+</table>
+{else}
+
+	{trans("We don't have any messages to you.")}
+
+{/if}
+
+
+{include file="footer.html"}

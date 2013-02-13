@@ -34,7 +34,7 @@ $DB->Execute("ALTER TABLE monitnodes ADD signaltest TINYINT( 1 ) NOT NULL DEFAUL
 $DB->Execute("ALTER TABLE netdevices ADD monit_nastype INT NOT NULL DEFAULT '0'");
 $DB->Execute("ALTER TABLE netdevices ADD monit_login VARCHAR( 60 ) NOT NULL DEFAULT ''");
 $DB->Execute("ALTER TABLE netdevices ADD monit_passwd VARCHAR( 60 ) NOT NULL DEFAULT ''");
-$DB->Execute("ALTER TABLE netdevices ADD monit_port SMALLINT NOT NULL DEFAULT ''");
+$DB->Execute("ALTER TABLE netdevices ADD monit_port SMALLINT NOT NULL DEFAULT '0'");
 $DB->Execute("ALTER TABLE users ADD profiles TEXT NOT NULL DEFAULT '';");
 $DB->Execute("ALTER TABLE up_customers ADD content TEXT NOT NULL DEFAULT '' ;");
 

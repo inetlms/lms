@@ -84,6 +84,13 @@ class Profile
 		    $tmp = serialize($tmp);
 		    $this->DB->Execute('UPDATE users SET profiles = ? WHERE id = ? ;',array($tmp,$this->AUTH->id));
 		}
+		else
+		{
+		    $tmp[$variable] = $content;
+		    if ($content == '') unset($tmp[$variable]);
+		    $tmp = serialize($tmp);
+		    $this->DB->Execute('UPDATE users SET profiles = ? WHERE id = ? ;',array($tmp,$this->AUTH->id));
+		}
 	}
 
 

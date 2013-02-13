@@ -264,7 +264,7 @@
 	    </td>
 
 	    <td width="1%" nowrap align="right" class="fright"style="padding-left:4px;padding-right:4px;">
-		<img src="img/radar.png" style="cursor:pointer;" {if $monitlist[devlist].ptime} {tip text="Kliknij aby otworzyć szczegółowe statystyki"} onclick="monitchart_popup('{$monitlist[devlist].nid}','node');"{else}{tip text="BRAK POMIARÓW DLA URZĄDZENIA"}{/if}>
+		<img src="img/radar.png" style="cursor:pointer;" {if $monitlist[devlist].pingtest || $monitlist[devlist].signaltest} {tip text="Kliknij aby otworzyć szczegółowe statystyki"} onclick="monitchart_popup('{$monitlist[devlist].nid}','node');"{else}{tip text="BRAK POMIARÓW DLA URZĄDZENIA"}{/if}>
 		{if get_conf('monit.live_ping')}<img src="img/ping.gif" {tip text="Pinguj urzadzenie"} style="cursor:pointer;" onclick="window.open('?m=nodeping&packetsize=64&ip={$monitlist[devlist].ipaddr}{if $node.typedev=='netdev'}&netdev={$monitlist[devlist].nid}{/if}','pingnode{$monitlist[devlist].ipaddr}','width=400,height=450')">{/if}
 		<a href="?{$backto}&action=setaccess&nid={$monitlist[devlist].nid}&access={if !$monitlist[devlist].active}1{else}0{/if}" {tip text="włącz/wyłącz monitorowanie hosta"}><img src="img/{if !$monitlist[devlist].active}no{/if}access.gif" alt="access"></a>
 		{if $node.typedev == 'netdev'}

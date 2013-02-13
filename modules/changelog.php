@@ -34,6 +34,57 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2013/02/12',
+	    'status'	=> '',
+	    'opis'	=> '<b><font color="blue">******************** iNET LMS 1.0.2 ********************</font></b>',
+	),
+	array(
+	    'data'	=> '2013/02/12',
+	    'status'	=> 'fix',
+	    'opis'	=> 'mała poprawka w messageadd',
+	),
+	array(
+	    'data'	=> '2013/02/12',
+	    'status'	=> 'fix',
+	    'opis'	=> 'poprawka monitoringu',
+	),
+	array(
+	    'data'	=> '2013/02/12',
+	    'status'	=> 'add',
+	    'opis'	=> 'dodano nowy moduł do UP Wiadomości oparty o skrypt udostępniony przez CZEMPIN.NET<br>
+			    Wiadomości "do" UP wysłamy poprzez Wiadomości -> nowa wiadomość, Klient ma swobodny dostęp do poprzednich wiadomości wystałnych w ten sposób,<br>
+			    my natomiast w karcie klienta (box wiadomości) mamy informację kiedy klient przeczytał infrmację pierwszy i ostatni raz oraz czy potwierdził przeczytanie wiadomości.',
+	),
+	array(
+	    'data'	=> '2013/02/12',
+	    'status'	=> 'add',
+	    'opis'	=> 'doszła możliwość wysłania do klienta wiadomości na Gadu-Gadu, dostępne w Wiadomości -> Nowa wiadomość. Konfiguracja klienta GG dostępna w UI sekcja Gadu-Gadu',
+	),
+	array(
+	    'data'	=> '2013/02/12',
+	    'status'	=> 'up',
+	    'opis'	=> 'Zmieniono nazwę modułu dla userpanel z <b>Wiadomości</b> na <b>Powiadomienia</b>.<br>Moduł ten wyświetlał nam ostatnie powiadomienie wysłane poprzez Klienci / Komputery powiadomienia a nie rzeczywiste wiadomości wysłane za pomocą Wiadomości -> Nowa wiadomość.',
+	),
+	array(
+	    'data'	=> '2013/02/12',
+	    'status'	=> 'add',
+	    'opis'	=> 'dodano dodatkowe zmienne <b>%address , %postaddress i %last_3_in_a_table</b> dla wysyłanych wiadomości. Obecne zmienne które zwracają nam dane:<br>
+			    %customer -> nazwisko i imię klienta<br>
+			    %balance -> saldo<br>
+			    %cid -> id klienta<br>
+			    %pin -> numer PIN klienta<br>
+			    %address -> adres zameldowania / siedziby klienta<br>
+			    %postaddress -> adres do korespondencji<br>
+			    %bankaccount -> numer konta bankowego właściwego dla klienta<br>
+			    %last_3_in_a_table -> ostatnie 3 operacje finansowe klienta<br>
+			    %last_10_in_a_table -> ostatnich 10 operacji finansowych klienta',
+	),
+	array(
+	    'data'	=> '2013/02/12',
+	    'status'	=> 'up',
+	    'opis'	=> '<font color="red"><b>UWAGA !!!</b></font><br>aktualizacja lms-sendinvoices i lms-sendinvocies-proforma, dla prawidłowego działania skryptu wymagany jest moduł perl <b>Socket::SSL</b>',
+	),
+	array(
 	    'data'	=> '2013/01/11',
 	    'status'	=> 'add',
 	    'opis'	=> 'dodano listę firm które wsparły projekt iNET LMS, lista dostępna w Administracja -> sponsorzy<br>Dane są automatycznie aktualizowane co 7 dni.',
@@ -46,7 +97,7 @@ $changelog = array(
 	array(
 	    'data'	=> '2013/01/10',
 	    'status'	=> 'add',
-	    'opis'	=> 'wprowadzono możliwość tworzenia szablonów wiadomości, które możemy potem wykorzystać przy tworzeniu nowej wiadomości do klienta(ów) dostępne w Wiadomości/Szablony.',
+	    'opis'	=> 'wprowadzono możliwość tworzenia szablonów wiadomości, które możemy potem wykorzystać przy tworzeniu nowej wiadomości do klienta(ów) dostępne w Wiadomości -> Szablony.',
 	),
 	array(
 	    'data'	=> '2013/02/10',

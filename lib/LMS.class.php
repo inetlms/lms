@@ -5146,8 +5146,8 @@ class LMS {
 	}
 
 	function GetMessages($customerid, $limit = NULL) {
-		return $this->DB->GetAll('SELECT i.messageid AS id, i.status, i.error,
-		        i.destination, m.subject, m.type, m.cdate
+		return $this->DB->GetAll('SELECT i.messageid AS id, i.status, i.error, i.firstread, i.lastread, i.isread, 
+		        i.destination, m.subject, m.type, m.cdate 
 			FROM messageitems i
 			JOIN messages m ON (m.id = i.messageid)
 			WHERE i.customerid = ?
@@ -7078,6 +7078,49 @@ class LMS {
 	return $this->DB->GetAll('SELECT id, '.($name ? 'name, ' : '').' theme FROM messagestemplate ORDER BY theme ASC');
     }
 
+    
+    function SendGaduGadu($numer,$wiadomosc,$ggconnect=false)
+    {
+	global $GG;
+	
+	$mess = '';
+	
+	if (get_conf('gadugadu.gg_header')) 
+	    $mess = get_conf('gadugadu.gg_header').'<br><br>';
+	
+	$mess .= $wiadomosc;
+	
+	if (get_conf('gadugadu.gg_footer')) 
+	    $mess .= '<br><br>'.get_conf('gadugadu.gg_footer');
+	
+	if ($ggconnect)
+	{
+	    if ($GG->sendMessage($numer,$mess,true)) return MSG_SENT; else return MSG_NEW;
+	} 
+	elseif ($ggconnect = $GG->connect(get_conf('gadugadu.gg_number'),get_conf('gadugadu.gg_passwd'),get_conf('gadugadu.gg_signature_statuson',NULL)))
+	{
+		$result = $GG->sendMessage($numer,$mess,true);
+		$GG->disconnect(get_conf('gadugadu.gg_signature_statusoff',NULL));
+		if ($result) 
+		    return MSG_SENT; 
+		else 
+		    return false;
+	}
+	else
+	    return "Błąd połączenia z kontem GG !";
+    }
+    
+    function DisConnectGaduGadu($connect = FALSE)
+    {
+	global $GG;
+	if ($connect) $GG->disconnect(get_conf('gadugadu.gg_signature_statusoff',NULL));
+    }
+    
+    function ConnectGaduGadu()
+    {
+	global $GG;
+	return $GG->connect(get_conf('gadugadu.gg_number'),get_conf('gadugadu.gg_passwd'),get_conf('gadugadu.gg_signature_statuson',NULL));
+    }
 
 }
 

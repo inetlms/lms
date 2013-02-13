@@ -68,6 +68,12 @@ if ($date = $DB->GetOne('SELECT MAX(cdate) FROM monitsignal WHERE nodeid = ? '.$
 	$node_monit['signal'] = true;
 	unset($tmp);
 }
+$node_monit['pingtest'] = $node_monit['signaltest'] = 0;
+if ($tmp = $DB->GetRow('SELECT pingtest, signaltest FROM monitnodes WHERE id = ? LIMIT 1;',array($nodeid)))
+{
+    if ($tmp['pingtest']) $node_monit['pingtest'] = 1;
+    if ($tmp['signaltest']) $node_monit['signaltest'] = 1;
+}
 
 $SMARTY->assign('node_monit',$node_monit);
 

@@ -4,7 +4,7 @@
 <TABLE WIDTH="100%" CELLPADDING="3">
 	<TR CLASS="DARK">
 		<TD CLASS="FLEFTU" WIDTH="1%">
-			<IMG SRC="img/{if $message.type == $smarty.const.MSG_SMS}sms{else}email{/if}.gif" ALT=""> 
+			<IMG SRC="img/{if $message.type == $smarty.const.MSG_SMS}sms{elseif $message.type == $smarty.const.MSG_MAIL}email{elseif $message.type == $smarty.const.MSG_GADUGADU}gg{elseif $message.type == $smarty.const.MSG_USERPANEL}cms{/if}.gif" ALT=""> 
 		</TD>
 		<TD CLASS="FBT" WIDTH="1%" NOWRAP>
 			<B>{trans("Subject:")}</B>

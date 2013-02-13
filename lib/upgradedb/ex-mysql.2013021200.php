@@ -23,9 +23,13 @@
 
 $DB->BeginTrans();
 
-$DB->Execute('DELETE FROM monitnodes WHERE id = ? ;',array('0'));
+$DB->Execute("ALTER TABLE netdevices CHANGE monit_port monit_port VARCHAR( 5 ) NULL DEFAULT NULL ;");
+$DB->Execute("UPDATE netdevices SET monit_port = NULL WHERE monit_port = '8728' OR monit_port = '0';");
+$DB->Execute("ALTER TABLE messageitems ADD firstread INT(11) NOT NULL DEFAULT '0';");
+$DB->Execute("ALTER TABLE messageitems ADD lastread INT(11) NOT NULL DEFAULT '0';");
+$DB->Execute("ALTER TABLE messageitems ADD isread TINYINT( 1 ) NOT NULL DEFAULT '0';");
 
-$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2013021000', 'dbvex'));
+$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2013021200', 'dbvex'));
 
 $DB->CommitTrans();
 ?>
