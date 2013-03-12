@@ -3525,7 +3525,8 @@ class LMS {
 		
 		if (SYSLOG && $sys_log) {
 			    $cusname = $this->getcustomername($addbalance['customerid']);
-			    addlogs('dodano zobowiązanie <b>'.moneyf($addbalance['value']).'</b> dla '.$cusname,'e=add;m=fin;c='.$addbalance['customerid']);
+			    if ($addbalance['type'] == '0') $str = 'zobowiązanie'; else $str = 'przychód';
+			    addlogs('dodano '.$str.' <b>'.moneyf($addbalance['value']).'</b> dla '.$cusname,'e=add;m=fin;c='.$addbalance['customerid']);
 		}
 
 		return $this->DB->Execute('INSERT INTO cash (time, userid, value, type, taxid,

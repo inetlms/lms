@@ -3,7 +3,7 @@
 /*
  * LMS version 1.11-git
  *
- *  (C) Copyright 2001-2012 LMS Developers
+ *  (C) Copyright 2001-2013 LMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -52,7 +52,7 @@ if (array_key_exists('version', $options))
 {
 	print <<<EOF
 lms-uke.php
-(C) 2001-2012 LMS Developers
+(C) 2001-2013 LMS Developers
 
 EOF;
 	exit(0);
@@ -62,7 +62,7 @@ if (array_key_exists('help', $options))
 {
 	print <<<EOF
 lms-uke.php
-(C) 2001-2012 LMS Developers
+(C) 2001-2013 LMS Developers
 
 -C, --config-file=/etc/lms/lms.ini      alternate config file (default: /etc/lms/lms.ini);
 -m, --message-file=<message-file>       name of message file;
@@ -79,7 +79,7 @@ if (!$quiet)
 {
 	print <<<EOF
 lms-uke.php
-(C) 2001-2012 LMS Developers
+(C) 2001-2013 LMS Developers
 
 EOF;
 }
@@ -502,8 +502,12 @@ foreach ($netnodes as $netnodename => $netnode) {
 						$set = 12;
 					elseif ($node['downstream'] == 30000)
 						$set = 13;
-					else
+					elseif ($node['downstream'] < 100000)
 						$set = 14;
+					elseif ($node['downstream'] == 100000)
+						$set = 15;
+					else
+						$set = 16;
 					if ($node['type'] == 0)
 						$personalnodes[$node['servicetypes']][$set]++;
 					else
@@ -512,13 +516,13 @@ foreach ($netnodes as $netnodename => $netnode) {
 				// save info about computers connected to this network node
 			foreach ($personalnodes as $servicetype => $servicenodes) {
 				$services = array();
-				foreach (array_fill(0, 15, '0') as $key => $value)
+				foreach (array_fill(0, 17, '0') as $key => $value)
 					$services[] = isset($servicenodes[$key]) ? $servicenodes[$key] : $value;
 				$personalnodes[$servicetype] = $services;
 			}
 			foreach ($commercialnodes as $servicetype => $servicenodes) {
 				$services = array();
-				foreach (array_fill(0, 15, '0') as $key => $value)
+				foreach (array_fill(0, 17, '0') as $key => $value)
 					$services[] = isset($servicenodes[$key]) ? $servicenodes[$key] : $value;
 				$commercialnodes[$servicetype] = $services;
 			}
@@ -534,10 +538,13 @@ foreach ($netnodes as $netnodename => $netnode) {
 						$teryt['area_terc'], $teryt['area_city'], $teryt['area_simc'],
 						$teryt['address_cecha'], $teryt['address_ulica'], $teryt['address_symul'],
 						$teryt['address_budynek'], ZIP_CODE))
-					.",0,".$linktypes[$range['linktype']]['technologia_dostepu'].",".implode('_', $ukeservices).",WLASNA,"
-					.$linktypes[$range['linktype']]['szybkosc'].","
-					.(implode(',', isset($personalnodes[$servicetype]) ? $personalnodes[$servicetype] : array_fill(0, 15, '0'))).","
-					.(implode(',', isset($commercialnodes[$servicetype]) ? $commercialnodes[$servicetype] : array_fill(0, 15, '0')))."\n";
+					.",0,".$linktypes[$range['linktype']]['technologia_dostepu'].",";
+				$snetranges .= ",Nie,Nie," . (isset($ukeservices['INT']) ? "Tak" : "Nie")
+					. ",Nie,Nie," . (isset($ukeservices['TV']) ? "Tak" : "Nie") . ","
+					. (isset($ukeservices['TEL']) ? "Tak" : "Nie") . ",Nie,Nie,";
+				$snetranges .= ",WLASNA," . $linktypes[$range['linktype']]['szybkosc'].","
+					.(implode(',', isset($personalnodes[$servicetype]) ? $personalnodes[$servicetype] : array_fill(0, 17, '0'))).","
+					.(implode(',', isset($commercialnodes[$servicetype]) ? $commercialnodes[$servicetype] : array_fill(0, 17, '0')))."\n";
 				$netrangeid++;
 			}
 		}
@@ -586,7 +593,7 @@ if ($netlinks)
 			$snetlines .= $netlineid.",węzeł sieci,".$netnodes[$netlink['src']]['id'].",węzeł sieci,".$netnodes[$netlink['dst']]['id'].",Nie,Tak,Nie,"
 				.implode(',', array_slice($linktypes[$netlink['type']], 0, 6)).","
 				.implode(',', array_fill(0, 3, $linktypes[$netlink['type']]['liczba_jednostek'])).","
-				.$linktypes[$netlink['type']]['jednostka'].",0,0\n";
+				.$linktypes[$netlink['type']]['jednostka'].",0," . $linktypes[$netlink['type']]['jednostka'] . ",0\n";
 			$netlineid++;
 		}
 
@@ -612,7 +619,7 @@ $filename = tempnam('/tmp', 'LMS_SIIS_').'.zip';
 if ($zip->open($filename, ZIPARCHIVE::OVERWRITE)) {
 	$zip->addFromString('WEZLY.csv', $snetnodes);
 	$zip->addFromString('W_INTERFACE.csv', $snetinterfaces);
-	$zip->addFromString('W_ZASIEG.csv', $snetranges);
+	$zip->addFromString('USLUGI_SZER.csv', $snetranges);
 	$zip->addFromString('LINIE.csv', $snetlines);
 	$zip->addFromString('POLACZENIA.csv', $snetlinks);
 	$zip->close();

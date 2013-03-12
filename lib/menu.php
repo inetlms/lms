@@ -312,7 +312,7 @@ $menu = array(
 				array(
 					'name' => trans('UKE report'),
 					'link' => '?m=uke',
-					'tip' => trans('Allows you to prepare SIIS v2 report for UKE'),
+					'tip' => 'Raport SIIS v3, rozwiązanie z LMS 1.11-git',
 					'prio' => 50,
 				),
 			),
