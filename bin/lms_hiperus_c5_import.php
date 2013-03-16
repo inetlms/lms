@@ -31,6 +31,11 @@ empty($_SERVER['SHELL']) && die('<br><Br>Sorry Winnetou, tylko powloka shell ;-)
 ?>
 <?php
     $option = array();
+    /**
+     * parseArgs Command Line Interface (CLI) utility function.
+     * @author              Patrick Fisher <patrick@pwfisher.com>
+     * @source              https://github.com/pwfisher/CommandLine.php
+     */
     function parseArgs()
     {
 	$argv = $_SERVER['argv'];
