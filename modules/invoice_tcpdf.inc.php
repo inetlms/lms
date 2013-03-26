@@ -379,21 +379,12 @@ function invoice_buyer() {
 
 	$buyer = '<b>' . trans('Purchaser:') . '</b><br>';
 	
-	if (!empty($invoice['invoice_name']) && !empty($invoice['invoice_address']) && !empty($invoice['invoice_zip'])&& !empty($invoice['invoice_city']))
-	{
-	    $buyer .= $invoice['invoice_name'] . '<br>';
-	    $buyer .= $invoice['invoice_address'] . '<br>';
-	    $buyer .= $invoice['invoice_zip'] . ' ' . $invoice['invoice_city'] . '<br>';
-	    if ($invoice['invoice_ten']) $buyer .= trans('TEN') . ': ' . $invoice['invoice_ten'] . '<br>';
-	}
-	else
-	{
-	    $buyer .= $invoice['name'] . '<br>';
-	    $buyer .= $invoice['address'] . '<br>';
-	    $buyer .= $invoice['zip'] . ' ' . $invoice['city'] . '<br>';
-	    if ($invoice['ten']) $buyer .= trans('TEN') . ': ' . $invoice['ten'] . '<br>';
-	    else $buyer .= trans('SSN') . ': ' . $invoice['ssn'] . '<br>';
-	}
+	$buyer .= $invoice['name'] . '<br>';
+	$buyer .= $invoice['address'] . '<br>';
+	$buyer .= $invoice['zip'] . ' ' . $invoice['city'] . '<br>';
+	if ($invoice['ten']) $buyer .= trans('TEN') . ': ' . $invoice['ten'] . '<br>';
+	else $buyer .= trans('SSN') . ': ' . $invoice['ssn'] . '<br>';
+
 	$pdf->SetFont('arial', '', 10);
 	$pdf->writeHTMLCell(80, '', '', '', $buyer, 0, 1, 0, true, 'L');
 

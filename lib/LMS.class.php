@@ -2944,12 +2944,22 @@ class LMS {
 	}
 
 	function AddInvoice($invoice) {
-
+		
 		$currtime = time();
 		$cdate = $invoice['invoice']['cdate'] ? $invoice['invoice']['cdate'] : $currtime;
 		$sdate = $invoice['invoice']['sdate'] ? $invoice['invoice']['sdate'] : $currtime;
 		$number = $invoice['invoice']['number'];
 		$type = $invoice['invoice']['type'];
+		if (isset($invoice['customer']['invoice_name']) && isset($invoice['customer']['invoice_address']) && isset($invoice['customer']['invoice_zip']) && isset($invoice['customer']['invoice_city']) && 
+		    !empty($invoice['customer']['invoice_name']) && !empty($invoice['customer']['invoice_address']) && !empty($invoice['customer']['invoice_zip']) && !empty($invoice['customer']['invoice_city']))
+		{
+		    $invoice['customer']['customername'] = $invoice['customer']['invoice_name'];
+		    $invoice['customer']['address'] = $invoice['customer']['invoice_address'];
+		    $invoice['customer']['zip'] = $invoice['customer']['invoice_zip'];
+		    $invoice['customer']['city'] = $invoice['customer']['invoice_city'];
+		    $invoice['customer']['countryid'] = ($invoice['customer']['invoice_countryid'] ? $invoice['customer']['invoice_countryid'] : $invoice['customer']['countryid']);
+		    $invoice['customer']['ten'] = ($invoice['customer']['invoice_ten'] ? $invoice['customer']['invoice_ten'] : $invoice['customer']['ten']);
+		}
 		
 		$this->DB->Execute('INSERT INTO documents (number, numberplanid, type,
 			cdate, sdate, paytime, paytype, userid, customerid, name, address, 
