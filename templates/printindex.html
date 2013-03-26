@@ -452,9 +452,10 @@ cal4.time_comp = false;
                                             <B>{trans("Typ")}:</B>
                                             </TD>
                                             <TD width="98%" colspan="2" nowrap>
-                                            <INPUT TYPE="radio" NAME="type" VALUE="0" ID="private" {if $type eq 0} CHECKED{/if}><label for="private">{trans("private person")}</label>
-                                            <INPUT TYPE="radio" NAME="type" VALUE="1" ID="private" {if $type eq 1} CHECKED{/if}><label for="private">{trans("firma")}</label>
-                                            <INPUT TYPE="radio" NAME="type" VALUE="2" ID="private" CHECKED><label for="private">{trans("wszyscy")}</label>
+                                            
+                                            <INPUT TYPE="radio" NAME="type" VALUE="0" ID="private1" {if $type eq 0} CHECKED{/if}><label for="private1"> osoba fizyczna</label>
+                                            <INPUT TYPE="radio" NAME="type" VALUE="1" ID="private2" {if $type eq 1} CHECKED{/if}><label for="private2"> firma</label>
+                                            <INPUT TYPE="radio" NAME="type" VALUE="2" ID="private3" CHECKED><label for="private3"> wszyscy</label>
                                             </TD>
                                             </TR>
 				
