@@ -117,10 +117,12 @@ $items = $DB->GetAll('SELECT c.docid, c.itemid, c.taxid, c.value, c.count,
 	d.number, d.cdate, d.sdate, d.paytime, d.customerid, d.reference,
 	d.name, d.address, d.zip, d.city, d.ten, d.ssn, n.template
 	    FROM documents d
-	    LEFT JOIN invoicecontents c ON c.docid = d.id
-	    LEFT JOIN numberplans n ON d.numberplanid = n.id
+	    LEFT JOIN invoicecontents c ON c.docid = d.id 
+	    LEFT JOIN numberplans n ON d.numberplanid = n.id 
+  	    LEFT JOIN customers cs ON  cs.id = d.customerid 
 	    WHERE (d.type = ? OR d.type = ?) AND ('.$sortcol.' BETWEEN ? AND ?) '
-	    .($_POST['numberplanid'] ? 'AND d.numberplanid = '.intval($_POST['numberplanid']) : '')
+	    .($_POST['numberplanid'] ? 'AND d.numberplanid = '.intval($_POST['numberplanid']).' ' : ' ')
+	    .(intval($_POST['type']) < 2 ? 'AND cs.type = '.intval($_POST['type']).' ' : ' ')
 	    .(isset($divwhere) ? $divwhere : '')
 	    .(isset($groupwhere) ? $groupwhere : '')
 	    .' AND NOT EXISTS (

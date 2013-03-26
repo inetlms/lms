@@ -54,8 +54,6 @@ if (is_readable('lms.ini')) {
 }
 elseif (!is_readable($CONFIG_FILE)) die('Unable to read configuration file ['.$CONFIG_FILE.'] !'); 
 
-//$CONFIG = (array) parse_ini_file($CONFIG_FILE, true);
-
 // Check for configuration vars and set default values
 $CONFIG['directories']['sys_dir'] = (!isset($CONFIG['directories']['sys_dir']) ? getcwd() : $CONFIG['directories']['sys_dir']);
 $CONFIG['directories']['lib_dir'] = (!isset($CONFIG['directories']['lib_dir']) ? $CONFIG['directories']['sys_dir'].'/lib' : $CONFIG['directories']['lib_dir']);

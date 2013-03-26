@@ -443,6 +443,21 @@ cal4.time_comp = false;
 				<TR>
 					<TD width="1%">
 					    <TABLE width="100%">
+
+                                            <TR>
+                                            <TD width="1%">
+                                            <IMG src="img/folder.gif" alt="">
+                                            </TD>
+                                            <TD width="1%" nowrap>
+                                            <B>{trans("Typ")}:</B>
+                                            </TD>
+                                            <TD width="98%" colspan="2" nowrap>
+                                            <INPUT TYPE="radio" NAME="type" VALUE="0" ID="private" {if $type eq 0} CHECKED{/if}><label for="private">{trans("private person")}</label>
+                                            <INPUT TYPE="radio" NAME="type" VALUE="1" ID="private" {if $type eq 1} CHECKED{/if}><label for="private">{trans("firma")}</label>
+                                            <INPUT TYPE="radio" NAME="type" VALUE="2" ID="private" CHECKED><label for="private">{trans("wszyscy")}</label>
+                                            </TD>
+                                            </TR>
+				
 						<TR>
 						    <TD width="1%">
 							<IMG src="img/division.gif" alt="">
