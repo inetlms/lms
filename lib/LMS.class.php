@@ -1067,7 +1067,9 @@ class LMS {
 				'SELECT c.id AS id, ' . $this->DB->Concat('UPPER(lastname)', "' '", 'c.name') . ' AS customername, 
 				status, address, zip, city, countryid, countries.name AS country, email, ten, ssn, c.info AS info, 
 				message, c.divisionid, c.paytime AS paytime, COALESCE(b.value, 0) AS balance,
-				COALESCE(t.value, 0) AS tariffvalue, s.account, s.warncount, s.online,
+				COALESCE(t.value, 0) AS tariffvalue, s.account, s.warncount, s.online, 
+				c.type AS customertype, cutoffstop, 
+				(SELECT max(cash.time) FROM cash WHERE cash.customerid = c.id) AS lastcash,
 				(CASE WHEN s.account = s.acsum THEN 1
 					WHEN s.acsum > 0 THEN 2	ELSE 0 END) AS nodeac,
 				(CASE WHEN s.warncount = s.warnsum THEN 1
