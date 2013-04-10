@@ -21,7 +21,8 @@ $shellsession = '/var/lib/hiperus/hiperus2.session';
 
 /******** End of configuration section ****************************************/
 
-define('H_URI','https://backend.hiperus.pl:8080/hiperusapi.php');
+//define('H_URI','https://backend.hiperus.pl:8080/hiperusapi.php');
+define('H_URI','https://platforma.lovo.pl:8080/hiperusapi.php');
 
 /**
  * 
