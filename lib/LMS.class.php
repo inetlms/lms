@@ -1077,7 +1077,7 @@ class LMS {
 				FROM customersview c
 				LEFT JOIN countries ON (c.countryid = countries.id) '
 				. ($customergroup ? 'LEFT JOIN customerassignments ON (c.id = customerassignments.customerid) ' : '')
-				.(in_array($CONFIG['database']['type'],array('mysql','mysqli')) && !$time ? ' JOIN customercas b ON (b.customerid = c.id) ' : 
+				.(in_array($this->CONFIG['database']['type'],array('mysql','mysqli')) && !$time ? ' JOIN customercash b ON (b.customerid = c.id) ' : 
 				 'LEFT JOIN (SELECT
 					SUM(value) AS value, customerid
 					FROM cash'

@@ -10,29 +10,29 @@
     <title>::: {trans("Welcome to LMS")} {$layout.lmsv} :::</title>
 </head>
 <body>
-<table width="100%" height="100%">
+
+<table width="100%" height="100%" class="table table-success">
 	<tr>
 		<td valign="middle" align="center">
 			<table align="center" cellpadding="20">
 				<tr>
 					<td>
-						<img src="img/logo.gif" alt="">
-						
+					    <img src="img/logo.gif">
 					</td>
-					<td align="center" class="loginform light" width="300">
+					<td align="center" class="light loginform" width="300" height="400">
 						<b>{$layout.lmsv} LMS {$layout.lmsvr}</b><br><br>
 						<b>&copy;2012-{$smarty.now|date_format:"Y"} iNET LMS Developers</b><br><br><br>
 						{if $error}<font class="alert bold">{$error}</font>{else}&nbsp;{/if}<br>
 						<br>
 						<form method="post" name="loginform" action="{$target}">
-						<INPUT type="submit" class="hiddenbtn">
+						<input type="submit" class="hiddenbtn">
 							<table>
 								<tr>
 									<td align="right">
 										<b>{trans("Login:")}&nbsp;</b>
 									</td>
 									<td>
-										<input class="bold" type="TEXT" name="loginform[login]" size="10" accesskey="l" autofocus>
+										<input class="bold" type="text" name="loginform[login]" size="10" accesskey="l" autofocus>
 									</td>
 								</tr>
 								<tr>
@@ -74,8 +74,11 @@
 		</td>
 	</tr>
 </table>
-<div style="left:20%;bottom:1%;width:60%;position:absolute;border:solid 1px #888888;padding:5px;background-color:#F4F0E8;text-align:center;">
+<div style="left:10%;bottom:1%;width:80%;position:absolute;padding:5px;text-align:center;">
+<table width="100%" cellpadding="0" cellspacing="0" class="table table-bordered table-info">
+<tr class="light alert-info"><td align="center" class="fall" style="padding-top:4px; padding-bottom:4px;">
 Informujemy, że projekt iNET LMS to autorska inicjatywa Daniela Kuleszy prezesa iNET Media group sp. z o.o. z siedzibą w Karlinie. Projekt nie jest powiązany<br>w żaden sposób z iNET group sp. z o.o. z siedzibą w Wodzisławiu Śląskim. Wszelkie pytania prosimy kierować na adres email {protect_email('inetlms@inetmediagroup.pl')}
+</td></tr></table>
 
 </div>
 <script type="text/javascript">

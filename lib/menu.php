@@ -480,6 +480,12 @@ $menu = array(
 					'prio' => 50,
 				),
 				array(
+					'name' => 'Historia importów', 
+					'link' => '?m=cashimportlist',
+					'tip' => 'Hisoria zaimportowanych płatności',
+					'prio' => 55,
+				),
+				array(
 					'name' => trans('New Balance'),
 					'link' => '?m=balancenew',
 					'tip' => trans('Add new financial operation'),

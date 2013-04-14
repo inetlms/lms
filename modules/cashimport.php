@@ -196,6 +196,7 @@ elseif(isset($_POST['marks']))
 			$LMS->AddBalance($balance);
 
 			$DB->CommitTrans();
+			unset($_POST['marks']);
 		}
 	}
 }

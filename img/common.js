@@ -24,11 +24,23 @@ function addClass(theElem, theClass)
 	theElem.className += ' ' + theClass;
 }
 
+function addClassId(idElem, theClass)
+{
+	document.getElementById(idElem).className += ' ' + theClass;
+}
+
 function removeClass(theElem, theClass)
 {
 	regexp = new RegExp('\\s*' + theClass, 'i');
 	var str = theElem.className;
 	theElem.className = str.replace(regexp, '');
+}
+
+function removeClassId(idElem, theClass)
+{
+	regexp = new RegExp('\\s*' + theClass, 'i');
+	var str = document.getElementById(idElem).className;
+	document.getElementById(idElem).className = str.replace(regexp, '');
 }
 
 // LMS: function to autoresize iframe and parent div container (overlib)
@@ -101,6 +113,11 @@ function macchoosewin(formfield)
 function customerchoosewin(formfield)
 {
 	return openSelectWindow('?m=choosecustomer','choosecustomer',450,250,'true',formfield);
+}
+
+function customersearchchoosewin(formfieldid,formfieldname)
+{
+	return openSelectWindow2('?m=choosecustomersearch','choosecustomersearch',450,250,'true',formfieldid,formfieldname);
 }
 
 function contractorchoosewin(formfield,formfield2)
@@ -550,9 +567,21 @@ function divisioninfo_popup(id)
 	autoiframe_setsize('autoiframe', 450,250);
 }
 
-function infocenter_popup(id)
+function help_popup(id)
 {
-	popup_scroll('?m=infocenterwin&id=' + id, 1, 1, 30, 30);
+	popup('?m=helpinfowin&key=' + id, 1, 1, 30, 30);
+	autoiframe_setsize('autoiframe', 450,250);
+}
+
+function notatnik_popup()
+{
+	popup('?m=notatnik', 1, 1, 30, 30);
+	autoiframe_setsize('autoiframe', 650,400);
+}
+
+function infocenter_popup(key)
+{
+	popup_scroll('?m=infocenterwin&key=' + key, 1, 1, 30, 30);
 	autoiframe_setsize('autoiframe', 450,250);
 }
 
@@ -589,15 +618,25 @@ function changeMacFormat(id)
 	elem.innerHTML = curmac;
 }
 
+//function ShowAjaxLoadingImage()
+//{
+//    document.getElementById('id_loadajax_img').innerHTML = 
+//	'<div style="width:80px;height:80px;position:fixed;top:40%;left:49%;"><img src="img/321.gif" alt="Czekaj..."></div>';
+//}
+
+//function HideAjaxLoadingImage()
+//{
+//    document.getElementById('id_loadajax_img').innerHTML = '';
+//}
+
 function ShowAjaxLoadingImage()
 {
-    document.getElementById('id_loadajax_img').innerHTML = 
-	'<div style="width:80px;height:80px;position:fixed;top:40%;left:49%;"><img src="img/preload.gif" alt="Czekaj..."></div>';
+    document.getElementById('id_loadajax_img').src = 'img/328.gif';
 }
 
 function HideAjaxLoadingImage()
 {
-    document.getElementById('id_loadajax_img').innerHTML = '';
+    document.getElementById('id_loadajax_img').src = 'img/empty.gif';
 }
 
 function loadAjax(idel,strona)
@@ -637,6 +676,7 @@ function AjaxObjectCreateGeneral() {
     }
     return req;
 }
+
 
 function sendPOST(plik,dane) {
     var xml = AjaxObjectCreateGeneral();

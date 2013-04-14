@@ -164,7 +164,7 @@ class LMSDB_driver_postgres extends LMSDB_common
 
 	function _driver_limit($start,$offset=NULL)
 	{
-	    return 'LIMIT '.$start.' '.($offset ? ' OFFSET $start' : '');
+	    return 'LIMIT '.$start.' '.($offset ? ' OFFSET '.$start : '');
 	}
 
 	function _driver_year($data)

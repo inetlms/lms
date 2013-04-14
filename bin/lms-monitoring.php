@@ -109,10 +109,10 @@ if (!$quiet)
 if (!is_readable($CONFIG_FILE))
 	die("Nie mozna odczytac pliku konfiguracyjnego file [".$CONFIG_FILE."]!\n");
 	
-$ch = curl_init();
+//$ch = curl_init();
 
-if (!$ch)
-	die("Blad krytyczny: Nie zainicjowano biblioteki curl !\n");
+//if (!$ch)
+//	die("Blad krytyczny: Nie zainicjowano biblioteki curl !\n");
 
 $CONFIG = (array) parse_ini_file($CONFIG_FILE, true);
 
@@ -125,8 +125,8 @@ define('SYS_DIR', $CONFIG['directories']['sys_dir']);
 define('LIB_DIR', $CONFIG['directories']['lib_dir']);
 define('TMP_DIR', $CONFIG['directories']['tmp_dir']);
 define('RRD_DIR', $CONFIG['directories']['rrd_dir']);
-define('USER_AGENT', "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-define('COOKIE_FILE', tempnam('/tmp', 'lms-monitoring-cookies-'));
+//define('USER_AGENT', "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+//define('COOKIE_FILE', tempnam('/tmp', 'lms-monitoring-cookies-'));
 
 require_once(LIB_DIR.'/config.php');
 
