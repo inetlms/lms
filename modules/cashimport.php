@@ -193,7 +193,7 @@ elseif(isset($_POST['marks']))
 			}
 
 			$DB->Execute('UPDATE cashimport SET closed = 1 WHERE id = ?', array($import['id']));
-			if ($DB->GetOne('SELECT 1 FROM cash WHERE time = ? AND customerid = ? AND importid = ? LIMIT 1',array($import['idate'],$customers[$import['id']],$import['id']))
+			if ($DB->GetOne('SELECT 1 FROM cash WHERE time = ? AND customerid = ? AND importid = ? LIMIT 1',array($import['idate'],$customers[$import['id']],$import['id'])))
 			    $dubel = true; else $dubel = false;
 			if (!$dubel) {
 			    $LMS->AddBalance($balance);
