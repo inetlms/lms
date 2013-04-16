@@ -27,10 +27,11 @@
 $layout['pagetitle'] = 'Historia operacji importów płatności masowych';
 
 $tucklist = array(
-	array('tuck' => 'settled', 'name' => 'Wpłaty rozliczone', 'link' => '?m=cashimportlist&tuck=settled', 'tip' => 'Lista wpłat które zostały prawidłowo przypisane do klienta'),
-	array('tuck' => 'notsettled', 'name' => 'Wpłaty nierozliczone', 'link' => '?m=cashimportlist&tuck=notsettled', 'tip' => 'Lista wpłat które wpłyneły na nasze konto, a nie zostały przypisane do klienta'),
-	array('tuck' => 'duplicate', 'name' => 'Wpłaty zdublowane', 'link' => '?m=cashimportlist&tuck=duplicate', 'tip' => 'Lista rozliczonych wpłat, które mogą być zdublowane'),
-	array('tuck' => 'base', 'name' => 'Pliki importu', 'link' => '?m=cashimportlist&tuck=base', 'tip' => 'Lista zaimportowanych plików z płatnościami'),
+	array('tuck' => 'settled',     'name' => 'Wpłaty zaksięgowane', 'link' => '?m=cashimportlist&tuck=settled', 'tip' => 'Lista zaksięgowanych wpłat, które zostały prawidłowo przypisane do klienta'),
+	array('tuck' => 'notsettled',  'name' => 'Wpłaty niezaksięgowane', 'link' => '?m=cashimportlist&tuck=notsettled', 'tip' => 'Lista wpłat które niezostały zaksięgowane a są prawidłowo skojarzone z klientem '),
+	array('tuck' => 'unidentified','name' => 'Wpłaty niezidentyfikowane', 'link' => '?m=cashimportlist&tuck=unidentified', 'tip' => 'Lista wpłat które wpłyneły na nasze konto, gdzie nadawca nie został prawidłowo rozpoznany'),
+	array('tuck' => 'duplicate',   'name' => 'Wpłaty zdublowane', 'link' => '?m=cashimportlist&tuck=duplicate', 'tip' => 'Lista rozliczonych wpłat, które mogą być zdublowane'),
+	array('tuck' => 'base',        'name' => 'Pliki importu', 'link' => '?m=cashimportlist&tuck=base', 'tip' => 'Lista zaimportowanych plików z płatnościami'),
 );
 
 
@@ -111,8 +112,7 @@ if ($tuck == 'base') {
 
 } 
 
-
-elseif ($tuck == 'settled' || $tuck == 'notsettled' ) {
+elseif ($tuck == 'settled' || $tuck == 'notsettled') {
     
     $layout['popup'] = true;
     
@@ -136,7 +136,7 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled' ) {
 		    'sourceid'		=> $wplata['sourceid']
 		);
 		if ($LMS->addBalance($balance))
-		    $DB->Execute('UPDATE cashimport SET customerid = ? WHERE id = ? ;',array($idc,$idw));
+		    $DB->Execute('UPDATE cashimport SET customerid = ?, closed = ?  WHERE id = ? ;',array($idc,1,$idw));
 	}
     }
     
@@ -198,7 +198,7 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled' ) {
 					FROM cash 
 					GROUP BY customerid
 				) b ON (b.customerid = c.id) ')
-	    .'WHERE l.customerid != 0 AND (l.customerid IS NOT NULL) '
+	    .'WHERE l.customerid != 0 AND (l.customerid IS NOT NULL) AND closed = 1 '
 			    .($dfrom!='' ? ' AND l.date > '.(strtotime($dfrom)-1) : '')
 			    .($dto!='' ? ' AND l.date < '.strtotime($dto.' 23:59:59') : '')
 			    .($cid ? ' AND l.customerid = '.$cid.' ' : '')
@@ -206,8 +206,129 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled' ) {
 			    .' ORDER BY '.$order.' '.$direction.' '
 			    .' ;';
     }
-    else
+    elseif ($tuck == 'notsettled')
     {
+	$sql = 'SELECT l.id, l.date, l.value, l.customer, l.description, l.customerid, l.closed, l.sourcefileid, '
+	    .($DB->concat('UPPER(c.lastname)',"' '",'c.name')).' AS customers, '
+	    .'c.type, c.status, c.deleted, c.message, s.account, s.warncount,
+	    (CASE WHEN s.account = s.acsum THEN 1 WHEN s.acsum > 0 THEN 2 ELSE 0 END) AS nodeac,
+	    (CASE WHEN s.warncount = s.warnsum THEN 1 WHEN s.warnsum > 0 THEN 2 ELSE 0 END) AS nodewarn, 
+	    COALESCE(b.value, 0) AS balance, 
+	    COALESCE((SELECT SUM(cv.value) FROM cash cv WHERE cv.customerid = c.id AND cv.time <= l.date), 0) AS bbalance '
+	    .' FROM cashimport l 
+	    LEFT JOIN customers c ON (c.id = l.customerid) 
+	    LEFT JOIN (SELECT ownerid,
+		SUM(access) AS acsum, COUNT(access) AS account,
+		SUM(warning) AS warnsum, COUNT(warning) AS warncount 
+		FROM nodes
+		WHERE ownerid > 0
+		GROUP BY ownerid
+	    ) s ON (s.ownerid = c.id) '
+	    .(in_array($CONFIG['database']['type'],array('mysql','mysqli')) && !$time ? ' LEFT JOIN customercash b ON (b.customerid = c.id) ' : 
+				 'LEFT JOIN (SELECT
+					SUM(value) AS value, customerid
+					FROM cash 
+					GROUP BY customerid
+				) b ON (b.customerid = c.id) ')
+	    .'WHERE l.customerid != 0 AND (l.customerid IS NOT NULL) AND closed = 0'
+			    .($dfrom!='' ? ' AND l.date > '.(strtotime($dfrom)-1) : '')
+			    .($dto!='' ? ' AND l.date < '.strtotime($dto.' 23:59:59') : '')
+			    .($cid ? ' AND l.customerid = '.$cid.' ' : '')
+			    .($sql_search ? $sql_search : '')
+			    .' ORDER BY '.$order.' '.$direction.' '
+			    .' ;';
+    }
+
+    $lista = $DB->GetAll($sql);
+
+    $listdata['total'] = sizeof($lista);
+    $sum = 0;
+    if ($lista) for ($i=0;$i<$listdata['total'];$i++) $sum += $lista[$i]['value'];
+    
+    $listdata['sumvalue'] = $sum;
+    
+    $page = (!$_GET['page'] ? 1 : $_GET['page']);
+    $pagelimit = get_conf('phpui.balancelist_pagelimit',50);
+    $start = ($page -1) * $pagelimit;
+    
+    $SESSION->save('cil_'.$tuck.'_page',$page);
+    $SESSION->save('backto', 'm=cashimportlist');
+    $SESSION->_saveSession();
+    
+    $SMARTY->assign('adlink','&tuck='.$tuck);
+    $SMARTY->assign('start',$start);
+    $SMARTY->assign('page',$page);
+    $SMARTY->assign('pagelimit',$pagelimit);
+    $SMARTY->assign('listdata',$listdata);
+    $SMARTY->assign('filtr',$filtr);
+    $SMARTY->assign('lista',$lista);
+    $SMARTY->assign('tuck',$tuck);
+    $SMARTY->display('cashimportlist_box.html');
+    die;
+} 
+
+elseif ($tuck == 'unidentified') {
+    
+    $layout['popup'] = true;
+    
+    if ($tuck == 'unidentified' && isset($_GET['ksieguj']) && isset($_GET['idw']) && isset($_GET['idc']) && intval($_GET['idw']) && intval($_GET['idc'])) {
+	$idw = intval($_GET['idw']);
+	$idc = intval($_GET['idc']);
+	
+	if ($wplata = $DB->GetRow('SELECT * FROM cashimport WHERE id = ? LIMIT 1;',array($idw)))
+	{
+		$balance = array(
+		    'time' 		=> $wplata['date'],
+		    'userid' 		=> $AUTH->id,
+		    'value'		=> $wplata['value'],
+		    'type'		=> 1,
+		    'taxid'		=> 0,
+		    'customerid'	=> $idc,
+		    'comment'		=> $wplata['description'],
+		    'docid'		=> 0,
+		    'itemid'		=> 0,
+		    'importid'		=> $idw,
+		    'sourceid'		=> $wplata['sourceid']
+		);
+		if ($LMS->addBalance($balance))
+		    $DB->Execute('UPDATE cashimport SET customerid = ?, closed = ? WHERE id = ? ;',array($idc,1,$idw));
+	}
+    }
+    
+    if (!isset($_GET['o'])) $SESSION->restore('cil_'.$tuck.'_o', $o); else $o = $_GET['o']; 		$SESSION->save('cil_'.$tuck.'_o', $o);
+    if (isset($_GET['cid'])) $cid = $_GET['cid']; else $SESSION->restore('cil_'.$tuck.'_cid',$cid); 	$SESSION->save('cil_'.$tuck.'_cid',$cid);
+    if (isset($_GET['sf'])) $sf = $_GET['sf']; else $SESSION->restore('cil_'.$tuck.'_sf',$sf); 		$SESSION->save('cil_'.$tuck.'_sf',$sf);
+    if (isset($_GET['dfrom'])) $dfrom = $_GET['dfrom']; else $SESSION->restore('cil_'.$tuck.'_dfrom',$dfrom); if (!isset($dfrom)) $dfrom = date("Y/m", time())."/01"; $SESSION->save('cil_'.$tuck.'_dfrom',$dfrom);
+    if (!isset($_GET['dto'])) $SESSION->restore('cil_'.$tuck.'_dto',$dto); else $dto = $_GET['dto']; $SESSION->save('cil_'.$tuck.'_dto',$dto);
+
+    $listdata['dfrom'] = $dfrom;
+    $listdata['dto'] = $dto;
+    $listdata['cid'] = $cid;
+    $listdata['sc'] = ($cid ? $LMS->GetCustomerName($cid) : '');
+    $listdata['sf'] = $sf;
+
+    if (!isset($_GET['page'])) $SESSION->restore('cil_'.$tuck.'_page',$_GET['page']);
+    
+    $listdata['ajax'] = true;
+    
+    if ($o == '') $o = 'date,asc';
+    list($order, $direction) = sscanf($o, '%[^,],%s');
+    ($direction == 'desc') ? $direction = 'desc' : $direction = 'asc';
+    
+    $listdata['order'] = $order;
+    $listdata['direction'] = $direction;
+    
+    $sql_search = NULL;
+
+    if ($sf != '')
+    {
+	$sql_search = " AND (".(intval($sf) ? "l.id = ".intval($sf)." OR" : "")
+	    .(" l.value = ".($DB->Escape(str_replace(",",".",$sf))))
+	    .(" OR UPPER(l.customer) ?LIKE? UPPER(".($DB->Escape('%'.str_replace('+',' ',$sf).'%')).")")
+	    .(" OR UPPER(l.description) ?LIKE? UPPER(".($DB->Escape('%'.str_replace('+',' ',$sf).'%')).")")
+	    .") ";
+    }
+
 	    $sql = 'SELECT l.id, l.date, l.value, l.customer, l.description, l.customerid, l.closed, l.sourcefileid,
 	    (SELECT '.$DB->concat('UPPER(c.lastname)',"' '",'c.name').' FROM customersview c WHERE c.id = l.customerid) AS customers
 	     FROM cashimport l 
@@ -217,7 +338,6 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled' ) {
 			    .($sql_search ? $sql_search : '')
 			    .' ORDER BY '.$order.' '.$direction.' '
 			    .' ;';
-    }
 //    echo $sql;
     $lista = $DB->GetAll($sql);
 

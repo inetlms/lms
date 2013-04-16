@@ -78,6 +78,9 @@
 			{/if}
 			<b>od dnia:</b> <input type="text" style="cursor:pointer;width:70px;{if $listdata.dfrom}background-color:#FFFF99;{/if}" value="{$listdata.dfrom}" onclick="javascript:cal1.popup();" name="calfrom" id="calfrom" {tip text="Kliknij aby otworzyć kalendarz"} readonly>&nbsp;<img src="img/cancel.gif" width="14" onclick="document.getElementById('calfrom').value='';szukaj('{$tuck}');"title="[ wyczyść datę początkową ]" style="cursor:pointer;">&nbsp;&nbsp;
 			<b>do dnia:</b> <input type="text" style="cursor:pointer;width:70px;{if $listdata.dto}background-color:#FFFF99;{/if}" value="{$listdata.dto}" onclick="javascript:cal2.popup();" name="calto" id="calto" {tip text="Kliknij aby otworzyć kalendarz"} readonly >&nbsp;<img src="img/cancel.gif" width="14" onclick="document.getElementById('calto').value='';szukaj('{$tuck}');" title="[ wyczyść datę końcową ]" style="cursor:pointer;">&nbsp;&nbsp;
+			<!--//
+			<img src="img/search.gif" style="cursor:pointer;" border="0" title="[ szukaj ]" onclick="szukaj('{$tuck}');">
+			//-->
 			<input type="button" value="Szukaj" style="font-weight:bold;" onclick="szukaj('{$tuck}');">
 		    
 		</td>
@@ -209,10 +212,8 @@
 			<input type="hidden" name="cid" id="cid" value="{$listdata.cid}">
 			<b>Szukaj: </b> <input type="text" size="30" id="sf" name="sf" value="{$listdata.sf}" {if $listdata.sf} style="background-color:#FFFF99;"{/if} {tip text="Wpisz ID przelewu, kwotę lub szukaną frazę w nadawcy lub tytule przelewu"}>
 			<img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="document.getElementById('sf').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">&nbsp;
-			{if $tuck == 'settled'}
 			<b>Klient: </b> <input type="text" size="30" {tip text="Kliknij aby wyszukać klienta z bazy LMS"} id="sc" name="sc" value="{$listdata.sc}" style="cursor:pointer;{if $listdata.cid}background-color:#FFFF99;{/if}" readonly onclick="return customersearchchoosewin(document.filterek.cid,document.filterek.sc);">&nbsp;
 			<img src="img/cancel.gif" {tip text="wyczyść filtr na podstawie klienta"} onclick="document.getElementById('sc').value='';document.getElementById('cid').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">&nbsp;
-			{/if}
 			<b>od dnia:</b> <input type="text" style="cursor:pointer;width:70px;{if $listdata.dfrom}background-color:#FFFF99;{/if}" value="{$listdata.dfrom}" onclick="javascript:cal1.popup();" name="calfrom" id="calfrom" {tip text="Kliknij aby otworzyć kalendarz"} readonly>&nbsp;<img src="img/cancel.gif" width="14" onclick="document.getElementById('calfrom').value='';szukaj('{$tuck}');"title="[ wyczyść datę początkową ]" style="cursor:pointer;">&nbsp;&nbsp;
 			<b>do dnia:</b> <input type="text" style="cursor:pointer;width:70px;{if $listdata.dto}background-color:#FFFF99;{/if}" value="{$listdata.dto}" onclick="javascript:cal2.popup();" name="calto" id="calto" {tip text="Kliknij aby otworzyć kalendarz"} readonly >&nbsp;<img src="img/cancel.gif" width="14" onclick="document.getElementById('calto').value='';szukaj('{$tuck}');" title="[ wyczyść datę końcową ]" style="cursor:pointer;">&nbsp;&nbsp;
 			<!--//
@@ -234,7 +235,7 @@
 		<td width="1%" class="fbt pad" align="center" nowrap style="vertical-align:bottom;"><a href="javascript: void(0);" onclick="loadAjax('id_data','?m=cashimportlist&tuck={$tuck}&o=date{if $listdata.direction=='asc' && $listdata.order=='date'},desc{/if}');"><b>Data dodania</b> {if $listdata.order=='date'}<img src="img/{$listdata.direction}_order.gif">{else}<img src="img/empty.gif" width="7">{/if}</a></td>
 		<td width="1%" class="fbt pad" align="left" nowrap style="vertical-align:bottom;">&nbsp;<a href="javascript: void(0);" onclick="loadAjax('id_data','?m=cashimportlist&tuck={$tuck}&o=value{if $listdata.direction=='asc' && $listdata.order=='value'},desc{/if}');"><b>Kwota</b> {if $listdata.order=='value'}<img src="img/{if $listdata.direction=='asc'}desc{else}asc{/if}_order.gif">{else}<img src="img/empty.gif" width="7">{/if}</a>&nbsp;</td>
 		<td width="auto" class="fbt pad" align="left" nowrap><a href="javascript: void(0);" onclick="loadAjax('id_data','?m=cashimportlist&tuck={$tuck}&o=customer{if $listdata.direction=='asc' && $listdata.order=='customer'},desc{/if}');"><b>Nadawca</b> {if $listdata.order=='customer'}<img src="img/{if $listdata.direction=='asc'}desc{else}asc{/if}_order.gif">{else}<img src="img/empty.gif" width="7">{/if}</a></td>
-		<td width="1%" class="fbt pad" align="center" nowrap>{if $tuck == 'settled'}<a href="javascript: void(0);" onclick="loadAjax('id_data','?m=cashimportlist&tuck={$tuck}&o=customers{if $listdata.direction=='asc' && $listdata.order=='customers'},desc{/if}');"><b>Klient LMS</b> {if $listdata.order=='customers'}<img src="img/{if $listdata.direction=='asc'}desc{else}asc{/if}_order.gif">{else}<img src="img/empty.gif" width="7">{/if}</a>{else}<b>Klient LMS</b>{/if}</td>
+		<td width="1%" class="fbt pad" align="center" nowrap><a href="javascript: void(0);" onclick="loadAjax('id_data','?m=cashimportlist&tuck={$tuck}&o=customers{if $listdata.direction=='asc' && $listdata.order=='customers'},desc{/if}');"><b>Klient LMS</b> {if $listdata.order=='customers'}<img src="img/{if $listdata.direction=='asc'}desc{else}asc{/if}_order.gif">{else}<img src="img/empty.gif" width="7">{/if}</a></td>
 		<td width="1%" class="frightu pad" align="left" nowrap>&nbsp;</td>
 		
 	    </tr>
@@ -243,7 +244,8 @@
 	    {section name=list loop=$lista start=$start max=$pagelimit}
 	    {assign var='indeks' value=$smarty.section.list.index+1}
 		{if $tuck == 'notsettled'}
-		    <input type="hidden" name="cusid{$indeks}" id="cusid{$indeks}" value="">
+		    <input type="hidden" name="cusid{$indeks}" id="cusid{$indeks}" value="{$lista[list].customerid}">
+		    <input type="hidden" name="cus{$indeks}" id="cus{$indeks}" value="{$lista[list].customers}">
 		    <input type="hidden" name="id_value{$indeks}" id="id_value{$indeks}" value="{$lista[list].value}">
 		    <input type="hidden" name="id_wplaty{$indeks}" id="id_wplaty{$indeks}" value="{$lista[list].id}">
 		{/if}
@@ -252,8 +254,7 @@
 		    <td width="1%" class="pad" align="center" nowrap>{$lista[list].date|date_format:"Y-m-d H:i"}</td>
 		    <td width="1%" class="pad" align="right" nowrap>{$lista[list].value}</td>
 		    <td width="auto" class="pad" align="left"><b><span {tip text=$lista[list].customer}>{$lista[list].customer|truncate:90}<span></b>{if $lista[list].description}<br><span {tip text=$lista[list].description}>{$lista[list].description|truncate:90}<span>{/if}</td>
-		    <td width="1%" class="pad" align="{if $tuck == 'settled'}left{else}right{/if}" nowrap style="min-width:200px;">
-			{if $tuck == 'settled'}
+		    <td width="1%" class="pad" align="left" nowrap style="min-width:200px;">
 			    {if $lista[list].customers}
 				<br><a href="?m=customerinfo&id={$lista[list].customerid}" {tip a=$lista[list].customerid dynpopup='?m=customerinfoshort&id=$a'}></b>{$lista[list].customers}</b></a>
 			    {else}
@@ -262,13 +263,13 @@
 				wpłata zaksięgowana dla ID {$lista[list].customerid}
 				</span>
 			    {/if}
-			{/if}
-			{if $tuck == 'notsettled'}
-			<input type="text" size="36" {tip text="Kliknij aby wyszukać klienta z bazy LMS"} id="cus{$indeks}" name="cus{$indeks}" value="" style="cursor:pointer;" readonly onclick="return customersearchchoosewin(document.filterek.cusid{$indeks},document.filterek.cus{$indeks});">
-			{/if}
+			
 		    </td>
 		    <td width="1%" class="fright pad" nowrap>
 			{if $tuck == 'settled'}
+			<!--//
+			<a href="javascript: void(0);" {tip text="wycofaj wpłatę dla klienta"}><img src="img/delete.gif" style="border:0;cursor:pointer;" ></a>
+			//-->
 			{else if $tuck == 'notsettled'}
 			    <a href="javascript: void(0);" onclick="relate_payment('{$indeks}');" {tip text="zaksięguj wpłatę dla klienta"}><img src="img/save.gif" style="border:0;cursor:pointer;" ></a>
 			{else}
@@ -337,6 +338,126 @@
 		    + tuck 
 		    + '&dfrom=' + document.getElementById('calfrom').value 
 		    + '&dto=' + document.getElementById('calto').value 
+		    + '&cid=' + document.getElementById('cid').value 
+		    + '&sf=' + document.getElementById('sf').value.replace(' ','+');
+		    loadAjax('id_data',link);
+		}
+		var cal1 = new calendar(document.forms['filterek'].elements['calfrom']);
+		cal1.time_comp = false;
+		var cal2 = new calendar(document.forms['filterek'].elements['calto']);
+		cal2.time_comp = false;
+		document.getElementById('sf').focus();
+	//-->
+</script>
+{/literal}
+
+{/if} 
+
+
+
+{if $tuck == 'unidentified'}
+<form name="filterek" id="cashimportlist">
+	<table width="100%" cellpadding="5">
+	    <tr class="dark">
+		<td colspan="6" width="100%" align="left" class="fall pad" nowrap>
+		    <img src="img/Filter.png" style="cursor:pointer;" border="0" title="[ szukaj ]" onclick="szukaj('{$tuck}');">&nbsp;&nbsp;
+			<input type="hidden" name="cid" id="cid" value="{$listdata.cid}">
+			<b>Szukaj: </b> <input type="text" size="30" id="sf" name="sf" value="{$listdata.sf}" {if $listdata.sf} style="background-color:#FFFF99;"{/if} {tip text="Wpisz ID przelewu, kwotę lub szukaną frazę w nadawcy lub tytule przelewu"}>
+			<img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="document.getElementById('sf').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">&nbsp;
+			<b>od dnia:</b> <input type="text" style="cursor:pointer;width:70px;{if $listdata.dfrom}background-color:#FFFF99;{/if}" value="{$listdata.dfrom}" onclick="javascript:cal1.popup();" name="calfrom" id="calfrom" {tip text="Kliknij aby otworzyć kalendarz"} readonly>&nbsp;<img src="img/cancel.gif" width="14" onclick="document.getElementById('calfrom').value='';szukaj('{$tuck}');"title="[ wyczyść datę początkową ]" style="cursor:pointer;">&nbsp;&nbsp;
+			<b>do dnia:</b> <input type="text" style="cursor:pointer;width:70px;{if $listdata.dto}background-color:#FFFF99;{/if}" value="{$listdata.dto}" onclick="javascript:cal2.popup();" name="calto" id="calto" {tip text="Kliknij aby otworzyć kalendarz"} readonly >&nbsp;<img src="img/cancel.gif" width="14" onclick="document.getElementById('calto').value='';szukaj('{$tuck}');" title="[ wyczyść datę końcową ]" style="cursor:pointer;">&nbsp;&nbsp;
+			<input type="button" value="Szukaj" style="font-weight:bold;" onclick="szukaj('{$tuck}');">
+		</td>
+	    </tr>
+	    {if $listdata.total != 0}
+	    <tr class="scroller">
+		<td class="fall" colspan="6">
+			{include file="scroller.html" loop=$lista}
+		</td>
+	    </tr>
+	    
+	    <tr class="dark">
+		<td width="1%" class="fleftu pad" align="center" nowrap style="vertical-align:bottom;"><a href="javascript: void(0);" onclick="loadAjax('id_data','?m=cashimportlist&tuck={$tuck}&o=id{if $listdata.direction=='asc' && $listdata.order=='id'},desc{/if}');"><b>ID</b> {if $listdata.order=='id'}<img src="img/{if $listdata.direction=='asc'}desc{else}asc{/if}_order.gif">{else}<img src="img/empty.gif" width="7">{/if}</a></td>
+		<td width="1%" class="fbt pad" align="center" nowrap style="vertical-align:bottom;"><a href="javascript: void(0);" onclick="loadAjax('id_data','?m=cashimportlist&tuck={$tuck}&o=date{if $listdata.direction=='asc' && $listdata.order=='date'},desc{/if}');"><b>Data dodania</b> {if $listdata.order=='date'}<img src="img/{$listdata.direction}_order.gif">{else}<img src="img/empty.gif" width="7">{/if}</a></td>
+		<td width="1%" class="fbt pad" align="left" nowrap style="vertical-align:bottom;">&nbsp;<a href="javascript: void(0);" onclick="loadAjax('id_data','?m=cashimportlist&tuck={$tuck}&o=value{if $listdata.direction=='asc' && $listdata.order=='value'},desc{/if}');"><b>Kwota</b> {if $listdata.order=='value'}<img src="img/{if $listdata.direction=='asc'}desc{else}asc{/if}_order.gif">{else}<img src="img/empty.gif" width="7">{/if}</a>&nbsp;</td>
+		<td width="auto" class="fbt pad" align="left" nowrap><a href="javascript: void(0);" onclick="loadAjax('id_data','?m=cashimportlist&tuck={$tuck}&o=customer{if $listdata.direction=='asc' && $listdata.order=='customer'},desc{/if}');"><b>Nadawca</b> {if $listdata.order=='customer'}<img src="img/{if $listdata.direction=='asc'}desc{else}asc{/if}_order.gif">{else}<img src="img/empty.gif" width="7">{/if}</a></td>
+		<td width="1%" class="fbt pad" align="center" nowrap>{if $tuck == 'settled'}<a href="javascript: void(0);" onclick="loadAjax('id_data','?m=cashimportlist&tuck={$tuck}&o=customers{if $listdata.direction=='asc' && $listdata.order=='customers'},desc{/if}');"><b>Klient LMS</b> {if $listdata.order=='customers'}<img src="img/{if $listdata.direction=='asc'}desc{else}asc{/if}_order.gif">{else}<img src="img/empty.gif" width="7">{/if}</a>{else}<b>Klient LMS</b>{/if}</td>
+		<td width="1%" class="frightu pad" align="left" nowrap>&nbsp;</td>
+		
+	    </tr>
+	    {/if}
+	    {cycle values="light,lucid" print=false}
+	    {section name=list loop=$lista start=$start max=$pagelimit}
+	    {assign var='indeks' value=$smarty.section.list.index+1}
+		    <input type="hidden" name="cusid{$indeks}" id="cusid{$indeks}" value="">
+		    <input type="hidden" name="id_value{$indeks}" id="id_value{$indeks}" value="{$lista[list].value}">
+		    <input type="hidden" name="id_wplaty{$indeks}" id="id_wplaty{$indeks}" value="{$lista[list].id}">
+		<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		    <td width="1%" class="fleft pad" align="center" nowrap>{$lista[list].id|string_format:"%05d"}</td>
+		    <td width="1%" class="pad" align="center" nowrap>{$lista[list].date|date_format:"Y-m-d H:i"}</td>
+		    <td width="1%" class="pad" align="right" nowrap>{$lista[list].value}</td>
+		    <td width="auto" class="pad" align="left"><b><span {tip text=$lista[list].customer}>{$lista[list].customer|truncate:90}<span></b>{if $lista[list].description}<br><span {tip text=$lista[list].description}>{$lista[list].description|truncate:90}<span>{/if}</td>
+		    <td width="1%" class="pad" align="{if $tuck == 'settled'}left{else}right{/if}" nowrap style="min-width:200px;">
+
+			
+			<input type="text" size="36" {tip text="Kliknij aby wyszukać klienta z bazy LMS"} id="cus{$indeks}" name="cus{$indeks}" value="" style="cursor:pointer;" readonly onclick="return customersearchchoosewin(document.filterek.cusid{$indeks},document.filterek.cus{$indeks});">
+		    </td>
+		    <td width="1%" class="fright pad" nowrap>
+			    <a href="javascript: void(0);" onclick="relate_payment('{$indeks}');" {tip text="zaksięguj wpłatę dla klienta"}><img src="img/save.gif" style="border:0;cursor:pointer;" ></a>
+		    </td>
+		</tr>
+	    {sectionelse}
+		<tr class="light">
+		    <td width="100%" colspan="6" align="center" class="flr">
+		    <p><h3><b>Brak Informacji</b></h3></p>
+		    </td>
+		</tr>
+	    {/section}
+	    {if $listdata.total != 0}
+	    <tr class="dark">
+		<td colspan="2" class="fleftu pad" align="right"><b>RAZEM : </b></td>
+		<td class="fbt pad" align="right"><b>{$listdata.sumvalue}</b></td>
+		<td colspan="3" class="frightu" align="left"></td>
+	    </tr>
+	    <tr class="scroller">
+		<td class="fall" colspan="6">
+			{include file="scroller.html" loop=$lista}
+		</td>
+	    </tr>
+	    {else}
+	    <tr><td colspan="6" class="ftop"></td></tr>
+	    {/if}
+	</table>
+</form>
+{literal}
+<script type="text/javascript">
+<!--
+    function relate_payment(id)
+    {
+	var id_wplaty = document.getElementById('id_wplaty'+id).value;
+	var id_klient = document.getElementById('cusid'+id).value;
+	var klient = document.getElementById('cus'+id).value;
+	var kwota = document.getElementById('id_value'+id).value;
+	var blad = false;
+	if (id_klient == '') { blad = true; alert('Nie wybrano klienta !!!'); }
+	
+	if (!blad && confirm('Kwota : '+kwota+'\nKlient : '+klient+'\n\nPotwierdź zaksięgowanie wpłaty')) 
+	{ 
+	    loadAjax('id_data','?m=cashimportlist&tuck=unidentified&ksieguj&idw='+id_wplaty+'&idc='+id_klient);
+	}
+    }
+		$("#sf").keyup(function(e){
+		    if (e.keyCode == 13)
+		    {
+			szukaj('{/literal}{$tuck}{literal}');
+		    }
+		});
+		
+		function szukaj(tuck) {
+		    var link = '?m=cashimportlist&tuck=' 
+		    + tuck 
+		    + '&dfrom=' + document.getElementById('calfrom').value 
+		    + '&dto=' + document.getElementById('calto').value 
 		    {/literal}{if $tuck == 'settled'}{literal}
 		    + '&cid=' + document.getElementById('cid').value 
 		    {/literal}{/if}{literal}
@@ -353,6 +474,9 @@
 {/literal}
 
 {/if} 
+
+
+
 
 {if $tuck == 'duplicate'}
 
@@ -510,3 +634,4 @@
 
 
 {/if} 
+
