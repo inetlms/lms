@@ -149,7 +149,7 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled') {
     $listdata['dfrom'] = $dfrom;
     $listdata['dto'] = $dto;
     $listdata['cid'] = $cid;
-    $listdata['sc'] = ($cid ? $LMS->GetCustomerName($cid) : '');
+    $listdata['sc'] = (!empty($cid) ? $LMS->GetCustomerName(intval($cid)) : '');
     $listdata['sf'] = $sf;
 
     if (!isset($_GET['page'])) $SESSION->restore('cil_'.$tuck.'_page',$_GET['page']);
@@ -304,7 +304,7 @@ elseif ($tuck == 'unidentified') {
     $listdata['dfrom'] = $dfrom;
     $listdata['dto'] = $dto;
     $listdata['cid'] = $cid;
-    $listdata['sc'] = ($cid ? $LMS->GetCustomerName($cid) : '');
+    $listdata['sc'] = (!empty($cid) ? $LMS->GetCustomerName($cid) : '');
     $listdata['sf'] = $sf;
 
     if (!isset($_GET['page'])) $SESSION->restore('cil_'.$tuck.'_page',$_GET['page']);
@@ -386,7 +386,7 @@ elseif ($tuck == 'duplicate') {
     $listdata['dfrom'] = $dfrom;
     $listdata['dto'] = $dto;
     $listdata['cid'] = $cid;
-    $listdata['sc'] = ($cid ? $LMS->GetCustomerName($cid) : '');
+    $listdata['sc'] = (!empty($cid) ? $LMS->GetCustomerName($cid) : '');
     $listdata['sf'] = $sf;
 
     if (!isset($_GET['page'])) $SESSION->restore('cil_'.$tuck.'_page',$_GET['page']);
