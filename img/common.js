@@ -644,11 +644,11 @@ function loadAjax(idel,strona)
     if (strona=='empty') {
 	$("#"+idel+"").empty();
     } else {
-//	ShowAjaxLoadingImage();
+	ShowAjaxLoadingImage();
 	$.ajax({ 
 		url:strona, 
 		success:function(html){$("#"+idel+"").empty().append(html);
-//		HideAjaxLoadingImage();
+		HideAjaxLoadingImage();
 		}
 		
 	});

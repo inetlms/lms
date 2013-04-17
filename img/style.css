@@ -1,4 +1,15 @@
-BODY		{ overflow: scroll;overflow-x: auto;font-size: 8pt; font-family: Tahoma, Verdana, Arial, Helvetica; background-color: #EBE4D6; margin: 0; padding: 0; vertical-align: middle; }
+@charset "utf-8";
+
+BODY		{ 
+    overflow		: scroll;
+    overflow-x		: auto;
+    font-size		: 8pt; 
+    font-family		: Tahoma, Verdana, Arial, Helvetica; 
+    background-color	: #EBE4D6; 
+    margin		: 0; 
+    padding		: 0; 
+    vertical-align	: middle; 
+}
 TABLE		{ border-collapse: collapse; border-color: #000000 }
 
 #pagecontainer  { height: 100%; }
@@ -7,41 +18,28 @@ TABLE		{ border-collapse: collapse; border-color: #000000 }
 
 TD		{ font-size: 8pt; font-family: Tahoma, Verdana, Arial, Helvetica; vertical-align: middle; border-color: black; }
 
-TD.fleft	{ border-left-width: 1pt; border-left-style: solid; }
-TD.fright	{ border-right-width: 1pt; border-right-style: solid; }
-TD.ftop		{ border-top-width: 1pt; border-top-style: solid; }
-TD.fbottom	{ border-bottom-width: 1pt; border-bottom-style: solid; }
-TD.fleftu	{ border-top-width: 1pt; border-top-style: solid; border-bottom-width: 1pt; border-bottom-style: solid; border-left-width: 1pt; border-left-style: solid; }
-TD.frightu	{ border-top-width: 1pt; border-top-style: solid; border-bottom-width: 1pt; border-bottom-style: solid; border-right-width: 1pt; border-right-style: solid; }
-TD.ftopu	{ border-top-width: 1pt; border-top-style: solid; border-left-width: 1pt; border-left-style: solid; border-right-width: 1pt; border-right-style: solid; }
-TD.fbottomu	{ border-bottom-width: 1pt; border-bottom-style: solid; border-left-width: 1pt; border-left-style: solid; border-right-width: 1pt; border-right-style: solid; }
-TD.fall		{ border-width: 1pt; border-style: solid; }
-TD.fbt		{ border-bottom:solid 1pt #000000; border-top:solid  1pt #000000;}
-TD.fbl		{ border-bottom:solid  1pt #000000; border-left:solid 1pt #000000;}
-TD.fbr		{ border-bottom-width: 1pt; border-bottom-style: solid; border-right-width: 1pt; border-right-style: solid; }
-TD.ftl		{ border-top-width: 1pt; border-top-style: solid; border-left-width: 1pt; border-left-style: solid; }
-TD.ftr		{ border-top-width: 1pt; border-top-style: solid; border-right-width: 1pt; border-right-style: solid; }
-TD.flr		{ border-left-width: 1pt; border-left-style: solid; border-right-width: 1pt; border-right-style: solid; }
-TD.loginform	{ border-width: 1pt; border-style: solid; border-color: #888888; }
-
+TD.fleft	{ 
 /*
-TD.fleft	{ border-left:solid 1px #000000; }
-TD.fright	{ border-right:solid 1px #000000;}
-TD.ftop		{ border-top:solid 1px #000000; }
-TD.fbottom	{ border-bottom:solid 1px #000000;}
-TD.fleftu	{ border-top:solid 1px #000000;; border-bottom: solid 1px #000000; border-left:solid 1px #000000; }
-TD.frightu	{ border-top: solid 1px #000000; border-bottom: solid 1px #000000; border-right: solid 1px #000000; }
-TD.ftopu	{ border-top: solid 1px #000000; border-left: solid 1px #000000; border-right: solid 1px #000000;}
-TD.fbottomu	{ border-bottom: solid 1px #000000; border-left: solid 1px #000000; border-right: solid 1px #000000; }
-TD.fall		{ border:solid 1px #000000; }
-TD.fbt		{ border-bottom:solid 1pt #000000; border-top:solid  1pt #000000;}
-TD.fbl		{ border-bottom:solid  1pt #000000; border-left:solid 1pt #000000;}
-TD.fbr		{ border-bottom: 1pt; border-bottom-style: solid; border-right-width: 1pt; border-right-style: solid; }
-TD.ftl		{ border-top-width: 1pt; border-top-style: solid; border-left-width: 1pt; border-left-style: solid; }
-TD.ftr		{ border-top-width: 1pt; border-top-style: solid; border-right-width: 1pt; border-right-style: solid; }
-TD.flr		{ border-left:solid 1px #000000; border-right:solid  1px #000000; }
-TD.loginform	{ border-width: 1pt; border-style: solid; border-color: #888888; }
+    border-left-width	: 1px; 
+    border-left-style	: solid; 
 */
+    border-left		: solid 1px #000000;
+}
+TD.fright	{ border-right-width: 1px; border-right-style: solid; }
+TD.ftop		{ border-top-width: 1px; border-top-style: solid; }
+TD.fbottom	{ border-bottom-width: 1px; border-bottom-style: solid; }
+TD.fleftu	{ border-top-width: 1px; border-top-style: solid; border-bottom-width: 1px; border-bottom-style: solid; border-left-width: 1px; border-left-style: solid; }
+TD.frightu	{ border-top-width: 1px; border-top-style: solid; border-bottom-width: 1px; border-bottom-style: solid; border-right-width: 1px; border-right-style: solid; }
+TD.ftopu	{ border-top-width: 1px; border-top-style: solid; border-left-width: 1px; border-left-style: solid; border-right-width: 1px; border-right-style: solid; }
+TD.fbottomu	{ border-bottom-width: 1px; border-bottom-style: solid; border-left-width: 1px; border-left-style: solid; border-right-width: 1px; border-right-style: solid; }
+TD.fall		{ border-width: 1px; border-style: solid; }
+TD.fbt		{ border-bottom:solid 1px #000000; border-top:solid  1px #000000;}
+TD.fbl		{ border-bottom:solid  1px #000000; border-left:solid 1px #000000;}
+TD.fbr		{ border-bottom-width: 1px; border-bottom-style: solid; border-right-width: 1px; border-right-style: solid; }
+TD.ftl		{ border-top-width: 1px; border-top-style: solid; border-left-width: 1px; border-left-style: solid; }
+TD.ftr		{ border-top-width: 1px; border-top-style: solid; border-right-width: 1px; border-right-style: solid; }
+TD.flr		{ border-left-width: 1px; border-left-style: solid; border-right-width: 1px; border-right-style: solid; }
+TD.loginform	{ border-width: 1px; border-style: solid; border-color: #888888; }
 
 TD.hand		{ cursor: pointer; }
 TR.hand		{ cursor: pointer; }
@@ -71,6 +69,8 @@ HR		{ border: 0; height: 1px; color: black; background-color: black; }
 HT		{ font-size: 12pt; font-weight:bold;font-family: Tahoma, Verdana, Arial, Helvetica; margin-bottom:7px;margin-top:5px;display:block;}
 
 INPUT[type="text"],
+INPUT[type="number"],
+INPUT[type="email"],
 INPUT[type="password"],
 INPUT[type="file"] {
 	border: solid 1px black;
@@ -133,11 +133,11 @@ INPUT.hiddenbtn	{ display : none; }
 INPUT.blend	{ border-style: solid; border-color: #c0c0c0; border-width: 1px; vertical-align: middle; color: black; }
 INPUT.scroller	{ border-style: solid; border-color: grey; border-width: 1px; vertical-align: middle; background-color: #DFD5BD; }
 
-TEXTAREA	{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1pt; background-color: #EBE4D6; vertical-align: middle; }
-TEXTAREA.alert	{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1pt; background-color: #FF9B9B; vertical-align: middle; }
+TEXTAREA	{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1px; background-color: #EBE4D6; vertical-align: middle; }
+TEXTAREA.alert	{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1px; background-color: #FF9B9B; vertical-align: middle; }
 
-SELECT		{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1pt; background-color: #EBE4D6; vertical-align: middle; }
-SELECT.alert	{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1pt; background-color: #FF9B9B; vertical-align: middle; }
+SELECT		{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1px; background-color: #EBE4D6; vertical-align: middle; }
+SELECT.alert	{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1px; background-color: #FF9B9B; vertical-align: middle; }
 
 BUTTON		{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 0pt; background-color: #DFD5BD; vertical-align: middle; }
 
@@ -214,6 +214,7 @@ div.multiselectlayer ul li input { border: none; }
 .click-menu .box2-hover { background-color: #CCFFCC; padding: 0px 0px 0px 21px; }
 .click-menu .section .active,
 .click-menu .section .active:hover { color: yellow; }
+.imgmenuhide { margin-left:21px;}
 .tip		{ width: 162px; }
 
 .dark		{ background-color: #CEBD9B; }
@@ -271,3 +272,51 @@ div.multiselectlayer ul li input { border: none; }
 */
 }
 
+.title {
+    width:99%;
+    right: 15px;
+    font-weight:bold;
+    margin-bottom : 10px;
+    font-size:14pt;
+    font-family: Tahoma, Verdana, Arial;
+    padding : 2px 0px 2px 8px;
+}
+
+.title_sm {
+    font-weight : bold;
+    font-size : 14pt;
+    font-family : Tahoma, Verdana, Arial;
+}
+
+.newstyle { display:'';}
+/*
+.ui-state-error {
+    border: 1px solid #cd0a0a; 
+    background: #fef1ec url(ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x; 
+    color: #cd0a0a; 
+    }
+*/
+
+div.error {
+    position		: absolute;
+/*    margin-top		: -27px;*/
+    font-weight		: bold;
+    padding-top		: 1px;
+    border		: solid 2px red;
+    padding-left	: 5px;
+    padding-right	: 5px;
+    background-color	: #EEEEEE;
+    font-weight		: bold;
+
+}
+
+div.nodata {
+    width		: 100%;
+    padding-top		: 20px;
+    padding-bottom	: 20px;
+    font		: bold 18px Tahoma,Arial,Verdana;
+    text-align		: center;
+    color		: #000000;
+    background-color	: #DFD5BD;
+    border		: solid 1px #333333;
+}
