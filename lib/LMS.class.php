@@ -2963,10 +2963,17 @@ class LMS {
 		    $invoice['customer']['ten'] = ($invoice['customer']['invoice_ten'] ? $invoice['customer']['invoice_ten'] : $invoice['customer']['ten']);
 		}
 		
+		$division = $this->DB->GetRow('SELECT name, address, city, zip, countryid, ten, regon,
+				account, inv_header, inv_footer, inv_author, inv_cplace 
+				FROM divisions WHERE id = ? ;',array($invoice['customer']['divisionid']));
+		
 		$this->DB->Execute('INSERT INTO documents (number, numberplanid, type,
 			cdate, sdate, paytime, paytype, userid, customerid, name, address, 
-			ten, ssn, zip, city, countryid, divisionid)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($number,
+			ten, ssn, zip, city, countryid, divisionid,
+			div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
+			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+				array($number,
 				$invoice['invoice']['numberplanid'] ? $invoice['invoice']['numberplanid'] : 0,
 				$type,
 				$cdate,
@@ -2983,6 +2990,18 @@ class LMS {
 				$invoice['customer']['city'],
 				$invoice['customer']['countryid'],
 				$invoice['customer']['divisionid'],
+				($division['name'] ? $division['name'] : ''),
+				($division['address'] ? $division['address'] : ''), 
+				($division['city'] ? $division['city'] : ''), 
+				($division['zip'] ? $division['zip'] : ''),
+				($division['countryid'] ? $division['countryid'] : 0),
+				($division['ten'] ? $division['ten'] : ''), 
+				($division['regon'] ? $division['regon'] : ''), 
+				($division['account'] ? $division['account'] : ''),
+				($division['inv_header'] ? $division['inv_header'] : ''), 
+				($division['inv_footer'] ? $division['inv_footer'] : ''), 
+				($division['inv_author'] ? $division['inv_author'] : ''), 
+				($division['inv_cplace'] ? $division['inv_cplace'] : ''),
 		));
 
 		$iid = $this->DB->GetLastInsertID('documents');
@@ -3103,24 +3122,24 @@ class LMS {
 
 	function GetInvoiceContent($invoiceid) {
 		global $PAYTYPES;
+		
 		$result = $this->DB->GetRow('SELECT d.id, d.number, d.name, d.customerid, d.type, 
 				d.userid, d.address, d.zip, d.city, d.countryid, cn.name AS country,
 				d.ten, d.ssn, d.cdate, d.sdate, d.paytime, d.paytype, d.numberplanid,
 				d.closed, d.reference, d.reason, d.divisionid, 
 				(SELECT name FROM users WHERE id = d.userid) AS user, n.template,
-				ds.name AS division_name, ds.shortname AS division_shortname,
-				ds.address AS division_address, ds.zip AS division_zip,
-				ds.city AS division_city, ds.countryid AS division_countryid, 
-				ds.ten AS division_ten, ds.regon AS division_regon, ds.account AS account,
-				ds.inv_header AS division_header, ds.inv_footer AS division_footer,
-				ds.inv_author AS division_author, ds.inv_cplace AS division_cplace,
+				d.div_name AS division_name, d.div_name AS division_shortname,
+				d.div_address AS division_address, d.div_zip AS division_zip,
+				d.div_city AS division_city, d.div_countryid AS division_countryid, 
+				d.div_ten AS division_ten, d.div_regon AS division_regon, d.div_account AS account,
+				d.div_inv_header AS division_header, d.div_inv_footer AS division_footer,
+				d.div_inv_author AS division_author, d.div_inv_cplace AS division_cplace,
 				c.pin AS customerpin, c.divisionid AS current_divisionid,
 				c.post_name, c.post_address, c.post_zip, c.post_city, c.post_countryid,
 				c.invoice_name, c.invoice_address, c.invoice_zip, c.invoice_city, c.invoice_countryid, c.invoice_ten 
 				FROM documents d
 				JOIN customers c ON (c.id = d.customerid)
-				LEFT JOIN countries cn ON (cn.id = d.countryid)
-				LEFT JOIN divisions ds ON (ds.id = d.divisionid)
+				LEFT JOIN countries cn ON (cn.id = d.countryid) 
 				LEFT JOIN numberplans n ON (d.numberplanid = n.id)
 				WHERE d.id = ? AND (d.type = ? OR d.type = ? OR d.type = ?)', array($invoiceid, DOC_INVOICE, DOC_CNOTE, DOC_INVOICE_PRO));
 		if ($result) 
@@ -3203,9 +3222,9 @@ class LMS {
 					$result['customerbalancelist'] = $this->GetCustomerBalanceList($result['customerid']);
 				$result['customerbalancelistlimit'] = $this->CONFIG['invoices']['print_balance_history_limit'];
 			}
-
+			
 			$result['paytypename'] = $PAYTYPES[$result['paytype']];
-
+			
 			// for backward compat.
 			$result['totalg'] = round(($result['value'] - floor($result['value'])) * 100);
 			$result['year'] = date('Y', $result['cdate']);
@@ -3219,41 +3238,44 @@ class LMS {
 				if ($result['post_zip'] && $result['post_city'])
 					$result['serviceaddr'] .= "\n" . $result['post_zip'] . ' ' . $result['post_city'];
 			}
-
+			
 			return $result;
 		}
 		else
 			return FALSE;
 	}
 
-	function GetNoteContent($id) {
+	function GetNoteContent($id) 
+	{
+		
 		if ($result = $this->DB->GetRow('SELECT d.id, d.number, d.name, d.customerid,
 				d.userid, d.address, d.zip, d.city, d.countryid, cn.name AS country,
 				d.ten, d.ssn, d.cdate, d.numberplanid, d.closed, d.divisionid, d.paytime, 
 				(SELECT name FROM users WHERE id = d.userid) AS user, n.template,
-				ds.name AS division_name, ds.shortname AS division_shortname,
-				ds.address AS division_address, ds.zip AS division_zip,
-				ds.city AS division_city, ds.countryid AS division_countryid, 
-				ds.ten AS division_ten, ds.regon AS division_regon, ds.account AS account,
-				ds.inv_header AS division_header, ds.inv_footer AS division_footer,
-				ds.inv_author AS division_author, ds.inv_cplace AS division_cplace,
+				d.div_name AS division_name, d.div_name AS division_shortname,
+				d.div_address AS division_address, d.div_zip AS division_zip,
+				d.div_city AS division_city, d.div_countryid AS division_countryid, 
+				d.div_ten AS division_ten, d.div_regon AS division_regon, d.div_account AS account,
+				d.div_inv_header AS division_header, d.div_inv_footer AS division_footer,
+				d.div_inv_author AS division_author, d.div_inv_cplace AS division_cplace,
 				c.pin AS customerpin, c.divisionid AS current_divisionid,
 				c.post_name, c.post_address, c.post_zip, c.post_city, c.post_countryid
 				FROM documents d
 				JOIN customers c ON (c.id = d.customerid)
 				LEFT JOIN countries cn ON (cn.id = d.countryid)
-				LEFT JOIN divisions ds ON (ds.id = d.divisionid)
 				LEFT JOIN numberplans n ON (d.numberplanid = n.id)
-				WHERE d.id = ? AND d.type = ?', array($id, DOC_DNOTE))) {
+				WHERE d.id = ? AND d.type = ?', array($id, DOC_DNOTE)))
+		{
+			
 			$result['value'] = 0;
-
+			
 			if (!$result['division_header'])
 				$result['division_header'] = $result['division_name'] . "\n"
 						. $result['division_address'] . "\n" . $result['division_zip'] . ' ' . $result['division_city']
 						. ($result['division_countryid'] && $result['countryid']
 						&& $result['division_countryid'] != $result['countryid'] ? "\n" . trans($this->GetCountryName($result['division_countryid'])) : '')
 						. ($result['division_ten'] != '' ? "\n" . trans('TEN') . ' ' . $result['division_ten'] : '');
-
+			
 			if ($result['content'] = $this->DB->GetAll('SELECT
 				value, itemid, description 
 				FROM debitnotecontents 
@@ -3264,10 +3286,10 @@ class LMS {
 					$result['content'][$idx]['value'] = $row['value'];
 					$result['value'] += $row['value'];
 				}
-
+			
 			$result['valuep'] = round(($result['value'] - floor($result['value'])) * 100);
 			$result['pdate'] = $result['cdate'] + ($result['paytime'] * 86400);
-
+			
 			// NOTE: don't waste CPU/mem when printing history is not set:
 			if (!empty($this->CONFIG['notes']['print_balance_history']) && chkconfig($this->CONFIG['notes']['print_balance_history'])) {
 				if (isset($this->CONFIG['notes']['print_balance_history_save']) && chkconfig($this->CONFIG['notes']['print_balance_history_save']))
@@ -3276,7 +3298,7 @@ class LMS {
 					$result['customerbalancelist'] = $this->GetCustomerBalanceList($result['customerid']);
 				$result['customerbalancelistlimit'] = $this->CONFIG['notes']['print_balance_history_limit'];
 			}
-
+			
 			// for backward compatibility
 			if ($result['post_name'] || $result['post_address']) {
 				$result['serviceaddr'] = $result['post_name'];
