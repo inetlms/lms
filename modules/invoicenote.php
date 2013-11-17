@@ -233,7 +233,7 @@ switch($action)
 		}
 
 		$DB->BeginTrans();
-		$DB->LockTables(array('documents', 'numberplans'));
+		$DB->LockTables(array('documents', 'numberplans','divisions'));
 
 		if(!isset($cnote['number']) || !$cnote['number'])
 			$cnote['number'] = $LMS->GetNewDocumentNumber(DOC_CNOTE, $cnote['numberplanid'], $cnote['cdate']);
@@ -246,10 +246,16 @@ switch($action)
 			if ($error)
 				$cnote['number'] = $LMS->GetNewDocumentNumber(DOC_CNOTE, $cnote['numberplanid'], $cnote['cdate']);
 		}
-
+		
+		$division = $DB->GetRow('SELECT name, address, city, zip, countryid, ten, regon,
+				account, inv_header, inv_footer, inv_author, inv_cplace 
+				FROM divisions WHERE id = ? ;',array((!empty($cnote['use_current_division']) ? $invoice['current_divisionid'] : $invoice['divisionid'])));
+		
 		$DB->Execute('INSERT INTO documents (number, numberplanid, type, cdate, sdate, paytime, paytype,
-				userid, customerid, name, address, ten, ssn, zip, city, countryid, reference, reason, divisionid)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				userid, customerid, name, address, ten, ssn, zip, city, countryid, reference, reason, divisionid,
+				div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
+				div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 				array($cnote['number'],
 					$cnote['numberplanid'] ? $cnote['numberplanid'] : 0,
 					DOC_CNOTE,
@@ -269,6 +275,18 @@ switch($action)
 					$invoice['id'],
 					$cnote['reason'],
 					!empty($cnote['use_current_division']) ? $invoice['current_divisionid'] : $invoice['divisionid'],
+					($division['name'] ? $division['name'] : ''),
+					($division['address'] ? $division['address'] : ''), 
+					($division['city'] ? $division['city'] : ''), 
+					($division['zip'] ? $division['zip'] : ''),
+					($division['countryid'] ? $division['countryid'] : 0),
+					($division['ten'] ? $division['ten'] : ''), 
+					($division['regon'] ? $division['regon'] : ''), 
+					($division['account'] ? $division['account'] : ''),
+					($division['inv_header'] ? $division['inv_header'] : ''), 
+					($division['inv_footer'] ? $division['inv_footer'] : ''), 
+					($division['inv_author'] ? $division['inv_author'] : ''), 
+					($division['inv_cplace'] ? $division['inv_cplace'] : ''),
 		));
 
 		$id = $DB->GetOne('SELECT id FROM documents WHERE number = ? AND cdate = ? AND type = ?',
