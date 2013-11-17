@@ -619,7 +619,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 				switch($item['var'])
 				{
 					case 'service':
-						$config[$idx]['description'] = trans('Default service type for sending text messages.');
+						$config[$idx]['description'] = 'Domyślny typ serwisu używanego do wysyłania wiadomości, dozwolone smscenter, smsapi i smstools';
 					break;
 
 					case 'prefix':
@@ -631,17 +631,41 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					break;
 
 					case 'username':
-						$config[$idx]['description'] = trans('Username for smscenter service');
+						$config[$idx]['description'] = 'Nazwa użytkownika';
 					break;
 
 					case 'password':
 						$config[$idx]['description'] = trans('Password for smscenter service');
 					break;
-
+					
 					case 'smscenter_type':
 						$config[$idx]['description'] = trans('Type of account you have at smscenter service. LMS will add sender at the end of message, when static type has been set. Correct values are: static and dynamic');
 					break;
-
+					
+					case 'smsapi_eco':
+						$config[$idx]['description'] = 'SMSAPI - Wysyłka ekonomicznej wiadomości, bez pola nadawcy. DEF.: 1';
+					break;
+					
+					case 'smsapi_fast':
+						$config[$idx]['description'] = 'SMSAPI - Szybka wysyłka wiadomości. DEF.: 0';
+					break;
+					
+					case 'smsapi_nounicode':
+						$config[$idx]['description'] = 'SMSAPI - Ustawienie 1 zabezpiecza przed wysłaniem wiadomości ze znakami specjalnymi (w tym polskimi). DEF.: 1';
+					break;
+					
+					case 'smsapi_normalize':
+						$config[$idx]['description'] = 'SMSAPI - Powoduje zmianę polskich znaków na odpowiedniki łacińskie. DEF.: 1';
+					break;
+					
+					case 'smsapi_max_parts':
+						$config[$idx]['description'] = 'SMSAPI - Parametr określa maksymalną ilość częsci z jakich może składać się wiadomość, maksymalnie to 6. DEF.: 3';
+					break;
+					
+					case 'smsapi_skip_foreign':
+						$config[$idx]['description'] = 'SMSAPI - Ustawienie tego parametru na 1, powoduje pominięcie numerów niepolskich. DEF.: 1';
+					break;
+					
 					default:
 						$config[$idx]['description'] = trans('Unknown option. No description.');
 					break;

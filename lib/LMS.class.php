@@ -5148,6 +5148,53 @@ class LMS {
 						return 'Smscenter error ' . $smsc_result[0] . '. Please contact smscenter administrator';
 				}
 				break;
+			case 'smsapi': 
+				
+				if (empty($this->CONFIG['sms']['username']))
+					return trans('SMSApi username not set!');
+				
+				if (empty($this->CONFIG['sms']['password']))
+					return trans('SMSApi username not set!');
+				
+				if (empty($this->CONFIG['sms']['from']))
+					return trans('SMS "from" not set!');
+				else
+					$from = $this->CONFIG['sms']['from'];
+
+				if ($msg_len < 160)
+					$type_sms = 'sms';
+				else 
+				    if ($msg_len <= 459)
+					$type_sms = 'concat';
+				    else
+					return trans('SMS Message too long!');
+				
+				$params = array(
+				    'username' => $this->CONFIG['sms']['username'], //login z konta SMSAPI
+				    'password' => md5($this->CONFIG['sms']['password']), //lub $password="ciąg md5"
+				    'to' => $number, //numer odbiorcy
+				    'from' => $this->CONFIG['sms']['from'], //nazwa nadawcy musi być aktywna
+				    'eco' => get_conf('sms.smsapi_eco',1), //określa czy wiadomość ma być wysłana jako Eco lub Pro
+				    'fast' => get_conf('sms.smsapi_fast',0), // czy ma być szybka wysyłka
+				    'nounicode'	=> get_conf('sms.smsapi_nounicode',1), // ustawienie 1 Zabezpiecza przed wysłaniem znaków specjalnych w tym polskich
+				    'normalize' => get_conf('sms.smsapi_normalize',1), // zmienia polskie literki na lacinskie odpowiedniki
+				    'max_parts'	=> get_conf('sms.$smsapi_max_parts',3),
+				    'skip_foreign' => get_conf('sms.smsapi_skip_foreign',1), // pomija niepolskie numery
+				    'message' => $message, //treść wiadomości
+				    // 'date' => strtotime('2013-03-25 11:00'), //Data wysłania wiadomości
+				    // 'test' => 1, // DEBUG - nie wysyła wiadomości
+				);
+				
+				$data = '?'.http_build_query($params);
+				$stream = fopen('http://api.smsapi.pl/sms.do'.$data,'r');
+				$ret = fread($stream,1024);
+				fclose($stream);
+				$ret_status = explode(':',$ret);
+				
+				if(sizeof($ret_status)>0 && $ret_status[0] == 'OK')
+				    return MSG_SENT;
+				return $ret;
+			break;
 			case 'smstools':
 				$dir = !empty($this->CONFIG['sms']['smstools_outdir']) ? $this->CONFIG['sms']['smstools_outdir'] : '/var/spool/sms/outgoing';
 

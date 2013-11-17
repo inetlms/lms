@@ -254,6 +254,12 @@ $DEFAULTS = array(
 	    'service'			=> 'smscenter',
 	    'smscenter_type' 		=> 'static',
 	    'username'			=> '',
+	    'smsapi_eco'		=> 1,
+	    'smsapi_fast'		=> 0,
+	    'smsapi_nounicode'		=> 1,
+	    'smsapi_normalize'		=> 1,
+	    'smsapi_max_parts'		=> 3,
+	    'smsapi_skip_foreign'	=> 1,
 	),
 	'hiperus_c5' => array(
 	    'numberplanid'		=> '',		// numer planu numeracyjnego
