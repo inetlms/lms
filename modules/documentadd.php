@@ -189,7 +189,7 @@ if (isset($_POST['document'])) {
 
 		$DB->BeginTrans();
 		
-		$division = $this->DB->GetRow('SELECT name, address, city, zip, countryid, ten, regon,
+		$division = $DB->GetRow('SELECT name, address, city, zip, countryid, ten, regon,
 				account, inv_header, inv_footer, inv_author, inv_cplace 
 				FROM divisions WHERE id = ? ;',array($customer['divisionid']));
 		
@@ -197,7 +197,8 @@ if (isset($_POST['document'])) {
 			customerid, userid, name, address, zip, city, ten, ssn, divisionid, 
 			div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
 			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace,closed)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($document['type'],
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
+				$document['type'],
 				$document['number'],
 				$document['numberplanid'],
 				$time,
@@ -224,12 +225,12 @@ if (isset($_POST['document'])) {
 				($division['inv_cplace'] ? $division['inv_cplace'] : ''),
 				isset($document['closed']) ? 1 : 0
 		));
-
+		
 		$docid = $DB->GetLastInsertID('documents');
 		
 		if (SYSLOG) 
 		addlogs('dodano nowy dokument '.$DOCTYPES[$document['type']],'e=add;m=doc;c='.$document['customerid']);
-
+		
 		$DB->Execute('INSERT INTO documentcontents (docid, title, fromdate, todate, filename, contenttype, md5sum, description)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?)', array($docid,
 				$document['title'],
