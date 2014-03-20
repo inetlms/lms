@@ -1,0 +1,67 @@
+{if $npnetdev}
+	<table width="100%" cellpadding="5" cellspacing="0" class="table">
+	    <tr class="dark">
+		<td class="fall" nowrap>
+		    <b>Dodaj interfejs sieciowy : </b>
+		    <select style="min-width:200px;cursor:pointer;" id="id_addinterface" {tip text="UWAGA !!!<br>Przypisany interfejs sieciowy będzie miał zmieniony adres lokalizacji oraz współrzędne GPS. Dane będą zgodne z danymi węzła."}>
+			<option value=""></option>
+			{section name="npnetdev" loop=$npnetdev}
+			    <option value="{$npnetdev[npnetdev].id}">{$npnetdev[npnetdev].name}</option>
+			{/section}
+		    </select>&nbsp;&nbsp;
+		    <a href="javascript:void(0);" onclick="add_interface();"><b>Dodaj interfejs do węzła</b> <img src="img/add.gif"></a><br>
+		    <span style="color:green;"><b>UWAGA !!! Przypisany interfejs sieciowy będzie miał zmieniony adres lokalizacji oraz współrzędne GPS. Dane będą zgodne z danymi węzła.</b></span>
+		</td>
+	    </tr>
+	<table>
+	{literal}
+	    <script type="text/javascript" language="JavaScript">
+	    <!--
+		function add_interface()
+		{
+		    var idi = document.getElementById('id_addinterface').value;
+		    if (idi)
+			loadAjax('id_data','?m=networknodeinfo&tuck=interface&idn={/literal}{$idn}{literal}&addinterface='+idi+'');
+		}
+		
+	    //-->
+	    </script>
+	{/literal}
+{/if}
+
+{section name=netdevlist loop=$netdevlist}
+
+    {assign var='netdevinfo' value=$netdevlist[netdevlist]}
+    {assign var='idn' value=$networknode.id}
+    {assign var='target' value="networkinfo"}
+    <p>{include file="networknodenetdevinfo.html"}</p>
+
+{sectionelse}
+    <br>
+    <table width="100%" cellpadding="5" cellspacing="0" class="table">
+	<tr class="light error">
+	    <td class="fall" align="center">
+		<p><h2>brak przypisanych urządzeń siecowych (interfejsów)</h2></p>
+	    </td>
+	</tr>
+    </table>
+
+{/section}
+
+{if $netdevlist}
+
+    {literal}
+    <script type="text/javascript" language="JavaScript">
+    <!--
+	function del_interface(idi)
+	{
+	    if (confirm('Potwierdź usunięcie interfejsu z węzła'))
+	    {
+		loadAjax('id_data','?m=networknodeinfo&tuck=interface&idn={/literal}{$idn}{literal}&delinterface='+idi+'');
+	    }
+	}
+    //-->
+    </script>
+    {/literal}
+
+{/if}

@@ -101,6 +101,9 @@ if(isset($_POST['netdev']))
 $layout['pagetitle'] = trans('New Device');
 
 $SMARTY->assign('nastype', $LMS->GetNAStypes());
+$SMARTY->assign('networknodelist',$LMS->GetListnetworknode());
+
+include(MODULES_DIR . '/netdevxajax.inc.php');
 
 if (chkconfig($CONFIG['phpui']['ewx_support']))
 	$SMARTY->assign('channels', $DB->GetAll('SELECT id, name FROM ewx_channels ORDER BY name'));

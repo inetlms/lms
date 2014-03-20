@@ -1,0 +1,61 @@
+
+{if $filelist}
+<table width="100%" cellpadding="5">
+    <tr class="dark">
+	<td width="100%" colspan="7" align="left" class="fall pad"><img src="img/attach.gif">&nbsp;&nbsp;&nbsp;<b>Lista załączonych plików / dokumentów</b></td>
+    </tr>
+    <tr class="light nav-header">
+	<td class="fleftu pad" width="1%" nowrap align="center"><b>ID</b></td>
+	<td class="fbt pad" width="1%" nowrap align="center"><b>Dodany</b></td>
+	<td class="fbt pad" width="1%" nowrap align="center">&nbsp;</td>
+	<td class="fbt pad" width="1%" nowrap align="left"><b>Nazwa pliku</b></td>
+	<td class="fbt pad" width="auto" align="left"><b>Opis</b></td>
+	<td class="fbt pad" width="1%" nowrap align="center"><b>Waga</b></td>
+	<td class="frightu pad" width="1%" nowrap></td>
+    </tr>
+    
+    {cycle values="light,lucid" print=false}
+    {section name=list loop=$filelist}
+    <tr class="{cycle} lista"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td class="fleft pad" width="1%" nowrap>{$filelist[list].id|string_format:"%04d"}</td>
+	<td class="pad" width="1%" nowrap>{$filelist[list].cdate|date_format:"Y-m-d H:i"}</td>
+
+	<td class="pad" width="1%" nowrap>
+	    {if $filelist[list].filetype == 'image/jpeg' || $filelist[list].filetype == 'image/png' || $filelist[list].filetype == 'image/gif'}
+	    <img src="img/view.gif" {tip a=$filelist[list].id dynpopup='?m=view_image&id=$a' sticky=0}>
+	    {else}
+	    <img src="img/empty.gif">
+	    {/if}
+	</td>
+
+	<td class="pad" width="1%" nowrap>{$filelist[list].filename}</td>
+	<td class="pad" width="auto" align="left">{$filelist[list].description}</td>
+	<td class="pad" width="1%" nowrap align="right">
+	    {assign var='waga' value=$filelist[list].filesize}
+	    {if $waga <= 1024}
+		{$waga}&nbsp;&nbsp;&nbsp;&nbsp;B
+	    {else}
+		{math assign='waga' equation="x/1024" x=$waga}
+		{if $waga <= 1024}
+		    {$waga|string_format:"%.2f"}&nbsp;KB
+		{else}
+		    {math assign='waga' equation="x/1024" x=$waga}
+		    {$waga|string_format:"%.2f"}&nbsp;MB
+		{/if}
+	    {/if}
+	</td>
+	<td class="fright pad" width="1%" nowrap align="left">
+	    <img src="img/Download.png" border="0" title="[ pobierz plik ]" onclick="location.href='?m=ajax_request&action=downloadfile&id={$filelist[list].id}';" style="cursor:pointer;">
+	    <img src="img/delete.gif" border="0" style="cursor:pointer;" title="[ usuń plik ]" onclick="kasuj_plik_annex('{$filelist[list].id}');">
+	</td>
+    </tr>
+    {/section}
+    <tr><td colspan="7" class="ftop" align="right"></td></tr>
+</table>
+{else}
+    <table width="100%" cellpadding="4">
+	<tr class="light">
+	    <td align="center" class="fall"><p><h3>Brak wpisów</h3></p></td>
+	</tr>
+    </table>
+{/if}

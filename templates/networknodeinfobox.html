@@ -1,0 +1,282 @@
+<p>
+<table width="100%" cellpadding="5" cellspacing="0" class="table">
+    <tr class="dark nav-header">
+	<td class="fall" align="left" colspan="2">
+	    <strong>{$networknode.name}</strong> ({$networknode.id|string_format:"%04d"})
+	</td>
+    </tr>
+    <tr class="light">
+	<!--// lewa strona //-->
+	<td class="fleft pad" width="50%" style="text-align:left;vertical-align:top;">
+	    <table width="100%" cellpadding="3">
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Rodzaj węzła</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.type}{$_TNODE.$tmp}</td>
+		</tr>
+		{if $layout.module!='collocationinfo' && $networknode.collocationid}
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left"><span class="tiphelp" {tip text="Kolokacja do której jest przypisany węzeł"}>Kolokacja</span></td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left"><a href="?m=collocationinfo&idc={$networknode.collocationid}">{$networknode.collocation_name}</a></td>
+		</tr>
+		{/if}
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Miejscowość</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.zip} {$networknode.city}</td>
+		</tr>
+		{if $networknode.street}
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Ulica</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.street}</td>
+		</tr>
+		{/if}
+		{if $networknode.location_house}
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Nr. budynku</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.location_house}</td>
+		</tr>
+		{/if}
+		{if $networknode.location_flat}
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Nr. mieszkania</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.location_flat}</td>
+		</tr>
+		{/if}
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Gmina</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.boroughs}</td>
+		</tr>
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Powiat</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.districts}</td>
+		</tr>
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Województwo</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.states}</td>
+		</tr>
+		
+		
+		
+		{if $networknode.cadastral_parcel}
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Nr. działki ewidencyjnej</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.cadastral_parcel}</td>
+		</tr>
+		{/if}
+		{if $networknode.longitude && $networknode.latitude}
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Długość geograficzna</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.longitude}</td>
+		</tr>
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Szerokość geograficzna</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.latitude}</td>
+		</tr>
+		{/if}
+		<tr class="light">
+		    <td width="1%" class="pad" nowrap align="left"><span class="tiphelp" {tip text="Typ budynku/obiektu w którym znajduje się węzeł"}>Typ obiektu</span></td>
+		    <td width="1%">:</td>
+		    <td width="98%" class="pad" align="left">
+			{assign var='tmp' value=$networknode.buildingtype}{$_BUILDINGS.$tmp}
+		    </td>
+		</tr>
+		<tr class="light">
+		    <td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Powierzchnia całkowita pomieszczeń udostępnionych dla węzła"}>Powierzchnia całkowita</span></td>
+		    <td width="1%">:</td>
+		    <td width="98%" class="pad" align="left">{if $networknode.room_area}{$networknode.room_area}{else}0{/if} m2</td>
+		</tr>
+		<tr class="light">
+		    <td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Powierzchnia wolna pomieszczeń udostępnionych dla węzła"}>Powierzchnia wolna</span></td>
+		    <td width="1%">:</td>
+		    <td width="98%" class="pad" align="left">{if $networknode.room_area_empty}{$networknode.room_area_empty} m2{else}brak{/if}</td>
+		</tr>
+		
+		<tr class="light">
+		    <td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Liczba podmiotów obcych w obiekcie"}>Podmioty obce</span></td>
+		    <td width="1%">:</td>
+		    <td width="98%" class="pad" align="left">{if $networknode.foreign_entity}{$networknode.foreign_entity}{else}brak{/if}</td>
+		</tr>
+		
+		<tr class="light">
+		    <td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Liczba podmiotów posiadających zakończenia światłowodowe w obiekcie"}>Podmioty ze światłem</span></td>
+		    <td width="1%">:</td>
+		    <td width="98%" class="pad" align="left">{if $networknode.entity_fiber_end}{$networknode.entity_fiber_end}{else}brak{/if}</td>
+		</tr>
+		
+		
+	    </table>
+	</td>
+	
+	
+	
+	<!--// prawa strona //-->
+	<td class="fright pad" width="50%" style="text-align:left;vertical-align:top;">
+	    <table width="100%" cellpadding="3">
+		
+		<tr class="light">
+		    <td width="1%" class="pad" nowrap align="left"><span class="tiphelp" {tip text="Przepustowość całkowita węzła w Mb/s"}>Przepustowość całkowita</span></td>
+		    <td width="1%">:</td>
+		    <td width="98%" class="pad" align="left">{if $networknode.total_bandwidth}{$networknode.total_bandwidth} Mb/s{else}---{/if}</td>
+		</tr>
+		
+		<tr class="light">
+		    <td width="1%" class="pad" nowrap align="left"><span class="tiphelp" {tip text="Przepustowość na potrzeby usług szerokopasmowego dostępu do Internetu w Mb/s, uwzględniona w przepustowości całkowitej"}>Przepustowość dla Internetu</span></td>
+		    <td width="1%">:</td>
+		    <td width="98%" class="pad" align="left">{if $networknode.bandwidth_broadband}{$networknode.bandwidth_broadband} Mb/s{else}---{/if}</td>
+		</tr>
+		
+		<tr class="light">
+		    <td width="1%" class="pad" nowrap align="left"><span class="tiphelp" {tip text="Maksymalna możliwa wysokość zawieszenia anten nad poziomem gruntu"}>Wysokość zawieszenia anten</span></td>
+		    <td width="1%">:</td>
+		    <td width="98%" class="pad" align="left">{if $networknode.height_anten}{$networknode.height_anten} m{else}---{/if}</td>
+		</tr>
+		
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left"><span class="tiphelp" {tip text="Możliwość instalacji anten dla radiowej sieci dostępowej lub anten dla radiolinii"}>Możliwość instalacji anten</span></td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.instofanten}{$_TN.$tmp}</td>
+		</tr>
+		
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Możliwość instalacji masztu</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.instmast}{$_TN.$tmp}</td>
+		</tr>
+		
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Warstwa szkieletowa</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.backbone_layer}{$_TN.$tmp}</td>
+		</tr>
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Warstwa dystrybucyjna</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.distribution_layer}{$_TN.$tmp}</td>
+		</tr>
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Warstwa dostępowa</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.access_layer}{$_TN.$tmp}</td>
+		</tr>
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Udostępnianie portów</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.sharing}{$_TN.$tmp}</td>
+		</tr>
+		
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Podłoga techniczna</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.technical_floor}{$_TN.$tmp}</td>
+		</tr>
+		
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Sufit techniczny</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.technical_ceiling}{$_TN.$tmp}</td>
+		</tr>
+		
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Klimatyzacja</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.air_conditioning}{$_TN.$tmp}</td>
+		</tr>
+		
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Przyłącze telekomunikacyjne</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.telecommunication}{$_TN.$tmp}</td>
+		</tr>
+		
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left"><span class="tiphelp" {tip text="Możliwość udostępnienia przyłącza światłowodowego"}>Udostępnianie światłowodu</span></td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.sharing_fiber}{$_TN.$tmp}</td>
+		</tr>
+		
+		<tr class="light">
+		    <td width="1%" nowrap class="pad" align="left">Gwarantowane zasilanie</td>
+		    <td width="1%">:</td>
+		    <td width="98%" class="pad" align="left">
+			{if $networknode.dc12 ||$networknode.dc24 ||$networknode.dc48 ||$networknode.ac230}
+			{if $networknode.dc12}DC 12V , {/if}
+			{if $networknode.dc24}DC 24V , {/if}
+			{if $networknode.dc48}DC 48V , {/if}
+			{if $networknode.ac230}AC 230V{/if}
+			{else}---{/if}
+		    </td>
+		</tr>
+		
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left"><span class="tiphelp" {tip text="Wykorzytanie węzła na potrzeby usług szerokopasmowych"}>Usługi szerokopasmowe</span></td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.service_broadband}{$_TN.$tmp}</td>
+		</tr>
+		
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left"><span class="tiphelp" {tip text="Wykorzystanie węzła na potrzeby usług głosowych"}>Usługi głosowe</span></td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.service_voice}{$_TN.$tmp}</td>
+		</tr>
+		
+		{if $networknode.service_other}
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left" style="vertical-align:top;">Inne przeznaczenie</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.service_other|nl2br}</td>
+		</tr>
+		{/if}
+		
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Utworzone</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">
+		    {assign var='tmp' value=$networknode.cuser}
+		    {$networknode.cdate|date_format:"%Y/%m/%d %H:%I:%S"} przez {get_user_login($tmp)}
+		    </td>
+		</tr>
+		{if $networknode.mdate}
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left">Ost. modyfikacja</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">
+		    {assign var='tmp' value=$networknode.muser}
+		    {$networknode.mdate|date_format:"%Y/%m/%d %H:%I:%S"} przez {get_user_login($tmp)}
+		    </td>
+		</tr>
+		{/if}
+		{if $networknode.description}
+		<tr>
+		    <td width="1%" class="pad" nowrap align="left" style="vertical-align:top;">Notatka</td>
+		    <td width="1%" nowrap>:</td>
+		    <td width="98%" class="pad" align="left">{$networknode.description|nl2br}</td>
+		</tr>
+		{/if}
+	    </table>
+	</td>
+	</td>
+    </tr>
+    
+    <tr class="light nav-footer">
+	<td width="50%" align="left" class="fleftu pad dark">
+	</td>
+	<td width="50%"align="right" class="frightu pad dark">
+	    {if $layout.module != 'networknodeinfo'}
+		<button type="button" onclick="self.location.href='?m=networknodeinfo&idn={$networknode.id}';">Otwórz kartę węzła</button>
+	    {/if}
+	    <a href="?m=networknodeedit&id={$networknode.id}&t={$layout.module}&idc={$collocationinfo.id}&idn={$networknode.id}">Edytuj <img src="img/edit.gif"></a>
+	</td>
+    </tr>
+</table>
+</p>

@@ -1052,4 +1052,32 @@ function protect_email($email)
     return $output;
 }
 
+function get_user_login($id)
+{
+    global $DB;
+    if ($tmp = $DB->GetOne('SELECT login FROM users WHERE id = ? LIMIT 1;',array(intval($id))))
+    return $tmp;
+    else
+    return NULL;
+}
+
+function list_dir($dir,$maska=NULL)
+{
+	    $lista = array();
+	    if (!is_null($maska)) $maska = '.'.$maska;
+	    if (is_dir($dir))
+	    {
+		foreach(array_diff(scandir($dir),array('.','..')) as $file)
+		{
+		    if (!is_null($maska))
+		    {
+			if ($myfile = stristr($file,$maska)) $lista[] = $file;
+			
+		    } else $lista[] = $file;
+		}
+	    }
+	    return $lista;
+}
+
+
 ?>

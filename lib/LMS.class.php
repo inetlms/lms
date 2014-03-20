@@ -4144,6 +4144,7 @@ class LMS {
 
 		$netdevlist = $this->DB->GetAll('SELECT d.id, d.name, d.location,
 			d.description, d.producer, d.model, d.serialnumber, d.ports,
+			d.networknodeid, (SELECT nn.name FROM networknode nn WHERE nn.id = d.networknodeid) AS networknodename, 
 			(SELECT COUNT(*) FROM nodes WHERE netdev=d.id AND ownerid > 0)
 			+ (SELECT COUNT(*) FROM netlinks WHERE src = d.id OR dst = d.id)
 			AS takenports
@@ -4177,7 +4178,8 @@ class LMS {
 	function GetNetDev($id) {
 		$result = $this->DB->GetRow('SELECT d.*, t.name AS nastypename, tt.name AS monit_nastypename, c.name AS channel,
 		        lc.name AS city_name,
-				(CASE WHEN ls.name2 IS NOT NULL THEN ' . $this->DB->Concat('ls.name2', "' '", 'ls.name') . ' ELSE ls.name END) AS street_name, lt.name AS street_type
+		        (SELECT nn.name FROM networknode nn WHERE nn.id = d.networknodeid) AS networknodename,
+			(CASE WHEN ls.name2 IS NOT NULL THEN ' . $this->DB->Concat('ls.name2', "' '", 'ls.name') . ' ELSE ls.name END) AS street_name, lt.name AS street_type
 			FROM netdevices d
 			LEFT JOIN nastypes t ON (t.id = d.nastype) 
 			LEFT JOIN nastypes tt ON (tt.id = d.monit_nastype) 
@@ -4218,8 +4220,8 @@ class LMS {
 				description, producer, model, serialnumber,
 				ports, purchasetime, guaranteeperiod, shortname,
 				nastype, clients, secret, community, channelid,
-				longitude, latitude, monit_nastype, monit_login, monit_passwd,  monit_port )
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)', array($data['name'],
+				longitude, latitude, monit_nastype, monit_login, monit_passwd,  monit_port, networknodeid )
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($data['name'],
 						$data['location'],
 						$data['location_city'] ? $data['location_city'] : null,
 						$data['location_street'] ? $data['location_street'] : null,
@@ -4243,7 +4245,8 @@ class LMS {
 						$data['monit_nastype'],
 						$data['monit_login'],
 						$data['monit_passwd'],
-						$data['monit_port']
+						$data['monit_port'],
+						($data['networknode'] ? $data['networknode'] : 0),
 				))) {
 			$id = $this->DB->GetLastInsertID('netdevices');
 
@@ -4276,7 +4279,7 @@ class LMS {
 				location_city=?, location_street=?, location_house=?, location_flat=?,
 				model=?, serialnumber=?, ports=?, purchasetime=?, guaranteeperiod=?, shortname=?,
 				nastype=?, clients=?, secret=?, community=?, channelid=?, longitude=?, latitude=?,
-				monit_nastype = ?, monit_login = ?, monit_passwd = ?, monit_port = ? 
+				monit_nastype = ?, monit_login = ?, monit_passwd = ?, monit_port = ?, networknodeid = ? 
 				WHERE id=?', array($data['name'],
 				$data['description'],
 				$data['producer'],
@@ -4302,6 +4305,7 @@ class LMS {
 				$data['monit_login'],
 				$data['monit_passwd'],
 				$data['monit_port'],
+				($data['networknode'] ? $data['networknode'] : 0),
 				$data['id']
 		));
 	}
@@ -7203,6 +7207,399 @@ class LMS {
 	global $GG;
 	return $GG->connect(get_conf('gadugadu.gg_number'),get_conf('gadugadu.gg_passwd'),get_conf('gadugadu.gg_signature_statuson',NULL));
     }
+    
+    function GetLocationName($cityid,$streetid=NULL)
+    {
+    
+	$data = $this->DB->GetRow('SELECT c.name AS city, b.name AS boroughs, d.name AS districts, s.name AS states 
+					    FROM location_cities c 
+					    JOIN location_boroughs b ON (b.id = c.boroughid) 
+					    JOIN location_districts d ON (d.id = b.districtid) 
+					    JOIN location_states s ON (s.id = d.stateid) 
+					    WHERE c.id = ? ;',array(intval($cityid)));
+		
+		if (!empty($streetid) && $streetid != '99999' && $streetid != '99998')
+		{
+		    $tmp = $this->DB->GetRow('SELECT s.name AS street, s.typeid, t.name AS type 
+							FROM location_streets s 
+							LEFT JOIN location_street_types t ON (t.id = s.typeid) 
+							WHERE s.id = ? LIMIT 1;',array($streetid));
+		    $data['street'] = $tmp['type'].' '.$tmp['street'];
+		    unset($tmp);
+		}
+		else
+		    $data['street'] = '';
+	
+	return $data;
+    }
+    
+    
+    /*************************************************\
+    *                WĘZŁY                            *
+    \*************************************************/
+    
+    function CheckExistsNetworkNode($id = NULL)
+    {
+	if ($id) $id = intval($id);
+	if (is_null($id) || empty($id) ) return NULL;
+	return ($this->DB->GetOne('SELECT 1 FROM networknode WHERE id = ? '.$this->DB->Limit(1).' ;',array($id)) ? TRUE : FALSE);
+    }
+
+
+    function GetNetworkNode($id = NULL)
+    {
+	$id = intval($id);
+	$result = NULL;
+	if ($return = $this->DB->GetRow('SELECT 
+		n.*, 
+		(SELECT COUNT(nd.id) FROM netdevices nd WHERE nd.networknodeid = n.id) AS count_netdev 
+		FROM networknode n WHERE n.id = ? '.$this->DB->Limit(1).' ;',array($id)))
+	{
+	    $return['backbone_layer'] = intval($return['backbone_layer']);
+	    $return['distribution_layer'] = intval($return['distribution_layer']);
+	    $return['access_layer'] = intval($return['access_layer']);
+	    $result = $return;
+	    
+	    if (!empty($return['location_city'])) 
+	    {
+		$return['teryt'] = TRUE; 
+		$return['location'] = $return['city'];
+		if (!empty($return['street'])) $return['location'] .= ', '.$return['street'];
+	    }
+	    else 
+		$return['teryt'] = FALSE;
+	
+	return $return;
+	    
+	}
+	return $result;
+    }
+
+
+    function getNetworkNodeIdByName($name)
+    {
+	return $this->DB->GetOne('SELECT id FROM networknode WHERE name = ? '.$this->DB->Limit(1).' ;',array(strtoupper($name)));
+    }
+
+
+    function GetListNetworknode($filter = NULL)
+    {
+	return $this->DB->GetAll('SELECT nn.*, 
+				    (SELECT COUNT(nd.id) FROM netdevices nd WHERE nd.networknodeid = nn.id) AS count_netdev 
+				    FROM networknode nn WHERE 1=1 '
+				    .' AND deleted = 0;');
+    }
+    
+    function Addnetworknode($dane)
+    {
+	    if ($dane['teryt']) 
+	    {
+		$data = $this->GetLocationName($dane['location_city'],$dane['location_street']);
+		$dane['states'] = $data['states'];
+		$dane['districts'] = $data['districts'];
+		$dane['boroughs'] = $data['boroughs'];
+		$dane['city'] = $data['city'];
+		$dane['street'] = $data['street'];
+		unset($data);
+	    }
+	    $this->DB->Execute('INSERT INTO networknode (name, type, states, districts, boroughs, city, street, zip, 
+				location_city, location_street, location_house, location_flat,
+				cadastral_parcel, longitude, latitude, 
+				backbone_layer, distribution_layer, access_layer, sharing, buildingtype, collocationid, 
+				description, cdate, mdate, cuser, muser,
+				deleted, disabled, room_area, room_area_empty, technical_floor, technical_ceiling, 
+				air_conditioning, telecommunication, instmast, instofanten, foreign_entity,
+				entity_fiber_end, sharing_fiber, dc12, dc24, dc48, ac230, height_anten, 
+				service_broadband, service_voice, service_other, total_bandwidth, bandwidth_broadband
+				) 
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;',
+				array(
+					$dane['name'],
+					($dane['type'] ? $dane['type'] : NODE_OWN),
+					($dane['states'] ? $dane['states'] : NULL),
+					($dane['districts'] ? $dane['districts'] : NULL),
+					($dane['boroughs'] ? $dane['boroughs'] : NULL),
+					($dane['city'] ? $dane['city'] : NULL),
+					($dane['street'] ? $dane['street'] : NULL),
+					($dane['zip'] ? $dane['zip'] : NULL),
+					($dane['location_city'] ? $dane['location_city'] : NULL),
+					($dane['location_street'] ? $dane['location_street'] : NULL),
+					($dane['location_house'] ? $dane['location_house'] : NULL),
+					($dane['location_flat'] ? $dane['location_flat'] : NULL),
+					($dane['cadastral_parcel'] ? $dane['cadastral_parcel'] : NULL),
+					($dane['longitude'] ? $dane['longitude'] : NULL),
+					($dane['latitude'] ? $dane['latitude'] : NULL),
+					($dane['backbone_layer'] ? 1  : 0),
+					($dane['distribution_layer'] ? 1 : 0),
+					($dane['access_layer'] ? 1 : 0),
+					($dane['sharing'] ? 1 : 0),
+					($dane['buildingtype'] ? $dane['buildingtype'] : NULL),
+					0,
+					($dane['description'] ? $dane['description'] : NULL),
+					time(),0,$this->AUTH->id,0,0,0,
+					($dane['room_area'] ? $dane['room_area'] : 0),
+					($dane['room_area_empty'] ? $dane['room_area_empty'] : 0),
+					($dane['technical_floor'] ? 1 : 0),
+					($dane['technical_ceiling'] ? 1 : 0),
+					($dane['air_conditioning'] ? 1 : 0),
+					($dane['telecommunication'] ? 1: 0),
+					($dane['instmast'] ? 1 : 0),
+					($dane['instofanten'] ? 1 : 0),
+					($dane['foreign_entity'] ? $dane['foreign_entity'] : 0),
+					($dane['entity_fiber_end'] ? $dane['entity_fiber_end'] : 0),
+					($dane['sharing_fiber'] ? 1 : 0),
+					($dane['dc12'] ? 1 : 0),
+					($dane['dc24'] ? 1 : 0),
+					($dane['dc48'] ? 1 : 0),
+					($dane['ac230'] ? 1 : 0),
+					($dane['height_anten'] ? $dane['height_anten'] : 0),
+					($dane['service_broadband'] ? 1 : 0),
+					($dane['service_voice'] ? 1 : 0),
+					($dane['service_other'] ? $dane['service_other'] : NULL),
+					($dane['total_bandwidth'] ? $dane['total_bandwidth'] : 0),
+					($dane['bandwidth_broadband'] ? $dane['bandwidth_broadband'] : 0),
+					
+				));
+	    return $this->DB->GetLastInsertID('networknode');
+    }
+
+
+    function UpdateNetworkNode($dane)
+    {
+	if ($dane['teryt']) 
+	    { 
+		$data = $this->GetLocationName($dane['location_city'],$dane['location_street']);
+		$dane['states'] = $data['states'];
+		$dane['districts'] = $data['districts'];
+		$dane['boroughs'] = $data['boroughs'];
+		$dane['city'] = $data['city'];
+		$dane['street'] = $data['street'];
+		unset($data);
+	    }
+
+	    if ($this->DB->Execute('UPDATE networknode SET name=?, type=?, states=?, districts=?, boroughs=?, city=?, street=?, zip=?, location_city=?, location_street=?, location_house=?, 
+				location_flat=?, cadastral_parcel=?, longitude=?, latitude=?, backbone_layer=?, distribution_layer=?, access_layer=?, sharing=?, buildingtype=?, 
+				collocationid=?, description=?, mdate=?, muser=?, 
+				room_area=?, room_area_empty=?, technical_floor=?, technical_ceiling=?, 
+				air_conditioning=?, telecommunication=?, instmast=?, instofanten=?, foreign_entity=?,
+				entity_fiber_end=?, sharing_fiber=?, dc12=?, dc24=?, dc48=?, ac230=?, height_anten=?, 
+				service_broadband=?, service_voice=?, service_other=?, total_bandwidth=?, bandwidth_broadband=?
+				
+				WHERE id = ? ;',
+				array(
+					$dane['name'],
+					($dane['type'] ? $dane['type'] : NODE_OWN),
+					($dane['states'] ? $dane['states'] : NULL),
+					($dane['districts'] ? $dane['districts'] : NULL),
+					($dane['boroughs'] ? $dane['boroughs'] : NULL),
+					($dane['city'] ? $dane['city'] : NULL),
+					($dane['street'] ? $dane['street'] : NULL),
+					($dane['zip'] ? $dane['zip'] : NULL),
+					($dane['location_city'] ? $dane['location_city'] : NULL),
+					($dane['location_street'] ? $dane['location_street'] : NULL),
+					($dane['location_house'] ? $dane['location_house'] : NULL),
+					($dane['location_flat'] ? $dane['location_flat'] : NULL),
+					($dane['cadastral_parcel'] ? $dane['cadastral_parcel'] : NULL),
+					($dane['longitude'] ? $dane['longitude'] : NULL),
+					($dane['latitude'] ? $dane['latitude'] : NULL),
+					($dane['backbone_layer'] ? 1 : 0),
+					($dane['distribution_layer'] ? 1 : 0),
+					($dane['access_layer'] ? 1 : 0),
+					($dane['sharing'] ? 1 : 0),
+					($dane['buildingtype'] ? $dane['buildingtype'] : NULL),
+					0,
+					($dane['description'] ? $dane['description'] : NULL),
+					time(),$this->AUTH->id,
+					($dane['room_area'] ? $dane['room_area'] : 0),
+					($dane['room_area_empty'] ? $dane['room_area_empty'] : 0),
+					($dane['technical_floor'] ? 1 : 0),
+					($dane['technical_ceiling'] ? 1 : 0),
+					($dane['air_conditioning'] ? 1 : 0),
+					($dane['telecommunication'] ? 1: 0),
+					($dane['instmast'] ? 1 : 0),
+					($dane['instofanten'] ? 1 : 0),
+					($dane['foreign_entity'] ? $dane['foreign_entity'] : 0),
+					($dane['entity_fiber_end'] ? $dane['entity_fiber_end'] : 0),
+					($dane['sharing_fiber'] ? 1 : 0),
+					($dane['dc12'] ? 1 : 0),
+					($dane['dc24'] ? 1 : 0),
+					($dane['dc48'] ? 1 : 0),
+					($dane['ac230'] ? 1 : 0),
+					($dane['height_anten'] ? $dane['height_anten'] : 0),
+					($dane['service_broadband'] ? 1 : 0),
+					($dane['service_voice'] ? 1 : 0),
+					($dane['service_other'] ? $dane['service_other'] : NULL),
+					($dane['total_bandwidth'] ? $dane['total_bandwidth'] : 0),
+					($dane['bandwidth_broadband'] ? $dane['bandwidth_broadband'] : 0),
+					$dane['networknodeid']
+				))
+		) return true; else return false;
+    }
+    
+    // **********************************************************************
+    
+    function add_interface_for_networknode($idn,$idi)
+    {
+	if ($idn && $idi) {
+	    $dane = $this->DB->GetRow('SELECT city, street, zip, location_city, location_street, location_house, location_flat, longitude, latitude 
+					FROM networknode WHERE id = ?;',array($idn));
+	    if ($dane) {
+		$adres = '';
+		$adres .= $dane['zip'].' '.$dane['city'].', ';
+		$adres .= $dane['street'].' '.$dane['location_house'];
+		if ($dane['location_flat'])
+		    $adres .= '/'.$dane['location_flat'];
+		
+		
+		$this->DB->Execute('UPDATE netdevices SET location = ?, location_city=?, location_street=?, location_house=?, 
+				location_flat=?, longitude=?, latitude=?, networknodeid=? WHERE id=?;',
+				array(
+				    $adres,
+				    ($dane['location_city'] ? $dane['location_city'] : NULL),
+				    ($dane['location_street'] ? $dane['location_street'] : NULL),
+				    ($dane['location_house'] ? $dane['location_house'] : NULL),
+				    ($dane['location_flat'] ? $dane['location_flat'] : NULL),
+				    ($dane['longitude'] ? $dane['longitude'] : NULL),
+				    ($dane['latitude'] ? $dane['latitude'] : NULL),
+				    $idn, $idi,
+				)
+		);
+	    }
+	}
+    }
+
+    /******************
+    *   UploadFiles   *
+    \*****************/
+    function GetFileInfo($id)
+    {
+	    return $this->DB->GetRow('SELECT * FROM uploadfiles WHERE id = ? LIMIT 1;',array(intval($id)));
+    }
+
+
+    function DeleteFile($id)
+    {
+	$id = intval($id);
+	
+	if ($info = $this->GetFileInfo($id))
+	{
+	    @unlink(UPLOADFILES_DIR.'/'.$info['filenamesave']);
+	    $this->DB->Execute('DELETE FROM uploadfiles WHERE id = ? ;',array($id));
+	} 
+    }
+
+
+    function DeleteFileByOwner($section='',$ownerid=0)
+    {
+	$id = intval($ownerid);
+	if ($tmp = $this->DB->GetAll('SELECT id, filenamesave FROM uploadfiles WHERE section = ? AND ownerid = ? ;',array($section,$id)))
+	{
+	    for ($i=0;$i<sizeof($tmp);$i++) 
+		@unlink(UPLOADFILES_DIR.'/'.$$tmp[$i]['filenamesave']);
+	    $this->DB->Execute('DELETE FROM uploadfiles WHERE section = ? AND ownerid = ? ;',array($section,$id));
+	}
+    }
+
+
+    function UploadFile($files,$section=NULL,$ownerid=NULL,$description=NULL)
+    {
+	$d = false;
+	set_time_limit(0);
+	
+	if (isset($_FILES[$files]) && is_uploaded_file($_FILES[$files]['tmp_name'])) 
+	{
+	    $d=array();
+	    $d['filename'] = $_FILES[$files]['name'];
+	    $d['filetype'] = $_FILES[$files]['type'];
+	    $d['filesize'] = $_FILES[$files]['size'];
+	    $d['filemd5sum'] = md5_file($_FILES[$files]['tmp_name']);
+	    $d['filenamesave'] = time().'.'.$d['filemd5sum'];
+	    $d['filesrc'] = $_FILES[$files]['tmp_name'];
+	    
+	    $result = move_uploaded_file($_FILES[$files]['tmp_name'],UPLOADFILES_DIR.'/'.$d['filenamesave']);
+	    
+	    if (!$result) 
+		return FALSE;
+	    
+	    $this->DB->Execute('INSERT INTO uploadfiles (section,ownerid,description,filename, filetype, filesize, filemd5sum, filenamesave, cdate, userid) 
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;',
+				array($section,$ownerid,$description,$d['filename'], $d['filetype'], $d['filesize'], $d['filemd5sum'], $d['filenamesave'], time(), $this->AUTH->id));
+	    
+	    return $this->DB->GetLastInsertID();
+	} 
+	else 
+	    return FALSE;
+    }
+
+
+
+    function DownloadFile($id)
+    {
+	$id = intval($id);
+	
+	if ($d = $this->DB->GetRow('SELECT filename, filetype, filesize, filenamesave FROM uploadfiles WHERE id = ? LIMIT 1 ;',array($id)))
+	{
+	    $fullpath = UPLOADFILES_DIR.'/'.$d['filenamesave'];
+	    
+	    if (!file_exists($fullpath) or !is_readable($fullpath)) return FALSE;
+	    header("Content-Type: applicaton/force-download");
+	    header("Content-Type: application/ocet-stream");
+	    header("Content-Type: application/download");
+	    header("Content-Disposition: attachment; filename=\"".$d['filename']."\"");
+	    header("Accept-Ranges: bytes");
+	    header("Content-Transfer-Encoding: binary");
+	    header("Content-Length : ".$d['filesize']."");
+	    readfile($fullpath);
+	    return TRUE;
+	} 
+	else return FALSE;
+    }
+
+
+    function ViewFile($id) 
+    {
+	$id = intval($id);
+	
+	if ($d = $this->DB->GetRow('SELECT filename, filetype, filesize, filenamesave FROM uploadfiles WHERE id = ? LIMIT 1 ;',array($id)))
+	{
+	    $fullpath = UPLOADFILES_DIR.'/'.$d['filenamesave'];
+	    
+	    if (!file_exists($fullpath) || !is_readable($fullpath)) return FALSE;
+	    
+	    ob_end_clean();
+	    header("Content-type: ".$d['filetype']."");
+	    $fp = fopen($fullpath, 'rb');
+	    fpassthru($fp);
+	} else return FALSE;
+    }
+
+
+    function GetFileIdByName($nazwa=NULL)
+    {
+	$result = 0;
+	
+	if (!is_null($nazwa)) return $result;
+	if (!is_string($nazwa)) return $result;
+	
+	$nazwa = addslashes($nazwa);
+	$tmp = $this->DB->GetOne('SELECT id FROM uploadfiles WHERE UPPER(filename) = ? LIMIT 1 ;',array(strtoupper($nazwa)));
+	
+	if (!$tmp) return $result;
+	
+	$result = intval($tmp);
+	return $result;
+    }
+
+
+    function GetFilesList($section = NULL, $owner = NULL)
+    {
+	
+	return $this->DB->GetAll('SELECT * FROM uploadfiles WHERE 1=1'.($section ? ' AND section = \''.$section.'\'' : '').($owner ? ' AND ownerid = \''.intval($owner).'\'' : '').' ;');
+	
+    }
+
+
 
 }
 

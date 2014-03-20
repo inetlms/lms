@@ -388,6 +388,91 @@ $PASSWDEXPIRATIONS = array(
 	365	=> trans('year'),
 );
 
+define('NIE',0);
+define('TAK',1);
+define('CZESCIOWO',2);
+
+
+$TN = array(
+    TAK		=> 'Tak',
+    NIE		=> 'Nie'
+);
+
+$TNC = array(
+    TAK		=> 'Tak',
+    NIE		=> 'Nie',
+    CZESCIOWO	=> 'Częściowo'
+);
+
+// zgodnie ze słownikiem UKE
+define('TYP_BUDYNEK_BIUROWY',1);
+define('TYP_BUDYNEK_PRZEMYSLOWY',2);
+define('TYP_BUDYNEK_MIESZKALNY',3);
+define('TYP_OBIEKT_SAKRALNY',4);
+define('TYP_MASZT',5);
+define('TYP_WIEZA',6);
+define('TYP_KONTENER',7);
+define('TYP_SZAFA_ULICZNA',8);
+define('TYP_SKRZYNKA',9);
+define('TYP_STUDNIA_KABLOWA',10);
+define('TYP_KOMIN',11);
+// na własne potrzeby
+define('TYP_SLUP',12); // słup
+define('TYP_SZAFKA_NASCIENNA',13);
+define('TYP_SZAFKA_NASCIENNA_RACK',14);
+define('TYP_SZAFKA_STOJACA',15);
+define('TYP_SZAFKA_STOJACA_RACK',16);
+define('TYP_SLUPEK_TK',17); // słupek telekomunikacyjny
+define('TYP_MUFA',18); 
+define('TYP_ELEWATOR',19);
+
+$BUILDINGS = array(
+    TYP_BUDYNEK_BIUROWY		=> 'budynek biurowy',
+    TYP_BUDYNEK_PRZEMYSLOWY	=> 'budynek przemysłowy',
+    TYP_BUDYNEK_MIESZKALNY	=> 'budynek mieszkalny',
+    TYP_OBIEKT_SAKRALNY		=> 'obiekt sakralny',
+    TYP_MASZT			=> 'maszt',
+    TYP_WIEZA			=> 'wieża',
+    TYP_KONTENER		=> 'kontener',
+    TYP_SZAFA_ULICZNA		=> 'szafa uliczna',
+    TYP_SKRZYNKA		=> 'skrzynka',
+    TYP_STUDNIA_KABLOWA		=> 'studnia kablowa',
+    TYP_KOMIN			=> 'komin',
+    TYP_SLUP			=> 'słup',
+    TYP_SZAFKA_NASCIENNA	=> 'szafka naścienna',
+    TYP_SZAFKA_NASCIENNA_RACK	=> 'szafka naścienna RACK',
+    TYP_SZAFKA_STOJACA		=> 'szafka stojąca',
+    TYP_SZAFKA_STOJACA_RACK	=> 'szafka stojąca RACK',
+    TYP_SLUPEK_TK		=> 'słupek telekomunikacyjny',
+    TYP_MUFA			=> 'mufa',
+    TYP_ELEWATOR		=> 'elewator',
+);
+
+define('NODE_OWN',1);
+define('NODE_FOREIGN',2);
+$TNODE = array(
+    NODE_OWN		=> 'własny',
+    NODE_FOREIGN	=> 'obcy',
+);
+
+define('DEV_ACTIVE',1);
+define('DEV_PASSIVE',2);
+$DEVTYPE = array(
+    DEV_ACTIVE		=> 'aktywne',
+    DEV_PASSIVE		=> 'pasywne'
+);
+
+define('LAYER_ACCESS',1);		// warstwa dostępowa
+define('LAYER_DISTRIBUTION',2);	// warstwa dystrybucyjna
+define('LAYER_BACKBONE',3);		// warstwa szkieletowa
+$LAYERTYPE = array(
+    LAYER_ACCESS	=> 'dostępowa',
+    LAYER_DISTRIBUTION	=> 'dystrybucyjna',
+    LAYER_BACKBONE	=> 'szkieletowa'
+);
+
+
+
 if(isset($SMARTY))
 {
 	$SMARTY->assign('_CTYPES',$CTYPES);
@@ -408,6 +493,12 @@ if(isset($SMARTY))
 	$SMARTY->assign('_PASSWDEXPIRATIONS', $PASSWDEXPIRATIONS);
 	$SMARTY->assign('_MSG_LOG',$MSG_LOG);
 	$SMARTY->assign('_MOD',$MOD);
+	$SMARTY->assign('_TN',$TN);
+	$SMARTY->assign('_TNC',$TNC);
+	$SMARTY->assign('_BUILDINGS',$BUILDINGS);
+	$SMARTY->assign('_TNODE',$TNODE);
+	$SMARTY->assign('_DEVTYPE',$DEVTYPE);
+	$SMARTY->assign('_LAYERTYPE',$LAYERTYPE);
 }
 
 define('DEFAULT_NUMBER_TEMPLATE', '%N/LMS/%Y');

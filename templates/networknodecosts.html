@@ -1,0 +1,136 @@
+{include file="calendar_js.html"}
+{$xajax}
+<p style="width:100%;text-align:right;">
+<a href="javascript:void(0);" onclick="xajax_add_costsinfo();"><b>Dodaj nowy wpis </b> <img src="img/add.gif"></a>
+</p>
+<div id="id_editcosts" style="width:100%;display:none;">
+    <form name="costs" id="costs" method="POST">
+	<input type="hidden" name="costs[id]" id="costs_id" value="{$costs.id}">
+	<p class="fall light">
+	<table width="100%" cellpadding="3" cellspacing="0">
+	    <tr>
+		<td colspan="3" class="dark fall pad10" align="left"><div id="id_costs_title" style="font-weight:bold;">Dodaj nowy koszt</div></td>
+	    </tr>
+	    <tr>
+		<td width="1%" nowrap class="fleft pad10" align="left" style="vertical-align:top;"><b>Wartość</b></td>
+		<td width="1%" nowrap class="pad" style="vertical-align:top;"><b>:</b></td>
+		<td width="98%" align="left" class="fright pad" style="vertical-align:top;"><input type="text" name="costs[value]" id="costs_value" style="width:100px;" value="{$costs.value}"><div id="alert_value" style="color:red;"></div></td>
+	    </tr>
+	    
+	    <tr>
+		<td width="1%" nowrap class="pad10 fleft" align="left" style="vertical-align:top;"><b>Naliczanie</b></td>
+		<td width="1%" nowrap class="pad" style="vertical-align:top;"><b>:</b></td>
+		<td width="98%" align="left" class="pad fright" style="vertical-align:top;">
+		    <select name="costs[period]" id="costs_period" style="min-width:150px;">
+			{foreach $_PERIODS as $key => $item}
+			    <option value="{$key}">{$item}</option>
+			{/foreach}
+		    </select>
+		</td>
+	    </tr>
+	    
+	    <tr>
+		<td width="1%" nowrap class="pad10 fleft" align="left" style="vertical-align:top;"><b>Okres</b></td>
+		<td width="1%" nowrap class="pad" style="vertical-align:top;"><b>:</b></td>
+		<td width="98%" align="left" class="pad fright" style="vertical-align:top;">
+		    od : <input type="text" name="costs[fromdate]" id="costs_fromdate" style="width:80px;" value="{$costs.fromdate|date_format:'Y/m/d'}" onclick="javascript:cal1.popup();">
+		    do : <input type="text" name="costs[todate]" id="costs_todate" style="width:80px;" value="{$costs.todate|date_format:'Y/m/d'}" onclick="javascript:cal2.popup();"><div id="alert_date" style="color:red;"></div></td>
+	    </tr>
+	    <tr>
+		<td width="1%" nowrap class="pad10 fleft" align="left" style="vertical-align:top;"><b>Nazwa</b></td>
+		<td width="1%" nowrap class="pad" style="vertical-align:top;"><b>:</b></td>
+		<td width="98%" align="left" class="pad fright" style="vertical-align:top;"><input type="text" name="costs[name]" id="costs_name" style="width:400px;" value="{$costs.name}"><div id="alert_name" style="color:red;"></div></td>
+	    </tr>
+	    
+	    <tr>
+		<td width="1%" nowrap class="pad10 fleft" align="left" style="vertical-align:top;"><b>Notatka</b></td>
+		<td width="1%" nowrap class="pad" style="vertical-align:top;"><b>:</b></td>
+		<td width="98%" align="left" class="pad fright" style="vertical-align:top;"><textarea name="costs[description]" id="costs_description" rows="7" style="width:400px;">{$service.description}</textarea></div></td>
+	    </tr>
+	    
+	    <tr>
+		<td colspan="2" class="fleftu dark" align="left" width="2%">
+		</td>
+		<td class="dark frightu" align="right" width="98%">
+			<a href="javascript:void(0);" onclick="xajax_save_costsinfo(xajax.getFormValues('costs'));">Zapisz <img src="img/save.gif"></a>
+			<a href="javascript:void(0);" onclick="xajax_hide_editcost();">Anuluj <img src="img/cancel.gif"></a>
+		</td>
+	</table>
+	</p>
+    </form>
+</div>
+{literal}
+<script type="text/javascript">
+<!--
+    var cal1 = new calendar(document.forms['costs'].elements['costs[fromdate]']); cal1.time_comp = false;
+    var cal2 = new calendar(document.forms['costs'].elements['costs[todate]']); cal2.time_comp = false;
+
+//-->
+</script>
+{/literal}
+
+
+<p class="fall light">
+
+{if $lista}
+<table width="100%" cellpadding="3" cellspacing"0">
+
+    <tr class="dark">
+	<td width="1%" nowrap class="pad10 fleftu" style="vertical-align:bottom;" align="center"><b>#</b></td>
+	<td width="1%" nowrap class="pad10 fbt" style="vertical-align:bottom;" align="center"><b>Data dodania<br>Data modyfikacji.</b></td>
+	<td width="1%" nowrap class="pad10 fbt" style="vertical-align:bottom;" align="center"><b>Dodał<br>Modyfikował</b></td>
+	<td width="93%"class="pad10 fbt" style="vertical-align:bottom;" align="left"><b>Nazwa<br>Opis</b></td>
+	<td width="1%" class="pad10 fbt" style="vertical-align:bottom;" align="right" nowrap><b>Wartość</b></td>
+	<td width="1%" class="pad10 fbt" style="vertical-align:bottom;" align="center" nowrap><b>Naliczanie</b></td>
+	<td width="1%" class="pad10 fbt" style="vertical-align:bottom;" align="center" nowrap><b>od dnia<br>do dnia</b></td>
+	<td width="1%" nowrap class="pad2 frightu" style="vertical-align:bottom;" align="right">&nbsp;</td>
+    </tr>
+    
+    {cycle values="light,lucid" print=false}
+    {section name='lista' loop=$lista}
+    <tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td width="1%" nowrap class="pad10 fleft" align="center">{$lista[lista].id|string_format:"%04d"}</td>
+	<td width="1%" nowrap class="pad10" style="vertical-align:top;" align="center">
+	{$lista[lista].cdate|date_format:"Y/m/d H:i"}<br>{if $lista[lista].mdate}{$lista[lista].mdate|date_format:"Y/m/d H:i"}{else}---{/if}</td>
+	<td width="1%" nowrap class="pad10" style="vertical-align:top;" align="center">
+	    {$lista[lista].cname}<br>
+	    {if $lista[lista].mname}{$lista[lista].mname}{else}---{/if}
+	</td>
+	<td width="93%"class="pad10" style="vertical-align:top;" align="left"><b>{$lista[lista].name}</b><br>{$lista[lista].description|nl2br}</td>
+	
+	<td width="1%" class="pad10" align="right" nowrap>{$lista[lista].value|money_format}</td>
+	<td width="1%" class="pad10" align="center" nowrap>
+	    {assign var='tmp' value=$lista[lista].periods}
+	    {$_PERIODS.$tmp}
+	</td>
+	<td width="1%" class="pad10" style="vertical-align:bottom;" align="center" nowrap>
+	    {if $lista[lista].fromdate}{$lista[lista].fromdate|date_format:"Y/m/d"}{else}---{/if}<br>
+	    {if $lista[lista].todate}{$lista[lista].todate|date_format:"Y/m/d"}{else}---{/if}
+	</td>
+	
+	
+	<td width="1%" nowrap class="pad2 fright" align="right">
+	    <img src="img/edit.gif" onclick="xajax_edit_costsinfo('{$lista[lista].id}');">
+	    <img src="img/delete.gif" onclick="usun_info('{$lista[lista].id}');">
+	</td>
+    </tr>
+    {/section}
+    <tr class="dark">
+	<td colspan="8" class="fall"></td></tr>
+    {literal}
+    <script type="text/javascript">
+    <!--
+	function usun_info(id) { if (confirm('Potwierdź usunięcie')) xajax_delete_costsinfo(id); }
+    //-->
+    </script>
+    {/literal}
+
+</table>
+{else}
+    <table width="100%" cellpadding="4">
+    <tr class="light">
+	<td align="center"><p><h3>Brak wpisów</h3></p></td>
+    </tr>
+    </table>
+{/if}
+</p>

@@ -1,0 +1,36 @@
+{include file="header.html"}
+{title value=$layout.pagetitle link="<a href='?m=networknodelist'><b>Lista węzłów</b>&nbsp;<img src='img/list.png'></a>"}
+
+<table width="100%" cellpadding="5" cellspacing="0" class="table">
+
+{math assign='cnt' equation="1+y" y=$tucklist|count}
+
+<tr class="dark nav-header">
+    {section name='tucklist' loop=$tucklist}
+	<td width="1%" class="fleftu" nowrap style="cursor:pointer;padding-left:10px;padding-right:10px;" onmouseover="addClass(this, 'highlight')" id="id_{$tucklist[tucklist].tuck}" onmouseout="removeClass(this, 'highlight')" onclick="switch_view('id_{$tucklist[tucklist].tuck}','{$tucklist[tucklist].link}');" >
+	    <strong {if $tucklist[tucklist].tip}{tip text=$tucklist[tucklist].tip}{/if}>{$tucklist[tucklist].name}</strong>
+	</td>
+    {/section}
+    <td width="auto" class="fall"></td>
+</tr>
+
+</table>
+<p><div id="id_data"></div></p>
+{literal}
+<script type="text/javascript">
+<!--
+    function switch_view(elem,links)
+    {
+	{/literal}{section name=tmp1 loop=$tucklist}{literal}removeClassId('id_{/literal}{$tucklist[tmp1].tuck}{literal}','active');{/literal}{/section}{literal}
+	addClassId(elem,'active');
+	loadAjax('id_data',links);
+    }
+//-->
+</script>
+{/literal}
+<script type="text/javascript">
+<!--
+    switch_view('id_{$tuck}','{$tucklink}');
+//-->
+</script>
+{include file="footer.html"}

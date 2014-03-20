@@ -534,11 +534,30 @@ if (isset($_POST['netdev'])) {
 		if (!isset($netdevdata['nastype']))
 			$netdevdata['nastype'] = 0;
 
-		if (empty($netdevdata['teryt'])) {
+		if (empty($netdevdata['teryt']) && !$netdevdata['networknode']) {
 			$netdevdata['location_city'] = null;
 			$netdevdata['location_street'] = null;
 			$netdevdata['location_house'] = null;
 			$netdevdata['location_flat'] = null;
+		}
+		
+		if ($netdevdata['networknode']) {
+		    
+		    $dane = $DB->GetRow('SELECT city, street, zip, location_city, location_street, location_house, location_flat, longitude, latitude 
+					FROM networknode WHERE id = ?;',array($netdevdata['networknode']));
+		    $adres = '';
+		    $adres .= $dane['zip'].' '.$dane['city'].', ';
+		    $adres .= $dane['street'].' '.$dane['location_house'];
+		    if ($dane['location_flat'])
+			$adres .= '/'.$dane['location_flat'];
+		    
+		    $netdevdata['location'] = $adres;
+		    $netdevdata['location_city'] = $dane['location_city'];
+		    $netdevdata['location_street'] = $dane['location_street'];
+		    $netdevdata['location_house'] = $dane['location_house'];
+		    $netdevdata['location_flat'] = $dane['location_flat'];
+		    $netdevdata['longitude'] = $dane['longitude'];
+		    $netdevdata['latitude'] = $dane['latitude'];
 		}
 
 		$LMS->NetDevUpdate($netdevdata);
@@ -594,6 +613,7 @@ $SMARTY->assign('devlinkspeed', $SESSION->get('devlinkspeed'));
 $SMARTY->assign('nodelinktype', $SESSION->get('nodelinktype'));
 $SMARTY->assign('nodelinkspeed', $SESSION->get('nodelinkspeed'));
 $SMARTY->assign('nastype', $LMS->GetNAStypes());
+$SMARTY->assign('networknodelist',$LMS->GetListnetworknode());
 
 include(MODULES_DIR . '/netdevxajax.inc.php');
 

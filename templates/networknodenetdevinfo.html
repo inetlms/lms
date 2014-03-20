@@ -14,19 +14,6 @@
 				<tr class="light">
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
-	<tr class="light">
-		<td width="1%">
-		    <img src="img/network-node.png" alt="" width="16">
-		</td>
-		<td width="1%">
-		    <b>Węzeł</b>
-		</td>
-		<td width="98%">
-		    {if $netdevinfo.networknodename}
-			<a href="?m=networknodeinfo&idn={$netdevinfo.networknodeid}"><b>{$netdevinfo.networknodename}</b></a>
-			{else} nie przypisany{/if}
-		</td>
-	</tr>
         {if $netdevinfo.producer}
 	<tr class="light">
 		<td width="1%">
@@ -324,43 +311,13 @@
 					</td>
 				</tr>
 			</table>
-{if !$devicepanel}
     		</td>
 	</tr>
-	<tr class="light">
-	        <td width="100%" colspan="2" class="FBOTTOMU" align="RIGHT">
-{/if}
-			{if $replacelisttotal>1}
-			<form method="GET" action="?m=netdevedit" name="replace">
-			<input type="submit" class="hiddenbtn">
-			<input type="hidden" name="m" value="netdevedit">
-			<input type="hidden" name="id" value="{$netdevinfo.id}">
-			<input type="hidden" name="action" value="replace">
-			<a href="javascript:document.replace.submit(); ">{trans("Replace with:")}</A>
-			<select name="netdev" {tip trigger="replace" text="Select device from list for replacement"}>
-				{section name=replacelist loop=$replacelist}
-					{if $replacelist[replacelist].id != $netdevinfo.id}
-					{assign var=netdevname value=$replacelist[replacelist].name}
-					{if $replacelist[replacelist].producer}{assign var=netdevname value=$netdevname|cat:" / "|cat:$replacelist[replacelist].producer}{/if}
-					{if $replacelist[replacelist].location}{assign var=netdevname value=$netdevname|cat:" ("|cat:$replacelist[replacelist].location|cat:")"}{/if}
-					<option value="{$replacelist[replacelist].id}">{$netdevname|truncate:120:"...":true}</option>
-					{/if}
-				{/section}
-			</select>
-			</form>
-			{/if}
-			<a href="?m=netdevedit&id={$netdevinfo.id}" accesskey="E">{trans("Edit")} <img src="img/edit.gif" alt="[ {trans("Edit")} ]"></a>
-			<a href="?m=netdevdel&id={$netdevinfo.id}" onclick="return confirmLink(this, '{t a=$netdevinfo.name}Are you sure, you want to remove device \'$a\' from database?{/t}');">{trans("Delete")} <img src="img/delete.gif" alt=""></a>
+	<tr class="dark">
+	        <td width="100%" colspan="2" class="fall" align="right">
+			<a href="?m=netdevinfo&id={$netdevinfo.id}">Przejdź do interfejsu <img src="img/netdev.gif"></a>&nbsp;&nbsp;
+			<a href="javascript:void(0);" onclick="del_interface({$netdevinfo.id});">Usuń interfejs z węzła <img src="img/delete.gif" alt=""></a>
 		</td>
 	</tr>
 </table>
-{if $devicepanel}
-<script type="text/javascript">
-<!--
-if (getCookie('devicepanel') == '1')
-{
-	document.getElementById('devicepanel').style.display = '';
-}
-//-->
-</script>
-{/if}
+

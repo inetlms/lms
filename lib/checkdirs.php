@@ -54,4 +54,11 @@ if(!is_dir(RRD_DIR))
 if(!is_writable(RRD_DIR))
 	die('Can\'t write to directory <B>'.RRD_DIR.'</B>. Run: <BR><PRE>chown '.posix_geteuid().':'.posix_getegid().' '.RRD_DIR."\nchmod 755 ".RRD_DIR.'</PRE>This helps me to work. Thanks.');
 
+if(!is_dir(UPLOADFILES_DIR))
+	die('Missing directory <B>'.UPLOADFILES_DIR.'</B>. Can anybody make them?');
+	
+if(!is_writable(UPLOADFILES_DIR))
+	die('Can\'t write to directory <B>'.UPLOADFILES_DIR.'</B>. Run: <BR><PRE>chown '.posix_geteuid().':'.posix_getegid().' '.UPLOADFILES_DIR."\nchmod 755 ".UPLOADFILES_DIR.'</PRE>This helps me to work. Thanks.');
+
+
 ?>

@@ -320,3 +320,23 @@ div.nodata {
     background-color	: #DFD5BD;
     border		: solid 1px #333333;
 }
+
+.tiphelp {
+    cursor			: pointer;
+    border-bottom		: dashed 1px blue;
+}
+
+.pad { 
+    padding-left		: 4px; 
+    padding-right		: 4px; 
+}
+
+.pad2 { 
+    padding-left		: 6px; 
+    padding-right		: 6px;
+}
+
+.pad10 {
+    padding-left		: 10px;
+    padding-right		: 10px; 
+}

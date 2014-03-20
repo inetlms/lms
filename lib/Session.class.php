@@ -83,6 +83,12 @@ class Session {
 			$this->_updated = TRUE;
 	}
 
+	function nowsave($variable, $content)
+	{
+	    $this->_content[$variable] = $content;
+	    $this->DB->Execute('UPDATE sessions SET content = ?, mtime = ?NOW? WHERE id = ?', array(serialize($this->_content), $this->SID));
+	}
+
 	function save_by_ref($variable, &$content)
 	{
 		$this->_content[$variable] =& $content;

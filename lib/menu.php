@@ -298,6 +298,18 @@ $menu = array(
 					'prio' => 20,
 				),
 				array(
+					'name' => 'Węzły',
+					'link' => '?m=networknodelist',
+					'tip' => 'Węzły sieciowe',
+					'prio' => 21,
+				),
+				array(
+					'name' => 'Nowy Węzeł',
+					'link' => '?m=networknodeadd',
+					'tip' => 'Dodaj nowy węzeł sieciowy',
+					'prio' => 22,
+				),
+				array(
 					'name' => trans('Search'),
 					'link' => '?m=netdevsearch',
 					'tip' => trans('Allows you to search device'),
@@ -309,12 +321,15 @@ $menu = array(
 					'tip' => trans('Network map display'),
 					'prio' => 40,
 				),
-				array(
-					'name' => trans('UKE report'),
-					'link' => '?m=uke',
-					'tip' => 'Raport SIIS v3, rozwiązanie z LMS 1.11-git',
-					'prio' => 50,
-				),
+				
+			
+// ------------------- STARY RAPORT -----------------------------
+//				array(
+//					'name' => trans('UKE report'),
+//					'link' => '?m=uke',
+//					'tip' => 'Raport SIIS v3, rozwiązanie z LMS 1.11-git',
+//					'prio' => 50,
+//				),
 			),
 		),
 		
@@ -829,17 +844,24 @@ $menu = array(
 				),
 			),
 		),
-
-		'password' => array(
-			'name' => trans('Password'),
-			'img' => 'pass.gif',
-			'link' => '?m=chpasswd',
-			'tip' => trans('Allows you to change your password'),
-			'accesskey' => 'p',
-			'prio' => 65,
-			'index' => 320,
+/*
+		'raporty'	=> array(
+			'name' => 'Raporty',
+			'img' => 'reports.png',
+			'link' => '',
+			'tip' => '',
+			'prio' => 57,
+			'index' => 330,
+			'submenu' => array(
+				array(
+				    'name' => 'UKE SIIS v4',
+				    'link' => '?m=uke_siis4',
+				    'tip' => '',
+				    'prio' => 10,
+				),
+			),
 		),
-
+*/
 		'config' => array(
 			'name' => trans('Configuration'),
 			'img' =>'settings.gif',
@@ -899,6 +921,16 @@ $menu = array(
 				),
 				
 			),
+		),
+		
+				'password' => array(
+			'name' => trans('Password'),
+			'img' => 'pass.gif',
+			'link' => '?m=chpasswd',
+			'tip' => trans('Allows you to change your password'),
+			'accesskey' => 'p',
+			'prio' => 65,
+			'index' => 320,
 		),
 
 		'documentation' => array(
