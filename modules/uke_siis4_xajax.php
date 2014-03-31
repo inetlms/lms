@@ -239,7 +239,8 @@ function add_siis4($forms)
 	
 	if ($form['action'] == 'add') {
 	    $idr = $UKE->add_siis4($form);
-	    $obj->script("self.location.href='?m=uke_siis4_info&tuck=DP&idr=".$idr."';");
+	    //$obj->script("self.location.href='?m=uke_siis4_info&tuck=&idr=".$idr."';");
+	    $obj->script("self.location.href='?m=uke_siis4';");
 	}
 	elseif ($form['action'] == 'edit') {
 	    $UKE->update_siis4($form);
