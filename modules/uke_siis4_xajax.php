@@ -665,8 +665,8 @@ function add_PO($forms)
 		LEFT JOIN (SELECT netdev, COUNT(port) AS portcount FROM nodes LEFT JOIN customers ON customers.id = nodes.ownerid WHERE customers.type = 1 AND linktype = 1 GROUP BY netdev) cndpradio ON cndpradio.netdev = nd.id 
 		LEFT JOIN (SELECT netdev, COUNT(port) AS portcount FROM nodes LEFT JOIN customers ON customers.id = nodes.ownerid WHERE customers.type = 0 AND linktype = 2 GROUP BY netdev) pndpfiber ON pndpfiber.netdev = nd.id 
 		LEFT JOIN (SELECT netdev, COUNT(port) AS portcount FROM nodes LEFT JOIN customers ON customers.id = nodes.ownerid WHERE customers.type = 1 AND linktype = 2 GROUP BY netdev) cndpfiber ON cndpfiber.netdev = nd.id 
-		WHERE nd.networknodeid > 0 AND u.useraport=1 AND u.mark = ? AND EXISTS (SELECT id FROM netlinks nl WHERE nl.src = nd.id OR nl.dst = nd.id) 
-		ORDER BY nd.name',array('WW'));
+		WHERE nd.networknodeid > 0 AND u.useraport=1 AND (u.mark = ? OR u.mark = ?) AND EXISTS (SELECT id FROM netlinks nl WHERE nl.src = nd.id OR nl.dst = nd.id) 
+		ORDER BY nd.name',array('WW','WO'));
 	
 	if ($nd) {
 	    $count = sizeof($nd);
