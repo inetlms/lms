@@ -49,9 +49,13 @@
 		</TD>
 		<TD WIDTH="1%" CLASS="fright" align="right">
 			<nobr>
-			<a href="?m=netdevdel&id={$netdevlist[netdevlist].id}" onClick="return confirmLink(this, '{t a=$netdevlist[netdevlist].name}Are you sure, you want to remove device \'$a\' from database?{/t}')"><IMG src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></A>
-			<a href="?m=netdevedit&id={$netdevlist[netdevlist].id}"><IMG src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></A>
-			<a href="?m=netdevinfo&id={$netdevlist[netdevlist].id}"><IMG src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></A>
+			{if !$netdevlist[netdevlist].networknodeid}
+			    <a href="?m=networknodeadd&create&int={$netdevlist[netdevlist].id}"><img src="img/netdev.png" title="[ Utwórz węzeł ]" style="cursor:pointer;"></a>
+			{/if}
+			<a href="?m=netdevinfo&id={$netdevlist[netdevlist].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></a>
+			<a href="?m=netdevedit&id={$netdevlist[netdevlist].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
+			<a href="?m=netdevdel&id={$netdevlist[netdevlist].id}" onclick="return confirmLink(this, '{t a=$netdevlist[netdevlist].name}Are you sure, you want to remove device \'$a\' from database?{/t}')"><IMG src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
+			
 			</nobr>
 		</TD>
 	</TR>

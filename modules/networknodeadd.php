@@ -28,14 +28,58 @@ include('networknode.inc.php');
 
 $layout['pagetitle'] = 'Nowy węzeł';
 
+if (isset($_GET['create']) && isset($_GET['int']) && !empty($_GET['int']))
+{
+	
+	
+	$networknodeinfo = array(
+	
+	    'type'			=> NODE_OWN,
+	    'backbone_layer'		=> NIE,
+	    'distribution_layer'	=> TAK,
+	    'access_layer'		=> TAK,
+	    'int'			=> $_GET['int'],
+	);
+	
+	if ($int = $DB->GetROw('SELECT * FROM netdevices WHERE id = ? LIMIT 1;',array($_GET['int'])))
+	{
+	    $teryt = $LMS->getterytcode($int['location_city'],$int['location_street']);
+//	    $networknodeinfo[''] = 
+	    $networknodeinfo['int'] = $int['id'];
+	    $networknodeinfo['name'] = 'WEZEL_'.$int['name'];
+	    $networknodeinfo['teryt'] = (!empty($int['location_city']) ? 1 : 0);
+	    $networknodeinfo['states'] = $teryt['name_states'];
+	    $networknodeinfo['districts'] = $teryt['name_districts'];
+	    $networknodeinfo['boroughs'] = $teryt['name_boroughs'];
+	    $networknodeinfo['city'] = $teryt['name_city'];
+	    $networknodeinfo['street'] = $teryt['name_street'];
+	    $networknodeinfo['location_city'] = $int['location_city'];
+	    $networknodeinfo['location_street'] = $int['location_street'];
+	    $networknodeinfo['location_house'] = $int['location_house'];
+	    $networknodeinfo['location_flat'] = $int['location_flat'];
+	    $networknodeinfo['location'] = $teryt['name_city'].' '.$teryt['name_street'].' '.$int['location_house'].($int['location_flat'] ? '/'.$int['location_flat'] : '');
+	    $networknodeinfo['longitude'] = $int['longitude'];
+	    $networknodeinfo['latitude'] = $int['latitude'];
+	    $networknodeinfo['dc24'] = 1;
+	    $networknodeinfo['service_broadband'] = 1;
+	}
+	
+	$SMARTY->assign('networknodeinfo',$networknodeinfo);
+	
+}
+
 if (isset($_POST['name']))
 {
     $networknode = $_POST['networknode'];
     $networknode['name'] = $_POST['name'];
     $networknode['teryt'] = $_POST['teryt'] ? true : false;
     if (!$networknode['teryt'] && empty($networknode['collocationid'])) $networknode['location_city'] = $networknode['location_street'] = NULL;
-
-    $SESSION->redirect('?m=networknodeinfo&idn='.$LMS->Addnetworknode($networknode));
+    
+    $idn = $LMS->Addnetworknode($networknode);
+    if (isset($networknode['int']) && !empty($networknode['int'])) {
+	$LMS->add_interface_for_networknode($idn,$networknode['int']);
+    }
+    $SESSION->redirect('?m=networknodeinfo&idn='.$idn);
 }
 
 
