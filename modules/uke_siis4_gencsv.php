@@ -361,7 +361,7 @@ if (
 		'notint' => 0,		// US / 11
 	    );
 	    for ($i=0;$i<$count;$i++) {
-		if (strtoupper($US[$i]['int']) == 'NIE')
+		if (strtoupper($US[$i]['int']) == 'Nie')
 		    $staty['noint']++;
 	    }
 	    
@@ -378,7 +378,7 @@ if (
 		    $dane .= 'Nie,';
 		    $dane .= $tmp['iptv'].',';
 		    $dane .= ',';									// 10
-		    $dane .= ($tmp['custype'] == '1' && strtoupper($tmp['int']) == 'NIE' ? 1 : 0).',';
+		    $dane .= ($tmp['custype'] == '1' && strtoupper($tmp['int']) == 'Nie' ? 1 : 0).',';
 		    $dane .= ($tmp['custype'] == '1' ? 0 : ($tmp['downstream'] <= '1' ? 1 : 0)).',';	// 12
 		    $dane .= ($tmp['custype'] == '1' ? 0 : ($tmp['downstream'] > '1' && $tmp['downstream'] < '2' ? 1 : 0)).',';	// 13
 		    $dane .= ($tmp['custype'] == '1' ? 0 : ($tmp['downstream'] == '2' ? 1 : 0)).',';	// 14
@@ -390,7 +390,7 @@ if (
 		    $dane .= ($tmp['custype'] == '1' ? 0 : ($tmp['downstream'] == '100' ? 1 : 0)).',';	// 20
 		    $dane .= ($tmp['custype'] == '1' ? 0 : ($tmp['downstream'] > '100' ? 1 : 0)).',';	// 21
 		    
-		    $dane .= ($tmp['custype'] != '1' && strtoupper($tmp['int']) == 'NIE' ? 1 : 0).',';					// 22
+		    $dane .= ($tmp['custype'] != '1' && strtoupper($tmp['int']) == 'Nie' ? 1 : 0).',';					// 22
 		    $dane .= ($tmp['custype'] != '1' ? 0 : ($tmp['downstream'] <= '1' ? 1 : 0)).',';					// 23
 		    $dane .= ($tmp['custype'] != '1' ? 0 : ($tmp['downstream'] > '1' && $tmp['downstream'] < '2' ? 1 : 0)).',';		// 24
 		    $dane .= ($tmp['custype'] != '1' ? 0 : ($tmp['downstream'] == '2' ? 1 : 0)).',';					// 25

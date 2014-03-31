@@ -681,13 +681,13 @@ function add_PO($forms)
 	    $dane[$i]['id'] = $nd[$i]['id'];
 	    $dane[$i]['netnodename'] = $nd[$i]['netnodename'];
 	    $dane[$i]['networknodename'] = $nd[$i]['networknodename'];
-	    $dane[$i]['backbone_layer'] = 'NIE';
+	    $dane[$i]['backbone_layer'] = 'Nie';
 	
 	    if ($nd[$i]['cabledistports'] + $nd[$i]['radiodistports'] + $nd[$i]['fiberdistports'] > 0 || $nd[$i]['personalaccessports'] + $nd[$i]['commercialaccessports'] == 0) {
 		
 		if ($nd[$i]['cabledistports']) {
-			$dane[$i]['distribution_layer'] = 'TAK';
-			$dane[$i]['access_layer'] = 'NIE';
+			$dane[$i]['distribution_layer'] = 'Tak';
+			$dane[$i]['access_layer'] = 'Nie';
 			$dane[$i]['medium'] = 'kablowe parowe miedziane';
 			$dane[$i]['pasmo_radiowe'] = '';
 			$dane[$i]['technologia'] = 'Ethernet';
@@ -696,12 +696,12 @@ function add_PO($forms)
 			$dane[$i]['ports'] = $nd[$i]['cabledistports'];
 			$dane[$i]['use_ports'] = $nd[$i]['cabledistports'];
 			$dane[$i]['empty_ports'] = 0;
-			$dane[$i]['sharing'] = 'NIE';
+			$dane[$i]['sharing'] = 'Nie';
 		}
 		
 		if ($nd[$i]['radiodistports']) {
-			$dane[$i]['distribution_layer'] = 'TAK';
-			$dane[$i]['access_layer'] = 'NIE';
+			$dane[$i]['distribution_layer'] = 'Tak';
+			$dane[$i]['access_layer'] = 'Nie';
 			$dane[$i]['medium'] = 'radiowe';
 			$dane[$i]['pasmo_radiowe'] = '5.5';
 			$dane[$i]['technologia'] = 'Ethernet';
@@ -710,12 +710,12 @@ function add_PO($forms)
 			$dane[$i]['ports'] = $nd[$i]['radiodistports'];
 			$dane[$i]['use_ports'] = $nd[$i]['radiodistports'];
 			$dane[$i]['empty_ports'] = 0;
-			$dane[$i]['sharing'] = 'NIE';
+			$dane[$i]['sharing'] = 'Nie';
 		}
 		
 		if ($nd[$i]['fiberdistports']) {
-			$dane[$i]['distribution_layer'] = 'TAK';
-			$dane[$i]['access_layer'] = 'NIE';
+			$dane[$i]['distribution_layer'] = 'Tak';
+			$dane[$i]['access_layer'] = 'Nie';
 			$dane[$i]['medium'] = 'światłowodowe';
 			$dane[$i]['pasmo_radiowe'] = '';
 			$dane[$i]['technologia'] = 'Ethernet';
@@ -724,13 +724,13 @@ function add_PO($forms)
 			$dane[$i]['ports'] = $nd[$i]['fiberdistports'];
 			$dane[$i]['use_ports'] = $nd[$i]['fiberdistports'];
 			$dane[$i]['empty_ports'] = 0;
-			$dane[$i]['sharing'] = 'NIE';
+			$dane[$i]['sharing'] = 'Nie';
 		}
 	    }
 	
 	    if ($nd[$i]['cablepersonalaccessports'] + $nd[$i]['cablecommercialaccessports']) {
-		$dane[$i]['distribution_layer'] = 'NIE';
-		$dane[$i]['access_layer'] = 'TAK';
+		$dane[$i]['distribution_layer'] = 'Nie';
+		$dane[$i]['access_layer'] = 'Tak';
 		$dane[$i]['medium'] = 'kablowe parowe miedziane';
 		$dane[$i]['pasmo_radiowe'] = '';
 		$dane[$i]['technologia'] = 'Ethernet';
@@ -739,13 +739,13 @@ function add_PO($forms)
 		$dane[$i]['ports'] = ($nd[$i]['ports'] - $nd[$i]['cabledistports'] - $nd[$i]['radiodistports'] - $nd[$i]['fiberdistports'] - $nd[$i]['radiopersonalaccessports'] - $nd[$i]['radiocommercialaccessports'] - $nd[$i]['fiberpersonalaccessports'] - $nd[$i]['fibercommercialaccessports']);
 		$dane[$i]['use_ports'] = ($nd[$i]['cablepersonalaccessports'] + $nd[$i]['cablecommercialaccessports']);
 		$dane[$i]['empty_ports'] = ($nd[$i]['ports'] - $nd[$i]['cabledistports'] - $nd[$i]['radiodistports'] - $nd[$i]['fiberdistports'] - $nd[$i]['personalaccessports'] - $nd[$i]['commercialaccessports']);
-		$dane[$i]['sharing'] = 'NIE';
+		$dane[$i]['sharing'] = 'Nie';
 	    }
 	
 	
 	    if ($nd[$i]['radiopersonalaccessports'] + $nd[$i]['radiocommercialaccessports']) {
-		$dane[$i]['distribution_layer'] = 'NIE';
-		$dane[$i]['access_layer'] = 'TAK';
+		$dane[$i]['distribution_layer'] = 'Nie';
+		$dane[$i]['access_layer'] = 'Tak';
 		$dane[$i]['medium'] = 'radiowe';
 		$dane[$i]['pasmo_radiowe'] = '2.4';
 		$dane[$i]['technologia'] = 'Ethernet';
@@ -754,13 +754,13 @@ function add_PO($forms)
 		$dane[$i]['ports'] = ($nd[$i]['radiopersonalaccessports'] + $nd[$i]['radiocommercialaccessports']);
 		$dane[$i]['use_ports'] = ($nd[$i]['radiopersonalaccessports'] + $nd[$i]['radiocommercialaccessports']);
 		$dane[$i]['empty_ports'] = 0;
-		$dane[$i]['sharing'] = 'NIE';
+		$dane[$i]['sharing'] = 'Nie';
 	    }
 	
 	
 	    if ($nd[$i]['fiberpersonalaccessports'] + $nd[$i]['fibercommercialaccessports']) {
-		$dane[$i]['distribution_layer'] = 'NIE';
-		$dane[$i]['access_layer'] = 'TAK';
+		$dane[$i]['distribution_layer'] = 'Nie';
+		$dane[$i]['access_layer'] = 'Tak';
 		$dane[$i]['medium'] = 'światłowodowe';
 		$dane[$i]['pasmo_radiowe'] = '';
 		$dane[$i]['technologia'] = 'Ethernet';
@@ -769,7 +769,7 @@ function add_PO($forms)
 		$dane[$i]['ports'] = ($nd[$i]['fiberpersonalaccessports'] + $nd[$i]['fibercommercialaccessports']);
 		$dane[$i]['use_ports'] = ($nd[$i]['fiberpersonalaccessports'] + $nd[$i]['fibercommercialaccessports']);
 		$dane[$i]['empty_ports'] = 0;
-		$dane[$i]['sharing'] = 'NIE';
+		$dane[$i]['sharing'] = 'Nie';
 	    }
 
     } // end for
