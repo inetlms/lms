@@ -4,8 +4,8 @@ Deny From All
 </Files>
 
 php_flag register_globals Off
-php_flag display_errors Of
-php_flag display_startup_errors Of
+php_flag display_errors Off
+php_flag display_startup_errors Off
 php_value post_max_size 128M
 php_value upload_max_filesize 128M 
 php_value default_mimetype text/html

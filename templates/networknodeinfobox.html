@@ -96,10 +96,23 @@
 		    <td width="1%">:</td>
 		    <td width="98%" class="pad" align="left">{if $networknode.room_area}{$networknode.room_area}{else}0{/if} m2</td>
 		</tr>
+		
 		<tr class="light">
 		    <td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Powierzchnia wolna pomieszczeń udostępnionych dla węzła"}>Powierzchnia wolna</span></td>
 		    <td width="1%">:</td>
 		    <td width="98%" class="pad" align="left">{if $networknode.room_area_empty}{$networknode.room_area_empty} m2{else}brak{/if}</td>
+		</tr>
+		
+		<tr class="light">
+		    <td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Możliwość udostępnienia innym podmiotom powierzchni w obiekcie, w którym znajduje się węzeł"}>Udostępnienie obcym podmiotom</span></td>
+		    <td width="1%">:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.available_surface}{$_TN.$tmp}</td>
+		</tr>
+		
+		<tr class="light">
+		    <td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Węzeł współfinansowany ze środków unijnych"}>Współfinansowany z EU</span></td>
+		    <td width="1%">:</td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$networknode.eu}{$_TN.$tmp}</td>
 		</tr>
 		
 		<tr class="light">

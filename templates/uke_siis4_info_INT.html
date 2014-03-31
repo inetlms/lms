@@ -1,0 +1,81 @@
+{$xajax}
+{if $action == 'add' || $action == 'edit'}
+{else}
+
+    {title value="Informacje o interfejsach węzłów własnych lub współdzielonych z innymi podmiotami i ich wykorzystanie" link="<a href=\"javascript:void(0);\" onclick=\"xajax_import_interfaces({$idr})\"><b>Pobierz ponownie informacje</b></a>"}
+    
+    <table width="100%"><tr><td width="100%"><div id="id_data_int"></div></td></tr></table>
+    
+    {if $intlist}
+	
+	<table width="100%" cellpadding="3">
+	    <tr class="dark">
+		<td width="1%" class="fleftu pad10" align="center"><span class="tiphelp" {tip text="ID interfejsu"}><b>ID</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Identyfikator grupy interfejsów"}><b>Identyfikator</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Identyfikator węzła własnego"}><b>Węzeł</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Warstwa szkieletowa"}><b>W.szkielet</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Warstwa dystrybucyjna"}><b>W.dystry</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Warstwa dostępowa"}><b>W.dostęp</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Medium transmisyjne (środowisko wykorzystywane do transmisji sygnałów)"}><b>Medium</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Pasmo radiowe"}><b>Pasmo</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Technologia dla medium światłowodowego/miedzianego/radiowego"}><b>Technologia</b></span></td>
+		<td width="1%" class="fbt pad10" align="center"><span class="tiphelp" {tip text="Maksymalna przepustowość dla jednego interfejsu w kierunku od sieci do użytkownika"}><b>Przep.<br>INT->USR</b></span></td>
+		<td width="1%" class="fbt pad10" align="center"><span class="tiphelp" {tip text="Maksymalna przepustowość dla jednego interfejsu w kierunku od użytkownika do sieci"}><b>Przep.<br>USR->INT</b></span></td>
+		<td width="1%" class="fbt pad10" align="center"><span class="tiphelp" {tip text="Liczba interfejsów (czyt. portów) łącznie"}><b>SUM<br>INT</b></span></td>
+		<td width="1%" class="fbt pad10" align="center"><span class="tiphelp" {tip text="Liczba interfejsów (czyt. portów)wykorzystanych dla świadczenia usług szerokopasmowego dostępu do Internetu"}><b>USE<br>INT</b></span></td>
+		<td width="1%" class="fbt pad10" align="center"><span class="tiphelp" {tip text="Liczba interfejsów (czyt. portów) nie wykorzystanych"}><b>Empty<br>INT</b></span></td>
+		<td width="1%" class="fbt pad10" align="center"><span class="tiphelp" {tip text="Możliwość udostępniania interfejsów"}><b>Sharing</b></span></td>
+		<td width="85%" class="frightu pad10" align="right"></td>
+	    </tr>
+	    
+	    
+	    {cycle values="light,lucid" print=false}
+	    {section name='intlist' loop=$intlist}
+	    <tr class="{cycle}{if !$intlist[intlist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+		<td width="1%" class="fleft pad10" align="left">{$intlist[intlist].markid|string_format:"%04d"}</td>
+		<td width="1%" class="pad10" align="left">{$intlist[intlist].netnodename}</td>
+		<td width="1%" class="pad10" align="left">{$intlist[intlist].networknodename}</td>
+		<td width="1%" class="pad10" align="center">{$intlist[intlist].backbone_layer}</td>
+		<td width="1%" class="pad10" align="center">{$intlist[intlist].distribution_layer}</td>
+		<td width="1%" class="pad10" align="center">{$intlist[intlist].access_layer}</td>
+		<td width="1%" class="pad10" align="left">{$intlist[intlist].medium}</td>
+		<td width="1%" class="pad10" align="left">{$intlist[intlist].pasmo_radiowe}</td>
+		<td width="1%" class="pad10" align="left">{$intlist[intlist].technologia}</td>
+		<td width="1%" class="pad10" align="center">{$intlist[intlist].max_to_net}</td>
+		<td width="1%" class="pad10" align="center">{$intlist[intlist].max_to_user}</td>
+		<td width="1%" class="pad10" align="center">{$intlist[intlist].ports}</td>
+		<td width="1%" class="pad10" align="center">{$intlist[intlist].use_ports}</td>
+		<td width="1%" class="pad10" align="center">{$intlist[intlist].empty_ports}</td>
+		<td width="1%" class="pad10" align="center">{$intlist[intlist].sharing}</td>
+		<td width="85%" class="fright pad10" align="right">
+		    {if $intlist[intlist].useraport}
+			<img src="img/access.gif" {tip text="Nie uwzględniaj rekordu w raporcie"} onclick="xajax_set_int_useraport({$idr},{$intlist[intlist].id},0);" style="cursor:pointer;">
+		    {else}
+			<img src="img/noaccess.gif" {tip text="Uwzględnij rekord w raporcie"} onclick="xajax_set_int_useraport({$idr},{$intlist[intlist].id},1);" style="cursor:pointer;">
+		    {/if}
+		</td>
+	    </tr>
+	    {/section}
+	    <tr>
+		<td width="100%" colspan="16" class="ftop"></td>
+	    </tr>
+	</table>
+
+    {else}
+	
+	<table width="100%" cellpadding="10">
+	    <tr class="dark">
+		<td width="100%" class="pad10 fall" align="center">
+		    <br>
+		    <a href="javascript:void(0);" onclick="xajax_import_interfaces({$idr})"><b>Pobierz informacje o interfejsach</b></a><br><br>
+		    <b>UWAGA !!!</b>&nbsp;&nbsp;&nbsp;Pobrane będą informacje tylko o interfejsach przypisanych do węzłów które są uwzględnione w raporcie.
+		    <br><br>
+		</td>
+	    </tr>
+	</table>
+		
+    
+    {/if}
+
+    {include file="load_gif.html"}
+{/if}

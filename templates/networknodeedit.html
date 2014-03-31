@@ -131,6 +131,20 @@
 	</tr>
 	
 	<tr class="light">
+		<td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Możliwość udostępnienia innym podmiotom powierzchni w obiekcie, w którym znajduje się węzeł"}>Udostępnienie obcym podmiotom</span></td>
+		<td width="99%" nowrap class="pad">
+		{foreach $_TN as $item => $key}<input type="radio" name="networknode[available_surface]" id="id_available_surface_{$item}" value="{$item}" {if $networknodeinfo.available_surface == $item}checked{/if}><label for="id_available_surface_{$item}">&nbsp;{$key}</label>{/foreach}
+		</td>
+	</tr>
+	
+	<tr class="light">
+		<td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Węzeł współfinansowany ze środków unijnych"}>Współfinansowany z EU</span></td>
+		<td width="99%" nowrap class="pad">
+		{foreach $_TN as $item => $key}<input type="radio" name="networknode[eu]" id="id_eu_{$item}" value="{$item}" {if $networknodeinfo.eu == $item}checked{/if}><label for="id_eu_{$item}">&nbsp;{$key}</label>{/foreach}
+		</td>
+	</tr>
+	
+	<tr class="light">
 	    <td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Powierzchnia wolna pomieszczeń udostępnionych dla węzła"}>Powierzchnia wolna</span></td>
 	    <td width="99%" nowrap class="pad">
 		<input type="text" style="width:110px;" name="networknode[room_area_empty]" id="id_room_area_empty" value="{$networknodeinfo.room_area_empty}">

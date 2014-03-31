@@ -2047,7 +2047,7 @@ class LMS {
 		    
 		    unset($diff['new']);
 		    if (!empty($nodedata['ownerid']))
-			addlogs('aktualizacja danych komputera: '.$nodedata['name'].', klient: '.$cusname,'e=up;m=node;n='.$nodedata['id'].';c='.$nodedata['ownerid'].';');
+			addlogs('aktualizacja danych komputera: ID:'.$nodedata['id'].' '.$nodedata['name'].', klient: '.$cusname,'e=up;m=node;n='.$nodedata['id'].';c='.$nodedata['ownerid'].';');
 		    else
 			addlogs('aktualizacja danych urządzenia sieciowego: '.$nodedata['name'],'e=up;m=netdev;n='.$nodedata['netdev'].';');
 		    unset($cusname);
@@ -7234,6 +7234,49 @@ class LMS {
     }
     
     
+    function getTerytCode($cityid,$streetid=NULL)
+    {
+	$tmp = $this->getlocationname($cityid,$streetid);
+	$result = array();
+	
+	$result['name_states'] = $tmp['states']; // województwo
+	$result['name_districts'] = $tmp['districts']; // powiat
+	$result['name_boroughs'] = $tmp['boroughs']; // gmina
+	$result['name_city'] = $tmp['city']; // miasto
+	$result['name_street'] = $tmp['street']; //ulica
+	
+	$result['kod_simc'] = $this->DB->GetOne('SELECT ident FROM location_cities WHERE id = ? LIMIT 1;',array($cityid));
+	$tmp = $this->DB->GetRow('SELECT woj, pow, gmi, rodz_gmi FROM teryt_simc WHERE sym=? LIMIT 1;',array($result['kod_simc']));
+	if ($tmp) {
+	    $terc = sprintf('%02d',$tmp['woj']).sprintf('%02d',$tmp['pow']).sprintf('%02d',$tmp['gmi']).$tmp['rodz_gmi'];
+	} else {
+	    $terc = NULL;
+	}
+	$result['kod_terc'] = $terc;
+	
+	if (!empty($streetid) && $streetid!='99999' && $streetid != '99998') {
+	    $tmp = $this->DB->GetRow('SELECT ident,typeid FROM location_streets WHERE id = ? LIMIT 1;',array($streetid));
+	    $result['kod_ulic'] = $tmp['ident'];
+	    $result['type_ulic'] = $this->DB->GetOne('SELECT name FROM location_street_types WHERE id = ? LIMIT 1;',array($tmp['typeid']));
+	} else {
+	    $result['kod_ulic'] = $streetid;
+	    $result['type_ulic'] = NULL;
+	}
+	
+	if (empty($result['kod_ulic'])) $result['kod_ulic'] = '99999';
+	if (!empty($result['name_street']) && $result['kod_ulic'] == '99999') $result['kod_ulic'] = '99998';
+	if (empty($result['name_street']) && $result['kod_ulic'] = '99999') $result['street'] = 'BRAK ULICY';
+	
+	if (!empty($result['kod_ulic'])) {
+	    $tmp = $this->DB->GetRow('SELECT cecha,nazwa_1,nazwa_2 FROM teryt_ulic WHERE sym=? AND sym_ul = ? LIMIT 1;',array($result['kod_simc'],$result['kod_ulic']));
+	    $result['name_street'] = $result['street'] = ($tmp['cecha'] ? $tmp['cecha'].' ' : '') . ($tmp['nazwa_2'] ? $tmp['nazwa_2'].' ' : ''). $tmp['nazwa_1'];
+	}
+	
+	return $result;
+
+    }
+    
+    
     /*************************************************\
     *                WĘZŁY                            *
     \*************************************************/
@@ -7310,10 +7353,10 @@ class LMS {
 				deleted, disabled, room_area, room_area_empty, technical_floor, technical_ceiling, 
 				air_conditioning, telecommunication, instmast, instofanten, foreign_entity,
 				entity_fiber_end, sharing_fiber, dc12, dc24, dc48, ac230, height_anten, 
-				service_broadband, service_voice, service_other, total_bandwidth, bandwidth_broadband
+				service_broadband, service_voice, service_other, total_bandwidth, bandwidth_broadband, available_surface, eu
 				) 
 				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;',
+				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;',
 				array(
 					$dane['name'],
 					($dane['type'] ? $dane['type'] : NODE_OWN),
@@ -7359,6 +7402,8 @@ class LMS {
 					($dane['service_other'] ? $dane['service_other'] : NULL),
 					($dane['total_bandwidth'] ? $dane['total_bandwidth'] : 0),
 					($dane['bandwidth_broadband'] ? $dane['bandwidth_broadband'] : 0),
+					($dane['available_surface'] ? 1 : 0),
+					($dane['eu'] ? 1 : 0),
 					
 				));
 	    return $this->DB->GetLastInsertID('networknode');
@@ -7384,7 +7429,7 @@ class LMS {
 				room_area=?, room_area_empty=?, technical_floor=?, technical_ceiling=?, 
 				air_conditioning=?, telecommunication=?, instmast=?, instofanten=?, foreign_entity=?,
 				entity_fiber_end=?, sharing_fiber=?, dc12=?, dc24=?, dc48=?, ac230=?, height_anten=?, 
-				service_broadband=?, service_voice=?, service_other=?, total_bandwidth=?, bandwidth_broadband=?
+				service_broadband=?, service_voice=?, service_other=?, total_bandwidth=?, bandwidth_broadband=?, available_surface=?, eu=? 
 				
 				WHERE id = ? ;',
 				array(
@@ -7432,6 +7477,8 @@ class LMS {
 					($dane['service_other'] ? $dane['service_other'] : NULL),
 					($dane['total_bandwidth'] ? $dane['total_bandwidth'] : 0),
 					($dane['bandwidth_broadband'] ? $dane['bandwidth_broadband'] : 0),
+					($dane['available_surface'] ? 1 : 0),
+					($dane['eu'] ? 1 : 0),
 					$dane['networknodeid']
 				))
 		) return true; else return false;

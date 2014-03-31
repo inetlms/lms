@@ -844,7 +844,7 @@ $menu = array(
 				),
 			),
 		),
-/*
+
 		'raporty'	=> array(
 			'name' => 'Raporty',
 			'img' => 'reports.png',
@@ -861,7 +861,7 @@ $menu = array(
 				),
 			),
 		),
-*/
+
 		'config' => array(
 			'name' => trans('Configuration'),
 			'img' =>'settings.gif',

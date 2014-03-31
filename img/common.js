@@ -618,26 +618,26 @@ function changeMacFormat(id)
 	elem.innerHTML = curmac;
 }
 
-//function ShowAjaxLoadingImage()
-//{
-//    document.getElementById('id_loadajax_img').innerHTML = 
-//	'<div style="width:80px;height:80px;position:fixed;top:40%;left:49%;"><img src="img/321.gif" alt="Czekaj..."></div>';
-//}
-
-//function HideAjaxLoadingImage()
-//{
-//    document.getElementById('id_loadajax_img').innerHTML = '';
-//}
-
 function ShowAjaxLoadingImage()
 {
-    document.getElementById('id_loadajax_img').src = 'img/328.gif';
+    document.getElementById('id_loadajax_img').innerHTML = 
+	'<div style="width:80px;height:80px;position:fixed;top:40%;left:49%;"><img src="img/loading.gif" alt="<b>LOADING...</b>"></div>';
 }
 
 function HideAjaxLoadingImage()
 {
-    document.getElementById('id_loadajax_img').src = 'img/empty.gif';
+    document.getElementById('id_loadajax_img').innerHTML = '';
 }
+
+//function ShowAjaxLoadingImage()
+//{
+//    document.getElementById('id_loadajax_img').src = 'img/328.gif';
+//}
+
+//function HideAjaxLoadingImage()
+//{
+//    document.getElementById('id_loadajax_img').src = 'img/empty.gif';
+//}
 
 function loadAjax(idel,strona)
 {
@@ -645,6 +645,7 @@ function loadAjax(idel,strona)
 	$("#"+idel+"").empty();
     } else {
 	ShowAjaxLoadingImage();
+	start_login_timeout(3600);
 	$.ajax({ 
 		url:strona, 
 		success:function(html){$("#"+idel+"").empty().append(html);

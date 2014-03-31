@@ -1,0 +1,35 @@
+
+<table width="100%" cellpadding="3" cellspacing="0">
+    <tr class="dark">
+	<td width="1%"  align="center" class="fleftu pad10" nowrap><b>Rok</b></td>
+	<td width="97%" align="left"   class="fbt pad10"><b>Firma</b></td>
+	<td width="1%"  align="center" class="fbt pad10"><b>Zamknięte</b></td>
+	<td width="1%"  align="right"  class="frightu pad10">&nbsp;</td>
+    </tr>
+    {cycle values="light,lucid" print=false}
+    {section name='reportlist' loop=$reportlist}
+    <tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	<td width="1%"  align="center" class="fleft pad10" nowrap style="vertical-align:top;cursor:pointer;"  onclick="self.location.href='?m=uke_siis4_info&idr={$reportlist[reportlist].id}';">
+	    {$reportlist[reportlist].reportyear}
+	</td>
+	<td width="97%" align="left"   class="pad10" style="vertical-align:top;cursor:pointer;"  onclick="self.location.href='?m=uke_siis4_info&idr={$reportlist[reportlist].id}';">
+	    {$reportlist[reportlist].divname}, {$reportlist[reportlist].zip} {$reportlist[reportlist].city} {$reportlist[reportlist].street} {$reportlist[reportlist].location_house}{if $reportlist[reportlist].location_flat}/{$reportlist[reportlist].location_flat}{/if}
+	    {if $reportlist[reportlist].description}<br><i>{$reportlist[reportlist].description|nl2br}</i>{/if}
+	</td>
+	<td width="1%"  align="center" class="pad10" style="vertical-align:top;cursor:pointer;" onclick="self.location.href='?m=uke_siis4_info&idr={$reportlist[reportlist].id}';">
+	    {assign var='tmp' value=$reportlist[reportlist].closed}
+	    {$_TN.$tmp}
+	</td>
+	<td width="1%"  align="right"  class="fright pad10" style="vertical-align:top;">
+	<!--//
+	    <img src="img/edit.gif" alt="edytuj" style="cursor:pointer;" onclick="self.location.href='?m=uke_siis4_edit&idr={$reportlist[reportlist].id}';">
+	//-->
+	</td>
+    </tr>
+    {/section}
+    <tr class="dark">
+	<td width="100%" align="right" class="fall pad10" colspan="4">
+	    <a href="?m=uke_siis4_add">Utwórz nowy raport <img src="img/add.gif"></a>
+	</td>
+    </tr>
+</table>

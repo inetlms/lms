@@ -129,6 +129,16 @@ INPUT.alert	{ background-color: #FF9B9B; }
 INPUT.alert { /* IE fix */
 	background-color: expression(this.type=='checkbox' || this.type=='radio' ? 'transparent' : '#FF9B9B');
 }
+INPUT.alerts {
+    border-color		:#FF0000;
+}
+
+
+INPUT.alerts { /* IE fix */
+    background-color		: expression(this.type=='checkbox' || this.type=='radio' ? 'transparent' : '#FFE2E6');
+    border-color		: #FF0000;
+}
+
 INPUT.hiddenbtn	{ display : none; }
 INPUT.blend	{ border-style: solid; border-color: #c0c0c0; border-width: 1px; vertical-align: middle; color: black; }
 INPUT.scroller	{ border-style: solid; border-color: grey; border-width: 1px; vertical-align: middle; background-color: #DFD5BD; }
@@ -136,8 +146,28 @@ INPUT.scroller	{ border-style: solid; border-color: grey; border-width: 1px; ver
 TEXTAREA	{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1px; background-color: #EBE4D6; vertical-align: middle; }
 TEXTAREA.alert	{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1px; background-color: #FF9B9B; vertical-align: middle; }
 
+TEXTAREA.alerts {
+    font-size			: 8pt;
+    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    border-style		: solid;
+    border-width		: 1px;
+    border-color		: #FF0000;
+    vertical-align		: middle; 
+}
+
+
 SELECT		{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1px; background-color: #EBE4D6; vertical-align: middle; }
 SELECT.alert	{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 1px; background-color: #FF9B9B; vertical-align: middle; }
+
+SELECT.alerts {
+    font-size			: 8pt; 
+    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    border-style		: solid;
+    border-width		: 1px;
+    border-color		: #FF0000;
+    vertical-align		: middle; 
+}
+
 
 BUTTON		{ font-size:  8pt; font-family: Tahoma, Verdana, Arial, Helvetica; border-style: solid; border-width: 0pt; background-color: #DFD5BD; vertical-align: middle; }
 
@@ -237,6 +267,11 @@ div.multiselectlayer ul li input { border: none; }
 .brown		{ color: #A52A2A; }
 .white		{ color: #FFFFFF; }
 .alert		{ color: #FF0000; }
+.alerts { 
+    border-color		: #FF0000; 
+    color			: #FF0000;
+}
+
 .surplus	{ color: #008000; }
 .alertblend	{ color: #FA8072; }
 .suspended	{ color: #30B6C6; }
@@ -277,14 +312,14 @@ div.multiselectlayer ul li input { border: none; }
     right: 15px;
     font-weight:bold;
     margin-bottom : 10px;
-    font-size:14pt;
+    font-size:12px;
     font-family: Tahoma, Verdana, Arial;
     padding : 2px 0px 2px 8px;
 }
 
 .title_sm {
     font-weight : bold;
-    font-size : 14pt;
+    font-size : 12px;
     font-family : Tahoma, Verdana, Arial;
 }
 

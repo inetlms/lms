@@ -1,0 +1,11 @@
+{literal}
+<script type="text/javascript" language="JavaScript">
+<!--
+    xajax.callback.global.onRequest = function(){
+	ShowAjaxLoadingImage();
+	start_login_timeout({/literal}{get_conf('phpui.timeout')}{literal})
+    }
+    xajax.callback.global.onComplete = function(){HideAjaxLoadingImage();}
+//-->
+</script>
+{/literal}

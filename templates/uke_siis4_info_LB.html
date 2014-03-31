@@ -1,0 +1,67 @@
+{$xajax}
+{if $action == 'add' || $action == 'edit'}
+{else}
+
+    {title value="Charakterystyka elementów infrastruktury telekomunikacyjnej stanowiących linie bezprzewodowe z wyłączeniem instalacji telekomunikacyjnej budynku" link="<a href=\"javascript:void(0);\" onclick=\"xajax_import_lb({$idr})\"><b>Pobierz ponownie informacje</b></a>"}
+    
+    <table width="100%"><tr><td width="100%"><div id="id_data_lb"></div></td></tr></table>
+    
+    {if $lblist}
+	
+	<table width="100%" cellpadding="3">
+	    <tr class="dark">
+		<td width="1%" class="fleftu pad10" align="left"><b><span class="tiphelp" {tip text="Identyfikator lini przewodowej"}><b>Identyfikator</b></span></td>
+		
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Identyfikator punktu A"}><b>Punkt A</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Identyfikator punktu B"}><b>Punkt B</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Medium transmisyjne (środowisko wykorzystywane do transmisji sygnałów)"}><b>Medium</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Pasmo radiowe"}><b>Pasmo</b></span></td>
+		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="System transmisyjny dla medium radiowego"}><b>System</b></span></td>
+		<td width="86%" class="frightu pad10" align="right"></td>
+	    </tr>
+	    
+	    
+	    {cycle values="light,lucid" print=false}
+	    {section name='lblist' loop=$lblist}
+	    <tr class="{cycle}{if !$lblist[lblist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+		<td width="1%" class="fleft pad10" align="left">{$lblist[lblist].identyfikator}</td>
+		
+		<td width="1%" class="pad10" align="left">{$lblist[lblist].identyfikatora}</td>
+		<td width="1%" class="pad10" align="left">{$lblist[lblist].identyfikatorb}</td>
+		<td width="1%" class="pad10" align="left" nowrap>{$lblist[lblist].medium}</td>
+		
+		<td width="1%" class="pad10" align="center">{$lblist[lblist].pasmo}</td>
+		<td width="1%" class="pad10" align="center">{$lblist[lblist].system}</td>
+		
+		<td width="86%" class="fright pad10" align="right">
+		    {if $lblist[lblist].useraport}
+			<img src="img/access.gif" {tip text="Nie uwzględniaj rekordu w raporcie"} onclick="xajax_set_lb_useraport({$idr},{$lblist[lblist].id},0);" style="cursor:pointer;">
+		    {else}
+			<img src="img/noaccess.gif" {tip text="Uwzględnij rekord w raporcie"} onclick="xajax_set_lb_useraport({$idr},{$lblist[lblist].id},1);" style="cursor:pointer;">
+		    {/if}
+		</td>
+	    </tr>
+	    {/section}
+	    <tr>
+		<td width="100%" colspan="16" class="ftop"></td>
+	    </tr>
+	</table>
+
+    {else}
+	
+	<table width="100%" cellpadding="10">
+	    <tr class="dark">
+		<td width="100%" class="pad10 fall" align="center">
+		    <br>
+		    <a href="javascript:void(0);" onclick="xajax_import_lb({$idr})"><b>Pobierz informacje o liniach kablowych</b></a><br><br>
+		    <b>UWAGA !!!</b>&nbsp;&nbsp;&nbsp;Pobrane będą informacje tylko z interfejsów uwzględnionych w raporcie.
+		    <br><br>
+		</td>
+	    </tr>
+	</table>
+		
+    
+    {/if}
+    
+    {include file="load_gif.html"}
+{/if}

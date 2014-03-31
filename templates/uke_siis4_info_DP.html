@@ -1,0 +1,336 @@
+{title value="Podmiot przekazujący informacje oraz osoba kontaktowa" link="<a href='?m=uke_siis4_gencsv&action=gencsv&idr={$idr}'>Generuj Raport CSV</a>"}
+<!--//
+link="<a href=\"javascript:void(0);\" onclick=\"loadAjax('id_data_po','?m=uke_siis4_info&tuck=DP&action=gencsv&idr={$idr}');\">Generuj Raport CSV</a>"
+//-->
+
+<table width="100%" cellpadding="3">
+	<tr class="dark">
+	    <td width="100%" align="right" colspan="2" class="fall">&nbsp;
+	    </td>
+	</tr>
+	<tr class="light">
+	    
+	    <!--// lewa strona //-->
+	    <td width="50%" align="left" style="vertical-align:top;" class="fleftu pad10">
+		<table width="100%" cellpadding="2">
+		
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Podmiot
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.divshortname}
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+			    <span class="tiphelp" {tip text="Pełna nazwa podmiotu"}>Nazwa podmiotu</span>
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.divname}
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    NIP
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.ten}
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    REGON
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.regon}
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    EDG/KRS
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.krs}
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    <span class="tiphelp" {tip text="Numer w Rejestrze Przedsiębiorców Telekomunikacyjnych"}>RPT</span>
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.rpt}
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    <span class="tiphelp" {tip text="Numer w Rejestrze Jednostek Samorządu Terytorialnego"}>RJST</span>
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.rjst}
+			</td>
+		    </tr>
+		    
+		    <tr class="light" id="id_view_states">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Województwo
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">	
+			    {$rapdata.states}
+			</td>
+		    </tr>
+		    
+		    <tr class="light" id="id_view_districts">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Powiat
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.districts}
+			</td>
+		    </tr>
+		    
+		    <tr class="light" id="id_view_boroughs">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Gmina
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.boroughs}
+			</td>
+		    </tr>
+		    
+		    <tr class="light" id="id_view_city">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Miejscowość
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.city}
+			</td>
+		    </tr>
+		    {if $rapdata.street}
+		    <tr class="light" id="id_view_street">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Ulica
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.street}
+			</td>
+		    </tr>
+		    {/if}
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Numer budynku
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.location_house}
+			</td>
+		    </tr>
+		    {if $rapdata.location_flat}
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">	
+			    Numer mieszkania
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.location_flat}
+			</td>
+		    </tr>
+		    {/if}
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Kod pocztowy
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.zip}
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    <span class="tiphelp" {tip text="Adres strony WWW"}>URL</span>
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.url}
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    E-mail
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.email}
+			</td>
+		    </tr>
+		</table>
+	    </td>
+	    
+	    
+	    <!--// prawa strona //-->
+	    <td width="50%" align="left" style="vertical-align:top;" class="frightu pad10">
+		<table width="100%" cellpadding="2">
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+			    {assign var='tmp' value=$rapdata.accept1}{$_TN.$tmp}
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+			<td width="98%" align="left" class="pad">
+			    Wyrażenie zgody na upublicznienie nazwy podmiotu dla węzłów własnych
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+			    {assign var='tmp' value=$rapdata.accept2}{$_TN.$tmp}
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+			<td width="98%" align="left" class="pad">
+			    Wyrażenie zgody na upublicznienie nazwy podmiotu dla elementów infrastruktury telekomunikacyjnej zapewniających łączenie kabli telekomunikacyjnych
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+			{assign var='tmp' value=$rapdata.accept3}{$_TN.$tmp}
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+			<td width="98%" align="left" class="pad">
+			    Wyrażenie zgody na upublicznienie nazwy podmiotu dla elementów infrastruktury stanowiących punkty styku z innymi sieciami
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+			{assign var='tmp' value=$rapdata.accept4}{$_TN.$tmp}
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+			<td width="98%" align="left" class="pad">
+			    Wyrażenie zgody na upublicznienie nazwy podmiotu dla elementów infrastruktury telekomunikacyjnej stanowiących linie kablowe lub bezprzewodowe
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+			{assign var='tmp' value=$rapdata.accept5}{$_TN.$tmp}
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+			<td width="98%" align="left" class="pad">
+			    Wyrażenie zgody na upublicznienie nazwy podmiotu dla połączeń pomiędzy węzłami
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+			{assign var='tmp' value=$rapdata.accept6}{$_TN.$tmp}
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+			<td width="98%" align="left" class="pad">
+			    Wyrażenie zgody na upublicznienie nazwy podmiotu dla obszarów i adresów budynków objętych zasięgiem sieci, w których możliwe jest świadczenie usług
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;"></td>
+			<td width="98%" align="left" class="pad">
+			    <b>Dane osoby do kontaktu</b>
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Imię
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.contact_name}
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Nazwisko
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.contact_lastname}
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Telefon
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.contact_phone}
+			</td>
+		    </tr>
+		    
+		    {if $rapdata.contact_fax}
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    FAX
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.contact_fax}
+			</td>
+		    </tr>
+		    {/if}
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    E-mail
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    {$rapdata.contact_email}
+			</td>
+		    </tr>
+		    
+		    {if $rapdata.description}
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+			    <span class="tiphelp" {tip text="dodatkowa informacja tylko dla nas"}>Opis</span>
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <table style="width; 100%;" cellpadding="5"><tr><td class="fall superlight">{$rapdata.description|nl2br}</td></tr></table>
+			</td>
+		    </tr>
+		    {/if}
+		    
+		</table>
+	    </td>
+	</tr>
+	<tr class="dark">
+	    <td width="100%" align="right" colspan="2" class="fall">
+		<a href="javascript:void(0);" onclick="loadAjax('id_data','?m=uke_siis4_edit&idr={$rapdata.id}&tuck=DP');">{trans('Edit')} <img src="img/edit.gif" alt=""></a>
+	    </td>
+	</tr>
+    </table>
+</form>

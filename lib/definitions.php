@@ -451,8 +451,8 @@ $BUILDINGS = array(
 define('NODE_OWN',1);
 define('NODE_FOREIGN',2);
 $TNODE = array(
-    NODE_OWN		=> 'własny',
-    NODE_FOREIGN	=> 'obcy',
+    NODE_OWN		=> 'Węzeł własny',
+    NODE_FOREIGN	=> 'Węzeł współdzielony z innym podmiotem',
 );
 
 define('DEV_ACTIVE',1);
@@ -469,6 +469,23 @@ $LAYERTYPE = array(
     LAYER_ACCESS	=> 'dostępowa',
     LAYER_DISTRIBUTION	=> 'dystrybucyjna',
     LAYER_BACKBONE	=> 'szkieletowa'
+);
+
+// podstawy prawne współdzielenia węzłów
+define('POD_UMNET',1);
+define('POD_UMBSA',2);
+define('POD_UMLLU',3);
+define('POD_ODSP',4);
+define('POD_USLUGA',5);
+define('POD_OTHER',100);
+
+$PODSTAWA = array(
+    POD_NET	=> 'Umowa o dostęp do sieci telekomunikacyjnej',
+    POD_UMBSA	=> 'Umowa BSA na sieci innego podmiotu',
+    POD_UMLLU	=> 'Umowa LLU na sieci innego podmiotu',
+    POD_ODSP	=> 'Prosta odsprzedaż usług na sieci innego podmiotu',
+    POD_USLUGA	=> 'Usługa dostępu szerokopasmowego w modelu VNO',
+    POD_OTHER	=> 'Inna',
 );
 
 
@@ -499,6 +516,7 @@ if(isset($SMARTY))
 	$SMARTY->assign('_TNODE',$TNODE);
 	$SMARTY->assign('_DEVTYPE',$DEVTYPE);
 	$SMARTY->assign('_LAYERTYPE',$LAYERTYPE);
+	$SMARTY->assign('_PODSTAWA',$PODSTAWA);
 }
 
 define('DEFAULT_NUMBER_TEMPLATE', '%N/LMS/%Y');
