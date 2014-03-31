@@ -1,9 +1,9 @@
 <?php
 
 /*
- *  iNET LMS
+ * LMS version 1.11-git
  *
- *  (C) Copyright 2001-2012 LMS Developers
+ *  (C) Copyright 2001-2014 LMS Developers
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License Version 2 as
@@ -19,14 +19,17 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  *
- * ex-mysql.2014032000.php
  */
-
-
 
 $DB->BeginTrans();
 
-$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014032000', 'dbvex'));
+$DB->Execute("INSERT INTO uiconfig (section, var, value) VALUES(?, ?, ?)",
+	array('userpanel', 'allow_message_add_to_closed_tickets', '1'));
+$DB->Execute("INSERT INTO uiconfig (section, var, value) VALUES(?, ?, ?)",
+	array('userpanel', 'limit_ticket_movements_to_selected_queues', '0'));
+
+$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014021700', 'dbversion'));
+
 $DB->CommitTrans();
 
 ?>

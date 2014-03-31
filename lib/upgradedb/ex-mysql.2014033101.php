@@ -26,7 +26,7 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014032000', 'dbvex'));
+$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014033101', 'dbvex'));
 $DB->CommitTrans();
 
 ?>

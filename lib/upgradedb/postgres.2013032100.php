@@ -1,9 +1,9 @@
 <?php
 
 /*
- *  iNET LMS
+ * LMS version 1.11-git
  *
- *  (C) Copyright 2001-2012 LMS Developers
+ *  (C) Copyright 2001-2013 LMS Developers
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License Version 2 as
@@ -19,14 +19,24 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  *
- * ex-mysql.2014032000.php
  */
-
-
 
 $DB->BeginTrans();
 
-$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014032000', 'dbvex'));
+$DB->Execute("ALTER TABLE networks
+				ADD COLUMN hostid integer NULL
+				REFERENCES hosts (id) ON DELETE SET NULL ON UPDATE CASCADE");
+
+$DB->Execute("CREATE INDEX networks_hostid_idx ON networks (hostid)");
+
+$DB->Execute("ALTER TABLE networks
+				DROP CONSTRAINT networks_address_key");
+
+$DB->Execute("ALTER TABLE networks
+				ADD CONSTRAINT networks_address_key UNIQUE (address, hostid)");
+
+$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2013032100', 'dbversion'));
+
 $DB->CommitTrans();
 
 ?>

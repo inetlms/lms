@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  iNET LMS
+ * LMS (iNET)
  *
  *  (C) Copyright 2001-2012 LMS Developers
  *
@@ -19,14 +19,10 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  *
- * ex-mysql.2014032000.php
+ * $ID: mysql.2013101400.php by Sylwester Kondracki
  */
 
-
-
 $DB->BeginTrans();
-
-$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014032000', 'dbvex'));
+$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2013101400', 'dbversion'));
 $DB->CommitTrans();
-
 ?>
