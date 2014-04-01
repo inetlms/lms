@@ -24,8 +24,8 @@
 $DB->BeginTrans();
 
 $DB->Execute("ALTER TABLE networks
-				ADD COLUMN hostid integer NULL
-				REFERENCES hosts (id) ON DELETE SET NULL ON UPDATE CASCADE");
+				ADD COLUMN hostid integer NULL;");
+//				REFERENCES hosts (id) ON DELETE SET NULL ON UPDATE CASCADE");
 
 $DB->Execute("CREATE INDEX networks_hostid_idx ON networks (hostid)");
 
