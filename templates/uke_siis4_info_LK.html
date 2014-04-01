@@ -10,26 +10,26 @@
 	
 	<table width="100%" cellpadding="3">
 	    <tr class="dark">
-		<td width="1%" class="fleftu pad10" align="left"><b><span class="tiphelp" {tip text="Identyfikator lini przewodowej"}><b>Identyfikator</b></span></td>
-		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Określenie własności elementu infrastruktury"}><b>Własność</b></span></td>
-		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Identyfikator punktu A"}><b>Punkt A</b></span></td>
-		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Identyfikator punktu B"}><b>Punkt B</b></span></td>
-		<td width="1%" class="fbt pad10" align="left"><span class="tiphelp" {tip text="Medium transmisyjne (środowisko wykorzystywane do transmisji sygnałów)"}><b>Medium</b></span></td>
-		<td width="86%" class="frightu pad10" align="right"></td>
+		<td width="1%" class="fleftu pad" align="left"><b><span class="tiphelp" {tip text="Identyfikator lini przewodowej"}><b>Identyfikator</b></span></td>
+		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Określenie własności elementu infrastruktury"}><b>Własność</b></span></td>
+		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Identyfikator punktu A"}><b>Punkt A</b></span></td>
+		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Identyfikator punktu B"}><b>Punkt B</b></span></td>
+		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Medium transmisyjne (środowisko wykorzystywane do transmisji sygnałów)"}><b>Medium</b></span></td>
+		<td width="86%" class="frightu pad" align="right"></td>
 	    </tr>
 	    
 	    
 	    {cycle values="light,lucid" print=false}
 	    {section name='lklist' loop=$lklist}
 	    <tr class="{cycle}{if !$lklist[lklist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
-		<td width="1%" class="fleft pad10" align="left">{$lklist[lklist].identyfikator}</td>
-		<td width="1%" class="pad10" align="left">{$lklist[lklist].wlasnosc}</td>
-		<td width="1%" class="pad10" align="left">{$lklist[lklist].identyfikatora}</td>
-		<td width="1%" class="pad10" align="left">{$lklist[lklist].identyfikatorb}</td>
-		<td width="1%" class="pad10" align="left" nowrap>{$lklist[lklist].medium}</td>
+		<td width="1%" class="fleft pad" align="left">{$lklist[lklist].identyfikator}</td>
+		<td width="1%" class="pad" align="left">{$lklist[lklist].wlasnosc}</td>
+		<td width="1%" class="pad" align="left">{$lklist[lklist].identyfikatora}</td>
+		<td width="1%" class="pad" align="left">{$lklist[lklist].identyfikatorb}</td>
+		<td width="1%" class="pad" align="left" nowrap>{$lklist[lklist].medium}</td>
 		
 		
-		<td width="86%" class="fright pad10" align="right">
+		<td width="86%" class="fright pad" align="right">
 		    {if $lklist[lklist].useraport}
 			<img src="img/access.gif" {tip text="Nie uwzględniaj rekordu w raporcie"} onclick="xajax_set_lk_useraport({$idr},{$lklist[lklist].id},0);" style="cursor:pointer;">
 		    {else}
@@ -39,7 +39,7 @@
 	    </tr>
 	    {/section}
 	    <tr>
-		<td width="100%" colspan="16" class="ftop"></td>
+		<td width="100%" colspan="6" class="ftop"></td>
 	    </tr>
 	</table>
 
@@ -47,7 +47,7 @@
 	
 	<table width="100%" cellpadding="10">
 	    <tr class="dark">
-		<td width="100%" class="pad10 fall" align="center">
+		<td width="100%" class="pad fall" align="center">
 		    <br>
 		    <a href="javascript:void(0);" onclick="xajax_import_lk({$idr})"><b>Pobierz informacje o liniach kablowych</b></a><br><br>
 		    <b>UWAGA !!!</b>&nbsp;&nbsp;&nbsp;Pobrane będą informacje tylko z interfejsów uwzględnionych w raporcie.

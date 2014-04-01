@@ -11,13 +11,15 @@
 	<tr class="light">
 	    <td width="1%" nowrap class="fleftu pad10" align="left">
 		{if $networknodelist}
-		    <span class="tiphelp" {tip text="Wybierz i dodaj węzeł do raporu"}><b>Węzeł:</b> </span>
-		    <select id="id_select_networknode" style="cursor:pointer;" onchange="xajax_view_select_po_to_ww(this.value,{$idr});">
-			<option value=""></option>
-			{section name='networknodelist' loop=$networknodelist}
-			    <option value="{$networknodelist[networknodelist].id}">{$networknodelist[networknodelist].name}</option>
-			{/section}
-		    </select>
+
+			    <span class="tiphelp" {tip text="Wybierz i dodaj węzeł do raporu"}><b>Węzeł:</b> </span>
+			    <select id="id_select_networknode" style="cursor:pointer;" onchange="xajax_view_select_po_to_ww(this.value,{$idr});">
+			    <option value=""></option>
+			    {section name='networknodelist' loop=$networknodelist}
+				<option value="{$networknodelist[networknodelist].id}">{$networknodelist[networknodelist].name}</option>
+			    {/section}
+			    </select>
+
 		{else}
 		<b>Brak dostępnych węzłów</b>
 		{/if}
@@ -25,8 +27,13 @@
 	    <td width="1%" nowrap class="fbt pad10" align="left">
 		<div id="id_view_select_po"></div>
 	    </td>
-	    <td width="98%"class="frightu pad10" align="left">
+	    <td width="97%" class="fbt pad10" align="left">
 		<div id="id_view_add_po_to_ww"></div>
+	    </td>
+	    <td width="1%" nowrap class="frightu pad2" align="right">
+	    <!--//
+			    <a href="javascript:void(0);"><b>Dodaj wszystkie węzły</b></a>
+	    //-->
 	    </td>
 	</tr>
     </table>

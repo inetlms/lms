@@ -117,7 +117,7 @@ function customerchoosewin(formfield)
 
 function customersearchchoosewin(formfieldid,formfieldname)
 {
-	return openSelectWindow2('?m=choosecustomersearch','choosecustomersearch',450,250,'true',formfieldid,formfieldname);
+	return openSelectWindow2('?m=choosecustomersearch','choosecustomersearch',600,250,'true',formfieldid,formfieldname);
 }
 
 function contractorchoosewin(formfield,formfield2)

@@ -505,7 +505,29 @@ function add_PO($forms)
 	return $obj;
     
     }
-    
+/*
+    function add_all_to_ww($idr) 
+    {
+	global $DB,$LMS;
+	$obj = new xajaxResponse();
+	
+	$tmp = $DB->GetAll('SELECT data FROM uke_data WHERE rapid=? AND mark=? ;',array($idr,'WW'));
+	$idww = array();
+	for ($i=0;$i<sizeof($tmp);$i++)
+	{
+	    $tmp2 = unserialize($tmp[$i]);
+	    $idww[] = $tmp2['id'];
+	}
+	
+	$noidww = implode(',',$idww);
+	
+	if (!empty($idww)) {
+	    
+	}
+	
+	return $obj;
+    }
+*/    
     function set_ww_useraport($idr,$id,$set)
     {
 	global $DB;
@@ -820,16 +842,23 @@ function add_PO($forms)
 	$obj = new xajaxResponse();
 	
 	$netdevices = $DB->GetAll('SELECT markid AS id FROM uke_data WHERE rapid=? AND mark=? AND useraport=? ORDER BY markid;',array($idr,'INT',1));
-	
+	$idnetdevices = array();
+	if ($netdevices) 
+	{
+	    for ($i=0;$i<sizeof($netdevices);$i++)
+		$idnetdevices[] = $netdevices[$i]['id'];
+	}
 	$processed = array();
 	$netlinks = array();
 	
 	if ($netdevices) foreach ($netdevices as $netdevice) {
-		if ($ndnetlinks = $DB->GetAll("SELECT src, dst, type, speed FROM netlinks WHERE src = ? OR dst = ? ORDER BY src",array($netdevice['id'], $netdevice['id']))) {
+		if (($ndnetlinks = $DB->GetAll("SELECT src, dst, type, speed FROM netlinks WHERE src = ? OR dst = ? ORDER BY src",array($netdevice['id'], $netdevice['id'])))) {
 		    foreach ($ndnetlinks as $netlink) {
 			$idnet = $netdevice['id'];
 			$srcnet = $netlink['src'];
 			$dstnet = $netlink['dst'];
+			if (in_array($srcnet,$idnetdevices) && in_array($dstnet,$idnetdevices))
+			{
 			$netnodeid = array($srcnet, $dstnet);
 			sort($netnodeid);
 			$netnodelinkid = implode('_',$netnodeid);
@@ -856,6 +885,7 @@ function add_PO($forms)
 				    $processed[$netnodelinkid] = true;
 				    $netnodes[$idnet]['distports']++;
 				}
+			}
 			}
 		    }
 		}
@@ -905,8 +935,10 @@ function add_PO($forms)
 		}
 	    }
 	}
+	    $obj->script("alert('Dane zostały ponownie zaimportowane');");
 	}
-	$obj->script("alert('Dane zostały ponownie zaimportowane');");
+	else $obj->script("alert('Dane NIE zostały ponownie zaimportowane');");
+	
 	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=LK&idr=".$idr."');");
 	return $obj;
     }
@@ -919,32 +951,46 @@ function add_PO($forms)
 	
 	$netdevices = $DB->GetAll('SELECT markid AS id FROM uke_data WHERE rapid=? AND mark=? AND useraport=? ORDER BY markid;',array($idr,'INT',1));
 	
+	$idnetdevices = array();
+	if ($netdevices) 
+	{
+	    for ($i=0;$i<sizeof($netdevices);$i++)
+		$idnetdevices[] = $netdevices[$i]['id'];
+	}
+	
 	$processed = array();
 	$netlinks = array();
 	
 	if ($netdevices) foreach ($netdevices as $netdevice) {
 		if ($ndnetlinks = $DB->GetAll("SELECT src, dst, type, speed FROM netlinks WHERE src = ? OR dst = ? ORDER BY src",array($netdevice['id'], $netdevice['id']))) {
-		    foreach ($ndnetlinks as $netlink) {
+		    foreach ($ndnetlinks as $netlink) 
+		    {
 			$idnet = $netdevice['id'];
 			$srcnet = $netlink['src'];
 			$dstnet = $netlink['dst'];
-			$netnodeid = array($srcnet, $dstnet);
-			sort($netnodeid);
-			$netnodelinkid = implode('_',$netnodeid);
-			if (!isset($processed[$netnodelinkid])) {
-			    
-			    if ($netlink['src'] == $netdevice['id']) {
-				if ($idnet != $dstnet) {
-				    $netlinks[] = array(
-					'type' 	=> $netlink['type'], 
-					'speed' => $netlink['speed'], 
-					'src' 	=> $idnet, 
-					'dst' 	=> $dstnet,
-				    );
-				    $processed[$netnodelinkid] = true;
-				    $netnodes[$idnet]['distports']++;
-				}
-			    } else if ($idnet != $srcnet) {
+			if (in_array($srcnet,$idnetdevices) && in_array($dstnet,$idnetdevices))
+			{
+			    $netnodeid = array($srcnet, $dstnet);
+			    sort($netnodeid);
+			    $netnodelinkid = implode('_',$netnodeid);
+			    if (!isset($processed[$netnodelinkid])) 
+			    {
+				if ($netlink['src'] == $netdevice['id']) 
+				{
+				    if ($idnet != $dstnet) 
+				    {
+					$netlinks[] = array(
+					    'type' 	=> $netlink['type'], 
+					    'speed' => $netlink['speed'], 
+					    'src' 	=> $idnet, 
+					    'dst' 	=> $dstnet,
+					);
+					$processed[$netnodelinkid] = true;
+					$netnodes[$idnet]['distports']++;
+				    }
+				} 
+				else if ($idnet != $srcnet) 
+				{
 				    $netlinks[] = array(
 					'type' 	=> $netlink['type'], 
 					'speed' => $netlink['speed'], 
@@ -954,6 +1000,7 @@ function add_PO($forms)
 				    $processed[$netnodelinkid] = true;
 				    $netnodes[$idnet]['distports']++;
 				}
+			    }
 			}
 		    }
 		}

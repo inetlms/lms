@@ -115,7 +115,7 @@ switch($mode)
 				    continue;
 				}
 				if (preg_match("~$search~i",$row['username'])) {
-				    $descriptions[$row['id']] = '';
+				    $descriptions[$row['id']] = escape_js(trans('Address:').' '.$row['address']);
 				    continue;
 				}
 				if (preg_match("~$search~i",$row['address'])) {
