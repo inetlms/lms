@@ -184,8 +184,10 @@
 	
 	<td width="1%" class="pad10" align="left" nowrap>
 	    {$radlist[radlist].nasipaddress}
-	    {if $radlist[radlist].nasname}<br>
+	    {if $radlist[radlist].nasid}<br>
 	    <a href="?m=netdevinfo&id={$radlist[radlist].nasid}">{$radlist[radlist].nasname}</a>
+	    {else}
+		<br><span class="tiphelp" style="color:red;" {tip text="Proszę wprowadzić do LMS NAS które jest koncentratorem dla urządzenia klienckiego, wraz z jego prawidłowym adresem IP"}>BRAK NAS W LMS</span>
 	    {/if}
 	</td>
 	
@@ -233,7 +235,9 @@
 	<td width="auto" class="frightu pad10" align="right" nowrap>&nbsp;
 	    {if $listdata.status=='open'}
 		{if $current}
+		    {if $radlist[radlist].nasid}
 		    <img src="img/logout.gif" style="cursor:pointer;" {tip text="Zerwij sesje (Kick User)"} onclick="kickuser({$radlist[radlist].radacctid});">
+		    {/if}
 		    <!--//
 		    <img src="img/refresh.png" style="cursor:pointer;" {tip text="odpytaj NAS"} width="18">
 		    //-->

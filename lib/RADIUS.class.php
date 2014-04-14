@@ -88,7 +88,7 @@ class RADIUS {
 		.', n.location AS nodelocation, n.producer AS nodeproducer, n.model AS nodemodel '
 		.($status=='open' ? ', nd.maxid AS maxid ' : ', 0 AS maxid ')
 		.'FROM radacct r '
-		.'JOIN nodes nas ON (inet_ntoa(nas.ipaddr) = r.nasipaddress) '
+		.'LEFT JOIN nodes nas ON (inet_ntoa(nas.ipaddr) = r.nasipaddress) '
 		.($status=='open' ? 'JOIN ( SELECT MAX(radacctid) AS maxid, username FROM radacct GROUP BY username) nd ON (nd.username = r.username) ' : '')
 		.(strtolower(get_conf('radius.auth_login','id')) == 'id' ? 'JOIN nodes n ON (n.id = r.username) ' : '')
 		.(strtolower(get_conf('radius.auth_login')) == 'name' ? 'JOIN nodes n ON (UPPER(n.name) = UPPER(r.username)) ' : '')
@@ -97,8 +97,8 @@ class RADIUS {
 		.'WHERE 1=1 '
 		.(($cid) ? " AND c.id = '".$cid."'" : '')
 		.(($nid) ? " AND n.id = '".$nid."'" : '')
-		.($status=='open' ? ' AND r.acctstoptime IS NULL ' : '')
-		.($status=='completed' ? ' AND r.acctstoptime IS NOT NULL ' : '')
+		.($status=='open' ? ' AND (r.acctstoptime IS NULL OR r.acctstoptime=\'0000-00-00 00:00:00\') ' : '')
+		.($status=='completed' ? ' AND r.acctstoptime IS NOT NULL AND r.acctstoptime!=\'0000-00-00 00:00:00\' ' : '')
 		.($nullsession=='tak' ? ' AND r.acctsessiontime = 0 ' : '')
 		.($nullsession=='nie' ? ' AND r.acctsessiontime != 0 ' : '')
 		.($sessions=='cur' && $status=='open' ? ' AND r.radacctid = nd.maxid ' : '')
