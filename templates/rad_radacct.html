@@ -41,10 +41,10 @@
 		    </td>
 		    
 		    <td width="1%" class="pad5" align="right" nowrap>Początek sesji od dnia</td>
-		    <td width="1%" class="pad5" align="left" nowrap><input type="text" {if $listdata.startdatefrom} class="active" {/if} style="width:100px;" id="startdatefrom" name="startdatefrom" readonly onclick="javascript:cal1.popup();" value="{$listdata.startdatefrom}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('startdatefrom').value='';" width="12" {tip text="Wyczyść datę początkową"} style="cursor:pointer;"></td>
+		    <td width="1%" class="pad5" align="left" nowrap><input type="text" {if $listdata.startdatefrom} class="active" {/if} style="width:100px;" id="startdatefrom" name="startdatefrom" readonly onclick="javascript:cal1.popup();" value="{$listdata.startdatefrom}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('startdatefrom').value='';document.choosefilter.submit();" width="12" {tip text="Wyczyść datę początkową"} style="cursor:pointer;"></td>
 		    
 		    <td width="1%" class="pad5" align="right" nowrap>do dnia</td>
-		    <td width="1%" class="pad5" align="left" nowrap><input type="text" {if $listdata.startdateto} class="active" {/if} style="width:100px;" id="startdateto" name="startdateto" readonly onclick="javascript:cal2.popup();" value="{$listdata.startdateto}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('startdateto').value='';" width="12" {tip text="Wyczyść datę końcową"} style="cursor:pointer;"></td>
+		    <td width="1%" class="pad5" align="left" nowrap><input type="text" {if $listdata.startdateto} class="active" {/if} style="width:100px;" id="startdateto" name="startdateto" readonly onclick="javascript:cal2.popup();" value="{$listdata.startdateto}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('startdateto').value='';document.choosefilter.submit();" width="12" {tip text="Wyczyść datę końcową"} style="cursor:pointer;"></td>
 		    
 		    <td width="auto" align="right" class="pad">
 			<img src="img/Filter.png" alt="ustaw filtr" style="cursor:pointer;" onclick="document.choosefilter.submit();" {tip text="ustaw filtr"}>
@@ -93,10 +93,10 @@
 		    </td>
 		    
 		    <td width="1%" class="pad5" align="right" nowrap>{if $listdata.status != 'open'}Koniec sesji od dnia{/if}</td>
-		    <td width="1%" class="pad5" align="left" nowrap>{if $listdata.status != 'open'}<input type="text" {if $listdata.enddatefrom} class="active" {/if} style="width:100px;" id="enddatefrom" name="enddatefrom" readonly onclick="javascript:cal3.popup();" value="{$listdata.enddatefrom}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('enddatefrom').value='';" width="12" {tip text="Wyczyść datę początkową"} style="cursor:pointer;">{/if}</td>
+		    <td width="1%" class="pad5" align="left" nowrap>{if $listdata.status != 'open'}<input type="text" {if $listdata.enddatefrom} class="active" {/if} style="width:100px;" id="enddatefrom" name="enddatefrom" readonly onclick="javascript:cal3.popup();" value="{$listdata.enddatefrom}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('enddatefrom').value='';document.choosefilter.submit();" width="12" {tip text="Wyczyść datę początkową"} style="cursor:pointer;">{/if}</td>
 		    
 		    <td width="1%" class="pad5" align="right" nowrap>{if $listdata.status != 'open'}do dnia{/if}</td>
-		    <td width="1%" class="pad5" align="left" nowrap>{if $listdata.status != 'open'}<input type="text" {if $listdata.enddateto} class="active" {/if} style="width:100px;" id="enddateto" name="enddateto" readonly onclick="javascript:cal4.popup();" value="{$listdata.enddateto}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('enddateto').value='';" width="12" {tip text="Wyczyść datę końcową"} style="cursor:pointer;">{/if}</td>
+		    <td width="1%" class="pad5" align="left" nowrap>{if $listdata.status != 'open'}<input type="text" {if $listdata.enddateto} class="active" {/if} style="width:100px;" id="enddateto" name="enddateto" readonly onclick="javascript:cal4.popup();" value="{$listdata.enddateto}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('enddateto').value='';document.choosefilter.submit();" width="12" {tip text="Wyczyść datę końcową"} style="cursor:pointer;">{/if}</td>
 		    
 		    <td width="auto" align="right" class="pad"></td>
 		</tr>
@@ -172,7 +172,7 @@
 	
 	{cycle values="light,lucid" print=false}
 	{section name=radlist loop=$radlist start=$start max=$pagelimit}
-	{if $radlist[radlist].radacctid == $radlist[radlist].maxid && !$radlist[radlist].acctstoptime}
+	{if $radlist[radlist].radacctid == $radlist[radlist].maxid && (!$radlist[radlist].acctstoptime || $radlist[radlist].acctstoptime=='0000-00-00 00:00:00')}
 	    {assign var='current' value='1'}
 	{else}
 	    {assign var='current' value='0'}
@@ -236,7 +236,7 @@
 	    {if $listdata.status=='open'}
 		{if $current}
 		    {if $radlist[radlist].nasid}
-		    <img src="img/logout.gif" style="cursor:pointer;" {tip text="Zerwij sesje (Kick User)"} onclick="kickuser({$radlist[radlist].radacctid});">
+		    <img src="img/logout.gif" alt="Kick User" style="cursor:pointer;" {tip text="Zerwij sesje (Kick User)"} onclick="kickuser({$radlist[radlist].radacctid});">
 		    {/if}
 		    <!--//
 		    <img src="img/refresh.png" style="cursor:pointer;" {tip text="odpytaj NAS"} width="18">
