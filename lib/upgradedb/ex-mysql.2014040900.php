@@ -56,7 +56,6 @@ array($DB->_dbname,'netdevices','server')))
 	$DB->Execute("DROP VIEW nas");
 
 	$DB->Execute("ALTER TABLE netdevices ADD server varchar(64) NOT NULL DEFAULT ''");
-	$DB->Execute("ALTER TABLE netdevices ADD coaport varchar(5) default null;");
 
 	$DB->Execute("CREATE VIEW nas AS 
 		SELECT n.id, inet_ntoa(n.ipaddr) AS nasname, d.shortname, d.nastype AS type,
