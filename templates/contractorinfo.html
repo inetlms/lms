@@ -3,23 +3,23 @@
 <!--// $Id$ //-->
 <h1>{$layout.pagetitle}</h1>
 {include file="calendar_js.html"}
-<TABLE WIDTH="100%" CELLPADDING="3">
-	<TR>
-		<TD WIDTH="100%">
+<table width="100%" cellpadding="3">
+	<tr>
+		<td width="100%">
 			{include file="contractorinfobox.html"}
-		</TD>
-	</TR>
-	<TR>
-		<TD WIDTH="100%">
+		</td>
+	</tr>
+	<tr>
+		<td width="100%">
 			{include file="contractorgroupsbox.html"}
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{if check_modules(160)}
-	<TR>
-		<TD WIDTH="100%">
+	<tr>
+		<td width="100%">
 			{include file="contractorbalancebox.html" limit=-10}
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{/if}
-</TABLE>
+</table>
 {include file="footer.html"}

@@ -26,7 +26,7 @@ switch ($action)
 	case 'downloadfile' :
 				$LMS->downloadfile($id);
 	break;
-
+/*
 	case 'check_networknode_name' :
 				if (is_null($field) || empty($field)) $filed = 'name';
 				$request = trim(strtoupper($_REQUEST[$field]));
@@ -47,7 +47,7 @@ switch ($action)
 					$result = true;
 				}
 	break;
-
+*/
 	case 'check_netdev_name' :
 				if (is_null($field) || empty($field)) $filed = 'name';
 				$request = trim(strtoupper($_REQUEST[$field]));

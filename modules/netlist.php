@@ -26,7 +26,24 @@
 
 $layout['pagetitle'] = trans('IP Networks');
 
-$netlist = $LMS->GetNetworkList();
+// status
+if(!isset($_GET['s']))
+	$SESSION->restore('netlist_s', $s);
+else
+	$s = $_GET['s'];
+$SESSION->save('netlist_s', $s);
+
+// hostid
+if(!isset($_GET['h']))
+	$SESSION->restore('netlist_h', $h);
+else
+	$h = $_GET['h'];
+$SESSION->save('netlist_h', $h);
+
+$listdata['state'] = $s;
+$listdata['hostid'] = $h;
+
+$netlist = $LMS->GetNetworkList($s,$h);
 
 $listdata['size'] = $netlist['size'];
 $listdata['assigned'] = $netlist['assigned'];
@@ -39,6 +56,7 @@ $listdata['total'] = sizeof($netlist);
 
 $SMARTY->assign('listdata',$listdata);
 $SMARTY->assign('netlist',$netlist);
+$SMARTY->assign('hostlist',$DB->GetAll('SELECT id, name FROM hosts ORDER BY name;'));
 $SMARTY->display('netlist.html');
 
 ?>

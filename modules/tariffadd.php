@@ -62,9 +62,9 @@ if(isset($_POST['tariff']))
 			$error[$item] = trans('Integer value expected!');
 	}
 
-	if(($tariff['uprate'] < 8 || $tariff['uprate'] > 100000) && $tariff['uprate'] != 0)
+	if(($tariff['uprate'] < 8 || $tariff['uprate'] > 100000000) && $tariff['uprate'] != 0)
 		$error['uprate'] = trans('This field must be within range 8 - 100000');
-	if(($tariff['downrate'] < 8 || $tariff['downrate'] > 100000) && $tariff['downrate'] != 0)
+	if(($tariff['downrate'] < 8 || $tariff['downrate'] > 100000000) && $tariff['downrate'] != 0)
 		$error['downrate'] = trans('This field must be within range 8 - 100000');
 	if(($tariff['upceil'] < 8 || $tariff['upceil'] < $tariff['uprate']) && $tariff['upceil'] != 0)
 		$error['upceil'] = trans('This field must contain number greater than 8 and greater than upload rate');
@@ -81,9 +81,9 @@ if(isset($_POST['tariff']))
 			$error[$item] = trans('Integer value expected!');
 	}
 
-	if(($tariff['uprate_n'] < 8 || $tariff['uprate_n'] > 100000) && $tariff['uprate_n'])
+	if(($tariff['uprate_n'] < 8 || $tariff['uprate_n'] > 100000000) && $tariff['uprate_n'])
 		$error['uprate_n'] = trans('This field must be within range 8 - 100000');
-	if(($tariff['downrate_n'] < 8 || $tariff['downrate_n'] > 100000) && $tariff['downrate_n'])
+	if(($tariff['downrate_n'] < 8 || $tariff['downrate_n'] > 100000000) && $tariff['downrate_n'])
 		$error['downrate_n'] = trans('This field must be within range 8 - 100000');
 	if(($tariff['upceil_n'] < 8 || $tariff['upceil_n'] < $tariff['uprate']) && $tariff['upceil_n'])
 		$error['upceil_n'] = trans('This field must contain number greater than 8 and greater than upload rate');

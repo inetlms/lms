@@ -28,6 +28,19 @@ include('networknode.inc.php');
 
 $layout['pagetitle'] = 'Nowy węzeł';
 
+$networknodeinfo = array(
+	
+	    'type'			=> NODE_OWN,
+	    'backbone_layer'		=> NIE,
+	    'distribution_layer'	=> TAK,
+	    'access_layer'		=> TAK,
+	    'dc24' 			=> 1,
+	    'ac230' 			=> 1,
+	    'service_broadband' 	=> 1,
+	    'teryt'			=> true,
+	    
+);
+
 if (isset($_GET['create']) && isset($_GET['int']) && !empty($_GET['int']))
 {
 	
@@ -39,6 +52,7 @@ if (isset($_GET['create']) && isset($_GET['int']) && !empty($_GET['int']))
 	    'distribution_layer'	=> TAK,
 	    'access_layer'		=> TAK,
 	    'int'			=> $_GET['int'],
+	    
 	);
 	
 	if ($int = $DB->GetROw('SELECT * FROM netdevices WHERE id = ? LIMIT 1;',array($_GET['int'])))
@@ -46,7 +60,7 @@ if (isset($_GET['create']) && isset($_GET['int']) && !empty($_GET['int']))
 	    $teryt = $LMS->getterytcode($int['location_city'],$int['location_street']);
 //	    $networknodeinfo[''] = 
 	    $networknodeinfo['int'] = $int['id'];
-	    $networknodeinfo['name'] = 'WEZEL_'.$int['name'];
+	    $networknodeinfo['name'] = 'WEZEL_'.strtoupper($int['name']);
 	    $networknodeinfo['teryt'] = (!empty($int['location_city']) ? 1 : 0);
 	    $networknodeinfo['states'] = $teryt['name_states'];
 	    $networknodeinfo['districts'] = $teryt['name_districts'];
@@ -64,7 +78,7 @@ if (isset($_GET['create']) && isset($_GET['int']) && !empty($_GET['int']))
 	    $networknodeinfo['service_broadband'] = 1;
 	}
 	
-	$SMARTY->assign('networknodeinfo',$networknodeinfo);
+	
 	
 }
 
@@ -82,7 +96,7 @@ if (isset($_POST['name']))
     $SESSION->redirect('?m=networknodeinfo&idn='.$idn);
 }
 
-
+$SMARTY->assign('networknodeinfo',$networknodeinfo);
 $SMARTY->assign('actions','add');
 $SMARTY->display('networknodeedit.html');
 ?>

@@ -11,13 +11,15 @@ function showcalculator()
 //-->
 </script>
 {/literal}
-<hr>
+<div id="id_toolbar" class="toolbarbg">
+<hr class="newstyle">
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr>
     <td width="98%" nowrap align="left">
 	<span style="padding-right:15px;">
 	    <a href="?m={get_conf('phpui.default_module','welcome')}" {tip text="Basic system information"}><img src="img/home.png" border="0" width="20"></a>
 	    <img src="img/Calculator.png" style="cursor:pointer;" {tip text="Kalkulator"} onclick="showcalculator();" width="18">
+	    <img src="img/note.gif" style="cursor:pointer;" onclick="notatnik_popup();" {tip text="Osobisty notatnik"}>
 	</span>
 
 	<span style="padding-right:15px;">
@@ -61,8 +63,9 @@ function showcalculator()
     </td>
     <td width="1%" style="padding-right:5px;" align="right" nowrap>
 	{if check_modules(240)}<a href="?m=reload" {tip text="Reload"}><img src="img/refresh.png" border="0" width="20"></a>{/if}
-	<a href="?m=logout&is_sure=1" {tip text="<B>Allows you to logout</B>"}><img src="img/Exit.png" border="0" width="20"></a>
+	<a href="?m=logout&is_sure=1" {tip text="<b>Allows you to logout</b>"}><img src="img/Exit.png" border="0" width="20"></a>
     </td>
 </tr>
 </table>
-<hr>
+<hr class="newstyle">
+</div>

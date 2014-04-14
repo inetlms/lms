@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
 <title>::: LMS :{if $layout.pagetitle neq ""} {$layout.pagetitle} :{/if}::</title>
 <link href="{get_conf('phpui.style', 'img/style.css')}" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="img/common.js"></SCRIPT>
+<script type="text/javascript" src="img/common.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -35,7 +35,7 @@
 	{if $nodelist.total > 0}
 	{section name=nodelist loop=$nodelist}
 	{if $nodelist[nodelist].id}
-	<tr class="{cycle}{if ! $nodelist[nodelist].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<tr class="{cycle} lista{if ! $nodelist[nodelist].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="1%">
 			<input type="checkbox" class="box {cycle print=false}{cycle}" name="nodes" value="{$nodelist[nodelist].id}">
 		</td>

@@ -5,7 +5,7 @@
     {cycle values="lucid,light" print=false}
     {section name=list loop=$listtemplate}
     
-	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')" style="cursor:pointer;">
+	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')" style="cursor:pointer;">
 	    <td width="1%" nowrap onclick="wyslij('{$listtemplate[list].theme}','misiek');">
 		{$listtemplate[list].theme}
 	    </td>

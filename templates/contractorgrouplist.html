@@ -13,7 +13,7 @@
 <table width="100%" cellpadding="3">
 	<tr class="dark">
 		<td width="1%" class="fleftu">
-			<img src="img/group.gif" alt="">&nbsp;<b>{trans("Name:")}</b><BR>
+			<img src="img/group.gif" alt="">&nbsp;<b>{trans("Name:")}</b><br>
 		</td>
 		<td width="96%" class="fbt">
 			<img src="img/info1.gif" alt="">&nbsp;{trans("Description:")}
@@ -24,13 +24,13 @@
 		<td width="1%" class="fbt" align="right">
 			{trans("Members:")}
 		</td>
-		<td width="1%" class="frightu" align="RIGHT" nowrap>
+		<td width="1%" class="frightu" align="right" nowrap>
 			<b>{t a=$listdata.total|default:"0"}Total: $a{/t}</b>
 		</td>
 	</tr>
 	{cycle values="light,lucid" print=false}
 	{section name=contractorgroups loop=$contractorgrouplist}
-	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="1%" class="fleft" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';" nowrap style="padding-right:10px;">
 			<b>{$contractorgrouplist[contractorgroups].name}</b>
 		</td>
@@ -44,7 +44,7 @@
 			{$contractorgrouplist[contractorgroups].contractorscount} 
 		</td>
 		<td width="1%" class="fright" align="right">
-			<NOBR>
+			<nobr>
 			{if $contractorgrouplist[contractorgroups].contractorscount}
 				<a href="javascript:alert('{trans("Group with members cannot be deleted!")}');">
 			{else}
@@ -52,7 +52,7 @@
 			{/if}<img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
 				<a href="?m=contractorgroupedit&id={$contractorgrouplist[contractorgroups].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
 				<a href="?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></a>
-			</NOBR>
+			<nobr>
 		</td>
 	</tr>
 	{sectionelse}
@@ -68,7 +68,7 @@
 		<td class="fleftu" colspan="3" width="98%" align="right">
 			<img src="img/info2.gif" alt="">&nbsp;<b>{trans("Total:")}</b>
 		</td>
-		<td class="fbt" width="1%" align="right" NOWRAP>
+		<td class="fbt" width="1%" align="right" nowrap>
 			<b>{$listdata.totalcount|default:"0"} </b>
 		</td>
 		<td class="frightu" width="1%">

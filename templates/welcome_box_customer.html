@@ -1,0 +1,72 @@
+<table width="100%" cellpadding="3" class="table table-success" >
+    <tr class="boxtitleteal">
+	<td colspan="2" class="boxtitletealtd" align="center">
+	    <b>KLIENCI</b>
+	</td>
+    </tr>
+
+	<tr class="light">
+		<td width="50%" align="right" class="fleft">
+			<b><a href="?m=customerlist&page=1&fletter=&osp=&s=3&st=0&ce=&d=&n=0&g=&ng=&odl=&warn=&or=">{trans("Connected:")}</a></b>
+		</td>
+		<td width="50%" class="fright">
+			{$customerstats.connected}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="50%" align="right" class="fleft">
+			<b><a href="?m=customerlist&page=1&fletter=&osp=&s=2&st=0&ce=&d=&n=0&g=&ng=&odl=&warn=&or=">{trans("Waiting:")}</a></b>
+		</td>
+		<td width="50%" class="fright">
+			{$customerstats.awaiting}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="50%" align="right" class="fleft">
+			<b><a href="?m=customerlist&page=1&fletter=&osp=&s=1&st=0&ce=&d=&n=0&g=&ng=&odl=&warn=&or=">{trans("Interested:")}</a></b>
+		</td>
+		<td width="50%" class="fright">
+			{$customerstats.interested}
+		</td>
+	</tr>
+	<!--//
+	<tr class="light">
+		<td width="50%" align="right" class="fleft">
+		    <b><a href="?m=customerlist&page=1&fletter=&osp=&s=15&st=0&ce=&d=&n=0&g=&ng=&odl=&warn=&or=">Rozwiązani:</a></b>
+		</td>
+		<td width="50%" align="left" class="fright">
+		    {$customerstats.aliens}
+		</td>
+	</tr>
+	//-->
+	<tr class="light">
+	<td width="50%" align="right" class="fleftu">
+			<b><a href="?m=customerlist&page=1&fletter=&osp=&s=0&st=0&ce=&d=&n=0&g=&ng=&odl=&warn=&or=">{trans("Total:")}</a><br>
+			{if !check_conf('privileges.hide_finances')}
+				<nobr><a href="?m=customerlist&page=1&fletter=&s=0&st=6&ce=&d=&n=0&g=&ng=&odl=&warn=&or=">{trans("Total Dues:")}</a></b></nobr>
+			{/if}
+		</td>
+		<td width="50%" class="frightu">
+			{$customerstats.total}<br>
+			{if !check_conf('privileges.hide_finances')}
+				<nobr>{$customerstats.debt} ({trans("amount")} {$customerstats.debtvalue|money_format})<nobr>
+			{/if}
+		</td>
+	</tr>
+	{if !check_conf('privileges.hide_finances')}
+	<tr class="light">
+		<td width="50%" align="right" class="fleftu">
+			<nobr><a href="?m=customerlist&ce=7&page=1&fletter=&s=3&d=&n=0&g=&ng=&st=&odl=&warn=&or=" {tip text="Klienci u których kończą się zobowiązania w ciągu 7 dni"}><b>Wygasające zobowiązania w ciągu 7 d</b></a><br></nobr>
+			<nobr><a href="?m=customerlist&ce=30&page=1&fletter=&s=3&d=&n=0&g=&ng=&st=&odl=&warn=&or=" {tip text="Klienci u których kończą się zobowiązania w ciągu 30 dni"}><b>Wygasające zobowiązania w ciągu 30 d</b></a><br></nobr>
+			<nobr><a href="?m=customerlist&ce=-2&page=1&fletter=&s=3&d=&n=0&g=&ng=&st=&odl=&warn=&or=" {tip text="Klienci którzy posiadają zobowiązanie bezterminowe"}><b>Bezterminowe zobowiązania</b></a></nobr>
+		</td>
+		
+		<td width="50%" class="frightu">
+				{$contractending7|count}<br>
+				{$contractending30|count}<br>
+				{$contractnodata|count}
+		</td>
+		
+	</tr>
+	{/if}
+</table>

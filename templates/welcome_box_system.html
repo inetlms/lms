@@ -1,0 +1,47 @@
+<table width="100%" cellpadding="3" class="table table-info">
+				<tr class="boxtitleinfo">
+					<td height="24" align="center" colspan="2" class="boxtitleinfotd" nowrap>
+						<b>{strtoupper(trans("About system:"))}</b>
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b>{trans("Hostname:")}</b>
+					</td>
+					<td width="50%" class="fright">
+						{$sysinfo.hostname}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b>{trans("System version:")}</b>
+					</td>
+					<td width="50%" class="fright">
+						{$sysinfo.kernel}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b>{trans("Uptime:")}</b>
+					</td>
+					<td width="50%" class="fright">
+						{$sysinfo.uptime}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b>{trans("Users logged in:")}</b>
+					</td>
+					<td width="50%" class="fright">
+						{$sysinfo.users}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fbl">
+						<b>{trans("Load:")}</b>
+					</td>
+					<td width="50%" class="fbr">
+						{$sysinfo.loadavg.0} {$sysinfo.loadavg.1} {$sysinfo.loadavg.2}
+					</td>
+				</tr>
+			</table>

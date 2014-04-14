@@ -1,62 +1,62 @@
 <!--// $Id$ //-->
-<H1><span class="bold">{$layout.pagetitle}</span></H1>
-<P><FORM name="reload" method="POST" action="?m=reload&setreloads">
-<INPUT type="submit" class="hiddenbtn">
-<TABLE WIDTH="100%" CELLPADDING="3">
-	<TR CLASS="DARK">
-		<TD class="fall">
+<h1><span class="bold">{$layout.pagetitle}</span></h1>
+<p><form name="reload" method="POST" action="?m=reload&setreloads">
+<input type="submit" class="hiddenbtn">
+<table width="100%" cellpadding="3">
+	<tr class="dark">
+		<td class="fall">
 		<div style="float:left">
 			<span class="bold">{trans("Select hosts for configuration reload:")} </div> </span> <div id="reloadtxt" style="display:none; float:right"><span class="bold">{trans("Reload configuration in:")} </span> <span id="reloadtimer" class="bold"></span> </div>
-		</TD>
-	</TR>
-	<TR>
-		<TD width="100%" class="fall">
-			<TABLE cellpadding="5" cellspacing="0" width="100%">
-				<TR class="dark">
-					<TD width="1%" class="fleftu" nowrap><IMG src="img/host.gif" ALT=""> <span class="bold">{trans("Name:")}</span></TD>
-					<TD width="96%" class="fbt" nowrap>{trans("Description:")}</TD>
-					<TD width="1%" class="fbt" align="right" nowrap>{trans("Last Reload:")}</TD>
-					<TD width="1%" class="fbt" nowrap>{trans("Status:")}</TD>
-					<TD width="1%" class="frightu"></TD>
-				</TR>
+		</td>
+	</tr>
+	<tr>
+		<td width="100%" class="fall">
+			<table cellpadding="5" cellspacing="0" width="100%">
+				<tr class="dark">
+					<td width="1%" class="fleftu" nowrap><img src="img/host.gif" alt=""> <span class="bold">{trans("Name:")}</span></td>
+					<td width="96%" class="fbt" nowrap>{trans("Description:")}</td>
+					<td width="1%" class="fbt" align="right" nowrap>{trans("Last Reload:")}</td>
+					<td width="1%" class="fbt" nowrap>{trans("Status:")}</td>
+					<td width="1%" class="frightu"></td>
+				</tr>
 				{cycle values="light,lucid" print=false}
 				{section name=hosts loop=$hosts}
-				<TR class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-					<TD nowrap onClick="return checkElement({$hosts[hosts].id});"><IMG src="img/host.gif" ALT=""> <span class="bold">{$hosts[hosts].name}</span></TD>
-					<TD onClick="return checkElement({$hosts[hosts].id});">{$hosts[hosts].description}</TD>
-					<TD align="right" nowrap onClick="return checkElement({$hosts[hosts].id});">{if $hosts[hosts].lastreload}{$hosts[hosts].lastreload|date_format:"%Y/%m/%d %H:%M"}{else}-{/if}</TD>
-					<TD nowrap onClick="return checkElement({$hosts[hosts].id});">{if $hosts[hosts].reload==1}{trans("waiting")}
+				<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+					<td nowrap onclick="return checkElement({$hosts[hosts].id});"><img src="img/host.gif" alt=""> <span class="bold">{$hosts[hosts].name}</span></td>
+					<td onclick="return checkElement({$hosts[hosts].id});">{$hosts[hosts].description}</td>
+					<td align="right" nowrap onclick="return checkElement({$hosts[hosts].id});">{if $hosts[hosts].lastreload}{$hosts[hosts].lastreload|date_format:"%Y/%m/%d %H:%M"}{else}-{/if}</td>
+					<td nowrap onclick="return checkElement({$hosts[hosts].id});">{if $hosts[hosts].reload==1}{trans("waiting")}
 						    {elseif $hosts[hosts].reload==0}{trans("OK")}
-						    {else}{trans("unknown")}{/if}</TD>
-					<TD>
-						<INPUT TYPE="checkbox" NAME="hosts[]" ID="{$hosts[hosts].id}" VALUE="{$hosts[hosts].id}"{if $hosts[hosts].reload} CHECKED{/if}>
-					</TD>
-				</TR>
+						    {else}{trans("unknown")}{/if}</td>
+					<td>
+						<input type="checkbox" name="hosts[]" id="{$hosts[hosts].id}" value="{$hosts[hosts].id}"{if $hosts[hosts].reload} checked{/if}>
+					</td>
+				</tr>
 				{sectionelse}
-				<TR>
-					<TD colspan="4" align="center">
-						<P>&nbsp;</P>
-						<P><span class="bold">{trans("No such hosts in database.")}</span></P>
-						<P>&nbsp;</P>
-					</TD>
-				</TR>
+				<tr>
+					<td colspan="4" align="center">
+						<p>&nbsp;</p>
+						<p><span class="bold">{trans("No such hosts in database.")}</span></p>
+						<p>&nbsp;</p>
+					</td>
+				</tr>
 				{/section}
-				<TR class="light">
-					<TD CLASS="ftop" colspan="2"nowrap>
-						<INPUT TYPE="checkbox" NAME="allbox" id="allbox" onchange="CheckAll('reload', this)" VALUE="1"><label for="allbox">{trans("Check All")}</label>
-					</TD>
-					<TD CLASS="ftop" ALIGN="right" colspan="3" nowrap>
-						<A href="javascript:document.reload.submit();">{trans("Submit")} <IMG src="img/save.gif" ALT=""></A>
-					</TD>
-				</TR>
-			</TABLE>
-		</TD>
-	</TR>
-</TABLE>
-</FORM>
-</P>
+				<tr class="light">
+					<td class="ftop" colspan="2"nowrap>
+						<input type="checkbox" name="allbox" id="allbox" onchange="CheckAll('reload', this)" value="1"><label for="allbox">{trans("Check All")}</label>
+					</td>
+					<td class="ftop" align="right" colspan="3" nowrap>
+						<a href="javascript:document.reload.submit();">{trans("Submit")} <img src="img/save.gif" alt=""></a>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</form>
+</p>
 {if $serverTime}
-<SCRIPT type="text/javascript">
+<script type="text/javascript">
         <!--
 
 	var serverTime = new Date("{$serverTime}");
@@ -86,5 +86,5 @@
 		ShowSeconds();
 
 	//-->
-</SCRIPT>
+</script>
 {/if}

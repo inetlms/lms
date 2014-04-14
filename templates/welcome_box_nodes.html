@@ -1,0 +1,39 @@
+<table width="100%" cellpadding="3" class="table table-success">
+    <tr class="boxtitleteal">
+	<td class="boxtitletealtd" colspan="2" align="center">
+	    <b>KOMPUTERY</b>
+	</td>
+    </tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleftu">
+						<a href="?m=nodelist&s=3"><b>{trans("Online:")}</b></a>
+					</td>
+					<td width="50%" class="frightu">
+						{$nodestats.online}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<a href="?m=nodelist&s=1"><b>{trans("Connected<!nodes>:")}</b></a>
+					</td>
+					<td width="50%" class="fright">
+						{$nodestats.connected}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<a href="?m=nodelist&s=2"><b>{trans("Disconnected:")}</b></a>
+					</td>
+					<td width="50%" class="fright">
+						{$nodestats.disconnected}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleftu">
+						<b><a href="?m=nodelist">{trans("Total:")}</a></b>
+					</td>
+					<td width="50%" class="frightu">
+						{$nodestats.total}
+					</td>
+				</tr>
+			</table>

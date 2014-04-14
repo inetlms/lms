@@ -61,7 +61,7 @@
 
     {cycle values="light,lucid" print=false}
     {section name='l1' loop=$postlist}
-    <tr class="{cycle}"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+    <tr class="{cycle} lista"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	<td style="padding:3px 5px 3px 5px;" class="fleft" width="99%">
 	    {$postlist[l1].post|nl2br}
 	    <p class="blend">{$postlist[l1].cdate|date_format:"Y/m/d H:i"} ({$postlist[l1].cname})

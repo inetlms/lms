@@ -1,7 +1,7 @@
 <!--// $Id$ //-->
 
-<table width="100%" cellpadding="3">
-    <tr class="dark" >
+<table width="100%" cellpadding="3"  class="table table-bordered">
+    <tr class="dark info-hover">
 	<td width="99%" class="fleftu" align="left" onclick="ShowOrHideBox('customercallcenterbox');" style="cursor:pointer;">
 	    <img src="img/info2.gif" alt="">&nbsp;<b>{trans('Call Center')} ( {$openedcallcenter} ): </b>
 	</td>
@@ -13,7 +13,7 @@
     <tr class="light" id="customercallcenterbox" style="display:none;">
 	<td width="100%" class="fall" colspan="2">
 	    <table width="100%" cellpadding="0">
-		<tr class="LIGHT">
+		<tr class="light">
 		    <td width="50%" style="vertical-align:top;">
 			<table width="100%" cellpadding="3">
 			<tr class="dark">
@@ -27,7 +27,7 @@
 			{cycle values="light,lucid" print=false}
 			{section name='calllist' loop=$customercallcenter}
 			
-			<tr class="{cycle} {if $customercallcenter[calllist].closed}blend{/if}"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+			<tr class="{cycle} lista {if $customercallcenter[calllist].closed}blend{/if}"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 
 			    <td width="1%" align="center" nowrap style="padding-right:10px;">
 				{$customercallcenter[calllist].id}/{$customercallcenter[calllist].cid|string_format:"%04d"}/{$customercallcenter[calllist].cdate|date_format:"Y"}

@@ -1,0 +1,44 @@
+
+<form name="editdictionarydevices" id="editdictionarydevices" method="POST">
+    <input type="hidden" name="editdictionarydevices[id]" value="{$devicesinfo.id}">
+    <table width="100%" cellpadding="3">
+	<tr class="dark">
+	    <td class="fall pad10" align="left" style="height:22px;"><b>{if $devicesinfo.id}Edycja pozycji{else}Nowa pozycja{/if}</b></td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="100%" align="left" style="vertical-align:top;" class="flr">
+		<table width="100%">
+		    <tr>
+			<td width="1%" class="pad10" align="left" nowrap>Rodzaj urządzenia</td>
+			<td width="1%" class="pad10"><b>:</b></td>
+			<td width="98%" class="pad10" align="left">
+			    <input type="text" style="width:200px;" name="editdictionarydevices[type]" id="id_edit_dictionary_devices_type" value="{$devicesinfo.type}">
+			</td>
+		    </tr>
+		    <tr>
+			<td width="1%" class="pad10" align="left" nowrap style="vertical-align:top;">Opis</td>
+			<td width="1%" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" class="pad10" align="left">
+			    <textarea name="editdictionarydevices[description]" id="id_edit_dictionary_devices_description" rows="4" style="width:200px;">{$devicesinfo.description}</textarea>
+			</td>
+		    </tr>
+		    <tr>
+			<td width="1%" class="pad10" align="left" nowrap style="vertical-align:top;"></td>
+			<td width="1%" class="pad10" style="vertical-align:top;"></td>
+			<td width="98%" class="pad10" align="left"><div id="id_alerts" style="color:red;"></div></td>
+		    </tr>
+		</table>
+	    </td>
+	</tr>
+	
+	<tr class="dark">
+	    <td class="fall pad10" align="right" style="height:22px;">
+		<input type="button" value="Zapisz" onclick="xajax_dictionary_devices_save(xajax.getFormValues('editdictionarydevices'));">
+		<input type="button" value="Anuluj" onclick="xajax_dictionary_devices_cancel();">
+	    </td>
+	</tr>
+    </table>
+
+</form>
+<br>

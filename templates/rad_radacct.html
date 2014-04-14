@@ -1,0 +1,290 @@
+{include file="header.html"}
+{include file="calendar_js.html"}
+{$xajax}
+{title value=$layout.pagetitle}
+
+<table width="100%" cellpadding="3">
+    <form method="GET" action="?m=rad_radacct" name="choosefilter" id="choosefilter">
+    <input type="submit" class="hiddenbtn">
+    <input type="hidden" name="m" value="rad_radacct">
+    <input type="hidden" name="page" value="1">
+    <input type="hidden" name="status" value="{$listdata.status}">
+    <input type="hidden" name="cid" id="cid" value="{$listdata.cid}">
+    <input type="hidden" name="nid" id="nid" value="{$listdata.nid}">
+    {if $listdata.status == 'open'}
+	{assign var='rows' value="10"}
+    {else if $listdata.status == 'completed'}
+	{assign var='rows' value="11"}
+    {/if}
+    
+    <tr class="dark">
+	<td width="100%" class="fall pad" align="left" colspan="{$rows}">
+	    <table width="100%" cellpadding="3">
+		<tr>
+		    <td width="1%" class="pad" nowrap>
+			<img src="img/Filter.png" alt="ustaw filtr" style="cursor:pointer;" onclick="document.choosefilter.submit();" {tip text="ustaw filtr"}>
+		    </td>
+		    
+		    
+		    <td width="1%" class="pad5" align="right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tiphelp" {tip text="sesje które mają zerowy czas trwania"}>Zerowe</span></td>
+		    <td width="1%" class="pad5" align="left">
+			<select name="zerowe" {if $listdata.zerowe !='all'} class="active"{/if} style="width:100px;text-align:center;" onchange="document.choosefilter.submit();">
+			    <option value="all" {if $listdata.zerowe == 'all'} selected {/if}>Wszystkie</option>
+			    <option value="nie" {if $listdata.zerowe == 'nie'} selected {/if}>Nie</option>
+			    <option value="tak" {if $listdata.zerowe == 'tak'} selected {/if}>Tak</option>
+			</select>
+		    </td>
+		    
+		    <td width="1%" class="pad5" align="right" nowrap>Klient</td>
+		    <td width="1%" class="pad5" align="left" nowrap>
+			<input type="text" size="20" {tip text="Wprowadź identyfikator klienta, imię, nazwisko, adres lub email"} id="searchcustomer" name="searchcustomer" value="{$listdata.searchcustomer}" {if $listdata.searchcustomer} class="active"{/if}>&nbsp;<img src="img/cancel.gif" {tip text="wyczyść filtr na podstawie klienta"} width="12" onclick="document.getElementById('searchcustomer').value='';document.getElementById('cid').value='';document.choosefilter.submit();" style="cursor:pointer;">
+		    </td>
+		    
+		    <td width="1%" class="pad5" align="right" nowrap>Początek sesji od dnia</td>
+		    <td width="1%" class="pad5" align="left" nowrap><input type="text" {if $listdata.startdatefrom} class="active" {/if} style="width:100px;" id="startdatefrom" name="startdatefrom" readonly onclick="javascript:cal1.popup();" value="{$listdata.startdatefrom}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('startdatefrom').value='';" width="12" {tip text="Wyczyść datę początkową"} style="cursor:pointer;"></td>
+		    
+		    <td width="1%" class="pad5" align="right" nowrap>do dnia</td>
+		    <td width="1%" class="pad5" align="left" nowrap><input type="text" {if $listdata.startdateto} class="active" {/if} style="width:100px;" id="startdateto" name="startdateto" readonly onclick="javascript:cal2.popup();" value="{$listdata.startdateto}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('startdateto').value='';" width="12" {tip text="Wyczyść datę końcową"} style="cursor:pointer;"></td>
+		    
+		    <td width="auto" align="right" class="pad">
+			<img src="img/Filter.png" alt="ustaw filtr" style="cursor:pointer;" onclick="document.choosefilter.submit();" {tip text="ustaw filtr"}>
+		    </td>
+		</tr>
+		<tr>
+		    <td width="1%" class="pad" nowrap>
+			<!--//
+			<img src="img/cancel.gif" alt="wyczyść filtr" style="cursor:pointer;" {tip text="wyczyść filtr"}>
+			//-->
+		    </td>
+		    
+		    
+		    <td width="1%" class="pad5" align="right">
+			{if $listdata.status=='open'}Sesje{/if}
+			{if $listdata.status=='completed'}<span class="tiphelp" {tip text="Przyczyna zakończenia sesji"}>Przyczyna</span>{/if}
+		    </td>
+		    
+		    <td width="1%" class="pad5" align="left">
+			{if $listdata.status=='open'}
+			<select name="sessions" {if $listdata.sessions !='all'} class="active"{/if} style="width:100px;text-align:center;" onchange="document.choosefilter.submit();">
+			    <option value="all" {if $listdata.sessions == 'all'} selected {/if}>Wszystkie</option>
+			    <option value="cur" {if $listdata.sessions == 'cur'} selected {/if}>Bieżące</option>
+			    <option value="err" {if $listdata.sessions == 'err'} selected {/if}>Błędne</option>
+			</select>
+			{else}
+			    <input type="hidden" name="sessions" value="all">
+			{/if}
+			
+			{if $listdata.status=='completed'}
+			    <select name="cause" {if $listdata.cause !='all'} class="active"{/if} style="width:100px;" onchange="document.choosefilter.submit();">
+			    <option value="all" {if $listdata.cause=='all'} selected {/if}>- Wszystkie -</option>
+			    <option value="NULL" {if $listdata.cause=='NULL'} selected {/if}>- nieokreślona -</option>
+			    {foreach $_RAD_TERMINATE_CAUSE as $idx => $key}
+				<option value="{$idx}" {if $listdata.cause == $idx} selected {/if}>{$key}</option>
+			    {/foreach}
+			    </select>
+			{else}
+			    <input type="hidden" name="cause" value="all">
+			{/if}
+		    </td>
+		    
+		    <td width="1%" class="pad5" align="right" nowrap>Urz.Klienckie</td>
+		    <td width="1%" class="pad5" align="left" nowrap>
+		    <input type="text" size="20" {tip text="Wprowadź identyfikator urządzenia klienckiego (komputera), nazwę, adres IP lub adres MAC i naciśnij ENTER"} id="searchnode" name="searchnode" value="{$listdata.searchnode}" {if $listdata.searchnode} class="active"{/if}>&nbsp;<img src="img/cancel.gif" {tip text="wyczyść filtr na podstawie urządzenia klienckiego"} width="12" onclick="document.getElementById('searchnode').value='';document.getElementById('nid').value='';document.choosefilter.submit();" style="cursor:pointer;">
+		    </td>
+		    
+		    <td width="1%" class="pad5" align="right" nowrap>{if $listdata.status != 'open'}Koniec sesji od dnia{/if}</td>
+		    <td width="1%" class="pad5" align="left" nowrap>{if $listdata.status != 'open'}<input type="text" {if $listdata.enddatefrom} class="active" {/if} style="width:100px;" id="enddatefrom" name="enddatefrom" readonly onclick="javascript:cal3.popup();" value="{$listdata.enddatefrom}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('enddatefrom').value='';" width="12" {tip text="Wyczyść datę początkową"} style="cursor:pointer;">{/if}</td>
+		    
+		    <td width="1%" class="pad5" align="right" nowrap>{if $listdata.status != 'open'}do dnia{/if}</td>
+		    <td width="1%" class="pad5" align="left" nowrap>{if $listdata.status != 'open'}<input type="text" {if $listdata.enddateto} class="active" {/if} style="width:100px;" id="enddateto" name="enddateto" readonly onclick="javascript:cal4.popup();" value="{$listdata.enddateto}"> <img src="img/cancel.gif" onclick="javascript:document.getElementById('enddateto').value='';" width="12" {tip text="Wyczyść datę końcową"} style="cursor:pointer;">{/if}</td>
+		    
+		    <td width="auto" align="right" class="pad"></td>
+		</tr>
+	    </table>
+	</td>
+    </tr>
+    
+    <script type="text/javascript" language="JavaScript">
+	new AutoSuggest(document.getElementById('choosefilter'),document.getElementById('searchcustomer'),'?m=quicksearch&ajax=1&mode=customer&radacct&what=',1);
+	new AutoSuggest(document.getElementById('choosefilter'),document.getElementById('searchnode'),'?m=quicksearch&ajax=1&mode=node&radacct&what=',1);
+    </script>
+    
+    {if $listdata.total !=0}
+	    <tr class="scroller">
+		<td colspan="{$rows}" class="fall">
+		    {include file="scroller.html" loop=$radlist}
+		</td>
+	    </tr>
+    {/if}
+    
+    
+    <tr class="dark">
+	<td width="1%" class="fleftu pad10" align="left" style="font-weight:bold;" nowrap>
+	    ID Sesji
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="left" style="font-weight:bold;" nowrap>
+	    NAS
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="left" style="font-weight:bold;" nowrap>
+	    Przydzielone IP<br>
+	    Adres MAC
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="right" style="font-weight:bold;" nowrap>
+	    Login
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="left" style="font-weight:bold;" nowrap>
+	    Początek sesji
+	</td>
+	{if $listdata.status == 'completed'}
+	<td width="1%" class="fbt pad10" align="left" style="font-weight:bold;" nowrap>
+	    Koniec sesji
+	</td>
+	{/if}
+	
+	<td width="1%" class="fbt pad10" align="right" style="font-weight:bold;" nowrap>
+	    Czas sesji
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="center" style="font-weight:bold;">
+	    Pobrano<br>
+	    Wysłano
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="left" style="font-weight:bold;">
+	    {if $listdata.status=='completed'}Przyczyna{/if}
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="left" style="font-weight:bold;" nowrap>
+	    Właściciel<br>
+	    Urządzenie
+	    
+	</td>
+	
+	<td width="auto" class="frightu pad10" align="right" style="font-weight:bold;" nowrap>&nbsp;
+	</td>
+    </tr>
+    </form>
+    {if $radlist}
+	
+	{cycle values="light,lucid" print=false}
+	{section name=radlist loop=$radlist start=$start max=$pagelimit}
+	{if $radlist[radlist].radacctid == $radlist[radlist].maxid && !$radlist[radlist].acctstoptime}
+	    {assign var='current' value='1'}
+	{else}
+	    {assign var='current' value='0'}
+	{/if}
+	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')" {if $listdata.status=='open'}{if !$radlist[radlist].acctsessiontime && !$current}style="color:red;"{else if !$radlist[radlist].acctsessiontime && $current}style="color:blue;"{else if $radlist[radlist].acctsessiontime && !$current}style="color:green;"{/if}{/if}>
+	<td width="1%" class="fleft pad10" align="left" nowrap>
+	    {$radlist[radlist].acctsessionid}
+	</td>
+	
+	<td width="1%" class="pad10" align="left" nowrap>
+	    {$radlist[radlist].nasipaddress}
+	    {if $radlist[radlist].nasname}<br>
+	    <a href="?m=netdevinfo&id={$radlist[radlist].nasid}">{$radlist[radlist].nasname}</a>
+	    {/if}
+	</td>
+	
+	<td width="1%" class="pad10" align="left" nowrap>
+	    {$radlist[radlist].framedipaddress}<br>
+	    <a href="?m=nodeinfo&id={$radlist[radlist].nodeid}" {tip text="otwórz kartę urządzenia klienckiego"}>{$radlist[radlist].callingstationid}</a>
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="right" nowrap>
+	    {$radlist[radlist].username}
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="right" nowrap>
+	    {$radlist[radlist].acctstarttime}
+	</td>
+	
+	{if $listdata.status == 'completed'}
+	<td width="1%" class="fbt pad10" align="right" nowrap>
+	    {$radlist[radlist].acctstoptime}
+	</td>
+	{/if}
+	
+	<td width="1%" class="fbt pad10" align="right" nowrap>
+	    {$radlist[radlist].acctsessiontime|sec_to_time}
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="right" nowrap>
+	    {$radlist[radlist].acctoutputoctets|bytes_to_weight}<br>
+	    <span class="blends">{$radlist[radlist].acctinputoctets|bytes_to_weight}</span>
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="left" nowrap>
+	    {if $listdata.status=='completed'}{$radlist[radlist].acctterminatecause}{/if}
+	</td>
+	
+	<td width="1%" class="fbt pad10" align="left" nowrap>
+	    <a href="?m=customerinfo&id={$radlist[radlist].cid}" {tip text=$radlist[radlist].customeraddress}>{$radlist[radlist].customername|truncate:30:"...":true}</a><br>
+	    <a href="?m=nodeinfo&id={$radlist[radlist].nodeid}">
+		<span class="blends" {tip text="<b>Adres:</b> {$radlist[radlist].nodelocation}<br><b>Producent:</b> {$radlist[radlist].nodeproducer}<br><b>Model:</b> {$radlist[radlist].nodemodel}"}>
+		    {$radlist[radlist].nodename}
+		</span>
+	    </a>
+	</td>
+	
+	<td width="auto" class="frightu pad10" align="right" nowrap>&nbsp;
+	    {if $listdata.status=='open'}
+		{if $current}
+		    <img src="img/logout.gif" style="cursor:pointer;" {tip text="Zerwij sesje (Kick User)"} onclick="kickuser({$radlist[radlist].radacctid});">
+		    <!--//
+		    <img src="img/refresh.png" style="cursor:pointer;" {tip text="odpytaj NAS"} width="18">
+		    //-->
+		{else}
+		    <img src="img/eraser.gif" style="cursor:pointer;" {tip text="Zamknij rekord"} onclick="self.location.href='?m=rad_radacct&closed={$radlist[radlist].radacctid}';">
+		{/if}
+	    {/if}
+	</td>
+    </tr>
+	{/section}
+    {/if}
+    
+    {if $listdata.total !=0}
+	    <tr class="scroller">
+		<td colspan="{$rows}" class="fall">
+		    {include file="scroller.html" loop=$radlist}
+		</td>
+	    </tr>
+    {/if}
+</table>
+
+{literal}
+<script type="text/javascript" language="JavaScript">
+<!--
+    function kickuser(radid)
+    {
+	if (confirm('Napewno rozłączyć sesję ?')) {
+	    xajax_kick_user(radid);
+	}
+    }
+    var cal1 = new calendar(document.getElementById('startdatefrom'));
+    var cal2 = new calendar(document.getElementById('startdateto'));
+    cal1.time_comp = false;
+    cal2.time_comp = false;
+//-->
+</script>
+{/literal}
+
+{if $listdata.status != 'open'}
+{literal}
+<script type="text/javascript" language="JavaScript">
+<!--
+    var cal3 = new calendar(document.getElementById('enddatefrom'));
+    var cal4 = new calendar(document.getElementById('enddateto'));
+    cal3.time_comp = false;
+    cal4.time_comp = false;
+
+//-->
+</script>
+{/literal}
+{/if}
+
+{include file="load_gif.html"}
+{include file="footer.html"}

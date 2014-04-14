@@ -19,4 +19,4 @@ rm -f temp.txt
 rm -f oui.txt
 rm -f out.txt
 
-cvs commit ../lib/ethercodes.txt
+# cvs commit ../lib/ethercodes.txt

@@ -27,31 +27,31 @@
 </table>
 
 <p>
-<TABLE cellpadding="3" width="100%">
+<table cellpadding="3" width="100%">
 	
-	<tr class="DARK">
+	<tr class="dark">
 		<td class="fall" colspan="3">
-			<FORM METHOD="GET" ACTION="?m={$layout.module}" name="choosefilter">
+			<form method="GET" action="?m={$layout.module}" name="choosefilter">
 				<input type="submit" class="hiddenbtn">
-				<input type="HIDDEN" name="m" value="contractorlist">
-				<input type="HIDDEN" name="page" value="1">
+				<input type="hidden" name="m" value="contractorlist">
+				<input type="hidden" name="page" value="1">
 				<input type="hidden" name="fletter" value="{$listdata.fletter}">
 				
 				<img src="img/Filter.png">&nbsp;<a href="?m=contractorlist&s=&g=&fletter=" {tip text="wyczyść filtr"}><img src="img/cancel.gif"></a>
-				<NOBR>{trans("Contractors")}:
-				<SELECT SIZE="1" name="s" ONCHANGE="document.choosefilter.submit();" {if $listdata.state} class="active"{/if}>
-					<OPTION value="0"{if $listdata.state eq 0} SELECTED{/if}>{trans("- all customers -")}</OPTION>
-					<OPTION value="4"{if $listdata.state eq 4} SELECTED{/if}>{trans("deleted<!plural>")}</OPTION>
-					<OPTION value="8"{if $listdata.state eq 8} SELECTED{/if}>{trans("without group")}</OPTION>
-				</SELECT></NOBR>
+				<nobr>{trans("Contractors")}:
+				<select size="1" name="s" onchange="document.choosefilter.submit();" {if $listdata.state} class="active"{/if}>
+					<option value="0"{if $listdata.state eq 0} selected{/if}>{trans("- all customers -")}</option>
+					<option value="4"{if $listdata.state eq 4} selected{/if}>{trans("deleted<!plural>")}</option>
+					<option value="8"{if $listdata.state eq 8} selected{/if}>{trans("without group")}</option>
+				</select><nobr>
 
-				<NOBR>{trans("Group:")}
-				<SELECT SIZE="1" name="g" ONCHANGE="document.choosefilter.submit();" {if $listdata.customergroup} class="active"{/if}>
-					<OPTION value="" {if !$listdata.customergroup} SELECTED {/if}>{trans("- all groups -")}</OPTION>
+				<nobr>{trans("Group:")}
+				<select size="1" name="g" onchange="document.choosefilter.submit();" {if $listdata.customergroup} class="active"{/if}>
+					<option value="" {if !$listdata.customergroup} selected {/if}>{trans("- all groups -")}</option>
 					{section name=customergroups loop=$customergroups}
-					<OPTION value="{$customergroups[customergroups].id}" {if $listdata.customergroup eq $customergroups[customergroups].id} SELECTED {/if}>{$customergroups[customergroups].name|truncate:30:"...":true}</OPTION>
+					<option value="{$customergroups[customergroups].id}" {if $listdata.customergroup eq $customergroups[customergroups].id} selected {/if}>{$customergroups[customergroups].name|truncate:30:"...":true}</option>
 					{/section}
-				</SELECT></NOBR>
+				</select><nobr>
 				<p>
 				<table width="100%" cellpadding="4">
 				    <tr class="light">
@@ -63,47 +63,47 @@
 				</table>
 				</p>
 
-			</FORM>
+			</form>
 		</td>
 	</tr>		
 	{if $listdata.total != 0}
 	<tr class="scroller">
-		<td COLSPAN="3" class="FALL">
+		<td colspan="3" class="fall">
 			{include file="scroller.html" loop=$customerlist}
 		</td>
 	</tr>
 	{/if}
 	<tr class="dark" {tip text="Click on column name to change sorting order"}>
 		<td width="98%" class="fleftu">
-			<img src="img/customer.gif" ALT="">&nbsp;<a href="?m={$layout.module}&s={$listdata.state}&o=customername{if $listdata.direction eq "asc" && $listdata.order eq "customername"},desc{/if}">{trans("First/last or Company name")}</a></b> {if $listdata.order eq "customername"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<BR>
-			<img src="img/home.gif" ALT="">&nbsp;<a href="?m={$layout.module}&s={$listdata.state}&o=address{if $listdata.direction eq "asc" && $listdata.order eq "address"},desc{/if}">{trans("Address:")}</a> {if $listdata.order eq "address"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+			<img src="img/customer.gif" alt="">&nbsp;<a href="?m={$layout.module}&s={$listdata.state}&o=customername{if $listdata.direction eq "asc" && $listdata.order eq "customername"},desc{/if}">{trans("First/last or Company name")}</a></b> {if $listdata.order eq "customername"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
+			<img src="img/home.gif" alt="">&nbsp;<a href="?m={$layout.module}&s={$listdata.state}&o=address{if $listdata.direction eq "asc" && $listdata.order eq "address"},desc{/if}">{trans("Address:")}</a> {if $listdata.order eq "address"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
 		<td width="1%" nowrap class="fbt">
 		    {trans("Balance:")}
 		</td>
 		
 		<td width="1%" align="right" class="frightu" nowrap>
-			<NOBR><b>{t a=$listdata.total}Total: $a{/t}</b></NOBR>
+			<nobr><b>{t a=$listdata.total}Total: $a{/t}</b><nobr>
 		</td>
 	</tr>
 	{cycle values="light,lucid" print=false}
 	{section name=customerlist loop=$customerlist start=$start max=$pagelimit}
-	<tr class="{cycle}{if $customerlist[customerlist].account && !$customerlist[customerlist].nodeac} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<tr class="{cycle} lista{if $customerlist[customerlist].account && !$customerlist[customerlist].nodeac} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	
 		<td onclick="return self.location.href='?m=contractorinfo&id={$customerlist[customerlist].id}';" class="fleft" valign="top">
-			<img src="img/{if $customerlist[customerlist].status eq 1}unk{/if}{if $customerlist[customerlist].status eq 2}wait{/if}{if $customerlist[customerlist].status eq 3}customer{/if}.gif" alt="">{if $customerlist[customerlist].info}&nbsp;<img src="img/info1.gif" alt="" {tip text=$customerlist[customerlist].info}>{/if}<a name="{$customerlist[customerlist].id}" {tip a=$customerlist[customerlist].id dynpopup='?m=customerinfoshort&contractor&id=$a'}>&nbsp;<b>{$customerlist[customerlist].customername|escape}</b></a><BR>
+			<img src="img/{if $customerlist[customerlist].status eq 1}unk{/if}{if $customerlist[customerlist].status eq 2}wait{/if}{if $customerlist[customerlist].status eq 3}customer{/if}.gif" alt="">{if $customerlist[customerlist].info}&nbsp;<img src="img/info1.gif" alt="" {tip text=$customerlist[customerlist].info}>{/if}<a name="{$customerlist[customerlist].id}" {tip a=$customerlist[customerlist].id dynpopup='?m=customerinfoshort&contractor&id=$a'}>&nbsp;<b>{$customerlist[customerlist].customername|escape}</b></a><br>
 			<img src="img/home.gif" alt="">&nbsp;{$customerlist[customerlist].address}{if $customerlist[customerlist].city neq ""},{/if} {$customerlist[customerlist].zip} {$customerlist[customerlist].city}{if $customerlist[customerlist].country neq ""}, {t}{$customerlist[customerlist].country}{/t}{/if}
 		</td>
 		
 		<td align="right" valign="top" nowrap>
 			{if !check_conf('privileges.hide_finances') && $customerlist[customerlist].balance}
-			    {if $customerlist[customerlist].balance < 0}<font class="alert">{/if}{$customerlist[customerlist].balance|money_format}{if $customerlist[customerlist].balance < 0}</FONT>{/if}<BR>
+			    {if $customerlist[customerlist].balance < 0}<font class="alert">{/if}{$customerlist[customerlist].balance|money_format}{if $customerlist[customerlist].balance < 0}</font>{/if}<br>
 			{else}
 			    &nbsp;
 			{/if}
 		</td>
 		<td align="right" class="fright">
-			<NOBR>
+			<nobr>
 			
 			
 			
@@ -114,7 +114,7 @@
 			<a href="?m=contractoredit&id={$customerlist[customerlist].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a> 
 			{/if}
 			<a href="?m=contractorinfo&id={$customerlist[customerlist].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></a>
-			</NOBR>
+			<nobr>
 		</td>
 	</tr>
 	{sectionelse}
@@ -125,18 +125,18 @@
 			<p>&nbsp;</p>
 		</td>
 	</tr>
-	<tr class="DARK">
-		<td COLSPAN="3" class="FALL">&nbsp;</td>
+	<tr class="dark">
+		<td colspan="3" class="fall">&nbsp;</td>
 	</tr>
 	{/section}
 	{if $listdata.total != 0}
 	<tr class="scroller">
-		<td COLSPAN="3" class="FALL">
+		<td colspan="3" class="fall">
 			{include file="scroller.html" loop=$customerlist}
 		</td>
 	</tr>
 	{/if}
 
-</TABLE>
+</table>
 </p>
 {include file="footer.html"}

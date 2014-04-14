@@ -180,6 +180,11 @@ class LMSDB_driver_mysql extends LMSDB_common
 	{
 	    return 'DAY('.$data.')';
 	}
+	
+	function _driver_unix_timestamp($data)
+	{
+	    return 'UNIX_TIMESTAMP('.$data.')';
+	}
 
 	function _driver_listtables()
 	{

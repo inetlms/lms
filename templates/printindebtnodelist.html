@@ -1,73 +1,73 @@
 {include file="clearheader.html"}
 <!--// $Id$ //-->
-<TABLE WIDTH="100%" CELLPADDING="3" ALIGN="CENTER">
-	<TR>
-		<TD WIDTH="535" VALIGN="TOP">
-			<H1>{$layout.pagetitle}</H1>
-		</TD>
-		<TD WIDTH="180" ALIGN="RIGHT" NOWRAP>
-			LMS {$layout.lmsv} @ {$layout.hostname}<BR>
-			{$smarty.now|date_format:"%A, %x"}<BR>
+<table width="100%" cellpadding="3" align="center">
+	<tr>
+		<td width="535" valign="top">
+			<h1>{$layout.pagetitle}</h1>
+		</td>
+		<td width="180" align="right" nowrap>
+			LMS {$layout.lmsv} @ {$layout.hostname}<br>
+			{$smarty.now|date_format:"%A, %x"}<br>
 			{t a=$layout.logname}Prepared by: $a{/t}
-		</TD>
-	</TR>
-</TABLE>
-<BR>
-<TABLE WIDTH="100%" CELLPADDING="3" BORDER="1" ALIGN="CENTER">
-	<TR>
-		<TD WIDTH="15" ALIGN="CENTER" CLASS="head">
+		</td>
+	</tr>
+</table>
+<br>
+<table width="100%" cellpadding="3" BORDER="1" align="center">
+	<tr>
+		<td width="15" align="center" class="head">
 			{trans("No.")}
-		</TD>
-		<TD WIDTH="20" ALIGN="CENTER" CLASS="head">
+		</td>
+		<td width="20" align="center" class="head">
 			{trans("ID")}
-		</TD>
-		<TD WIDTH="80" ALIGN="CENTER" CLASS="head">
-			<B>{trans("Node name")}</B>
-		</TD>
-		<TD WIDTH="75" ALIGN="CENTER" CLASS="head">
+		</td>
+		<td width="80" align="center" class="head">
+			<b>{trans("Node name")}</b>
+		</td>
+		<td width="75" align="center" class="head">
 			{trans("IP address")}
-		</TD>
-		<TD WIDTH="75" ALIGN="CENTER" CLASS="head">
+		</td>
+		<td width="75" align="center" class="head">
 			{trans("MAC address")}
-		</TD>
-		<TD WIDTH="30" ALIGN="CENTER" CLASS="head">
+		</td>
+		<td width="30" align="center" class="head">
 			{trans("Balance")}
-		</TD>
-		<TD WIDTH="200" ALIGN="CENTER" CLASS="head">
+		</td>
+		<td width="200" align="center" class="head">
 			{trans("Owner")}
-		</TD>
-		<TD WIDTH="100" ALIGN="CENTER" CLASS="head">
+		</td>
+		<td width="100" align="center" class="head">
 			{trans("Description")}
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{cycle values="white,grey" print=false}
 	{section name=nodelist loop=$nodelist}{if $nodelist[nodelist].id}
-	<TR class="{cycle}">
-		<TD ALIGN="CENTER">
+	<tr class="{cycle} lista">
+		<td align="center">
 			{counter}.
-		</TD>
-		<TD ALIGN="CENTER">
+		</td>
+		<td align="center">
 			{$nodelist[nodelist].id|string_format:"%04d"}
-		</TD>
-		<TD ALIGN="LEFT">
-			<B>{$nodelist[nodelist].name}</B>
-		</TD>
-		<TD ALIGN="CENTER">
+		</td>
+		<td align="left">
+			<b>{$nodelist[nodelist].name}</b>
+		</td>
+		<td align="center">
 			{$nodelist[nodelist].ip}
-		</TD>
-		<TD ALIGN="CENTER">
-			{$nodelist[nodelist].mac|replace:",":"<BR>"}
-		</TD>
-		<TD ALIGN="CENTER" nowrap>
+		</td>
+		<td align="center">
+			{$nodelist[nodelist].mac|replace:",":"<br>"}
+		</td>
+		<td align="center" nowrap>
 			{$nodelist[nodelist].balance|money_format}
-		</TD>
-		<TD ALIGN="LEFT">
+		</td>
+		<td align="left">
 			{$nodelist[nodelist].owner}
-		</TD>
-		<TD ALIGN="LEFT">
+		</td>
+		<td align="left">
 			{$nodelist[nodelist].info}
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{/if}{/section}
-</TABLE>
+</table>
 {include file="clearfooter.html"}

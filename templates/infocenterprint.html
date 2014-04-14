@@ -8,19 +8,19 @@
 <link href="img/style_print.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<TABLE WIDTH="100%" CELLPADDING="3" ALIGN="CENTER">
-	<TR>
-		<TD WIDTH="480" VALIGN="TOP">
+<table width="100%" cellpadding="3" align="center">
+	<tr>
+		<td width="480" valign="top">
 		{$layout.pagetitle}<br>
 		<b>id:</b> {$topic.cid|string_format:"%05d"}
-		</TD>
-		<TD WIDTH="235" ALIGN="RIGHT" NOWRAP>
-			{$layout.lmsv} LMS @ {$layout.hostname}<BR>
-			{$smarty.now|date_format:"d.m.Y H:i"}<BR>
+		</td>
+		<td width="235" align="right" nowrap>
+			{$layout.lmsv} LMS @ {$layout.hostname}<br>
+			{$smarty.now|date_format:"d.m.Y H:i"}<br>
 			{t a=$layout.logname}Prepared by: $a{/t}
-		</TD>
-	</TR>
-</TABLE>
+		</td>
+	</tr>
+</table>
 <br>
 {if $print=='topic'}
     <table width="100%" cellpadding="3">
@@ -61,7 +61,7 @@
     {cycle values="white,grey" print=false}
     {section name='l1' loop=$postlist}
     {assign var='lp' value=$smarty.section.l1.index+1}
-    <tr class="{cycle}">
+    <tr class="{cycle} lista">
 	<td width="37" nowrap align="center" style="border-left:solid 1pt #333333;border-bottom:solid 1pt #333333;border-right:solid 1pt #333333;">
 	    {$lp|string_format:"%02d"}
 	</td>

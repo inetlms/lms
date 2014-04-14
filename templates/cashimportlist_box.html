@@ -26,7 +26,7 @@
 	    {/if}
 	    {cycle values="light,lucid" print=false}
 	    {section name=list loop=$filelist start=$start max=$pagelimit}
-		<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		    <td width="1%" class="fleft pad" align="center" nowrap>{$filelist[list].id|string_format:"%05d"}</td>
 		    <td width="1%" class="pad" align="center" nowrap>{$filelist[list].idate|date_format:"Y-m-d H:i:s"}</td>
 		    <td width="1%" class="pad" align="left" nowrap>{$filelist[list].user}</td>
@@ -110,7 +110,7 @@
 		    <input type="hidden" name="id_value{$indeks}" id="id_value{$indeks}" value="{$lista[list].value}">
 		    <input type="hidden" name="id_wplaty{$indeks}" id="id_wplaty{$indeks}" value="{$lista[list].id}">
 		{/if}
-		<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		    <td width="1%" class="fleft pad" align="center" nowrap>{$lista[list].id|string_format:"%05d"}</td>
 		    <td width="1%" class="pad" align="center" nowrap>{$lista[list].date|date_format:"Y-m-d H:i"}</td>
 		    <td width="1%" class="pad" align="right" nowrap>{$lista[list].value}</td>
@@ -120,8 +120,8 @@
 				<a href="?m=customerinfo&id={$lista[list].customerid}" {if $lista[list].type=='2'}{tip a=$lista[list].customerid dynpopup='?m=customerinfoshort&contractor&id=$a'}{else}{tip a=$lista[list].customerid dynpopup='?m=customerinfoshort&id=$a'}{/if}></b>{$lista[list].customers}</b></a>{if $lista[list].deleted}<span style="color:red;font-weight:bold;">&nbsp;usunięty</span>{/if}
 				{if !check_conf('pri11vileges.hide_finances')}
 				    <br>
-				    <span {tip text="bilans klienta po zaksięgowaniu wpłaty"} style="cursor:pointer;">( <img src="img/empty.gif" width="1" height="16" ALT="">{if $lista[list].bbalance < 0}<font class="alert">{/if}{if $lista[list].bbalance > 0}<font class="surplus">+{/if}{$lista[list].bbalance|money_format}{if $lista[list].bbalance != 0}</font>{/if} )</span>
-				    <span {tip text="bilans klienta na stan obecny"} style="cursor:pointer;"><img src="img/empty.gif" width="1" height="16" ALT="">{if $lista[list].balance < 0}<font class="alert" style="font-weight:bold;">{/if}{if $lista[list].balance > 0}<font class="surplus" style="font-weight:bold;">+{/if}{$lista[list].balance|money_format}{if $lista[list].balance != 0}</font>{/if}</span>
+				    <span {tip text="bilans klienta po zaksięgowaniu wpłaty"} style="cursor:pointer;">( <img src="img/empty.gif" width="1" height="16" alt="">{if $lista[list].bbalance < 0}<font class="alert">{/if}{if $lista[list].bbalance > 0}<font class="surplus">+{/if}{$lista[list].bbalance|money_format}{if $lista[list].bbalance != 0}</font>{/if} )</span>
+				    <span {tip text="bilans klienta na stan obecny"} style="cursor:pointer;"><img src="img/empty.gif" width="1" height="16" alt="">{if $lista[list].balance < 0}<font class="alert" style="font-weight:bold;">{/if}{if $lista[list].balance > 0}<font class="surplus" style="font-weight:bold;">+{/if}{$lista[list].balance|money_format}{if $lista[list].balance != 0}</font>{/if}</span>
 				    
 				    
 				{/if}
@@ -249,7 +249,7 @@
 		    <input type="hidden" name="id_value{$indeks}" id="id_value{$indeks}" value="{$lista[list].value}">
 		    <input type="hidden" name="id_wplaty{$indeks}" id="id_wplaty{$indeks}" value="{$lista[list].id}">
 		{/if}
-		<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		    <td width="1%" class="fleft pad" align="center" nowrap>{$lista[list].id|string_format:"%05d"}</td>
 		    <td width="1%" class="pad" align="center" nowrap>{$lista[list].date|date_format:"Y-m-d H:i"}</td>
 		    <td width="1%" class="pad" align="right" nowrap>{$lista[list].value}</td>
@@ -392,7 +392,7 @@
 		    <input type="hidden" name="cusid{$indeks}" id="cusid{$indeks}" value="">
 		    <input type="hidden" name="id_value{$indeks}" id="id_value{$indeks}" value="{$lista[list].value}">
 		    <input type="hidden" name="id_wplaty{$indeks}" id="id_wplaty{$indeks}" value="{$lista[list].id}">
-		<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		    <td width="1%" class="fleft pad" align="center" nowrap>{$lista[list].id|string_format:"%05d"}</td>
 		    <td width="1%" class="pad" align="center" nowrap>{$lista[list].date|date_format:"Y-m-d H:i"}</td>
 		    <td width="1%" class="pad" align="right" nowrap>{$lista[list].value}</td>
@@ -536,7 +536,7 @@
 		    <input type="hidden" name="cus{$indeks}" id="cus{$indeks}" value="{$lista[list].customers}">
 		    <input type="hidden" name="id_value{$indeks}" id="id_value{$indeks}" value="{$lista[list].value}">
 		    <input type="hidden" name="id_wplaty{$indeks}" id="id_wplaty{$indeks}" value="{$lista[list].id}">
-		<tr class="{cycle}{if $lista[list].id != $lista[list].minid} alert{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<tr class="{cycle} lista{if $lista[list].id != $lista[list].minid} alert{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		    <td width="1%" class="fleft pad" align="center" nowrap>{$lista[list].id|string_format:"%05d"}</td>
 		    <td width="1%" class="pad" align="center" nowrap>{$lista[list].importid|string_format:"%05d"}</td>
 		    <td width="1%" class="pad" align="center" nowrap>{$lista[list].time|date_format:"Y-m-d H:i"}</td>

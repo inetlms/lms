@@ -20,14 +20,14 @@
 		</td>
 	</tr>
 	<tr class="light"><td colspan="3" class="flr" width="100%">&nbsp;</td></tr>
-	<tr class="LIGHT">
-		<td width="1%" class="FLEFT">
+	<tr class="light">
+		<td width="1%" class="fleft">
 			<img src="img/info1.gif" alt="">
 		</td>
 		<td width="1%" style="vertical-align:top;">
 			<b>{trans("Description:")}</b>
 		</td>
-		<td width="98%" class="FRIGHT">
+		<td width="98%" class="fright">
 			{$contractorgroup.description|nl2br}
 		</td>
 	</tr>
@@ -35,11 +35,11 @@
 	<tr class="light"><td colspan="3" class="flr" width="100%">&nbsp;</td></tr>
 	
 	<tr class="light">
-	    <td width="1%" class="FLEFT" colspan="2" nowrap  style="vertical-align:top;">
+	    <td width="1%" class="fleft" colspan="2" nowrap  style="vertical-align:top;">
 			<img src="img/group.gif" alt="">
 			<b>{trans("Contractors")}:</b>
 		</td>
-		<td width="98%" class="FRIGHT">
+		<td width="98%" class="fright">
 		    {include file="multiselect.html" selected=$contractorgroup.groups}
 		</td>
 	</tr>
@@ -47,7 +47,7 @@
 	<tr class="light"><td colspan="3" class="flr" width="100%"></td></tr>
 
 	<tr class="dark">
-		<td width="100%" colspan="3" align="RIGHT" class="fall">
+		<td width="100%" colspan="3" align="right" class="fall">
 			<a href="javascript:document.contractorgroupedit.submit();" accesskey="S">{trans("Submit")} <img src="img/save.gif" alt=""></a>
 			<a href="?m=contractorgrouplist">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a> 
 		</td>

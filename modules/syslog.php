@@ -36,6 +36,7 @@ if (!isset($_GET['sl_dt']))	$SESSION->restore('sl_dt',$filter['dt']);	else $filt
 if (!isset($_GET['sl_mod']))	$SESSION->restore('sl_mod',$filter['mod']);	else $filter['mod'] = $_GET['sl_mod'];	$SESSION->save('sl_mod',$filter['mod']);
 if (!isset($_GET['sl_ev']))	$SESSION->restore('sl_ev',$filter['ev']);	else $filter['ev'] = $_GET['sl_ev'];	$SESSION->save('sl_ev',$filter['ev']);
 if (!isset($_GET['sl_us']))	$SESSION->restore('sl_us',$filter['us']);	else $filter['us'] = $_GET['sl_us'];	$SESSION->save('sl_us',$filter['us']);
+if (!isset($_GET['cid']))	$SESSION->restore('sl_cid',$filter['cid']);	else $filter['cid'] = $_GET['cid'];	$SESSION->save('sl_cid',$filter['cid']);
 //if (!isset($_GET['sl_dus']))	$SESSION->restore('sl_dus',$filter['dus']);	else $filter['dus'] = $_GET['sl_dus'];	$SESSION->save('sl_dus',$filter['dus']);
 
 
@@ -45,6 +46,7 @@ $syslog = $DB->GetAll('SELECT s.*, u.login FROM syslog AS s LEFT JOIN users AS u
     .($filter['ev'] ? ' AND s.event='.$filter['ev'] : '')
     .($filter['us'] ? ' AND s.uid='.$filter['us'] : '')
     .($filter['us']=='0' ? ' AND s.uid=0' : '')
+    .($filter['cid'] ? " AND s.cid='".$filter['cid']."'" : '')
     .($filter['df'] ? ' AND s.cdate>='.strtotime($filter['df'].' 00:00:00') : '')
     .($filter['dt'] ? ' AND s.cdate<='.strtotime($filter['dt'].' 23:59:59') : '')
 //    .(!$filter['dus'] ? ' AND u.deleted=0 ' : '')
@@ -58,6 +60,7 @@ $SESSION->save('sl_page',$page);
 $SESSION->save('backto',$_SERVER['QUERY_STRING']);
 
 $listdata['total'] = sizeof($syslog);
+$filter['customer'] = ($filter['cid'] ? $LMS->getcustomername($filter['cid']) : '');
 
 $SMARTY->assign('listdata',$listdata);
 $SMARTY->assign('pagelimit',$pagelimit);

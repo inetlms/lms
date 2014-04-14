@@ -40,4 +40,13 @@ Pominięcie tego przełącznika podczas ręcznego testu spowoduje błędy w stat
 
 Ważne jest również prawidłowe podanie scieżki do lms-monitoring.pl , opcja test_script_dir
 
+należy dodać również odpowiednie wpisy do /etc/sudoers
+
+www-data ALL = NOPASSWD: /usr/bin/fping
+www-data ALL = NOPASSWD: /bin/ping
+www-data ALL = NOPASSWD: /bin/grep
+www-data ALL = NOPASSWD: /usr/local/sbin/lms-monitoring.pl
+
+
 Pozostałe wartości dla monitoringu ustawiamy już z poziomu LMS. 
+

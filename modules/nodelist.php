@@ -1,7 +1,7 @@
 <?php
 
 /*
- * LMS version 1.11-git
+ *  iLMS version 1.0.3
  *
  *  (C) Copyright 2001-2012 LMS Developers
  *
@@ -23,6 +23,54 @@
  *
  *  $Id$
  */
+ 
+function setnodeaccess($idek)
+{
+    global $DB;
+    $obj = new xajaxResponse();
+    
+    $tmp = $DB->GetOne('SELECT access FROM nodes WHERE id = ? LIMIT 1 ;',array($idek));
+    $tmp = intval($tmp);
+    if ($tmp === 1) $tmp = 0; else $tmp = 1;
+    
+    $DB->Execute('UPDATE nodes SET access = ? WHERE id = ? ;',array($tmp,$idek));
+
+    if (SYSLOG) {
+	addlogs(($tmp ? 'włączono' : 'wyłączono').' dostęp dla komputera','e=acl;m=node;n='.$idek);
+    }
+    
+    if ($tmp === 0) {
+	$obj->script("addClassId('idtr".$idek."','blend');");
+	$obj->script("addClassId('idtra".$idek."','blend');");
+	$obj->script("document.getElementById('src_access".$idek."').src='img/noaccess.gif';");
+    } else {
+	$obj->script("removeClassId('idtr".$idek."','blend');");
+	$obj->script("removeClassId('idtra".$idek."','blend');");
+	$obj->script("document.getElementById('src_access".$idek."').src='img/access.gif';");
+  }
+  return $obj;
+}
+
+function setnodewarning($idek)
+{
+    global $DB;
+    $obj = new xajaxResponse();
+    $tmp = $DB->GetOne('SELECT warning FROM nodes WHERE id = ? LIMIT 1 ;',array($idek));
+    $tmp = intval($tmp);
+    if ($tmp === 1) $tmp = 0 ; else $tmp = 1;
+    $DB->Execute('UPDATE nodes SET warning = ? WHERE id = ? ;',array($tmp,$idek));
+    if (SYSLOG) {
+	addlogs(($tmp ? 'włączono' : 'wyłączono').' wiadomość dla komputera','e=warn;m=node;n='.$idek);
+    }
+    
+    if ($tmp === 0) {
+      $obj->script("document.getElementById('src_warning".$idek."').src='img/warningoff.gif';");
+    } else {
+      $obj->script("document.getElementById('src_warning".$idek."').src='img/warningon.gif';");
+    }
+  
+  return $obj;
+}
 
 $layout['pagetitle'] = trans('Nodes List');
 
@@ -92,6 +140,11 @@ $SMARTY->assign('listdata',$listdata);
 $SMARTY->assign('networks',$LMS->GetNetworks());
 $SMARTY->assign('nodegroups', $LMS->GetNodeGroupNames());
 $SMARTY->assign('customergroups', $LMS->CustomergroupGetAll());
+
+$LMS->InitXajax();
+$LMS->RegisterXajaxFunction(array('setnodeaccess','setnodewarning'));
+$SMARTY->assign('xajax',$LMS->RunXajax());
+
 $SMARTY->display('nodelist.html');
 
 ?>

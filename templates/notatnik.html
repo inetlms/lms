@@ -1,0 +1,86 @@
+{include file="header.html"}
+<!--// notatnik.html //-->
+{$xajax}
+<div style="width:100%;height:100%;" class="superlight">
+
+<form name="notatnik" id="id_notatnik" method="post">
+
+<input type="hidden" name="bwazne" id="id_bwazne" value="1">
+<input type="hidden" name="wazne" id="id_wazne" value="1">
+<input type="hidden" name="normalne" id="id_normalne" value="1">
+<input type="hidden" name="action" id="id_action" value="view">
+<input type="hidden" name="noteid" id="noteid" value="">
+
+<div style="width:650px;position:absolute;top:0px;">
+<table width="100%" cellpadding="3" cellspacing="0">
+    <tr class="dark nav-header">
+	<td width="1%" class="fleftu" align="left" style="height:22px;vertical-align:middle" nowrap><b>Temat:</b></td>
+	<td width="99%" colspan="2" class="frightu" align="left" style="height:22px;vertical-align:midle;"><div id="id_theme" style="font-weight:bold;"></div></td>
+    </tr>
+    
+    <tr class="light">
+	<td class="fbl pad" width="1%" nowrap>
+	    <img src="img/add.gif" style="cursor:pointer;" onclick="addtheme();" {tip text="Dodaj nową notatkę"}>
+	</td>
+	<td width="98%" class="fbottom pad" align="left" nowrap  style="height:22px;">
+	    <img src="img/circle_yellow.png" style="cursor:pointer;" {tip text="pokaż/ukryj normalne"} id="id_filtr_n" onclick="xajax_change_filter('n');">
+	    <img src="img/circle_green.png" style="cursor:pointer;" {tip text="pokaż/ukryj ważne"}  id="id_filtr_w" onclick="xajax_change_filter('w');">
+	    <img src="img/circle_red.png" style="cursor:pointer;" {tip text="pokaż/ukryj bardzo ważne"}  id="id_filtr_bw" onclick="xajax_change_filter('bw');">
+	    <img src="img/empty.gif" width="10px;">
+	</td>
+	<td class="fbr pad" width="1%" nowrap>
+	    <img src="img/empty.gif" id="id_ajax_img" width="16" height="16">
+	    <img src="img/Exit.png" border="0" style="cursor:pointer;" title="[ {trans('Close')} ]" onclick="javascript:parent.window.popclick();">
+	</td>
+    </tr>
+</table>
+</div>
+
+
+<div style="position:absolute;width:648px;top:52px;height:318px;">
+<table width="100%" cellpadding="3">
+    <tr>
+	<td style="width:210px;vertical-align:top;" align="left"><div id="id_list"></div></td>
+	<td style="width:2px;"></td>
+	<td style="width:434px;vertical-align:top;" align="left" style="background-color:#FFFFFF;"><div id="id_description"></div></td>
+    </tr>
+</table>
+</div>
+
+
+
+</form>
+
+{literal}
+<script type="text/javascript">
+<!--
+    xajax.callback.global.onRequest = function(){document.getElementById('id_ajax_img').src = 'img/328.gif';}
+    xajax.callback.global.onComplete = function(){document.getElementById('id_ajax_img').src = 'img/empty.gif';}
+
+
+    function deletenote(idek)
+    {
+	if (confirm('Potwierdź'))
+	    xajax_delete_note(idek);
+    }
+    
+    function addtheme() { xajax_add_theme(); document.getElementById('id_description').focus();}
+
+    function savenote() {
+	var title = document.getElementById('idtheme').value;
+	var tresc = document.getElementById('iddescription').value;
+	xajax_save_note(title,tresc);
+    }
+
+    function updatenote() {
+	var title = document.getElementById('idtheme').value;
+	var tresc = document.getElementById('iddescription').value;
+	var idek = document.getElementById('noteid').value;
+	xajax_update_note(idek,title,tresc);
+    }
+    
+    xajax_start_note();
+//-->
+</script>
+{/literal}
+</div>

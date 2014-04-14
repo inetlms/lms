@@ -9,7 +9,7 @@
 		</td>
 	</tr>
 	<tr class="light"{if $devicepanel} id="devicepanel" style="display:none;"{/if}>
-	    <td width="100%" colspan="2"{if $devicepanel} class="fall container" align="RIGHT"{else}class="flr container"{/if}>
+	    <td width="100%" colspan="2"{if $devicepanel} class="fall container" align="right"{else}class="flr container"{/if}>
 			<table width="100%" cellpadding="0">
 				<tr class="light">
 					<td width="50%" style="vertical-align:top;">
@@ -187,6 +187,19 @@
 		</td>
 	</tr>
 	{/if}
+	{if $netdevinfo.coaport}
+	<tr class="light">
+		<td width="1%">
+			<img src="img/radius.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<b>CoA Port</b>
+		</td>
+		<td width="98%">
+		        {$netdevinfo.coaport}
+		</td>
+	</tr>
+	{/if}
 {/if}
 {if $netdevinfo.monit_nastype}
 	<tr class="light">
@@ -300,7 +313,7 @@
                         <table width="100%" cellpadding="5">
                                 <tr>
                                         <td class="fall super"light">
-						{$netdevinfo.description|escape|replace:"\n":"<BR>"}
+						{$netdevinfo.description|escape|replace:"\n":"<br>"}
                                         </td>
                                 </tr>
                         </table>
@@ -315,8 +328,8 @@
 	</tr>
 	<tr class="dark">
 	        <td width="100%" colspan="2" class="fall" align="right">
-			<a href="?m=netdevinfo&id={$netdevinfo.id}">Przejdź do interfejsu <img src="img/netdev.gif"></a>&nbsp;&nbsp;
-			<a href="javascript:void(0);" onclick="del_interface({$netdevinfo.id});">Usuń interfejs z węzła <img src="img/delete.gif" alt=""></a>
+			<a href="?m=netdevinfo&id={$netdevinfo.id}" class="button">Przejdź do interfejsu <img src="img/netdev.gif"></a>&nbsp;&nbsp;
+			<a href="javascript:void(0);" onclick="del_interface({$netdevinfo.id});" class="button">Usuń interfejs z węzła <img src="img/delete.gif" alt=""></a>
 		</td>
 	</tr>
 </table>

@@ -6,6 +6,11 @@
     <meta name="GENERATOR" content="LMS {$layout.lmsv}">
     <meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
     <meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0, post-check=0, pre-check=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="Robots" content="noindex, nofollow">
+    <meta name="Robots" content="noarchive">
+    <meta name="googlebot" content="noarchive">
     <link href="{get_conf('phpui.style', 'img/style.css')}" rel="stylesheet" type="text/css">
     <link href="img/map.css" rel="stylesheet" type="text/css">
     <link href="img/tcal.css" rel="stylesheet" type="text/css">
@@ -38,7 +43,7 @@
 			<td align="center" style="border-bottom-style: dashed; border-bottom-width: 1px;" valign="top">
 				<br>
 				<img src="{get_conf('phpui.logo', 'img/inet_lms_1_small.png')}" alt="LMS {$layout.lmsv}"><br><br>
-				<!--// <B>{$layout.lmsv} LMS</B><br>
+				<!--// <b>{$layout.lmsv} LMS</b><br>
 				&nbsp;<br> //-->
 			</td>
 		</tr>
@@ -48,14 +53,14 @@
 		{if check_modules($menuitem.index)}
 		<tr>
 			<td class="click-menu">
-				<div class="tip"{if $menuitem.tip} {tip text="<B>\$a</B>" a=$menuitem.tip}{/if}{if ! $menuitem.submenu} onClick="{if $menuitem.windowopen}window.open('{$menuitem.link}');{else}return self.location.href='{$menuitem.link}';{/if}"{/if}>
+				<div class="tip"{if $menuitem.tip} {tip text="<b>\$a</b>" a=$menuitem.tip}{/if}{if ! $menuitem.submenu} onclick="{if $menuitem.windowopen}window.open('{$menuitem.link}');{else}return self.location.href='{$menuitem.link}';{/if}"{/if}>
 					<div class="box1"><img src="img/{$menuitem.img}" alt="*" style="position: absolute;width:16px;" ><font style="margin-left: 21px">{$menuitem.name}</font></div>
 				</div>
 				<div class="section">
 				{if $menuitem.submenu}
 				{foreach from=$menuitem.submenu item=submenuitem}
-					<div class="tip"{if $submenuitem.tip} {tip text="<B>\$a</B>" a=$submenuitem.tip}{/if}>
-						<div class="box2" onClick="return self.location.href='{$submenuitem.link}';">&raquo;&nbsp;<a href="{$submenuitem.link}">{$submenuitem.name}</a></div>
+					<div class="tip"{if $submenuitem.tip} {tip text="<b>\$a</b>" a=$submenuitem.tip}{/if}>
+						<div class="box2" onclick="return self.location.href='{$submenuitem.link}';">&raquo;&nbsp;<a href="{$submenuitem.link}">{$submenuitem.name}</a></div>
 					</div>
 				{/foreach}
 				{/if}
@@ -66,13 +71,13 @@
 		{/foreach}
 		<tr>
 			<td class="click-menu" style="border-bottom-style: dashed; border-bottom-width: 1pt;">
-				<div class="tip" {tip text="<B>Allows you to logout</B>"} onClick="if(confirm('{trans("Are you sure that you want to logout?")}')) { return self.location.href='?m=logout&is_sure=1'; } ">
-					<div class="box1"><img src="img/logout.gif" alt="*" style="position: absolute"><NOBR><font style="margin-left: 21px">{trans("Logout")} {$layout.logname|truncate:10:"..."}</font></NOBR></div>
+				<div class="tip" {tip text="<b>Allows you to logout</b>"} onclick="if(confirm('{trans("Are you sure that you want to logout?")}')) { return self.location.href='?m=logout&is_sure=1'; } ">
+					<div class="box1"><img src="img/logout.gif" alt="*" style="position: absolute"><nobr><font style="margin-left: 21px">{trans("Logout")} {$layout.logname|truncate:10:"..."}</font><nobr></div>
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td nowrap align="center"><font style="font-size: 7pt;">&nbsp;<br><B>{$layout.lmsv} LMS<br>{if $layout.lmsvr}({$layout.lmsvr})<br>{/if}DB: {$layout.dbschversion}<br> DBEX: {$layout.dbschversionex}<br>@ {$layout.hostname}</B></font>&nbsp;<br>&nbsp;<br></td>
+			<td nowrap align="center"><font style="font-size: 7pt;">&nbsp;<br><b>{$layout.lmsv} LMS<br>{if $layout.lmsvr}({$layout.lmsvr})<br>{/if}DB: {$layout.dbschversion}<br> DBEX: {$layout.dbschversionex}<br>@ {$layout.hostname}</b></font>&nbsp;<br>&nbsp;<br></td>
 		</tr>
 	</table>
 	<script type="text/javascript">
@@ -109,16 +114,16 @@
 		    </td>
 		    <td width="99%" align="right" nowrap>
 			{if get_conf('phpui.installation_name')}
-			    <font style="font-weight:bold;color:blue;">{get_conf('phpui.installation_name')}</font>{else}&nbsp;<A href="?m=copyrights">&copy; 2001-2012 LMS Developers</A>{/if}
+			    <font style="font-weight:bold;color:blue;">{get_conf('phpui.installation_name')}</font>{else}&nbsp;<a href="?m=copyrights">&copy; 2001-2012 LMS Developers</a>{/if}
 		    </td>
 		</tr>
 	</table>
 	</form>
 	
 	
-<SCRIPT type="text/javascript">
+<script type="text/javascript">
 <!--//
 document.forms['quicksearch'].elements['customerinput'].focus();
 //-->
-</SCRIPT>
+</script>
 {/if}

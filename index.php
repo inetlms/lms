@@ -163,6 +163,7 @@ require_once(LIB_DIR.'/accesstable.php');
 require_once(LIB_DIR.'/Session.class.php');
 require_once(LIB_DIR.'/GaduGadu.class.php');
 require_once(LIB_DIR.'/LMS.Hiperus.class.php');
+require_once(LIB_DIR.'/RADIUS.class.php');
 
 
 // Initialize Session, Auth and LMS classes
@@ -174,6 +175,7 @@ $LMS = new LMS($DB, $AUTH, $CONFIG);
 $LMS->ui_lang = $_ui_language;
 $LMS->lang = $_language;
 $GG = new rfGG(GG_VER_77);
+$RAD = new radius($DB,$LMS);
 
 
 
@@ -191,7 +193,8 @@ $layout['smarty_version'] = SMARTY_VERSION;
 $layout['hostname'] = hostname();
 $layout['lmsv'] = 'iNET';
 $layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
-$layout['lmsvr'] = '1.0.2';
+//$layout['lmsvr'] = '1.0.2';
+$layout['lmsvr'] = '14.04.14';
 $layout['dberrors'] =& $DB->errors;
 $layout['dbdebug'] = $_DBDEBUG;
 $layout['popup'] = isset($_GET['popup']) ? true : false;

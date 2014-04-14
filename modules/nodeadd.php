@@ -51,9 +51,11 @@ if(isset($_GET['prename']))
 if (isset($_POST['nodedata']))
 {
 	$nodedata = $_POST['nodedata'];
-
+	
+	$nodedata['netid'] = $_POST['nodedatanetid'];
 	$nodedata['ipaddr'] = $_POST['nodedataipaddr'];
 	$nodedata['ipaddr_pub'] = $_POST['nodedataipaddr_pub'];
+	
 	foreach($nodedata['macs'] as $key => $value)
 		$nodedata['macs'][$key] = str_replace('-',':',$value);
 
@@ -84,11 +86,17 @@ if (isset($_POST['nodedata']))
 		$error['ipaddr'] = trans('Incorrect node IP address!');
 	elseif(!$LMS->IsIPValid($nodedata['ipaddr']))
 		$error['ipaddr'] = trans('Specified IP address doesn\'t overlap with any network!');
-	elseif(!$LMS->IsIPFree($nodedata['ipaddr']))
-		$error['ipaddr'] = trans('Specified IP address is in use!');
-	elseif($LMS->IsIPGateway($nodedata['ipaddr']))
-		$error['ipaddr'] = trans('Specified IP address is network gateway!');
-
+	else
+	{
+		if (empty($nodedata['netid']))
+			$nodedata['netid'] = $DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id LIMIT 1',
+				array($nodedata['ipaddr']));
+		if (!$LMS->IsIPFree($nodedata['ipaddr'], $nodedata['netid']))
+			$error['ipaddr'] = trans('Specified IP address is in use!');
+		elseif($LMS->IsIPGateway($nodedata['ipaddr']))
+			$error['ipaddr'] = trans('Specified IP address is network gateway!');
+	}
+	
 	if($nodedata['ipaddr_pub']!='0.0.0.0' && $nodedata['ipaddr_pub']!='')
 	{
 		if(!check_ip($nodedata['ipaddr_pub']))
@@ -161,47 +169,89 @@ if (isset($_POST['nodedata']))
 	}
 	else
 		$nodedata['netdev'] = 0;
+	
+	
+	if (get_conf('netdevices.force_connection') && !$nodedata['netdev']) {
+	    $error['netdev'] = 'Proszę skonfigurować połączenie z interfejsem sieciowym';
+	}
+	
+	if ((!empty($nodedata['netdev']) && empty($nodedata['linktechnology'])) || (get_conf('netdevices.force_connection') && empty($nodedata['linktechnology'])))
+	    $error['linktechnology'] = 'Proszę wybrać technologię łącza';
 
 	if(!isset($nodedata['chkmac']))	$nodedata['chkmac'] = 0;
 	if(!isset($nodedata['halfduplex'])) $nodedata['halfduplex'] = 0;
+	
+	if($nodedata['access_from'] == '')
+		$access_from = 0;
+	elseif(preg_match('/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/',$nodedata['access_from']))
+	{
+		list($y, $m, $d) = explode('/', $nodedata['access_from']);
+		if(checkdate($m, $d, $y))
+			$access_from = mktime(0, 0, 0, $m, $d, $y);
+		else
+			$error['access_from'] = trans('Incorrect charging time!');
+	}
+	else
+		$error['access_from'] = trans('Incorrect charging time!');
+
+	if($nodedata['access_to'] == '')
+		$access_to = 0;
+	elseif(preg_match('/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/', $nodedata['access_to']))
+	{
+		list($y, $m, $d) = explode('/', $nodedata['access_to']);
+		if(checkdate($m, $d, $y))
+			$access_to = mktime(23, 59, 59, $m, $d, $y);
+		else
+			$error['access_to'] = trans('Incorrect charging time!');
+	}
+	else
+		$error['access_to'] = trans('Incorrect charging time!');
+
+	if($access_to < $access_from && $access_to != 0 && $access_from != 0)
+		$error['access_to'] = trans('Incorrect date range!');
+
 
 	if(!$error)
 	{
-        if (empty($nodedata['teryt'])) {
-            $nodedata['location_city'] = null;
-            $nodedata['location_street'] = null;
-            $nodedata['location_house'] = null;
-            $nodedata['location_flat'] = null;
-        }
-
-        $nodedata = $LMS->ExecHook('node_add_before', $nodedata);
-
+		if (empty($nodedata['teryt'])) 
+		{
+			$nodedata['location_city'] = null;
+			$nodedata['location_street'] = null;
+			$nodedata['location_house'] = null;
+			$nodedata['location_flat'] = null;
+		}
+		
+		$nodedata = $LMS->ExecHook('node_add_before', $nodedata);
+		$nodedata['access_from'] = $access_from;
+		$nodedata['access_to'] = $access_to;
+		
 		$nodeid = $LMS->NodeAdd($nodedata);
-
+		
 		if($nodedata['nodegroup'] != '0')
 		{
 			$DB->Execute('INSERT INTO nodegroupassignments (nodeid, nodegroupid)
 				VALUES (?, ?)', array($nodeid, intval($nodedata['nodegroup'])));
 		}
-
-        $nodedata['id'] = $nodeid;
-        $nodedata = $LMS->ExecHook('node_add_after', $nodedata);
-
+		
+		$nodedata['id'] = $nodeid;
+		$nodedata = $LMS->ExecHook('node_add_after', $nodedata);
+		
 		if(!isset($nodedata['reuse']))
 		{
 			$SESSION->redirect('?m=nodeinfo&id='.$nodeid);
 		}
-
+		
 		$ownerid = $nodedata['ownerid'];
 		unset($nodedata);
 
 		$nodedata['ownerid'] = $ownerid;
 		$nodedata['reuse'] = '1';
 	}
-	else {
+	else 
+	{
 		if($nodedata['ipaddr_pub']=='0.0.0.0')
 			$nodedata['ipaddr_pub'] = '';
-    }
+	}
 }
 
 if(empty($nodedata['macs']))
@@ -223,7 +273,9 @@ if(!isset($CONFIG['phpui']['big_networks']) || !chkconfig($CONFIG['phpui']['big_
 
 $nodedata = $LMS->ExecHook('node_add_init', $nodedata);
 
+$SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
 $SMARTY->assign('netdevices', $LMS->GetNetDevNames());
+$SMARTY->assign('networks', $LMS->GetNetworks(false));
 $SMARTY->assign('error', $error);
 $SMARTY->assign('nodedata', $nodedata);
 $SMARTY->display('nodeadd.html');

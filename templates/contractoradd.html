@@ -1,7 +1,7 @@
 {include file="header.html"}
 <h1>{$layout.pagetitle}</h1>
 <!--// $Id$ //-->
-<SCRIPT type="text/javascript">
+<script type="text/javascript">
 <!--
 	function randomize()
 	{
@@ -22,409 +22,409 @@
 		var nr = contactscountelem.value;
 		var lastcontactelem = document.getElementById('contact' + (nr - 1));
 		var newrow = lastcontactelem.parentNode.insertRow(lastcontactelem.rowIndex + 1);
-		newrow.className = 'LIGHT';
+		newrow.className = 'light';
 		newrow.id = 'contact' + nr;
 		var newcell1 = newrow.insertCell(0);
 		var newcell2 = newrow.insertCell(1);
 		newcell1.style.verticalAlign = 'top';
 		newcell1.style.width = '1%';
-		newcell1.innerHTML = '<IMG src="img/phone.gif" alt="">';
+		newcell1.innerHTML = '<img src="img/phone.gif" alt="">';
 		newcell2.style.width = '99%';
 		newcell2.style.whiteSpace = 'nowrap';
-		newcell2.innerHTML = '<INPUT TYPE="text" size="15" value="" name="contractordata[contacts][' + nr + '][phone]"'
+		newcell2.innerHTML = '<input type="text" size="15" value="" name="contractordata[contacts][' + nr + '][phone]"'
 				+ ' onmouseover="popup(\'{trans("Enter contact phone")}\')" onmouseout="pophide()">'
-			+ '<INPUT TYPE="checkbox" value="{$smarty.const.CONTACT_MOBILE}"'
-				+ ' name="contractordata[contacts][' + nr + '][type][]" ID="chkmobile' + nr + '"><label for="chkmobile' + nr + '">{trans("mobile")}</label>'
-			+ '<INPUT TYPE="checkbox" value="{$smarty.const.CONTACT_FAX}"'
-				+ ' name="contractordata[contacts][' + nr + '][type][]" ID="chkfax' + nr + '"><label for="chkfax' + nr + '">{trans("fax")}</label>'
-			+ '<BR><INPUT TYPE="text" size="38" value="" name="contractordata[contacts][' + nr + '][name]"'
+			+ '<input type="checkbox" value="{$smarty.const.CONTACT_MOBILE}"'
+				+ ' name="contractordata[contacts][' + nr + '][type][]" id="chkmobile' + nr + '"><label for="chkmobile' + nr + '">{trans("mobile")}</label>'
+			+ '<input type="checkbox" value="{$smarty.const.CONTACT_FAX}"'
+				+ ' name="contractordata[contacts][' + nr + '][type][]" id="chkfax' + nr + '"><label for="chkfax' + nr + '">{trans("fax")}</label>'
+			+ '<br><input type="text" size="38" value="" name="contractordata[contacts][' + nr + '][name]"'
 				+ ' onmouseover="popup(\'{trans("Enter contact name/description (optional)")}\')" onmouseout="pophide()">';
 		contactscountelem.value = parseInt(nr) + 1;
 	}
 //-->
-</SCRIPT>
-<FORM NAME="contractoredit" id="contractoredit" METHOD="POST" ACTION="?m=contractoradd">
+</script>
+<form name="contractoredit" id="contractoredit" method="POST" action="?m=contractoradd">
 
-<INPUT type="submit" class="hiddenbtn">
-<TABLE WIDTH="100%" CELLPADDING="3">
+<input type="submit" class="hiddenbtn">
+<table width="100%" cellpadding="3">
 	
-	<TR CLASS="DARK">
-		<TD WIDTH="100%" CLASS="FALL" NOWRAP>
-		        <TABLE WIDTH="100%" CELLPADDING="1">
-				<TR>
-					<TD WIDTH="1%"><B><nobr>{trans("Company name")}:&nbsp;</nobr></B></TD>
-					<TD WIDTH="99%"><INPUT TYPE="TEXT" SIZE="50" NAME="contractordata[lastname]" VALUE="{$contractorinfo.lastname|escape}" {tip text="Enter first/lastname of customer" trigger="lastname" bold=1}></TD>
-				</TR>
-				<TR>
-					<TD WIDTH="1%"><b><nobr>{trans('Name and last name')}:&nbsp;</nobr></B></TD>
-					<TD WIDTH="99%"><INPUT TYPE="TEXT" SIZE="50" NAME="contractordata[name]" VALUE="{$contractorinfo.name|escape}" {tip text="Enter first name of customer (optional)" trigger="name" bold=1}></TD>
-				</TR>
-			</TABLE>
-		</TD>
-	</TR>
-        <TR class="LIGHT">
-            <TD WIDTH="100%" CLASS="flr container">
-		        <TABLE WIDTH="100%" CELLPADDING="0">
-				<TR CLASS="LIGHT">
-					<TD WIDTH="50%" style="vertical-align:top;">
-						<TABLE WIDTH="100%" CELLPADDING="3">
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%" style="vertical-align: top">
-			<IMG SRC="img/home.gif" ALT="">
-		</TD>
-		<TD WIDTH="99%">
+	<tr class="dark">
+		<td width="100%" class="fall" nowrap>
+		        <table width="100%" cellpadding="1">
+				<tr>
+					<td width="1%"><b><nobr>{trans("Company name")}:&nbsp;</nobr></b></td>
+					<td width="99%"><input type="text" size="50" name="contractordata[lastname]" value="{$contractorinfo.lastname|escape}" {tip text="Enter first/lastname of customer" trigger="lastname" bold=1}></td>
+				</tr>
+				<tr>
+					<td width="1%"><b><nobr>{trans('Name and last name')}:&nbsp;</nobr></b></td>
+					<td width="99%"><input type="text" size="50" name="contractordata[name]" value="{$contractorinfo.name|escape}" {tip text="Enter first name of customer (optional)" trigger="name" bold=1}></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+        <tr class="light">
+            <td width="100%" class="flr container">
+		        <table width="100%" cellpadding="0">
+				<tr class="light">
+					<td width="50%" style="vertical-align:top;">
+						<table width="100%" cellpadding="3">
+	<tr class="light">
+		<td width="1%" style="vertical-align: top">
+			<img src="img/home.gif" alt="">
+		</td>
+		<td width="99%">
 		<fieldset style="width:240px">
 					    <legend><b>{trans("Address of the company")}</b></legend>
-			<TABLE width="100%" cellpadding="1">
-			    <TR>
-    				<TD width="1%" NOWRAP>{trans("Address:")}</TD>
-	    			<TD width="99%"><INPUT TYPE="TEXT" NAME="contractordata[address]" id="address" VALUE="{$contractorinfo.address}" SIZE="30" {tip text="Enter address" trigger="address"}></TD>
-			    </TR>
-			    <TR>
-		    		<TD width="1%" NOWRAP>{trans("City:")}</TD>
-			    	<TD width="99%"><INPUT TYPE="TEXT" NAME="contractordata[city]" id="city" VALUE="{$contractorinfo.city}" SIZE="30" {tip text="Enter city"}></TD>
-			    </TR>
-			    <TR>
-    				<TD width="1%" NOWRAP>{trans("Zip:")}</TD>
-	    			<TD width="99%"><INPUT TYPE="TEXT" NAME="contractordata[zip]" id="zip" VALUE="{$contractorinfo.zip}" SIZE="10" {tip text="Enter zip code" trigger="zip"}></TD>
+			<table width="100%" cellpadding="1">
+			    <tr>
+    				<td width="1%" nowrap>{trans("Address:")}</td>
+	    			<td width="99%"><input type="text" name="contractordata[address]" id="address" value="{$contractorinfo.address}" size="30" {tip text="Enter address" trigger="address"}></td>
+			    </tr>
+			    <tr>
+		    		<td width="1%" nowrap>{trans("City:")}</td>
+			    	<td width="99%"><input type="text" name="contractordata[city]" id="city" value="{$contractorinfo.city}" size="30" {tip text="Enter city"}></td>
+			    </tr>
+			    <tr>
+    				<td width="1%" nowrap>{trans("Zip:")}</td>
+	    			<td width="99%"><input type="text" name="contractordata[zip]" id="zip" value="{$contractorinfo.zip}" size="10" {tip text="Enter zip code" trigger="zip"}></td>
     				{if $contractorinfo.zipwarning}
-	    			<INPUT TYPE="HIDDEN" NAME="contractordata[zipwarning]" VALUE="1">
+	    			<input type="hidden" name="contractordata[zipwarning]" value="1">
 		    		{/if}
-			    </TR>
+			    </tr>
 			    {if $cstateslist}
-			    <TR>
-			        <TD width="1%" NOWRAP>{trans("State:")}</TD>
-			        <TD width="99%">
-			            <SELECT NAME="contractordata[stateid]" {tip text="Select country state (optional)" trigger="stateid"}>
-			                <OPTION value="0"></OPTION>
+			    <tr>
+			        <td width="1%" nowrap>{trans("State:")}</td>
+			        <td width="99%">
+			            <select name="contractordata[stateid]" {tip text="Select country state (optional)" trigger="stateid"}>
+			                <option value="0"></option>
 			                {foreach from=$cstateslist item=item key=key}
-			                <OPTION value="{$key}"{if $key==$contractorinfo.stateid} SELECTED{/if}>{$item.name}</OPTION>
+			                <option value="{$key}"{if $key==$contractorinfo.stateid} selected{/if}>{$item.name}</option>
 			                {/foreach}
-			            </SELECT>
-				</TD>
-			    </TR>
+			            </select>
+				</td>
+			    </tr>
                 {/if}
                 {if $countrieslist}
-			    <TR>
-			        <TD width="1%" NOWRAP>{trans("Country:")}</TD>
-			        <TD width="99%">
-			            <SELECT NAME="contractordata[countryid]" {tip text="Select country (optional)" trigger="countryid"}>
-			                <OPTION value="0"></OPTION>
+			    <tr>
+			        <td width="1%" nowrap>{trans("Country:")}</td>
+			        <td width="99%">
+			            <select name="contractordata[countryid]" {tip text="Select country (optional)" trigger="countryid"}>
+			                <option value="0"></option>
 					{foreach from=$countrieslist item=item key=key}
-			                <OPTION value="{$key}"{if $key==$contractorinfo.countryid} SELECTED{/if}>{t}{$item.name}{/t}</OPTION>
+			                <option value="{$key}"{if $key==$contractorinfo.countryid} selected{/if}>{t}{$item.name}{/t}</option>
 					{/foreach}
-			            </SELECT>
-    				</TD>
-			    </TR>
+			            </select>
+    				</td>
+			    </tr>
 			    {/if}
-			</TABLE>
+			</table>
 		<script type="text/javascript">
 		new AutoSuggest(document.getElementById('contractoredit'),document.getElementById('address'),'?m=customeradd&ajax=1&mode=address&what=',0);
 		new AutoSuggest(document.getElementById('contractoredit'),document.getElementById('zip'),'?m=customeradd&ajax=1&mode=zip&what=',0);
 		new AutoSuggest(document.getElementById('contractoredit'),document.getElementById('city'),'?m=customeradd&ajax=1&mode=city&what=',0);
 		</script>
 		</fieldset>
-	</TR>
+	</tr>
 
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%" style="vertical-align: top">
-			<IMG SRC="img/post.gif" ALT="">
-		</TD>
-		<TD WIDTH="99%">
+	<tr class="light">
+		<td width="1%" style="vertical-align: top">
+			<img src="img/post.gif" alt="">
+		</td>
+		<td width="99%">
 		<fieldset style="width:240px">
 		<legend><b> {trans("Address for correspondence")} </b></legend>
-			<TABLE width="100%" cellpadding="1">
-			    <TR>
-				<TD width="1%" NOWRAP>{trans("Name:")}</TD>
-				<TD width="99%"><INPUT TYPE="TEXT" NAME="contractordata[post_name]" id="post_name" VALUE="{$contractorinfo.post_name}" SIZE="30" {tip text="Enter service name (optional)" trigger="post_name"}></TD>
-			    </TR>
-			    <TR>
-    				<TD width="1%" NOWRAP>{trans("Address:")}</TD>
-	    			<TD width="99%"><INPUT TYPE="TEXT" NAME="contractordata[post_address]" id="post_address" VALUE="{$contractorinfo.post_address}" SIZE="30" {tip text="Enter service address (optional)" trigger="post_address"}></TD>
-			    </TR>
-			    <TR>
-		    		<TD width="1%" NOWRAP>{trans("City:")}</TD>
-			    	<TD width="99%"><INPUT TYPE="TEXT" NAME="contractordata[post_city]" id="post_city" VALUE="{$contractorinfo.post_city}" SIZE="30" {tip text="Enter city of service address (optional)" trigger="post_city"}></TD>
-			    </TR>
-			    <TR>
-    				<TD width="1%" NOWRAP>{trans("Zip:")}</TD>
-	    			<TD width="99%"><INPUT TYPE="TEXT" NAME="contractordata[post_zip]" id="post_zip" VALUE="{$contractorinfo.post_zip}" SIZE="10" {tip text="Enter zip code of service address (optional)" trigger="post_zip"}></TD>
+			<table width="100%" cellpadding="1">
+			    <tr>
+				<td width="1%" nowrap>{trans("Name:")}</td>
+				<td width="99%"><input type="text" name="contractordata[post_name]" id="post_name" value="{$contractorinfo.post_name}" size="30" {tip text="Enter service name (optional)" trigger="post_name"}></td>
+			    </tr>
+			    <tr>
+    				<td width="1%" nowrap>{trans("Address:")}</td>
+	    			<td width="99%"><input type="text" name="contractordata[post_address]" id="post_address" value="{$contractorinfo.post_address}" size="30" {tip text="Enter service address (optional)" trigger="post_address"}></td>
+			    </tr>
+			    <tr>
+		    		<td width="1%" nowrap>{trans("City:")}</td>
+			    	<td width="99%"><input type="text" name="contractordata[post_city]" id="post_city" value="{$contractorinfo.post_city}" size="30" {tip text="Enter city of service address (optional)" trigger="post_city"}></td>
+			    </tr>
+			    <tr>
+    				<td width="1%" nowrap>{trans("Zip:")}</td>
+	    			<td width="99%"><input type="text" name="contractordata[post_zip]" id="post_zip" value="{$contractorinfo.post_zip}" size="10" {tip text="Enter zip code of service address (optional)" trigger="post_zip"}></td>
     				{if $contractorinfo.post_zipwarning}
-	    			<INPUT TYPE="HIDDEN" NAME="contractordata[post_zipwarning]" VALUE="1">
+	    			<input type="hidden" name="contractordata[post_zipwarning]" value="1">
 		    		{/if}
-			    </TR>
+			    </tr>
 			    {if $cstateslist}
-			    <TR>
-			        <TD width="1%" NOWRAP>{trans("State:")}</TD>
-			        <TD width="99%">
-			            <SELECT NAME="contractordata[post_stateid]" {tip text="Select country state (optional)" trigger="post_stateid"}>
-			                <OPTION value="0"></OPTION>
+			    <tr>
+			        <td width="1%" nowrap>{trans("State:")}</td>
+			        <td width="99%">
+			            <select name="contractordata[post_stateid]" {tip text="Select country state (optional)" trigger="post_stateid"}>
+			                <option value="0"></option>
 			                {foreach from=$cstateslist item=item key=key}
-			                <OPTION value="{$key}"{if $key==$contractorinfo.post_stateid} SELECTED{/if}>{$item.name}</OPTION>
+			                <option value="{$key}"{if $key==$contractorinfo.post_stateid} selected{/if}>{$item.name}</option>
 			                {/foreach}
-			            </SELECT>
-				</TD>
-			    </TR>
+			            </select>
+				</td>
+			    </tr>
                 {/if}
                 {if $countrieslist}
-			    <TR>
-			        <TD width="1%" NOWRAP>{trans("Country:")}</TD>
-			        <TD width="99%">
-			            <SELECT NAME="contractordata[post_countryid]" {tip text="Select country (optional)" trigger="post_countryid"}>
-			                <OPTION value="0"></OPTION>
+			    <tr>
+			        <td width="1%" nowrap>{trans("Country:")}</td>
+			        <td width="99%">
+			            <select name="contractordata[post_countryid]" {tip text="Select country (optional)" trigger="post_countryid"}>
+			                <option value="0"></option>
 					{foreach from=$countrieslist item=item key=key}
-			                <OPTION value="{$key}"{if $key==$contractorinfo.post_countryid} SELECTED{/if}>{t}{$item.name}{/t}</OPTION>
+			                <option value="{$key}"{if $key==$contractorinfo.post_countryid} selected{/if}>{t}{$item.name}{/t}</option>
 					{/foreach}
-			            </SELECT>
-    				</TD>
-			    </TR>
+			            </select>
+    				</td>
+			    </tr>
 			    {/if}
-			</TABLE>
+			</table>
 		<script type="text/javascript">
 		new AutoSuggest(document.getElementById('contractoredit'),document.getElementById('post_address'),'?m=customeradd&ajax=1&mode=address&what=',0);
 		new AutoSuggest(document.getElementById('contractoredit'),document.getElementById('post_zip'),'?m=customeradd&ajax=1&mode=zip&what=',0);
 		new AutoSuggest(document.getElementById('contractoredit'),document.getElementById('post_city'),'?m=customeradd&ajax=1&mode=city&what=',0);
 		</script>
 		</fieldset>
-	</TR>
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/mail.gif" ALT="">
-		</TD>
-		<TD WIDTH="99%">
-			<INPUT TYPE="TEXT" NAME="contractordata[email]" VALUE="{$contractorinfo.email}" SIZE="38" {tip text="Enter e-mail address (optional)" trigger="email" }><BR>
-		</TD>
-	</TR>
-	<TR CLASS="LIGHT">
-		<TD width="1%" style="vertical-align: top">
-			<IMG src="img/serialnumber.gif" alt="">
-		</TD>
-		<TD width="99%">
-		    <TABLE width="100%">
+	</tr>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/mail.gif" alt="">
+		</td>
+		<td width="99%">
+			<input type="text" name="contractordata[email]" value="{$contractorinfo.email}" size="38" {tip text="Enter e-mail address (optional)" trigger="email" }><br>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" style="vertical-align: top">
+			<img src="img/serialnumber.gif" alt="">
+		</td>
+		<td width="99%">
+		    <table width="100%">
 			
-			<TR class="light">
-			    <TD width="1%">
+			<tr class="light">
+			    <td width="1%">
 					{trans("Bank:")}
-			    </TD>
-			    <TD width="98%">
-			<INPUT type="text" name="contractordata[account]" VALUE="{$contractorinfo.account}" SIZE="30" {tip text="Enter bank account (optional)" trigger="account"}>
-		</TD>
-	</TR>		        
-		        <TR>
-		            <TD width="1%" NOWRAP>{trans("TEN")}:</TD>
-		            <TD width="99%">
-			<INPUT TYPE="TEXT" NAME="contractordata[ten]" VALUE="{$contractorinfo.ten}" SIZE="30" {tip text="Enter Tax Exempt Number (optional)" trigger="ten"}>
+			    </td>
+			    <td width="98%">
+			<input type="text" name="contractordata[account]" value="{$contractorinfo.account}" size="30" {tip text="Enter bank account (optional)" trigger="account"}>
+		</td>
+	</tr>		        
+		        <tr>
+		            <td width="1%" nowrap>{trans("TEN")}:</td>
+		            <td width="99%">
+			<input type="text" name="contractordata[ten]" value="{$contractorinfo.ten}" size="30" {tip text="Enter Tax Exempt Number (optional)" trigger="ten"}>
 			{if $contractorinfo.tenwarning}
-			<INPUT TYPE="HIDDEN" NAME="contractordata[tenwarning]" VALUE="1">
+			<input type="hidden" name="contractordata[tenwarning]" value="1">
 			{/if}
-			        </TD>
-			    </TR>
-		        <TR>
-		            <TD width="1%" NOWRAP>{trans("REGON")}:</TD>
-		            <TD width="99%">
-			<INPUT TYPE="text" value="{$contractorinfo.regon}" name="contractordata[regon]" SIZE="30" {tip text="Enter Business Registration Number (optional)" trigger="regon"}>
-			        </TD>
-			    </TR>
-		        <TR>
-		            <TD width="1%" NOWRAP>{trans("RBE")}:</TD>
-		            <TD width="99%">
-			<INPUT TYPE="text" value="{$contractorinfo.rbe}" name="contractordata[rbe]" SIZE="30" {tip text="Enter National Court Register / Register of Business Entities Number (optional)" trigger="rbe"}>
-			        </TD>
-			    </TR>
-            </TABLE>
-		</TD>
-	</TR>
+			        </td>
+			    </tr>
+		        <tr>
+		            <td width="1%" nowrap>{trans("REGON")}:</td>
+		            <td width="99%">
+			<input type="text" value="{$contractorinfo.regon}" name="contractordata[regon]" size="30" {tip text="Enter Business Registration Number (optional)" trigger="regon"}>
+			        </td>
+			    </tr>
+		        <tr>
+		            <td width="1%" nowrap>{trans("RBE")}:</td>
+		            <td width="99%">
+			<input type="text" value="{$contractorinfo.rbe}" name="contractordata[rbe]" size="30" {tip text="Enter National Court Register / Register of Business Entities Number (optional)" trigger="rbe"}>
+			        </td>
+			    </tr>
+            </table>
+		</td>
+	</tr>
 	{foreach from=$contractorinfo.contacts item=item key=key}
-	<TR CLASS="LIGHT" ID="contact{$key}">
-		<TD WIDTH="1%" style="vertical-align: top">
-			<IMG SRC="img/phone.gif" ALT="">
-		</TD>
-		<TD WIDTH="99%" NOWRAP>
-			<INPUT TYPE="text" size="15" value="{$item.phone}" name="contractordata[contacts][{$key}][phone]" {tip text="Enter contact phone" trigger="contact`$key`"}>
-            <INPUT TYPE="checkbox" value="{$smarty.const.CONTACT_MOBILE}" name="contractordata[contacts][{$key}][type][]" ID="chkmobile{$key}" {if ($item.type & $smarty.const.CONTACT_MOBILE)} checked{/if}><label for="chkmobile{$key}">{trans("mobile")}</label>
-            <INPUT TYPE="checkbox" value="{$smarty.const.CONTACT_FAX}" name="contractordata[contacts][{$key}][type][]" ID="chkfax{$key}" {if ($item.type & $smarty.const.CONTACT_FAX)} checked{/if}><label for="chkfax{$key}">{trans("fax")}</label>
-            <BR>
-			<INPUT TYPE="text" size="38" value="{$item.name}" name="contractordata[contacts][{$key}][name]" {tip text="Enter contact name/description (optional)"}>
-		</TD>
-	</TR>
+	<tr class="light" id="contact{$key}">
+		<td width="1%" style="vertical-align: top">
+			<img src="img/phone.gif" alt="">
+		</td>
+		<td width="99%" nowrap>
+			<input type="text" size="15" value="{$item.phone}" name="contractordata[contacts][{$key}][phone]" {tip text="Enter contact phone" trigger="contact`$key`"}>
+            <input type="checkbox" value="{$smarty.const.CONTACT_MOBILE}" name="contractordata[contacts][{$key}][type][]" id="chkmobile{$key}" {if ($item.type & $smarty.const.CONTACT_MOBILE)} checked{/if}><label for="chkmobile{$key}">{trans("mobile")}</label>
+            <input type="checkbox" value="{$smarty.const.CONTACT_FAX}" name="contractordata[contacts][{$key}][type][]" id="chkfax{$key}" {if ($item.type & $smarty.const.CONTACT_FAX)} checked{/if}><label for="chkfax{$key}">{trans("fax")}</label>
+            <br>
+			<input type="text" size="38" value="{$item.name}" name="contractordata[contacts][{$key}][name]" {tip text="Enter contact name/description (optional)"}>
+		</td>
+	</tr>
 	{/foreach}
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%"></TD>
-		<TD WIDTH="99%">
-			<INPUT TYPE="HIDDEN" ID="contactscount" VALUE="{$item@total}">
-			<A href="javascript: newcontact()">{trans("Add contact field")} &raquo;&raquo;&raquo;</A>
-		</TD>
-	</TR>
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/gg.gif" alt="Gadu-Gadu">
-		</TD>
-		<TD WIDTH="99%">
+	<tr class="light">
+		<td width="1%"></td>
+		<td width="99%">
+			<input type="hidden" id="contactscount" value="{$item@total}">
+			<a href="javascript: newcontact()">{trans("Add contact field")} &raquo;&raquo;&raquo;</a>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/gg.gif" alt="Gadu-Gadu">
+		</td>
+		<td width="99%">
 			{assign var=gg value=$smarty.const.IM_GG}
-			<INPUT TYPE="TEXT" NAME="contractordata[uid][{$gg}]" VALUE="{if $contractorinfo.uid.$gg}{$contractorinfo.uid.$gg}{/if}" SIZE="20" {tip text="Enter Gadu-Gadu ID (optional)" trigger="gg"}>
-		</TD>
-	</TR>
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG src="img/yim.gif" alt="Yahoo">
-		</TD>
-		<TD WIDTH="99%">
+			<input type="text" name="contractordata[uid][{$gg}]" value="{if $contractorinfo.uid.$gg}{$contractorinfo.uid.$gg}{/if}" size="20" {tip text="Enter Gadu-Gadu ID (optional)" trigger="gg"}>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/yim.gif" alt="Yahoo">
+		</td>
+		<td width="99%">
 			{assign var=yahoo value=$smarty.const.IM_YAHOO}
-			<INPUT TYPE="TEXT" NAME="contractordata[uid][{$yahoo}]" VALUE="{if $contractorinfo.uid.$yahoo}{$contractorinfo.uid.$yahoo}{/if}" SIZE="20" {tip text="Enter Yahoo Messenger ID (optional)" trigger="yahoo"}>
-		</TD>
-	</TR>
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG src="img/skype.gif" alt="Skype">
-		</TD>
-		<TD WIDTH="99%">
+			<input type="text" name="contractordata[uid][{$yahoo}]" value="{if $contractorinfo.uid.$yahoo}{$contractorinfo.uid.$yahoo}{/if}" size="20" {tip text="Enter Yahoo Messenger ID (optional)" trigger="yahoo"}>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/skype.gif" alt="Skype">
+		</td>
+		<td width="99%">
 			{assign var=skype value=$smarty.const.IM_SKYPE}
-			<INPUT TYPE="TEXT" NAME="contractordata[uid][{$skype}]" VALUE="{if $contractorinfo.uid.$skype}{$contractorinfo.uid.$skype}{/if}" SIZE="20" {tip text="Enter Skype ID (optional)" trigger="skype"}>
-		</TD>
-	</TR>
+			<input type="text" name="contractordata[uid][{$skype}]" value="{if $contractorinfo.uid.$skype}{$contractorinfo.uid.$skype}{/if}" size="20" {tip text="Enter Skype ID (optional)" trigger="skype"}>
+		</td>
+	</tr>
 	
 
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/pin.gif" ALT="">
-		</TD>
-		<TD WIDTH="98%">
-			<INPUT TYPE="TEXT" NAME="contractordata[pin]" VALUE="{if $contractorinfo.pin}{$contractorinfo.pin}{/if}" SIZE="6" {tip text="Enter 4 to 6 digits PIN number (optional)" trigger="pin"}>&nbsp;
-			<A href="javascript: randomize()" {tip text="Generate PIN"}>&raquo;&raquo;&raquo;</A>
-		</TD>
-	</TR>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/pin.gif" alt="">
+		</td>
+		<td width="98%">
+			<input type="text" name="contractordata[pin]" value="{if $contractorinfo.pin}{$contractorinfo.pin}{/if}" size="6" {tip text="Enter 4 to 6 digits PIN number (optional)" trigger="pin"}>&nbsp;
+			<a href="javascript: randomize()" {tip text="Generate PIN"}>&raquo;&raquo;&raquo;</a>
+		</td>
+	</tr>
 	
 	
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%" style="vertical-align: top" nowrap>
-			<IMG SRC="img/options.gif" ALT="">
-		</TD>
-		<TD WIDTH="98%">
-		    <TABLE>
-		        <TR>
-		            <TD>
+	<tr class="light">
+		<td width="1%" style="vertical-align: top" nowrap>
+			<img src="img/options.gif" alt="">
+		</td>
+		<td width="98%">
+		    <table>
+		        <tr>
+		            <td>
 			            {trans("Deadline:")}
-			        </TD>
-			        <TD>
-			<SELECT name="contractordata[paytime]" {tip text="Select default deadline in days" trigger="paytime"}>
-				<OPTION value="0"{if $contractorinfo.paytime==0} selected{/if}>0</OPTION>
-				<OPTION value="7"{if $contractorinfo.paytime==7} selected{/if}>7</OPTION>
-				<OPTION value="10"{if $contractorinfo.paytime==10} selected{/if}>10</OPTION>
-				<OPTION value="14"{if $contractorinfo.paytime==14} selected{/if}>14</OPTION>
-				<OPTION value="21"{if $contractorinfo.paytime==21} selected{/if}>21</OPTION>
-				<OPTION value="30"{if $contractorinfo.paytime==30} selected{/if}>30</OPTION>
-			</SELECT>
-		            </TD>
-	            </TR>
-	            <TR>
-	                <TD nowrap>
+			        </td>
+			        <td>
+			<select name="contractordata[paytime]" {tip text="Select default deadline in days" trigger="paytime"}>
+				<option value="0"{if $contractorinfo.paytime==0} selected{/if}>0</option>
+				<option value="7"{if $contractorinfo.paytime==7} selected{/if}>7</option>
+				<option value="10"{if $contractorinfo.paytime==10} selected{/if}>10</option>
+				<option value="14"{if $contractorinfo.paytime==14} selected{/if}>14</option>
+				<option value="21"{if $contractorinfo.paytime==21} selected{/if}>21</option>
+				<option value="30"{if $contractorinfo.paytime==30} selected{/if}>30</option>
+			</select>
+		            </td>
+	            </tr>
+	            <tr>
+	                <td nowrap>
 			            {trans("Payment type:")}
-			        </TD>
-			        <TD>
-			<SELECT name="contractordata[paytype]" {tip text="Select default invoices payment type" trigger="paytype"}>
+			        </td>
+			        <td>
+			<select name="contractordata[paytype]" {tip text="Select default invoices payment type" trigger="paytype"}>
 				{foreach from=$_PAYTYPES item=item key=key}
-				<OPTION value="{$key}"{if $contractorinfo.paytype==$key} selected{/if}>{$item}</OPTION>
+				<option value="{$key}"{if $contractorinfo.paytype==$key} selected{/if}>{$item}</option>
 				{/foreach}
-			</SELECT>
-		            </TD>
-	            </TR>
+			</select>
+		            </td>
+	            </tr>
 	            
 
                 
-			</TABLE>
-		</TD>
-	</TR>
-					<TR>
-					<TD width="1%" style="vertical-align: top">
-						<IMG src="img/options.gif" alt="">
-					</TD>
-					<TD width="99%">
-                        <TABLE cellpadding="0">
-                            <TR>
-                                <TD>
+			</table>
+		</td>
+	</tr>
+					<tr>
+					<td width="1%" style="vertical-align: top">
+						<img src="img/options.gif" alt="">
+					</td>
+					<td width="99%">
+                        <table cellpadding="0">
+                            <tr>
+                                <td>
             						<label for="chkconsent">{trans("Consent to personal data processing:")}</label>
-                                </TD>
-                                <TD>
-			            			<INPUT TYPE="checkbox" NAME="contractordata[consentdate]" VALUE="{$smarty.now}" ID="chkconsent"{if $contractorinfo.consentdate} checked{/if}>
-                                </TD>
-                            </TR>
-                            <TR>
-					            <TD>
+                                </td>
+                                <td>
+			            			<input type="checkbox" name="contractordata[consentdate]" value="{$smarty.now}" id="chkconsent"{if $contractorinfo.consentdate} checked{/if}>
+                                </td>
+                            </tr>
+                            <tr>
+					            <td>
 				            		<label for="chkeinvoice">{trans("Consent to electronic invoices:")}</label>
-                                </TD>
-                                <TD>
-                					<INPUT TYPE="checkbox" NAME="contractordata[einvoice]" VALUE="1" ID="chkeinvoice"{if $contractorinfo.einvoice} checked{/if}>
-					            </TD>
-				            </TR>
-				            <TR>
-					            <TD>
+                                </td>
+                                <td>
+                					<input type="checkbox" name="contractordata[einvoice]" value="1" id="chkeinvoice"{if $contractorinfo.einvoice} checked{/if}>
+					            </td>
+				            </tr>
+				            <tr>
+					            <td>
 						            <label for="chkinvoicenotice">{trans("Consent to invoices delivery via e-mail:")}</label>
-                                </TD>
-                                <TD>
-			            			<INPUT TYPE="checkbox" NAME="contractordata[invoicenotice]" VALUE="1" ID="chkinvoicenotice"{if $contractorinfo.invoicenotice} checked{/if}>
-					            </TD>
-				            </TR>
-				            <TR>
-					            <TD>
+                                </td>
+                                <td>
+			            			<input type="checkbox" name="contractordata[invoicenotice]" value="1" id="chkinvoicenotice"{if $contractorinfo.invoicenotice} checked{/if}>
+					            </td>
+				            </tr>
+				            <tr>
+					            <td>
             						<label for="chkmailingnotice">{trans("Consent to messages delivery via e-mail or sms:")}</label>
-                                </TD>
-                                <TD>
-   						            <INPUT TYPE="checkbox" NAME="contractordata[mailingnotice]" VALUE="1" ID="chkmailingnotice"{if $contractorinfo.mailingnotice} checked{/if}>
-            					</TD>
-			            	</TR>
-			            </TABLE>
-			        </TD>
-			    </TR>
+                                </td>
+                                <td>
+   						            <input type="checkbox" name="contractordata[mailingnotice]" value="1" id="chkmailingnotice"{if $contractorinfo.mailingnotice} checked{/if}>
+            					</td>
+			            	</tr>
+			            </table>
+			        </td>
+			    </tr>
 	
-                                    		</TABLE>
-					</TD>
-					<TD WIDTH="50%" style="vertical-align:top;">
-						<TABLE WIDTH="100%" CELLPADDING="3">
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/info1.gif" ALT="">
-		</TD>
-		<TD WIDTH="99%">
-			<TEXTAREA NAME="contractordata[info]" COLS="60" ROWS="10" {tip text="Enter additional information (optional)"}>{$contractorinfo.info|escape}</TEXTAREA>
-		</TD>
-	</TR>
+                                    		</table>
+					</td>
+					<td width="50%" style="vertical-align:top;">
+						<table width="100%" cellpadding="3">
+	<tr class="light">
+		<td width="1%">
+			<img src="img/info1.gif" alt="">
+		</td>
+		<td width="99%">
+			<textarea name="contractordata[info]" cols="60" rows="10" {tip text="Enter additional information (optional)"}>{$contractorinfo.info|escape}</textarea>
+		</td>
+	</tr>
 	
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/note.gif" ALT="">
-		</TD>
-		<TD WIDTH="99%">
-			<TEXTAREA NAME="contractordata[notes]" COLS="60" ROWS="10" {tip text="Enter notes (optional)"}>{$contractorinfo.notes|escape}</TEXTAREA>
-		</TD>
-	</TR>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/note.gif" alt="">
+		</td>
+		<td width="99%">
+			<textarea name="contractordata[notes]" cols="60" rows="10" {tip text="Enter notes (optional)"}>{$contractorinfo.notes|escape}</textarea>
+		</td>
+	</tr>
 	
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/users.gif" ALT="">
-		</TD>
-		<TD WIDTH="99%">
-			<B>{trans("Created:")}</B> {$contractorinfo.createdby}, {$contractorinfo.creationdateh}<BR>
-			<B>{trans("Modified:")}</B> {if $contractorinfo.moddate}{$contractorinfo.modifiedby}, {$contractorinfo.moddateh}{else}-{/if}
-		</TD>
-	</TR>
-                                        	</TABLE>
-					</TD>
-				</TR>
-			</TABLE>
-		</TD>
-	</TR>
-	<TR CLASS="dark">
-		<TD WIDTH="100%" CLASS="fall" ALIGN="RIGHT">
-			<A HREF="javascript:document.contractoredit.submit();" ACCESSKEY="S">{trans("Submit")} <IMG SRC="img/save.gif" alt=""></A>
-			<A HREF="?m=contractorlist">{trans("Cancel")} <IMG SRC="img/cancel.gif" alt=""></A>
-		</TD>
-	</TR>
-</TABLE>
-</FORM>
-<SCRIPT type="text/javascript">
+	<tr class="light">
+		<td width="1%">
+			<img src="img/users.gif" alt="">
+		</td>
+		<td width="99%">
+			<b>{trans("Created:")}</b> {$contractorinfo.createdby}, {$contractorinfo.creationdateh}<br>
+			<b>{trans("Modified:")}</b> {if $contractorinfo.moddate}{$contractorinfo.modifiedby}, {$contractorinfo.moddateh}{else}-{/if}
+		</td>
+	</tr>
+                                        	</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr class="dark">
+		<td width="100%" class="fall" align="right">
+			<a href="javascript:document.contractoredit.submit();" accesskey="S">{trans("Submit")} <img src="img/save.gif" alt=""></a>
+			<a href="?m=contractorlist">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a>
+		</td>
+	</tr>
+</table>
+</form>
+<script type="text/javascript">
 <!--
 document.forms['contractoredit'].elements['contractordata[lastname]'].focus();
 //-->
-</SCRIPT>
+</script>
 
 {include file="footer.html"}

@@ -1,5 +1,11 @@
 {include file="header.html"}
-<h1>{$layout.pagetitle}</h1>
+
+{if $node == 'netdev'}
+    {assign var='tmp' value='monit_netdev'}
+{else}
+    {assign var='tmp' value='monit_node'}
+{/if}
+{title value=$layout.pagetitle help=$tmp}
 {literal}
 <script type="text/javascript">
 <!--
@@ -55,7 +61,7 @@
 </script>
 {/literal}
 
-<table width="100%" cellpadding="3">
+<table width="100%" cellpadding="3" class="table">
     <form name="choosefilter" method="GET" action="?{$backto}">
     <input type="submit" class="hiddenbtn">
     <input type="hidden" name="m" value="monitnodelist">
@@ -63,7 +69,7 @@
     <input type="hidden" name="tmp_pingtest" value="">
     <input type="hidden" name="tmp_signaltest" value="">
     
-    <tr class="dark">
+    <tr class="dark info">
 
 	<td width="1%"  nowrap align="left" class="fleftu">
 		<a href="?{$backto}&o=name&d={if $listdata.order=='name' && $listdata.direction=='asc'}desc{else}asc{/if}">{if $node.typedev=='netdev'}Nazwa{else}Klient{/if}</a>&nbsp;<img src="img/{if $listdata.order=='name'}{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order{else}empty{/if}.gif" width="7"><br>
@@ -113,17 +119,16 @@
     {section name=devlist loop=$monitlist}
 	{assign var='indeks' value=$smarty.section.devlist.index}
 
-	<tr class="{cycle} {if !$monitlist[devlist].active}blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');" >
-
+	<tr class="{cycle} lista {if !$monitlist[devlist].active}blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');" >
 	    <td width="1%" align="left" nowrap class="fleft"style="padding-left:4px;padding-right:4px;">
 		<img src="img/radar.png" style="cursor:pointer;" border="0" {if $monitlist[devlist].ptime}{tip a=$monitlist[devlist].nid dynpopup='?m=monitchartshort&chart=ping&type=node&id=$a' sticky=0}{else}{tip text="BRAK POMIARÓW DLA URZĄDZENIA"}{/if}>&nbsp;
-		{$monitlist[devlist].dname}&nbsp;<a href="?m={if $node.typedev=='netdev'}netdevinfo{else}customerinfo{/if}&id={$monitlist[devlist].did}" {if $node.typedev=='netdev'}{tip text="Otwórz kartę urządzenia sieciowego"}{else}{tip text="Otwórz kartę klienta"}{/if}>&raquo;&raquo;&raquo;</A><br>
+		{$monitlist[devlist].dname}&nbsp;<a href="?m={if $node.typedev=='netdev'}netdevinfo{else}customerinfo{/if}&id={$monitlist[devlist].did}" {if $node.typedev=='netdev'}{tip text="Otwórz kartę urządzenia sieciowego"}{else}{tip text="Otwórz kartę klienta"}{/if}>&raquo;&raquo;&raquo;</a><br>
 		<img src="img/wireless.gif" {tip a=$monitlist[devlist].nid dynpopup='?m=monitchartshort&chart=signal&type=node&time=-12h&id=$a' sticky=0} style="cursor:pointer;" border="0">
 		{$monitlist[devlist].location}
 	    </td>
 
 	    <td width="auto" nowrap align="left" style="padding-left:4px;padding-right:4px;vertical-align:top;">
-		{if $monitlist[devlist].nname}{$monitlist[devlist].nname} <a href="?m={if $node.typedev=='netdev'}netdevinfo{else}nodeinfo{/if}&id={if $node.typedev=='netdev'}{$monitlist[devlist].did}{else}{$monitlist[devlist].nid}{/if}{if $node.typedev=='netdev'}&ip={$monitlist[devlist].nid}{/if}" {tip text="Otwórz kartę urządzenia sieciowego"}>&raquo;&raquo;&raquo;</A>{else}&nbsp;{/if} <br>
+		{if $monitlist[devlist].nname}{$monitlist[devlist].nname} <a href="?m={if $node.typedev=='netdev'}netdevinfo{else}nodeinfo{/if}&id={if $node.typedev=='netdev'}{$monitlist[devlist].did}{else}{$monitlist[devlist].nid}{/if}{if $node.typedev=='netdev'}&ip={$monitlist[devlist].nid}{/if}" {tip text="Otwórz kartę urządzenia sieciowego"}>&raquo;&raquo;&raquo;</a>{else}&nbsp;{/if} <br>
 		{if $monitlist[devlist].ipaddr} 
 		    <a href="javascript:ping_popup('{$monitlist[devlist].ipaddr}')">{$monitlist[devlist].ipaddr}</a>
 		{/if}
@@ -131,19 +136,19 @@
 
 	    <td width="1%" nowrap align="center" style="padding-left:4px;padding-right:4px;" >
 		<select onchange="settesttype('{$monitlist[devlist].nid}',this.value);" {tip text="wybierz usługę za pomocą której będzie przeprowadzony test"}>
-		    <option value="icmp" {if $monitlist[devlist].test_type=='icmp'} SELECTED{/if}>icmp</option>
-		    <option value="http" {if $monitlist[devlist].test_type=='http'} SELECTED{/if}>http</option>
-		    <option value="https" {if $monitlist[devlist].test_type=='https'} SELECTED{/if}>https</option>
-		    <option value="ssh" {if $monitlist[devlist].test_type=='ssh'} SELECTED{/if}>ssh</option>
-		    <option value="ftp" {if $monitlist[devlist].test_type=='ftp'} SELECTED{/if}>ftp</option>
-		    <option value="telnet" {if $monitlist[devlist].test_type=='telnet'} SELECTED{/if}>telnet</option>
-		    <option value="callbook" {if $monitlist[devlist].test_type=='callbook'} SELECTED{/if}>callbook</option>
-		    <option value="rpcbind" {if $monitlist[devlist].test_type=='rpcbind'} SELECTED{/if}>rpcbind</option>
-		    <option value="pptp" {if $monitlist[devlist].test_type=='pptp'} SELECTED{/if}>pptp</option>
-		    <option value="dns" {if $monitlist[devlist].test_type=='dns'} SELECTED{/if}>dns</option>
-		    <option value="smtp" {if $monitlist[devlist].test_type=='smtp'} SELECTED{/if}>smtp</option>
-		    <option value="nfs" {if $monitlist[devlist].test_type=='nfs'} SELECTED{/if}>nfs</option>
-		    <option value="winbox" {if $monitlist[devlist].test_type=='winbox'} SELECTED{/if}>winbox</option>
+		    <option value="icmp" {if $monitlist[devlist].test_type=='icmp'} selected{/if}>icmp</option>
+		    <option value="http" {if $monitlist[devlist].test_type=='http'} selected{/if}>http</option>
+		    <option value="https" {if $monitlist[devlist].test_type=='https'} selected{/if}>https</option>
+		    <option value="ssh" {if $monitlist[devlist].test_type=='ssh'} selected{/if}>ssh</option>
+		    <option value="ftp" {if $monitlist[devlist].test_type=='ftp'} selected{/if}>ftp</option>
+		    <option value="telnet" {if $monitlist[devlist].test_type=='telnet'} selected{/if}>telnet</option>
+		    <option value="callbook" {if $monitlist[devlist].test_type=='callbook'} selected{/if}>callbook</option>
+		    <option value="rpcbind" {if $monitlist[devlist].test_type=='rpcbind'} selected{/if}>rpcbind</option>
+		    <option value="pptp" {if $monitlist[devlist].test_type=='pptp'} selected{/if}>pptp</option>
+		    <option value="dns" {if $monitlist[devlist].test_type=='dns'} selected{/if}>dns</option>
+		    <option value="smtp" {if $monitlist[devlist].test_type=='smtp'} selected{/if}>smtp</option>
+		    <option value="nfs" {if $monitlist[devlist].test_type=='nfs'} selected{/if}>nfs</option>
+		    <option value="winbox" {if $monitlist[devlist].test_type=='winbox'} selected{/if}>winbox</option>
 		</select>
 	    </td>
 
@@ -258,8 +263,7 @@
 			<font color="red">dead</font>
 		    {/if}
 		{else}
-		---<br>---
-		{/if}
+		---<br>---{/if}
 		
 	    </td>
 
@@ -293,14 +297,14 @@
 	</tr>
 
     {sectionelse}
-	<tr class="light">
+	<tr class="light error">
 	    <td width="100%" colspan="11" class="flr" align="center">
 		<br><h1>Brak urządzeń</h1><br>
 	    </td>
 	</tr>
     {/section}
 
-    <tr class="dark">
+    <tr class="dark footer footer-bordertop">
 	<td class="fall" width="100%"  colspan="11" align="right" style="padding-right:15px;">
 	    <select name="newnetdev" id="newnetdev">
 		<option value="0">--- dodaj urządzenie do monitoringu ---</option>
@@ -308,7 +312,7 @@
 		    <option value="{$devlist[devlist].id}">{$devlist[devlist].name} ({$devlist[devlist].ipaddr})</option>
 		{/section}
 	    </select>
-	    <a href="javascript:addMonitDev();">Dodaj urządzenie</A>
+	    <a href="javascript:addMonitDev();">Dodaj urządzenie</a>
 	</td>
     </tr>
 

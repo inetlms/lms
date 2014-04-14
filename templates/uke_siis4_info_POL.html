@@ -26,7 +26,7 @@
 	    
 	    {cycle values="light,lucid" print=false}
 	    {section name='pollist' loop=$pollist}
-	    <tr class="{cycle}{if !$pollist[pollist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	    <tr class="{cycle} lista {if !$pollist[pollist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		<td width="1%" class="fleft pad" align="left">{$pollist[pollist].identyfikator}</td>
 		
 		<td width="1%" class="pad" align="left">{$pollist[pollist].identyfikatora}</td>

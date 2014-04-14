@@ -104,8 +104,8 @@ ul.fader{clear:both;}
     <tr class="dark">
 		    <td width="50%" class="fleftu pad"nowrap></td>
 		    <td width="50%" align="right" class="frightu pad">
-			<button class="button" type="submit">{trans('Save')}</button>
-			<button type="button" onclick="document.getElementById('id_annex_edit').style.display='none';">{trans('Cancel')}</button>
+			<button type="submit">Dodaj plik <img src="img/add.gif"></button>
+			<a class="button" href="javascript:void(0);" onclick="document.getElementById('id_annex_edit').style.display='none';">Anuluj <img src="img/cancel.gif"></a>
 		    </td>
     </tr>
 </table>
@@ -114,11 +114,11 @@ ul.fader{clear:both;}
 
 <div id="id_annex_content"></div>
 
+{include file="load_gif.html"}
+
 {literal}
 <script type="text/javascript">
 <!--
-    xajax.callback.global.onRequest = function(){document.getElementById('id_loadajax_img').src = 'img/328.gif';}
-    xajax.callback.global.onComplete = function(){document.getElementById('id_loadajax_img').src = 'img/empty.gif';}
     
     function kasuj_plik_annex(id)
     {

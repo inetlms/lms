@@ -74,8 +74,8 @@ if(!empty($_POST['division']))
 	{
 		$DB->Execute('INSERT INTO divisions (name, shortname, address, city, zip,
 			countryid, ten, regon, account, inv_header, inv_footer, inv_author,
-			inv_cplace, inv_paytime, inv_paytype, description) 
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+			inv_cplace, inv_paytime, inv_paytype, description, status, url, email, rpt, rjpt, rbe) 
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 			array(
 				    $division['name'],
 				    $division['shortname'],
@@ -91,8 +91,15 @@ if(!empty($_POST['division']))
 				    $division['inv_author'],
 				    $division['inv_cplace'],
 				    $division['inv_paytime'],
-				    $division['inv_paytype'] ? $division['inv_paytype'] : null,
+				    $division['inv_paytype'] ? $division['inv_paytype'] : NULL,
 				    $division['description'],
+				    (!empty($division['status']) ? 1 : 0),
+				    ($division['url'] ? $division['url'] : NULL),
+				    ($division['email'] ? $division['email'] : NULL),
+				    ($division['rpt'] ? $division['rpt'] : NULL),
+				    ($division['rjpt'] ? $division['rjpt'] : NULL),
+				    ($division['rbe'] ? $division['rbe'] : NULL),
+				    
 			));
 
 		if (SYSLOG)

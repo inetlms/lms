@@ -74,50 +74,50 @@ function showInvoiceLMS()
 		    <tr><td width="1%" align="left" nowrap>Adres</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[address]" value="{$dane.address}" size="50"></td></tr>
 		    <tr><td width="1%" align="left" nowrap >Numer domu</td><td width="1%" align="left" nowrap><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[street_number]" value="{$dane.street_number}" size="10"></td></tr>
 		    <tr><td width="1%" align="left" nowrap >Numer mieszkania</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[apartment_number]" value="{$dane.flat_number}" size="10"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Kod pocztowy</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[postcode]" value="{$dane.postcode}" size="10"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Miejscowość</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[city]" value="{$dane.city}" size="50"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Kraj</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[country]" value="{$dane.country}" size="50"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Kod pocztowy</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[postcode]" value="{$dane.postcode}" size="10"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Miejscowość</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[city]" value="{$dane.city}" size="50"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Kraj</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[country]" value="{$dane.country}" size="50"></td></tr>
 		    
 		    
 		    <tr>
 			<td width="1%" align="left" nowrap >Klient LMS</td>
-			<td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left">
 			<select name="accountadd[ext_billing_id]" style="width:365px;cursor:pointer;" {tip text="Kliknij aby otworzyć listę klientów z systemu LMS"} onchange="showInvoiceLMS();">
-			    <option value="" {if $dane.ext_billing_id eq 0} SELECTED{/if}>&nbsp;</option>
+			    <option value="" {if $dane.ext_billing_id eq 0} selected{/if}>&nbsp;</option>
 			    {section name=l2 loop=$cuslms}
-			    <option value="{$cuslms[l2].id}" {if $dane.ext_billing_id eq $cuslms[l2].id} SELECTED{else}{if $cusid}{if $cuslms[l2].id==$cusid} SELECTED {/if}{/if}{/if}>{$cuslms[l2].lastname} {$cuslms[l2].name}, {$cuslms[l2].address} {$cuslms[l2].zip} {$cuslms[l2].city}</option>
+			    <option value="{$cuslms[l2].id}" {if $dane.ext_billing_id eq $cuslms[l2].id} selected{else}{if $cusid}{if $cuslms[l2].id==$cusid} selected {/if}{/if}{/if}>{$cuslms[l2].lastname} {$cuslms[l2].name}, {$cuslms[l2].address} {$cuslms[l2].zip} {$cuslms[l2].city}</option>
 			    {/section}
 			</select>&nbsp;<a href="#" onclick="podstawklienta();" {tip text="Podstaw dane klienta do formularza"}>&raquo;&raquo;&raquo;</a>
 			</td>
 		    </tr>
-		    <tr><td width="1%" align="left" nowrap >E-mail</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[email]" value="{$dane.email}" size="50"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Domyślny cennik {$dane.id_default_pricelist}</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><select name="accountadd[id_default_pricelist]" style="cursor:pointer;">{section name=lista loop=$price}<option value="{$price[lista].id}" {if $dane.id_default_pricelist==$price[lista].id} SELECTED{/if}>&nbsp;&nbsp;{$price[lista].name}&nbsp;&nbsp;</option>{/section}</select></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Typ Płatności {$dane.payment_type}</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left"><select name="accountadd[payment_type]" style="width:170px;cursor:pointer;"><option value="prepaid" {if $dane.payment_type=='prepaid'} SELECTED{/if}>&nbsp;&nbsp;prepaid (przedpłata)&nbsp;&nbsp;</option><option value="postpaid" {if $dane.payment_type=='postpaid'} SELECTED{/if}>&nbsp;&nbsp;postpaid (abonament)&nbsp;&nbsp;</option></select></td></tr>
+		    <tr><td width="1%" align="left" nowrap >E-mail</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[email]" value="{$dane.email}" size="50"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Domyślny cennik {$dane.id_default_pricelist}</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><select name="accountadd[id_default_pricelist]" style="cursor:pointer;">{section name=lista loop=$price}<option value="{$price[lista].id}" {if $dane.id_default_pricelist==$price[lista].id} selected{/if}>&nbsp;&nbsp;{$price[lista].name}&nbsp;&nbsp;</option>{/section}</select></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Typ Płatności {$dane.payment_type}</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left"><select name="accountadd[payment_type]" style="width:170px;cursor:pointer;"><option value="prepaid" {if $dane.payment_type=='prepaid'} selected{/if}>&nbsp;&nbsp;prepaid (przedpłata)&nbsp;&nbsp;</option><option value="postpaid" {if $dane.payment_type=='postpaid'} selected{/if}>&nbsp;&nbsp;postpaid (abonament)&nbsp;&nbsp;</option></select></td></tr>
 		</table>
 	    </td>
 	    <td class="fright" width="auto" style="text-align:left;vertical-align:top;">
 		<table width="100%" cellpadding="3">
-		    <tr><td colspan="3" align="left" width="100%"><B>DANE DO FAKTURY W SERWISIE HIPERUS&nbsp;<a href="javascript:podstawdofaktury();"> podstaw dane konta</a></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Nazwa</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[b_name]" value="{$dane.b_name}" size="50"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Adres</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[b_address]" value="{$dane.b_address}" size="50"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Numer domu</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[b_street_number]" value="{$dane.b_street_number}" size="10"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Numer mieszkania</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[b_apartment_number]" value="{$dane.b_apartment_number}" size="10"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Kod pocztowy</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[b_postcode]" value="{$dane.b_postcode}" size="10"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Miejscowość</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[b_city]" value="{$dane.b_city}" size="50"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Kraj</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[b_country]" value="{$dane.b_country}" size="50"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >NIP / PESEL</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[b_nip]" value="{$dane.b_nip}" size="50"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Regon</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><input type="text" name="accountadd[b_regon]" value="{$dane.b_regon}" size="50"></td></tr>
-		    <tr><td width="1%" align="left" nowrap >WLR</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><select style="width:70px;text-align:center;cursor:pointer;" {if !$wlr} DISABLED{/if}><option value="f" {if $dane.is_wlr=='f'} SELECTED{/if}>Nie</option><option value="t" {if $dane.is_wlr=='t'} SELECTED{/if}>Tak</option></select></td></tr>
-		    <tr><td width="1%" align="left" nowrap >Zgoda na przetwarzanie danych</td><td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td><td width="98%" align="left" ><select name="accountadd[consent_data_processing]" style="width:70px;text-align:center;cusros:pointer;"><option value="t" {if $dane.consent_data_processing=='t'} SELECTED{/if}>Tak</option><option value="f" {if $dane.consent_data_processing=='f'} SELECTED{/if}>Nie</option></select></td></tr>
+		    <tr><td colspan="3" align="left" width="100%"><b>DANE DO FAKTURY W SERWISIE HIPERUS&nbsp;<a href="javascript:podstawdofaktury();"> podstaw dane konta</a></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Nazwa</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[b_name]" value="{$dane.b_name}" size="50"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Adres</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[b_address]" value="{$dane.b_address}" size="50"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Numer domu</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[b_street_number]" value="{$dane.b_street_number}" size="10"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Numer mieszkania</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[b_apartment_number]" value="{$dane.b_apartment_number}" size="10"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Kod pocztowy</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[b_postcode]" value="{$dane.b_postcode}" size="10"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Miejscowość</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[b_city]" value="{$dane.b_city}" size="50"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Kraj</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[b_country]" value="{$dane.b_country}" size="50"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >NIP / PESEL</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[b_nip]" value="{$dane.b_nip}" size="50"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Regon</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><input type="text" name="accountadd[b_regon]" value="{$dane.b_regon}" size="50"></td></tr>
+		    <tr><td width="1%" align="left" nowrap >WLR</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><select style="width:70px;text-align:center;cursor:pointer;" {if !$wlr} disabled{/if}><option value="f" {if $dane.is_wlr=='f'} selected{/if}>Nie</option><option value="t" {if $dane.is_wlr=='t'} selected{/if}>Tak</option></select></td></tr>
+		    <tr><td width="1%" align="left" nowrap >Zgoda na przetwarzanie danych</td><td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><select name="accountadd[consent_data_processing]" style="width:70px;text-align:center;cusros:pointer;"><option value="t" {if $dane.consent_data_processing=='t'} selected{/if}>Tak</option><option value="f" {if $dane.consent_data_processing=='f'} selected{/if}>Nie</option></select></td></tr>
 		    <tr>
 			<td width="1%" align="left" nowrap >Faktury VAT </td>
-			<td width="1%" align="left" nowrap ><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%" align="left" nowrap ><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" >
 			    <select name="accountadd[invoice]" style="width:170px;cursor:pointer;" {tip text="Aby była możliwość wystawiania faktur VAT przez LMS, konto VoIP musi być powiązane z klientem z LMSa"}>
-				<option value="0" {if $dane.invoice=='0'} SELECTED{/if}>&nbsp;&nbsp;bez faktury&nbsp;&nbsp;</option>
-				<option value="1" {if $dane.invoice=='1'} SELECTED{/if}>&nbsp;&nbsp;Hiperus&nbsp;&nbsp;</option>
-				<option value="2" {if $dane.invoice=='2'} SELECTED{/if} id="id_show_invoice_lms" style="display:none;">&nbsp;&nbsp;LMS&nbsp;&nbsp;</option>
+				<option value="0" {if $dane.invoice=='0'} selected{/if}>&nbsp;&nbsp;bez faktury&nbsp;&nbsp;</option>
+				<option value="1" {if $dane.invoice=='1'} selected{/if}>&nbsp;&nbsp;Hiperus&nbsp;&nbsp;</option>
+				<option value="2" {if $dane.invoice=='2'} selected{/if} id="id_show_invoice_lms" style="display:none;">&nbsp;&nbsp;LMS&nbsp;&nbsp;</option>
 			    </select>
 			</td>
 		    </tr>

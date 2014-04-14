@@ -1,7 +1,7 @@
 {include file="header.html"}
 {$xajax}
 
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 
 <form name="networknode" id="networknode" method="POST" action="?m=networknode{$actions}">
 <input type="hidden" name="networknodeid" value="{$networknodeid}">
@@ -9,6 +9,8 @@
 <input type="hidden" name="networknode[location_street]" id="id_location_street" value="{$networknodeinfo.location_street}"> <!--// 9 //-->
 <input type="hidden" name="target" value="{$target}">
 <input type="hidden" name="networknode[int]" id="id_networknode_int" value="{$networknodeinfo.int}">
+<input type="hidden" name="networknode[validate]" id="validate" value="0">
+<input type="hidden" name="networknode[actions]" id="actions" value="{$actions}">
 
 {if $actions == 'edit'}
     <input type="hidden" name="networknode[old_location_city]" id="id_old_location_city" value="{$networknodeinfo.location_city}">
@@ -39,88 +41,163 @@
 <table width="100%" cellpadding="2">
 
 	<tr>
-		<td width="1%" nowrap class="pad" align="left"><strong>Nazwa węzła</strong></td>
-		<td width="99%" class="pad" nowrap><input type="text" name="name" id="id_name" style="width:200px;" value="{$networknodeinfo.name}" autocomplete="off"></td>
+		<td width="1%" nowrap class="pad" align="left">
+		    <strong>Nazwa węzła</strong>
+		</td>
+		<td width="99%" class="pad" nowrap>
+		    <input type="text" name="name" id="id_name" style="width:200px;" value="{$networknodeinfo.name}" autocomplete="off">
+		    <div id="id_name_alerts" style="color:red;"></div>
+		</td>
 	</tr>
 	
 	<tr class="light">
-		<td width="1%" nowrap class="pad" align="left">Rodzaj węzła</td>
+		<td width="1%" nowrap class="pad" align="left">
+		    Rodzaj węzła
+		</td>
 		<td width="99%" nowrap class="pad">
 		    {foreach $_TNODE as $item => $key}
 			<input type="radio" name="networknode[type]" id="id_type{$item}" value="{$item}" {if $networknodeinfo.type == $item} checked {/if}>
 			<label for="id_type{$item}">{$key}</label>
-		    {/foreach}</td>
+		    {/foreach}
+		</td>
 	</tr>
 
 	<tr class="light" id="id_view_used_teryt">
-		<td width="1%" nowrap class="pad" align="left"><label for="teryt">Użyj bazy TERYT</label><input type="checkbox" name="teryt" value="1" id="teryt" onchange="check_use_teryt();" {if $networknodeinfo.teryt} checked {/if}></td>
-		<td width="99%" align="left"><a href="javascript: void(0);" id="used_teryt" style="display:none;" onclick="if (check_teryt()) return locationchoosewin('networknode', 'networknode', document.forms['networknode'].elements['networknode[location_city]'].value,  document.forms['networknode'].elements['networknode[location_street]'].value)">&raquo;&raquo;&raquo;<strong> WYBIERZ LOKALIZACJĘ </strong>&raquo;&raquo;&raquo;</a></td>
-	</tr>
-
-	<tr class="light" id="id_view_states">
-		<td width="1%" nowrap class="pad" align="left">Województwo</td>
-		<td width="99%" nowrap class="pad"><input type="text" name="networknode[states]" id="id_states" style="width:200px;" value="{$networknodeinfo.states}"></td>
-	</tr>
-
-	<tr class="light" id="id_view_districts">
-		<td width="1%" nowrap class="pad" align="left">Powiat</td>
-		<td width="99%" nowrap class="pad"><input type="text" name="networknode[districts]" id="id_districts" style="width:200px;" value="{$networknodeinfo.districts}"></td>
-	</tr>
-
-	<tr class="light" id="id_view_boroughs">
-		<td width="1%" nowrap class="pad" align="left">Gmina</td>
-		<td width="99%" nowrap class="pad"><input type="text" name="networknode[boroughs]" id="id_boroughs" style="width:200px;" value="{$networknodeinfo.boroughs}"></td>
-	</tr>
-
-	<tr class="light" id="id_view_city">
-		<td width="1%" nowrap class="pad" align="left">Miejscowość</td>
-		<td width="99%" nowrap class="pad"><input type="text" name="networknode[city]" id="id_city" style="width:200px;" value="{$networknodeinfo.city}"></td>
-	</tr>
-
-	<tr class="light" id="id_view_street">
-		<td width="1%" nowrap class="pad" align="left">Ulica</td>
-		<td width="99%" nowrap class="pad"><input type="text" name="networknode[street]" id="id_street" style="width:200px;" value="{$networknodeinfo.street}"></td>
+		<td width="1%" nowrap class="pad" align="left">
+		    <label for="teryt">Użyj bazy TERYT</label>
+		    <input type="checkbox" name="teryt" value="1" id="teryt" onchange="check_use_teryt();" {if $networknodeinfo.teryt} checked {/if}>
+		</td>
+		<td width="99%" align="left">
+		    <a href="javascript: void(0);" id="used_teryt" style="display:none;" onclick="if (check_teryt()) return locationchoosewin('networknode', 'networknode', document.forms['networknode'].elements['networknode[location_city]'].value,  document.forms['networknode'].elements['networknode[location_street]'].value)">&raquo;&raquo;&raquo;<strong> WYBIERZ LOKALIZACJĘ </strong>&raquo;&raquo;&raquo;</a>
+		</td>
 	</tr>
 	
 	<tr class="light" id="id_view_location" style="display:none;">
 		<td width="1%" nowrap class="pad" align="left">Loklalizacja</td>
-		<td width="99%" nowrap class="pad"><input type="text" name="networknode[location]" id="location" readonly style="width:200px;" value="{$networknodeinfo.location}"></td>
-	</tr>
-
-	<tr class="light">
-		<td width="1%" nowrap class="pad" align="left">Numer porządkowy budynku</td>
-		<td width="99%" nowrap class="pad"><input type="text" name="networknode[location_house]" id="id_location_house" style="width:110px;" value="{$networknodeinfo.location_house}"></td>
-	</tr>
-	
-	<tr class="light">
-		<td width="1%" nowrap class="pad" align="left">Numer mieszkania</td>
-		<td width="99%" nowrap class="pad"><input type="text" name="networknode[location_flat]" id="id_location_flat" style="width:110px;" value="{$networknodeinfo.location_flat}"></td>
-	</tr>
-
-	<tr class="light">
-		<td width="1%" nowrap class="pad" align="left">Kod Pocztowy</td>
-		<td width="99%" nowrap class="pad"><input type="text" name="networknode[zip]" id="id_zip" style="width:110px;" value="{$networknodeinfo.zip}"></td>
-	</tr>
-
-	<tr class="light">
-		<td width="1%" nowrap class="pad" align="left">Numer działki ewidencyjnej</td>
-		<td width="99%" nowrap class="pad"><input type="text" name="networknode[cadastral_parcel]" id="id_cadastral_parcel" style="width:110px;" value="{$networknodeinfo.cadastral_parcel}"></td>
-	</tr>
-
-	<tr class="light">
-		<td width="1%" nowrap class="pad" align="left">Szerokość geografczna</td>
-		<td width="99%" nowrap class="pad"><input type="text" name="networknode[latitude]" id="id_latitude" style="width:110px;" value="{$networknodeinfo.latitude}"><a href="javascript: void(0);" id="id_latitude_map" onclick="return gpscoordschoosewin(document.forms['networknode'].elements['networknode[longitude]'], document.forms['networknode'].elements['networknode[latitude]']);" {tip text="Click to select gps coordinates from map"}>&nbsp;&raquo;&raquo;&raquo;</a></td>
-	</tr>
-
-	<tr class="light">
-		<td width="1%" nowrap class="pad" align="left">Długość geograficzna</td>
 		<td width="99%" nowrap class="pad">
-		<input type="text" name="networknode[longitude]" id="id_longitude" style="width:110px;" value="{$networknodeinfo.longitude}"><a href="javascript: void(0);" id="id_longitude_map" onclick="return gpscoordschoosewin(document.forms['networknode'].elements['networknode[longitude]'], document.forms['networknode'].elements['networknode[latitude]']);" {tip text="Click to select gps coordinates from map"}>&nbsp;&raquo;&raquo;&raquo;</a></td>
+		    <input type="text" name="networknode[location]" id="location" readonly style="width:200px;" value="{$networknodeinfo.location}">
+		    <div id="id_location_alerts" style="color:red;"></div>
+		</td>
+	</tr>
+
+	<tr class="light" id="id_view_states">
+		<td width="1%" nowrap class="pad" align="left">
+		    Województwo
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <input type="text" name="networknode[states]" id="id_states" style="width:200px;" value="{$networknodeinfo.states}">
+		    <div id="id_states_alerts" style="color:red;"></div>
+		</td>
+	</tr>
+
+	<tr class="light" id="id_view_districts">
+		<td width="1%" nowrap class="pad" align="left">
+		    Powiat
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <input type="text" name="networknode[districts]" id="id_districts" style="width:200px;" value="{$networknodeinfo.districts}">
+		    <div id="id_districts_alerts" style="color:red;"></div>
+		</td>
+	</tr>
+
+	<tr class="light" id="id_view_boroughs">
+		<td width="1%" nowrap class="pad" align="left">
+		    Gmina
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <input type="text" name="networknode[boroughs]" id="id_boroughs" style="width:200px;" value="{$networknodeinfo.boroughs}">
+		    <div id="id_boroughs_alerts" style="color:red;"></div>
+		</td>
+	</tr>
+
+	<tr class="light" id="id_view_city">
+		<td width="1%" nowrap class="pad" align="left">
+		    Miejscowość
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <input type="text" name="networknode[city]" id="id_city" style="width:200px;" value="{$networknodeinfo.city}">
+		    <div id="id_city_alerts" style="color:red;"></div>
+		</td>
+	</tr>
+
+	<tr class="light" id="id_view_street">
+		<td width="1%" nowrap class="pad" align="left">
+		    Ulica
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <input type="text" name="networknode[street]" id="id_street" style="width:200px;" value="{$networknodeinfo.street}">
+		</td>
+	</tr>
+	
+	
+
+	<tr class="light">
+		<td width="1%" nowrap class="pad" align="left">
+		    Numer porządkowy budynku
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <input type="text" name="networknode[location_house]" id="id_location_house" style="width:110px;" value="{$networknodeinfo.location_house}">
+		    <div id="id_location_house_alerts" style="color:red;"></div>
+		</td>
 	</tr>
 	
 	<tr class="light">
-		<td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Typ budynku/obiektu w którym znajduje się węzeł.<br>Wymagane dla węzła własnego"}>Typ obiektu</span></td>
-		<td width="99%" nowrap class="pad"><select name="networknode[buildingtype]" id="id_buildingtype"><option value="" {if !$networknodeinfo.buildingtype} selected {/if}></option>{foreach $_BUILDINGS as $item => $key}<option value="{$item}" {if $networknodeinfo.buildingtype == $item} selected {/if}>{$key}</option>{/foreach}</select></td>
+		<td width="1%" nowrap class="pad" align="left">
+		    Numer mieszkania
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <input type="text" name="networknode[location_flat]" id="id_location_flat" style="width:110px;" value="{$networknodeinfo.location_flat}">
+		</td>
+	</tr>
+
+	<tr class="light">
+		<td width="1%" nowrap class="pad" align="left">
+		    Kod Pocztowy
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <input type="text" name="networknode[zip]" id="id_zip" style="width:110px;" value="{$networknodeinfo.zip}">
+		    <div id="id_zip_alerts" style="color:red;"></div>
+		</td>
+	</tr>
+
+	<tr class="light">
+		<td width="1%" nowrap class="pad" align="left">
+		    <span class="tiphelp" {tip text="Proszę podać numer działki jeżeli nie ma podanego adresu"}>Numer działki ewidencyjnej</span>
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <input type="text" name="networknode[cadastral_parcel]" id="id_cadastral_parcel" style="width:110px;" value="{$networknodeinfo.cadastral_parcel}">
+		    <div id="id_cadastral_parcel_alerts" style="color:blue;"></div>
+		</td>
+	</tr>
+
+	<tr class="light">
+		<td width="1%" nowrap class="pad" align="left">
+		    Szerokość geografczna
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <input type="text" name="networknode[latitude]" id="id_latitude" style="width:110px;" value="{$networknodeinfo.latitude}"><a href="javascript: void(0);" id="id_latitude_map" onclick="return gpscoordschoosewin(document.forms['networknode'].elements['networknode[longitude]'], document.forms['networknode'].elements['networknode[latitude]']);" {tip text="Click to select gps coordinates from map"}>&nbsp;&raquo;&raquo;&raquo;</a>
+		    <div id="id_latitude_alerts" style="color:red;"></div>
+		</td>
+	</tr>
+
+	<tr class="light">
+		<td width="1%" nowrap class="pad" align="left">
+		    Długość geograficzna
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <input type="text" name="networknode[longitude]" id="id_longitude" style="width:110px;" value="{$networknodeinfo.longitude}"><a href="javascript: void(0);" id="id_longitude_map" onclick="return gpscoordschoosewin(document.forms['networknode'].elements['networknode[longitude]'], document.forms['networknode'].elements['networknode[latitude]']);" {tip text="Click to select gps coordinates from map"}>&nbsp;&raquo;&raquo;&raquo;</a>
+		    <div id="id_longitude_alerts" style="color:red;"></div>
+		</td>
+	</tr>
+	
+	<tr class="light">
+		<td width="1%" nowrap class="pad" align="left">
+		    <span class="tiphelp" {tip text="Typ budynku/obiektu w którym znajduje się węzeł.<br>Wymagane dla węzła własnego"}>Typ obiektu</span>
+		</td>
+		<td width="99%" nowrap class="pad">
+		    <select name="networknode[buildingtype]" id="id_buildingtype"><option value="" {if !$networknodeinfo.buildingtype} selected {/if}></option>{foreach $_BUILDINGS as $item => $key}<option value="{$item}" {if $networknodeinfo.buildingtype == $item} selected {/if}>{$key}</option>{/foreach}</select>
+		    <div id="id_buildingtype_alerts" style="color:red;"></div>
+		</td>
 	</tr>
 	
 	<tr class="light">
@@ -129,6 +206,14 @@
 			<input type="text" style="width:110px;" name="networknode[room_area]" id="id_room_area" value="{$networknodeinfo.room_area}">
 			&nbsp;m2
 		</td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Powierzchnia wolna pomieszczeń udostępnionych dla węzła"}>Powierzchnia wolna</span></td>
+	    <td width="99%" nowrap class="pad">
+		<input type="text" style="width:110px;" name="networknode[room_area_empty]" id="id_room_area_empty" value="{$networknodeinfo.room_area_empty}">
+		&nbsp;m2
+	    </td>
 	</tr>
 	
 	<tr class="light">
@@ -145,25 +230,28 @@
 		</td>
 	</tr>
 	
+	
 	<tr class="light">
-	    <td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Powierzchnia wolna pomieszczeń udostępnionych dla węzła"}>Powierzchnia wolna</span></td>
-	    <td width="99%" nowrap class="pad">
-		<input type="text" style="width:110px;" name="networknode[room_area_empty]" id="id_room_area_empty" value="{$networknodeinfo.room_area_empty}">
-		&nbsp;m2
-	    </td>
-	</tr>
-	<tr class="light">
-	    <td width="1%" nowrap align="left"><span class="tiphelp" {tip text="Liczba podmiotów obcych w obiekcie"}>Podmioty obce</span></td>
-	    <td width="99%" align="left">
+	    <td width="1%" nowrap align="left" class="pad"><span class="tiphelp" {tip text="Liczba podmiotów obcych w obiekcie"}>Podmioty obce</span></td>
+	    <td width="99%" align="left" class="pad">
 		<input type="number" name="networknode[foreign_entity]" id="id_foreign_entity" value="{$networknodeinfo.foreign_entity}" style="width:110px;">
 	    </td>
 	</tr>
 	
 	<tr class="light">
-	    <td width="1%" nowrap align="left"><span class="tiphelp" {tip text="Liczba podmiotów posiadających zakończenia światłowodowe w obiekcie"}>Podmioty ze światłem</span></td>
-	    <td width="99%" align="left">
+	    <td width="1%" nowrap align="left" class="pad"><span class="tiphelp" {tip text="Liczba podmiotów posiadających zakończenia światłowodowe w obiekcie"}>Podmioty ze światłem</span></td>
+	    <td width="99%" align="left" class="pad">
 		<input type="number" name="networknode[entity_fiber_end]" id="id_entity_fiber_end" value="{$networknodeinfo.entity_fiber_end}" style="width:110px;">
 	    </td>
+	</tr>
+	
+	<tr class="light">
+		<td width="1%" nowrap align="left" class="pad" style="vertical-align:top;">
+		    Notatka
+		</td>
+		<td width="99%" nowrap class="pad" style="vertical-align:top;">
+		    <textarea style="width:200px;" rows="5" name="networknode[description]" id="id_description">{$networknodeinfo.description}</textarea>
+		</td>
 	</tr>
     </table>
 </td>
@@ -172,12 +260,22 @@
     <table width="100%" cellpadding="2">
 	
 	<tr class="light">
-	    <td width="1%" nowrap><span class="tiphelp" {tip text="Przepustowość całkowita węzła w Mb/s"}>Przepustowość całkowita</span></td>
-	    <td width="99%" class="pad" align="left"><input type="text" name="networknode[total_bandwidth]" value="{$networknodeinfo.total_bandwidth}" style="width:100px;"> Mb/s</td>
+	    <td width="1%" nowrap>
+		<span class="tiphelp" {tip text="Przepustowość całkowita węzła w Mb/s"}>Przepustowość całkowita</span>
+	    </td>
+	    <td width="99%" class="pad" align="left">
+		<input type="text" name="networknode[total_bandwidth]" id="id_total_bandwidth" value="{$networknodeinfo.total_bandwidth}" style="width:100px;"> Mb/s
+		<div id="id_total_bandwidth_alerts" style="color:blue;"></div>
+	    </td>
 	</tr>
 	<tr class="light">
-	    <td width="1%" nowrap><span class="tiphelp" {tip text="Przepustowość na potrzeby usług szerokopasmowego dostępu do Internetu w Mb/s, uwzględniona w przepustowości całkowitej"}>Przepustowość dla Internetu</span></td>
-	    <td width="99%" class="pad" align="left"><input type="text" name="networknode[bandwidth_broadband]" value="{$networknodeinfo.bandwidth_broadband}" style="width:100px;"> Mb/s</td>
+	    <td width="1%" nowrap>
+		<span class="tiphelp" {tip text="Przepustowość na potrzeby usług szerokopasmowego dostępu do Internetu w Mb/s, uwzględniona w przepustowości całkowitej"}>Przepustowość dla Internetu</span>
+	    </td>
+	    <td width="99%" class="pad" align="left">
+		<input type="text" name="networknode[bandwidth_broadband]" id="id_bandwidth_broadband" value="{$networknodeinfo.bandwidth_broadband}" style="width:100px;"> Mb/s
+		<div id="id_bandwidth_broadband_alerts" style="color:blue;"></div>
+	    </td>
 	</tr>
 	</tr>
 	<tr class="light">
@@ -262,21 +360,18 @@
 		<td width="99%" nowrap class="pad" style="vertical-align:top;"><textarea style="width:200px;" rows="5" name="networknode[service_other]" id="id_service_other">{$networknodeinfo.service_other}</textarea></td>
 	</tr>
 
-	<tr class="light">
-		<td width="1%" nowrap align="left" style="vertical-align:top;">Notatka</td>
-		<td width="99%" nowrap class="pad" style="vertical-align:top;"><textarea style="width:200px;" rows="5" name="networknode[description]" id="id_description">{$networknodeinfo.description}</textarea></td>
-	</tr>
+	
     </table>
 </td>
 </tr>
 
 <tr class="dark nav-footer">
-    <td width="1%" class="fleftu pad">
-	
+    <td width="1%" class="fleftu pad" align="left">
+	<div id="id_warn_view"></div>
     </td>
     <td width="99%" nowrap class="frightu pad" align="right">
-	<input type="submit" value="Zapisz">
-	<a href="?m={if $target && $target !='add'}{$target}{else}networknodelist{/if}">Anuluj <img src="img/cancel.gif"></a>
+	<a href="javascript:void(0);" class="button" onclick="xajax_validate_networknode(xajax.getFormValues('networknode'));">Zapisz <img src="img/save.gif" alt=""></a>
+	<a href="?m={if $target && $target !='add'}{$target}{else}networknodelist{/if}" class="button">Anuluj <img src="img/cancel.gif"></a>
     </td>
 </tr>
 </table>
@@ -287,7 +382,15 @@
 {literal}
 <script type="text/javascript">
 <!--
+    function save_networknode()
+    {
+	xajax_validate_networknode(xajax.getFormValues('networknode'));
+	var validate = document.getElementById('validate').value;
+	
+	alert('Validacja : '+validate);
+    }
 
+    
     function check_use_teryt()
     {
 	if (document.getElementById('teryt').checked == true)
@@ -311,31 +414,7 @@
 	    document.getElementById('id_view_street').style.display = '';
 	}
     }
-
-
-    $(document).ready(function(input,value){$("#networknode").validate({
-	    rules: {
-		name					: {
-							    required 	: true,
-							    remote 	: "?m=ajax_request&action=check_networknode_name&field=name{/literal}{if $actions=='edit'}&ignoreid={$networknodeid}{/if}{literal}"
-							},
-		'networknode[states]'			: { required : function(){return $("#teryt").is(":checked") ? false : true} },
-		'networknode[districts]'		: { required : function(){return $("#teryt").is(":checked") ? false : true} },
-		'networknode[boroughs]'			: { required : function(){return $("#teryt").is(":checked") ? false : true} },
-		'networknode[city]'			: { required : function(){return $("#teryt").is(":checked") ? false : true} },
-		'networknode[location]'			: { required : function(){return $("#teryt").is(":checked") ? true : false} },
-		'networknode[location_house]'		: { required : true },
-		'networknode[zip]'			: { required : true },
-		'networknode[type]'			: { required : true },
-		'networknode[buildingtype]'		: { required : function(){return $("#id_type1").is(":checked") ? true : false;}}
-		
-	    },
-	    messages : {
-		name 					: { remote:jQuery.validator.format("<p style='color:red;'>Podana nazwa jest już w użyciu</p>") }
-	    },
-	    errorElement : "div"
-	});
-    });
+    
 
 
     $(function() {
@@ -344,62 +423,10 @@
     });
     
     
-    {/literal}{if $actions == 'edit'}{literal}
-    $("#networknode").submit(function(){
-	
-	var zmiana = false;
-	var zapisz = true;
-	
-//	if (document.getElementById('id_collocationid').value != document.getElementById('id_old_collocationid').value) zmiana = true;
-	
-	if (!zmiana) 
-	{
-		if (document.getElementById('teryt').checked == true) {
-			if (
-			document.getElementById('id_location_city').value != document.getElementById('id_old_location_city').value ||
-			 document.getElementById('id_location_street').value != document.getElementById('id_old_location_street').value
-			 ) zmiana = true;
-		 } else {
-			if (
-			document.getElementById('id_states').value != document.getElementById('id_old_states').value ||
-			 document.getElementById('id_districts').value != document.getElementById('id_old_districts').value ||
-			 document.getElementById('id_boroughs').value != document.getElementById('id_old_boroughs').value ||
-			 document.getElementById('id_city').value != document.getElementById('id_old_city').value ||
-			 document.getElementById('id_street').value != document.getElementById('id_old_street').value
-			 ) zmiana = true;
-		 }
-		 
-		 if ( document.getElementById('id_location_house').value != document.getElementById('id_old_location_house').value ||
-			 document.getElementById('id_location_flat').value != document.getElementById('id_old_location_flat').value ||
-			 document.getElementById('id_zip').value != document.getElementById('id_old_zip').value ||
-			 document.getElementById('id_cadastral_parcel').value != document.getElementById('id_old_cadastral_parcel').value ||
-			 document.getElementById('id_latitude').value != document.getElementById('id_old_latitude').value ||
-			 document.getElementById('id_longitude').value != document.getElementById('id_old_longitude').value 
-			 ) zmiana = true;
-		 
-		if ( document.getElementById('id_old_teryt').value=='1' && document.getElementById('teryt').checked == false) zmiana = true;
-		if ( document.getElementById('id_old_teryt').value=='' && document.getElementById('teryt').checked == true) zmiana = true;
-	}
-	
-	 if (zmiana) 
-	    document.getElementById('id_change_location').value = '1';
-	else
-	    document.getElementById('id_change_location').value = '';
-	
-	if (zmiana)
-	{
-		if (confirm('Dane lokalizacji i/lub adresowe dla węzła zostały zmienione.\nAutomatycznie zostaną zmienione te dane \ndla interfejsów sieciowych które są powiązane\n\nKontynuować zmiany ?'))
-		zapisz =  true; else zapisz = false;
-	} else zapisz = true;
-	
-	return zapisz;
-    });
-    {/literal}{/if}{literal}
-    
     check_use_teryt();
-    document.networknode.name.focus();
+    document.getElementById('id_name').focus();
 //-->
 </script>
 {/literal}
-
+{include file="load_gif.html"}
 {include file="footer.html"}

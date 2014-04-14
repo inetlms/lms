@@ -1,6 +1,6 @@
 {include file="header.html"}
 
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <table width="100%" cellpadding="3" cellspacing="0" class="table">
     <tr class="dark nav-header">
 	
@@ -118,7 +118,7 @@
     {/section}
     <tr class="dark nav-footer">
 		<td colspan="11" align="right" class="fall">
-		    <a href="?m=networknodeadd">Nowy węzeł <img src="img/save.gif"></a>
+		    <a href="?m=networknodeadd" class="button">Nowy węzeł <img src="img/add.gif"></a>
 		</td>
     </tr>
     

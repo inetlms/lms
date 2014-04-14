@@ -15,11 +15,11 @@
 		&nbsp;Terminal:&nbsp;
 		    <select name="pbfte" style="cursor:pointer;text-align:center;{if $pbf.te}background-color:#FFFE9F;{/if}" onchange="document.voippanelfilter.submit();" >
 			{section name=pbfte loop=$info.terminal}
-			    <option value="{$info.terminal[pbfte].username}" {if $info.terminal[pbfte].username==$pbf.te} SELECTED{/if}>{$info.terminal[pbfte].username}</option>
+			    <option value="{$info.terminal[pbfte].username}" {if $info.terminal[pbfte].username==$pbf.te} selected{/if}>{$info.terminal[pbfte].username}</option>
 			{/section}
 		</select>&nbsp;&nbsp;&nbsp;
-		&nbsp;Rok:&nbsp;<select name="pbfr" style="cursor:pointer;text-align:center;{if $pbf.r}background-color:#FFFE9F;{/if}" onchange="document.voippanelfilter.submit();" ><option value="">-- wszystkie --</option>{section name=pbfr loop=$listyear}<option value="{$listyear[pbfr].rok}" {if $listyear[pbfr].rok==$pbf.r} SELECTED{/if}>{$listyear[pbfr].rok}</option>{/section}</select>&nbsp;&nbsp;&nbsp;
-		Miesiąc:&nbsp;<select name="pbfm" style="cursor:pointer;text-align:center;{if $pbf.m}background-color:#FFFE9F;{/if}" onchange="document.voippanelfilter.submit();" ><option value="">-- wszystkie --</option><option value="1" {if $pbf.m==1} SELECTED{/if}>styczeń</option><option value="2" {if $pbf.m==2} SELECTED{/if}>luty</option><option value="3" {if $pbf.m==3} SELECTED{/if}>marzec</option><option value="4" {if $pbf.m==4} SELECTED{/if}>kwiecień</option><option value="5" {if $pbf.m==5} SELECTED{/if}>maj</option><option value="6" {if $pbf.m==6} SELECTED{/if}>czerwiec</option><option value="7" {if $pbf.m==7} SELECTED{/if}>lipiec</option><option value="8" {if $pbf.m==8} SELECTED{/if}>sierpień</option><option value="9" {if $pbf.m==9} SELECTED{/if}>wrzesień</option><option value="10" {if $pbf.m==10} SELECTED{/if}>październik</option><option value="11" {if $pbf.m==11} SELECTED{/if}>listopad</option><option value="12" {if $pbf.m==12} SELECTED{/if}>grudzień</option></select>&nbsp;&nbsp;&nbsp;
+		&nbsp;Rok:&nbsp;<select name="pbfr" style="cursor:pointer;text-align:center;{if $pbf.r}background-color:#FFFE9F;{/if}" onchange="document.voippanelfilter.submit();" ><option value="">-- wszystkie --</option>{section name=pbfr loop=$listyear}<option value="{$listyear[pbfr].rok}" {if $listyear[pbfr].rok==$pbf.r} selected{/if}>{$listyear[pbfr].rok}</option>{/section}</select>&nbsp;&nbsp;&nbsp;
+		Miesiąc:&nbsp;<select name="pbfm" style="cursor:pointer;text-align:center;{if $pbf.m}background-color:#FFFE9F;{/if}" onchange="document.voippanelfilter.submit();" ><option value="">-- wszystkie --</option><option value="1" {if $pbf.m==1} selected{/if}>styczeń</option><option value="2" {if $pbf.m==2} selected{/if}>luty</option><option value="3" {if $pbf.m==3} selected{/if}>marzec</option><option value="4" {if $pbf.m==4} selected{/if}>kwiecień</option><option value="5" {if $pbf.m==5} selected{/if}>maj</option><option value="6" {if $pbf.m==6} selected{/if}>czerwiec</option><option value="7" {if $pbf.m==7} selected{/if}>lipiec</option><option value="8" {if $pbf.m==8} selected{/if}>sierpień</option><option value="9" {if $pbf.m==9} selected{/if}>wrzesień</option><option value="10" {if $pbf.m==10} selected{/if}>październik</option><option value="11" {if $pbf.m==11} selected{/if}>listopad</option><option value="12" {if $pbf.m==12} selected{/if}>grudzień</option></select>&nbsp;&nbsp;&nbsp;
 	    </td>
 	</tr>
 	<tr><td></td></tr>
@@ -64,7 +64,7 @@
 	    
 	    {if $lb[lb].subscription ne 0}{math assign='przychod' equation="(x-y)" x=$cuscost y=$rescost}{else}{math assign='przychod' equation="x*(-1)" x=$rescost}{/if}
 	    {math assign='sumprzychod' equation="x+y" x=$sumprzychod y=$przychod}
-	    <tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	    <tr class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		<td width="1%" nowrap align="left" class="fleft">&nbsp;{$lb[lb].rok}&nbsp;</td>
 		<td width="auto" nowrap align="left">&nbsp;{$miesiace[$mscname]}&nbsp;</td>
 		<td width="1%" nowrap align="right" class="fleft">
@@ -102,7 +102,7 @@
 		<td width="1%" nowrap align="right" class="flr"><img src="img/box.png" border="0" {tip text="Kliknij aby otworzyć wykaz połączeń"} onclick="wyswietlbiling('{$info.account.id}','{$lb[lb].rok}','{$lb[lb].msc}','{$pbf.te}');" style="cursor:pointer;"></td>
 	    </tr>
 	{sectionelse}
-	    <tr class="light"><td colspan="11" class="fall" align="center"><BR><H2>Brak bilingów</H2></td></tr>
+	    <tr class="light"><td colspan="11" class="fall" align="center"><br><h2>Brak bilingów</h2></td></tr>
 	{/section}
 	{math assign='sumcus' equation="x+y+z" x=$sumcuscost y=$sumcusinit z=$sumsubscription}
 	{math assign='sumres' equation="x+y" x=$sumrescost y=$sumresinit}

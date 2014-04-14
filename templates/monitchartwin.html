@@ -34,16 +34,16 @@
 {if $chart.ping_test || $chart.signal_test || $chart/transfer_test}
 <script type="text/javascript">
 <!--
-    xajax.callback.global.onRequest = function()
-    {
-	document.getElementById('id_wykres').innerHTML = 
-	'<div style="width:80px;height:50px;position:fixed;top:40%;left:47%;"><b>Loading...</b></div>';
-    }
-    function hideloading()
-    {
-	document.getElementById('id_wykres').innerHTML = '';
- }
-xajax.callback.global.onComplete=hideloading();
+//    xajax.callback.global.onRequest = function()
+//    {
+//	document.getElementById('id_wykres').innerHTML = 
+//	'<div style="width:80px;height:50px;position:fixed;top:40%;left:47%;"><b>Loading...</b></div>';
+//    }
+//    function hideloading()
+//    {
+//	document.getElementById('id_wykres').innerHTML = '';
+// }
+//xajax.callback.global.onComplete=hideloading();
     xajax_genImage('{$chart.chart}');
 //-->
 </script>

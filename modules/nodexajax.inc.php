@@ -114,7 +114,25 @@ function getThroughput($ip) {
 	return $result;
 }
 
+function change_linktypes($linktype,$nodelinktype=0)
+{
+    global $LINKTYPES, $LINKTECHNOLOGIES;
+    $obj = new xajaxResponse();
+    $str = "<select name='nodeedit[linktechnology]' id='linktechnology' style='min-width:170px;'>";
+    $str .= "<option value='0'>- nieznany -</option>";
+    foreach ($LINKTECHNOLOGIES[$linktype] as $idx => $key) {
+	$str .= "<option value='".$idx."'";
+	if ($idx == $nodelinktype)
+	    $srt .= " selected";
+	$str .= ">".$key."</option>";
+    }
+    $str .= "</select>";
+    $obj->assign("view_select_linktechnology","innerHTML",$str);
+    
+    return $obj;
+}
+
 $LMS->InitXajax();
-$LMS->RegisterXajaxFunction(array('getNodeLocks', 'addNodeLock', 'delNodeLock', 'getThroughput'));
+$LMS->RegisterXajaxFunction(array('getNodeLocks', 'addNodeLock', 'delNodeLock', 'getThroughput','change_linktypes'));
 
 ?>

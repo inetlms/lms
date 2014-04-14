@@ -1,0 +1,82 @@
+
+<table width="100%" cellpadding="3">
+				
+			{counter start=0 skip=1 assign=rtstatscounter print=false}
+			{foreach from=$rtstats item=rtcategorystats}
+				{if $rtstatscounter is div by 3}
+				<tr>
+				{/if}
+					<td width="33%">
+
+			<table cellpadding="2" class="table table-warning">
+				<tr class="boxtitlewarn">
+					<td colspan="2" align="center" class="boxtitlewarntd" nowrap>
+						<b><a href="?m=rtticketadd&catid={$rtcategorystats.id}" {tip text="Add new ticket" trigger="newticket"}><img src="img/ticket.gif"></a>&nbsp;<a href="?m=rtqueueview&catid={$rtcategorystats.id}">{$rtcategorystats.name}</a></b>
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b><a href="?m=rtqueueview&catid={$rtcategorystats.id}&s=0&o=lastmodified,desc">{trans("New:")}</a></b>
+					</td>
+					<td width="50%" class="fright">
+						{$rtcategorystats.new|default:"0"}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b><a href="?m=rtqueueview&catid={$rtcategorystats.id}&s=1&o=lastmodified,desc">{trans("Opened:")}</a></b>
+					</td>
+					<td width="50%" class="fright">
+						{$rtcategorystats.opened|default:"0"}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b><a href="?m=rtqueueview&catid={$rtcategorystats.id}&s=3&o=lastmodified,desc">{trans("Dead:")}</a></b>
+					</td>
+					<td width="50%" class="fright">
+						{$rtcategorystats.dead|default:"0"}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft" nowrap>
+						<b><a href="?m=rtqueueview&catid={$rtcategorystats.id}&s=-1&o=lastmodified,desc">{trans("Unresolved:")}</a></b>
+					</td>
+					<td width="50%" class="fright">
+						{$rtcategorystats.unresolved|default:"0"}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b><a href="?m=rtqueueview&catid={$rtcategorystats.id}&s=2&o=lastmodified,desc">{trans("Resolved:")}</a></b>
+					</td>
+					<td width="50%" class="fright">
+						{$rtcategorystats.resolved|default:"0"}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleftu">
+						<b><a href="?m=rtqueuelist">{trans("Total:")}</a></b>
+					</td>
+					<td width="50%" class="frightu">
+						{math equation="a+b+c+d" a=$rtcategorystats.opened b=$rtcategorystats.new c=$rtcategorystats.dead d=$rtcategorystats.resolved}
+					</td>
+				</tr>
+			</table>
+
+					</td>
+				{if $rtstatscounter mod 3 == 2}
+				</tr>
+				{/if}
+				{counter}
+			{/foreach}
+			{if $rtstatscounter is not div by 3}
+				{assign var=loop value=$rtstatscounter%5*-1+3}
+				{section name=filler loop=$loop}
+				<td width="33%">
+				</td>
+				{/section}
+			</tr>
+			</tr>
+			{/if}
+			</table>

@@ -1,0 +1,53 @@
+<table width="100%" cellpadding="3" class="table table-info">
+				<tr class="boxtitleinfo">
+					<td align="center" colspan="2" class="boxtitleinfotd">
+						<b>{strtoupper(trans("About LMS:"))}</b>
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b><a href="http://www.lms.org.pl" target="_blank">{trans("LMS version:")}</a></b>
+					</td>
+					<td width="50%" class="fright">
+						{$layout.lmsv}{if $layout.lmsvr} ({$layout.lmsvr}){/if}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b><a href="http://www.lms.org.pl" target="_blank">{trans("LMSDB version:")}</a></b>
+					</td>
+					<td width="50%" class="fright">
+						{$layout.lmsdbv}
+					</td>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b>
+						{if $layout.dbtype == "mysql" || $layout.dbtype == "mysqli"}
+						<a href="http://www.mysql.com" target="_blank">{trans("MySQL version:")}</a>
+						{elseif $layout.dbtype == "postgres"}
+						<a href="http://www.postgresql.org" target="_blank">{trans("PostgreSQL version:")}</a>
+						{/if}
+						</b>
+					</td>
+					<td width="50%" class="fright">
+						{$layout.dbversion}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fleft">
+						<b><a href="http://www.php.net/" target="_blank">{trans("PHP version:")}</a></b>
+					</td>
+					<td width="50%" class="fright">
+						{phpversion()}
+					</td>
+				</tr>
+				<tr class="light">
+					<td width="50%" align="right" class="fbl">
+						<b><a href="http://www.smarty.net" target="_blank">{trans("Smarty version:")}</a></b>
+					</td>
+					<td width="50%" class="fbr">
+						{$layout.smarty_version}
+					</td>
+				</tr>
+				
+</table>

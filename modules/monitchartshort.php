@@ -36,47 +36,71 @@ $chart['filename'] = '';
 
 if ($chart['chart'] == 'ping')
 {
-    if ($chart['type'] == 'node' || $chart['type'] == 'netdev')
-    {
-	if (file_exists(RRD_DIR.'/ping.node.'.$chart['id'].'.rrd') && !file_exists(TMP_DIR.'/ping.node.'.$chart['id'].'.small.png'))
-	{
-	    $nname = $DB->GetOne('SELECT inet_ntoa(ipaddr) FROM nodes WHERE id = ? LIMIT 1',array($chart['id']));
-	    $LMS->RRD_CreatePingImage('node.'.$chart['id'],'Ping '.$nname.', Ostatnie 12h','-12h','now',450,200);
+	if ($chart['type'] == 'node' || $chart['type'] == 'netdev') {
+		
+		$nname = $DB->GetOne('SELECT inet_ntoa(ipaddr) FROM nodes WHERE id = ? LIMIT 1',array($chart['id']));
+		
+		if (!get_conf('monit.autocreate_chart',0))  {// jeśli monit nie robi z automatu małych wykresów
+			
+			if (file_exists(RRD_DIR.'/ping.node.'.$chart['id'].'.rrd'))
+				$LMS->RRD_CreatePingImage('node.'.$chart['id'],'Ping '.$nname.', Ostatnie 12h','-12h','now',450,200);
+		} else {
+			
+			if (file_exists(RRD_DIR.'/ping.node.'.$chart['id'].'.rrd') && !file_exists(TMP_DIR.'/ping.node.'.$chart['id'].'.small.png'))
+				$LMS->RRD_CreatePingImage('node.'.$chart['id'],'Ping '.$nname.', Ostatnie 12h','-12h','now',450,200);
+		}
+		
+		if (!file_exists(TMP_DIR.'/ping.node.'.$chart['id'].'.450.200.png')) 
+			$chart['img'] = false;
+		else
+			$chart['filename'] = 'tmp/ping.node.'.$chart['id'].'.450.200.png';
 	}
-	if (!file_exists(TMP_DIR.'/ping.node.'.$chart['id'].'.small.png')) 
-	    $chart['img'] = false;
-	else
-	    $chart['filename'] = 'tmp/ping.node.'.$chart['id'].'.small.png';
-    }
-    
-    if ($chart['type'] == 'owner')
-    {
-	if (file_exists(RRD_DIR.'/ping.owner.'.$chart['id'].'.rrd') && !file_exists(TMP_DIR.'/ping.owner.'.$chart['id'].'.small.png'))
-	{
-	    $nname = $DB->GetOne('SELECT ipaddr FROM monitown WHERE id = ? LIMIT 1',array($chart['id']));
-	    $LMS->RRD_CreatePingImage('owner.'.$chart['id'],'Ping '.$nname.' Ostatnie 12h','-12h','now',450,200);
+	
+	
+	if ($chart['type'] == 'owner') {
+		
+		$nname = $DB->GetOne('SELECT ipaddr FROM monitown WHERE id = ? LIMIT 1',array($chart['id']));
+		
+		if (!get_conf('monit.autocreate_chart',0)) {
+			
+			if (file_exists(RRD_DIR.'/ping.owner.'.$chart['id'].'.rrd'))
+				$LMS->RRD_CreatePingImage('owner.'.$chart['id'],'Ping '.$nname.' Ostatnie 12h','-12h','now',450,200);
+			
+		} else {
+			
+			if (file_exists(RRD_DIR.'/ping.owner.'.$chart['id'].'.rrd') && !file_exists(TMP_DIR.'/ping.owner.'.$chart['id'].'.small.png'))
+				$LMS->RRD_CreatePingImage('owner.'.$chart['id'],'Ping '.$nname.' Ostatnie 12h','-12h','now',450,200);
+		
+		}
+		if (!file_exists(TMP_DIR.'/ping.owner.'.$chart['id'].'.450.200.png')) 
+			$chart['img'] = false;
+		else
+			$chart['filename'] = 'tmp/ping.owner.'.$chart['id'].'.450.200.png';
 	}
-	if (!file_exists(TMP_DIR.'/ping.owner.'.$chart['id'].'.small.png')) 
-	    $chart['img'] = false;
-	else
-	    $chart['filename'] = 'tmp/ping.owner.'.$chart['id'].'.small.png';
-    }
 }
 
-if ($chart['chart'] == 'signal')
-{
-    if ($chart['type'] == 'node')
-    {
-	if (file_exists(RRD_DIR.'/signal.node.'.$chart['id'].'.rrd') && !file_exists(TMP_DIR.'/signal.node.'.$chart['id'].'.small.png'))
+if ($chart['chart'] == 'signal') {
+	
+	if ($chart['type'] == 'node')
 	{
-	    $nname = $DB->GetOne('SELECT inet_ntoa(ipaddr) FROM nodes WHERE id = ? LIMIT 1',array($chart['id']));
-	    $LMS->RRD_CreateSignalImage('node.'.$chart['id'],'Ping '.$nname.', Ostatnie 12h','-12h','now',450,200);
+		$nname = $DB->GetOne('SELECT inet_ntoa(ipaddr) FROM nodes WHERE id = ? LIMIT 1',array($chart['id']));
+		
+		if (!get_conf('monit.autocreate_chart',0)) {
+			
+			if (file_exists(RRD_DIR.'/signal.node.'.$chart['id'].'.rrd'))
+				$LMS->RRD_CreateSignalImage('node.'.$chart['id'],'Ping '.$nname.', Ostatnie 12h','-12h','now',450,200);
+		
+		} else {
+			
+			if (file_exists(RRD_DIR.'/signal.node.'.$chart['id'].'.rrd') && !file_exists(TMP_DIR.'/signal.node.'.$chart['id'].'.small.png'))
+				$LMS->RRD_CreateSignalImage('node.'.$chart['id'],'Ping '.$nname.', Ostatnie 12h','-12h','now',450,200);
+		}
+		
+		if (!file_exists(TMP_DIR.'/signal.node.'.$chart['id'].'.450.200.png')) 
+			$chart['img'] = false;
+		else
+			$chart['filename'] = 'tmp/signal.node.'.$chart['id'].'.450.200.png';
 	}
-	if (!file_exists(TMP_DIR.'/signal.node.'.$chart['id'].'.small.png')) 
-	    $chart['img'] = false;
-	else
-	    $chart['filename'] = 'tmp/signal.node.'.$chart['id'].'.small.png';
-    }
 
 }
 

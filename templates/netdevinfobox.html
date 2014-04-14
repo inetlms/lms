@@ -1,6 +1,6 @@
 <!--// $Id$ //-->
 <table width="100%" cellpadding="3">
-	<tr{if $devicepanel} class="dark hand" onclick="showOrHide('devicepanel');"{else} class="dark"{/if}>
+	<tr{if $devicepanel} class="dark hand info-hover" onclick="showOrHide('devicepanel');"{else} class="dark"{/if}>
 		<td width="1%" class="fleftu">
 			<img src="img/netdev.gif" alt="">
 		</td>
@@ -9,7 +9,7 @@
 		</td>
 	</tr>
 	<tr class="light"{if $devicepanel} id="devicepanel" style="display:none;"{/if}>
-	    <td width="100%" colspan="2"{if $devicepanel} class="fall container" align="RIGHT"{else}class="flr container"{/if}>
+	    <td width="100%" colspan="2"{if $devicepanel} class="fall container" align="right"{else}class="flr container"{/if}>
 			<table width="100%" cellpadding="0">
 				<tr class="light">
 					<td width="50%" style="vertical-align:top;">
@@ -200,6 +200,19 @@
 		</td>
 	</tr>
 	{/if}
+	{if $netdevinfo.coaport}
+	<tr class="light">
+		<td width="1%">
+			<img src="img/radius.gif" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<b>CoA Port</b>
+		</td>
+		<td width="98%">
+		        {$netdevinfo.coaport}
+		</td>
+	</tr>
+	{/if}
 {/if}
 {if $netdevinfo.monit_nastype}
 	<tr class="light">
@@ -313,7 +326,7 @@
                         <table width="100%" cellpadding="5">
                                 <tr>
                                         <td class="fall super"light">
-						{$netdevinfo.description|escape|replace:"\n":"<BR>"}
+						{$netdevinfo.description|escape|replace:"\n":"<br>"}
                                         </td>
                                 </tr>
                         </table>
@@ -328,7 +341,7 @@
     		</td>
 	</tr>
 	<tr class="light">
-	        <td width="100%" colspan="2" class="FBOTTOMU" align="RIGHT">
+	        <td width="100%" colspan="2" class="FBOTTOMU" align="right">
 {/if}
 			{if $replacelisttotal>1}
 			<form method="GET" action="?m=netdevedit" name="replace">
@@ -336,7 +349,7 @@
 			<input type="hidden" name="m" value="netdevedit">
 			<input type="hidden" name="id" value="{$netdevinfo.id}">
 			<input type="hidden" name="action" value="replace">
-			<a href="javascript:document.replace.submit(); ">{trans("Replace with:")}</A>
+			<a href="javascript:document.replace.submit(); ">{trans("Replace with:")}</a>
 			<select name="netdev" {tip trigger="replace" text="Select device from list for replacement"}>
 				{section name=replacelist loop=$replacelist}
 					{if $replacelist[replacelist].id != $netdevinfo.id}

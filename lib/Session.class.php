@@ -27,13 +27,13 @@
 class Session {
 
 	var $SID = NULL;			// session unique ID
-	var $_version = '1.11-git';		// library version
+	var $_version = '1.0.1';		// library version
 	var $_revision = '$Revision$';	// library revision
 	var $_content = array();		// session content array
 	var $_updated = FALSE;			// indicates that content has
 						// been altered
 	var $DB = NULL;				// database library object
-	var $timeout = 600;			// timeout since session will
+	var $timeout = 900;			// timeout since session will
 						// be destroyed
 	var $autoupdate = FALSE;		// do automatic update on each
 						// save() or save_by_ref() ?
@@ -136,6 +136,13 @@ class Session {
 		else
 			return FALSE;
 	}
+
+
+	function check_exists_key($variable)
+	{
+	    return isset($this->_content[$variable]);
+	}
+
 
 	function _createSession()
 	{

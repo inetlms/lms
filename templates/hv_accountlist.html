@@ -9,33 +9,33 @@
 	<td class="fleftu" colspan="6" align="left">
 	    Skojarzone: 
 	    <select  name="hvext" onchange="javascript:location.href=this.value;" style="text-align:center;{if $filtr.hvext}background-color:#FFFE9F;{/if}min-width:110px;" {tip text="Konta VoIP powiązane z klientami w LMS"}>
-		<option value="?m=hv_accountlist&hvext=&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if !$filtr.hvext} SELECTED{/if}>-wszystkie-</option>
-		<option value="?m=hv_accountlist&hvext=1&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if $filtr.hvext eq 1} SELECTED{/if}>TAK</option>
-		<option value="?m=hv_accountlist&hvext=2&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if $filtr.hvext eq 2} SELECTED{/if}>NIE</option>
+		<option value="?m=hv_accountlist&hvext=&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if !$filtr.hvext} selected{/if}>-wszystkie-</option>
+		<option value="?m=hv_accountlist&hvext=1&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if $filtr.hvext eq 1} selected{/if}>TAK</option>
+		<option value="?m=hv_accountlist&hvext=2&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if $filtr.hvext eq 2} selected{/if}>NIE</option>
 	    </select>&nbsp;&nbsp;&nbsp;
     
 	    Faktury VAT: 
 	    <select name="hvvat" onchange="javascript:location.href=this.value;" style="text-align:center;{if $filtr.hvvat}background-color:#FFFE9F;{/if}min-width:110px;" {tip text="Sposób wystawiania faktur VAT"}>
-		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat=&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if !$filtr.hvvat} SELECTED{/if}>-wszystkie-</option>
-		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat=hiperus&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if $filtr.hvvat=='hiperus'} SELECTED{/if}>Hiperus</option>
-		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat=lms&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if $filtr.hvvat=='lms'} SELECTED{/if}>LMS</option>
-		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat=none&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if $filtr.hvvat=='none'} SELECTED{/if}>bez faktur</option>
+		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat=&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if !$filtr.hvvat} selected{/if}>-wszystkie-</option>
+		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat=hiperus&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if $filtr.hvvat=='hiperus'} selected{/if}>Hiperus</option>
+		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat=lms&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if $filtr.hvvat=='lms'} selected{/if}>LMS</option>
+		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat=none&hvprice={$filtr.hvprice}&hvpayment={$filtr.hvpayment}" {if $filtr.hvvat=='none'} selected{/if}>bez faktur</option>
 	    </select>&nbsp;&nbsp;&nbsp;
     
 	    Cennik: 
 	    <select name="hvprice" onchange="javascript:location.href=this.value;" style="text-align:center;{if $filtr.hvprice}background-color:#FFFE9F;{/if}min-width:110px;">
-		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvpayment={$filtr.hvpayment}&hvprice=" {if !$filtr.hvprice} SELECTED{/if}>-- wszystkie --</option>
-		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvpayment={$filtr.hvpayment}&hvprice=noprice" {if $filtr.hvprice=='noprice'} SELECTED{/if}>bez cennika</option>
+		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvpayment={$filtr.hvpayment}&hvprice=" {if !$filtr.hvprice} selected{/if}>-- wszystkie --</option>
+		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvpayment={$filtr.hvpayment}&hvprice=noprice" {if $filtr.hvprice=='noprice'} selected{/if}>bez cennika</option>
 		{section name=pricelist loop=$pricelist}
-		    <option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvpayment={$filtr.hvpayment}&hvprice={$pricelist[pricelist].id}" {if $filtr.hvprice==$pricelist[pricelist].id} SELECTED{/if}>&nbsp;{$pricelist[pricelist].name}&nbsp;</option>
+		    <option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvpayment={$filtr.hvpayment}&hvprice={$pricelist[pricelist].id}" {if $filtr.hvprice==$pricelist[pricelist].id} selected{/if}>&nbsp;{$pricelist[pricelist].name}&nbsp;</option>
 		{/section}
 	    </select>&nbsp;&nbsp;&nbsp;
     
 	    Typ płatności: 
 	    <select name="hvpayment" onchange="javascript:location.href=this.value;" style="text-align:center;{if $filtr.hvpayment}background-color:#FFFE9F;{/if}min-width:110px;" {tip text="Soposób płatności:<br>postpaid - abonament<br>prepaid - przedpłata"}>
-		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment=" {if !$filtr.hvpayment} SELECTED{/if}>-- wszyskie --</option>
-		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment=postpaid" {if $filtr.hvpayment=='postpaid'} SELECTED{/if}>postpaid</option>
-		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment=prepaid" {if $filtr.hvpayment=='prepaid'} SELECTED{/if}>prepaid</option>
+		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment=" {if !$filtr.hvpayment} selected{/if}>-- wszyskie --</option>
+		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment=postpaid" {if $filtr.hvpayment=='postpaid'} selected{/if}>postpaid</option>
+		<option value="?m=hv_accountlist&hvext={$filtr.hvext}&hvlistsort={$filtr.hvlistsort}&hvvat={$filtr.hvvat}&hvprice={$filtr.hvprice}&hvpayment=prepaid" {if $filtr.hvpayment=='prepaid'} selected{/if}>prepaid</option>
 	    </select>
 	</td>
 	<td class="frightu" align="right" nowrap>
@@ -60,7 +60,7 @@
     {/if}
     {cycle values="light,lucid" print=false}
     {section name=list loop=$lista start=$start max=$pagelimit}
-	<tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	<tr class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 	    <td class="fleft" style="padding-right:10px;cursor:pointer;" nowrap onclick="return self.location.href='?m=hv_accountinfo&id={$lista[list].id}&pbfte='"><b>{$lista[list].name}</b><br>{$lista[list].address} {$lista[list].street_number}{if $lista[list].apartment_number}/{$lista[list].apartment_number}{/if}&nbsp;&nbsp;{$lista[list].postcode} {$lista[list].city}</td>
 	    <td nowrap onclick="return self.location.href='?m=hv_accountinfo&id={$lista[list].id}&pbfte='" style="cursor:pointer;"><b>{$lista[list].clastname} {$lista[list].cname}</b>{if $lista[list].ext_billing_id}<a href="?m=customerinfo&id={$lista[list].cid}" {tip text="przejdź do karty klienta"}>&nbsp;&nbsp;&raquo;&raquo;&raquo;</a>{/if}<br>{$lista[list].caddress}&nbsp;&nbsp;{$lista[list].czip}&nbsp;{$lista[list].ccity}</td>
 	    <td width="1%" align="center" nowrap onclick="return self.location.href='?m=hv_accountinfo&id={$lista[list].id}&pbfte='" style="cursor:pointer;">{if $lista[list].invoice=='0'}<b>---</b>{elseif $lista[list].invoice=='1'}&nbsp;Hiperus&nbsp;{elseif $lista[list].invoice=='2'}&nbsp;LMS&nbsp;{/if}</td>

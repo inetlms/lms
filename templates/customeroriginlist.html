@@ -1,0 +1,105 @@
+{include file="header.html"}
+{$xajax}
+
+<p>
+<table width="100%" cellpadding="4" cellspacing="0">
+<tr>
+    <td width="99%" align="left"><h1>{$layout.pagetitle}</h1></td>
+    <td width="1%" nowrap>
+    <a href="javascript: void(0);" onclick="xajax_editorigin_add();"><b>Dodaj nowe źródło</b> <img src="img/add.gif"></a>
+    </td>
+</tr>
+</table>
+</p>
+
+<div id="id_editorigin" style="display:none;">
+    <form name="editorigin" id="editorigin" method="POST">
+    <input type="hidden" name="editorigin[id]" id="editorigin_id" value="">
+    <table width="100%" cellpadding="4">
+	<tr class="dark">
+	    <td colspan="2" class="fall" align="left" style="font-weight:bold;"><div id="infoaction"></div></td>
+	</tr>
+	<tr class="light">
+	    <td class="fleft" width="1%" align="left" nowrap><b>Nazwa</b></td>
+	    <td class="fright" width="99%" align="left"><input type="text" style="width:400px;" name="editorigin[name]" id="editorigin_name" value=""><span style="color:red;font-weight:bold;padding-left:5px;" id="alert_name"></span></td>
+	</tr>
+	
+	<tr class="light">
+	    <td class="fleft" width="1%" align="left" nowrap style="vertical-align:top;"><b>Opis</b></td>
+	    <td class="fright" width="99%" align="left" style="vertical-align:top;">
+		<textarea name="editorigin[description]" id="editorigin_description" rows="3" style="width:400px;"></textarea>
+	    </td>
+	</tr>
+	<tr class="dark">
+	    <td colspan="2" align="right" width="100%" class="fall">
+		<a href="javascript: void(0);" onclick="xajax_editorigin_save(xajax.getFormValues('editorigin'));" >Zapisz <img src="img/save.gif"> </a>&nbsp;&nbsp;
+		<a href="javascript: void(0);" onclick="xajax_editorigin_cancel();">Anuluj <img src="img/cancel.gif"></a>
+	    </td>
+	</tr>
+    </table>
+    </form>
+    <br>
+</div>
+
+<table width="100%" cellpadding="3">
+	<tr class="dark">
+		<td width="1%" class="fleftu" align="center" style="vertical-align:bottom;"><b>#</b></td>
+		<td width="97%" class="fbt"><b>{trans("Name:")}</b><br>{trans("Description:")}</td>
+		<td width="1%" class="fbt" align="center" style="vertical-align:bottom;"><b>Członków</b></td>
+		<td width="1%" class="frightu" align="right" nowrap>&nbsp;</td>
+	</tr>
+	{cycle values="light,lucid" print=false}
+	{section name=listdata loop=$listdata}
+	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	
+		<td width="1%" align="right" class="fleft" style="padding-right:10px;">
+			{$listdata[listdata].id|string_format:"%03d"}
+		</td>
+		
+		<td width="97%">
+			<b>{$listdata[listdata].name}</b>
+			{if $listdata[listdata].description}<br>{$listdata[listdata].description|nl2br}{/if}
+		</td>
+		
+		<td width="1%" align="center">
+			{$listdata[listdata].customerscount} 
+		</td>
+		
+		<td width="1%" class="fright" align="right">
+			<nobr>
+			{if $listdata[listdata].customerscount}
+				<img src="img/empty.gif" width="16">
+			{else}
+			    <img src="img/delete.gif" onclick="editorigindelete({$listdata[listdata].id},'{$listdata[listdata].name}');" style="cursor:pointer;" alt="[ {trans('Delete')} ]" title="[ {trans('Delete')} ]"></a>
+			{/if}
+				<a href="javascript: void(0);" onclick="xajax_editorigin_edit({$listdata[listdata].id});"><img src="img/edit.gif" alt="[ {trans('Edit')} ]" title="[ {trans('Edit')} ]"></a>
+			</nobr>
+		</td>
+	</tr>
+	{sectionelse}
+	<tr>
+		<td colspan="4" align="center" class="fall">
+			<p>&nbsp;</p>
+			<p><b>Brak danych w bazie danych</b></p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>
+	{/section}
+	<tr><td class="ftop" colspan="4" width="100%"></td></tr>
+</table>
+{literal}
+<script type="text/javascript">
+<!--
+    function editorigindelete(id,nazwa)
+    {
+	if (confirm('Czy napewno usunąć\n ' + nazwa + ' ?'))
+	{
+	    xajax_editorigin_del(id);
+	}
+    }
+    
+//-->
+</script>
+{/literal}
+
+{include file="footer.html"}

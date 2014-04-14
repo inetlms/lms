@@ -8,8 +8,8 @@
 <div class="light" style="border:solid 1px #000000;">
 <table width="100%" cellpadding="3" align="top">
 	<tr class="dark">
-		<td class="fbottom" width="100%" COLSPAN="2">
-			<B>{$layout.pagetitle}</B>
+		<td class="fbottom" width="100%" colspan="2">
+			<b>{$layout.pagetitle}</b>
 		</td>
 	</tr>
 	<tr>
@@ -17,58 +17,58 @@
 		<table width="100%" cellpadding="3">
 		    <tr class="light">
 			    <td width="1%" nowrap>
-			    	<B>{trans("Invoice number:")}</B><br>
-		    	</TD>
-		    	<TD  WIDTH="99%" NOWRAP>
+			    	<b>{trans("Invoice number:")}</b><br>
+		    	</td>
+		    	<td  width="99%" nowrap>
 		    		{if $numberplanlist}
-		    		<SELECT name="invoice[numberplanid]" {tip text="Select numbering plan"}>
+		    		<select name="invoice[numberplanid]" {tip text="Select numbering plan"}>
 		    		{foreach item=plan from=$numberplanlist}
 		    			{assign var=period value=$plan.period}
-		    			<OPTION value="{$plan.id}"{if $plan.id==$invoice.numberplanid} SELECTED{/if}>{number number=$plan.next template=$plan.template time=$invoice.cdate} ({$_NUM_PERIODS.$period})</OPTION>
+		    			<option value="{$plan.id}"{if $plan.id==$invoice.numberplanid} selected{/if}>{number number=$plan.next template=$plan.template time=$invoice.cdate} ({$_NUM_PERIODS.$period})</option>
 		    		{/foreach}
-		    		</SELECT>
+		    		</select>
 		    		{else}
-		    			<INPUT type="hidden" name="invoice[numberplanid]" value="0">
+		    			<input type="hidden" name="invoice[numberplanid]" value="0">
 		    		{/if}
-		    	</TD>
-		    </TR>
+		    	</td>
+		    </tr>
 		    <tr class="light">
 		    	<td width="1%" nowrap>
-		    		<B>{trans("Settlement date:")}&nbsp;&nbsp;&nbsp;&nbsp;</B>
+		    		<b>{trans("Settlement date:")}&nbsp;&nbsp;&nbsp;&nbsp;</b>
 		    	</td>
 		    	<td width="99%" nowrap>
-		    		<input type="TEXT" name="invoiceconvert[cdate]" value="{$invoice.cdate|date_format:"%Y/%m/%d"}" size="10" readonly {tip text="Enter date of settlement in YYYY/MM/DD format (empty field means current date) or click to select it from calendar" trigger="cdate"} onclick="javascript:cal1.popup();" >
+		    		<input type="text" name="invoiceconvert[cdate]" value="{$invoice.cdate|date_format:"%Y/%m/%d"}" size="10" readonly {tip text="Enter date of settlement in YYYY/MM/DD format (empty field means current date) or click to select it from calendar" trigger="cdate"} onclick="javascript:cal1.popup();" >
 		    		{if $invoice.cdatewarning}
-		    		<input type="HIDDEN" name="invoiceconvert[cdatewarning]" value="1">
+		    		<input type="hidden" name="invoiceconvert[cdatewarning]" value="1">
 		    		{/if}
 		    	</td>
 		    </tr>
 		    <tr class="light">
 		    	<td width="1%" nowrap>
-		    		<B>{trans("Sale date:")}</B>
+		    		<b>{trans("Sale date:")}</b>
 		    	</td>
 		    	<td width="99%" nowrap>
-		    		<input type="TEXT" name="invoiceconvert[sdate]" value="{$invoice.sdate|date_format:"%Y/%m/%d"}" size="10" readonly {tip text="Enter date of sale in YYYY/MM/DD format (empty field means current date) or click to select it from calendar" trigger="sdate"} onclick="javascript:cal2.popup();" >
+		    		<input type="text" name="invoiceconvert[sdate]" value="{$invoice.sdate|date_format:"%Y/%m/%d"}" size="10" readonly {tip text="Enter date of sale in YYYY/MM/DD format (empty field means current date) or click to select it from calendar" trigger="sdate"} onclick="javascript:cal2.popup();" >
 		    	</td>
 		    </tr>
 		    <tr class="light">
 		    	<td width="1%" nowrap>
-		    		<B>{trans("Deadline:")}</B>
+		    		<b>{trans("Deadline:")}</b>
 		    	</td>
 		    	<td width="99%" nowrap>
-		    		<input type="TEXT" name="invoiceconvert[paytime]" value="{$invoice.paytime}" size="5" id="paytime">
+		    		<input type="text" name="invoiceconvert[paytime]" value="{$invoice.paytime}" size="5" id="paytime">
 		    	</td>
 		    </tr>
 		    <tr class="light">
 		    	<td width="1%" nowrap>
-		    		<B>{trans("Payment type:")}</B>
+		    		<b>{trans("Payment type:")}</b>
 		    	</td>
 		    	<td width="99%" nowrap>
-		    		<SELECT name="invoiceconvert[paytype]" {tip text="Select payment type" trigger="paytype"}>
+		    		<select name="invoiceconvert[paytype]" {tip text="Select payment type" trigger="paytype"}>
 		    			{foreach from=$_PAYTYPES item=item key=key}
-		    			<OPTION value="{$key}"{if $invoice.paytype==$key} selected{/if}>{$item}</OPTION>
+		    			<option value="{$key}"{if $invoice.paytype==$key} selected{/if}>{$item}</option>
 		    			{/foreach}
-		    		</SELECT>
+		    		</select>
 		    	</td>
 		    </tr>
 		</table>
@@ -130,36 +130,36 @@
 	<tr class="lucid">
 	    <td colspan="2" width="100%">
 		<table width="100%" cellpadding="3">
-		<TR CLASS="DARK">
-		<TD CLASS="fleftu" WIDTH="1%">
-			<B>{trans("No.")}</B>
-		</TD>
-		<TD CLASS="fbt" WIDTH="93%">
+		<tr class="dark">
+		<td class="fleftu" width="1%">
+			<b>{trans("No.")}</b>
+		</td>
+		<td class="fbt" width="93%">
 			{trans("Name of product, commodity or service:")}
-		</TD>
-		<TD CLASS="fbt" WIDTH="1%" nowrap>
+		</td>
+		<td class="fbt" width="1%" nowrap>
 			{trans("Product ID:")}
-		</TD>
-		<TD CLASS="fbt" WIDTH="1%" ALIGN="RIGHT">
-			{trans("Amount:")}<BR>
+		</td>
+		<td class="fbt" width="1%" align="right">
+			{trans("Amount:")}<br>
 			{trans("Unit:")}
-		</TD>
-		<TD CLASS="fbt" WIDTH="1%" NOWRAP ALIGN="RIGHT">
+		</td>
+		<td class="fbt" width="1%" nowrap align="right">
 			{trans("Discount:")}
-		</TD>
-		<TD CLASS="fbt" WIDTH="1%" NOWRAP ALIGN="RIGHT">
-			{trans("Net Price:")}<BR>
+		</td>
+		<td class="fbt" width="1%" nowrap align="right">
+			{trans("Net Price:")}<br>
 			{trans("Net Value:")}
-		</TD>
-		<TD CLASS="fbt" WIDTH="1%" ALIGN="RIGHT">
+		</td>
+		<td class="fbt" width="1%" align="right">
 			{trans("Tax:")}
-		</TD>
-		<TD CLASS="frightu" WIDTH="1%" NOWRAP ALIGN="RIGHT">
-			{trans("Gross Price:")}<BR>
+		</td>
+		<td class="frightu" width="1%" nowrap align="right">
+			{trans("Gross Price:")}<br>
 			{trans("Gross Value:")}
-		</TD>
+		</td>
 		
-	</TR>
+	</tr>
 		    {cycle values="light,lucid" print=false}
 		    {assign var="sum_brutto" value="0"}
 		    {assign var="sum_netto" value="0"}
@@ -171,9 +171,9 @@
 			{math assign='w_netto' equation="round((brutto / (vat / 100 + 1)),2)" brutto=$w_brutto vat=$contents[lista].taxvalue}
 			{math assign='sum_brutto' equation="sbrutto + wbrutto" sbrutto=$sum_brutto wbrutto=$w_brutto}
 			{math assign='sum_netto' equation="snetto + wnetto" snetto=$sum_netto wnetto=$w_netto}
-			<tr class="{cycle}">
+			<tr class="{cycle} lista">
 			    <td width="1%" class="fleft">
-				<B>{$lp}.</B>
+				<b>{$lp}.</b>
 			    </td>
 			    <td width="93%">
 				{$contents[lista].description}
@@ -202,9 +202,9 @@
 			</tr>
 		    {sectionelse}
 		    <tr class="lucid">
-			<td colspan="8" align="CENTER" class="fbottomu">
+			<td colspan="8" align="center" class="fbottomu">
 			    <p>&nbsp;</p>
-			    <p><B>{trans("Invoice have no items.")}</B></p>
+			    <p><b>{trans("Invoice have no items.")}</b></p>
 			    <p>&nbsp;</p>
 			</td>
 		    </tr>
@@ -225,8 +225,8 @@
 	
 	<tr class="dark">
 	    <td colspan="2" align="right" class="ftop">
-		<B><a href="javascript: document.invoiceconvert.submit();">{trans('Save')} <img src="img/save.gif"></a></B>
-		<B><a href="?m=invoicelist">{trans('Cancel')} <img src="img/cancel.gif"></a></B>
+		<b><a href="javascript: document.invoiceconvert.submit();">{trans('Save')} <img src="img/save.gif"></a></b>
+		<b><a href="?m=invoicelist">{trans('Cancel')} <img src="img/cancel.gif"></a></b>
 	    </td>
 	</tr>
 </table>

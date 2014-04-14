@@ -1,6 +1,6 @@
 <!--// $Id$ //-->
-<table cellpadding="3" width="100%">
-	<tr class="dark">
+<table cellpadding="3" width="100%"  class="table table-bordered">
+	<tr class="dark info-hover">
 		<td class="fleftu hand" onclick="ShowOrHideBox('messagespanelbox');">
                         <img src="img/mailsms.gif" alt="">
                         <b>{trans("Customer Messages:")}</b>
@@ -16,12 +16,12 @@
 	<tr id="messagespanelbox"  style="display:none;">
 		<td width="100%" colspan="2" class="fall">
 			<table cellpadding="5" cellspacing="0" width="100%">
-				<tr CLASS="DARK">
+				<tr class="dark">
 					<td width="1%" class="fleftu" nowrap>
 						{trans("Date:")}
 					</td>
 					<td width="97%" class="fbt" nowrap>
-						<B>{trans("Subject:")}</B>
+						<b>{trans("Subject:")}</b>
 					</td>
 					<td width="1%" class="fbt" nowrap>
 						{trans("Destination:")}
@@ -36,7 +36,7 @@
 					</td>
 					<td width="97%" onclick="return self.location.href='?m=messageinfo&id={$item.id}'">
 						<img src="img/{if $item.type == $smarty.const.MSG_SMS}sms{elseif $item.type==$smarty.const.MSG_MAIL}mail{elseif $item.type==$smarty.const.MSG_GADUGADU}gg{elseif $item.type==$smarty.const.MSG_USERPANEL}cms{/if}.gif" alt="">
-						<B>{$item.subject}</B>
+						<b>{$item.subject}</b>
 						{if $item.type == $smarty.const.MSG_USERPANEL}
 						<br><img src="img/empty.gif" width="16" border="0" alt="">
 						Pierwszy odczyt: {if $item.firstread}{$item.firstread|date_format:"Y/m/d H:i"}{else}-----{/if}&nbsp;&nbsp;&nbsp;

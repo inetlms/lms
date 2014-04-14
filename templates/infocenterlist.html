@@ -53,13 +53,13 @@
 	    <b>Status:</b>&nbsp;
 	    <select name="s" {if $listdata.status} class="active"{/if}  onchange="document.callcenter.submit();">
 		<option value="">-- all --</option>
-		<option value="1" {if $listdata.status eq "1"}SELECTED{/if}>normalne</option>
-		<option value="2" {if $listdata.status eq "2"}SELECTED{/if}>ważne</option>
+		<option value="1" {if $listdata.status eq "1"}selected{/if}>normalne</option>
+		<option value="2" {if $listdata.status eq "2"}selected{/if}>ważne</option>
 	    </select>&nbsp;
 	    <select name="st" {if $listdata.status2} class="active"{/if}  onchange="document.callcenter.submit();">
 		<option value="">-- all --</option>
-		<option value="1" {if $listdata.status2 eq "1"}SELECTED{/if}>otwarte</option>
-		<option value="2" {if $listdata.status2 eq "2"}SELECTED{/if}>zamknięte</option>
+		<option value="1" {if $listdata.status2 eq "1"}selected{/if}>otwarte</option>
+		<option value="2" {if $listdata.status2 eq "2"}selected{/if}>zamknięte</option>
 	    </select>&nbsp;<b>Okres:</b>&nbsp;
 	    od:
 		<input type="text" class="tcal" style="width:90px;{if $listdata.datefrom}background-color:#ffff99;{/if}" name="datefrom" id="datefrom" value="{$listdata.datefrom}" readonly>
@@ -113,7 +113,7 @@
     
     {cycle values="light,lucid" print=false}
     {section name='l1' loop=$topiclist start=$start max=$pagelimit}
-    <tr class="{cycle}{if $topiclist[l1].closed} blend{/if}"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+    <tr class="{cycle} lista {if $topiclist[l1].closed} blend{/if}"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	<td class="fleft" align="center">
 	    <nobr>
 	    {$topiclist[l1].id}/{$topiclist[l1].cid|string_format:"%04d"}/{$topiclist[l1].cdate|date_format:"Y"}

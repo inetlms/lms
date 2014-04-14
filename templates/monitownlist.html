@@ -1,5 +1,5 @@
 {include file="header.html"}
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle help="monit_own"}
 
 
 {if $akcja=='add' || $akcja=='edit'}
@@ -21,19 +21,19 @@
 		<b>Opis :</b> <input type="text" name="{$formname}[description]" value="{$dane.description}" size="40" {tip text="Dodatkowe info (opcja)"}>&nbsp;&nbsp;&nbsp;
 		<b>Test type:</b>&nbsp;
 		<select name="{$formname}[type]">
-		    <option value="icmp" {if $dane.test_type=='icmp'} SELECTED{/if}>icmp</option>
-		    <option value="http" {if $dane.test_type=='http'} SELECTED{/if}>http</option>
-		    <option value="https" {if $dane.test_type=='https'} SELECTED{/if}>https</option>
-		    <option value="ssh" {if $dane.test_type=='ssh'} SELECTED{/if}>ssh</option>
-		    <option value="ftp" {if $dane.test_type=='ftp'} SELECTED{/if}>ftp</option>
-		    <option value="telnet" {if $dane.test_type=='telnet'} SELECTED{/if}>telnet</option>
-		    <option value="callbook" {if $dane.test_type=='callbook'} SELECTED{/if}>callbook</option>
-		    <option value="rpcbind" {if $dane.test_type=='rpcbind'} SELECTED{/if}>rpcbind</option>
-		    <option value="pptp" {if $dane.test_type=='pptp'} SELECTED{/if}>pptp</option>
-		    <option value="dns" {if $dane.test_type=='dns'} SELECTED{/if}>dns</option>
-		    <option value="smtp" {if $dane.test_type=='smtp'} SELECTED{/if}>smtp</option>
-		    <option value="nfs" {if $dane.test_type=='nfs'} SELECTED{/if}>nfs</option>
-		    <option value="winbox" {if $dane.test_type=='winbox'} SELECTED{/if}>winbox</option>
+		    <option value="icmp" {if $dane.test_type=='icmp'} selected{/if}>icmp</option>
+		    <option value="http" {if $dane.test_type=='http'} selected{/if}>http</option>
+		    <option value="https" {if $dane.test_type=='https'} selected{/if}>https</option>
+		    <option value="ssh" {if $dane.test_type=='ssh'} selected{/if}>ssh</option>
+		    <option value="ftp" {if $dane.test_type=='ftp'} selected{/if}>ftp</option>
+		    <option value="telnet" {if $dane.test_type=='telnet'} selected{/if}>telnet</option>
+		    <option value="callbook" {if $dane.test_type=='callbook'} selected{/if}>callbook</option>
+		    <option value="rpcbind" {if $dane.test_type=='rpcbind'} selected{/if}>rpcbind</option>
+		    <option value="pptp" {if $dane.test_type=='pptp'} selected{/if}>pptp</option>
+		    <option value="dns" {if $dane.test_type=='dns'} selected{/if}>dns</option>
+		    <option value="smtp" {if $dane.test_type=='smtp'} selected{/if}>smtp</option>
+		    <option value="nfs" {if $dane.test_type=='nfs'} selected{/if}>nfs</option>
+		    <option value="winbox" {if $dane.test_type=='winbox'} selected{/if}>winbox</option>
 		</select>
 	    </td>
 	    
@@ -43,11 +43,11 @@
 		<a href="javascript:document.{$formname}.submit();">{trans("Save")}&nbsp;<img src="img/save.gif"></a>&nbsp;&nbsp;<a href="?m=monitownlist">{trans("Cancel")}&nbsp;<img src="img/cancel.gif"></a>
 	    </td>
 	</tr>
-    </TABLE>
-    </FORM>
-    <BR>
+    </table>
+    </form>
+    <br>
 {/if}
-<TABLE width="100%" cellpadding="3">
+<table width="100%" cellpadding="3">
     <tr class="dark">
 	<td width="1%"  nowrap align="left" class="fleftu">
 	    <b>Nazwa<br>Host</b>
@@ -59,24 +59,24 @@
 	    <b>Test type</b>
 	</td>
 	<td width="1%" align="center" class="fbt" nowrap>
-	    <b>Ostatni pomiar<BR>Data</b>
+	    <b>Ostatni pomiar<br>Data</b>
 	</td>
 
 	<td width="1%" align="center" class="fbt" nowrap>
-	    <b>MIN</b> (1d)<BR>
+	    <b>MIN</b> (1d)<br>
 	    <b>MIN</b> (7d)
 	</td>
 	<td width="1%" align="center" class="fbt" nowrap>
-	    <b>AVG</b> (1d)<BR>
+	    <b>AVG</b> (1d)<br>
 	    <b>AVG</b> (7d)
 	</td>
 	<td width="1%" align="center" class="fbt" nowrap>
-	    <b>MAX</b> (1d)<BR>
+	    <b>MAX</b> (1d)<br>
 	    <b>MAX</b> (7d)
 	</td>
 		
 	<td width="1%" align="center" class="fbt" nowrap>
-	    <b>Ostatnia usterka<BR>trwała do</b>
+	    <b>Ostatnia usterka<br>trwała do</b>
 	</td>
 	
 	<td width="1%" nowrap align="right" class="frightu">
@@ -87,10 +87,10 @@
     {section name=devlist loop=$monitdevlist}
 	{assign var='indeks' value=$smarty.section.devlist.index}
 	{assign var='monit' value=$monitdevlist[devlist].active}
-	<tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');" {if !$monit}style="color:#666;font-style:italic;"{/if}>
+	<tr class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');" {if !$monit}style="color:#666;font-style:italic;"{/if}>
 	    <td width="1%" align="left" nowrap class="fleft"style="padding-left:4px;padding-right:10px;">
 		<img src="img/radar{if !$monit}off{/if}.png" style="cursor:pointer;" border="0" {if $monitdevlist[devlist].ptime}{tip a=$monitdevlist[devlist].nid dynpopup='?m=monitchartshort&chart=ping&type=owner&id=$a' sticky=0}{else}{tip text="BRAK POMIARÓW DLA URZĄDZENIA"}{/if}>&nbsp;
-		{$monitdevlist[devlist].nname}<BR>
+		{$monitdevlist[devlist].nname}<br>
 		<img src="img/empty.gif" width="16">&nbsp;
 		<a href="javascript:ping_popup('{$monitdevlist[devlist].ipaddr}');">{$monitdevlist[devlist].ipaddr}</a>
 	    </td>
@@ -99,19 +99,19 @@
 	    </td>
 	    <td width="1%" nowrap align="center" style="padding-left:10px;padding-right:10px;" >
 		<select onchange="location.href='?m=monitownlist&id={$monitdevlist[devlist].nid}&action=settesttype&testtype='+this.value">
-		    <option value="icmp" {if $monitdevlist[devlist].test_type=='icmp'} SELECTED{/if}>icmp</option>
-		    <option value="http" {if $monitdevlist[devlist].test_type=='http'} SELECTED{/if}>http</option>
-		    <option value="https" {if $monitdevlist[devlist].test_type=='https'} SELECTED{/if}>https</option>
-		    <option value="ssh" {if $monitdevlist[devlist].test_type=='ssh'} SELECTED{/if}>ssh</option>
-		    <option value="ftp" {if $monitdevlist[devlist].test_type=='ftp'} SELECTED{/if}>ftp</option>
-		    <option value="telnet" {if $monitdevlist[devlist].test_type=='telnet'} SELECTED{/if}>telnet</option>
-		    <option value="callbook" {if $monitdevlist[devlist].test_type=='callbook'} SELECTED{/if}>callbook</option>
-		    <option value="rpcbind" {if $monitdevlist[devlist].test_type=='rpcbind'} SELECTED{/if}>rpcbind</option>
-		    <option value="pptp" {if $monitdevlist[devlist].test_type=='pptp'} SELECTED{/if}>pptp</option>
-		    <option value="dns" {if $monitdevlist[devlist].test_type=='dns'} SELECTED{/if}>dns</option>
-		    <option value="smtp" {if $monitdevlist[devlist].test_type=='smtp'} SELECTED{/if}>smtp</option>
-		    <option value="nfs" {if $monitdevlist[devlist].test_type=='nfs'} SELECTED{/if}>nfs</option>
-		    <option value="winbox" {if $monitdevlist[devlist].test_type=='winbox'} SELECTED{/if}>winbox</option>
+		    <option value="icmp" {if $monitdevlist[devlist].test_type=='icmp'} selected{/if}>icmp</option>
+		    <option value="http" {if $monitdevlist[devlist].test_type=='http'} selected{/if}>http</option>
+		    <option value="https" {if $monitdevlist[devlist].test_type=='https'} selected{/if}>https</option>
+		    <option value="ssh" {if $monitdevlist[devlist].test_type=='ssh'} selected{/if}>ssh</option>
+		    <option value="ftp" {if $monitdevlist[devlist].test_type=='ftp'} selected{/if}>ftp</option>
+		    <option value="telnet" {if $monitdevlist[devlist].test_type=='telnet'} selected{/if}>telnet</option>
+		    <option value="callbook" {if $monitdevlist[devlist].test_type=='callbook'} selected{/if}>callbook</option>
+		    <option value="rpcbind" {if $monitdevlist[devlist].test_type=='rpcbind'} selected{/if}>rpcbind</option>
+		    <option value="pptp" {if $monitdevlist[devlist].test_type=='pptp'} selected{/if}>pptp</option>
+		    <option value="dns" {if $monitdevlist[devlist].test_type=='dns'} selected{/if}>dns</option>
+		    <option value="smtp" {if $monitdevlist[devlist].test_type=='smtp'} selected{/if}>smtp</option>
+		    <option value="nfs" {if $monitdevlist[devlist].test_type=='nfs'} selected{/if}>nfs</option>
+		    <option value="winbox" {if $monitdevlist[devlist].test_type=='winbox'} selected{/if}>winbox</option>
 		    
 		</select>
 	    </td>
@@ -121,12 +121,12 @@
 		    {if $monitdevlist[devlist].ptime>0}
 			{$monitdevlist[devlist].ptime} ms
 		    {elseif $monitdevlist[devlist].ptime<0}
-			<font color="red">timeout</FONT>
+			<font color="red">timeout</font>
 		    {else}
-			<font color="blue">no test</FONT>
-		    {/if}</b><BR>
+			<font color="blue">no test</font>
+		    {/if}</b><br>
 		{else}
-		    <font color="blue"><b>no test</b></FONT>
+		    <font color="blue"><b>no test</b></font>
 		{/if}
 		{$monitdevlist[devlist].cdate|date_format:"%Y-%m-%d %H:%M"}
 	    </td>
@@ -136,7 +136,7 @@
 		{else}
 		    ---
 		{/if}
-		<BR>
+		<br>
 		{if $monitdevlist[devlist].minptime7d}
 		    {$monitdevlist[devlist].minptime7d|string_format:"%.3f"|replace:',':'.'} ms
 		{else}
@@ -149,7 +149,7 @@
 		{else}
 		    ---
 		{/if}
-		<BR>
+		<br>
 		{if $monitdevlist[devlist].avgptime7d}
 		    {$monitdevlist[devlist].avgptime7d|string_format:"%.3f"|replace:',':'.'} ms
 		{else}
@@ -160,29 +160,29 @@
 	    {if $monitdevlist[devlist].maxptime}
 		{assign var='czas' value=$monitdevlist[devlist].maxptime}
 		{if $monit}
-		    {if $czas<20}<FONT color="black">{/if}
-		    {if $czas>=20 && $czas<50}<FONT color="green" style="font-weight:bold;">{/if}
-		    {if $czas>=50 && $czas<100}<FONT color="blue" style="font-weight:bold;">{/if}
-		    {if $czas>=100 && $czas<200}<FONT color="brown" style="font-weight:bold;">{/if}
-		    {if $czas>=200 }<FONT color="red" style="font-weight:bold;text-decoration:blink;">{/if}
+		    {if $czas<20}<font color="black">{/if}
+		    {if $czas>=20 && $czas<50}<font color="green" style="font-weight:bold;">{/if}
+		    {if $czas>=50 && $czas<100}<font color="blue" style="font-weight:bold;">{/if}
+		    {if $czas>=100 && $czas<200}<font color="brown" style="font-weight:bold;">{/if}
+		    {if $czas>=200 }<font color="red" style="font-weight:bold;text-decoration:blink;">{/if}
 		{/if}
 		    {$czas|string_format:"%.3f"|replace:',':'.'} ms
-		{if $monit}</FONT>{/if}
+		{if $monit}</font>{/if}
 		{else}
 		    ---
 		{/if}
-		<BR>
+		<br>
 		{if $monitdevlist[devlist].maxptime7d}
 		{assign var='czas' value=$monitdevlist[devlist].maxptime7d}
 		{if $monit}
-		    {if $czas<20}<FONT color="black">{/if}
-		    {if $czas>=20 && $czas<50}<FONT color="green" style="font-weight:bold;">{/if}
-		    {if $czas>=50 && $czas<100}<FONT color="blue" style="font-weight:bold;">{/if}
-		    {if $czas>=100 && $czas<200}<FONT color="brown" style="font-weight:bold;">{/if}
-		    {if $czas>=200 }<FONT color="red" style="font-weight:bold;text-decoration:blink;">{/if}
+		    {if $czas<20}<font color="black">{/if}
+		    {if $czas>=20 && $czas<50}<font color="green" style="font-weight:bold;">{/if}
+		    {if $czas>=50 && $czas<100}<font color="blue" style="font-weight:bold;">{/if}
+		    {if $czas>=100 && $czas<200}<font color="brown" style="font-weight:bold;">{/if}
+		    {if $czas>=200 }<font color="red" style="font-weight:bold;text-decoration:blink;">{/if}
 		{/if}
 		    {$czas|string_format:"%.3f"|replace:',':'.'} ms
-		{if $monit}</FONT>{/if}
+		{if $monit}</font>{/if}
 		{else}
 		    ---
 		{/if}
@@ -191,14 +191,14 @@
 		
 		{if $monitdevlist[devlist].warndate}
 		    {$monitdevlist[devlist].warndate|date_format:"%d/%m/%Y %H:%M"}
-		    <BR>
+		    <br>
 		    {if $monitdevlist[devlist].backtime}
 			{$monitdevlist[devlist].backtime|date_format:"%d/%m/%Y %H:%M"}
 		    {else}
 			<font color="red">dead</font>
 		    {/if}
 		{else}
-		---<BR>---
+		---<br>---
 		{/if}
 	    </td>
 	    <td width="1%" nowrap align="right" class="fright"style="padding-left:10px;padding-right:4px;">
@@ -214,7 +214,7 @@
 	<tr class="light">
 	    <td width="100%" colspan="9" class="flr" align="center">
 	    <br>
-		<H1>Brak urządzeń</H1><br>
+		<h1>Brak urządzeń</h1><br>
 	    </td>
 	</tr>
     {/section}
@@ -223,5 +223,5 @@
 	    <a href="?m=monitownlist&action=add">Dodaj nowe urządzenie&nbsp;<img src="img/add.gif"></a>
 	</td>
     </tr>
-</TABLE>
+</table>
 {include file="footer.html"}

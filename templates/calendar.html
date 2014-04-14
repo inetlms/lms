@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
 <title>::: LMS : {trans("Select Date")} :::</title>
 {literal}
-<link href="img/style.css" rel="stylesheet" type="text/css">
+<link href="img/style_old.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="img/autoiframe.js"></script>
 <script type="text/javascript" src="img/common.js"></script>
 <!--
@@ -161,7 +161,7 @@ while (dt_current_day.getMonth() == dt_current.getMonth() ||
 	document.write('</tr>');
 }
 if (obj_caller && obj_caller.time_comp)
-	document.write('<form onsubmit="javascript:set_datetime('+dt_current.valueOf()+', true)" name="cal"><tr><td colspan="7" class="dark" align="center">Godzina: <INPUT type="text" name="time" value="'+obj_caller.gen_time(this.dt_current)+'" size="5" maxlength="5"></td></tr></form>');
+	document.write('<form onsubmit="javascript:set_datetime('+dt_current.valueOf()+', true)" name="cal"><tr><td colspan="7" class="dark" align="center">Godzina: <input type="text" name="time" value="'+obj_caller.gen_time(this.dt_current)+'" size="5" maxlength="5"></td></tr></form>');
 </script>
 {/literal}
 </table></tr></td>

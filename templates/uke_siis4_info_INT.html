@@ -31,7 +31,7 @@
 	    
 	    {cycle values="light,lucid" print=false}
 	    {section name='intlist' loop=$intlist}
-	    <tr class="{cycle}{if !$intlist[intlist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	    <tr class="{cycle} lista{if !$intlist[intlist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		<td width="1%" class="fleft pad" align="left">{$intlist[intlist].markid|string_format:"%04d"}</td>
 		<td width="1%" class="pad" align="left">{$intlist[intlist].netnodename}</td>
 		<td width="1%" class="pad" align="left">{$intlist[intlist].networknodename}</td>

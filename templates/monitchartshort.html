@@ -1,25 +1,25 @@
 {include file="header.html"}
 {if $chart.img}
-	<TABLE width="100%" cellpadding="3" id="table">
-	<TR><TD align="center">
+	<table width="100%" cellpadding="3" id="table">
+	<tr><td align="center">
 	
 	<img src="{$chart.filename}" alt="">
-	</TD></TR>
-	</TABLE>
-	<SCRIPT type="text/javascript">
+	</td></tr>
+	</table>
+	<script type="text/javascript">
 	<!--
 	    autoiframe_setsize('autoiframe',476, 238);
 	//-->
-	</SCRIPT>
+	</script>
 {else}
-	<TABLE width="170" cellpadding="3" id="table">
-	<TR><TD align="center">
+	<table width="170" cellpadding="3" id="table">
+	<tr><td align="center">
 	<b>Wykres niedostępny</b>
-	</TD></TR>
-	</TABLE>
-	<SCRIPT type="text/javascript">
+	</tr></td>
+	</table>
+	<script type="text/javascript">
 	<!--
 	    autoiframe_setsize('autoiframe',170, 20);
 	//-->
-	</SCRIPT>
+	</script>
 {/if}

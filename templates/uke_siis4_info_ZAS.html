@@ -29,7 +29,7 @@
 	    
 	    {cycle values="light,lucid" print=false}
 	    {section name='zaslist' loop=$zaslist}
-	    <tr class="{cycle}{if !$zaslist[zaslist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	    <tr class="{cycle} lista {if !$zaslist[zaslist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		<td width="1%" class="fleft pad2" align="left">{$zaslist[zaslist].markid|string_format:"%04d"}</td>
 		<td width="1%" class="pad2" align="left" nowrap>{$zaslist[zaslist].states}</td>
 		<td width="1%" class="pad2" align="left" nowrap>{$zaslist[zaslist].districts}</td>

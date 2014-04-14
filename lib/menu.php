@@ -112,23 +112,12 @@ $menu = array(
 					'tip' => trans('Allows you to find customer'),
 					'prio' => 30,
 				),
-				array(
-					'name' => trans('Groups'),
-					'link' =>'?m=customergrouplist',
-					'tip' => trans('List of Customers Groups'),
-					'prio' => 40,
-				),
-				array(
-					'name' => trans('New Group'),
-					'link' =>'?m=customergroupadd',
-					'tip' => trans('Allows you to add new group'),
-					'prio' => 50,
-				),
+
 				array(
 					'name' => 'Call Center',
 					'link' =>'?m=infocenterlist&cid=',
 					'tip' => '',
-					'prio' => 51,
+					'prio' => 52,
 				),
 				array(
 					'name' => trans('Notices'),
@@ -172,18 +161,7 @@ $menu = array(
 					'tip' => trans('Allows you to search node'),
 					'prio' => 30,
 				),
-				array(
-					'name' => trans('Groups'),
-					'link' =>'?m=nodegrouplist',
-					'tip' => trans('List of Nodes Groups'),
-					'prio' => 40,
-				),
-				array(
-					'name' => trans('New Group'),
-					'link' =>'?m=nodegroupadd',
-					'tip' => trans('Allows you to add new group'),
-					'prio' => 50,
-				),
+
 				array(
 					'name' => trans('Notices'),
 					'link' => '?m=nodewarn',
@@ -286,13 +264,13 @@ $menu = array(
 			'index' => 100,
 			'submenu' => array(
 				array(
-					'name' => trans('List'),
+					'name' => 'Interfejsy sieciowe',
 					'link' => '?m=netdevlist',
 					'tip' => trans('Network devices list'),
 					'prio' => 10,
 				),
 				array(
-					'name' => trans('New Device'),
+					'name' => 'Nowy interfejs',
 					'link' => '?m=netdevadd',
 					'tip' => trans('Add new device'),
 					'prio' => 20,
@@ -320,6 +298,12 @@ $menu = array(
 					'link' => '?m=netdevmap',
 					'tip' => trans('Network map display'),
 					'prio' => 40,
+				),
+				array(
+					'name' => trans('Hosts'),
+					'link' => '?m=hostlist',
+					'tip' => trans('List of Hosts'),
+					'prio' => 60,
 				),
 				
 			
@@ -368,6 +352,7 @@ $menu = array(
 				),
 			)
 		),
+		
 
 		'networks' => array(
 			'name' => trans('IP Networks'),
@@ -414,18 +399,13 @@ $menu = array(
 					'prio' => 20,
 				),
 				
-				array(
-					'name' => trans('Groups'),
-					'link' =>'?m=contractorgrouplist',
-					'tip' => trans('List of Contractors Groups'),
-					'prio' => 40,
-				),
-				array(
-					'name' => trans('New Group'),
-					'link' =>'?m=contractorgroupadd',
-					'tip' => trans('Allows you to add new group'),
-					'prio' => 50,
-				),
+				
+//				array(
+//					'name' => trans('New Group'),
+//					'link' =>'?m=contractorgroupadd',
+//					'tip' => trans('Allows you to add new group'),
+//					'prio' => 50,
+//				),
 /*
 				array(
 					'name' => trans('Reports'),
@@ -861,6 +841,49 @@ $menu = array(
 				),
 			),
 		),
+		
+		'slownik'	=> array(
+			'name'		=> 'Słowniki',
+			'img'		=> 'dictionary.png',
+			'link'		=> '',
+			'prio'		=> 58,
+			'index'		=> 331,
+			'submenu'	=> array(
+				array(
+					'name' => 'Grupy klientów',
+					'link' =>'?m=customergrouplist',
+					'tip' => trans('List of Customers Groups'),
+					'prio' => 10,
+				),
+				array(
+					'name' => 'Grupy kontrahentów',
+					'link' =>'?m=contractorgrouplist',
+					'tip' => trans('List of Contractors Groups'),
+					'prio' => 15,
+				),
+				array(
+					'name' => 'Grupy komputerów',
+					'link' =>'?m=nodegrouplist',
+					'tip' => trans('List of Nodes Groups'),
+					'prio' => 20,
+				),
+				array(
+					'name' => 'Pochodzenie klientów',
+					'link' => '?m=customeroriginlist',
+					'tip'	=> 'Źródła pochodzenia klientów',
+					'prio' => 30,
+				),
+				
+				array(
+					'name' => 'Urządzenia klienckie',
+					'link' => '?m=dictionarydevices',
+					'tip'	=> 'Rodzaje urządzeń instalowanych u klienta',
+					'prio' => 40,
+				),
+				
+			),
+			
+		),
 
 		'config' => array(
 			'name' => trans('Configuration'),
@@ -901,12 +924,7 @@ $menu = array(
 					'tip' => trans('Company Divisions Definitions'),
 					'prio' => 50,
 				),
-				array(
-					'name' => trans('Hosts'),
-					'link' => '?m=hostlist',
-					'tip' => trans('List of Hosts'),
-					'prio' => 60,
-				),
+
 				array(
 					'name' => trans('Daemon'),
 					'link' => '?m=daemoninstancelist',
@@ -945,6 +963,40 @@ $menu = array(
 		),
 
 	);
+
+if (get_conf('phpui.radius')) {
+	
+	$menu['radius'] = array(
+		'name'		=> 'Radius',
+		'img'		=> 'radius.gif',
+		'link'		=> '',
+		'tip'		=> '',
+		'accesskey'	=> '',
+		'prio'		=> 18,
+		'index'		=> 115,
+		'submenu'	=> array(
+			array(
+				'name'		=> 'sesje otwarte',
+				'link'		=> '?m=rad_radacct&status=open&page=1',
+				'tip'		=> '',
+				'prio'		=> 10,
+			),
+			array(
+				'name'		=> 'sesje zakończone',
+				'link'		=> '?m=rad_radacct&status=completed&page=1&startdatefrom='.date('Y/m/d',strtotime("-1 week",time())),
+				'tip'		=> '',
+				'prio'		=> 10,
+			),
+			array(
+				'name'		=> 'konfiguracja',
+				'link'		=> '?m=configlist&page=1&s=radius&n=',
+				'tip'		=> '',
+				'prio'		=> 100,
+			),
+		),
+	);
+	
+}
 
 // menu item for EtherWerX STM channels management
 if (chkconfig($CONFIG['phpui']['ewx_support'])) {

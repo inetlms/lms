@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
     <link href="{get_conf('phpui.style', 'img/style.css')}" rel="stylesheet" type="text/css">
     <link href="img/lms-net.gif" rel="shortcut icon">
-    <title>::: {trans("Welcome to LMS")} {$layout.lmsv} :::</title>
+    <title> Witaj w iNET LMS </title>
 </head>
 <body>
 
@@ -20,7 +20,7 @@
 					    <img src="img/logo.gif">
 					</td>
 					<td align="center" class="light loginform" width="300" height="400">
-						<b>{$layout.lmsv} LMS {$layout.lmsvr}</b><br><br>
+						<b>{$layout.lmsv} LMS<br>{$layout.lmsvr}</b><br><br>
 						<b>&copy;2012-{$smarty.now|date_format:"Y"} iNET LMS Developers</b><br><br><br>
 						{if $error}<font class="alert bold">{$error}</font>{else}&nbsp;{/if}<br>
 						<br>
@@ -50,7 +50,7 @@
 								</tr>
 								<tr>
 									<td colspan="2" align="center">
-										<input type="button" class="bold" name="loginform[submit]" onclick="document.loginform.submit();" value="{trans("Login")}">
+										<input type="submit" class="bold" name="loginform[submit]" onclick="document.loginform.submit();" value="{trans("Login")}" style="border:solid 1px #CCCCCC; padding:5px;">
 									</td>
 								</tr>
 							</table>
@@ -77,7 +77,7 @@
 <div style="left:10%;bottom:1%;width:80%;position:absolute;padding:5px;text-align:center;">
 <table width="100%" cellpadding="0" cellspacing="0" class="table table-bordered table-info">
 <tr class="light alert-info"><td align="center" class="fall" style="padding-top:4px; padding-bottom:4px;">
-Informujemy, że projekt iNET LMS to autorska inicjatywa Daniela Kuleszy prezesa iNET Media group sp. z o.o. z siedzibą w Karlinie. Projekt nie jest powiązany<br>w żaden sposób z iNET group sp. z o.o. z siedzibą w Wodzisławiu Śląskim. Wszelkie pytania prosimy kierować na adres email {protect_email('kontakt@inetlms.pl')}
+Informujemy, że projekt iNET LMS nie jest powiązany w żaden sposób z iNET group sp. z o.o. z siedzibą w Katowicach.<br> Wszelkie pytania prosimy kierować na adres email {protect_email('kontakt@inetlms.pl')}
 </td></tr></table>
 
 </div>

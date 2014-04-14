@@ -114,6 +114,117 @@ function GetConfigList($order='var,asc', $section='', $search='')
 			    }
 			break;
 			
+
+			case 'radius' :
+			    switch($item['var'])
+			    {
+				
+				case 'coa_port':
+					$config[$idx]['description'] = 'domyślny port na którym nasłuchuje NAS, DEF 3799';
+				break;
+				
+				case 'auth_login':
+					$config[$idx]['description'] = 'pole z karty urządzenia klienta (komputer) które jest loginem dla autoryzacji w radius\'ie.<br>Dopuszczalne wartości : <br><b>id</b> - id komputera<br><b>name</b> - nazwa komputera<br><b>ip</b> - IP komputera<br>DEFAULT : id';
+				break;
+				
+				case 'page_view':
+					$config[$idx]['description'] = 'ilość wyświetlanych pozycji na jednej stronie';
+				break;
+				
+				default:
+					$config[$idx]['description'] = trans('Unknown option. No description.');
+				break;
+			    }
+			break;
+
+
+
+			case 'netdevices':
+				switch($item['var'])
+				{
+					case 'shift_port':
+						$config[$idx]['description'] = 'Pozwala na przestawianie kolejności portów w interfejsie sieciowym. DEF: 0';
+					break;
+					case 'def_nameport':
+						$config[$idx]['description'] = 'Domyślna nazwa portu dla aktywnych interfejsów sieciowych. DEF: eth';
+					break;
+					case 'def_pnameport':
+						$config[$idx]['description'] = 'Domyślna nazwa portu dla pasywnych interfejsów sieciowyh. DEF: port';
+					break;
+					case 'link_networknode':
+						$config[$idx]['description'] = 'Interfejs sieciowy musi być przypisany do węzła. DEF.: 1';
+					break;
+					case 'link_tosame':
+						$config[$idx]['description'] = 'Pozwól na połączenie sieciowe w obrębie tego samego pasywnego interfejsu sieciowego do innego portu. DEF.: 1';
+					break;
+					case 'link_tosame_active':
+						$config[$idx]['description'] = 'Pozwól na połączenie sieciowe w obrębie tego samego aktywnego interfejsu sieciowego do innego portu. DEF.: 0';
+					break;
+					
+					case 'delinfoservice':
+						$config[$idx]['description'] = 'Zezwalaj na kasowanie informacji o czynnościach serwisowych w interfejsach sieciowych DEF.: 0';
+					break;
+					case 'force_connection':
+						$config[$idx]['description'] = 'wymusza skonfigurowania połączenia sieciowego podczas edycji/dodawania komputera klienta DEF.: 1';
+					break;
+					case 'force_network_to_host':
+						$config[$idx]['description'] = 'wymusza powiązanie klasy adresowej IP z hostem  DEF.: 0';
+					break;
+					
+					
+					case 'force_network_gateway':
+						$config[$idx]['description'] = 'wymusza wpisanie bramy w konfiguracji sieci DEF.: 1';
+					break;
+					case 'force_network_dns':
+						$config[$idx]['description'] = 'wymusza wpisanie chociaż jednego adresu serwera DNS w konfiguracji sieci  DEF.: 1';
+					break;
+					
+					
+					
+				default:
+						$config[$idx]['description'] = trans('Unknown option. No description.');
+					break;
+				} //end: var
+			break;
+			
+			case 'homepage' :
+				switch($item['var'])
+				{
+					case 'box_lms' :
+						$config[$idx]['description'] = 'Pokaż box z informacją o iNET LMS. <b>DEFAULT: 1</b>';
+					break;
+					case 'box_system' :
+						$config[$idx]['description'] = 'Pokaż box z informacją o systemie. <b>DEFAULT: 1</b>';
+					break;
+					case 'box_customer' :
+						$config[$idx]['description'] = 'Pokaż box z informacją o klientach. <b>DEFAULT: 1</b>';
+					break;
+					case 'box_nodes' :
+						$config[$idx]['description'] = 'Pokaż box z informacją o komputerach. <b>DEFAULT: 1</b>';
+					break;
+					case 'box_helpdesk' :
+						$config[$idx]['description'] = 'Pokaż box z informacją o zgłoszeniach. <b>DEFAULT: 1</b>';
+					break;
+					case 'box_links' :
+						$config[$idx]['description'] = 'Pokaż box z informacją o użytecznych linkach. <b>DEFAULT: 1</b>';
+					break;
+					case 'box_totd' :
+						$config[$idx]['description'] = 'Pokaż Pana Żaróweczkę :). <b>DEFAULT: 0</b>';
+					break;
+					case 'box_board' :
+						$config[$idx]['description'] = 'Pokaż box z tablicą informacyjną. <b>DEFAULT: 1</b>';
+					break;
+					case 'box_callcenter' :
+						$config[$idx]['description'] = 'Pokaż box Call Center. <b>DEFAULT: 1</b>';
+					break;
+					
+					default:
+						$config[$idx]['description'] = trans('Unknown option. No description.');
+					break;
+				}
+			break;
+
+			
 			case 'autobackup' :
 			    switch($item['var'])
 			    {

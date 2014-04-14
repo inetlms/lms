@@ -24,30 +24,30 @@
 	<table width="100%">
 	    {if $typenode=="nodes"}
 	    <tr>
-		<td width="1%" NOWRAP /><b>Klient</b></td>
+		<td width="1%" nowrap /><b>Klient</b></td>
 		<td width="auto">&nbsp;:&nbsp;&nbsp;{$klient}</td>
 	    </tr>
 	    <tr>
-		<td width="1%" NOWRAP /><b>Komputer</b></td>
+		<td width="1%" nowrap /><b>Komputer</b></td>
 		<td width="auto">&nbsp;:&nbsp;&nbsp;{$komputer}</td>
 	    </tr>
 	    {else}
 	    <tr>
-		<td width="1%" NOWRAP /><b>Urządzenie</b></td>
+		<td width="1%" nowrap /><b>Urządzenie</b></td>
 		<td width="auto">&nbsp;:&nbsp;&nbsp;{$klient}</td>
 	    </tr>
 	    <tr>
-		<td width="1%" NOWRAP /><b>Lokalizacja</b></td>
+		<td width="1%" nowrap /><b>Lokalizacja</b></td>
 		<td width="auto">&nbsp;:&nbsp;&nbsp;{$location}</td>
 	    </tr>
 	    {/if}
 	    <tr>
-		<td width="1%" NOWRAP /><b>IP</b></td>
+		<td width="1%" nowrap /><b>IP</b></td>
 		<td width="auto">&nbsp;:&nbsp;&nbsp;{$ipek}</td>
 	    </tr>
 	</table>
     </td>
-    <td class="frightu" width="1%" align="right" NOWRAP />
+    <td class="frightu" width="1%" align="right" nowrap />
 	<a href="javascript:window.close();"><b>ZAMKNIJ</b></a>&nbsp;&nbsp;
     </td>
     
@@ -55,28 +55,28 @@
 <tr class="dark">
 
     <td class="fleftu " width="auto" align="left" colspan="2">
-    &nbsp;<b>Pakiet</b>: <select name="packetsize" style="width:80px;" {tip text="Ustaw wielkość pakietu dla pinga"} onChange="zmien();">
-	<option value="32" {if $packetsize=='32'}SELECTED{/if}>32</option>
-	<option value="64" {if $packetsize=='64'}SELECTED{/if}>64</option>
-	<option value="128" {if $packetsize=='128'}SELECTED{/if}>128</option>
-	<option value="256" {if $packetsize=='256'}SELECTED{/if}>256</option>
-	<option value="512" {if $packetsize=='512'}SELECTED{/if}>512</option>
-	<option value="1024" {if $packetsize=='1024'}SELECTED{/if}>1024</option>
+    &nbsp;<b>Pakiet</b>: <select name="packetsize" style="width:80px;" {tip text="Ustaw wielkość pakietu dla pinga"} onchange="zmien();">
+	<option value="32" {if $packetsize=='32'}selected{/if}>32</option>
+	<option value="64" {if $packetsize=='64'}selected{/if}>64</option>
+	<option value="128" {if $packetsize=='128'}selected{/if}>128</option>
+	<option value="256" {if $packetsize=='256'}selected{/if}>256</option>
+	<option value="512" {if $packetsize=='512'}selected{/if}>512</option>
+	<option value="1024" {if $packetsize=='1024'}selected{/if}>1024</option>
     </select>&nbsp;&nbsp;
     <b>Typ testu:</b> 
     <select name="typtest" style="width:80px;" onchange="zmien();">
-	<option value="icmp" {if $typtest=='icmp'}SELECTED{/if}>icmp</option>
-	<option value="http" {if $typtest=='http'}SELECTED{/if}>http</option>
-	<option value="https" {if $typtest=='https'}SELECTED{/if}>https</option>
-	<option value="ssh" {if $typtest=='ssh'}SELECTED{/if}>ssh</option>
-	<option value="ftp" {if $typtest=='ftp'}SELECTED{/if}>ftp</option>
-	<option value="telnet" {if $typtest=='telnet'}SELECTED{/if}>telnet</option>
-	<option value="callbook" {if $typtest=='callbook'}SELECTED{/if}>callbook</option>
-	<option value="rpcbind" {if $typtest=='rpcbind'}SELECTED{/if}>rpcbind</option>
-	<option value="pptp" {if $typtest=='pptp'}SELECTED{/if}>pptp</option>
-	<option value="smtp" {if $typtest=='smtp'}SELECTED{/if}>smtp</option>
-	<option value="dns" {if $typtest=='dns'}SELECTED{/if}>dns</option>
-	<option value="winbox" {if $typtest=='winbox'}SELECTED{/if}>winbox</option>
+	<option value="icmp" {if $typtest=='icmp'}selected{/if}>icmp</option>
+	<option value="http" {if $typtest=='http'}selected{/if}>http</option>
+	<option value="https" {if $typtest=='https'}selected{/if}>https</option>
+	<option value="ssh" {if $typtest=='ssh'}selected{/if}>ssh</option>
+	<option value="ftp" {if $typtest=='ftp'}selected{/if}>ftp</option>
+	<option value="telnet" {if $typtest=='telnet'}selected{/if}>telnet</option>
+	<option value="callbook" {if $typtest=='callbook'}selected{/if}>callbook</option>
+	<option value="rpcbind" {if $typtest=='rpcbind'}selected{/if}>rpcbind</option>
+	<option value="pptp" {if $typtest=='pptp'}selected{/if}>pptp</option>
+	<option value="smtp" {if $typtest=='smtp'}selected{/if}>smtp</option>
+	<option value="dns" {if $typtest=='dns'}selected{/if}>dns</option>
+	<option value="winbox" {if $typtest=='winbox'}selected{/if}>winbox</option>
     </select>
     
     <p>

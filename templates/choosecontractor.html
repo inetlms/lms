@@ -14,7 +14,7 @@
 </script>{/if}
 </head>
 {if ! $part}
-<frameset name="all" frameborder="0" framespacing="0" ROWS="36,*">
+<frameset name="all" frameborder="0" framespacing="0" rows="36,*">
 	<frame scrolling="no" frameborder="0" marginheight="0" marginwidth="0" name="top" noresize src="?m=choosecontractor&p=top">
 	<frame scrolling="always" frameborder="0" marginheight="0" marginwidth="0" name="main" noresize src="?m=choosecontractor&p=main">
 </frameset>
@@ -44,18 +44,18 @@ document.search.searchcustomer.focus();
 <table cellpadding="3" width="100%">
 	{cycle values="light,lucid" print=false}
 	{section name=customerlist loop=$customerlist}
-	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td {$customerlist[customerlist].id} style="vertical-align: top;" onClick="sendvalue2(targetfield1,'{$customerlist[customerlist].id}',targetfield2,'1');">
+	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td {$customerlist[customerlist].id} style="vertical-align: top;" onclick="sendvalue2(targetfield1,'{$customerlist[customerlist].id}',targetfield2,'1');">
 			<b>{$customerlist[customerlist].customername}</b>
 			({$customerlist[customerlist].id|string_format:"%04d"})<br>
 			{$customerlist[customerlist].address}{if $customerlist[customerlist].city neq ""},{/if} {$customerlist[customerlist].zip} {$customerlist[customerlist].city}
 		</td>
-		<td width="1%" align="right" style="vertical-align: top;" onClick="sendvalue2(targetfield1,'{$customerlist[customerlist].id}',targetfield2,'1');">
+		<td width="1%" align="right" style="vertical-align: top;" onclick="sendvalue2(targetfield1,'{$customerlist[customerlist].id}',targetfield2,'1');">
 			{foreach from=$customerlist[customerlist].nodes item=node}
 			{$node.name}
 			{/foreach}
 		</td>
-		<td align="right" nowrap style="vertical-align: top;" onClick="sendvalue2(targetfield1,'{$customerlist[customerlist].id}',targetfield2,'1');">
+		<td align="right" nowrap style="vertical-align: top;" onclick="sendvalue2(targetfield1,'{$customerlist[customerlist].id}',targetfield2,'1');">
 			{if $customerlist[customerlist].balance < 0}<font class="alert">{/if}{$customerlist[customerlist].balance|money_format}{if $customerlist[customerlist].balance < 0}</font>{/if}
 		</td>
 	</tr>

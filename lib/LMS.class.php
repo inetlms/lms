@@ -100,6 +100,7 @@ class LMS {
 	    możliwe kombinajce dla $dni
 	    -1		: którym zakończyły się zobowiązania - nie działa
 	    -2		: którzy są na czas nieokreślony
+	    -3		: bez jakich kolwiek zobowiązań
 	    FALSE	: domyślnie 30 dni, w ciągu 30 dni
 	    $>0	: w ciągu ilu dni kończy się zobowiązanie
 	*/
@@ -115,6 +116,10 @@ class LMS {
 	    .' AND a.dateto>'.time()
 	    .' AND NOT EXISTS (SELECT 1 FROM assignments aa WHERE aa.customerid=a.customerid AND aa.datefrom>a.dateto LIMIT 1)'
 	    ;
+	}
+	elseif ($dni=='-3')
+	{
+	    $zap = 'SELECT c.id FROM customersview c WHERE id NOT IN (SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a);';
 	}
 	elseif ($dni=='-2')
 	{
@@ -573,9 +578,9 @@ class LMS {
 				    creatorid, info, notes, message, pin, regon, rbe,
 				    icn, cutoffstop, consentdate, einvoice, divisionid, paytime, paytype,
 				    invoicenotice, mailingnotice,
-				    invoice_name, invoice_address, invoice_zip, invoice_city, invoice_countryid, invoice_ten)
+				    invoice_name, invoice_address, invoice_zip, invoice_city, invoice_countryid, invoice_ten,origin)
 				    VALUES (?, UPPER(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?NOW?,
-				    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(lms_ucwords($customeradd['name']),
+				    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(lms_ucwords($customeradd['name']),
 						$customeradd['lastname'],
 						empty($customeradd['type']) ? 0 : 1,
 						$customeradd['address'],
@@ -613,6 +618,7 @@ class LMS {
 						$customeradd['invoice_city'],
 						$customeradd['invoice_countryid'],
 						$customeradd['invoice_ten'],
+						($customeradd['origin'] ? $customeradd['origin'] : 0),
 				))
 		) {
 			$this->UpdateCountryState($customeradd['zip'], $customeradd['stateid']);
@@ -689,7 +695,8 @@ class LMS {
 				deleted=0, message=?, pin=?, regon=?, icn=?, rbe=?,
 				cutoffstop=?, consentdate=?, einvoice=?, invoicenotice=?, mailingnotice=?,
 				divisionid=?, paytime=?, paytype=?,
-				invoice_name=?, invoice_address=?, invoice_zip=?, invoice_city=?, invoice_countryid=?, invoice_ten=? 
+				invoice_name=?, invoice_address=?, invoice_zip=?, invoice_city=?, invoice_countryid=?, invoice_ten=?,
+				origin = ?
 				WHERE id=?', array($customerdata['status'],
 				empty($customerdata['type']) ? 0 : 1,
 				$customerdata['address'],
@@ -728,6 +735,7 @@ class LMS {
 				$customerdata['invoice_city'],
 				$customerdata['invoice_countryid'],
 				$customerdata['invoice_ten'],
+				($customerdata['origin'] ? $customerdata['origin'] : 0),
 				$customerdata['id'],
 				));
 
@@ -767,6 +775,7 @@ class LMS {
 
 		if ($result = $this->DB->GetRow('SELECT c.*, '
 				. $this->DB->Concat('UPPER(c.lastname)', "' '", 'c.name') . ' AS customername,
+			(SELECT co.name FROM customerorigin co WHERE co.id = c.origin) AS originname, 
 			d.shortname AS division, d.account
 			FROM customers' . (defined('LMS-UI') ? 'view' : '') . ' c 
 			LEFT JOIN divisions d ON (d.id = c.divisionid)
@@ -879,10 +888,13 @@ class LMS {
 			return FALSE;
 	}
 
-	function GetCustomerList($order = 'customername,asc', $state = NULL, $network = NULL, $customergroup = NULL, $search = NULL, $time = NULL, $sqlskey = 'AND', $nodegroup = NULL, $division = NULL, $firstletter = NULL, $status = NULL, $contractend = NULL) {
+
+	function GetCustomerList($order = 'customername,asc', $state = NULL, $network = NULL, $customergroup = NULL, $search = NULL, $time = NULL, $sqlskey = 'AND', $nodegroup = NULL, $division = NULL, $firstletter = NULL, $status = NULL, $contractend = NULL, $odlaczeni = NULL, $warn = NULL, $origin = NULL, $osobowosc = NULL) {
 		list($order, $direction) = sscanf($order, '%[^,],%s');
 
 		($direction != 'desc') ? $direction = 'asc' : $direction = 'desc';
+		
+		if ($origin) $origin = intval($origin);
 
 		switch ($order) {
 			case 'id':
@@ -931,6 +943,8 @@ class LMS {
 				break;
 			case 12: $indebted3 = 1;
 				break;
+			case 15: $tying = 1;
+				break;
 		}
 		
 		switch ($status) {
@@ -948,6 +962,22 @@ class LMS {
 				break;
 			case 12: $indebted3 = 1;
 				break;
+			case 15: $tying = 1;
+				break;
+		}
+		
+		switch ($odlaczeni) {
+			case 1 : $disabled = 1; break;
+			case 2 : $disabled = 2; break;
+			case 3 : $disabled = 3; break;
+			case 4 : $disabled = 4; break;
+		}
+		
+		switch ($warn) {
+			case 1 : $warning = 1; break;
+			case 2 : $warning = 2; break;
+			case 3 : $warning = 3; break;
+			default: $warning = NULL; break;
 		}
 		
 
@@ -1067,7 +1097,7 @@ class LMS {
 				'SELECT c.id AS id, ' . $this->DB->Concat('UPPER(lastname)', "' '", 'c.name') . ' AS customername, 
 				status, address, zip, city, countryid, countries.name AS country, email, ten, ssn, c.info AS info, 
 				message, c.divisionid, c.paytime AS paytime, COALESCE(b.value, 0) AS balance,
-				COALESCE(t.value, 0) AS tariffvalue, s.account, s.warncount, s.online, 
+				COALESCE(t.value, 0) AS tariffvalue, s.account, s.warncount, s.online,
 				c.type AS customertype, cutoffstop, 
 				(SELECT max(cash.time) FROM cash WHERE cash.customerid = c.id) AS lastcash,
 				(CASE WHEN s.account = s.acsum THEN 1
@@ -1117,6 +1147,7 @@ class LMS {
 					GROUP BY ownerid
 				) s ON (s.ownerid = c.id)
 				WHERE c.deleted = ' . intval($deleted)
+				. ($tying ? ' AND c.status=4 ' : '')
 				. ($contractend ? ' AND c.id IN ('.$contractend.')' : '')
 				. ($state <= 3 && $state > 0 ? ' AND c.status = ' . intval($state) : '')
 				. ($division ? ' AND c.divisionid = ' . intval($division) : '')
@@ -1124,7 +1155,17 @@ class LMS {
 				. ($indebted ? ' AND b.value < 0' : '')
 				. ($indebted2 ? ' AND b.value < -t.value' : '')
 				. ($indebted3 ? ' AND b.value < -t.value * 2' : '')
-				. ($disabled ? ' AND s.ownerid IS NOT NULL AND s.account > s.acsum' : '')
+				. ($origin ? ' AND c.origin = '.$origin : '')
+				. (!$odlaczeni && $disabled ? ' AND s.ownerid IS NOT NULL AND s.account > s.acsum' : '')
+				. ($odlaczeni && $disabled == 1 ? ' AND s.ownerid IS NOT NULL AND s.acsum = 0 ' : '')
+				. ($odlaczeni && $disabled == 2 ? ' AND s.ownerid IS NOT NULL AND s.account = s.acsum' : '')
+				. ($odlaczeni && $disabled == 3 ? ' AND s.ownerid IS NOT NULL AND s.account > s.acsum AND s.acsum != 0' : '')
+				. ($warn && $warning == 1 ? ' AND s.ownerid IS NOT NULL AND s.warnsum = 0 ' : '')
+				. ($warn && $warning == 2 ? ' AND s.ownerid IS NOT NULL AND s.warncount = s.warnsum' : '')
+				. ($warn && $warning == 3 ? ' AND s.ownerid IS NOT NULL AND s.warncount > s.warnsum AND s.warnsum != 0' : '')
+				. ($osobowosc && $osobowosc == 1 ? ' AND c.type=0 ' : '')
+				. ($osobowosc && $osobowosc == 2 ? ' AND c.type=1 ' : '')
+				. ($odlaczeni && $disabled == 4 ? ' AND s.ownerid IS NULL' : '')
 				. ($network ? ' AND EXISTS (SELECT 1 FROM nodes WHERE ownerid = c.id AND 
 							((ipaddr > ' . $net['address'] . ' AND ipaddr < ' . $net['broadcast'] . ') 
 							OR (ipaddr_pub > ' . $net['address'] . ' AND ipaddr_pub < ' . $net['broadcast'] . ')))' : '')
@@ -1938,6 +1979,8 @@ class LMS {
 	 *  Nodes functions
 	 */
 
+
+
 	function GetNodeOwner($id) {
 		return $this->DB->GetOne('SELECT ownerid FROM nodes WHERE id=?', array($id));
 	}
@@ -1981,7 +2024,7 @@ class LMS {
 				modid=?, access=?, warning=?, ownerid=?, info=?, location=?,
 				location_city=?, location_street=?, location_house=?, location_flat=?,
 				chkmac=?, halfduplex=?, linktype=?, linkspeed=?, port=?, nas=?,
-				longitude=?, latitude=? 
+				longitude=?, latitude=?, netid=?, linktechnology=?, access_from=?, access_to=?, typeofdevice=?, producer=?, model=?, sn=? 
 				WHERE id=?', array($nodedata['name'],
 				$nodedata['ipaddr_pub'],
 				$nodedata['ipaddr'],
@@ -2005,8 +2048,16 @@ class LMS {
 				isset($nodedata['nas']) ? $nodedata['nas'] : 0,
 				!empty($nodedata['longitude']) ? str_replace(',', '.', $nodedata['longitude']) : null,
 				!empty($nodedata['latitude']) ? str_replace(',', '.', $nodedata['latitude']) : null,
+				($nodedata['netid'] ? $nodedata['netid'] : 0),
+				($nodedata['linktechnology'] ? $nodedata['linktechnology'] : 0),
+				($nodedata['access_from'] ? $nodedata['access_from'] : 0),
+				($nodedata['access_to'] ? $nodedata['access_to'] : 0),
+				($nodedata['typeofdevice'] ? $nodedata['typeofdevice'] : 0),
+				($nodedata['producer'] ? $nodedata['producer'] : NULL),
+				($nodedata['model'] ? $nodedata['model'] : NULL),
+				($nodedata['sn'] ? $nodedata['sn'] : NULL),
 				$nodedata['id']
-		));
+		)	);
 		
 		
 		if (!empty($nodedata['monitoring']))
@@ -2047,13 +2098,14 @@ class LMS {
 		    
 		    unset($diff['new']);
 		    if (!empty($nodedata['ownerid']))
-			addlogs('aktualizacja danych komputera: ID:'.$nodedata['id'].' '.$nodedata['name'].', klient: '.$cusname,'e=up;m=node;n='.$nodedata['id'].';c='.$nodedata['ownerid'].';');
+			addlogs('aktualizacja danych komputera: '.$nodedata['name'].', klient: '.$cusname,'e=up;m=node;n='.$nodedata['id'].';c='.$nodedata['ownerid'].';');
 		    else
 			addlogs('aktualizacja danych urządzenia sieciowego: '.$nodedata['name'],'e=up;m=netdev;n='.$nodedata['netdev'].';');
 		    unset($cusname);
 		    unset($diff);
 		}
 	}
+
 
 	function DeleteNode($id) {
 		
@@ -2076,7 +2128,7 @@ class LMS {
 			    $this->DB->Execute('UPDATE iphistory SET todate = ? WHERE id = ? ',array(time(),$maxid));
 		    }
 		}
-
+		
 		$this->DB->Execute('DELETE FROM monitwarn WHERE id = ? ',array($id));
 		$this->DB->Execute('DELETE FROM monittime WHERE nodeid = ? ',array($id));
 		$this->DB->Execute('DELETE FROM monitnodes WHERE id = ? ',array($id));
@@ -2087,61 +2139,82 @@ class LMS {
 		$this->DB->CommitTrans();
 	}
 
+
 	function GetNodeNameByMAC($mac) {
 		return $this->DB->GetOne('SELECT name FROM vnodes WHERE mac=UPPER(?) LIMIT 1;', array($mac));
 	}
+
 
 	function GetNodeIDByIP($ipaddr) {
 		return $this->DB->GetOne('SELECT id FROM nodes WHERE ipaddr=inet_aton(?) OR ipaddr_pub=inet_aton(?) LIMIT 1;', array($ipaddr, $ipaddr));
 	}
 
+
 	function GetNodeIDByMAC($mac) {
 		return $this->DB->GetOne('SELECT nodeid FROM macs WHERE mac=UPPER(?) LIMIT 1;', array($mac));
 	}
+
 
 	function GetNodeIDByName($name) {
 		return $this->DB->GetOne('SELECT id FROM nodes WHERE name=UPPER(?) LIMIT 1;', array($name));
 	}
 
+
 	function GetNodeIPByID($id) {
 		return $this->DB->GetOne('SELECT inet_ntoa(ipaddr) FROM nodes WHERE id=? LIMIT 1;', array($id));
 	}
+
 
 	function GetNodePubIPByID($id) {
 		return $this->DB->GetOne('SELECT inet_ntoa(ipaddr_pub) FROM nodes WHERE id=? LIMIT 1;', array($id));
 	}
 
+
 	function GetNodeMACByID($id) {
 		return $this->DB->GetOne('SELECT mac FROM vnodes WHERE id=? LIMIT 1;', array($id));
 	}
+
 
 	function GetNodeName($id) {
 		return $this->DB->GetOne('SELECT name FROM nodes WHERE id=? LIMIT 1;', array($id));
 	}
 
+
 	function GetNodeNameByIP($ipaddr) {
 		return $this->DB->GetOne('SELECT name FROM nodes WHERE ipaddr=inet_aton(?) OR ipaddr_pub=inet_aton(?) LIMIT 1;', array($ipaddr, $ipaddr));
 	}
 
+
 	function GetNode($id) {
 		if ($result = $this->DB->GetRow('SELECT n.*,
 		    inet_ntoa(n.ipaddr) AS ip, inet_ntoa(n.ipaddr_pub) AS ip_pub,
-		    lc.name AS city_name, 
-		    (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active = 1) AS monitoring,
-		    (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active = 1 AND monitnodes.signaltest=1) AS monitoringsignal,
-				(CASE WHEN ls.name2 IS NOT NULL THEN ' . $this->DB->Concat('ls.name2', "' '", 'ls.name') . ' ELSE ls.name END) AS street_name, lt.name AS street_type
+		    lc.name AS city_name ' 
+		    .',(SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active = 1) AS monitoring '
+		    .',(SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active = 1 AND monitnodes.signaltest=1) AS monitoringsignal '
+			.', (CASE WHEN ls.name2 IS NOT NULL THEN ' . $this->DB->Concat('ls.name2', "' '", 'ls.name') . ' ELSE ls.name END) AS street_name, lt.name AS street_type
 			FROM vnodes n
 			LEFT JOIN location_cities lc ON (lc.id = n.location_city)
 			LEFT JOIN location_streets ls ON (ls.id = n.location_street)
 			LEFT JOIN location_street_types lt ON (lt.id = ls.typeid)
 			WHERE n.id = ?', array($id))
 		) {
+			$result['typeofdevicename'] = $this->DB->GetOne('SELECT type FROM dictionary_devices_client WHERE id = ? '.$this->DB->Limit('1').' ;',array($result['typeofdevice']));
 			$result['owner'] = $this->GetCustomerName($result['ownerid']);
 			$result['createdby'] = $this->GetUserName($result['creatorid']);
 			$result['modifiedby'] = $this->GetUserName($result['modid']);
 			$result['creationdateh'] = date('Y/m/d, H:i', $result['creationdate']);
 			$result['moddateh'] = date('Y/m/d, H:i', $result['moddate']);
+			if ($result['access_from'])
+			    $result['access_from'] = date('Y/m/d',$result['access_from']);
+			else
+			    $result['access_from'] = '';
+			if ($result['access_to'])
+			    $result['access_to'] = date('Y/m/d',$result['access_to']);
+			else
+			    $result['acces_to'] = '';
 			$result['lastonlinedate'] = lastonline_date($result['lastonline']);
+			$result['networkname'] = $this->DB->GetOne('SELECT name FROM networks WHERE id=? LIMIT 1;',array($result['netid']));
+			$result['hostname'] = $this->DB->GetOne('SELECT h.name FROM networks n LEFT JOIN hosts h ON (h.id = n.hostid) WHERE n.id = ? LIMIT 1;',array($result['netid']));
 
 			$result['mac'] = preg_split('/,/', $result['mac']);
 			foreach ($result['mac'] as $mac)
@@ -2234,6 +2307,7 @@ class LMS {
 
 		if ($nodelist = $this->DB->GetAll('SELECT n.id AS id, n.ipaddr, inet_ntoa(n.ipaddr) AS ip, n.ipaddr_pub,
 				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.mac, n.name, n.ownerid, n.access, n.warning,
+				n.linktype, n.linkspeed, n.linktechnology,
 				n.netdev, n.lastonline, n.info, (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id LIMIT 1) AS monitoring, '
 				. $this->DB->Concat('c.lastname', "' '", 'c.name') . ' AS owner '
 				.(!$search ? ', nd.name AS devname, nd.location AS devlocation ' : '')
@@ -2394,13 +2468,14 @@ class LMS {
 	}
 
 	function NodeAdd($nodedata) {
-//		echo "<pre>"; print_r($nodedata); echo "</pre>"; die;
+		
 		if ($this->DB->Execute('INSERT INTO nodes (name, ipaddr, ipaddr_pub, ownerid,
 			passwd, creatorid, creationdate, access, warning, info, netdev,
 			location, location_city, location_street, location_house, location_flat,
-			linktype, linkspeed, port, chkmac, halfduplex, nas, longitude, latitude)
+			linktype, linkspeed, port, chkmac, halfduplex, nas, longitude, latitude, netid, linktechnology, 
+			access_from, access_to, typeofdevice, producer, model, sn)
 			VALUES (?, inet_aton(?), inet_aton(?), ?, ?, ?,
-			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($nodedata['name']),
+			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($nodedata['name']),
 						$nodedata['ipaddr'],
 						$nodedata['ipaddr_pub'],
 						$nodedata['ownerid'],
@@ -2423,6 +2498,14 @@ class LMS {
 						isset($nodedata['nas']) ? $nodedata['nas'] : 0,
 						!empty($nodedata['longitude']) ? str_replace(',', '.', $nodedata['longitude']) : null,
 						!empty($nodedata['latitude']) ? str_replace(',', '.', $nodedata['latitude']) : null,
+						($nodedata['netid'] ? $nodedata['netid'] : 0),
+						($nodedata['linktechnology'] ? $nodedata['linktechnology'] : 0),
+						($nodedata['access_from'] ? $nodedata['access_from'] : 0),
+						($nodedata['access_to'] ? $nodedata['access_to'] : 0),
+						($nodedata['typeofdevice'] ? $nodedata['typeofdevice'] : 0),
+						($nodedata['producer'] ? $nodedata['producer'] : NULL),
+						($nodedata['model'] ? $nodedata['model'] : NULL),
+						($nodedata['sn'] ? $nodedata['sn'] : NULL),
 				))) 
 			{
 			    
@@ -2443,8 +2526,7 @@ class LMS {
 				    array($id,0,$nodedata['ipaddr_pub'],$nodedata['ownerid'],$nodedata['netdev'],0));
 			}
 			
-			foreach ($nodedata['macs'] as $mac)
-				$this->DB->Execute('INSERT INTO macs (mac, nodeid) VALUES(?, ?)', array(strtoupper($mac), $id));
+			
 
 			// EtherWerX support (devices have some limits)
 			// We must to replace big ID with smaller (first free)
@@ -2463,6 +2545,9 @@ class LMS {
 				$this->DB->UnLockTables();
 				$this->DB->CommitTrans();
 			}
+			
+			foreach ($nodedata['macs'] as $mac)
+				$this->DB->Execute('INSERT INTO macs (mac, nodeid) VALUES(?, ?)', array(strtoupper($mac), $id));
 			
 			if (SYSLOG) {
 			    if (!empty($nodedata['ownerid'])) {
@@ -2574,7 +2659,7 @@ class LMS {
 	}
 
 	function GetNetDevLinkedNodes($id) {
-		return $this->DB->GetAll('SELECT nodes.id AS id, nodes.name AS name, linktype, linkspeed, ipaddr, 
+		return $this->DB->GetAll('SELECT nodes.id AS id, nodes.name AS name, linktype, linkspeed, ipaddr, linktechnology,
 			inet_ntoa(ipaddr) AS ip, ipaddr_pub, inet_ntoa(ipaddr_pub) AS ip_pub, 
 			netdev, port, ownerid,
 			' . $this->DB->Concat('c.lastname', "' '", 'c.name') . ' AS owner 
@@ -2583,23 +2668,17 @@ class LMS {
 			ORDER BY nodes.name ASC', array($id));
 	}
 
-	function NetDevLinkNode($id, $devid, $type = 0, $speed = 100000, $port = 0) {
-		return $this->DB->Execute('UPDATE nodes SET netdev=?, linktype=?, linkspeed=?, port=?
+	function NetDevLinkNode($id, $devid, $type = 0, $speed = 100000, $port = 0, $technology=0) {
+		return $this->DB->Execute('UPDATE nodes SET netdev=?, linktype=?, linkspeed=?, port=?, linktechnology=? 
 			 WHERE id=?', array($devid,
 						intval($type),
 						intval($speed),
 						intval($port),
+						intval($technology),
 						$id
 				));
 	}
 
-	function SetNetDevLinkType($dev1, $dev2, $type = 0, $speed = 100000) {
-		return $this->DB->Execute('UPDATE netlinks SET type=?, speed=? WHERE (src=? AND dst=?) OR (dst=? AND src=?)', array($type, $speed, $dev1, $dev2, $dev1, $dev2));
-	}
-
-	function SetNodeLinkType($node, $type = 0, $speed = 100000) {
-		return $this->DB->Execute('UPDATE nodes SET linktype=?, linkspeed=? WHERE id=?', array($type, $speed, $node));
-	}
 
 	/*
 	 *  Tarrifs and finances
@@ -2611,7 +2690,7 @@ class LMS {
 			WHERE tariffid = tariffs.id AND customerid = ? AND suspended = 0
 			    AND (datefrom <= ?NOW? OR datefrom = 0) AND (dateto > ?NOW? OR dateto = 0)', array($id));
 	}
-
+//AND (a.liabilityid = 0 OR (a.liabilityid != 0 AND (a.at >= ' . $now . ' OR a.at < 531)))' : '')
 	function GetCustomerAssignments($id, $show_expired = false) {
 		$now = mktime(0, 0, 0, date('n'), date('d'), date('Y'));
 
@@ -2626,8 +2705,8 @@ class LMS {
 			LEFT JOIN liabilities l ON (a.liabilityid = l.id)
 			WHERE a.customerid=? '
 				. (!$show_expired ? 'AND (a.dateto > ' . $now . ' OR a.dateto = 0)
-			    AND (a.liabilityid = 0 OR (a.liabilityid != 0 AND (a.at >= ' . $now . ' OR a.at < 531)))' : '')
-				. ' ORDER BY a.datefrom, value', array($id))) {
+			    AND (a.at >= ' . $now . ' OR a.at < 531)' : '')
+				. ' ORDER BY t.name, a.datefrom, value', array($id))) {
 			foreach ($assignments as $idx => $row) {
 				switch ($row['period']) {
 					case DISPOSABLE:
@@ -3318,42 +3397,65 @@ class LMS {
 		$result = $this->DB->Execute('INSERT INTO tariffs (name, description, value,
 				period, taxid, prodid, uprate, downrate, upceil, downceil, climit,
 				plimit, uprate_n, downrate_n, upceil_n, downceil_n, climit_n,
-				plimit_n, dlimit, type, sh_limit, www_limit, mail_limit, sql_limit,
+				plimit_n, dlimit, type, dlimit_n, sh_limit, www_limit, mail_limit, sql_limit,
 				ftp_limit, quota_sh_limit, quota_www_limit, quota_mail_limit,
-				quota_sql_limit, quota_ftp_limit, domain_limit, alias_limit)
-				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
+				quota_sql_limit, quota_ftp_limit, domain_limit, alias_limit,
+				burst_limit_up, burst_threshold_up, burst_time_up,
+				burst_limit_dn, burst_threshold_dn, burst_time_dn,
+				burst_limit_up_n, burst_threshold_up_n, burst_time_up_n,
+				burst_limit_dn_n, burst_threshold_dn_n, burst_time_dn_n,
+				start_night_h, start_night_m, stop_night_h, stop_night_m)
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+				array(
 				$tariff['name'],
-				$tariff['description'],
-				$tariff['value'],
-				$tariff['period'] ? $tariff['period'] : null,
-				$tariff['taxid'],
-				$tariff['prodid'],
-				$tariff['uprate'],
-				$tariff['downrate'],
-				$tariff['upceil'],
-				$tariff['downceil'],
-				$tariff['climit'],
-				$tariff['plimit'],
-				$tariff['uprate_n'],
-				$tariff['downrate_n'],
-				$tariff['upceil_n'],
-				$tariff['downceil_n'],
-				$tariff['climit_n'],
-				$tariff['plimit_n'],
-				$tariff['dlimit'],
-				$tariff['type'],
-				$tariff['sh_limit'],
-				$tariff['www_limit'],
-				$tariff['mail_limit'],
-				$tariff['sql_limit'],
-				$tariff['ftp_limit'],
-				$tariff['quota_sh_limit'],
-				$tariff['quota_www_limit'],
-				$tariff['quota_mail_limit'],
-				$tariff['quota_sql_limit'],
-				$tariff['quota_ftp_limit'],
-				$tariff['domain_limit'],
-				$tariff['alias_limit'],
+				($tariff['description'] ? $tariff['description'] : ''),
+				($tariff['value'] ? $tariff['value'] : '0.00'),
+				($tariff['period'] ? $tariff['period'] : NULL),
+				($tariff['taxid'] ? $tariff['taxid'] : 0),
+				($tariff['prodid'] ? $tariff['prodid'] : ''),
+				($tariff['uprate'] ? $tariff['uprate'] : 0),
+				($tariff['downrate'] ? $tariff['downrate'] : 0),
+				($tariff['upceil'] ? $tariff['upceil'] : 0),
+				($tariff['downceil'] ? $tariff['downceil'] : 0),
+				($tariff['climit'] ? $tariff['climit'] : 0),
+				($tariff['plimit'] ? $tariff['plimit'] : 0),
+				($tariff['uprate_n'] ? $tariff['uprate_n'] : NULL),
+				($tariff['downrate_n'] ? $tariff['downrate_n'] : NULL),
+				($tariff['upceil_n'] ? $tariff['upceil_n'] : NULL),
+				($tariff['downceil_n'] ? $tariff['downceil_n'] : NULL),
+				($tariff['climit_n'] ? $tariff['climit_n'] : NULL),
+				($tariff['plimit_n'] ? $tariff['plimit_n'] : NULL),
+				($tariff['dlimit'] ? $tariff['dlimit'] : 0),
+				($tariff['type'] ? $tariff['type'] : 1),
+				($tariff['dlimit_n'] ? $tariff['dlimit_n'] : NULL),
+				($tariff['sh_limit'] ? $tariff['sh_limit'] : NULL),
+				($tariff['www_limit'] ? $tariff['www_limit'] : NULL),
+				($tariff['mail_limit'] ? $tariff['mail_limit'] : NULL),
+				($tariff['sql_limit'] ? $tariff['sql_limit'] : NULL),
+				($tariff['ftp_limit'] ? $tariff['ftp_limit'] : NULL),
+				($tariff['quota_sh_limit'] ? $tariff['quota_sh_limit'] : NULL),
+				($tariff['quota_www_limit'] ? $tariff['quota_www_limit'] : NULL),
+				($tariff['quota_mail_limit'] ? $tariff['quota_mail_limit'] : NULL),
+				($tariff['quota_sql_limit'] ? $tariff['quota_sql_limit'] : NULL),
+				($tariff['quota_ftp_limit'] ? $tariff['quota_ftp_limit'] : NULL),
+				($tariff['domain_limit'] ? $tariff['domain_limit'] : NULL),
+				($tariff['alias_limit'] ? $tariff['alias_limit'] : NULL),
+				($tariff['burst_limit_up'] ? $tariff['burst_limit_up'] : NULL),
+				($tariff['burst_threshold_up'] ? $tariff['burst_threshold_up'] : NULL),
+				($tariff['burst_time_up'] ? $tariff['burst_time_up'] : NULL),
+				($tariff['burst_limit_dn'] ? $tariff['burst_limit_dn'] : NULL),
+				($tariff['burst_threshold_dn'] ? $tariff['burst_threshold_dn'] : NULL),
+				($tariff['burst_time_dn'] ? $tariff['burst_time_dn'] : NULL),
+				($tariff['burst_limit_up_n'] ? $tariff['burst_limit_up_n'] : NULL),
+				($tariff['burst_threshold_up_n'] ? $tariff['burst_threshold_up_n'] : NULL),
+				($tariff['burst_time_up_n'] ? $tariff['burst_time_up_n'] : NULL),
+				($tariff['burst_limit_dn_n'] ? $tariff['burst_limit_dn_n'] : NULL),
+				($tariff['burst_threshold_dn_n'] ? $tariff['burst_threshold_dn_n'] : NULL),
+				($tariff['burst_time_dn_n'] ? $tariff['burst_time_dn_n'] : NULL),
+				($tariff['start_night_h'] ? $tariff['start_night_h'] : 0),
+				($tariff['start_night_m'] ? $tariff['start_night_m'] : 0),
+				($tariff['stop_night_h'] ? $tariff['stop_night_h'] : 0),
+				($tariff['stop_night_m'] ? $tariff['stop_night_m'] : 0),
 				));
 		if ($result)
 		{
@@ -3376,39 +3478,63 @@ class LMS {
 				climit_n=?, plimit_n=?, dlimit=?, sh_limit=?, www_limit=?, mail_limit=?,
 				sql_limit=?, ftp_limit=?, quota_sh_limit=?, quota_www_limit=?,
 				quota_mail_limit=?, quota_sql_limit=?, quota_ftp_limit=?,
-				domain_limit=?, alias_limit=?, type=? WHERE id=?', array($tariff['name'],
-						$tariff['description'],
-						$tariff['value'],
-						$tariff['period'] ? $tariff['period'] : null,
-						$tariff['taxid'],
-						$tariff['prodid'],
-						$tariff['uprate'],
-						$tariff['downrate'],
-						$tariff['upceil'],
-						$tariff['downceil'],
-						$tariff['climit'],
-						$tariff['plimit'],
-						$tariff['uprate_n'],
-						$tariff['downrate_n'],
-						$tariff['upceil_n'],
-						$tariff['downceil_n'],
-						$tariff['climit_n'],
-						$tariff['plimit_n'],
-						$tariff['dlimit'],
-						$tariff['sh_limit'],
-						$tariff['www_limit'],
-						$tariff['mail_limit'],
-						$tariff['sql_limit'],
-						$tariff['ftp_limit'],
-						$tariff['quota_sh_limit'],
-						$tariff['quota_www_limit'],
-						$tariff['quota_mail_limit'],
-						$tariff['quota_sql_limit'],
-						$tariff['quota_ftp_limit'],
-						$tariff['domain_limit'],
-						$tariff['alias_limit'],
-						$tariff['type'],
-						$tariff['id']
+				domain_limit=?, alias_limit=?, type=?, dlimit_n=?,
+				burst_limit_up=?, burst_threshold_up=?, burst_time_up=?,
+				burst_limit_dn=?, burst_threshold_dn=?, burst_time_dn=?,
+				burst_limit_up_n=?, burst_threshold_up_n=?, burst_time_up_n=?,
+				burst_limit_dn_n=?, burst_threshold_dn_n=?, burst_time_dn_n=?,
+				start_night_h=?, start_night_m=?, stop_night_h=?, stop_night_m=? 
+				WHERE id=?', array(
+					$tariff['name'],
+					($tariff['description'] ? $tariff['description'] : ''),
+					($tariff['value'] ? $tariff['value'] : '0.00'),
+					($tariff['period'] ? $tariff['period'] : NULL),
+					($tariff['taxid'] ? $tariff['taxid'] : 0),
+					($tariff['prodid'] ? $tariff['prodid'] : ''),
+					($tariff['uprate'] ? $tariff['uprate'] : 0),
+					($tariff['downrate'] ? $tariff['downrate'] : 0),
+					($tariff['upceil'] ? $tariff['upceil'] : 0),
+					($tariff['downceil'] ? $tariff['downceil'] : 0),
+					($tariff['climit'] ? $tariff['climit'] : 0),
+					($tariff['plimit'] ? $tariff['plimit'] : 0),
+					($tariff['uprate_n'] ? $tariff['uprate_n'] : NULL),
+					($tariff['downrate_n'] ? $tariff['downrate_n'] : NULL),
+					($tariff['upceil_n'] ? $tariff['upceil_n'] : NULL),
+					($tariff['downceil_n'] ? $tariff['downceil_n'] : NULL),
+					($tariff['climit_n'] ? $tariff['climit_n'] : NULL),
+					($tariff['plimit_n'] ? $tariff['plimit_n'] : NULL),
+					($tariff['dlimit'] ? $tariff['dlimit'] : 0),
+					($tariff['sh_limit'] ? $tariff['sh_limit'] : NULL),
+					($tariff['www_limit'] ? $tariff['www_limit'] : NULL),
+					($tariff['mail_limit'] ? $tariff['mail_limit'] : NULL),
+					($tariff['sql_limit'] ? $tariff['sql_limit'] : NULL),
+					($tariff['ftp_limit'] ? $tariff['ftp_limit'] : NULL),
+					($tariff['quota_sh_limit'] ? $tariff['quota_sh_limit'] : NULL),
+					($tariff['quota_www_limit'] ? $tariff['quota_www_limit'] : NULL),
+					($tariff['quota_mail_limit'] ? $tariff['quota_mail_limit'] : NULL),
+					($tariff['quota_sql_limit'] ? $tariff['quota_sql_limit'] : NULL),
+					($tariff['quota_ftp_limit'] ? $tariff['quota_ftp_limit'] : NULL),
+					($tariff['domain_limit'] ? $tariff['domain_limit'] : NULL),
+					($tariff['alias_limit'] ? $tariff['alias_limit'] : NULL),
+					($tariff['type'] ? $tariff['type'] : 1),
+					($tariff['dlimit_n'] ? $tariff['dlimit_n'] : NULL),
+					($tariff['burst_limit_up'] ? $tariff['burst_limit_up'] : NULL),
+					($tariff['burst_threshold_up'] ? $tariff['burst_threshold_up'] : NULL),
+					($tariff['burst_time_up'] ? $tariff['burst_time_up'] : NULL),
+					($tariff['burst_limit_dn'] ? $tariff['burst_limit_dn'] : NULL),
+					($tariff['burst_threshold_dn'] ? $tariff['burst_threshold_dn'] : NULL),
+					($tariff['burst_time_dn'] ? $tariff['burst_time_dn'] : NULL),
+					($tariff['burst_limit_up_n'] ? $tariff['burst_limit_up_n'] : NULL),
+					($tariff['burst_threshold_up_n'] ? $tariff['burst_threshold_up_n'] : NULL),
+					($tariff['burst_time_up_n'] ? $tariff['burst_time_up_n'] : NULL),
+					($tariff['burst_limit_dn_n'] ? $tariff['burst_limit_dn_n'] : NULL),
+					($tariff['burst_threshold_dn_n'] ? $tariff['burst_threshold_dn_n'] : NULL),
+					($tariff['burst_time_dn_n'] ? $tariff['burst_time_dn_n'] : NULL),
+					($tariff['start_night_h'] ? $tariff['start_night_h'] : 0),
+					($tariff['start_night_m'] ? $tariff['start_night_m'] : 0), 
+					($tariff['stop_night_h'] ? $tariff['stop_night_h'] : 0),
+					($tariff['stop_night_m'] ? $tariff['stop_night_m'] : 0),
+					$tariff['id']
 				));
 	}
 
@@ -3753,9 +3879,15 @@ class LMS {
 			return $this->DB->Execute('UPDATE networks SET disabled = 1 WHERE id = ?', array($id));
 	}
 
-	function IsIPFree($ip) {
-		return !($this->DB->GetOne('SELECT id FROM nodes WHERE ipaddr=inet_aton(?) OR ipaddr_pub=inet_aton(?)', array($ip, $ip)) ? TRUE : FALSE);
+
+	function IsIPFree($ip, $netid = 0) 
+	{
+		if ($netid)
+			return !($this->DB->GetOne('SELECT id FROM nodes WHERE (ipaddr=inet_aton(?) AND netid=?) OR ipaddr_pub=inet_aton(?)', array($ip, $netid, $ip)) ? TRUE : FALSE);
+		else
+			return !($this->DB->GetOne('SELECT id FROM nodes WHERE ipaddr=inet_aton(?) OR ipaddr_pub=inet_aton(?)', array($ip, $ip)) ? TRUE : FALSE);
 	}
+
 
 	function IsIPGateway($ip) {
 		return ($this->DB->GetOne('SELECT gateway FROM networks WHERE gateway = ?', array($ip)) ? TRUE : FALSE);
@@ -3775,8 +3907,8 @@ class LMS {
 			$netadd['mask'] = prefix2mask($netadd['prefix']);
 
 		if ($this->DB->Execute('INSERT INTO networks (name, address, mask, interface, gateway, 
-				dns, dns2, domain, wins, dhcpstart, dhcpend, notes) 
-				VALUES (?, inet_aton(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($netadd['name']),
+				dns, dns2, domain, wins, dhcpstart, dhcpend, notes, hostid) 
+				VALUES (?, inet_aton(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($netadd['name']),
 						$netadd['address'],
 						$netadd['mask'],
 						strtolower($netadd['interface']),
@@ -3787,7 +3919,8 @@ class LMS {
 						$netadd['wins'],
 						$netadd['dhcpstart'],
 						$netadd['dhcpend'],
-						$netadd['notes']
+						$netadd['notes'],
+						($netadd['hostid'] ? $netadd['hostid'] : NULL),
 				)))
 			return $this->DB->GetOne('SELECT id FROM networks WHERE address = inet_aton(?)', array($netadd['address']));
 		else
@@ -3810,11 +3943,13 @@ class LMS {
 	function GetNetworks($with_disabled = true) {
 		if ($with_disabled == false)
 			return $this->DB->GetAll('SELECT id, name, inet_ntoa(address) AS address, 
-				address AS addresslong, mask, mask2prefix(inet_aton(mask)) AS prefix, disabled 
+				address AS addresslong, mask, mask2prefix(inet_aton(mask)) AS prefix, disabled,
+				(SELECT h.name FROM hosts h WHERE h.id = hostid) AS hostname 
 				FROM networks WHERE disabled=0 ORDER BY name');
 		else
 			return $this->DB->GetAll('SELECT id, name, inet_ntoa(address) AS address, 
-				address AS addresslong, mask, mask2prefix(inet_aton(mask)) AS prefix, disabled 
+				address AS addresslong, mask, mask2prefix(inet_aton(mask)) AS prefix, disabled,
+				(SELECT h.name FROM hosts h WHERE h.id = hostid) AS hostname 
 				FROM networks ORDER BY name');
 	}
 
@@ -3824,14 +3959,15 @@ class LMS {
 			FROM networks WHERE id = ?', array($id));
 	}
 
-	function GetNetworkList() {
-		if ($networks = $this->DB->GetAll('SELECT id, name, inet_ntoa(address) AS address, 
+	function GetNetworkList($status = NULL, $hostid = NULL) 
+	{
+		if ($networks = $this->DB->GetAll('SELECT n.id, n.name, h.name AS hostname, inet_ntoa(address) AS address, 
 				address AS addresslong, mask, interface, gateway, dns, dns2, 
 				domain, wins, dhcpstart, dhcpend,
 				mask2prefix(inet_aton(mask)) AS prefix,
 				broadcast(address, inet_aton(mask)) AS broadcastlong,
 				inet_ntoa(broadcast(address, inet_aton(mask))) AS broadcast,
-				pow(2,(32 - mask2prefix(inet_aton(mask)))) AS size, disabled,
+				pow(2,(32 - mask2prefix(inet_aton(mask)))) AS size, disabled, 
 				(SELECT COUNT(*) 
 					FROM nodes 
 					WHERE (ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
@@ -3842,8 +3978,14 @@ class LMS {
 					WHERE ((ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
 						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask))))
 						AND (?NOW? - lastonline < ?)
-				) AS online
-				FROM networks ORDER BY name', array(intval($this->CONFIG['phpui']['lastonline_limit'])))) {
+				) AS online 
+				FROM networks n 
+				LEFT JOIN hosts h ON h.id = n.hostid'
+				.' WHERE 1=1'
+				.($status == '1' ? ' AND disabled=1' : '')
+				.($status == '0' ? ' AND disabled=0' : '')
+				.($hostid ? ' AND hostid = '.intval($hostid) : '')
+				.' ORDER BY name', array(intval($this->CONFIG['phpui']['lastonline_limit'])))) {
 			$size = 0;
 			$assigned = 0;
 			$online = 0;
@@ -3868,21 +4010,24 @@ class LMS {
 			AND broadcast(address, inet_aton(mask)) >' . ($checkbroadcast ? '=' : '') . ' ?', array(intval($ignoreid), $ip, $ip));
 	}
 
-	function NetworkOverlaps($network, $mask, $ignorenet = 0) {
+
+	function NetworkOverlaps($network, $mask, $hostid = NULL, $ignorenet = 0) {
 		$cnetaddr = ip_long($network);
 		$cbroadcast = ip_long(getbraddr($network, $mask));
 
 		return $this->DB->GetOne('SELECT 1 FROM networks
-			WHERE id != ? AND (
+			WHERE id != ? '.($hostid ? ' AND hostid = '.intval($hostid) : ' AND hostid IS NULL').' AND (
 				address = ? OR broadcast(address, inet_aton(mask)) = ?
 				OR (address > ? AND broadcast(address, inet_aton(mask)) < ?) 
 				OR (address < ? AND broadcast(address, inet_aton(mask)) > ?) 
-			)', array(intval($ignorenet),
-						$cnetaddr, $cbroadcast,
-						$cnetaddr, $cbroadcast,
-						$cnetaddr, $cbroadcast
-				));
+			)', array(
+				intval($ignorenet),
+				$cnetaddr, $cbroadcast,
+				$cnetaddr, $cbroadcast,
+				$cnetaddr, $cbroadcast
+			));
 	}
+
 
 	function NetworkShift($network = '0.0.0.0', $mask = '0.0.0.0', $shift = 0) {
 		return ($this->DB->Execute('UPDATE nodes SET ipaddr = ipaddr + ? 
@@ -3891,10 +4036,11 @@ class LMS {
 				WHERE ipaddr_pub >= inet_aton(?) AND ipaddr_pub <= inet_aton(?)', array($shift, $network, getbraddr($network, $mask))));
 	}
 
+
 	function NetworkUpdate($networkdata) {
 		return $this->DB->Execute('UPDATE networks SET name=?, address=inet_aton(?), 
 			mask=?, interface=?, gateway=?, dns=?, dns2=?, domain=?, wins=?, 
-			dhcpstart=?, dhcpend=?, notes=? WHERE id=?', array(strtoupper($networkdata['name']),
+			dhcpstart=?, dhcpend=?, notes=?, hostid=? WHERE id=?', array(strtoupper($networkdata['name']),
 						$networkdata['address'],
 						$networkdata['mask'],
 						strtolower($networkdata['interface']),
@@ -3906,7 +4052,8 @@ class LMS {
 						$networkdata['dhcpstart'],
 						$networkdata['dhcpend'],
 						$networkdata['notes'],
-						$networkdata['id']
+						($networkdata['hostid'] ? $networkdata['hostid'] : NULL),
+						$networkdata['id'],
 				));
 	}
 
@@ -3989,11 +4136,10 @@ class LMS {
 
 		return $counter;
 	}
-
 	function GetNetworkRecord($id, $page = 0, $plimit = 4294967296, $firstfree = false) {
 		$network = $this->DB->GetRow('SELECT id, name, inet_ntoa(address) AS address, 
 				address AS addresslong, mask, interface, gateway, dns, dns2, 
-				domain, wins, dhcpstart, dhcpend, 
+				domain, wins, dhcpstart, dhcpend, hostid,
 				mask2prefix(inet_aton(mask)) AS prefix,
 				inet_ntoa(broadcast(address, inet_aton(mask))) AS broadcast, 
 				notes 
@@ -4001,12 +4147,15 @@ class LMS {
 
 		$nodes = $this->DB->GetAllByKey('
 				SELECT id, name, ipaddr, ownerid, netdev 
-				FROM nodes WHERE ipaddr > ? AND ipaddr < ?
+				FROM nodes WHERE netid = ? AND ipaddr > ? AND ipaddr < ?
 				UNION ALL
 				SELECT id, name, ipaddr_pub AS ipaddr, ownerid, netdev 
-				FROM nodes WHERE ipaddr_pub > ? AND ipaddr_pub < ?', 'ipaddr', array($network['addresslong'], ip_long($network['broadcast']),
-				$network['addresslong'], ip_long($network['broadcast'])));
+				FROM nodes WHERE ipaddr_pub > ? AND ipaddr_pub < ?', 'ipaddr',
+				array($id, $network['addresslong'], ip_long($network['broadcast']),
+					$network['addresslong'], ip_long($network['broadcast'])));
 
+		if($network['hostid'])
+			$network['hostname'] = $this->DB->GetOne('SELECT name FROM hosts WHERE id=?', array($network['hostid']));
 		$network['size'] = pow(2, 32 - $network['prefix']);
 		$network['assigned'] = sizeof($nodes);
 		$network['free'] = $network['size'] - $network['assigned'] - 2;
@@ -4095,13 +4244,13 @@ class LMS {
 
 	function GetNetDevConnectedNames($id) {
 		return $this->DB->GetAll('SELECT d.id, d.name, d.description,
-			d.location, d.producer, d.ports, l.type AS linktype,
+			d.location, d.producer, d.ports, l.type AS linktype, l.technology AS linktechnology,
 			l.speed AS linkspeed, l.srcport, l.dstport,
 			(SELECT COUNT(*) FROM netlinks WHERE src = d.id OR dst = d.id) 
 			+ (SELECT COUNT(*) FROM nodes WHERE netdev = d.id AND ownerid > 0)
 			AS takenports 
 			FROM netdevices d
-			JOIN (SELECT DISTINCT type, speed, 
+			JOIN (SELECT DISTINCT type, speed, technology ,
 				(CASE src WHEN ? THEN dst ELSE src END) AS dev, 
 				(CASE src WHEN ? THEN dstport ELSE srcport END) AS srcport, 
 				(CASE src WHEN ? THEN srcport ELSE dstport END) AS dstport 
@@ -4220,8 +4369,8 @@ class LMS {
 				description, producer, model, serialnumber,
 				ports, purchasetime, guaranteeperiod, shortname,
 				nastype, clients, secret, community, channelid,
-				longitude, latitude, monit_nastype, monit_login, monit_passwd,  monit_port, networknodeid )
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($data['name'],
+				longitude, latitude, monit_nastype, monit_login, monit_passwd,  monit_port, networknodeid, server, coaport )
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($data['name'],
 						$data['location'],
 						$data['location_city'] ? $data['location_city'] : null,
 						$data['location_street'] ? $data['location_street'] : null,
@@ -4247,6 +4396,8 @@ class LMS {
 						$data['monit_passwd'],
 						$data['monit_port'],
 						($data['networknode'] ? $data['networknode'] : 0),
+						($data['server'] ? $data['server'] : ''),
+						($data['coaport'] ? $data['coaport'] : '3799'),
 				))) {
 			$id = $this->DB->GetLastInsertID('netdevices');
 
@@ -4279,7 +4430,7 @@ class LMS {
 				location_city=?, location_street=?, location_house=?, location_flat=?,
 				model=?, serialnumber=?, ports=?, purchasetime=?, guaranteeperiod=?, shortname=?,
 				nastype=?, clients=?, secret=?, community=?, channelid=?, longitude=?, latitude=?,
-				monit_nastype = ?, monit_login = ?, monit_passwd = ?, monit_port = ?, networknodeid = ? 
+				monit_nastype = ?, monit_login = ?, monit_passwd = ?, monit_port = ?, networknodeid = ?, server=?, coaport=?
 				WHERE id=?', array($data['name'],
 				$data['description'],
 				$data['producer'],
@@ -4306,6 +4457,8 @@ class LMS {
 				$data['monit_passwd'],
 				$data['monit_port'],
 				($data['networknode'] ? $data['networknode'] : 0),
+				($data['server'] ? $data['server'] : ''),
+				($data['coaport'] ? $data['coaport'] : '3799'),
 				$data['id']
 		));
 	}
@@ -4315,13 +4468,13 @@ class LMS {
 			WHERE (src=? AND dst=?) OR (dst=? AND src=?)', array($dev1, $dev2, $dev1, $dev2));
 	}
 
-	function NetDevLink($dev1, $dev2, $type = 0, $speed = 100000, $sport = 0, $dport = 0) {
+	function NetDevLink($dev1, $dev2, $type = 0, $speed = 100000, $sport = 0, $dport = 0, $technology=0) {
 		if ($dev1 != $dev2)
 			if (!$this->IsNetDevLink($dev1, $dev2))
 				return $this->DB->Execute('INSERT INTO netlinks 
-					(src, dst, type, speed, srcport, dstport) 
-					VALUES (?, ?, ?, ?, ?, ?)', array($dev1, $dev2, $type, $speed,
-								intval($sport), intval($dport)));
+					(src, dst, type, speed, srcport, dstport,technology) 
+					VALUES (?, ?, ?, ?, ?, ?,?)', array($dev1, $dev2, $type, $speed,
+								intval($sport), intval($dport),intval($technology)));
 
 		return FALSE;
 	}
@@ -7646,6 +7799,27 @@ class LMS {
 	
     }
 
+
+    function getOriginList()
+    {
+	return $this->DB->GetAll('SELECT o.*, (SELECT COUNT(*) FROM customers c WHERE c.origin = o.id) AS customerscount FROM customerorigin o ORDER by o.name;');
+    }
+    
+    
+    function getListDictionaryDevices()
+    {
+	
+	$result = $this->DB->GetAll('SELECT d.*,
+					(SELECT COUNT(n.id) FROM nodes n WHERE n.ownerid!=0 AND n.typeofdevice = d.id ) AS countnodes 
+					FROM dictionary_devices_client d ORDER BY type ASC;');
+	return $result;
+    }
+    
+    function GetDictionaryDevicesClientOfType()
+    {
+	$result = $this->DB->GetAll('SELECT id,type FROM dictionary_devices_client GROUP BY type ORDER BY type;');
+	return $result;
+    }
 
 
 }

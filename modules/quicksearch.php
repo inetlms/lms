@@ -101,8 +101,16 @@ switch($mode)
 			    
 				if (isset($_GET['infocenterlist']))
 				    $actions[$row['id']] = '?m=infocenterlist&cid='.$row['id'];
+				
 				elseif(isset($_GET['iphistory']))
 				    $actions[$row['id']] = '?m=iphistory&cid='.$row['id'];
+				
+				elseif(isset($_GET['radacct']))
+				    $actions[$row['id']] = '?m=rad_radacct&cid='.$row['id'];
+				
+				elseif(isset($_GET['syslog']))
+				    $actions[$row['id']] = '?m=syslog&cid='.$row['id'];
+				
 				else
 				    $actions[$row['id']] = '?m=customerinfo&id='.$row['id'];
 				
@@ -216,7 +224,12 @@ switch($mode)
 			$eglible=array(); $actions=array(); $descriptions=array();
 			if ($candidates)
 			foreach($candidates as $idx => $row) {
-				$actions[$row['id']] = '?m=nodeinfo&id='.$row['id'];
+				
+				if (isset($_GET['radacct']))
+				    $actions[$row['id']] = '?m=rad_radacct&nid='.$row['id'];
+				else
+				    $actions[$row['id']] = '?m=nodeinfo&id='.$row['id'];
+				
 				$eglible[$row['id']] = escape_js($row['name']);
 
 				if (preg_match("~^$search\$~i", $row['id'])) {

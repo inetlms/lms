@@ -47,7 +47,7 @@
 				<td width="98%" align="left" >
 				    <select name="pstnedit[terminal_name]">
 					{section name=l1 loop=$terminallist}
-					    <option value="{$terminallist[l1].username}" {if $terminallist[l1].username==$pstninfo.terminal_name} SELECTED{/if}>{$terminallist[l1].username}</option>
+					    <option value="{$terminallist[l1].username}" {if $terminallist[l1].username==$pstninfo.terminal_name} selected{/if}>{$terminallist[l1].username}</option>
 					{/section}
 				    </select>&nbsp;( {$pstninfo.terminal_name} )
 				</td>
@@ -56,20 +56,20 @@
 				<td width="1%" align="left" nowrap />Głowny numer</td>
 				<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
 				<td width="98%" align="left" >
-				    <SELECT name="pstnedit[is_main]">
-					<OPTION value='t' {if $pstninfo.is_main=='t'} SELECTED{/if}>TAK</OPTION>
-					<OPTION value='f' {if $pstninfo.is_main=='f'} SELECTED{/if}>NIE</OPTION>
-				    </SELECT>&nbsp;( {if $pstninfo.is_main=='t'}TAK{else}NIE{/if} )
+				    <select name="pstnedit[is_main]">
+					<option value='t' {if $pstninfo.is_main=='t'} selected{/if}>TAK</option>
+					<option value='f' {if $pstninfo.is_main=='f'} selected{/if}>NIE</option>
+				    </select>&nbsp;( {if $pstninfo.is_main=='t'}TAK{else}NIE{/if} )
 				</td>
 			    </tr>
-			    <tr><td width="1%" align="left" nowrap />DISA</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><SELECT name="pstnedit[disa_enabled]"><OPTION value='t' {if $pstninfo.disa_enabled=='t'} SELECTED{/if}>TAK</OPTION><OPTION value='f' {if $pstninfo.disa_enabled=='f'} SELECTED{/if}>NIE</OPTION></SELECT>&nbsp;( {if $pstninfo.disa_enabled=='t'}TAK{else}NIE{/if} )</td></tr>
-			    <tr><td width="1%" align="left" nowrap />CLIR</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><SELECT name="pstnedit[clir]"><OPTION value='t' {if $pstninfo.clir=='t'} SELECTED{/if}>TAK</OPTION><OPTION value='f' {if $pstninfo.clir=='f'} SELECTED{/if}>NIE</OPTION></SELECT>&nbsp;( {if $pstninfo.clir=='t'}TAK{else}NIE{/if} )</td></tr>
+			    <tr><td width="1%" align="left" nowrap />DISA</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><select name="pstnedit[disa_enabled]"><option value='t' {if $pstninfo.disa_enabled=='t'} selected{/if}>TAK</option><option value='f' {if $pstninfo.disa_enabled=='f'} selected{/if}>NIE</option></select>&nbsp;( {if $pstninfo.disa_enabled=='t'}TAK{else}NIE{/if} )</td></tr>
+			    <tr><td width="1%" align="left" nowrap />CLIR</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><select name="pstnedit[clir]"><option value='t' {if $pstninfo.clir=='t'} selected{/if}>TAK</option><option value='f' {if $pstninfo.clir=='f'} selected{/if}>NIE</option></select>&nbsp;( {if $pstninfo.clir=='t'}TAK{else}NIE{/if} )</td></tr>
 			</table>
 		    </td>
 		    <td width="auto" style="text-align:left;vertical-align:top;">
 			<table width="100%" cellpadding="3">
-			    <tr><td width="1%" align="left" nowrap />FAX</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><SELECT name="pstnedit[virtual_fax]"><OPTION value='t' {if $pstninfo.virtual_fax=='t'} SELECTED{/if}>TAK</OPTION><OPTION value='f' {if $pstninfo.virtual_fax=='f'} SELECTED{/if}>NIE</OPTION></SELECT>&nbsp;( {if $pstninfo.virtual_fax=='t'}TAK{else}NIE{/if} )</td></tr>
-			    <tr><td width="1%" align="left" nowrap />Poczta głosowa</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><SELECT name="pstnedit[voicemail_enabled]"><OPTION value='t' {if $pstninfo.voicemail_enabled=='t'} SELECTED{/if}>TAK</OPTION><OPTION value='f' {if $pstninfo.voicemail_enabled=='f'} SELECTED{/if}>NIE</OPTION></SELECT>&nbsp;( {if $pstninfo.voicemail_enabled=='t'}TAK{else}NIE{/if} )</td></tr>
+			    <tr><td width="1%" align="left" nowrap />FAX</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><select name="pstnedit[virtual_fax]"><option value='t' {if $pstninfo.virtual_fax=='t'} selected{/if}>TAK</option><option value='f' {if $pstninfo.virtual_fax=='f'} selected{/if}>NIE</option></select>&nbsp;( {if $pstninfo.virtual_fax=='t'}TAK{else}NIE{/if} )</td></tr>
+			    <tr><td width="1%" align="left" nowrap />Poczta głosowa</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" ><select name="pstnedit[voicemail_enabled]"><option value='t' {if $pstninfo.voicemail_enabled=='t'} selected{/if}>TAK</option><option value='f' {if $pstninfo.voicemail_enabled=='f'} selected{/if}>NIE</option></select>&nbsp;( {if $pstninfo.voicemail_enabled=='t'}TAK{else}NIE{/if} )</td></tr>
 			    <tr><td width="1%" align="left" nowrap />Utworzony</td><td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td><td width="98%" align="left" >{$pstninfo.create_date}</td></tr>
 			</table>
 
@@ -88,9 +88,9 @@
 </table>
 {include file="footer.html"}
 {if $blad}
-<SCRIPT type="text/javascript" language="JavaScript">
+<script type="text/javascript" language="JavaScript">
 <!--
     alert('Nie można zapisać danych !!!');
 //-->
-</SCRIPT>
+</script>
 {/if}

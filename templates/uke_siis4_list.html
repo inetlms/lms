@@ -8,7 +8,7 @@
     </tr>
     {cycle values="light,lucid" print=false}
     {section name='reportlist' loop=$reportlist}
-    <tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+    <tr class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 	<td width="1%"  align="center" class="fleft pad10" nowrap style="vertical-align:top;cursor:pointer;"  onclick="self.location.href='?m=uke_siis4_info&idr={$reportlist[reportlist].id}';">
 	    {$reportlist[reportlist].reportyear}
 	</td>

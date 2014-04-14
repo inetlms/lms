@@ -4,8 +4,8 @@
 	<meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
 	<meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
 	<link href="{get_conf('phpui.style', 'img/style.css')}" rel="stylesheet" type="text/css">
-	<script type="text/javascript" src="img/autoiframe.js"></SCRIPT>
-	<script type="text/javascript" src="img/common.js"></SCRIPT>
+	<script type="text/javascript" src="img/autoiframe.js"></script>
+	<script type="text/javascript" src="img/common.js"></script>
     </head>
 <body>
 
@@ -24,7 +24,7 @@
 	</tr>
 
         {if $netdevinfo.producer}
-	<tr class="LIGHT">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/producer.gif" alt="">
 		</td>
@@ -38,7 +38,7 @@
 	{/if}
 
 	{if $netdevinfo.model}
-	<tr class="LIGHT">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/netdev_model.gif" alt="">
 		</td>
@@ -51,11 +51,11 @@
 	</tr>
 	{/if}
 	
-	<tr class="LIGHT">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/port.gif" alt="">
 		</td>
-		<td width="1%" NOWRAP>
+		<td width="1%" nowrap>
 		        <b>{trans("Number of ports:")}</b>
 		</td>
 		<td width="98%">
@@ -63,11 +63,11 @@
 		</td>
 	</tr>
 
-	<tr class="LIGHT">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/netdev_takenports.gif" alt="">
 		</td>
-		<td width="1%" NOWRAP>
+		<td width="1%" nowrap>
 		        <b>{trans("Ports used:")}</b>
 		</td>
 		<td width="98%">
@@ -76,11 +76,11 @@
 	</tr>
 
 	{if $netdevinfo.location}
-	<tr class="LIGHT">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/home.gif" alt="">
 		</td>
-		<td width="1%" NOWRAP>
+		<td width="1%" nowrap>
 		        <b>{trans("Location:")}</b>
 		</td>
 		<td width="98%" nowrap>
@@ -91,11 +91,11 @@
 
 {if check_conf('phpui.radius')}
 	{if $netdevinfo.shortname}
-	<tr class="LIGHT">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radius.gif" alt="">
 		</td>
-		<td width="1%" NOWRAP>
+		<td width="1%" nowrap>
 			<b>{trans("Shortname:")}</b>
 		</td>
 		<td width="98%">
@@ -104,11 +104,11 @@
 	</tr>
 	{/if}
 	{if $netdevinfo.nastype}
-	<tr class="LIGHT">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radius.gif" alt="">
 		</td>
-		<td width="1%" NOWRAP>
+		<td width="1%" nowrap>
 			<b>{trans("Type:")}</b>
 		</td>
 		<td width="98%">
@@ -117,11 +117,11 @@
 	</tr>
 	{/if}
 	{if $netdevinfo.clients}
-	<tr class="LIGHT">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radius.gif" alt="">
 		</td>
-		<td width="1%" NOWRAP>
+		<td width="1%" nowrap>
 			<b>{trans("Max clients:")}</b>
 		</td>
 		<td width="98%">
@@ -132,7 +132,7 @@
 {/if}
 
 	{if $netdevinfo.description}
-	<tr class="LIGHT">
+	<tr class="light">
 	    <td width="1%">
 		<img src="img/desc.gif" alt="">
 	    </td>

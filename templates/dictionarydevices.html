@@ -1,0 +1,60 @@
+{$xajax}
+
+
+
+{include file="header.html"}
+{title value=$layout.title link="<a href='javascript:void(0);' onclick='xajax_dictionary_devices_add();'><b>Dodaj nową pozycję</b> <img src='img/add.gif' alt=''></a>"}
+
+<div id="id_edit_dictionary_devices"></div>
+    
+<table width="100%" cellpadding="3">
+    <tr class="dark">
+    
+	<td width="1%" nowrap style="height:22px;min-width:100px;vertical-align:bottom;" class="pad10 fleftu" align="left"><b>Rodzaj<br>Urządzenia</b></td>
+	<td width="97%" style="height:22px;vertical-align:bottom;" class="pad10 fbt" align="left"><b>Opis</b></td>
+	<td width="1%" nowrap style="height:22px;min-width:50px;vertical-align:bottom;" class="pad10 fbt" align="left"><b>Przypisanych<br>Urządzeń</b></td>
+	<td width="1%" nowrap style="height:22px;" class="pad10 frightu" align="right"></td>
+    </tr>
+    
+    {cycle values="lucid,light" print=false}
+    {section name='deviceslist' loop=$deviceslist}
+	
+	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	    <td width="1%" nowrap style="min-width:100px;" align="left" class="fleft pad10">{$deviceslist[deviceslist].type}</td>
+	    <td width="97%" align="left" class="pad10">{if $deviceslist[deviceslist].description}{$deviceslist[deviceslist].description|nl2br}{/if}</td>
+	    <td width="1%" nowrap style="min-width:50px;" align="center" class="pad10">{$deviceslist[deviceslist].countnodes}</td>
+	    <td width="1%" align="right" class="pl10 fright" nowrap>
+		{if $deviceslist[deviceslist].countnodes}
+		    <img src="img/deleteoff.gif" title="Nie można usunąć pozycji">
+		{else}
+		    <img src="img/delete.gif" onclick="confirm_delete({$deviceslist[deviceslist].id});">
+		{/if}
+		<img src="img/edit.gif" alt="[ Edycja ]" onclick="xajax_dictionary_devices_edit({$deviceslist[deviceslist].id});">
+	    </td>
+	</tr>
+    
+    {sectionelse}
+	<tr class="light">
+	    <td colspan="6" width="100%" align="center" class="fall">
+		<br><p><b>Brak pozycji w słowniku</b></p><br>
+	    </td>
+	</tr>
+    {/section}
+</table>
+
+{literal}
+<script type="text/javascript">
+    <!--
+	function confirm_delete(id)
+	{
+	    if (confirm('Potwierdź usunięcie pozycji'))
+	    {
+		xajax_dictionary_devices_deleted(id);
+	    }
+	}
+    //-->
+</script>
+{/literal}
+
+{include file="footer.html"}
+

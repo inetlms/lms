@@ -73,7 +73,7 @@ if (array_key_exists('help', $options))
 	print <<<EOF
 lms-monitoring.php
 version 1.0.3
-(C) 2012-2013 LMS iNET
+(C) 2012-2014 iNET LMS 
 
 -C, --config-file=/etc/lms/lms.ini      alternate config file (default: /etc/lms/lms.ini);
 -h, --help                              wyswietlenie pomocy i zakonczenie;
@@ -111,8 +111,8 @@ if (!is_readable($CONFIG_FILE))
 	
 //$ch = curl_init();
 
-//if (!$ch)
-//	die("Blad krytyczny: Nie zainicjowano biblioteki curl !\n");
+if (!$ch)
+	die("Blad krytyczny: Nie zainicjowano biblioteki curl !\n");
 
 $CONFIG = (array) parse_ini_file($CONFIG_FILE, true);
 
@@ -287,7 +287,7 @@ if ($test_netdev)
 				);
 				
 				$LMS->RRD_UpdatePingFile('node.'.$nodeslist[$i]['id'],$ptime,$currenttime,STEP_NETDEV);
-				$LMS->RRD_CreateSmallPingImage('node.'.$nodeslist[$i]['id'],'-1d','now');
+				if (get_conf('monit.autocreate_chart',0)) $LMS->RRD_CreateSmallPingImage('node.'.$nodeslist[$i]['id'],'-1d','now');
 				
 				if ($nodeslist[$i]['ptime'] == '-1')
 				{
@@ -348,7 +348,7 @@ if ($test_nodes)
 				);
 				
 				$LMS->RRD_UpdatePingFile('node.'.$nodeslist[$i]['id'],$ptime,$currenttime, STEP_NODES);
-				$LMS->RRD_CreateSmallPingImage('node.'.$nodeslist[$i]['id'],'-1d','now');
+				if (get_conf('monit.autocreate_chart',0)) $LMS->RRD_CreateSmallPingImage('node.'.$nodeslist[$i]['id'],'-1d','now');
 				
 				if ($nodeslist[$i]['ptime'] == '-1') 
 				{
@@ -402,7 +402,7 @@ if ($test_owner)
 					array(0, $ownlist[$i]['id'], $currenttime, $ptime));
 				
 				$LMS->RRD_UpdatePingFile('owner.'.$ownlist[$i]['id'],$ptime,$currenttime, STEP_OWNER);
-				$LMS->RRD_CreateSmallPingImage('owner.'.$ownlist[$i]['id'],'-1d','now');
+				if (get_conf('monit.autocreate_chart',0)) $LMS->RRD_CreateSmallPingImage('owner.'.$ownlist[$i]['id'],'-1d','now');
 				
 				if ($ownlist[$i]['ptime'] == '-1')
 				{
@@ -490,7 +490,7 @@ if ($test_netdev)
 				
 				$ptime = str_replace(' ','',str_replace(',','.',sprintf("%.2f",$nodeslist[$i]['ptime'])));
 				$LMS->RRD_UpdatePingFile('node.'.$nodeslist[$i]['id'],$ptime,$currenttime, STEP_NODES);
-				$LMS->RRD_CreateSmallPingImage('node.'.$nodeslist[$i]['id'],'-1d','now');
+				if (get_conf('monit.autocreate_chart',0)) $LMS->RRD_CreateSmallPingImage('node.'.$nodeslist[$i]['id'],'-1d','now');
 			}
 		}
 	}
@@ -566,7 +566,7 @@ if ($test_nodes)
 					}
 				}
 				
-				$LMS->RRD_CreateSmallPingImage('node.'.$nodeslist[$i]['id'],'-1d','now');
+				if (get_conf('monit.autocreate_chart',0)) $LMS->RRD_CreateSmallPingImage('node.'.$nodeslist[$i]['id'],'-1d','now');
 			}
 			$DB->Committrans();
 		}
@@ -639,7 +639,7 @@ if ($test_owner)
 						$LMS->RRD_UpdatePingFile('owner.'.$ownlist[$i]['id'],$ptime,$currenttime, STEP_OWNER);
 					}
 				}
-				$LMS->RRD_CreateSmallPingImage('owner.'.$ownlist[$i]['id'],'-1d','now');
+				if (get_conf('monit.autocreate_chart',0)) $LMS->RRD_CreateSmallPingImage('owner.'.$ownlist[$i]['id'],'-1d','now');
 			}
 		}
 	}
@@ -845,11 +845,11 @@ if (get_conf('monit.signal_test') && $test_signal)
 								array($currenttime, $idek, $rx_signal, $tx_signal, $signal_noise, $tx_rate, $rx_rate, $rx_ccq, $tx_ccq, $ack_timeout ));
 							
 							$LMS->RRD_UpdateSignalExpandedFile('node.'.$idek, $tx_signal, $signal_noise, $tx_ccq, $rx_ccq, $ack_timeout, $currenttime, STEP_SIGNAL);
-							$LMS->RRD_CreateSmallSignalImage('node.'.$idek,'-1d','now',NULL,true);
+							if (get_conf('monit.autocreate_chart',0)) $LMS->RRD_CreateSmallSignalImage('node.'.$idek,'-1d','now',NULL,true);
 						}
 						else
 						{
-							$LMS->RRD_CreateSmallSignalImage('node.'.$idek,'-1d','now', NULL, false);
+							if (get_conf('monit.autocreate_chart',0)) $LMS->RRD_CreateSmallSignalImage('node.'.$idek,'-1d','now', NULL, false);
 							$DB->Execute('INSERT INTO monitsignal (cdate, nodeid, rx_signal, tx_rate, rx_rate) VALUES (?, ?, ?, ?, ?) ',
 								array($currenttime, $idek, $rx_signal,$tx_rate,$rx_rate));
 						}
@@ -886,5 +886,5 @@ if (get_conf('monit.beep','0') && ($test_netdev || $test_nodes || $test_owner ||
 
 if (!$quiet) 
 	printf("\n\nKONIEC TESTU\n\n");
-
+//@unlink(COOKIE_FILE);
 ?>

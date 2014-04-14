@@ -85,8 +85,6 @@ CREATE TABLE uke_data (
     PRIMARY KEY (id));
 ");
 
-
-
 $DB->Execute("CREATE SEQUENCE collocation_id_seq;");
 $DB->Execute("
 CREATE TABLE collocation (

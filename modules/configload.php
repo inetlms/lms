@@ -154,6 +154,31 @@ foreach($CONFIG['autobackup'] as $key => $val)
 			);
 }
 
+if(!empty($CONFIG['homepage']) && (!$section || $section == 'homepage'))
+foreach($CONFIG['homepage'] as $key => $val)
+{
+	$DB->Execute('INSERT INTO uiconfig(section, var, value) VALUES(?,?,?)',
+			array('homepage', $key, parse_cfg_val($val))
+			);
+}
+
+if(!empty($CONFIG['netdevices']) && (!$section || $section == 'netdevices'))
+foreach($CONFIG['netdevices'] as $key => $val)
+{
+	$DB->Execute('INSERT INTO uiconfig(section, var, value) VALUES(?,?,?)',
+			array('netdevices', $key, parse_cfg_val($val))
+			);
+}
+
+if(!empty($CONFIG['radius']) && (!$section || $section == 'radius'))
+foreach($CONFIG['radius'] as $key => $val)
+{
+	$DB->Execute('INSERT INTO uiconfig(section, var, value) VALUES(?,?,?)',
+			array('radius', $key, parse_cfg_val($val))
+			);
+}
+
+
 $DB->CommitTrans();
 
 header('Location: ?m=configlist');

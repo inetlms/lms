@@ -905,11 +905,11 @@ function add_PO($forms)
 		    'identyfikator'	=> $netlink['src'].'_'.$netlink['dst'],
 		    'wlasnosc'		=> 'własna',
 		    'obcy'		=> '',
-		    'rodzaja'		=> 'węzeł własny',
+		    'rodzaja'		=> 'Węzeł Własny',
 		    
 		    'identyfikatora'	=> $DB->GetOne('SELECT nn.name FROM networknode nn JOIN netdevices nd ON (nn.id = nd.networknodeid) WHERE nd.id = ? LIMIT 1;',array($netlink['src'])),
 		    
-		    'rodzajb'		=> 'węzeł własny',
+		    'rodzajb'		=> 'Węzeł Własny',
 		    
 		    'identyfikatorb'	=> $DB->GetOne('SELECT nn.name FROM networknode nn JOIN netdevices nd ON (nn.id = nd.networknodeid) WHERE nd.id = ? LIMIT 1;',array($netlink['src'])),
 		    

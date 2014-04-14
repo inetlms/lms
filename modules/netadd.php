@@ -27,12 +27,13 @@
 if(isset($_POST['netadd']))
 {
 	$netadd = $_POST['netadd'];
+	$error = array();
 	
 	foreach($netadd as $key=>$value)
 	{
 		$netadd[$key] = trim($value);
 	}
-
+/*
 	if(
 			$netadd['name'] == '' &&
 			$netadd['address'] == '' &&
@@ -45,7 +46,7 @@ if(isset($_POST['netadd']))
 			$netadd['dhcpend'] == ''
 	)
 		header('Location: ?m=netadd');
-
+*/
 
 	if($netadd['name'] == '')
 		$error['name'] = trans('Network name is required!');
@@ -54,6 +55,9 @@ if(isset($_POST['netadd']))
 	
 	if($netadd['domain'] != '' && !preg_match('/^[.a-z0-9-]+$/i', $netadd['domain']))
 		$error['domain'] = trans('Specified domain contains forbidden characters!');
+	
+	if (get_conf('netdevices.force_network_to_host') && empty($netadd['hostid']))
+		$error['hostid'] = 'Proszę wybrać host';
 	
 	if(!check_ip($netadd['address']))
 		$error['address'] = trans('Incorrect network IP address!');
@@ -66,7 +70,7 @@ if(isset($_POST['netadd']))
 		}
 		else
 		{
-			if($LMS->NetworkOverlaps($netadd['address'], prefix2mask($netadd['prefix'])))
+			if($LMS->NetworkOverlaps($netadd['address'], prefix2mask($netadd['prefix']), $netadd['hostid']))
 				$error['address'] = trans('Specified IP address overlaps with other network!');
 		}
 	}
@@ -76,6 +80,8 @@ if(isset($_POST['netadd']))
 
 	if($netadd['dns'] != '' && !check_ip($netadd['dns']))
 		$error['dns'] = trans('Incorrect DNS server IP address!');
+	elseif (get_conf('netdevices.force_network_dns') && empty($netadd['dns']))
+		$error['dns'] = 'Proszę podać adres serwera DNS';
 	
 	if($netadd['dns2'] != '' && !check_ip($netadd['dns2']))
 		$error['dns2'] = trans('Incorrect DNS server IP address!');
@@ -83,11 +89,15 @@ if(isset($_POST['netadd']))
 	if($netadd['wins'] != '' && !check_ip($netadd['wins']))
 		$error['wins'] = trans('Incorrect WINS server IP address!');
 	
-	if($netadd['gateway'] != '')
+	if($netadd['gateway'] != '') {
+		
 		if(!check_ip($netadd['gateway']))
 			$error['gateway'] = trans('Incorrect gateway IP address!');
-	elseif(!isipin($netadd['gateway'], getnetaddr($netadd['address'], prefix2mask($netadd['prefix'])), prefix2mask($netadd['prefix'])))
-		$error['gateway'] = trans('Specified gateway address does not match with network address!');
+		elseif (!isipin($netadd['gateway'], getnetaddr($netadd['address'], prefix2mask($netadd['prefix'])), prefix2mask($netadd['prefix'])))
+			$error['gateway'] = trans('Specified gateway address does not match with network address!');
+	} elseif (get_conf('netdevices.force_network_gateway') && empty($netadd['gateway'])) {
+		$error['gateway'] = 'Proszę podać adres bramki sieciowej';
+	}
 	
 	if($netadd['dhcpstart'] != '')
 		if(!check_ip($netadd['dhcpstart']))
@@ -109,7 +119,7 @@ if(isset($_POST['netadd']))
 			$error['dhcpend'] = trans('End of DHCP range has to be equal or greater than start!');
 	}
 	
-	if(!$error)
+	if(empty($error))
 	{
 		$SESSION->redirect('?m=netinfo&id='.$LMS->NetworkAdd($netadd));
 	}
@@ -121,6 +131,7 @@ if(isset($_POST['netadd']))
 $layout['pagetitle'] = trans('New Network');
 
 $SMARTY->assign('prefixlist', $LMS->GetPrefixList());
+$SMARTY->assign('hostlist', $LMS->DB->GetAll('SELECT id, name FROM hosts ORDER BY name'));
 $SMARTY->display('netadd.html');
 
 ?>

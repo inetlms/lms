@@ -65,7 +65,7 @@
     {cycle values="lucid,light" print=false}
     {section name=l1 loop=$czasy}
 	{assign var='indeks' value=$smarty.section.l1.index}
-	<tr class="{cycle}" style=" 
+	<tr class="{cycle} lista" style=" 
 	    {if $czasy[l1]=='-1'}background-color:#EA0000;color:#FFFFFF;font:bold 8pt verdana;{/if} 
 	    {if $czasy[l1]>200}background-color:#EA0000;color:#FFFFFF;font:bold 8pt verdana;{/if} 
 	    {if $czasy[l1]>100 && $czasy[l1]<=200}background-color:#FFff84;font:normal 8pt verdana;{/if} 

@@ -181,6 +181,11 @@ class LMSDB_driver_postgres extends LMSDB_common
 	{
 	    return 'date_part(\'day\', '.$data.'::timestamp)';
 	}
+	
+	function _driver_unix_timestamp($data)
+	{
+	    return 'UNIX_TIMESTAMP('.$data.'::timestamptz)';
+	}
 
 	function _driver_listtables()
 	{

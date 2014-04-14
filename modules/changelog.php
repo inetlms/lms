@@ -34,6 +34,141 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/04/14',
+	    'status'	=> '',
+	    'opis'	=> 'syslog - dodano filtr na podstawie klienta',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano moduł Radius, który pozwala nam na przeglądanie tabeli radacct, wyzerowanie błędnych sesji oraz zerwanie bieżącej sesji.<br>Dokumentacja konfiguracji modułu znajduje się w DOC/README-Radius.txt',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dołączono tabele Radiusa do bazy LMS\'a',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano nowe pole w interfejsach sieciowych CoA Port, sekcja radius',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Przebudowa listy klientów',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'wprowadzono konfigurację technologii połączeń między interfejsami oraz urządzeniami klientów zgodnie z wytycznymi SIIS',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'doszła zmienna monit.autocreate_chart która odpowiada za automatyczne tworzenie plików png z wykresami podczas testu, 1-Tak, 0-Nie, wartość 0 powoduje tworzenie obrazka dopiero na żądanie. DEFAULT: 0',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowa taryf o dodatkowe pola dla BURST',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano zmienną w UI -> osprzęt sieciowy -> force_connection, wymuszającą podłączenie urządzenia klienta do interfejsu sieciowego, podczas edycji / dodawania urz. klienta ',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano zmienną w UI -> osprzęt sieciowy -> force_network_dns, wymuszającą podanie adresu serwera DNS w konfiguracji sieci',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano zmienną w UI -> osprzęt sieciowy -> force_network_gateway, wymuszającą podanie bramki sieciowej w konfiguracji klasy adresowej IP (sieci)',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'doszła możliwość powiązania klasy adresowej IP z konkretnym hostem, dodano również zmienną w UI -> osprzęt sieciowy -> force_network_to_host która wymusza powiązanie sieci IP z hostem.',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano tablicę informacyjnę na stronie startowej, za pomocą tablicy możemy zostawiać krótkie informacje dla wybranych użytkowników systemu.',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> "przebudowano stronę startową, zmiana dotyczy dla welcome_new, w UI sekcja strona startowa możemy zdefiniować które box'y mają być wyświetlane, zachowano uprawnienia dla poszczególnych użytkowników.",
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano Historię importów płatności masowych, Finanse -> Historia importów. Zastosowane zakładki i filtry pozwalają nam wyłapać nieścisłości jakie powstały podczas importu płatności.',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przybył nam osobisty notatnik, ikona na pasku narzędzi',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozszerzono filtr raportu sprzedaży, obecnie możliwy jest wydruk rejestru z podziałem na firmy, osoby fizyczne lub wszyscy. Podesłane przez MS-NET Miłosz Szewczak',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano dodatkowe pola w konfiguracji firmy / oddziału.',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowano sposób przechowywania informacji o dokumentach, od teraz w tabeli documents zapisana jest informacja io firmie która wystawiła dany dok. Zmiana danych firmy nie będzie wpływać np. na wystawce faktur które zostały wcześniej wystawione',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Zmiana walidacji dla węzłów sieciowych',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Przeniesienie konfiguracji hostów z konfiguracja do osprzęt sieciowy',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'aktualizacja Smarty',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'doszła możliwość dodania źródła pochodzenia klientów, np. ulotka, konkurencja, łapanka :D',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'mała zmiana css ;)',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka wysyłki faktur dla postivo',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Generowanie raportu SIISv4',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Dodana obsługa węzłów sieciowych',
+	),
+	array(
 	    'data'	=> '2013/02/12',
 	    'status'	=> '',
 	    'opis'	=> '<b><font color="blue">******************** iNET LMS 1.0.2 ********************</font></b>',

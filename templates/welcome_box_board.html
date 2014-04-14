@@ -1,0 +1,143 @@
+{$xajax}
+{if $boardadd || $boardedit}
+
+    {if preg_match("/MSIE/i",$smarty.server.HTTP_USER_AGENT) or preg_match("/Internet Explorer/i",$smarty.server.HTTP_USER_AGENT)}<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 1.0 Transitional//EN">{else}<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">{/if}
+    <html>
+    <head>
+	<title>::: LMS : Tablica</title>
+	<meta name="GENERATOR" content="LMS {$layout.lmsv}">
+	<meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
+	<meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0, post-check=0, pre-check=0">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta name="Robots" content="noindex, nofollow">
+	<meta name="Robots" content="noarchive">
+	<meta name="googlebot" content="noarchive">
+	<link href="{get_conf('phpui.style', 'img/style.css')}" rel="stylesheet" type="text/css">
+	<link href="img/lms-net.gif" rel="shortcut icon">
+	<script type="text/javascript" src="img/common.js"></script>
+    </head>
+    <form name="boardedit" id="boardedit" method="POST">
+    <input type="hidden" name="boardedit[boardedit]" value={$boardedit}">
+    <input type="hidden" name="boardedit[boardadd]" value="{$boardadd}">
+    <input type="hidden" name="boardedit[id]" value="{$boardid}">
+    <input type="hidden" name="userki" id="userki" value="">
+    <table width="100%">
+	<tr>
+	    <td style="width:160px;">
+		<div style="width:150px;height:298px;overflow:auto;border-right:solid 1px #CCCCCC;">
+		    <table width="100%">
+			<tr class="dark boxtitlealert">
+			    <td colspan="2" width="100%" align="center" class="boxtitlealerttd" style="border-left:0;border-top:0;border-right:0;"><b>Lista odbiorców</b></td>
+			</tr>
+			
+			    <tr><td colspan="2"><div id="id_alert_user" style="color:red;font-weight:bold;text-align:center;"></div></td></tr>
+			{cycle values="light,lucid" print=false}
+			{section name="userlist" loop=$userlist}
+			    {assign var='indeks' value=$smarty.section.userlist.index}
+			    <tr class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+				<td width="1%" nowrap>
+				    <input type="checkbox" name="boardedit[userbox][]" value="{$userlist[userlist].id}" id="user[{$indeks}]" {if $userlist[userlist].id|in_array:$defaultuser}checked{/if}>
+				</td>
+				<td width="99%" nowrap onclick="checkElement('user[{$indeks}]');">
+				    {$userlist[userlist].name}
+				</td>
+			    </tr>
+			{/section}
+		    </table>
+		</div>
+	    </td>
+	    
+	    <td align="left" style="text-align:left;vertical-align:top;width:430px;">
+		<div style="width:420px;">
+		<table width="100%">
+		    <tr>
+			<td style="width:300px;"><b>Temat</b></td>
+			<td style="width:110px;"><b>Priorytet</b></td>
+		    </tr>
+		    <tr>
+			<td style="width:280px;vertical-align:top;">
+			    <input type="text" name="boardedit[description]" style="width:290px;">&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="width:120px;vertical-align:top;">
+			    <select name="boardedit[prio]" style="width:110px;">
+				<option value="1">normalny</b>
+				<option value="2" style="color:green;">ważne</option>
+				<option value="3" style="color:red;">bardzo ważne</option>
+			    </select>
+			<td>
+		    </tr>
+		    <tr>
+			<td width="100%" colspan="2"><b>Wiadomość:</b></td>
+		    </tr>
+		    <tr>
+			<td width="100%" colspan="2">
+			    <textarea style="width:420px;height:200px;" name="boardedit[message]" id="wiadomosc"></textarea>
+			</td>
+		    </tr>
+		</table>
+		</div>
+		
+		<p>
+		<!--//
+		    Wyślij dodatkowo na: 
+			<input type="checkbox" id="id_send_email" value="1" name="boardedit[sendemail]"><label for="id_send_email">email</label>
+			<input type="checkbox" id="id_send_gadu" value="1" name="boardedit[sendgg]"><label for="id_send_gadu">gadu-gadu</label>
+			<input type="checkbox" id="id_send_sms" value="1" name="boardedit[sendsms]"><label for="id_send_sms">sms</label>&nbsp;&nbsp;
+		//-->
+			<a href="javascript:void(0);" onclick="xajax_board_save(xajax.getFormValues('boardedit'));"><b>Zapisz</b> <img src="img/save.gif"></a>
+			<a href="javascript:void(0);" onclick="window.parent.parent.popclick();"><b>Anuluj</b> <img src="img/cancel.gif"></a>
+		</p>
+	    </td>
+	
+	</tr>
+    </table>
+    </form>
+    </html>
+{else}
+    <div class="fall">
+    <table width="100%" cellpadding="3" class="table table-success">
+	<tr class="boxtitlemess">
+		<td align="center" class="boxtitlemesstd">
+		    <b>TABLICA INFORMACYJNA</b>
+		</td>
+	</tr>
+	<tr>
+	    <td width="100%">
+		<table width="100%" cellpadding="3">
+		    <tr class="dark">
+			<td width="99%" class="pad5">
+			    Status:<select id="id_board_status" onchange="xajax_board_view_list(this.value,'-2','-2');">
+				<option value="" {if !$itemdata.board_status} selected {/if} ></option>
+				<option value="1" {if $itemdata.board_status == '1'} selected {/if}>czytane</option>
+				<option value="2" {if $itemdata.board_status == '2'} selected {/if}>nieczytane</option>
+				</select>
+				&nbsp;
+			    Prio:<select id="id_board_prio" onchange="xajax_board_view_list('-2',this.value,'-2');">
+				<option value=""></option>
+				<option value="1"{if $itemdata.board_prio == '1'} selected {/if}>normalne</option>
+				<option value="2"{if $itemdata.board_prio == '2'} selected {/if} style="color:green;">ważne</option>
+				<option value="3"{if $itemdata.board_prio == '3'} selected {/if} style="color:red;">b.ważne</option>
+				</select>
+			    &nbsp;
+			    Autor:<select id="id_board_author" onchange="xajax_board_view_list('-2','-2',this.value);">
+				<option value=""></option>
+				{section name="userlist" loop=$userlist}
+				    <option value="{$userlist[userlist].id}" {if $itemdata.board_author == $userlist[userlist].id} selected {/if}>{$userlist[userlist].name}</option>
+				{/section}
+			</td>
+			<td width="1%" class="pad5" nowrap>
+			    <img src="img/add.gif" alt="Dodaj wpis" title="Dodaj nowy wpis" style="cursor:pointer;" onclick="popup_center('?m=welcome_new&boardadd',600,300);">
+			</td>
+		    </tr>
+		</table>
+	    </td>
+	</tr>
+	<tr>
+	    <td>
+		<div id="id_board_list" style="min-height:100px;max-height:300px;overflow:auto;"></div>
+	    </td>
+	</tr>
+    </table>
+    </div>
+{/if}

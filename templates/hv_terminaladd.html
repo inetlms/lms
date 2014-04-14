@@ -102,7 +102,7 @@
 		    </tr>
 		    <tr>
 			<td width="1%" align="left" nowrap>Hasło</td>
-			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" ><input type="text" name="terminaladd[password]" value="{$dane.password}">&nbsp;<a href="javascript:GenPasswdTerminal();" {tip text="Generuj 10 zankowe hasło dla terminala"}>&raquo;&raquo;&raquo;</a></td>
 		    </tr>
 		    <tr>
@@ -134,19 +134,19 @@
 		<table width="100%" cellpadding="3">
 		    <tr>
 			<td width="1%" align="left" nowrap>Cennik</td>
-			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" >
 			    {$infot[lt].pricelist_name}
 			    <select name="terminaladd[id_pricelist]">
 				{section name=lista loop=$price}
-				    <option value="{$price[lista].id}" {if $account.id_default_pricelist==$price[lista].id} SELECTED{/if}>{$price[lista].name}</option>
+				    <option value="{$price[lista].id}" {if $account.id_default_pricelist==$price[lista].id} selected{/if}>{$price[lista].name}</option>
 				{/section}
 			    </select>
 			</td>
 		    </tr>
 		    <tr>
 			<td width="1%" align="left" nowrap>Abonament</td>
-			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" >
 			    {$infot[lt].subscriptions}
 			    <select name="terminaladd[id_subscription]">
@@ -158,14 +158,14 @@
 		    </tr>
 		    <tr>
 			<td width="1%" align="left" nowrap>Abonament od</td>
-			<td width="1%"><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%"><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" >
 			    <input readonly type="text" name="terminaladd[subscription_from]" size="12" value="{$dane.subscription_from}">&nbsp;<img src="img/calendar.gif" border="0" {tip text="Kliknij aby otworzyć kalendarz"} onclick="tncal1.popup();" style="cursor:pointer;">&nbsp;<img src="img/delete.gif" onclick="javascript:document.terminaladd.elements['terminaladd[subscription_from]'].value='';" style="cursor:pointer;" {tip text="Wyczyść datę"}>
 			</td>
 		    </tr>
 		    <tr>
 			<td width="1%" align="left" nowrap>Abonament do</td>
-			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" >
 			    <input type="text" readonly name="terminaladd[subscription_to]" size="12" value="{$dane.subscription_to}">&nbsp;<img src="img/calendar.gif" border="0" {tip text="Kliknij aby otworzyć kalendarz"} onclick="tncal2.popup();" style="cursor:pointer;">&nbsp;<img src="img/delete.gif" onclick="javascript:document.terminaladd.elements['terminaladd[subscription_to]'].value='';" style="cursor:pointer;" {tip text="Wyczyść datę"}>
 			</td>
@@ -175,7 +175,7 @@
 
 	    <td width="auto" style="text-align:left;vertical-align:top;" class="fright">
 			<table width="100%" cellpadding="3" id="alarmlocal">
-			    <tr><td width="100%" colspan="3" align="left"><a href="javascript:searchterminallocation()"><b>Wybierz lokalizację dla połączeń alarmowych</b></A></td></tr>
+			    <tr><td width="100%" colspan="3" align="left"><a href="javascript:searchterminallocation()"><b>Wybierz lokalizację dla połączeń alarmowych</b></a></td></tr>
 			    <tr>
 				<td width="1%" align="left" nowrap />Województwo</td>
 				<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>

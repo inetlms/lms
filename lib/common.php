@@ -1079,5 +1079,14 @@ function list_dir($dir,$maska=NULL)
 	    return $lista;
 }
 
+function seconds_to_hours($seconds)
+{
+    if ($seconds<=0) return '00:00:00';
+    $h = intval($seconds/pow(60,2));
+    $m = intval($seconds/60)%60;
+    $s = $seconds%60;
+    return sprintf("%02d:%02d:%02d",$h,$m,$s);
+}
+
 
 ?>

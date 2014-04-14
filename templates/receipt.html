@@ -60,7 +60,7 @@
 	{cycle values="grey,white" print=false name=one}
 	{foreach item="row" from=$receipt.contents}
 	<tr class="{cycle name=one}">
-		<td class="flr sdr" colspan="4" valign="top"><b>{counter name=one}.</b> {$row.description|replace:"\n":"<BR>"}</td>
+		<td class="flr sdr" colspan="4" valign="top"><b>{counter name=one}.</b> {$row.description|replace:"\n":"<br>"}</td>
 		<td class="flr sdr" align="right" valign="top" nowrap>
 			{$row.value|money_format}
 		</td>
@@ -204,7 +204,7 @@
 	{cycle values="grey,white" print=false name=two}
 	{foreach item="row" from=$receipt.contents}
 	<tr class="{cycle name=two}">
-		<td class="flr sdr" colspan="4" valign="top"><b>{counter name=two}.</b> {$row.description|replace:"\n":"<BR>"}</td>
+		<td class="flr sdr" colspan="4" valign="top"><b>{counter name=two}.</b> {$row.description|replace:"\n":"<br>"}</td>
 		<td class="flr sdr" align="right" valign="top" nowrap>{$row.value|money_format}</td>
 		<td class="flr"></td>
 	</tr>

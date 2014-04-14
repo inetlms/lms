@@ -32,7 +32,7 @@ function GenPasswdTerminal(){var passwd=new Array();var items="abcdefghijklmnopq
 		    </tr>
 		    <tr>
 			<td width="1%" align="left" nowrap>Hasło</td>
-			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" ><input type="text" name="terminaledit[password]" value="{$terminalinfo.password}">&nbsp;<a href="javascript:GenPasswdTerminal();" {tip text="Generuj 10 zankowe hasło dla terminala"}>&raquo;&raquo;&raquo;</a></td>
 		    </tr>
 		    <tr>
@@ -40,8 +40,8 @@ function GenPasswdTerminal(){var passwd=new Array();var items="abcdefghijklmnopq
 			<td width="1%" align="left" nowrap><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" >
 			    <select name="terminaledit[screen_numbers]">
-				<option value='t' {if $terminalinfo.screen_numbers=='t'} SELECTED{/if}>TAK</option>
-				<option value='f' {if $terminalinfo.screen_numbers=='f'} SELECTED{/if}>NIE</option>
+				<option value='t' {if $terminalinfo.screen_numbers=='t'} selected{/if}>TAK</option>
+				<option value='f' {if $terminalinfo.screen_numbers=='f'} selected{/if}>NIE</option>
 			    </select>
 			</td>
 		    </tr>
@@ -50,8 +50,8 @@ function GenPasswdTerminal(){var passwd=new Array();var items="abcdefghijklmnopq
 			<td width="1%" align="left" nowrap><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" >
 			    <select name="terminaledit[t38_fax]">
-				<option value='t' {if $terminalinfo.t38_fax=='t'} SELECTED{/if}>TAK</option>
-				<option value='f' {if $terminalinfo.t38_fax=='f'} SELECTED{/if}>NIE</option>
+				<option value='t' {if $terminalinfo.t38_fax=='t'} selected{/if}>TAK</option>
+				<option value='f' {if $terminalinfo.t38_fax=='f'} selected{/if}>NIE</option>
 				
 				
 			    </select>
@@ -65,38 +65,38 @@ function GenPasswdTerminal(){var passwd=new Array();var items="abcdefghijklmnopq
 		<table width="100%" cellpadding="3">
 		    <tr>
 			<td width="1%" align="left" nowrap>Cennik</td>
-			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" >
 			    {$infot[lt].pricelist_name}
 			    <select name="terminaledit[id_pricelist]">
 				{section name=lista loop=$price}
-				    <option value="{$price[lista].id}" {if $terminalinfo.id_pricelist==$price[lista].id} SELECTED{/if}>{$price[lista].name}</option>
+				    <option value="{$price[lista].id}" {if $terminalinfo.id_pricelist==$price[lista].id} selected{/if}>{$price[lista].name}</option>
 				{/section}
 			    </select>
 			</td>
 		    </tr>
 		    <tr>
 			<td width="1%" align="left" nowrap>Abonament</td>
-			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" >
 			    {$infot[lt].subscriptions}
 			    <select name="terminaledit[id_subscription]">
 				{section name=lista2 loop=$subscription}
-				    <option value="{$subscription[lista2].id}" {if $terminalinfo.id_subscription==$subscription[lista2].id} SELECTED{/if}>{$subscription[lista2].name}</option>
+				    <option value="{$subscription[lista2].id}" {if $terminalinfo.id_subscription==$subscription[lista2].id} selected{/if}>{$subscription[lista2].name}</option>
 				{/section}
 			    </select>
 			</td>
 		    </tr>
 		    <tr>
 			<td width="1%" align="left" nowrap>Abonament od</td>
-			<td width="1%"><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%"><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" >
 			    <input readonly type="text" name="terminaledit[subscription_from]" size="12" value="{$terminalinfo.subscription_from}">&nbsp;<img src="img/calendar.gif" border="0" {tip text="Kliknij aby otworzyć kalendarz"} onclick="tncal1.popup();" style="cursor:pointer;">&nbsp;<img src="img/delete.gif" onclick="javascript:document.terminaledit.elements['terminaledit[subscription_from]'].value='';" style="cursor:pointer;" {tip text="Wyczyść datę"}>
 			</td>
 		    </tr>
 		    <tr>
 			<td width="1%" align="left" nowrap>Abonament do</td>
-			<td width="1%" align="left" nowrap /><B>&nbsp;:&nbsp;</B></td>
+			<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
 			<td width="98%" align="left" >
 			    <input type="text" readonly name="terminaledit[subscription_to]" size="12" value="{$terminalinfo.subscription_to}">&nbsp;<img src="img/calendar.gif" border="0" {tip text="Kliknij aby otworzyć kalendarz"} onclick="tncal2.popup();" style="cursor:pointer;">&nbsp;<img src="img/delete.gif" onclick="javascript:document.terminaledit.elements['terminaledit[subscription_to]'].value='';" style="cursor:pointer;" {tip text="Wyczyść datę"}>
 			</td>
@@ -106,7 +106,7 @@ function GenPasswdTerminal(){var passwd=new Array();var items="abcdefghijklmnopq
 
 	    <td width="auto" style="text-align:left;vertical-align:top;" class="fright">
 			<table width="100%" cellpadding="3" id="alarmlocal">
-			    <tr><td width="100%" colspan="3" align="left"><a href="javascript:searchterminallocation()"><b>Wybierz lokalizację dla połączeń alarmowych</b></A></td></tr>
+			    <tr><td width="100%" colspan="3" align="left"><a href="javascript:searchterminallocation()"><b>Wybierz lokalizację dla połączeń alarmowych</b></a></td></tr>
 			    <tr>
 				<td width="1%" align="left" nowrap />Województwo</td>
 				<td width="1%" align="left" nowrap /><b>&nbsp;:&nbsp;</b></td>
@@ -153,10 +153,10 @@ function GenPasswdTerminal(){var passwd=new Array();var items="abcdefghijklmnopq
 
 </form>
 
-<SCRIPT type="text/javascript" language="JavaScript">
+<script type="text/javascript" language="JavaScript">
     var tncal1 = new calendar(document.forms['terminaledit'].elements['terminaledit[subscription_from]']);
     tncal1.time_comp = false;
     var tncal2 = new calendar(document.forms['terminaledit'].elements['terminaledit[subscription_to]']);
     tncal2.time_comp = false;
-</SCRIPT>
+</script>
 {include file="footer.html"}

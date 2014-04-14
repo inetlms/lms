@@ -155,8 +155,238 @@ function basisdata_from_collocation($idc)
     return $obj;
 }
 
+function validate_networknode($forms)
+{
+    global $DB;
+    $blad = false;
+    $warn = false;
+    $obj = new xajaxResponse();
+    
+    $form = $forms['networknode'];
+    $form['name'] = $forms['name'];
+    $form['id'] = $forms['networknodeid'];
+    
+    $obj->script("removeClassId('id_name','alerts');");
+    $obj->assign("id_name_alerts","innerHTML","");
+    $obj->script("removeClassId('location','alerts');");
+    $obj->assign("id_location_alerts","innerHTML","");
+    $obj->script("removeClassId('id_location_house','alerts');");
+    $obj->assign("id_location_house_alerts","innerHTML","");
+    $obj->script("removeClassId('id_zip','alerts');");
+    $obj->assign("id_zip_alerts","innerHTML","");
+    $obj->script("removeClassId('id_states','alerts');");
+    $obj->assign("id_states_alerts","innerHTML","");
+    $obj->script("removeClassId('id_districts','alerts');");
+    $obj->assign("id_districts_alerts","innerHTML","");
+    $obj->script("removeClassId('id_boroughs','alerts');");
+    $obj->assign("id_boroughs_alerts","innerHTML","");
+    $obj->script("removeClassId('id_city','alerts');");
+    $obj->assign("id_city_alerts","innerHTML","");
+    $obj->script("removeClassId('id_street','alerts');");
+    $obj->assign("id_street_alerts","innerHTML","");
+    $obj->script("removeClassId('id_cadastral_parcel','alerts');");
+    $obj->assign("id_cadastral_parcel_alerts","innerHTML","");
+    $obj->script("removeClassId('id_latitude','alerts');");
+    $obj->assign("id_latitude_alerts","innerHTML","");
+    $obj->script("removeClassId('id_longitude','alerts');");
+    $obj->assign("id_longitude_alerts","innerHTML","");
+    $obj->script("removeClassId('id_buildingtype','alerts');");
+    $obj->assign("id_buildingtype_alerts","innerHTML","");
+    $obj->script("removeClassId('id_total_bandwidth','alerts');");
+    $obj->assign("id_total_bandwidth_alerts","innerHTML","");
+    $obj->script("removeClassId('id_bandwidth_broadband','alerts');");
+    $obj->assign("id_bandwidth_broadband_alerts","innerHTML","");
+    
+    if (empty($form['name'])) {
+	$blad = true;
+	$obj->script("addClassId('id_name','alerts');");
+	$obj->assign("id_name_alerts","innerHTML","Pole wymagane");
+    } else {
+	
+	if (!empty($form['id'])) {
+	    
+		if ($DB->GetOne('SELECT 1 FROM networknode WHERE UPPER(name) = ? AND id != ? '.$DB->Limit(1).' ;',array(strtoupper($form['name']),$form['id']))) {
+		    $blad = true;
+		    $obj->script("addClassid('id_name','alerts');");
+		    $obj->assign("id_name_alerts","innerHTML","Podana nazwa już istnieje");
+		}
+	
+	} else {
+		
+		if ($DB->GetOne('SELECT 1 FROM networknode WHERE UPPER(name) = ? '.$DB->Limit(1).' ;',array(strtoupper($form['name'])))) {
+		    $blad = true;
+		    $obj->script("addClassid('id_name','alerts');");
+		    $obj->assign("id_name_alerts","innerHTML","Podana nazwa już istnieje");
+		}
+	}
+    }
+    
+    if ($forms['teryt']) {
+	
+	if (empty($form['location']) || empty($form['location_city'])) {
+	    $blad = true;
+	    $obj->script("addClassId('location','alerts');");
+	    $obj->assign("id_location_alerts","innerHTML","Pole wymagane");
+	}
+	
+	if (empty($form['location_house'])) {
+	    $blad = true;
+	    $obj->script("addClassId('id_location_house','alerts');");
+	    $obj->assign("id_location_house_alerts","innerHTML","Pole wymagane");
+	}
+	
+	if (empty($form['latitude'])) {
+		$warn = true;
+		$obj->script("document.getElementById('id_latitude_alerts').style.color='blue';");
+		$obj->assign("id_latitude_alerts","innerHTML","Zalecane podanie szerokości");
+	    }
+	    
+	    if (empty($form['longitude'])) {
+		$warn = true;
+		$obj->script("document.getElementById('id_longitude_alerts').style.color='blue';");
+		$obj->assign("id_longitude_alerts","innerHTML","Zalecane podanie długości");
+	    }
+	
+	
+	
+    } else {
+	if (empty($form['states'])) {
+	    $blad = true;
+	    $obj->script("addClassId('id_states','alerts');");
+	    $obj->assign("id_states_alerts","innerHTML","Pole wymagane");
+	}
+	
+	if (empty($form['districts'])) {
+	    $blad = true;
+	    $obj->script("addClassId('id_districts','alerts');");
+	    $obj->assign("id_districts_alerts","innerHTML","Pole wymagane");
+	}
+	
+	if (empty($form['boroughs'])) {
+	    $blad = true;
+	    $obj->script("addClassId('id_boroughs','alerts');");
+	    $obj->assign("id_boroughs_alerts","innerHTML","Pole wymagane");
+	}
+	
+	if (empty($form['city'])) {
+	    $blad = true;
+	    $obj->script("addClassId('id_city','alerts');");
+	    $obj->assign("id_city_alerts","innerHTML","Pole wymagane");
+	}
+	
+	if (empty($form['street']) || empty($form['location_house'])) {
+	    $warn = true;
+	    $obj->assign("id_cadastral_parcel_alerts","innerHTML","Zalecane jest podanie nr. działki");
+	    
+	    if (empty($form['latitude'])) {
+		$blad = true;
+		$obj->script("addClassId('id_latitude','alerts');");
+		$obj->script("document.getElementById('id_latitude_alerts').style.color='red';");
+		$obj->assign("id_latitude_alerts","innerHTML","Pole wymagane");
+	    }
+	    
+	    if (empty($form['longitude'])) {
+		$blad = true;
+		$obj->script("addClassId('id_longitude','alerts');");
+		$obj->script("document.getElementById('id_longitude_alerts').style.color='red';");
+		$obj->assign("id_longitude_alerts","innerHTML","Pole wymagane");
+	    }
+	} else {
+	    if (empty($form['latitude'])) {
+		$warn = true;
+		$obj->script("document.getElementById('id_latitude_alerts').style.color='blue';");
+		$obj->assign("id_latitude_alerts","innerHTML","Zalecane podanie szerokości");
+	    }
+	    
+	    if (empty($form['longitude'])) {
+		$warn = true;
+		$obj->script("document.getElementById('id_longitude_alerts').style.color='blue';");
+		$obj->assign("id_longitude_alerts","innerHTML","Zalecane podanie długości");
+	    }
+	}
+    }
+    
+    if (empty($form['zip'])) {
+	    $blad = true;
+	    $obj->script("addClassId('id_zip','alerts');");
+	    $obj->assign("id_zip_alerts","innerHTML","Pole wymagane");
+    } elseif (!check_zip($form['zip'])) {
+	    $blad = true;
+	    $obj->script("addClassId('id_zip','alerts');");
+	    $obj->assign("id_zip_alerts","innerHTML","Błędny kod pocztowy");
+    }
+    
+    if (empty($form['buildingtype'])) {
+	$blad = true;
+	$obj->script("addClassId('id_buildingtype','alerts');");
+	$obj->assign("id_buildingtype_alerts","innerHTML","Pole wymagane");
+    }
+    
+    
+    
+    if (!empty($form['total_bandwidth']) && !is_numeric($form['total_bandwidth'])) {
+	$blad = true;
+	$obj->script("addClassId('id_total_bandwidth','alerts');");
+	$obj->script("document.getElementById('id_total_bandwidth_alerts').style.color='red';");
+	$obj->assign("id_total_bandwidth_alerts","innerHTML","Błędnie podana wartość");
+    }
+    
+    if (empty($form['bandwidth_broadband'])) {
+	$warn = true;
+	$obj->script("document.getElementById('id_bandwidth_broadband_alerts').style.color='blue';");
+	$obj->assign("id_bandwidth_broadband_alerts","innerHTML","Podaj przepustowość dla Internetu");
+    } elseif (!is_numeric($form['bandwidth_broadband'])) {
+	$blad = true;
+	$obj->script("addClassId('id_bandwidth_broadband','alerts');");
+	$obj->script("document.getElementById('id_bandwidth_broadband_alerts').style.color='red';");
+	$obj->assign("id_bandwidth_broadband_alerts","innerHTML","Błędnie podana wartość");
+    } elseif (!empty($form['bandwidth_broadband']) && empty($form['total_bandwidth'])) {
+	$obj->script("document.getElementById('id_total_bandwidth').value = document.getElementById('id_bandwidth_broadband').value;");
+    } 
+    
+    if (empty($form['total_bandwidth']) && empty($form['bandwidth_broadband'])) {
+	$warn = true;
+	$obj->script("document.getElementById('id_total_bandwidth_alerts').style.color='blue';");
+	$obj->assign("id_total_bandwidth_alerts","innerHTML","Podaj całkowitą przepustowość węzła");
+    }
+    
+    if (!empty($form['total_bandwidth']) && !empty($form['bandwidth_broadband']) && $form['bandwidth_broadband'] > $form['total_bandwidth']) {
+	$blad = true;
+	$obj->script("addClassId('id_bandwidth_broadband','alerts');");
+	$obj->script("document.getElementById('id_bandwidth_broadband_alerts').style.color='red';");
+	$obj->assign("id_bandwidth_broadband_alerts","innerHTML","Przepustowość jest wyższa dla całkowitej przepustowości");
+    }
+    
+    
+    if ($warn) {
+	$str = "<input type='checkbox' name='networknode[notwarn]' value='1' id='id_notwarn'";
+	if ($form['notwarn']) $str .= " checked";
+	$str .= "><label for='id_notwarn' style='color:blue;'><b>Ignoruj ostrzeżenia</b></label>";
+	$obj->assign("id_warn_view","innerHTML",$str);
+    } else {
+	$obj->assign("id_warn_view","innerHTML","");
+    }
+    
+    if (!$blad) {
+	if ($warn && !$form['notwarn'])
+	    $blad = true;
+    }
+    
+    if (!$blad)
+	$obj->script("document.networknode.submit();");
+    
+    
+    
+    return $obj;
+}
+
 $LMS->InitXajax();
-$LMS->RegisterXajaxFunction('basisdata_from_collocation');
+$LMS->RegisterXajaxFunction(
+    array(
+	'basisdata_from_collocation',
+	'validate_networknode',
+    )
+);
 $SMARTY->assign('xajax',$LMS->RunXajax());
 
 ?>

@@ -1,158 +1,173 @@
 {include file="header.html"}
+{$xajax}
+
 <!--// $Id$ //-->
-<H1>{$layout.pagetitle}</H1>
+<h1 class="title">{$layout.pagetitle}</h1>
 {$lastonline_limit = get_conf('phpui.lastonline_limit')}
-<TABLE cellpadding="3" width="100%">
+<table cellpadding="3" width="100%" class="table">
 	
-	<TR CLASS="DARK">
-		<TD CLASS="fall" colspan="5">
-			<FORM METHOD="GET" ACTION="?m={$layout.module}" NAME="choosefilter">
-				<INPUT type="submit" class="hiddenbtn">
-				<INPUT TYPE="HIDDEN" NAME="m" VALUE="nodelist">
-				<INPUT TYPE="HIDDEN" NAME="page" VALUE="1">
+	<tr class="dark info">
+		<td class="fall" colspan="6">
+			<form method="GET" action="?m={$layout.module}" name="choosefilter">
+				<input type="submit" class="hiddenbtn">
+				<input type="hidden" name="m" value="nodelist">
+				<input type="hidden" name="page" value="1">
 				<img src="img/Filter.png">&nbsp;<a href="?m=nodelist&page=1&s=&n=&ng=&g=" {tip text="Wyczyść filtr"}><img src="img/cancel.gif"></a> 
-				<NOBR>{trans("Status:")}
-				<SELECT SIZE="1" NAME="s" ONCHANGE="document.choosefilter.submit();" {if $listdata.state} class="active"{/if}>
-					<OPTION VALUE="0"{if $listdata.state eq 0} SELECTED{/if}>{trans("- all -")}</OPTION>
-					<OPTION VALUE="1"{if $listdata.state eq 1} SELECTED{/if}>{trans("connected<!plural:item>")}</OPTION>
-					<OPTION VALUE="2"{if $listdata.state eq 2} SELECTED{/if}>{trans("disconnected<!plural:item>")}</OPTION>
-					<OPTION VALUE="3"{if $listdata.state eq 3} SELECTED{/if}>{trans("online")}</OPTION>
-				</SELECT></NOBR>&nbsp;
-				<NOBR>{trans("Network:")}
-				<SELECT SIZE="1" NAME="n" ONCHANGE="document.choosefilter.submit();" {if $listdata.network} class="active"{/if}>
-					<OPTION value="0" {if !$listdata.network} SELECTED {/if}>{trans("- all networks -")}</OPTION>
+				<nobr>{trans("Status:")}
+				<select size="1" name="s" onchange="document.choosefilter.submit();" {if $listdata.state} class="active"{/if}>
+					<option value="0"{if $listdata.state eq 0} selected{/if}>{trans("- all -")}</option>
+					<option value="1"{if $listdata.state eq 1} selected{/if}>{trans("connected<!plural:item>")}</option>
+					<option value="2"{if $listdata.state eq 2} selected{/if}>{trans("disconnected<!plural:item>")}</option>
+					<option value="3"{if $listdata.state eq 3} selected{/if}>{trans("online")}</option>
+				</select><nobr>&nbsp;
+				<nobr>{trans("Network:")}
+				<select size="1" name="n" onchange="document.choosefilter.submit();" {if $listdata.network} class="active"{/if}>
+					<option value="0" {if !$listdata.network} selected {/if}>{trans("- all networks -")}</option>
 					{section name=networks loop=$networks}
-					<OPTION value="{$networks[networks].id}" {if $listdata.network eq $networks[networks].id} SELECTED {/if}>{$networks[networks].name|truncate:30:"...":true}</OPTION>
+					<option value="{$networks[networks].id}" {if $listdata.network eq $networks[networks].id} selected {/if}>{$networks[networks].name|truncate:30:"...":true}</option>
 					{/section}
-				</SELECT></NOBR>&nbsp;
-				<NOBR>{trans("Group:")}
-				<SELECT SIZE="1" NAME="ng" ONCHANGE="document.choosefilter.submit();" {if $listdata.nodegroup} class="active"{/if}>
-					<OPTION value="" {if !$listdata.nodegroup} SELECTED {/if}>{trans("- all groups -")}</OPTION>
+				</select><nobr>&nbsp;
+				<nobr>{trans("Group:")}
+				<select size="1" name="ng" onchange="document.choosefilter.submit();" {if $listdata.nodegroup} class="active"{/if}>
+					<option value="" {if !$listdata.nodegroup} selected {/if}>{trans("- all groups -")}</option>
 					{foreach from=$nodegroups item=nodegroup}
-					<OPTION value="{$nodegroup.id}" {if $listdata.nodegroup eq $nodegroup.id} SELECTED {/if}>{$nodegroup.name|truncate:30:"...":true}</OPTION>
+					<option value="{$nodegroup.id}" {if $listdata.nodegroup eq $nodegroup.id} selected {/if}>{$nodegroup.name|truncate:30:"...":true}</option>
 					{/foreach}
-				</SELECT></NOBR>&nbsp;
-				<NOBR>{trans("Customers Group:")}
-				<SELECT SIZE="1" NAME="g" ONCHANGE="document.choosefilter.submit();"  {if $listdata.customergroup} class="active"{/if}>
-					<OPTION value="" {if !$listdata.customergroup} SELECTED {/if}>{trans("- all groups -")}</OPTION>
+				</select><nobr>&nbsp;
+				<nobr>{trans("Customers Group:")}
+				<select size="1" name="g" onchange="document.choosefilter.submit();"  {if $listdata.customergroup} class="active"{/if}>
+					<option value="" {if !$listdata.customergroup} selected {/if}>{trans("- all groups -")}</option>
 					{section name=customergroups loop=$customergroups}
-					<OPTION value="{$customergroups[customergroups].id}" {if $listdata.customergroup eq $customergroups[customergroups].id} SELECTED {/if}>{$customergroups[customergroups].name|truncate:30:"...":true}</OPTION>
+					<option value="{$customergroups[customergroups].id}" {if $listdata.customergroup eq $customergroups[customergroups].id} selected {/if}>{$customergroups[customergroups].name|truncate:30:"...":true}</option>
 					{/section}
-				</SELECT></NOBR>
-			</FORM>
-		</TD>
-	</TR>
+				</select><nobr>
+			</form>
+		</td>
+	</tr>
 	{if $listdata.total != 0}
-	<TR CLASS="scroller">
-		<TD CLASS="fall" colspan="5">
+	<tr class="scroller">
+		<td class="fall" colspan="6">
 			{include file="scroller.html" loop=$nodelist}
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{/if}
-	<TR class="dark" {tip text="Click on column name to change sorting order"}>
-		<TD class="fleftu" width="96%">
-			<img src="img/node.gif" ALT=""> <A href="?m=nodelist&o=name{if $listdata.direction eq "asc" && $listdata.order eq "name"},desc{/if}"><B>{trans("Name:")}</B></A>{if $listdata.order eq "name"} <IMG SRC="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<BR>
-			<img src="img/customer.gif" ALT=""> <A href="?m=nodelist&o=owner{if $listdata.direction eq "asc" && $listdata.order eq "owner"},desc{/if}">{trans("Customer:")}</A>{if $listdata.order eq "owner"} <IMG SRC="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
-		</TD>
-		<td class="fbt" align="left" style="padding-left:10px;padding-right:10px;">
+	<tr class="dark warning" {tip text="Click on column name to change sorting order"}>
+		<td class="fleftu" width="95%">
+			<img src="img/node.gif" alt=""> <a href="?m=nodelist&o=name{if $listdata.direction eq "asc" && $listdata.order eq "name"},desc{/if}"><b>{trans("Name:")}</b></a>{if $listdata.order eq "name"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
+			<img src="img/customer.gif" alt=""> <a href="?m=nodelist&o=owner{if $listdata.direction eq "asc" && $listdata.order eq "owner"},desc{/if}">{trans("Customer:")}</a>{if $listdata.order eq "owner"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="fbt pad10" align="left"  width="1%" nowrap>
 		    <b>Podłączony do:</b>
 		</td>
-		<TD Class="fbt" align="right" valign="top" width="1%" nowrap>
-			<img src="img/empty.gif" ALT="" width="1" height="16"><A href="?m=nodelist&o=id{if $listdata.direction eq "asc" && $listdata.order eq "id"},desc{/if}">{trans("Node ID:")}</A>{if $listdata.order eq "id"} <IMG SRC="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<BR>
-			<img src="img/empty.gif" ALT="" width="1" height="16"><A href="?m=nodelist&o=ownerid{if $listdata.direction eq "asc" && $listdata.order eq "ownerid"},desc{/if}">{trans("Customer ID:")}</A>{if $listdata.order eq "ownerid"} <IMG SRC="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
-		</TD>
-		<TD CLASS="fbt" width="1%" nowrap>
-			<img src="img/ip.gif" ALT="">&nbsp;<A href="?m=nodelist&o=ip{if $listdata.direction eq "asc" && $listdata.order eq "ip"},desc{/if}">{trans("IP address:")}</A>{if $listdata.order eq "ip"} <IMG SRC="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<A href="?m=nodelist&o=ip_pub{if $listdata.direction eq "asc" && $listdata.order eq "ip_pub"},desc{/if}">({trans("Pub. IP address:")})</A> {if $listdata.order eq "ip_pub"}<IMG SRC="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<BR>
-			<img src="img/mac.gif" ALT="">&nbsp;<A href="?m=nodelist&o=mac{if $listdata.direction eq "asc" && $listdata.order eq "mac"},desc{/if}">{trans("MAC address:")}</A>{if $listdata.order eq "mac"} <IMG SRC="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
-		</TD>
-		<TD CLASS="frightu" width="1%" align="right">
-			<NOBR><B>{t a=$listdata.total}Total: $a{/t}</B></NOBR>
-		</TD>
-	</TR>
+		<td class="fbt pad10" width="1%" nowrap align="left">
+		    <b>Medium</b><br>
+		    <b>Technologia (prędkość)</b>
+		</td>
+		<td Class="fbt" align="right" valign="top" width="1%" nowrap>
+			<img src="img/empty.gif" alt="" width="1" height="16"><a href="?m=nodelist&o=id{if $listdata.direction eq "asc" && $listdata.order eq "id"},desc{/if}">{trans("Node ID:")}</a>{if $listdata.order eq "id"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
+			<img src="img/empty.gif" alt="" width="1" height="16"><a href="?m=nodelist&o=ownerid{if $listdata.direction eq "asc" && $listdata.order eq "ownerid"},desc{/if}">{trans("Customer ID:")}</a>{if $listdata.order eq "ownerid"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="fbt" width="1%" nowrap>
+			<img src="img/ip.gif" alt="">&nbsp;<a href="?m=nodelist&o=ip{if $listdata.direction eq "asc" && $listdata.order eq "ip"},desc{/if}">{trans("IP address:")}</a>{if $listdata.order eq "ip"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<a href="?m=nodelist&o=ip_pub{if $listdata.direction eq "asc" && $listdata.order eq "ip_pub"},desc{/if}">({trans("Pub. IP address:")})</a> {if $listdata.order eq "ip_pub"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
+			<img src="img/mac.gif" alt="">&nbsp;<a href="?m=nodelist&o=mac{if $listdata.direction eq "asc" && $listdata.order eq "mac"},desc{/if}">{trans("MAC address:")}</a>{if $listdata.order eq "mac"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="frightu" width="1%" align="right">
+			<nobr><b>{t a=$listdata.total}Total: $a{/t}</b><nobr>
+		</td>
+	</tr>
 	{cycle values="light,lucid" print=false}
 	{section name=nodelist loop=$nodelist start=$start max=$pagelimit}
-	<TR class="{cycle}{if ! $nodelist[nodelist].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<TD width="95%" class="fleft" onClick="return self.location.href='?m=nodeinfo&id={$nodelist[nodelist].id}';">
+	{assign var='idek' value=$nodelist[nodelist].id}
+	<tr id="idtr{$idek}" class="{cycle} lista{if ! $nodelist[nodelist].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td width="95%" class="fleft" onclick="return self.location.href='?m=nodeinfo&id={$nodelist[nodelist].id}';">
 			<a name="{$nodelist[nodelist].id}">
 			{if $nodelist[nodelist].lastonline}
 			    {if ($smarty.now-$nodelist[nodelist].lastonline) > $lastonline_limit}
-				<img src="img/node_off.gif" ALT="">
+				<img src="img/node_off.gif" alt="">
 			    {else}
-				<img src="img/node_on.gif" ALT="">
+				<img src="img/node_on.gif" alt="">
 			    {/if}
 			{else}
-			    <img src="img/node_unk.gif" ALT="">
+			    <img src="img/node_unk.gif" alt="">
 			{/if}
 			{if $nodelist[nodelist].info}
-			    <IMG src="img/info1.gif" alt="" {tip text=$nodelist[nodelist].info}>
+			    <img src="img/info1.gif" alt="" {tip text=$nodelist[nodelist].info}>
 			{/if}
-			<B>{$nodelist[nodelist].name}</B></A><BR>
-			<img src="img/customer.gif" ALT="">&nbsp;
+			<b>{$nodelist[nodelist].name}</b></a><br>
+			<img src="img/customer.gif" alt="">&nbsp;
 			{if check_modules(40)}
-			<A href="?m=customerinfo&id={$nodelist[nodelist].ownerid}" {tip a=$nodelist[nodelist].ownerid dynpopup='?m=customerinfoshort&id=$a'}>{if ! $nodelist[nodelist].access}<font class="blend">{/if}{$nodelist[nodelist].owner|truncate:40:"...":true|replace:" ":"&nbsp;"}{if ! $nodelist[nodelist].access}</FONT>{/if}</A>
+			<a href="?m=customerinfo&id={$nodelist[nodelist].ownerid}" {tip a=$nodelist[nodelist].ownerid dynpopup='?m=customerinfoshort&id=$a'} id="idtra{$idek}">{if ! $nodelist[nodelist].access}<font class="blend">{/if}{$nodelist[nodelist].owner|truncate:40:"...":true|replace:" ":"&nbsp;"}{if ! $nodelist[nodelist].access}</font>{/if}</a>
 			{else}
-			{if ! $nodelist[nodelist].access}<font class="blend">{/if}{$nodelist[nodelist].owner|truncate:40:"...":true|replace:" ":"&nbsp;"}{if ! $nodelist[nodelist].access}</FONT>{/if}
+			{if ! $nodelist[nodelist].access}<font class="blend">{/if}{$nodelist[nodelist].owner|truncate:40:"...":true|replace:" ":"&nbsp;"}{if ! $nodelist[nodelist].access}</font>{/if}
 			{/if}
-		</TD>
-		<td align="left" width="1%" nowrap>
+		</td>
+		<td align="left" width="1%" nowrap class="pad10">
 		    {if $nodelist[nodelist].netdev}
 			<a href="?m=netdevinfo&id={$nodelist[nodelist].netdev}" {tip a={$nodelist[nodelist].netdev} dynpopup='?m=netdevinfoshort&id=$a' sticky=0}>{$nodelist[nodelist].devname}</a>{if $nodelist[nodelist].devlocation}<br>{$nodelist[nodelist].devlocation}{/if}
 		    {/if}
 		</td>
-		<TD align="right" width="1%" onClick="return self.location.href='?m=nodeinfo&id={$nodelist[nodelist].id}';" valign="top">
-			<img src="img/empty.gif" ALT="" width="1" height="16">({$nodelist[nodelist].id|string_format:"%04d"})<BR>
-			<img src="img/empty.gif" ALT="" width="1" height="16"><font class="blend">({$nodelist[nodelist].ownerid|string_format:"%04d"})</font>
-		</TD>
-		<TD width="1%" valign="top" nowrap>
-			<img src="img/ip.gif" ALT="">&nbsp;<a href="javascript:ping_popup('{$nodelist[nodelist].ip}')">{$nodelist[nodelist].ip}</a> {if $nodelist[nodelist].ip_pub != "0.0.0.0"}<a href="javascript:ping_popup('{$nodelist[nodelist].ip_pub}')">({$nodelist[nodelist].ip_pub})</a> {/if}<BR>
-			<nobr><img src="img/mac.gif" ALT="">&nbsp;{$nodelist[nodelist].mac|replace:",":"</nobr><BR><nobr><img src=\"img/mac.gif\" ALT=\"\">&nbsp;"}</nobr>
-		</TD>
-		<TD class="fright" width="1%" align="right">
+		<td align="left" width="1%" nowrap class="pad10">
+		    {if $nodelist[nodelist].netdev}
+			    {$_LINKTYPES[$nodelist[nodelist].linktype]}<br>
+			    {if $nodelist[nodelist].linktechnology}{$_LINKTECHNOLOGIES[$nodelist[nodelist].linktype][$nodelist[nodelist].linktechnology]}{else}<span style="color:red;">nie wybrano technologii</span>{/if}  ({$_LINKSPEEDS[$nodelist[nodelist].linkspeed]})
+		    {/if}
+		</td>
+		<td align="right" width="1%" onclick="return self.location.href='?m=nodeinfo&id={$nodelist[nodelist].id}';" valign="top">
+			<img src="img/empty.gif" alt="" width="1" height="16">({$nodelist[nodelist].id|string_format:"%04d"})<br>
+			<img src="img/empty.gif" alt="" width="1" height="16"><font class="blend">({$nodelist[nodelist].ownerid|string_format:"%04d"})</font>
+		</td>
+		<td width="1%" valign="top" nowrap>
+			<img src="img/ip.gif" alt="">&nbsp;<a href="javascript:ping_popup('{$nodelist[nodelist].ip}')">{$nodelist[nodelist].ip}</a> {if $nodelist[nodelist].ip_pub != "0.0.0.0"}<a href="javascript:ping_popup('{$nodelist[nodelist].ip_pub}')">({$nodelist[nodelist].ip_pub})</a> {/if}<br>
+			<nobr><img src="img/mac.gif" alt="">&nbsp;{$nodelist[nodelist].mac|replace:",":"</nobr><br><nobr><img src=\"img/mac.gif\" alt=\"\">&nbsp;"}</nobr>
+		</td>
+		<td class="fright" width="1%" align="right">
 			<nobr>
 			{if $nodelist[nodelist].monitoring}
 			<img src="img/radar.png" style="cursor:pointer;" {tip text="Kliknij aby otworzyć szczegółowe statystyki"} onclick="monitchart_popup('{$nodelist[nodelist].id}','node');">
 			{/if}
 			{if get_conf('monit.live_ping')}<img src="img/ping.gif" {tip text="Pinguj urzadzenie"} style="cursor:pointer;" onclick="window.open('?m=nodeping&packetsize=64&ip={$nodelist[nodelist].ip}','pingnode{$nodelist[nodelist].ip}','width=400,height=450')">{/if}
-			<a href="?m=nodeset&id={$nodelist[nodelist].id}"><img src="img/{if ! $nodelist[nodelist].access}no{/if}access.gif" alt="[ {if ! $nodelist[nodelist].access}{trans("Connect")}{else}{trans("Disconnect")}{/if} ]" title="[ {if ! $nodelist[nodelist].access}{trans("Connect")}{else}{trans("Disconnect")}{/if} ]"></A>
-                        <a href="?m=nodewarn&id={$nodelist[nodelist].id}"><img src="img/warning{if ! $nodelist[nodelist].warning}off{else}on{/if}.gif" alt="[ {if ! $nodelist[nodelist].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]" title="[ {if ! $nodelist[nodelist].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]"></A>
-			<a onClick="return confirmLink(this, '{t a=$nodelist[nodelist].name}Are you sure, you want to remove node \'$a\' from database?{/t}')" href="?m=nodedel&id={$nodelist[nodelist].id}"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></A>
-			<a href="?m=nodeedit&id={$nodelist[nodelist].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></A>
-			<a href="?m=nodeinfo&id={$nodelist[nodelist].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></A>
+			<img id="src_access{$idek}" onclick="xajax_setnodeaccess({$idek});" src="img/{if !$nodelist[nodelist].access}no{/if}access.gif" alt="[ {if ! $nodelist[nodelist].access}{trans("Connect")}{else}{trans("Disconnect")}{/if} ]" title="[ {if ! $nodelist[nodelist].access}{trans("Connect")}{else}{trans("Disconnect")}{/if} ]" style="border:0;cursor:pointer;">
+			<img id="src_warning{$idek}" onclick="xajax_setnodewarning({$idek});" src="img/warning{if !$nodelist[nodelist].warning}off{else}on{/if}.gif" alt="[ {if ! $nodelist[nodelist].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]" title="[ {if ! $nodelist[nodelist].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]" style="border:0;cursor:pointer;"> 
+			<a onclick="return confirmLink(this, '{t a=$nodelist[nodelist].name}Are you sure, you want to remove node \'$a\' from database?{/t}')" href="?m=nodedel&id={$nodelist[nodelist].id}"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
+			<a href="?m=nodeedit&id={$nodelist[nodelist].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
+			<a href="?m=nodeinfo&id={$nodelist[nodelist].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></a>
 			</nobr>
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{if $nodelist[nodelist.index_next].ownerid eq $nodelist[nodelist].ownerid && $listdata.order eq "owner"}{cycle print=false}{/if}
 	{sectionelse}
-	<TR>
-		<TD colspan="5" class="fall" align="center">
+	<tr class="error">
+		<td colspan="6" class="fall" align="center">
 			<p>&nbsp;</p>
-			<p><B>{trans("No such nodes in database.")}</b></p>
+			<p><b>{trans("No such nodes in database.")}</b></p>
 			<p>&nbsp;</p>
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{/section}
 	{if $listdata.total != 0}
-	<TR CLASS="scroller">
-		<TD CLASS="fall" colspan="5">
+	<tr class="scroller">
+		<td class="fall" colspan="6">
 			{include file="scroller.html" loop=$nodelist}
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{/if}
-	<TR CLASS="light">
-		<TD WIDTH="98%" COLSPAN="4" CLASS="fleftu" ALIGN="right">
-			<B>
-				{trans("Total:")}<BR>
-				{trans("Connected<!nodes>:")}<BR>
+	<tr class="light success">
+		<td width="98%" colspan="5" class="fleftu" align="right">
+			<b>
+				{trans("Total:")}<br>
+				{trans("Connected<!nodes>:")}<br>
 				{trans("Disconnected:")}
-			</B>
-		</TD>
-		<TD WIDTH="2%" COLSPAN="1" CLASS="frightu" VALIGN="TOP">
-			<B>
-				{if $listdata.total}{$listdata.total}{else}0{/if}<BR>
-				{if $listdata.totalon}{$listdata.totalon}{else}0{/if}<BR>
+			</b>
+		</td>
+		<td width="2%" colspan="1" class="frightu" valign="top">
+			<b>
+				{if $listdata.total}{$listdata.total}{else}0{/if}<br>
+				{if $listdata.totalon}{$listdata.totalon}{else}0{/if}<br>
 				{if $listdata.totaloff}{$listdata.totaloff}{else}0{/if}
-			</B>
-		</TD>				
-	</TR>			
-</TABLE>
+			</b>
+		</td>
+	</tr>
+</table>
+
+{include file="load_gif.html"}
 {include file="footer.html"}

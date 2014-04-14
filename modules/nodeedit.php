@@ -32,29 +32,43 @@ if (!$LMS->NodeExists($_GET['id']))
 	else
 		header('Location: ?m=nodelist');
 
+$nodeid = intval($_GET['id']);
+$customerid = $LMS->GetNodeOwner($nodeid);
+
 switch ($action) {
+
 	case 'link':
 		if (empty($_GET['devid']) || !($netdev = $LMS->GetNetDev($_GET['devid']))) {
-			$SESSION->redirect('?m=nodeinfo&id=' . $_GET['id']);
+			$SESSION->redirect('?m=nodeinfo&id=' . $nodeid);
 		} else if ($netdev['ports'] > $netdev['takenports']) {
-			$LMS->NetDevLinkNode($_GET['id'], $_GET['devid'], isset($_GET['linktype']) ? intval($_GET['linktype']) : 0, isset($_GET['linkspeed']) ? intval($_GET['linkspeed']) : 100000, intval($_GET['port']));
-			$SESSION->redirect('?m=nodeinfo&id=' . $_GET['id']);
+			
+			$LMS->NetDevLinkNode($nodeid, $_GET['devid'],
+				isset($_GET['linktype']) ? intval($_GET['linktype']) : 0,
+				isset($_GET['linkspeed']) ? intval($_GET['linkspeed']) : 100000,
+				intval($_GET['port']),
+				isset($_GET['linktechnology']) ? intval($_GET['linktechnology']) : 0
+				);
+			
+			$SESSION->redirect('?m=nodeinfo&id=' . $nodeid);
 		} else {
-			$SESSION->redirect('?m=nodeinfo&id=' . $_GET['id'] . '&devid=' . $_GET['devid']);
+			$SESSION->redirect('?m=nodeinfo&id=' . $nodeid . '&devid=' . $_GET['devid']);
 		}
-		break;
+	break;
+
 	case 'chkmac':
 		$DB->Execute('UPDATE nodes SET chkmac=? WHERE id=?', array($_GET['chkmac'], $_GET['id']));
 		$SESSION->redirect('?m=nodeinfo&id=' . $_GET['id']);
-		break;
+	break;
+
 	case 'duplex':
 		$DB->Execute('UPDATE nodes SET halfduplex=? WHERE id=?', array($_GET['duplex'], $_GET['id']));
 		$SESSION->redirect('?m=nodeinfo&id=' . $_GET['id']);
-		break;
+	break;
+
 	case 'monit':
 		$LMS -> SetMonit($_GET['id'],$_GET['monit']);
 		$SESSION->redirect('?m=nodeinfo&id=' . $_GET['id']);
-		break;
+	break;
 }
 
 $nodeid = intval($_GET['id']);
@@ -75,9 +89,11 @@ $layout['pagetitle'] = trans('Node Edit: $a', $nodeinfo['name']);
 
 if (isset($_POST['nodeedit'])) {
 	$nodeedit = $_POST['nodeedit'];
-
+	
+	$nodeedit['netid'] = $_POST['nodeeditnetid'];
 	$nodeedit['ipaddr'] = $_POST['nodeeditipaddr'];
 	$nodeedit['ipaddr_pub'] = $_POST['nodeeditipaddrpub'];
+	
 	foreach ($nodeedit['macs'] as $key => $value)
 		$nodeedit['macs'][$key] = str_replace('-', ':', $value);
 
@@ -90,10 +106,16 @@ if (isset($_POST['nodeedit'])) {
 	}
 
 	if (check_ip($nodeedit['ipaddr'])) {
+		
 		if ($LMS->IsIPValid($nodeedit['ipaddr'])) {
+			if (empty($nodeedit['netid']))
+				$nodeedit['netid'] = $DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id LIMIT 1',
+					array($nodeedit['ipaddr']));
 			$ip = $LMS->GetNodeIPByID($nodeedit['id']);
-			if ($ip != $nodeedit['ipaddr'] && !$LMS->IsIPFree($nodeedit['ipaddr']))
+			
+			if ($ip != $nodeedit['ipaddr'] && !$LMS->IsIPFree($nodeedit['ipaddr'],$nodeedit['netid']))
 				$error['ipaddr'] = trans('Specified IP address is in use!');
+			
 			elseif ($ip != $nodeedit['ipaddr'] && $LMS->IsIPGateway($nodeedit['ipaddr']))
 				$error['ipaddr'] = trans('Specified IP address is network gateway!');
 		}
@@ -105,6 +127,7 @@ if (isset($_POST['nodeedit'])) {
 
 	if ($nodeedit['ipaddr_pub'] != '0.0.0.0' && $nodeedit['ipaddr_pub'] != '') {
 		if (check_ip($nodeedit['ipaddr_pub'])) {
+			
 			if ($LMS->IsIPValid($nodeedit['ipaddr_pub'])) {
 				$ip = $LMS->GetNodePubIPByID($nodeedit['id']);
 				if ($ip != $nodeedit['ipaddr_pub'] && !$LMS->IsIPFree($nodeedit['ipaddr_pub']))
@@ -158,6 +181,35 @@ if (isset($_POST['nodeedit'])) {
 		$nodeedit['halfduplex'] = 0;
 	if (!isset($nodeedit['netdev']))
 		$nodeedit['netdev'] = 0;
+	
+	if($nodeedit['access_from'] == '')
+		$access_from = 0;
+	elseif(preg_match('/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/',$nodeedit['access_from']))
+	{
+		list($y, $m, $d) = explode('/', $nodeedit['access_from']);
+		if(checkdate($m, $d, $y))
+			$access_from = mktime(0, 0, 0, $m, $d, $y);
+		else
+			$error['access_from'] = trans('Incorrect charging time!');
+	}
+	else
+		$error['access_from'] = trans('Incorrect charging time!');
+
+	if($nodeedit['access_to'] == '')
+		$access_to = 0;
+	elseif(preg_match('/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/', $nodeedit['access_to']))
+	{
+		list($y, $m, $d) = explode('/', $nodeedit['access_to']);
+		if(checkdate($m, $d, $y))
+			$access_to = mktime(23, 59, 59, $m, $d, $y);
+		else
+			$error['access_to'] = trans('Incorrect charging time!');
+	}
+	else
+		$error['access_to'] = trans('Incorrect charging time!');
+
+	if($access_to < $access_from && $access_to != 0 && $access_from != 0)
+		$error['access_to'] = trans('Incorrect date range!');
 
 	if ($nodeinfo['netdev'] != $nodeedit['netdev'] && $nodeedit['netdev'] != 0) {
 		$ports = $DB->GetOne('SELECT ports FROM netdevices WHERE id = ?', array($nodeedit['netdev']));
@@ -182,6 +234,14 @@ if (isset($_POST['nodeedit'])) {
 			}
 		}
 	}
+	
+	
+	if (get_conf('netdevices.force_connection') && !$nodeedit['netdev']) {
+	    $error['netdev'] = 'Proszę skonfigurować połączenie z interfejsem sieciowym';
+	}
+	
+	if ((!empty($nodeedit['netdev']) && empty($nodeedit['linktechnology'])) || (get_conf('netdevices.force_connection') && empty($nodeedit['linktechnology'])))
+	    $error['linktechnology'] = 'Proszę wybrać technologię łącza';
 
 	if (!$nodeedit['ownerid'])
 		$error['ownerid'] = trans('Customer not selected!');
@@ -197,6 +257,8 @@ if (isset($_POST['nodeedit'])) {
 		}
 
 		$nodeedit = $LMS->ExecHook('node_edit_before', $nodeedit);
+		$nodeedit['access_from'] = $access_from;
+		$nodeedit['access_to'] = $access_to;
 
 		$LMS->NodeUpdate($nodeedit, ($customerid != $nodeedit['ownerid']));
 
@@ -225,6 +287,18 @@ if (isset($_POST['nodeedit'])) {
 	$nodeinfo['stateid'] = $nodeedit['stateid'];
 	$nodeinfo['latitude'] = $nodeedit['latitude'];
 	$nodeinfo['longitude'] = $nodeedit['longitude'];
+	$nodeinfo['netid'] = $nodeedit['netid'];
+	$nodeinfo['typeofdevices'] = $nodeedit['typeofdevice'];
+	$nodeinfo['producer'] = $nodeedit['producer'];
+	$nodeinfo['model'] = $nodeedit['model'];
+	$nodeinfo['sn'] = $nodeedit['sn'];
+	$nodeinfo['access_from'] = $nodeedit['access_from'];
+	$nodeinfo['access_to'] = $nodeedit['access_to'];
+	$nodeinfo['netdev'] = $nodeedit['netdev'];
+	$nodeinfo['linktype'] = $nodeedit['linktype'];
+	$nodeinfo['linktechnology'] = $nodeedit['linktechnology'];
+	$nodeinfo['linkspeed'] = $nodeedit['linkspeed'];
+	
 
 	if ($nodeedit['ipaddr_pub'] == '0.0.0.0')
 		$nodeinfo['ipaddr_pub'] = '';
@@ -251,9 +325,12 @@ include(MODULES_DIR . '/nodexajax.inc.php');
 
 $SMARTY->assign('xajax', $LMS->RunXajax());
 
+$SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
 $SMARTY->assign('netdevices', $LMS->GetNetDevNames());
+$SMARTY->assign('networks', $LMS->GetNetworks(false));
 $SMARTY->assign('nodegroups', $LMS->GetNodeGroupNamesByNode($nodeid));
 $SMARTY->assign('othernodegroups', $LMS->GetNodeGroupNamesWithoutNode($nodeid));
+$SMARTY->assign('hostlist',$DB->GetAll('SELECT id,name FROM hosts ORDER BY name'));
 $SMARTY->assign('error', $error);
 $SMARTY->assign('nodeinfo', $nodeinfo);
 $SMARTY->display('nodeedit.html');

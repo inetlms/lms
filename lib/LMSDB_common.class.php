@@ -30,7 +30,7 @@
 
 class LMSDB_common
 {
-	var $_version = 'iNET 1.0.0';
+	var $_version = 'iNET 14.04.04';
 	var $_revision = '$Revision$';
 
 	// Driver powinien nadpisać tą zmienną wartością TRUE, żeby
@@ -280,6 +280,11 @@ class LMSDB_common
 	function Day($data)
 	{
 	    return $this->_driver_day($data);
+	}
+	
+	function unix_timestamp($data)
+	{
+	    return $this->_driver_unix_timestamp($data);
 	}
 
 	function _query_parser($query, $inputarray = NULL)

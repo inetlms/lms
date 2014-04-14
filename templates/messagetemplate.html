@@ -98,13 +98,13 @@
     {section name="messlist" loop=$messlist}
 	
 	
-	<tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	<tr class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 	    <td width="10%" align="left" class="fleft">{$messlist[messlist].name}</td>
 	    <td width="10%" align="left">{$messlist[messlist].theme}</td>
 	    <td width="auto" align="left">{$messlist[messlist].message|nl2br}</td>
 	    <td width="1%"  class="fright" nowrap>
-		<img src="img/edit.gif" title="[ EDYCJA ]" style="cursor:pointer" border="0" onClick="edytujtemplate('{$messlist[messlist].id}');">
-		<img src="img/delete.gif" title="[ KASUJ ]" style="cursor:pointer;" border="0" onClick="kasujtemplate('{$messlist[messlist].id}');">
+		<img src="img/edit.gif" title="[ EDYCJA ]" style="cursor:pointer" border="0" onclick="edytujtemplate('{$messlist[messlist].id}');">
+		<img src="img/delete.gif" title="[ KASUJ ]" style="cursor:pointer;" border="0" onclick="kasujtemplate('{$messlist[messlist].id}');">
 	    </td>
 	</tr>
     {sectionelse}

@@ -1,11 +1,11 @@
 {include file="hv_js.html"}
-<table width="100%" cellpadding="3">
-    <tr class="dark hand">
+<table width="100%" cellpadding="3"  class="table table-bordered">
+    <tr class="dark hand info-hover">
 	<td width="99%" class="fleftu hand" onclick="ShowOrHideBox('voipaccounthiperusbox');">
-	    <img src="img/voip.gif" alt=""><B>Konta VoIP Hiperus C5 ({$hiperusaccountcustomerlist|@count})</B> 
+	    <img src="img/voip.gif" alt=""><b>Konta VoIP Hiperus C5 ({$hiperusaccountcustomerlist|@count})</b> 
 	</td>
 	<td width="1%" class="frightu" align="right" nowrap>
-		{if $customerinfo.status neq "1" and ! $customerinfo.deleted}<A HREF="?m=hv_accountadd&cusid={$customerinfo.id}">Dodaj nowe konto VoIP &raquo;</A>&nbsp;{/if}
+		{if $customerinfo.status neq "1" and ! $customerinfo.deleted}<a href="?m=hv_accountadd&cusid={$customerinfo.id}">Dodaj nowe konto VoIP &raquo;</a>&nbsp;{/if}
 	</td>
     </tr>
     <tr id="voipaccounthiperusbox" style="display:none;">
@@ -22,7 +22,7 @@
 
 		{cycle values="light,lucid" print=false}
 		{section name=hiperusaccountcustomerlist loop=$hiperusaccountcustomerlist}
-		<tr class="{cycle}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+		<tr class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		    <td class="fleft" style="padding-right:10px;cursor:pointer;" nowrap onclick="return self.location.href='?m=hv_accountinfo&id={$hiperusaccountcustomerlist[hiperusaccountcustomerlist].id}'"><b>{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].name}</b><br>{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].address} {$hiperusaccountcustomerlist[hiperusaccountcustomerlist].street_number}{if $hiperusaccountcustomerlist[hiperusaccountcustomerlist].apartment_number}/{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].apartment_number}{/if}&nbsp;&nbsp;{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].postcode} {$hiperusaccountcustomerlist[hiperusaccountcustomerlist].city}</td>
 		    <td width="1%" align="center" nowrap onclick="return self.location.href='?m=hv_accountinfo&id={$hiperusaccountcustomerlist[hiperusaccountcustomerlist].id}'" style="cursor:pointer;">{if $hiperusaccountcustomerlist[hiperusaccountcustomerlist].invoice=='0'}&nbsp;{elseif $hiperusaccountcustomerlist[hiperusaccountcustomerlist].invoice=='1'}&nbsp;Hiperus&nbsp;{elseif $hiperusaccountcustomerlist[hiperusaccountcustomerlist].invoice=='2'}&nbsp;LMS&nbsp;{/if}</td>
 		    <td width="1%" align="center" nowrap onclick="return self.location.href='?m=hv_accountinfo&id={$hiperusaccountcustomerlist[hiperusaccountcustomerlist].id}'" style="cursor:pointer;">{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].pstncount}&nbsp;/&nbsp;{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].terminalcount}</td>

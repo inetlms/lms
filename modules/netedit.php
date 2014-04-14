@@ -1,7 +1,7 @@
 <?php
 
 /*
- * LMS version 1.11-git
+ *  iNET LMS
  *
  *  (C) Copyright 2001-2012 LMS Developers
  *
@@ -47,6 +47,8 @@ $network = $LMS->GetNetworkRecord($_GET['id'], $page, $CONFIG['phpui']['networkh
 if(isset($_POST['networkdata']))
 {
 	$networkdata = $_POST['networkdata'];
+	
+	$error = array();
 
 	foreach($networkdata as $key => $value)
 		$networkdata[$key] = trim($value);
@@ -55,6 +57,10 @@ if(isset($_POST['networkdata']))
 	$networkdata['size'] = pow(2,32-$networkdata['prefix']);
 	$networkdata['addresslong'] = ip_long($networkdata['address']);
 	$networkdata['mask'] = prefix2mask($networkdata['prefix']);
+	
+	if (get_conf('netdevices.force_network_to_host') && empty($networkdata['hostid'])) {
+		$error['hostid'] = 'Proszę wybrać host';
+	}
 	
 	if(!check_ip($networkdata['address']))
 		$error['address'] = trans('Incorrect network IP address!');
@@ -67,7 +73,7 @@ if(isset($_POST['networkdata']))
 		}
 		else
 		{
-			if($LMS->NetworkOverlaps($networkdata['address'],prefix2mask($networkdata['prefix']),$networkdata['id']))
+			if($LMS->NetworkOverlaps($networkdata['address'],prefix2mask($networkdata['prefix']), $networkdata['hostid'], $networkdata['id']))
 				$error['address'] = trans('Specified IP address overlaps with other network!');
 			else
 			{
@@ -117,6 +123,8 @@ if(isset($_POST['networkdata']))
 
 	if($networkdata['dns']!='' && !check_ip($networkdata['dns']))
 		$error['dns'] = trans('Incorrect DNS server IP address!');
+	elseif (get_conf('netdevices.force_network_dns') && empty($networkdata['dns']))
+		$error['dns'] = 'Proszę podać adres serwera DNS';
 
 	if($networkdata['dns2']!='' && !check_ip($networkdata['dns2']))
 		$error['dns2'] = trans('Incorrect DNS server IP address!');
@@ -124,12 +132,14 @@ if(isset($_POST['networkdata']))
 	if($networkdata['wins']!='' && !check_ip($networkdata['wins']))
 		$error['wins'] =  trans('Incorrect WINS server IP address!');
 
-	if($networkdata['gateway']!='')
+	if($networkdata['gateway']!='') {
 		if(!check_ip($networkdata['gateway']))
 			$error['gateway'] = trans('Incorrect gateway IP address!');
 		else
 			if(!isipin($networkdata['gateway'],getnetaddr($networkdata['address'],prefix2mask($networkdata['prefix'])),prefix2mask($networkdata['prefix'])))
 				$error['gateway'] =  trans('Specified gateway address does not match with network address!');
+	} elseif (get_conf('netdevices.force_network_gateway') && empty($networkdata['gateway'])) 
+	    $error['gateway'] = 'Proszę podać adres bramki';
 
 	if($networkdata['dhcpstart']!='')
 		if(!check_ip($networkdata['dhcpstart']))
@@ -153,14 +163,15 @@ if(isset($_POST['networkdata']))
 			$error['dhcpend'] = trans('End of DHCP range has to be equal or greater than start!');
 	}
 	
-	if(!$error)
+
+	if(empty($error))
 	{
 	        if(isset($networkdata['needshft']) && $networkdata['needshft'])
 		        $LMS->NetworkShift($network['address'],$network['mask'],$networkdata['addresslong'] - $network['addresslong']);
 
 		$LMS->NetworkUpdate($networkdata);
 		$SESSION->redirect('?m=netinfo&id='.$networkdata['id']);
-	}	
+	}
 
 	$network['interface'] = $networkdata['interface'];
 	$network['prefix'] = $networkdata['prefix'];
@@ -174,6 +185,7 @@ if(isset($_POST['networkdata']))
 	$network['dns'] = $networkdata['dns'];
 	$network['dns2'] = $networkdata['dns2'];
 	$network['notes'] = $networkdata['notes'];
+	$network['hostid'] = $networkdata['hostid'];
 }
 
 $networks = $LMS->GetNetworks();
@@ -185,6 +197,7 @@ $SMARTY->assign('network',$network);
 $SMARTY->assign('networks',$networks);
 $SMARTY->assign('netlistsize',sizeof($networks));
 $SMARTY->assign('prefixlist', $LMS->GetPrefixList());
+$SMARTY->assign('hostlist', $LMS->DB->GetAll('SELECT id, name FROM hosts ORDER BY name'));
 $SMARTY->assign('error',$error);
 $SMARTY->display('netinfo.html');
 

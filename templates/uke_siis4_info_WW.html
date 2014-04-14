@@ -52,7 +52,7 @@
 	</tr>
 	{cycle values="light,lucid" print=false}
 	{section name='nnodelist' loop=$nnodelist}
-	    <tr class="{cycle}{if !$nnodelist[nnodelist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	    <tr class="{cycle} lista{if !$nnodelist[nnodelist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		<td width="1%" nowrap class="fleft pad10" align="left">{$nnodelist[nnodelist].markid}</td>
 		<td width="1%" nowrap class="pad10" align="left">{assign var='tmp' value=$nnodelist[nnodelist].type}{$_TNODE.$tmp}</td>
 		<td width="1%" nowrap class="pad10" align="left">{assign var='tmp' value=$nnodelist[nnodelist].buildingtype}{$_BUILDINGS.$tmp}</td>

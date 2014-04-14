@@ -100,6 +100,35 @@ function get_conf($name, $default = null)
 */
 
 $DEFAULTS = array(
+	'radius' => array(
+		'coa_port'		=> 3799,
+		'auth_login'		=> 'id',
+		'page_view'		=> 50,
+	),
+	'homepage' => array(
+		'box_lms'		=> 1,
+		'box_system'		=> 1,
+		'box_customer'		=> 1,
+		'box_nodes'		=> 1,
+		'box_helpdesk'		=> 1,
+		'box_links'		=> 1,
+		'box_totd'		=> 0,
+		'box_board'		=> 1,
+		'box_callcenter'	=> 1,
+	),
+	'netdevices'	=> array(
+//		'shift_port'	=> 0,
+//		'def_nameport'	=> 'eth',
+//		'def_pnameport'	=> 'port',
+//		'link_networknode' => 1,
+//		'link_tosame' => 1,
+//		'link_tosame_active' => 0,
+//		'delinfoservice' => 0,
+		'force_connection' => 1,
+		'force_network_to_host' => 0,
+		'force_network_gateway' => 1,
+		'force_network_dns'	=> 1,
+	),
 	'database' => array(
 		'type' => 'mysql',
 		'host' => 'localhost',
@@ -279,6 +308,7 @@ $DEFAULTS = array(
 
 	'monit' => array(
 		'active_monitoring'	=> 1,
+		'autocreate_chart'	=> 0,
 //		'lms_password'		=>'',				// hasło dla użytkownika,
 //		'lms_url'		=>'http://localhost/lms',		// domyślny adres URL LMS'a
 //		'lms_user'		=>'',				// nazwa użytkownika LMS,
@@ -286,7 +316,7 @@ $DEFAULTS = array(
 		'netdev_test'		=> 1,
 //		'netdev_test_port'	=> 80,
 		'netdev_test_type'	=> 'icmp',
-//		'netdev_time_max'	=> 100,
+		'netdev_time_max'	=> 100,
 //		'netdev_time_send'	=> 1,
 //		'netdev_timeout_level'	=> 'low',
 //		'netdev_timeout_send'	=> 1,

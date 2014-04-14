@@ -230,6 +230,7 @@ if(!isset($customeradd['address']) && isset($CONFIG['phpui']['default_address'])
 $layout['pagetitle'] = trans('New Customer');
 
 $SMARTY->assign('cstateslist', $LMS->GetCountryStates());
+$SMARTY->assign('originlist',$DB->GetAll('SELECT id, name FROM customerorigin ORDER BY name;'));
 $SMARTY->assign('countrieslist', $LMS->GetCountries());
 $SMARTY->assign('divisions', $DB->GetAll('SELECT id, shortname, status FROM divisions ORDER BY shortname'));
 $SMARTY->assign('customeradd', $customeradd);

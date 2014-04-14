@@ -143,20 +143,20 @@ elseif (isset($_POST['customerdata']))
 	{
 		if($customerdata['cutoffstop'])
 			$customerdata['cutoffstop'] = mktime(23,59,59,date('m'), date('d') + $customerdata['cutoffstop']);
-
+		
 		if(!isset($customerdata['consentdate']))
 			$customerdata['consentdate'] = 0;
 		else {
-    		$consent = $DB->GetOne('SELECT consentdate FROM customers WHERE id = ?', array($customerdata['id']));
-            if ($consent)
+		    $consent = $DB->GetOne('SELECT consentdate FROM customers WHERE id = ?', array($customerdata['id']));
+		    if ($consent)
 			    $customerdata['consentdate'] = $consent;
-        }
-
+		}
+		
 		if(!isset($customerdata['divisionid']))
 			$customerdata['divisionid'] = 0;
-
+		
 		$LMS->CustomerUpdate($customerdata);
-
+		
 		$DB->Execute('DELETE FROM imessengers WHERE customerid = ?', array($customerdata['id']));
 		if(isset($im))
 			foreach($im as $idx => $val)
@@ -216,6 +216,7 @@ $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 $customerid = $customerinfo['id'];
 include(MODULES_DIR.'/customer.inc.php');
 
+$SMARTY->assign('originlist',$DB->GetAll('SELECT id, name FROM customerorigin ORDER BY name;'));
 $SMARTY->assign('customerinfo',$customerinfo);
 $SMARTY->assign('cstateslist',$LMS->GetCountryStates());
 $SMARTY->assign('countrieslist',$LMS->GetCountries());

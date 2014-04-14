@@ -1,6 +1,6 @@
 <!--// $Id$ //-->
-<table width="100%" cellpadding="3">
-	<tr{if $customerpanel} class="dark hand" onclick="ShowOrHideBox('customerpanelbox');"{else} class="dark"{/if}>
+<table width="100%" cellpadding="3"  class="table table-bordered">
+	<tr{if $customerpanel} class="dark hand info-hover" onclick="ShowOrHideBox('customerpanelbox');"{else} class="dark info"{/if}>
 		<td width="1%" class="fall">
 			<img src="img/customer.gif" alt="">
 			{if $customerpanel}<b>{trans("Owner:")}</b>{/if}
@@ -19,10 +19,12 @@
 			{if $customerinfo.status eq "2"}<img src="img/wait.gif" alt="">{/if}
 			{if $customerinfo.status eq "1"}<img src="img/unk.gif" alt="">{/if}
 		</td>
-		<td width="99%">
+		<td width="99%" nowrap>
+			<span class="tiphelp" {tip text="Status klienta"}>
 			{if $customerinfo.status eq "3"}<b>{trans("connected<!singular>")}</b>{/if}
 			{if $customerinfo.status eq "2"}<b>{trans("waiting")}</b>{/if}
 			{if $customerinfo.status eq "1"}<b>{trans("interested<!singular>")}</b>{/if}
+			</span>
 		</td>
 	</tr>
 {if $customerinfo.division}
@@ -32,6 +34,15 @@
 		</td>
 		<td width="99%">
 			<a href="javascript:divisioninfo_popup('{$customerinfo.divisionid}');" {tip text="Pokaż szczegóły"}>{$customerinfo.division}</a>
+		</td>
+	</tr>
+{/if}
+{if $customerinfo.origin}
+	<tr class="light">
+		<td width="1%">
+			<img src="img/group.gif"> 
+		</td>
+		<td width="99%"><span class="tiphelp" {tip text="źródło pochodzenia klienta"}><b>{$customerinfo.originname}</b></span>
 		</td>
 	</tr>
 {/if}
@@ -49,11 +60,11 @@
 		</td>
 		<td width="99%">
 		    <fieldset style="width:50%">
-		    <legend><b> Adres siedziby, zameldowania, instalacji </b></legend>
+		    <legend><b> Adres siedziby, zameldowania</b></legend>
 			{$customerinfo.address}<br>
 			{$customerinfo.zip} {$customerinfo.city}
-			{if $customerinfo.cstate}<BR>{$customerinfo.cstate}{/if}
-			{if $customerinfo.country}<BR>{t}{$customerinfo.country}{/t}{/if}
+			{if $customerinfo.cstate}<br>{$customerinfo.cstate}{/if}
+			{if $customerinfo.country}<br>{t}{$customerinfo.country}{/t}{/if}
 		    </lieldset>
 		</td>
 	</tr>
@@ -66,10 +77,10 @@
 		    <fieldset style="width:50%">
 		    <legend><b> Odbiorca faktury </b></legend>
 			{if $customerinfo.invoice_name neq ""}{$customerinfo.invoice_name}{/if}
-			{if $customerinfo.invoice_address neq ""}<BR>{$customerinfo.invoice_address}{/if}
-			<BR>{$customerinfo.invoice_zip} {$customerinfo.invoice_city}
-			{if $customerinfo.invoice_cstate}<BR>{$customerinfo.invoice_cstate}{/if}
-			{if $customerinfo.invoice_country}<BR>{t}{$customerinfo.invoice_country}{/t}{/if}
+			{if $customerinfo.invoice_address neq ""}<br>{$customerinfo.invoice_address}{/if}
+			<br>{$customerinfo.invoice_zip} {$customerinfo.invoice_city}
+			{if $customerinfo.invoice_cstate}<br>{$customerinfo.invoice_cstate}{/if}
+			{if $customerinfo.invoice_country}<br>{t}{$customerinfo.invoice_country}{/t}{/if}
 			{if $customerinfo.invoice_ten}<br>{$customerinfo.invoice_ten}{/if}
 		    </fieldset>
 		</td>
@@ -85,10 +96,10 @@
 		    <fieldset style="width:50%">
 		    <legend><b> Adres do wysyłki</b></legend>
 			{if $customerinfo.post_name neq ""}{$customerinfo.post_name}{/if}
-			{if $customerinfo.post_address neq ""}<BR>{$customerinfo.post_address}{/if}
-			<BR>{$customerinfo.post_zip} {$customerinfo.post_city}
-			{if $customerinfo.post_cstate}<BR>{$customerinfo.post_cstate}{/if}
-			{if $customerinfo.post_country}<BR>{t}{$customerinfo.post_country}{/t}{/if}
+			{if $customerinfo.post_address neq ""}<br>{$customerinfo.post_address}{/if}
+			<br>{$customerinfo.post_zip} {$customerinfo.post_city}
+			{if $customerinfo.post_cstate}<br>{$customerinfo.post_cstate}{/if}
+			{if $customerinfo.post_country}<br>{t}{$customerinfo.post_country}{/t}{/if}
 		    </fieldset>
 		</td>
 	</tr>
@@ -99,7 +110,7 @@
 			<img src="img/phone.gif" alt="">
 		</td>
 		<td width="99%">
-			{$item.phone}
+			TEL.: {$item.phone|phone_format}
 			{if $item.typestr}[{$item.typestr}]{/if}
 			{if $item.name} ({$item.name|truncate:"40":"...":true}){/if}
 		</td>
@@ -147,7 +158,7 @@
 			<img src="img/pin.gif" alt="">
 		</td>
 		<td width="99%">
-			{$customerinfo.pin}
+			PIN : {$customerinfo.pin}
 		</td>
 	</tr>
 {/if}
@@ -196,7 +207,7 @@
 		<td width="1%">
 			<img src="img/serialnumber.gif" alt="">
 		</td>
-		<td width="99%" NOWRAP>
+		<td width="99%" nowrap>
 			{trans("RBE")}: {$customerinfo.rbe}
 		</td>
 	</tr>
@@ -206,7 +217,7 @@
 		<td width="1%">
 			<img src="img/card.gif" alt="">
 		</td>
-		<td width="99%" NOWRAP>
+		<td width="99%" nowrap>
 			{format_bankaccount($customerinfo.bankaccount)}
 		</td>
 	</tr>
@@ -296,11 +307,11 @@
 		<td width="1%">
 			<img src="img/info1.gif" alt="">
 		</td>
-		<td width="99%" COLSPAN="2">
+		<td width="99%" colspan="2">
 			<table width="100%" cellpadding="5">
 				<tr>
 					<td class="fall superlight">
-						{$customerinfo.info|replace:"\n":"<BR>"}
+						{$customerinfo.info|replace:"\n":"<br>"}
 					</td>
 				</tr>
 			</table>
@@ -312,11 +323,11 @@
 		<td width="1%">
 			<img src="img/warningon.gif" alt="">
 		</td>
-		<td width="99%" COLSPAN="2">
+		<td width="99%" colspan="2">
 			<table width="100%" cellpadding="5">
 				<tr>
 					<td class="fall superlight">
-						{$customerinfo.message|replace:"\n":"<BR>"}
+						{$customerinfo.message|replace:"\n":"<br>"}
 					</td>
 				</tr>
 			</table>
@@ -328,11 +339,11 @@
 		<td width="1%">
 			<img src="img/note.gif" alt="">
 		</td>
-		<td width="99%" COLSPAN="2">
+		<td width="99%" colspan="2">
 			<table width="100%" cellpadding="5">
 				<tr>
 					<td class="fall superlight">
-						{$customerinfo.notes|replace:"\n":"<BR>"}
+						{$customerinfo.notes|replace:"\n":"<br>"}
 					</td>
 				</tr>
 			</table>
@@ -359,12 +370,12 @@
                 <td width="1%">
 		        <img src="img/cms.gif" alt="">
 		</td>
-		<td width="1%" NOWRAP>
-			<b>{trans("Last login:")}<BR>
+		<td width="1%" nowrap>
+			<b>{trans("Last login:")}<br>
 		        {trans("Last failed login:")}</b>
 		</td>
 		<td width="98%">
-		        {if $customerinfo.up_logins.lastlogindate}{$customerinfo.up_logins.lastlogindate|date_format:"%Y/%m/%d %H:%M"} ({$customerinfo.up_logins.lastloginip}){else}-{/if}<BR>
+		        {if $customerinfo.up_logins.lastlogindate}{$customerinfo.up_logins.lastlogindate|date_format:"%Y/%m/%d %H:%M"} ({$customerinfo.up_logins.lastloginip}){else}-{/if}<br>
 			{if $customerinfo.up_logins.failedlogindate}{$customerinfo.up_logins.failedlogindate|date_format:"%Y/%m/%d %H:%M"} ({$customerinfo.up_logins.failedloginip}){else}-{/if}
 		</td>
 	</tr>
@@ -373,11 +384,11 @@
 			<img src="img/users.gif" alt="">
 		</td>
 		<td width="1%">
-			<b>{trans("Created:")}<BR>
+			<b>{trans("Created:")}<br>
 			{trans("Modified:")}</b>
 		</td>
 		<td width="98%">
-			{$customerinfo.createdby}, {$customerinfo.creationdateh}<BR>
+			{$customerinfo.createdby}, {$customerinfo.creationdateh}<br>
 			{if $customerinfo.moddate}{$customerinfo.modifiedby}, {$customerinfo.moddateh}{else}-{/if}
 		</td>
 	</tr>

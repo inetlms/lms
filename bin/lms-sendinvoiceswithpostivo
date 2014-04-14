@@ -192,7 +192,7 @@ $dbq = $dbase->prepare("SELECT d.id, d.number, d.cdate, d.name, d.customerid, n.
 			LEFT JOIN customers c ON (c.id = d.customerid) 
 			LEFT JOIN numberplans n ON (n.id = d.numberplanid)
 			$groupjoin
-			WHERE c.deleted = 0 AND d.type = 1 AND c.email != '' 
+			WHERE c.deleted = 0 AND d.type = 1 
 				AND d.cdate >= $daystart AND d.cdate <= $dayend
 				$groupwhere GROUP BY d.id");
 $dbq->execute();

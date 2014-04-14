@@ -286,22 +286,29 @@ define('TARIFF_ITSERVICE', 8); // serwis IT
 define('TARIFF_VIP', 9); // klient V.I.P , czybkie reagowanie
 define('TARIFF_MULTIROOM',10); // podział sygnału
 define('TARIFF_SUSPENSION',11); // zawieszenie usługi
+define('TARIFF_PHONE_ISDN',12);
+define('TARIFF_PHONE_MOBILE',13);
+define('TARIFF_INTERNET_MOBILE',14);
 define('TARIFF_OTHER', -1);
 
 $TARIFFTYPES = array(
-	TARIFF_INTERNET		=> isset($CONFIG['tarifftypes']['internet']) ? $CONFIG['tarifftypes']['internet'] : trans('internet'),
+	TARIFF_INTERNET		=> 'Stacjonarny dostęp do Internetu',
 	TARIFF_HOSTING		=> isset($CONFIG['tarifftypes']['hosting']) ? $CONFIG['tarifftypes']['config'] : trans('hosting'),
 	TARIFF_SERVICE		=> isset($CONFIG['tarifftypes']['service']) ? $CONFIG['tarifftypes']['service'] : trans('service'),
-	TARIFF_PHONE		=> isset($CONFIG['tarifftypes']['phone']) ? $CONFIG['tarifftypes']['phone'] : trans('phone'),
-	TARIFF_TV		=> isset($CONFIG['tarifftypes']['tv']) ? $CONFIG['tarifftypes']['tv'] : trans('tv'),
+	TARIFF_PHONE		=> 'Telefonia stacjonarna VoIP',
+	TARIFF_TV		=> 'IPTV lub DTV',
 //	TARIFF_DEPOSIT		=> isset($CONFIG['tarifftypes']['deposit']) ? $CONFIG['tarifftypes']['deposit'] : trans('deposit'),
 	TARIFF_LEASE		=> isset($CONFIG['tarifftypes']['lease']) ? $CONFIG['tarifftypes']['lease'] : trans('lease'),
 	TARIFF_ITSERVICE	=> isset($CONFIG['tarifftypes']['itservice']) ? $CONFIG['tarifftypes']['itservice'] : trans('it service'),
 	TARIFF_VIP		=> isset($CONFIG['tarifftypes']['vip']) ? $CONFIG['tarifftypes']['vip'] : trans('VIP'),
 	TARIFF_MULTIROOM	=> isset($CONFIG['tarifftypes']['multiroom']) ? $CONFIG['tarifftypes']['multiroom'] : trans('multi room'),
 	TARIFF_SUSPENSION	=> isset($CONFIG['tarifftypes']['suspension']) ? $CONFIG['tarifftypes']['suspension'] : trans('suspension'),
-	TARIFF_OTHER		=> isset($CONFIG['tarifftypes']['other']) ? $CONFIG['tarifftypes']['other'] : trans('other'),
+	TARIFF_OTHER		=> 'Inne usługi',
+	TARIFF_PHONE_ISDN	=> 'Telefonia stacjonarna POTS i ISDN',
+	TARIFF_PHONE_MOBILE	=> 'Telefonia mobilna',
+	TARIFF_INTERNET_MOBILE	=> 'Mobilny dostęp do Internetu',
 );
+asort($TARIFFTYPES);
 
 $PAYTYPES = array(
     1   => trans('cash'),
@@ -349,21 +356,85 @@ $DAYS = array(
 	DAY_SUNDAY	=> trans('Sun'),
 );
 
+// medium transmisyjne
+define('LINKTYPES_CABLE',0);
+define('LINKTYPES_RADIO',1);
+define('LINKTYPES_FIBER',2);
+define('LINKTYPES_CABLE_COAXIAL',3);
+
 $LINKTYPES = array(
-	0		=> trans('wire'),
-	1		=> trans('wireless'),
-	2		=> trans('fiber'),
+	LINKTYPES_CABLE		=> 'kablowe parowe miedziane',
+	LINKTYPES_RADIO		=> 'radiowe',
+	LINKTYPES_FIBER		=> 'światłowodowe',
+	LINKTYPES_CABLE_COAXIAL => 'kablowe współosiowe miedziane',
+);
+asort($LINKTYPES);
+
+// technologie
+
+$LINKTECHNOLOGIES = array(
+	0 => array(
+		1 => 'ADSL',
+		2 => 'ADSL2',
+		3 => 'ADSL2+',
+		4 => 'VDSL',
+		5 => 'VDSL2',
+		6 => '10 Mb/s Ethernet',
+		7 => '100 Mb/s Fast Ethernet',
+		8 => '1 Gigabit Ethernet',
+		9 => '10 Gigabit Ethernet',
+//		50 => '(EURO)DOCSIS 1.x',
+//		51 => '(EURO)DOCSIS 2.x',
+//		52 => '(EURO)DOCSIS 3.x',
+	),
+	1 => array(
+		100 => 'WiFi - 2,4 GHz',
+		101 => 'WiFi - 5 GHz',
+		102 => 'WiMAX',
+		103 => 'LMDS',
+		104 => 'radiolinia',
+		105 => 'CDMA',
+		106 => 'GPRS',
+		107 => 'EDGE',
+		108 => 'HSPA',
+		109 => 'HSPA+',
+		110 => 'DC-HSPA+',
+		111 => 'MC-HSPA+',
+		112 => 'LTE',
+	),
+	2 => array(
+		200 => 'CWDM',
+		201 => 'DWDM',
+		202 => 'SDH',
+		203 => '10 Mb/s Ethernet',
+		204 => '100 Mb/s Fast Ethernet',
+		205 => '1 Gigabit Ethernet',
+		206 => '10 Gigabit Ethernet',
+		207 => '100 Gigabit Ethernet',
+		208 => 'EPON',
+		209 => 'GPON',
+	),
+	3 => array(
+		50 => '(EURO)DOCSIS 1.x',
+		51 => '(EURO)DOCSIS 2.x',
+		52 => '(EURO)DOCSIS 3.x',
+	),
 );
 
+
 $LINKSPEEDS = array(
-	10000		=> trans('10Mbit/s'),
-	25000		=> trans('25Mbit/s'),
-	54000		=> trans('54Mbit/s'),
-	100000		=> trans('100Mbit/s'),
-	200000		=> trans('200Mbit/s'),
-	300000		=> trans('300Mbit/s'),
-	1000000		=> trans('1Gbit/s'),
-	10000000	=> trans('10Gbit/s'),
+	10000		=> '10Mbit/s',
+	25000		=> '25Mbit/s',
+	54000		=> '54Mbit/s',
+	100000		=> '100Mbit/s',
+	150000		=> '150Mbit/s',
+	200000		=> '200Mbit/s',
+	300000		=> '300Mbit/s',
+	1000000		=> '1Gbit/s',
+	1250000		=> '1.2Gbit/s',
+	2500000		=> '2.5Gbit/s',
+	10000000	=> '10Gbit/s',
+	100000000	=> '100Gbit/s',
 );
 
 $BOROUGHTYPES = array(
@@ -447,6 +518,7 @@ $BUILDINGS = array(
     TYP_MUFA			=> 'mufa',
     TYP_ELEWATOR		=> 'elewator',
 );
+asort($BUILDINGS);
 
 define('NODE_OWN',1);
 define('NODE_FOREIGN',2);
@@ -488,7 +560,55 @@ $PODSTAWA = array(
     POD_OTHER	=> 'Inna',
 );
 
+$RAD_TERMINATE_CAUSE = array(
+    'User-Request'			=> 'User Request',
+    'Lost-Carrier'			=> 'Lost Carrier',
+    'Lost-Service'			=> 'Lost Service',
+    'Idle-Timeout'			=> 'Idle Timeout',
+    'Session-Timeout'			=> 'Session Timeout',
+    'Admin-Reset'			=> 'Admin Reset',
+    'Admin-Reboot'			=> 'Admin Reboot',
+    'Port-Error'			=> 'Port Error',
+    'NAS-Error'				=> 'NAS Error',
+    'NAS-Request'			=> 'NAS Request',
+    'NAS-Reboot'			=> 'NAS Reboot',
+    'Port-Unneeded'			=> 'Port Unneeded',
+    'Port-Preempted'			=> 'Port Preempted',
+    'Port-Suspended'			=> 'Port Suspended',
+    'Service-Unavailable'		=> 'Service Unavailable',
+    'Callback'				=> 'Callback',
+    'User-Error'			=> 'User Error',
+    'Host-Request'			=> 'Host Request',
+    'Supplicant-Restart'		=> 'Supplicant Restart',
+    'Reauthentication-Failure'		=> 'Reauthentication Failure',
+    'Port-Reinitialized'		=> 'Port Reinitialized',
+    'Port-Administratively-Disabled'	=> 'Port Administratively Disabled',
+    'Lost-Power'			=> 'Lost Power',
+);
 
+$RAD_SERVICE_TYPE = array(
+    'Login'				=> 'Login',
+    'Framed'				=> 'Framed',
+    'Framed-User'			=> 'Framed User',
+    'Callback-Login'			=> 'Callback Login',
+    'Callback-Framed'			=> 'Callback Framed',
+    'Outbound'				=> 'Outbound',
+    'Administrative'			=> 'Administrative',
+    'NAS-Prompt'			=> 'NAS Prompt',
+    'Authenticate-Only'			=> 'Authenticate Only',
+    'Callback-NAS-Prompt'		=> 'Callback NAS Prompt',
+    'Call-Check'			=> 'Call Check',
+    'Callback-Administrative'		=> 'Callback Administrative',
+    'Voice'				=> 'Voice',
+    'Fax'				=> 'Fax',
+    'Modem-Relay'			=> 'Modem Relay',
+    'IAPP-Register'			=> 'IAPP-Register',
+    'IAPP-AP-Check'			=> 'IAPP-AP-Check',
+    'Authorize-Only'			=> 'Authorize Only',
+    'Framed-Management'			=> 'Framed-Management',
+);
+
+// https://www.iana.org/assignments/radius-types/radius-types.xhtml#radius-types-4
 
 if(isset($SMARTY))
 {
@@ -505,6 +625,7 @@ if(isset($SMARTY))
 	$SMARTY->assign('_DISCOUNTTYPES', $DISCOUNTTYPES);
 	$SMARTY->assign('_DAYS', $DAYS);
 	$SMARTY->assign('_LINKTYPES', $LINKTYPES);
+	$SMARTY->assign('_LINKTECHNOLOGIES', $LINKTECHNOLOGIES);
 	$SMARTY->assign('_LINKSPEEDS', $LINKSPEEDS);
 	$SMARTY->assign('_BOROUGHTYPES', $BOROUGHTYPES);
 	$SMARTY->assign('_PASSWDEXPIRATIONS', $PASSWDEXPIRATIONS);
@@ -517,6 +638,8 @@ if(isset($SMARTY))
 	$SMARTY->assign('_DEVTYPE',$DEVTYPE);
 	$SMARTY->assign('_LAYERTYPE',$LAYERTYPE);
 	$SMARTY->assign('_PODSTAWA',$PODSTAWA);
+	$SMARTY->assign('_RAD_TERMINATE_CAUSE',$RAD_TERMINATE_CAUSE);
+	$SMARTY->assign('_RAD_SERVICE_TYPE',$RAD_SERVICE_TYPE);
 }
 
 define('DEFAULT_NUMBER_TEMPLATE', '%N/LMS/%Y');

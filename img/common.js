@@ -99,11 +99,12 @@ function openSelectWindow2(theURL, winName, myWidth, myHeight, isCenter, formfie
 	return false;
 }
 
-function ipchoosewin(formfield, netid, device)
+function ipchoosewin(formfield1, formfield2, netid, device)
 {
-    var url = '?m=chooseip' +  (netid ? '&netid=' + netid : '') + (device ? '&device=' + device : '');
-	return openSelectWindow(url,'chooseip',350,380,'true',formfield);
+	var url = '?m=chooseip' +  (netid ? '&netid=' + netid : '') + (device ? '&device=' + device : '');
+	return openSelectWindow2(url, 'chooseip', 350, 380, 'true', formfield1, formfield2);
 }
+
 
 function macchoosewin(formfield)
 {
@@ -117,7 +118,7 @@ function customerchoosewin(formfield)
 
 function customersearchchoosewin(formfieldid,formfieldname)
 {
-	return openSelectWindow2('?m=choosecustomersearch','choosecustomersearch',600,250,'true',formfieldid,formfieldname);
+	return openSelectWindow2('?m=choosecustomersearch','choosecustomersearch',450,250,'true',formfieldid,formfieldname);
 }
 
 function contractorchoosewin(formfield,formfield2)
@@ -478,6 +479,47 @@ function popup(content, frame, sticky, offset_x, offset_y)
 	}
 }
 
+function popup_center(content,widths,heights,scroll)
+{
+	if (!scroll) scroll=0;
+	
+	if (scroll == 1) { scroll='yes'; } else { scroll='no'; }
+	
+	var d = document;
+	if ( typeof window.innerWidth != 'undefined' )
+	{
+		var winW = window.innerWidth;
+		var winH = window.innerHeight;
+	}
+	else
+	{
+		if (d.documentElement && typeof d.documentElement.clientWidth != 'undefined' && d.documentElement.clientWidth != 0)
+		{
+			var winW = d.documentElement.clientWidth;
+			var winH = d.documentElement.clientHeight;
+		}
+		else
+		{
+			if (d.body && typeof d.body.clientWidth != 'undefined')
+			{
+				var winW = d.body.clientWidth;
+				var winH = d.body.clientHeight;
+			}
+		}
+	}
+	
+	var fix_x = ((winW - widths) / 2);
+	var fix_y = ((winH - heights) / 3);
+	
+	content = '<iframe width="' + widths + '" height="' + heights + '" frameborder="0" scrolling="' + scroll + '" src="'+content+'&popup=1"></iframe>';
+	overlib(content,STICKY,WIDTH,widths,HEIGHT,heights,FOLLOWMOUSE,0,FIXX,fix_x,FIXY,fix_y,BGCLASS,"overlib_popup");
+	
+	var body = document.getElementsByTagName('BODY')[0];
+	body.onmousedown = function () { popclick(); };
+	lms_sticky_popup = 1;
+}
+
+
 function popup_scroll(content, frame, sticky, offset_x, offset_y)
 {
 	if (lms_sticky_popup)
@@ -618,26 +660,26 @@ function changeMacFormat(id)
 	elem.innerHTML = curmac;
 }
 
-function ShowAjaxLoadingImage()
-{
-    document.getElementById('id_loadajax_img').innerHTML = 
-	'<div style="width:80px;height:80px;position:fixed;top:40%;left:49%;"><img src="img/loading.gif" alt="<b>LOADING...</b>"></div>';
-}
-
-function HideAjaxLoadingImage()
-{
-    document.getElementById('id_loadajax_img').innerHTML = '';
-}
-
 //function ShowAjaxLoadingImage()
 //{
-//    document.getElementById('id_loadajax_img').src = 'img/328.gif';
+//    document.getElementById('id_loadajax_img').innerHTML = 
+//	'<div style="width:80px;height:80px;position:fixed;top:40%;left:49%;"><img src="img/321.gif" alt="Czekaj..."></div>';
 //}
 
 //function HideAjaxLoadingImage()
 //{
-//    document.getElementById('id_loadajax_img').src = 'img/empty.gif';
+//    document.getElementById('id_loadajax_img').innerHTML = '';
 //}
+
+function ShowAjaxLoadingImage()
+{
+    document.getElementById('id_loadajax_img').src = 'img/328.gif';
+}
+
+function HideAjaxLoadingImage()
+{
+    document.getElementById('id_loadajax_img').src = 'img/empty.gif';
+}
 
 function loadAjax(idel,strona)
 {
@@ -645,9 +687,9 @@ function loadAjax(idel,strona)
 	$("#"+idel+"").empty();
     } else {
 	ShowAjaxLoadingImage();
-	start_login_timeout(3600);
 	$.ajax({ 
 		url:strona, 
+		cache:false,
 		success:function(html){$("#"+idel+"").empty().append(html);
 		HideAjaxLoadingImage();
 		}

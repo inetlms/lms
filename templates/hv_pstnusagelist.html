@@ -1,35 +1,35 @@
 {include file="header.html"}
 
-<H3>{$layout.pagetitle}</H3>
+<h3>{$layout.pagetitle}</h3>
 
-<TABLE width="100%" cellpadding="3">
-    <TR class="dark">
-	<TD class="fall">
-	    <B>&nbsp;Wykorzystanie numerów PSTN</B>
-	</TD>
-    </TR>
-    <TR>
-	<TD width="100%" class="flr" nowrap>
-	    <TABLE cellpadding="4" width="100%">
+<table width="100%" cellpadding="3">
+    <tr class="dark">
+	<td class="fall">
+	    <b>&nbsp;Wykorzystanie numerów PSTN</b>
+	</td>
+    </tr>
+    <tr>
+	<td width="100%" class="flr" nowrap>
+	    <table cellpadding="4" width="100%">
 		{cycle values="light,lucid" print=false}
 		{section name=lista loop=$lista step=8}
-		    <TR class="{cycle}">
+		    <tr class="{cycle} lista">
 			{section name=l2 loop=$lista start=$smarty.section.lista.index max=8}
-			<TD width="12%" align="center" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+			<td width="12%" align="center" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 			    {if $lista[l2].customerid==0}
 				{$lista[l2].number}
 			    {else}
-				<A href="?m=hv_accountinfo&id={$lista[l2].customerid}"><FONT class="blend">{$lista[l2].customer_name}</FONT></A>
+				<a href="?m=hv_accountinfo&id={$lista[l2].customerid}"><font class="blend">{$lista[l2].customer_name}</font></a>
 			    {/if}
-			</TD>
+			</td>
 			{/section}
-		    </TR>
+		    </tr>
 		    {/section}
-	    </TABLE>
-	</TD>
-    </TR>
-    <TR>
-	<TD width="100%" class="ftop"></TD>
-    </TR>
-</TABLE>
+	    </table>
+	</td>
+    </tr>
+    <tr>
+	<td width="100%" class="ftop"></td>
+    </tr>
+</table>
 {include file="footer.html"}

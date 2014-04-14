@@ -53,6 +53,12 @@ class Profile
 	}
 
 
+	public function check_exists_key($key)
+	{
+	    return isset($this->settings[$key]);
+	}
+
+
 	public function saveProfiles() 
 	{
 		if ($this->update) 
@@ -66,6 +72,7 @@ class Profile
 
 	public function save($variable,$content) 
 	{
+		if (empty($content)) $content = '';
 		$this->settings[$variable] = $content;
 		$this->update = TRUE;
 		
@@ -76,18 +83,21 @@ class Profile
 
 	public function nowsave($variable,$content)
 	{
+		if (empty($content)) $content = '';
+		
 		if ($tmp = $this->DB->GetOne('SELECT profiles FROM users WHERE id = ? LIMIT 1;',array($this->AUTH->id)))
 		{
 		    $tmp = unserialize($tmp);
+		    
 		    $tmp[$variable] = $content;
-		    if ($content == '') unset($tmp[$variable]);
+//		    if ($content == '') unset($tmp[$variable]);
 		    $tmp = serialize($tmp);
 		    $this->DB->Execute('UPDATE users SET profiles = ? WHERE id = ? ;',array($tmp,$this->AUTH->id));
 		}
 		else
 		{
 		    $tmp[$variable] = $content;
-		    if ($content == '') unset($tmp[$variable]);
+//		    if ($content == '') unset($tmp[$variable]);
 		    $tmp = serialize($tmp);
 		    $this->DB->Execute('UPDATE users SET profiles = ? WHERE id = ? ;',array($tmp,$this->AUTH->id));
 		}

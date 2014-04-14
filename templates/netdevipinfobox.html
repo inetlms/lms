@@ -1,5 +1,5 @@
 <!-- $Id$ -->
-<SCRIPT type="text/javascript">
+<script type="text/javascript">
 <!--
         function chkmac_change()
 	{
@@ -43,151 +43,151 @@
 	
 
 //-->
-</SCRIPT>
-<TABLE WIDTH="100%" CELLPADDING="3">
-	<TR CLASS="DARK">
-		<TD WIDTH="1%" CLASS="FLEFTU">
-			<IMG SRC="img/ip.gif" ALT="">
-		</TD>
-		<TD WIDTH="99%" CLASS="FRIGHTU" COLSPAN="2">
-			<B>{$nodeipdata.name} ({$nodeipdata.id|string_format:"%04d"})</B>
-		</TD>
-	</TR>
-	<TR class="LIGHT">
-		<TD WIDTH="100%" COLSPAN="3" CLASS="flr container">
-			<TABLE WIDTH="100%" CELLPADDING="0">
-				<TR CLASS="LIGHT">
-					<TD WIDTH="50%" style="vertical-align:top;">
-						<TABLE WIDTH="100%" CELLPADDING="3">
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/ip.gif" ALT="{trans("IP address:")}">
-		</TD>
-		<TD WIDTH="99%" COLSPAN="2">
+</script>
+<table width="100%" cellpadding="3">
+	<tr class="dark">
+		<td width="1%" class="fleftu">
+			<img src="img/ip.gif" alt="">
+		</td>
+		<td width="99%" class="frightu" colspan="2">
+			<b>{$nodeipdata.name} ({$nodeipdata.id|string_format:"%04d"})</b>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="100%" colspan="3" class="flr container">
+			<table width="100%" cellpadding="0">
+				<tr class="light">
+					<td width="50%" style="vertical-align:top;">
+						<table width="100%" cellpadding="3">
+	<tr class="light">
+		<td width="1%">
+			<img src="img/ip.gif" alt="{trans("IP address:")}">
+		</td>
+		<td width="99%" colspan="2">
 			<a href="javascript:ping_popup('{$nodeipdata.ip}')">{$nodeipdata.ip}</a>
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{if $nodeipdata.ip_pub != "0.0.0.0"}
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/ip_pub.gif" ALT="{trans("Pub. IP address:")}">
-		</TD>
-		<TD WIDTH="99%" COLSPAN="2">
+	<tr class="light">
+		<td width="1%">
+			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}">
+		</td>
+		<td width="99%" colspan="2">
 			<a href="javascript:ping_popup('{$nodeipdata.ip_pub}')">{$nodeipdata.ip_pub}</a>
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{/if}
 	{assign var="counter" value=0}
 	{foreach from=$nodeipdata.macs item=item}
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<a href="javascript:changeMacFormat('mac{$counter}');"><IMG SRC="img/mac.gif" ALT="{trans("MAC address:")}"></a>
-		</TD>
-		<TD WIDTH="99%" COLSPAN="2">
-			<span id="mac{$counter}">{$item.mac}</span> {if $item.producer}({$item.producer}){/if}<BR>
-		</TD>
-	</TR>
+	<tr class="light">
+		<td width="1%">
+			<a href="javascript:changeMacFormat('mac{$counter}');"><img src="img/mac.gif" alt="{trans("MAC address:")}"></a>
+		</td>
+		<td width="99%" colspan="2">
+			<span id="mac{$counter}">{$item.mac}</span> {if $item.producer}({$item.producer}){/if}<br>
+		</td>
+	</tr>
 	{math equation="x+1" x=$counter assign="counter"}
 	{/foreach}
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/passwd.gif" ALT="{trans("Password:")}">
-		</TD>
-		<TD WIDTH="99%" COLSPAN="2">
+	<tr class="light">
+		<td width="1%">
+			<img src="img/passwd.gif" alt="{trans("Password:")}">
+		</td>
+		<td width="99%" colspan="2">
 			{$nodeipdata.passwd}
-		</TD>
-	</TR>
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/options.gif" ALT="{trans("Options:")}">
-		</TD>
-		<TD WIDTH="99%" COLSPAN="2">
-			<label for="chkmac">{trans("MAC checking")}:</label><INPUT TYPE="checkbox" NAME="chkmac" VALUE="1" ID="chkmac" {if $nodeipdata.chkmac} checked{/if} onchange="chkmac_change();">&nbsp;
-			<label for="chkduplex">{trans("Half duplex")}:</label><INPUT TYPE="checkbox" NAME="duplex" VALUE="1" ID="chkduplex" {if $nodeipdata.halfduplex} checked{/if} onchange="duplex_change();">
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/options.gif" alt="{trans("Options:")}">
+		</td>
+		<td width="99%" colspan="2">
+			<label for="chkmac">{trans("MAC checking")}:</label><input type="checkbox" name="chkmac" value="1" id="chkmac" {if $nodeipdata.chkmac} checked{/if} onchange="chkmac_change();">&nbsp;
+			<label for="chkduplex">{trans("Half duplex")}:</label><input type="checkbox" name="duplex" value="1" id="chkduplex" {if $nodeipdata.halfduplex} checked{/if} onchange="duplex_change();">
 			{if check_conf('phpui.radius')}
 			&nbsp;
-			<label for="chknas">{trans("NAS")}:</label><INPUT TYPE="checkbox" NAME="nas" ID="chknas" VALUE="1" {if $nodeipdata.nas} checked{/if} onchange="nas_change();">
+			<label for="chknas">{trans("NAS")}:</label><input type="checkbox" name="nas" id="chknas" value="1" {if $nodeipdata.nas} checked{/if} onchange="nas_change();">
 			{/if}
-			<label for="monit">Monitoruj: </label><INPUT TYPE="checkbox" NAME="monit" ID="monit" VALUE="1" {if $nodeipdata.monitoring} checked{/if} onchange="monit_change();">
+			<label for="monit">Monitoruj: </label><input type="checkbox" name="monit" id="monit" value="1" {if $nodeipdata.monitoring} checked{/if} onchange="monit_change();">
 			{if $nodeipdata.monitoring && ($netdevinfo.monit_nastype=='1' || $netdevinfo.monit_nastype=='14' || $netdevinfo.monit_nastype=='15')}
-			<label for="monit_signal">Pobieraj inf. o sygnałach Wi-Fi:</label><input type="checkbox" NAME="monit_signal" ID="monit_signal" VALUE="1" {if $nodeipdata.monitoringsignal} checked{/if} onchange="monit_signal_change();">
+			<label for="monit_signal">Pobieraj inf. o sygnałach Wi-Fi:</label><input type="checkbox" name="monit_signal" id="monit_signal" value="1" {if $nodeipdata.monitoringsignal} checked{/if} onchange="monit_signal_change();">
 			{/if}
-		</TD>
-	</TR>
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/network.gif" ALT="{trans("Network:")}">
-		</TD>
-		<TD WIDTH="99%" COLSPAN="2">
-			<B><A HREF="?m=netinfo&id={$nodeipdata.netid}">{$nodeipdata.netname}</A></B>
-		</TD>
-	</TR>
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<A HREF="?m=netdevedit&id={$netdevinfo.id}&action=ipset&ip={$nodeipdata.id}"><IMG SRC="img/{if ! $nodeipdata.access}no{/if}access.gif" ALT=""></A>
-		</TD>
-		<TD WIDTH="99%" COLSPAN="2">
-			<B>{if $nodeipdata.access}{trans("connected<!singular>")}{else}{trans("disconnected<!singular>")}{/if}</B>
-		</TD>
-	</TR>
-	                                        </TABLE>
-					</TD>
-					<TD WIDTH="50%" style="vertical-align:top;">
-						<TABLE WIDTH="100%" CELLPADDING="3">
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/network.gif" alt="{trans("Network:")}">
+		</td>
+		<td width="99%" colspan="2">
+			<b><a href="?m=netinfo&id={$nodeipdata.netid}">{$nodeipdata.netname}</a></b>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%">
+			<a href="?m=netdevedit&id={$netdevinfo.id}&action=ipset&ip={$nodeipdata.id}"><img src="img/{if ! $nodeipdata.access}no{/if}access.gif" alt=""></a>
+		</td>
+		<td width="99%" colspan="2">
+			<b>{if $nodeipdata.access}{trans("connected<!singular>")}{else}{trans("disconnected<!singular>")}{/if}</b>
+		</td>
+	</tr>
+	                                        </table>
+					</td>
+					<td width="50%" style="vertical-align:top;">
+						<table width="100%" cellpadding="3">
 	{if $nodeipdata.info}
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/info.gif" ALT="">
-		</TD>
-		<TD WIDTH="1%">
-			<B>{trans("Description:")}</B>
-		</TD>
-		<TD WIDTH="98%">
+	<tr class="light">
+		<td width="1%">
+			<img src="img/info.gif" alt="">
+		</td>
+		<td width="1%">
+			<b>{trans("Description:")}</b>
+		</td>
+		<td width="98%">
 			{$nodeipdata.info}
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{/if}
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/time.gif" ALT="">
-		</TD>
-		<TD WIDTH="1%">
-			<B>{trans("Last online:")}</B>
-		</TD>
-		<TD WIDTH="98%">
+	<tr class="light">
+		<td width="1%">
+			<img src="img/time.gif" alt="">
+		</td>
+		<td width="1%">
+			<b>{trans("Last online:")}</b>
+		</td>
+		<td width="98%">
 			{if $nodeipdata.lastonline}{$nodeipdata.lastonlinedate}{else}-{/if}
-		</TD>
-	</TR>
-	<TR CLASS="LIGHT">
-		<TD WIDTH="1%">
-			<IMG SRC="img/users.gif" ALT="">
-		</TD>
-		<TD WIDTH="1%">
-			<B>{trans("Created:")}<BR>
-			{trans("Modified:")}</B>
-		</TD>
-		<TD WIDTH="98%">
-			{$nodeipdata.createdby}, {$nodeipdata.creationdateh}<BR>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/users.gif" alt="">
+		</td>
+		<td width="1%">
+			<b>{trans("Created:")}<br>
+			{trans("Modified:")}</b>
+		</td>
+		<td width="98%">
+			{$nodeipdata.createdby}, {$nodeipdata.creationdateh}<br>
 			{if $nodeipdata.moddate}{$nodeipdata.modifiedby}, {$nodeipdata.moddateh}{else}-{/if}
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	
 	<tr class="light">
 	    <td colspan="3" width="100%">
 		<img src="?m=monitchartimg&chart=ping&chartsize=small&type=netdev&id={$nodeipdata.id}$time=-1d" alt="">
 	    </td>
 	</tr>
-                                                </TABLE>
-					</TD>
-				</TR>
-			</TABLE>
-		</TD>
-	</TR>
-	<TR CLASS="LIGHT">
-		<TD WIDTH="100%" CLASS="FBOTTOMU" COLSPAN="3" ALIGN="RIGHT">
+                                                </table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="100%" class="FBOTTOMU" colspan="3" align="right">
 			{if get_conf('monit.live_ping')}<a href="javascript:void(0);" onclick="window.open('?m=nodeping&packetsize=64&ip={$nodeipdata.ip}&netdev={$nodeipdata.id}','pingnode{$nodeipdata.ip}','width=400,height=450')" {tip text="Pinguj urzadzenie"}>Live Ping <img src="img/ping.gif" alt=""></a>&nbsp;{/if}
-			<A HREF="?m=netdevedit&id={$netdevinfo.id}&action=editip&ip={$nodeipdata.id}" ACCESSKEY="E">{trans("Edit")} <IMG SRC="img/edit.gif" ALT=""></A>&nbsp;
-			<A HREF="?m=netdevedit&id={$netdevinfo.id}&action=ipdel&ip={$nodeipdata.id}" onClick="return confirmLink(this, '{t a=$nodeipdata.name}Are you sure, you want to delete address \'$a\' from database?{/t}')">{trans("Delete")} <IMG SRC="img/delete.gif" ALT=""></A>
-		</TD>
-	</TR>	
-</TABLE>
+			<a href="?m=netdevedit&id={$netdevinfo.id}&action=editip&ip={$nodeipdata.id}" accesskey="E">{trans("Edit")} <img src="img/edit.gif" alt=""></a>&nbsp;
+			<a href="?m=netdevedit&id={$netdevinfo.id}&action=ipdel&ip={$nodeipdata.id}" onclick="return confirmLink(this, '{t a=$nodeipdata.name}Are you sure, you want to delete address \'$a\' from database?{/t}')">{trans("Delete")} <img src="img/delete.gif" alt=""></a>
+		</td>
+	</tr>	
+</table>

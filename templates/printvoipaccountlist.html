@@ -1,69 +1,69 @@
 {include file="clearheader.html"}
 <!--// $Id$ //-->
-<TABLE WIDTH="100%" CELLPADDING="3" ALIGN="CENTER">
-	<TR>
-		<TD WIDTH="535" VALIGN="TOP">
-			<H1>{$layout.pagetitle}</H1>
-		</TD>
-		<TD WIDTH="180" ALIGN="RIGHT" NOWRAP>
-			LMS {$layout.lmsv} @ {$layout.hostname}<BR>
-			{$smarty.now|date_format:"%A, %x"}<BR>
+<table width="100%" cellpadding="3" align="center">
+	<tr>
+		<td width="535" valign="top">
+			<h1>{$layout.pagetitle}</h1>
+		</td>
+		<td width="180" align="right" nowrap>
+			LMS {$layout.lmsv} @ {$layout.hostname}<br>
+			{$smarty.now|date_format:"%A, %x"}<br>
 			{t a=$layout.logname}Prepared by: $a{/t}
-		</TD>
-	</TR>
-</TABLE>
-<BR>
-<TABLE WIDTH="100%" CELLPADDING="3" BORDER="1" ALIGN="CENTER">
-	<TR>
-		<TD WIDTH="15" ALIGN="CENTER" CLASS="head">
+		</td>
+	</tr>
+</table>
+<br>
+<table width="100%" cellpadding="3" BORDER="1" align="center">
+	<tr>
+		<td width="15" align="center" class="head">
 			{trans("No.")}
-		</TD>
-		<TD WIDTH="30" ALIGN="CENTER" CLASS="head">
+		</td>
+		<td width="30" align="center" class="head">
 			{trans("ID")}
-		</TD>
-		<TD WIDTH="50" ALIGN="CENTER" CLASS="head">
+		</td>
+		<td width="50" align="center" class="head">
 			{trans("Login<!voipaccounts>")}
-		</TD>
-		<TD WIDTH="50" ALIGN="CENTER" CLASS="head">
+		</td>
+		<td width="50" align="center" class="head">
 			{trans("Password")}
-		</TD>
-		<TD WIDTH="50" ALIGN="CENTER" CLASS="head">
+		</td>
+		<td width="50" align="center" class="head">
 			{trans("Phone")}
-		</TD>
-		<TD WIDTH="250" ALIGN="CENTER" CLASS="head">
+		</td>
+		<td width="250" align="center" class="head">
 			{trans("Owner")}
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{cycle values="white,grey" print=false}
 	{section name=voipaccountlist loop=$voipaccountlist}
-	<TR class="{cycle}">
-		<TD ALIGN="CENTER">
+	<tr class="{cycle}">
+		<td align="center">
 			{counter}.
-		</TD>
-		<TD ALIGN="CENTER">
+		</td>
+		<td align="center">
 			{$voipaccountlist[voipaccountlist].id|string_format:"%04d"}
-		</TD>
-		<TD ALIGN="RIGHT">
-			<B>{$voipaccountlist[voipaccountlist].login}</B>
-		</TD>
-		<TD ALIGN="CENTER">
+		</td>
+		<td align="right">
+			<b>{$voipaccountlist[voipaccountlist].login}</b>
+		</td>
+		<td align="center">
 			{$voipaccountlist[voipaccountlist].passwd}
-		</TD>
-		<TD ALIGN="CENTER">
+		</td>
+		<td align="center">
 			{$voipaccountlist[voipaccountlist].phone}
-		</TD>
-		<TD ALIGN="LEFT">
+		</td>
+		<td align="left">
 			{$voipaccountlist[voipaccountlist].owner}
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{sectionelse}
-	<TR>
-		<TD ALIGN="center" COLSPAN="6">
-			<P>&nbsp;</P>
-			<P><B>{trans("No such voip accounts in database.")}</B></P>
-			<P>&nbsp;</P>
-		</TD>
-	</TR>
+	<tr>
+		<td align="center" colspan="6">
+			<p>&nbsp;</p>
+			<p><b>{trans("No such voip accounts in database.")}</b></p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>
 	{/section}
-</TABLE>
+</table>
 {include file="clearfooter.html"}
