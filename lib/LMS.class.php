@@ -2697,7 +2697,7 @@ class LMS {
 		if ($assignments = $this->DB->GetAll('SELECT a.id AS id, a.tariffid,
 			a.customerid, a.period, a.at, a.suspended, a.invoice, a.settlement,
 			a.datefrom, a.dateto, a.pdiscount, a.vdiscount, a.liabilityid,
-			t.uprate, t.upceil, t.downceil, t.downrate,
+			t.uprate, t.upceil, t.downceil, t.downrate, t.type, 
 			(CASE WHEN t.value IS NULL THEN l.value ELSE t.value END) AS value,
 			(CASE WHEN t.name IS NULL THEN l.name ELSE t.name END) AS name
 			FROM assignments a
