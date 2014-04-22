@@ -1,0 +1,68 @@
+<!--// $Id$ //-->
+<table cellpadding="3" width="100%" class="table table-bordered">
+	<tr class="dark info-hover">
+		<td class="fleftu hand" onclick="ShowOrHideBox('syslogpanelbox');" width="99%" align="left">
+                        <img src="img/mailsms.gif" alt="">
+                        <b>Zdarzenia systemowe</b>
+			{if sysloglist}
+			(ostatnie {$sysloglist|count} zdarzeń)
+                        {/if}
+                </td>
+                <td width="1%" class="frightu pad5" nowrap>
+		    <a href="javascript:void(0);" onclick="self.location.href='?m=syslog&cid={$customerinfo.id}&page=1&sl_df=&sl_dt=&sl_mod=&sl_ev=';">Pokaż wszystkie zdarzenia &raquo;</a>
+                </td>
+        </tr>
+	<tr id="syslogpanelbox"  style="display:none;">
+		<td width="100%" colspan="2" class="fall">
+			<table cellpadding="5" cellspacing="0" width="100%">
+				<tr CLASS="DARK">
+					<td width="1%" class="fleftu pad" nowrap align="center">Data</td>
+					<td width="1%" class="fbt" nowrap>Operacja</td>
+
+					<td width="97%" class="fbt" nowrap>
+						Zdarzenie
+					</td>
+
+					<td width="1%" class="fbt" nowrap align="center">
+						Użytkownik
+					</td>
+					<td width="1%" class="frightu" nowrap></td>
+				</tr>
+				{cycle values="light,lucid" print=false name=syslog}
+				{foreach from=$sysloglist item=item}
+				{assign var="_event" value=$item.event}
+				<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+					<td width="1%" nowrap class="pad">
+						{$item.cdate|date_format:"%Y-%m-%d %H:%I:%S"}
+					</td>
+                                        <td width="1%" align="center" class="pad" style="color:{if $_event == $smarty.const._ADD_}green{elseif $_event == $smarty.const._RM_}red{elseif $_event == $smarty.const._UP_}blue{elseif $_event == $smarty.const._MOV_}blue{elseif $_event == $smarty.const._ERR_}red{elseif $_event == $smarty.const._WARN_}brown{elseif $_event == $smarty.const._ACL_}purple{else}black{/if};"><nobr><b>{$_MSG_LOG.$_event}</b></nobr></td>
+
+					<td width="97%">
+						{$item.msg}
+					</td>
+					<td width="1%" nowrap align="right">
+						{$item.username}
+					</td>
+					<td width="1%" align="right" nowrap>
+					</td>
+				</tr>
+				{foreachelse}
+				<tr>
+					<td colspan="4" align="center">
+						<p>&nbsp;</p>
+						<p><b>Brak zdarzeń w bazie</b></p>
+						<p>&nbsp;</p>
+					</td>
+				</tr>
+				{/foreach}
+			</table>
+		</td>
+	</tr>
+</table>
+{if get_profile('syslogpanelbox')}
+<script type="text/javascript">
+<!--
+	document.getElementById('syslogpanelbox').style.display = '';
+//-->
+</script>
+{/if}
