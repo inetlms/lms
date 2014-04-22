@@ -7822,6 +7822,15 @@ class LMS {
     }
 
 
+    function getCustomerSyslog($cid,$limit = NULL)
+    {
+	$result = $this->DB->GetAll('SELECT s.cdate, s.uid, s.cid, s.nid, s.module, s.event, s.msg, (SELECT u.name FROM users u WHERE u.id = s.uid) AS username
+				    FROM syslog s WHERE cid = ? ORDER BY s.cdate DESC '
+				    .($limit ? ' '.$this->DB->Limit($limit).' ' : '')
+				    ,array($cid));
+	return $result;
+    }
+
 }
 
 ?>

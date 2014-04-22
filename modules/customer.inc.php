@@ -47,6 +47,7 @@ $documents = $LMS->GetDocuments($customerid, 10);
 $taxeslist = $LMS->GetTaxes();
 $allnodegroups = $LMS->GetNodeGroupNames();
 $messagelist = $LMS->GetMessages($customerid, 10);
+$sysloglist = $LMS->GetCustomerSyslog($customerid, 20);
 $eventlist = $LMS->EventSearch(array('customerid' => $customerid), 'date,desc', true);
 $customernodes = $LMS->GetCustomerNodes($customerid);
 //$monit['ping_test'] = $monit['signal_test'] = false;
@@ -111,5 +112,6 @@ $SMARTY->assignByRef('allnodegroups', $allnodegroups);
 $SMARTY->assignByRef('messagelist', $messagelist);
 $SMARTY->assignByRef('eventlist', $eventlist);
 $SMARTY->assignByRef('customercallcenter',$customercallcenter);
+$SMARTY->assignByRef('sysloglist',$sysloglist);
 
 ?>
