@@ -2019,6 +2019,10 @@ class LMS {
 		    }
 		}
 		
+		if (!$nodedata['netid'])
+			$nodedata['netid'] = $this->DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id '.$this->DB->Limit(1).';',
+					array($nodedata['ipaddr']));
+		
 		$this->DB->Execute('UPDATE nodes SET name=UPPER(?), ipaddr_pub=inet_aton(?),
 				ipaddr=inet_aton(?), passwd=?, netdev=?, moddate=?NOW?,
 				modid=?, access=?, warning=?, ownerid=?, info=?, location=?,
@@ -2468,6 +2472,10 @@ class LMS {
 	}
 
 	function NodeAdd($nodedata) {
+	    
+	    if (!$nodedata['netid'])
+		$nodedata['netid'] = $this->DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id '.$this->DB->Limit(1).';',
+				array($nodedata['ipaddr']));
 		
 		if ($this->DB->Execute('INSERT INTO nodes (name, ipaddr, ipaddr_pub, ownerid,
 			passwd, creatorid, creationdate, access, warning, info, netdev,
@@ -3943,14 +3951,14 @@ class LMS {
 	function GetNetworks($with_disabled = true) {
 		if ($with_disabled == false)
 			return $this->DB->GetAll('SELECT id, name, inet_ntoa(address) AS address, 
-				address AS addresslong, mask, mask2prefix(inet_aton(mask)) AS prefix, disabled,
-				(SELECT h.name FROM hosts h WHERE h.id = hostid) AS hostname 
-				FROM networks WHERE disabled=0 ORDER BY name');
+				address AS addresslong, mask, mask2prefix(inet_aton(mask)) AS prefix, disabled '
+				.', (SELECT h.name FROM hosts h WHERE h.id = hostid) AS hostname '
+				.'FROM networks WHERE disabled=0 ORDER BY name');
 		else
 			return $this->DB->GetAll('SELECT id, name, inet_ntoa(address) AS address, 
-				address AS addresslong, mask, mask2prefix(inet_aton(mask)) AS prefix, disabled,
-				(SELECT h.name FROM hosts h WHERE h.id = hostid) AS hostname 
-				FROM networks ORDER BY name');
+				address AS addresslong, mask, mask2prefix(inet_aton(mask)) AS prefix, disabled '
+				.', (SELECT h.name FROM hosts h WHERE h.id = hostid) AS hostname '
+				.'FROM networks ORDER BY name');
 	}
 
 	function GetNetworkParams($id) {
