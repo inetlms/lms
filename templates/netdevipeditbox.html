@@ -7,6 +7,7 @@
     <input type="hidden" name="ipadd[moddate]" value="{$nodeipdata.moddate}">
     <input type="hidden" name="ipadd[modifiedby]" value="{$nodeipdata.modifiedby}">
     <input type="hidden" name="ipadd[moddateh]" value="{$nodeipdata.moddateh}">
+    <input type="hidden" name="ipadd[netid]" id="netid" value="{$nodeipdata.netid}">
 <table width="100%" cellpadding="3">
 	<tr class="dark">
 		<td width="1%" class="fleftu">
@@ -26,6 +27,32 @@
 				<tr class="light">
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
+	
+	<tr class="light">
+		<td style="width: 1%;">
+			<img src="img/host.gif">
+		</td>
+		<td style="width:1%;">
+		<b>Host:</b>
+		</td>
+		<td style="width: 99%;">
+			<div id="id_host_name">{$nodeipdata.hostname}</div>
+		</td>
+	</tr>
+	
+	<tr class="light">
+		<td style="width: 1%;">
+			<img src="img/network.gif">
+		</td>
+		<td style="width:1%;">
+		    <b>Sieć:</b>
+		</td>
+		<td style="width: 99%;">
+			<div id="id_network_name">{$nodeipdata.networkname}</div>
+		</td>
+	</tr>
+	
+	
 	<tr class="light">
 		<td width="1%">
 			<img src="img/ip.gif" alt="">
@@ -34,7 +61,8 @@
 			<b>{trans("IP address:")}</b>
 		</td>
 		<td width="98%">
-                       <input type="text" name="ipadd[ipaddr]" value="{$nodeipdata.ipaddr}" {tip text="Enter IP address" trigger="ipaddr"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.editipaddr['ipadd[ipaddr]'],{$nodeipdata.netid},{$netdevinfo.id});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
+       <input type="text" name="ipadd[ipaddr]" value="{$nodeipdata.ipaddr}" {tip text="Enter IP address" trigger="ipaddr"}>
+<a href="javascript: void(0);" onclick="return ipchoosewin(document.editipaddr['ipadd[ipaddr]'],document.editipaddr['ipadd[netid]'],document.getElementById('netid').value);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
 	{if check_conf('phpui.public_ip')}

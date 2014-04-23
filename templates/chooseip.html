@@ -20,14 +20,17 @@
 {/if}
 {if $part eq "main"}
 <body>
-	<script type="text/javascript">
+	<script type="text/javascript" language="JavaScript">
 	<!--
 	function send_address_settings(ipaddr) {
-		sendvalue(targetfield1, ipaddr);
-		if (targetfield2 != null)
-			for (var i = 0; i < targetfield2.options.length; i++)
-				if (targetfield2.options[i].value == '{$netid}')
-					targetfield2.options[i].selected = true;
+	    window.parent.parent.document.getElementById('id_host_name').innerHTML = '{$network.hostname}';
+	    window.parent.parent.document.getElementById('id_network_name').innerHTML = '{$network.name}';
+		sendvalue2(targetfield1, ipaddr, targetfield2, {$netid});
+//		if (targetfield2 != null)
+//		targetfield2.value = '{$netid}';
+//			for (var i = 0; i < targetfield2.options.length; i++)
+//				if (targetfield2.options[i].value == '{$netid}')
+//					targetfield2.options[i].selected = true;
 	}
 	//-->
 	</script>
@@ -72,7 +75,7 @@
 		<td class="fall light" align="center">
 			<select size="1" onchange="parent.location.href='?m=chooseip{if $device}&device={$device}{/if}&netid='+document.selectnet.elements['netid'].value" name="netid">
 				{section name=networks loop=$networks}
-				<option value="{$networks[networks].id}" {if $networks[networks].id eq $netid} selected {/if} {if $networks[networks].disabled eq 1} class="alert" {/if}>{$networks[networks].name|truncate:20:"":true}: {$networks[networks].address}/{$networks[networks].prefix}</option>
+				<option value="{$networks[networks].id}" {if $networks[networks].id eq $netid} selected {/if} {if $networks[networks].disabled eq 1} class="alert" {/if}>HOST: {if $networks[networks].hostname}{$networks[networks].hostname}{else} --- {/if} / {$networks[networks].name|truncate:20:"":true}: {$networks[networks].address}/{$networks[networks].prefix}</option>
 				{sectionelse}
 				<option value="0">{trans("You don't have any IP network.")}</option>
 				{/section}

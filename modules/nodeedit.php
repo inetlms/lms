@@ -107,10 +107,12 @@ if (isset($_POST['nodeedit'])) {
 
 	if (check_ip($nodeedit['ipaddr'])) {
 		
-		if ($LMS->IsIPValid($nodeedit['ipaddr'])) {
-			if (empty($nodeedit['netid']))
+		if (!$nodeedit['netid'])
 				$nodeedit['netid'] = $DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id LIMIT 1',
 					array($nodeedit['ipaddr']));
+		
+		if ($LMS->IsIPValid($nodeedit['ipaddr'])) {
+			
 			$ip = $LMS->GetNodeIPByID($nodeedit['id']);
 			
 			if ($ip != $nodeedit['ipaddr'] && !$LMS->IsIPFree($nodeedit['ipaddr'],$nodeedit['netid']))

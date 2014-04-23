@@ -34,6 +34,21 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/04/23',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowa obsługi wyboru adresu IP dla urządzeń klienckich i interfejsów sieciowych',
+	),
+	array(
+	    'data'	=> '2014/04/22',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano box z syslog w karcie klienta',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Aktualizacja Smarty do 3.1.18',
+	),
+	array(
 	    'data'	=> '2014/04/14',
 	    'status'	=> '',
 	    'opis'	=> 'syslog - dodano filtr na podstawie klienta',
