@@ -27,38 +27,44 @@
 $layout['pagetitle'] = trans('Copyrights');
 
 $authors = array(
-		
-		'alec' => array(
-			'realname' => 'Aleksander Machniak',
-			'www' => 'www.alec.pl',
-			'info' => 'PHP, C, Perl, HTML, JavaScript, images, doc, PostgreSQL'
-		     ),
-
-		'Baseciq' => array(
-			'realname' => 'Łukasz Jarosław Mozer',
-			'www' => 'www.baseciq.org',
-			'info' => 'inventor & maintainer, PHP, Perl, design, HTML, JavaScript, CSS, images, doc, project\'s WWW'
-			),
-
-		'chilek' => array(
-			'info' => 'PHP, Perl',
-			'realname' => 'Tomasz Chilinski',
-			),
-
-		'hunter' => array(
-			'info' => 'PHP, Perl',
-			'realname' => 'Krzysztof Drewicz',
-			),
-
-		'Lexx' => array(
-			'info' => 'PHP, C, doc, project\'s  WWW',
-			'www' => 'www.lexx.w.pl',
-			'realname' => 'Marcin Król',
-		     ),
+		  'sylwek' => array(
+                        'realname' => 'Sylwester Kondracki',
+                        'www' => 'www.pati.net.pl',
+                        'info' => 'PHP, C, Perl, HTML, JavaScript, T-Script, images, doc'
+                     ),
+	
 	
 		);
 
 $others = array(
+
+                'alec' => array(
+                        'realname' => 'Aleksander Machniak',
+                        'www' => 'www.alec.pl',
+                        'info' => 'PHP, C, Perl, HTML, JavaScript, images, doc, PostgreSQL'
+                     ),
+
+                'Baseciq' => array(
+                        'realname' => 'Łukasz Jarosław Mozer',
+                        'www' => 'www.baseciq.org',
+                        'info' => 'inventor & maintainer, PHP, Perl, design, HTML, JavaScript, CSS, images, doc, project\'s WWW'
+                        ),
+
+                'chilek' => array(
+                        'info' => 'PHP, Perl',
+                        'realname' => 'Tomasz Chilinski',
+                        ),
+
+                'hunter' => array(
+                        'info' => 'PHP, Perl',
+                        'realname' => 'Krzysztof Drewicz',
+                        ),
+
+                'Lexx' => array(
+                        'info' => 'PHP, C, doc, project\'s  WWW',
+                        'www' => 'www.lexx.w.pl',
+                        'realname' => 'Marcin Król',
+                     ),
 
 		'agaran' => array(
 			'info' => 'Perl',
