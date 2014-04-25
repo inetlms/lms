@@ -30,9 +30,10 @@
 	    <input type="text" class="tcal" style="width:90px;{if $listdata.dto !=''}background-color:#FFFF99;{/if}" name="dto" id="d_to" value="{$listdata.dto}" {tip text="Kliknij aby wybrać datę końcową"} readonly>&nbsp;<img src="img/cancel.gif" {tip text="wyczyść datę końcową"} onclick="document.getElementById('d_to').value='';document.iphistory.submit();" style="width:14px;cursor:pointer;">
 	    Adres IP: <input type="text" size="15" {tip text="podaj cały lub częściowy adres IP lokalny lub publiczny"} name="sip" id="searchip" value="{$listdata.searchip}" {if $listdata.searchip !=''}style="background-color:#FFFF99;"{/if}> <img src="img/cancel.gif" onclick="document.getElementById('searchip').value='';document.iphistory.submit();" style="width:14px;cursor:pointer;">&nbsp;&nbsp;&nbsp;
 	    Klient: <input type="text" size="20" {tip text="Wprowadź identyfikator klienta, imię, nazwisko, adres lub email"} id="searchcustomer" name="searchcustomer" value="{$customername}" {if $customername}style="background-color:#FFFF99;"{/if}>&nbsp;<img src="img/cancel.gif" {tip text="wyczyść filtr na podstawie klienta"} onclick="document.getElementById('searchcustomer').value='';document.getElementById('cid').value='';document.iphistory.submit();" style="width:14px;cursor:pointer;">&nbsp;
-	    
+ 
 	    <img src="img/search.gif" style="cursor:pointer;border:0;" {tip text="ustaw filtr"} onclick="document.iphistory.submit();">&nbsp;
-	    <img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="clear_filtr();" style="border:0;cusros:pointer;">
+            <img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="clear_filtr();" style="border:0;cusros:pointer;">
+	    
 	</td>
     </tr>
     

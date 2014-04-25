@@ -12,7 +12,7 @@
 				<input type="submit" class="hiddenbtn">
 				<input type="hidden" name="m" value="nodelist">
 				<input type="hidden" name="page" value="1">
-				<img src="img/Filter.png">&nbsp;<a href="?m=nodelist&page=1&s=&n=&ng=&g=" {tip text="Wyczyść filtr"}><img src="img/cancel.gif"></a> 
+				<img src="img/search.gif">&nbsp;<a href="?m=nodelist&page=1&s=&n=&ng=&g=" {tip text="Wyczyść filtr"}><img src="img/cancel.gif"></a> 
 				<nobr>{trans("Status:")}
 				<select size="1" name="s" onchange="document.choosefilter.submit();" {if $listdata.state} class="active"{/if}>
 					<option value="0"{if $listdata.state eq 0} selected{/if}>{trans("- all -")}</option>
