@@ -304,10 +304,10 @@ else
 	{
 	    $obj = new xajaxResponse();
 	    $c = curl_init();
-	    curl_setopt($c,CURLOPT_URL,'http://www.inetlms.pl/adv/getinfo.php');
+	    curl_setopt($c,CURLOPT_URL,'http://www.adv.inetlms.pl/getinfo.php');
 	    curl_setopt($c,CURLOPT_RETURNTRANSFER,1);
 	    curl_setopt($c,CURLOPT_USERAGENT,'MozillaXYZ/1.0');
-	    curl_setopt($c,CURLOPT_TIMEOUT,3);
+	    curl_setopt($c,CURLOPT_TIMEOUT,4);
 	    $info = curl_getinfo($c);
 	    $result = curl_exec($c);
 	    if (!curl_error($c) && !empty($result))
