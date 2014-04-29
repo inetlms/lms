@@ -1,4 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+{$xajax}
 <!--// $Id$ //-->
 <html>
 <head>
@@ -17,7 +18,7 @@
 			<table align="center" cellpadding="20">
 				<tr>
 					<td>
-					    <img src="img/logo.gif">
+					    <div style="width:404px;height:374px;text-align:center;margin-top:auto;overflow:auto;" id="id_login_adbox"></div>
 					</td>
 					<td align="center" class="light loginform" width="300" height="400">
 						<b>{$layout.lmsv} LMS<br>{$layout.lmsvr}</b><br><br>
@@ -81,10 +82,13 @@ Informujemy, że projekt iNET LMS nie jest powiązany w żaden sposób z iNET gr
 </td></tr></table>
 
 </div>
+{literal}
 <script type="text/javascript">
 <!--
 document.forms['loginform'].elements['loginform[login]'].focus();
+xajax_login_adbox();
 -->
 </script>
+{/literal}
 </body>
 </html>

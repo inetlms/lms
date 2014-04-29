@@ -983,7 +983,7 @@ if (get_conf('phpui.radius')) {
 			),
 			array(
 				'name'		=> 'sesje zakończone',
-				'link'		=> '?m=rad_radacct&status=completed&page=1&startdatefrom='.date('Y/m/d',strtotime("-1 week",time())),
+				'link'		=> '?m=rad_radacct&status=completed&page=1&startdatefrom='.date('Y/m/d',strtotime("-3 day",time())),
 				'tip'		=> '',
 				'prio'		=> 10,
 			),

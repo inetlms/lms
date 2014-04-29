@@ -77,6 +77,10 @@ class RADIUS {
 	if (!empty($enddateto))
 	    $enddateto = str_replace('/','-',$enddateto);
 	
+	$auth_login = strtolower(get_conf('radius.auth_login','id'));
+	if (!in_array($auth_login,array('id','name','ip','passwd')))
+	    $auth_login = 'id';
+	
 	$return =
 		$this->DB->GetAll('SELECT r.radacctid, r.acctsessionid, r.username, r.nasipaddress, r.nasporttype, r.acctstarttime, r.servicetype '
 		.', r.acctstoptime, r.acctterminatecause '
@@ -90,9 +94,10 @@ class RADIUS {
 		.'FROM radacct r '
 		.'LEFT JOIN nodes nas ON (inet_ntoa(nas.ipaddr) = r.nasipaddress) '
 		.($status=='open' ? 'JOIN ( SELECT MAX(radacctid) AS maxid, username FROM radacct GROUP BY username) nd ON (nd.username = r.username) ' : '')
-		.(strtolower(get_conf('radius.auth_login','id')) == 'id' ? 'JOIN nodes n ON (n.id = r.username) ' : '')
-		.(strtolower(get_conf('radius.auth_login')) == 'name' ? 'JOIN nodes n ON (UPPER(n.name) = UPPER(r.username)) ' : '')
-		.(strtolower(get_conf('radius.auth_login')) == 'ip' ? 'JOIN nodes n ON (inet_ntoa(n.ipaddr) = r.username) ' : '')
+		.($auth_login == 'id' ? 'JOIN nodes n ON (n.id = r.username) ' : '')
+		.($auth_login == 'name' ? 'JOIN nodes n ON (UPPER(n.name) = UPPER(r.username)) ' : '')
+		.($auth_login == 'ip' ? 'JOIN nodes n ON (inet_ntoa(n.ipaddr) = r.username) ' : '')
+		.($auth_login == 'passwd' ? 'JOIN nodes n ON (n.passwd = r.username) ' : '')
 		.'JOIN customers c ON (c.id = n.ownerid) '
 		.'WHERE 1=1 '
 		.(($cid) ? " AND c.id = '".$cid."'" : '')
@@ -120,7 +125,7 @@ class RADIUS {
     function closedradacct($id)
     {
 	$this->DB->Execute('UPDATE radacct SET acctstoptime=?, acctterminatecause=? WHERE radacctid = ?;',
-		array(date('%y-%m-%d H:i:s',time()),'User-Request',$id));
+		array(date('y-m-d H:i:s',time()),'User-Request',$id));
     }
 }
 
