@@ -34,6 +34,26 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/04/29',
+	    'status'	=> '',
+	    'opis'	=> 'Kilka drobnych zmian kosmetycznych',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano nową zmienną dla radius.auth_login -> <b>passwd</b> identyfikującą urządzenie klienckie na podstawie hasła jako loginu dla sesji PPPoE',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano box reklamowy na stronie logowania. Reklamy są pobierane dynamicznie z adv.inetlms.pl. Informacje będą zawierać różne treści nie łamiąc prawa ani etyki :D',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Małe poprawki odnośnie modułu radius',
+	),
+	array(
 	    'data'	=> '2014/04/23',
 	    'status'	=> '',
 	    'opis'	=> 'przebudowa obsługi wyboru adresu IP dla urządzeń klienckich i interfejsów sieciowych',

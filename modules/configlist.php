@@ -124,7 +124,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 				break;
 				
 				case 'auth_login':
-					$config[$idx]['description'] = 'pole z karty urządzenia klienta (komputer) które jest loginem dla autoryzacji w radius\'ie.<br>Dopuszczalne wartości : <br><b>id</b> - id komputera<br><b>name</b> - nazwa komputera<br><b>ip</b> - IP komputera<br>DEFAULT : id';
+					$config[$idx]['description'] = 'pole z karty urządzenia klienta (komputer) które jest loginem dla autoryzacji w radius\'ie.<br>Dopuszczalne wartości : <br><b>id</b> - id komputera<br><b>name</b> - nazwa komputera<br><b>ip</b> - IP komputera<br><b>passwd</b> - hasło logowania urządzenia<br>DEFAULT : id';
 				break;
 				
 				case 'page_view':
