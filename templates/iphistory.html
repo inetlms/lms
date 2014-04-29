@@ -19,21 +19,19 @@
 <input type="hidden" name="page" value="1">
 <input type="hidden" name="m" value="iphistory">
 <input type="hidden" name="cid" id="cid" value="{$listdata.cid}">
-<table width="100%" cellpadding="4">
+<table width="100%" cellpadding="4" class="listradiuscorners">
 
     <tr class="dark">
-	<td width="100%" colspan="8" class="fall">
+	<td width="100%" colspan="6" >
 	    <img src="img/Filter.png">
-	    <img src="img/search.gif" style="cursor:pointer;border:0;" {tip text="ustaw filtr"} onclick="document.iphistory.submit();">
-	    <img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="clear_filtr();" style="border:0;cusros:pointer;">
 	    <input type="text" class="tcal" style="width:90px;{if $listdata.dfrom !=''}background-color:#FFFF99;{/if}" name="dfrom" id="d_from" value="{$listdata.dfrom}" readonly {tip text="kliknij aby wybrać datę początkową"}>&nbsp;<img src="img/cancel.gif" {tip text="wyczyść datę początkową"} onclick="document.getElementById('d_from').value='';document.iphistory.submit();" style="width:14px;cursor:pointer;">
 	    <input type="text" class="tcal" style="width:90px;{if $listdata.dto !=''}background-color:#FFFF99;{/if}" name="dto" id="d_to" value="{$listdata.dto}" {tip text="Kliknij aby wybrać datę końcową"} readonly>&nbsp;<img src="img/cancel.gif" {tip text="wyczyść datę końcową"} onclick="document.getElementById('d_to').value='';document.iphistory.submit();" style="width:14px;cursor:pointer;">
 	    Adres IP: <input type="text" size="15" {tip text="podaj cały lub częściowy adres IP lokalny lub publiczny"} name="sip" id="searchip" value="{$listdata.searchip}" {if $listdata.searchip !=''}style="background-color:#FFFF99;"{/if}> <img src="img/cancel.gif" onclick="document.getElementById('searchip').value='';document.iphistory.submit();" style="width:14px;cursor:pointer;">&nbsp;&nbsp;&nbsp;
 	    Klient: <input type="text" size="20" {tip text="Wprowadź identyfikator klienta, imię, nazwisko, adres lub email"} id="searchcustomer" name="searchcustomer" value="{$customername}" {if $customername}style="background-color:#FFFF99;"{/if}>&nbsp;<img src="img/cancel.gif" {tip text="wyczyść filtr na podstawie klienta"} onclick="document.getElementById('searchcustomer').value='';document.getElementById('cid').value='';document.iphistory.submit();" style="width:14px;cursor:pointer;">&nbsp;
- 
+ 	 <td  colspan="2" align="right">
 	    <img src="img/search.gif" style="cursor:pointer;border:0;" {tip text="ustaw filtr"} onclick="document.iphistory.submit();">&nbsp;
             <img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="clear_filtr();" style="border:0;cusros:pointer;">
-	    
+         </td>
 	</td>
     </tr>
     

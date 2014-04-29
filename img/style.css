@@ -1313,3 +1313,18 @@ div.nodata {
 .nav-header {
     height:24px;
     }
+
+.listradiuscorners {
+        font-family             : Tahoma, Verdana, Arial, Helvetica;`
+        background              : #f6feff;
+        padding                 : 2px 4px;
+        border-radius           : 6px;
+        border                  : 1px solid #CCCCCC;
+        -moz-border-radius      : 6px;
+        -webkit-border-radius   : 6px;
+        -khtml-border-radius    : 6px;
+        box-shadow              : #333333 1px 1px 12px;
+        -moz-box-shadow         : 1px 1px 12px #333333;
+        -webkit-box-shadow      : #333333 1px 1px 12px;
+
+}

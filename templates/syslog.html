@@ -25,12 +25,10 @@
 <input type="hidden" name="page" value="1">
 <input type="hidden" name="cid" id="cid" value="{$filter.cid}">
 
-<table width="100%" cellpadding="3" cellspacing="10">
+<table width="100%" cellpadding="3" cellspacing="10" class="listradiuscorners">
     <tr class="dark">
-	<td colspan="7" width="100%" align="left" class="fall" style="padding-top:5px;padding-bottom:6px;">
+	<td colspan="6" width="93%" align="left"  style="padding-top:5px;padding-bottom:6px;">
 			<img src="img/Filter.png">&nbsp;
-			<img src="img/search.gif" style="border:0;cursor:pointer;" {tip text="Ustaw filtr"} onclick="document.syslog.submit();">&nbsp;
-			<img src="img/cancel.gif" style="border:0;cursor:pointer;" {tip text="Wyczyść filtr"} onclick="czysc_filtr();">&nbsp;
 			{trans('from:')} <input type="text" class="tcal" name="sl_df" style="width:90px;{if $filter.df !=''}background-color:#FFFF99;{/if}" value="{$filter.df}" id="sl_df" readonly>&nbsp;<img src="img/cancel.gif" style="width:14px;cursor:pointer;" {tip text="usuń datę"} onclick="document.getElementById('sl_df').value='';document.syslog.submit();">&nbsp;
 			{trans('to:')} <input type="text" class="tcal" name="sl_dt" style="width:90px;{if $filter.dt !=''}background-color:#FFFF99;{/if}" value="{$filter.dt}" id="sl_dt" readonly>&nbsp;<img src="img/cancel.gif" style="width:14px;cursor:pointer;" {tip text="usuń datę"} onclick="document.getElementById('sl_dt').value='';document.syslog.submit();">&nbsp;
 
@@ -60,11 +58,13 @@
 			&nbsp;&nbsp;
 			<input type="text" size="20" name="searchcustomer" id="searchcustomer" value="{$filter.customer}" {if $filter.customer} class="active"{/if} {tip text="Wprowadź identyfikator klienta, imię, nazwisko, adres lub email i naciśnij Enter"}>&nbsp;<img src="img/cancel.gif" style="cursor:pointer;" width="14" {tip text="Wyczyść filtr na podstawie klienta"} onclick="document.getElementById('cid').value='';document.syslog.submit();">
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<td width="7%" align="right"  style="padding-top:5px;padding-bottom:6px;">
 			<img src="img/search.gif" style="border:0;cursor:pointer;" {tip text="Ustaw filtr"} onclick="document.syslog.submit();">&nbsp;
 			<img src="img/cancel.gif" style="border:0;cursor:pointer;" {tip text="Wyczyść filtr"} onclick="czysc_filtr();">&nbsp;
 			<script type="text/javascript" language="JavaScript">
 			    new AutoSuggest(document.getElementById('syslog'),document.getElementById('searchcustomer'),'?m=quicksearch&ajax=1&syslog&mode=customer&what=',1);
 			</script>
+	</td>
 	</td>
     </tr>
 

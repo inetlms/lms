@@ -4,15 +4,15 @@
 <!--// $Id$ //-->
 <h1 class="title">{$layout.pagetitle}</h1>
 {$lastonline_limit = get_conf('phpui.lastonline_limit')}
-<table cellpadding="3" width="100%" class="table">
+<table cellpadding="3" width="100%" class="listradiuscorners">
 	
 	<tr class="dark info">
-		<td class="fall" colspan="6">
+		<td  colspan="5">
+			<img src="img/Filter.png">&nbsp;
 			<form method="GET" action="?m={$layout.module}" name="choosefilter">
 				<input type="submit" class="hiddenbtn">
 				<input type="hidden" name="m" value="nodelist">
 				<input type="hidden" name="page" value="1">
-				<img src="img/search.gif">&nbsp;<a href="?m=nodelist&page=1&s=&n=&ng=&g=" {tip text="Wyczyść filtr"}><img src="img/cancel.gif"></a> 
 				<nobr>{trans("Status:")}
 				<select size="1" name="s" onchange="document.choosefilter.submit();" {if $listdata.state} class="active"{/if}>
 					<option value="0"{if $listdata.state eq 0} selected{/if}>{trans("- all -")}</option>
@@ -42,6 +42,9 @@
 					{/section}
 				</select><nobr>
 			</form>
+			<td align="right">
+				<img src="img/search.gif">&nbsp;<a href="?m=nodelist&page=1&s=&n=&ng=&g=" {tip text="Wyczyść filtr"}><img src="img/cancel.gif"></a>
+			</td>
 		</td>
 	</tr>
 	{if $listdata.total != 0}
