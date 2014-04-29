@@ -46,13 +46,7 @@ function kick_user($rid)
     global $DB,$RAD;
     $obj = new xajaxResponse();
     $result = $RAD->disconnect_user($rid);
-    
-//    $obj->script("alert('".$result."');");
-    
-//    if ($result)
-//        $obj->script("alert('Polecenie zostało prawidłowo wykonane');");
-///    else
-//	$obj->script("alert('Polecenie nie zostało wykonane');");
+
     $obj->script("self.location.href='?m=rad_radacct&status=open';");
     return $obj;
 }
@@ -62,7 +56,7 @@ if ($status == 'open') {
     $_GET['enddatefrom'] = $_GET['enddateto'] = '';
     $lista = 'list';
 } elseif ($status == 'completed') {
-    $layout['pagetitle'] .= 'sesje zakończkone';
+    $layout['pagetitle'] .= 'sesje zakończone';
     $lista = 'list1';
 } elseif ($status == 'all') {
     $layout['pagetitle'] .= 'wszystkie sesje';

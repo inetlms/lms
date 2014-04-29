@@ -699,6 +699,21 @@ function loadAjax(idel,strona)
     }
 }
 
+function loadAD(idel,strona)
+{
+    if (strona=='empty') {
+	$("#"+idel+"").empty();
+    } else {
+	$.ajax({ 
+		url:strona, 
+//		cache:false,
+		success:function(html){$("#"+idel+"").empty().append(html);
+		}
+	});
+	
+    }
+}
+
 function AjaxObjectCreateGeneral() {
     var req;
     try {

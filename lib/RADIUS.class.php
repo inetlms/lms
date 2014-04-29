@@ -120,7 +120,7 @@ class RADIUS {
     function closedradacct($id)
     {
 	$this->DB->Execute('UPDATE radacct SET acctstoptime=?, acctterminatecause=? WHERE radacctid = ?;',
-		array(date('%y-%m-%d H:i:s',time()),'User-Request',$id));
+		array(date('y-m-d H:i:s',time()),'User-Request',$id));
     }
 }
 
