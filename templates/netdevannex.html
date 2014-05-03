@@ -1,0 +1,25 @@
+<table style="width: 100%;" cellpadding="3">
+	<tr class="dark info-hover">
+		<td style="width: 99%; text-align: left; white-space: nowrap;" class="fleftu hand" onclick="ShowOrHideBox('netdevannex');">
+			<img src="img/attach.gif" alt="">
+			<span class="bold">Załączniki</span>
+		</td>
+		<td width="1%" class="frightu hand pad5" nowrap align="right">
+		<a href="javascript: void(0);" onclick="document.getElementById('netdevannex').style.display = '';document.getElementById('id_annex_edit').style.display='';">Dodaj nowy plik &raquo;</a> 
+		</td>
+		
+	</tr>
+	<tr id="netdevannex" style="display:none;">
+		<td class="fall" style="width: 100%;" colspan="2">
+			{include file="annex.html"}
+		</td>
+	</tr>
+</table>
+
+{if get_profile('netdevannex')}
+<script type="text/javascript">
+<!--
+	document.getElementById('netdevannex').style.display = '';
+//-->
+</script>
+{/if}

@@ -216,6 +216,14 @@ $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 $customerid = $customerinfo['id'];
 include(MODULES_DIR.'/customer.inc.php');
 
+$annex_info = array('section'=>'customer','ownerid'=>$customerid);
+$SMARTY->assign('annex_info',$annex_info);
+include(MODULES_DIR.'/customer_xajax.inc.php');
+$LMS->InitXajax();
+$LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
+$SMARTY->assign('xajax', $LMS->RunXajax());
+
+
 $SMARTY->assign('originlist',$DB->GetAll('SELECT id, name FROM customerorigin ORDER BY name;'));
 $SMARTY->assign('customerinfo',$customerinfo);
 $SMARTY->assign('cstateslist',$LMS->GetCountryStates());

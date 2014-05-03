@@ -34,6 +34,31 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/05/03',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka błędu przy dodawaniu nowego komputera',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano box załączniki w karcie klienta',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Zmiana wartości w .htaccess dla php_value post_max_size i php_value upload_max_filesize na 256M. Pozwoli to nam pobrać załączniki o max. wielkości 256MB.',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Doszedł box Załączniki w karcie interfejsu sieciowego.',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano nowe pola w karcie interfejsu sieciowego',
+	),
+	array(
 	    'data'	=> '2014/04/29',
 	    'status'	=> '',
 	    'opis'	=> 'Kilka drobnych zmian kosmetycznych',

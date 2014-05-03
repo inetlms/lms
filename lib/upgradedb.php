@@ -26,7 +26,7 @@
 
 define('DBVERSION', '2014032900'); // here should be always the newest version of database!
 //define('DBVEX','2013021205');
-define('DBVEX','2014040901'); // wersja bazy LMS iNET
+define('DBVEX','2014043000'); // wersja bazy LMS iNET
 				 // it placed here to avoid read disk every time when we call this file.
 
 /*

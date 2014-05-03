@@ -96,6 +96,11 @@ include(MODULES_DIR . '/nodexajax.inc.php');
 
 $nodeinfo = $LMS->ExecHook('node_info_init', $nodeinfo);
 
+$annex_info = array('section'=>'customer','ownerid'=>$customerid);
+$SMARTY->assign('annex_info',$annex_info);
+include(MODULES_DIR.'/customer_xajax.inc.php');
+$LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
+
 $SMARTY->assign('xajax', $LMS->RunXajax());
 
 $SMARTY->assign('netdevices', $netdevices);

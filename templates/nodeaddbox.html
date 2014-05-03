@@ -2,6 +2,7 @@
 {include file="calendar_js.html"}
 <form name="nodeadd" id="nodeadd" method="POST" action="?m=nodeadd{if $customerinfo.id}&ownerid={$customerinfo.id}{/if}">
 <input type="submit" class="hiddenbtn">
+<input type="hidden" name="nodedatanetid" id="nodedatanetid" value="{$nodedata.netid}">
 <table style="width: 100%;" cellpadding="3" class="table">
 	<tr class="dark nav-header">
 		<td style="width: 1%;" class="fleftu">
@@ -18,16 +19,16 @@
 					<td style="width: 50%; vertical-align: top;">
 						<table style="width: 100%;" cellpadding="3">
 	<tr>
+		<td width="1%"><img src="img/host.gif"></td>
+		<td width="99%" align="left"><div id="id_host_name">{$nodedata.hostname}</div></td>
+	</tr>
+	<tr>
 		<td style="width: 1%;">
 			<img src="img/network.gif" alt="{trans("Network:")}">
 		</td>
 		<td style="width: 99%;">
-			<select size="1" name="nodedatanetid" {tip text="Choose network" trigger="netid"} style="min-width:122px;">
-				<option value="0"></option>
-				{foreach $networks as $net}
-				<option value="{$net.id}" {if $net.id eq $nodedata.netid} selected{/if}{if $net.disabled eq 1} class="alert"{/if}>HOST: {if $net.hostname}{$net.hostname}{else}-------{/if} / {$net.name|truncate:20:"":true}: {$net.address}/{$net.prefix}</option>
-				{/foreach}
-			</select>
+			
+			<div id="id_network_name">{$nodedata.networkname}</div>
 		</td>
 	</tr>
 	<tr class="light">

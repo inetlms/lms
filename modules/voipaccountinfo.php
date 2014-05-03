@@ -45,6 +45,14 @@ $customerid = $voipaccountinfo['ownerid'];
 
 include(MODULES_DIR.'/customer.inc.php');
 
+$annex_info = array('section'=>'customer','ownerid'=>$customerid);
+$SMARTY->assign('annex_info',$annex_info);
+include(MODULES_DIR.'/customer_xajax.inc.php');
+$LMS->InitXajax();
+$LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
+$SMARTY->assign('xajax', $LMS->RunXajax());
+
+
 $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 
 if(!isset($_GET['ownerid']))

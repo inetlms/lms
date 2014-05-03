@@ -123,6 +123,14 @@ $customers = $LMS->GetCustomerNames();
 
 include(MODULES_DIR.'/customer.inc.php');
 
+$annex_info = array('section'=>'customer','ownerid'=>$customerid);
+$SMARTY->assign('annex_info',$annex_info);
+include(MODULES_DIR.'/customer_xajax.inc.php');
+$LMS->InitXajax();
+$LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
+$SMARTY->assign('xajax', $LMS->RunXajax());
+
+
 $SMARTY->assign('customervoipaccounts',$customervoipaccounts);
 $SMARTY->assign('error',$error);
 $SMARTY->assign('voipaccountinfo',$voipaccountinfo);
