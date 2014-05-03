@@ -38,23 +38,30 @@ if(isset($_POST['netdev']))
 	
 	$netdevdata['name'] = strtoupper(str_replace(" ","_",$netdevdata['name']));
 	
+	if (!$netdevdata['devtype'])
+	    $netdevdata['managed'] = NIE;
+	
 	$netdevid = $LMS->NetDevAdd($netdevdata);
 	
 	if (SYSLOG) addlogs('Dodano nowy interfejs sieciowy '.$netdevdata['name'],'e=add;m=netdev;');
 	$SESSION->redirect('?m=netdevinfo&id='.$netdevid);
-}
+} else
+    $netdev = array('devtype'=>DEV_ACTIVE,'managed'=>TAK,'sharing'=>NIE,'modular'=>NIE,'backbone_layer'=>NIE,'distribution_layer'=>TAK,'access_layer'=>TAK);
 
 $layout['pagetitle'] = 'Nowe urządzenie sieciowe';
 
 $SMARTY->assign('networknodelist', $DB->GetAll('SELECT id, name FROM networknode WHERE deleted = ? AND disabled = ? ;',array(0,0)));
 
+$annex_info = array('section'=>'netdev','ownerid'=>0);
+$SMARTY->assign('annex_info',$annex_info);
 include(MODULES_DIR . '/netdevxajax.inc.php');
 
 if (chkconfig($CONFIG['phpui']['ewx_support'])) $SMARTY->assign('channels', $DB->GetAll('SELECT id, name FROM ewx_channels ORDER BY name'));
 
 $SMARTY->assign('action','add');
-$SMARTY->assign('netdevinfo',array('devtype'=>DEV_ACTIVE,'managed'=>TAK,'sharing'=>NIE));
+$SMARTY->assign('netdevinfo',$netdev);
 $SMARTY->assign('nastype', $LMS->GetNAStypes());
+$SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
 $SMARTY->display('netdevedit.html');
 
 ?>

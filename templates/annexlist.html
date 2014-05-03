@@ -2,11 +2,12 @@
 {if $filelist}
 <table width="100%" cellpadding="5">
     <tr class="dark">
-	<td width="100%" colspan="7" align="left" class="fall pad"><img src="img/attach.gif">&nbsp;&nbsp;&nbsp;<b>Lista załączonych plików / dokumentów</b></td>
+	<td width="100%" colspan="8" align="left" class="fall pad"><b>Lista załączonych plików / dokumentów</b></td>
     </tr>
     <tr class="light nav-header">
 	<td class="fleftu pad" width="1%" nowrap align="center"><b>ID</b></td>
 	<td class="fbt pad" width="1%" nowrap align="center"><b>Dodany</b></td>
+	<td class="fbt pad" width="1%" nowrap align="center"><b>Dodał</b></td>
 	<td class="fbt pad" width="1%" nowrap align="center">&nbsp;</td>
 	<td class="fbt pad" width="1%" nowrap align="left"><b>Nazwa pliku</b></td>
 	<td class="fbt pad" width="auto" align="left"><b>Opis</b></td>
@@ -19,7 +20,7 @@
     <tr class="{cycle} lista"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	<td class="fleft pad" width="1%" nowrap>{$filelist[list].id|string_format:"%04d"}</td>
 	<td class="pad" width="1%" nowrap>{$filelist[list].cdate|date_format:"Y-m-d H:i"}</td>
-
+	<td class="pad" width="1%" nowrap>{$filelist[list].username}</td>
 	<td class="pad" width="1%" nowrap>
 	    {if $filelist[list].filetype == 'image/jpeg' || $filelist[list].filetype == 'image/png' || $filelist[list].filetype == 'image/gif'}
 	    <img src="img/view.gif" {tip a=$filelist[list].id dynpopup='?m=view_image&id=$a' sticky=0}>
@@ -50,12 +51,12 @@
 	</td>
     </tr>
     {/section}
-    <tr><td colspan="7" class="ftop" align="right"></td></tr>
+    <tr><td colspan="8" class="ftop" align="right"></td></tr>
 </table>
 {else}
     <table width="100%" cellpadding="4">
 	<tr class="light">
-	    <td align="center" class="fall"><p><h3>Brak wpisów</h3></p></td>
+	    <td align="center" class="fall"><p><h3>Brak dodanych plików</h3></p></td>
 	</tr>
     </table>
 {/if}

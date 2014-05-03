@@ -4336,6 +4336,7 @@ class LMS {
 		$result = $this->DB->GetRow('SELECT d.*, t.name AS nastypename, tt.name AS monit_nastypename, c.name AS channel,
 		        lc.name AS city_name,
 		        (SELECT nn.name FROM networknode nn WHERE nn.id = d.networknodeid) AS networknodename,
+		        (SELECT dt.type FROM dictionary_devices_client dt WHERE dt.id = d.typeofdevice) AS typeofdevicename,
 			(CASE WHEN ls.name2 IS NOT NULL THEN ' . $this->DB->Concat('ls.name2', "' '", 'ls.name') . ' ELSE ls.name END) AS street_name, lt.name AS street_type
 			FROM netdevices d
 			LEFT JOIN nastypes t ON (t.id = d.nastype) 
@@ -4377,8 +4378,9 @@ class LMS {
 				description, producer, model, serialnumber,
 				ports, purchasetime, guaranteeperiod, shortname,
 				nastype, clients, secret, community, channelid,
-				longitude, latitude, monit_nastype, monit_login, monit_passwd,  monit_port, networknodeid, server, coaport )
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($data['name'],
+				longitude, latitude, monit_nastype, monit_login, monit_passwd,  monit_port, networknodeid, server, coaport,
+				devtype, managed, sharing, modular, backbone_layer, distribution_layer, access_layer, typeofdevice)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($data['name'],
 						$data['location'],
 						$data['location_city'] ? $data['location_city'] : null,
 						$data['location_street'] ? $data['location_street'] : null,
@@ -4406,6 +4408,14 @@ class LMS {
 						($data['networknode'] ? $data['networknode'] : 0),
 						($data['server'] ? $data['server'] : ''),
 						($data['coaport'] ? $data['coaport'] : '3799'),
+						($data['devtype'] ? 1 : 0),
+						($data['managed'] ? 1 : 0),
+						($data['sharing'] ? 1 : 0),
+						($data['modular'] ? 1 : 0),
+						($data['backbone_layer'] ? 1 : 0),
+						($data['distribution_layer'] ? 1 : 0),
+						($data['access_layer'] ? 1 : 0),
+						($data['typeofdevice'] ? $data['typeofdevice'] : 0),
 				))) {
 			$id = $this->DB->GetLastInsertID('netdevices');
 
@@ -4438,7 +4448,8 @@ class LMS {
 				location_city=?, location_street=?, location_house=?, location_flat=?,
 				model=?, serialnumber=?, ports=?, purchasetime=?, guaranteeperiod=?, shortname=?,
 				nastype=?, clients=?, secret=?, community=?, channelid=?, longitude=?, latitude=?,
-				monit_nastype = ?, monit_login = ?, monit_passwd = ?, monit_port = ?, networknodeid = ?, server=?, coaport=?
+				monit_nastype = ?, monit_login = ?, monit_passwd = ?, monit_port = ?, networknodeid = ?, server=?, coaport=?,
+				devtype=?, managed=?, sharing=?, modular=?, backbone_layer=?, distribution_layer=?, access_layer=?, typeofdevice=? 
 				WHERE id=?', array($data['name'],
 				$data['description'],
 				$data['producer'],
@@ -4467,6 +4478,14 @@ class LMS {
 				($data['networknode'] ? $data['networknode'] : 0),
 				($data['server'] ? $data['server'] : ''),
 				($data['coaport'] ? $data['coaport'] : '3799'),
+				($data['devtype'] ? 1 : 0),
+				($data['managed'] ? 1 : 0),
+				($data['sharing'] ? 1 : 0),
+				($data['modular'] ? 1 : 0),
+				($data['backbone_layer'] ? 1 : 0),
+				($data['distribution_layer'] ? 1 : 0),
+				($data['access_layer'] ? 1 : 0),
+				($data['typeofdevice'] ? $data['typeofdevice'] : 0),
 				$data['id']
 		));
 	}
@@ -7803,7 +7822,10 @@ class LMS {
     function GetFilesList($section = NULL, $owner = NULL)
     {
 	
-	return $this->DB->GetAll('SELECT * FROM uploadfiles WHERE 1=1'.($section ? ' AND section = \''.$section.'\'' : '').($owner ? ' AND ownerid = \''.intval($owner).'\'' : '').' ;');
+	return $this->DB->GetAll('SELECT u.*, (SELECT us.login FROM users us WHERE us.id = u.userid) AS username  FROM uploadfiles u WHERE 1=1 '
+	    .($section ? ' AND u.section = \''.$section.'\'' : '')
+	    .($owner ? ' AND u.ownerid = \''.intval($owner).'\'' : '')
+	    .' ;');
 	
     }
 
@@ -7818,7 +7840,8 @@ class LMS {
     {
 	
 	$result = $this->DB->GetAll('SELECT d.*,
-					(SELECT COUNT(n.id) FROM nodes n WHERE n.ownerid!=0 AND n.typeofdevice = d.id ) AS countnodes 
+					(SELECT COUNT(n.id) FROM nodes n WHERE n.ownerid!=0 AND n.typeofdevice = d.id ) AS countnodes, 
+					(SELECT COUNT(nd.id) FROM netdevices nd WHERE nd.typeofdevice = d.id) AS countnetdev 
 					FROM dictionary_devices_client d ORDER BY type ASC;');
 	return $result;
     }
@@ -7838,6 +7861,13 @@ class LMS {
 				    ,array($cid));
 	return $result;
     }
+    
+    
+    function getTeleLine()
+    {
+	return $this->DB->GetAll('SELECT l.*, (SELECT COUNT(*) FROM telelineassign a WHERE a.teleline = l.id) AS countlink FROM teleline l ORDER BY name ASC;');
+    }
+
 
 }
 

@@ -43,6 +43,7 @@ if($LMS->CountNetDevLinks($_GET['id'])>0)
     }else{
 	    header('Location: ?m=netdevlist');
 	    $body = '<P>'.trans('Device has been deleted.').'</P>';
+	    $LMS->DeleteFileByOwner('netdev',$_GET['id']);
 	    $LMS->DeleteNetDev($_GET['id']);
     }
 }

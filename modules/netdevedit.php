@@ -564,7 +564,10 @@ if (isset($_POST['netdev'])) {
 		    $netdevdata['longitude'] = $dane['longitude'];
 		    $netdevdata['latitude'] = $dane['latitude'];
 		}
-
+		
+		if (!$netdevdata['devtype'])
+		    $netdevdata['managed'] = NIE;
+		
 		$LMS->NetDevUpdate($netdevdata);
 		$SESSION->redirect('?m=netdevinfo&id=' . $_GET['id']);
 	}
@@ -621,8 +624,15 @@ $SMARTY->assign('nodelinktechnology', $SESSION->get('nodelinktechnology'));
 $SMARTY->assign('nodelinkspeed', $SESSION->get('nodelinkspeed'));
 $SMARTY->assign('nastype', $LMS->GetNAStypes());
 $SMARTY->assign('networknodelist',$LMS->GetListnetworknode());
+$SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
 
+$annex_info = array('section'=>'netdev','ownerid'=>$netdevdata['id']);
+$SMARTY->assign('annex_info',$annex_info);
 include(MODULES_DIR . '/netdevxajax.inc.php');
+
+
+//include(MODULES_DIR.'/annex.inc.php');
+
 
 switch ($edit) {
 	case 'data':

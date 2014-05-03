@@ -193,7 +193,7 @@ $layout['smarty_version'] = SMARTY_VERSION;
 $layout['hostname'] = hostname();
 $layout['lmsv'] = 'iNET';
 $layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
-$layout['lmsvr'] = '14.04.29';
+$layout['lmsvr'] = '14.05.03';
 $layout['dberrors'] =& $DB->errors;
 $layout['dbdebug'] = $_DBDEBUG;
 $layout['popup'] = isset($_GET['popup']) ? true : false;
@@ -304,10 +304,10 @@ else
 	{
 	    $obj = new xajaxResponse();
 	    $c = curl_init();
-	    curl_setopt($c,CURLOPT_URL,'http://www.adv.inetlms.pl/getinfo.php');
+	    curl_setopt($c,CURLOPT_URL,'http://www.inetlms.pl/adv/getinfo.php');
 	    curl_setopt($c,CURLOPT_RETURNTRANSFER,1);
 	    curl_setopt($c,CURLOPT_USERAGENT,'MozillaXYZ/1.0');
-	    curl_setopt($c,CURLOPT_TIMEOUT,4);
+	    curl_setopt($c,CURLOPT_TIMEOUT,5);
 	    $info = curl_getinfo($c);
 	    $result = curl_exec($c);
 	    if (!curl_error($c) && !empty($result))
