@@ -28,17 +28,19 @@ $DB->BeginTrans();
 
 
 
-$DB->Execute("DROP VIEW nas");
+$DB->Execute("DROP VIEW nas;");
 
 $DB->Execute("ALTER TABLE netdevices ADD coaport varchar(5) DEFAULT NULL;");
 $DB->Execute("UPDATE netdevices SET coaport='3799';");
 
-$DB->Execute("CREATE VIEW nas AS 
-		SELECT n.id, inet_ntoa(n.ipaddr) AS nasname, d.shortname, d.nastype AS type,
-		d.clients AS ports, d.secret, d.server, d.community, d.coaport, d.description 
-		FROM nodes n 
-		JOIN netdevices d ON (n.netdev = d.id) 
-		WHERE n.nas = 1");
+$DB->Execute("
+CREATE VIEW nas AS 
+	SELECT n.id, inet_ntoa(n.ipaddr) AS nasname, d.shortname, d.nastype AS type,
+	d.clients AS ports, d.secret, d.server, d.community, d.coaport, d.description 
+	FROM nodes n 
+	JOIN netdevices d ON (n.netdev = d.id) 
+	WHERE n.nas = 1;
+");
 
 $DB->addconfig('radius','auth_login','id');
 $DB->addconfig('radius','coa_port','3799');

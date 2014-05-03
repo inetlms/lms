@@ -32,7 +32,7 @@ if (!$DB->GetOne("SELECT 1 FROM pg_tables WHERE tablename = ?",array('radippool'
     CREATE SEQUENCE radippool_id_seq;
     
     CREATE TABLE radippool (
-	id			DEFAULT netval('radippool_id_seq'::text) NOT NULL,
+	id			bigint DEFAULT nextval('radippool_id_seq'::text) NOT NULL,
 	pool_name		varchar(64) NOT NULL,
 	FramedIPAddress		INET NOT NULL,
 	NASIPAddress		VARCHAR(16) NOT NULL default '',
@@ -52,14 +52,14 @@ if (!$DB->GetOne("SELECT 1 FROM pg_tables WHERE tablename = ?",array('radippool'
 }
 
 
-$DB->Execute("DROP VIEW nas");
-$DB->Execute("ALTER TABLE netdevices ADD server varchar(64) DEFAULT ''");
+$DB->Execute("DROP VIEW nas;");
+$DB->Execute("ALTER TABLE netdevices ADD server varchar(64) DEFAULT '';");
 $DB->Execute("CREATE VIEW nas AS 
 		SELECT n.id, inet_ntoa(n.ipaddr) AS nasname, d.shortname, d.nastype AS type,
 		d.clients AS ports, d.secret, d.server, d.community, d.description 
 		FROM nodes n 
 		JOIN netdevices d ON (n.netdev = d.id) 
-		WHERE n.nas = 1");
+		WHERE n.nas = 1;");
 
 
 
@@ -68,7 +68,7 @@ if (!$DB->GetOne("SELECT 1 FROM pg_tables WHERE tablename = ?",array('radacct'))
     $DB->Execute("
 	CREATE SEQUENCE radacct_id_seq;
 	CREATE TABLE radacct (
-		RadAcctId		DEFAULT nextval('radacct_id_seq'::text) NOT NULL,
+		RadAcctId		bigint DEFAULT nextval('radacct_id_seq'::text) NOT NULL,
 		AcctSessionId		VARCHAR(64) NOT NULL,
 		AcctUniqueId		VARCHAR(32) NOT NULL,
 		UserName		VARCHAR(253),
@@ -94,7 +94,7 @@ if (!$DB->GetOne("SELECT 1 FROM pg_tables WHERE tablename = ?",array('radacct'))
 		FramedIPAddress		INET,
 		AcctStartDelay		INTEGER,
 		AcctStopDelay		INTEGER,
-		PRIMARY KEY(id)
+		PRIMARY KEY(RadAcctId)
 	);
 	CREATE INDEX radacct_active_user_idx ON radacct (UserName, NASIPAddress, AcctSessionId) WHERE AcctStopTime IS NULL;
 	CREATE INDEX radacct_start_user_idx ON radacct (AcctStartTime, UserName);
@@ -108,7 +108,7 @@ if (!$DB->GetOne("SELECT 1 FROM pg_tables WHERE tablename = ?",array('radcheck')
     $DB->Execute("
 	CREATE SEQUENCE radcheck_id_seq;
 	CREATE TABLE radcheck (
-		id		DEFAULT nextval('radcheck_id_seq'::text) NOT NULL,
+		id		bigint DEFAULT nextval('radcheck_id_seq'::text) NOT NULL,
 		UserName	VARCHAR(64) NOT NULL DEFAULT '',
 		Attribute	VARCHAR(64) NOT NULL DEFAULT '',
 		op		CHAR(2) NOT NULL DEFAULT '==',
@@ -125,7 +125,7 @@ if (!$DB->GetOne("SELECT 1 FROM pg_tables WHERE tablename = ?",array('radgroupch
     $DB->Execute("
 	CREATE SEQUENCE radgroupcheck_id_seq;
 	CREATE TABLE radgroupcheck (
-		id		DEFAULT nextval('radgroupcheck_id_seq'::text) NOT NULL,
+		id		bigint DEFAULT nextval('radgroupcheck_id_seq'::text) NOT NULL,
 		GroupName	VARCHAR(64) NOT NULL DEFAULT '',
 		Attribute	VARCHAR(64) NOT NULL DEFAULT '',
 		op		CHAR(2) NOT NULL DEFAULT '==',
@@ -141,7 +141,7 @@ if (!$DB->GetOne("SELECT 1 FROM pg_tables WHERE tablename = ?",array('radgroupre
     $DB->Execute("
 	CREATE SEQUENCE radgroupreply_id_seq;
 	CREATE TABLE radgroupreply (
-		id		DEFAULT nextval('radgroupreply_id_seq'::text) NOT NULL,
+		id		bigint DEFAULT nextval('radgroupreply_id_seq'::text) NOT NULL,
 		GroupName	VARCHAR(64) NOT NULL DEFAULT '',
 		Attribute	VARCHAR(64) NOT NULL DEFAULT '',
 		op		CHAR(2) NOT NULL DEFAULT '=',
@@ -158,7 +158,7 @@ if (!$DB->GetOne("SELECT 1 FROM pg_tables WHERE tablename = ?",array('radreply')
     $DB->Execute("
 	CREATE SEQUENCE radreply_id_seq;
 	CREATE TABLE radreply (
-		id		DEFAULT nextval('radreply_id_seq'::text) NOT NULL,
+		id		bigint DEFAULT nextval('radreply_id_seq'::text) NOT NULL,
 		UserName	VARCHAR(64) NOT NULL DEFAULT '',
 		Attribute	VARCHAR(64) NOT NULL DEFAULT '',
 		op		CHAR(2) NOT NULL DEFAULT '=',
@@ -188,7 +188,7 @@ if (!$DB->GetOne("SELECT 1 FROM pg_tables WHERE tablename = ?",array('radpostaut
     $DB->Execute("
 	CREATE SEQUENCE radpostauth_id_seq;
 	CREATE TABLE radpostauth (
-		id			DEFAULT nextval('radpostauth_id_seq'::text) NOT NULL,
+		id			bigint DEFAULT nextval('radpostauth_id_seq'::text) NOT NULL,
 		username		VARCHAR(253) NOT NULL,
 		pass			VARCHAR(128),
 		reply			VARCHAR(32),
