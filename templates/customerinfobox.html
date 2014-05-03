@@ -1,14 +1,14 @@
 <!--// $Id$ //-->
 <table width="100%" cellpadding="3"  class="table table-bordered">
-	<tr{if $customerpanel} class="dark hand info-hover" onclick="ShowOrHideBox('customerpanelbox');"{else} class="dark info"{/if}>
+	<tr class="dark hand info-hover" onclick="ShowOrHideBox('customerpanelbox');">
 		<td width="1%" class="fall">
 			<img src="img/customer.gif" alt="">
-			{if $customerpanel}<b>{trans("Owner:")}</b>{/if}
+			<b>Klient:</b>
 			<b>{$customerinfo.customername|escape} ({$customerinfo.id|string_format:"%04d"}){if $customerinfo.deleted} <font COLOR="RED">({trans("deleted customer")})</font>{/if}</b>
 		</td>
 	</tr>
-    <tr class="light"{if $customerpanel} id="customerpanelbox" style="display:none;"{/if}>
-	    <td width="100%" {if $customerpanel} class="fall container" align="right"{else}class="flr container"{/if}>
+    <tr class="light" id="customerpanelbox" style="display:none;">
+	    <td width="100%" class="fall container" align="right">
 			<table width="100%" cellpadding="0">
 				<tr class="light">
 					<td width="50%" style="vertical-align:top;">
@@ -396,12 +396,12 @@
 					</td>
 				</tr>
 			</table>
-{if !$customerpanel}
+<!--//
 		</td>
         </tr>
 	<tr class="light">
 		<td width="100%" class="fbottomu" align="right">
-{/if}
+//-->
 			{if $customerinfo.deleted}
 				<a href="?m=customeredit&id={$customerinfo.id}&action=recover">{trans("Restore")} <img src="img/recover.gif" alt="[ {trans("Restore")} ]"></a>
 			{else}
@@ -422,7 +422,7 @@
 		</td>
 	</tr>
 </table>
-{if $customerpanel && get_profile('customerpanelbox')}
+{if get_profile('customerpanelbox')}
 <script type="text/javascript">
 <!--
 	document.getElementById('customerpanelbox').style.display = '';

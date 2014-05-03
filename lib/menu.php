@@ -25,65 +25,7 @@
  */
 
 $menu = array(
-		'admin' => array(
-			'name' => trans('Administration'),
-			'img' =>'users.gif',
-			'link' =>'?m=welcome',
-			'tip' => trans('System information and management'),
-			'accesskey' =>'i',
-			'prio' => 0,
-			'index' => 20,
-			'submenu' => array(
-				array(
-					'name' => trans('Info'),
-					'link' =>'?m='.$CONFIG['phpui']['default_module'],
-					'tip' => trans('Basic system information'),
-					'prio' => 10,
-				),
-				array(
-					'name' => trans('Users'),
-					'link' =>'?m=userlist',
-					'tip' => trans('User list'),
-					'prio' => 20,
-				),
-				array(
-					'name' => trans('New User'),
-					'link' =>'?m=useradd',
-					'tip' => trans('New User'),
-					'prio' => 30,
-				),
-				array(
-					'name' => trans('Backups'),
-					'link' =>'?m=dblist',
-					'tip' => trans('Allows you to manage database backups'),
-					'prio' => 40,
-				),
-				
-				array(
-					'name' => trans('Syslog'),
-					'link' => '?m=syslog&sl_df='.date('Y/m/d',strtotime("-2 week",time())),
-					'prio' => 50,
-				),
-				array(
-					'name' => 'Changelog',
-					'link' =>'?m=changelog',
-					'tip' => '',
-					'prio' => 60,
-				),
-				array(
-					'name' => 'Sponsorzy',
-					'link' =>'?m=sponsorzy',
-					'tip' => 'Lista firm które przyczyniły się do rozwoju iNET LMS',
-					'prio' => 70,
-				),
-				array(
-					'name' => trans('Copyrights'),
-					'link' =>'?m=copyrights',
-					'tip' => trans('Copyrights, authors, etc.'),
-					'prio' => 200,
-				),
-			),
-		),
+
 
 		'customers' => array(
 			'name' => trans('Customers'),
@@ -255,7 +197,7 @@ $menu = array(
 		),
 
 		'netdevices' => array(
-			'name' => trans('Net Devices'),
+			'name' => 'Sieć',
 			'img' =>'netdev.gif',
 			'link' =>'?m=netdevlist',
 			'tip' => trans('Network Devices Management'),
@@ -875,16 +817,74 @@ $menu = array(
 				),
 				
 				array(
-					'name' => 'Urządzenia klienckie',
+					'name' => 'Rodzaje urządzeń',
 					'link' => '?m=dictionarydevices',
-					'tip'	=> 'Rodzaje urządzeń instalowanych u klienta',
+					'tip'	=> 'Rodzaje urządzeń sieciowych oraz instalowanych u klienta',
 					'prio' => 40,
 				),
 				
 			),
 			
 		),
-
+'admin' => array(
+			'name' => trans('Administration'),
+			'img' =>'users.gif',
+			'link' =>'?m=welcome',
+			'tip' => trans('System information and management'),
+			'accesskey' =>'i',
+			'prio' => 59,
+			'index' => 20,
+			'submenu' => array(
+				array(
+					'name' => trans('Info'),
+					'link' =>'?m='.$CONFIG['phpui']['default_module'],
+					'tip' => trans('Basic system information'),
+					'prio' => 10,
+				),
+				array(
+					'name' => trans('Users'),
+					'link' =>'?m=userlist',
+					'tip' => trans('User list'),
+					'prio' => 20,
+				),
+				array(
+					'name' => trans('New User'),
+					'link' =>'?m=useradd',
+					'tip' => trans('New User'),
+					'prio' => 30,
+				),
+				array(
+					'name' => trans('Backups'),
+					'link' =>'?m=dblist',
+					'tip' => trans('Allows you to manage database backups'),
+					'prio' => 40,
+				),
+				
+				array(
+					'name' => trans('Syslog'),
+					'link' => '?m=syslog&sl_df='.date('Y/m/d',strtotime("-2 week",time())),
+					'prio' => 50,
+				),
+				array(
+					'name' => 'Changelog',
+					'link' =>'?m=changelog',
+					'tip' => '',
+					'prio' => 60,
+				),
+				array(
+					'name' => 'Sponsorzy',
+					'link' =>'?m=sponsorzy',
+					'tip' => 'Lista firm które przyczyniły się do rozwoju iNET LMS',
+					'prio' => 70,
+				),
+				array(
+					'name' => trans('Copyrights'),
+					'link' =>'?m=copyrights',
+					'tip' => trans('Copyrights, authors, etc.'),
+					'prio' => 200,
+				),
+			),
+		),
 		'config' => array(
 			'name' => trans('Configuration'),
 			'img' =>'settings.gif',
@@ -924,7 +924,6 @@ $menu = array(
 					'tip' => trans('Company Divisions Definitions'),
 					'prio' => 50,
 				),
-
 				array(
 					'name' => trans('Daemon'),
 					'link' => '?m=daemoninstancelist',
@@ -941,6 +940,8 @@ $menu = array(
 			),
 		),
 		
+		
+		
 				'password' => array(
 			'name' => trans('Password'),
 			'img' => 'pass.gif',
@@ -950,7 +951,7 @@ $menu = array(
 			'prio' => 65,
 			'index' => 320,
 		),
-
+/*
 		'documentation' => array(
 			'name' => trans('Documentation'),
 			'img' => 'doc.gif',
@@ -961,7 +962,7 @@ $menu = array(
 			'index' => 360,
 			'windowopen' => TRUE,
 		),
-
+*/
 	);
 
 if (get_conf('phpui.radius')) {

@@ -50,9 +50,6 @@ $messagelist = $LMS->GetMessages($customerid, 10);
 $sysloglist = $LMS->GetCustomerSyslog($customerid, 20);
 $eventlist = $LMS->EventSearch(array('customerid' => $customerid), 'date,desc', true);
 $customernodes = $LMS->GetCustomerNodes($customerid);
-//$monit['ping_test'] = $monit['signal_test'] = false;
-
-//if (isset($_GET['alltopic'])) $limit = NULL; else $limit = 10;
 
 if (!get_conf('privileges.hide_callcenter')) {
     $customercallcenter = $LMS->GetBoxListInfoCenter($customerid);

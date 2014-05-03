@@ -285,6 +285,51 @@
 				</td>
 				<td width="50%" style="vertical-align:top;">
 				        <table width="100%" cellpadding="3">
+	{if $netdevinfo.typeofdevice}
+	<tr class="light">
+	    <td width="1%"><img src="img/netdev.gif"></td>
+	    <td width="1%" nowrap><b>Rodzaj urządzenia:</b> </td>
+	    <td width="1%">{$netdevinfo.typeofdevicename}</td>
+	</tr>
+	{/if}
+	<tr class="light">
+	    <td width="1%"><img src="img/options.gif"></td>
+	    <td width="1%" nowrap><b>Typ urządzenia:</b> </td>
+	    <td width="1%">{assign var='tmp' value=$netdevinfo.devtype}{$_DEVTYPE.$tmp}</td>
+	</tr>
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Urz. zarządzalne:</b> </td>
+	    <td width="1%">{assign var='tmp' value=$netdevinfo.managed}{$_TN.$tmp}</td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Udostępnianie portów:</b> </td>
+	    <td width="1%">{assign var='tmp' value=$netdevinfo.sharing}{$_TN.$tmp}</td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Budowa modułowa:</b> </td>
+	    <td width="1%">{assign var='tmp' value=$netdevinfo.modular}{$_TN.$tmp}</td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Warstwa szkieletowa:</b> </td>
+	    <td width="1%">{assign var='tmp' value=$netdevinfo.backbone_layer}{$_TN.$tmp}</td>
+	</tr>
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Warstwa dystrybucyjna:</b> </td>
+	    <td width="1%">{assign var='tmp' value=$netdevinfo.distribution_layer}{$_TN.$tmp}</td>
+	</tr>
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Warstwa dostępowa:</b> </td>
+	    <td width="1%">{assign var='tmp' value=$netdevinfo.access_layer}{$_TN.$tmp}</td>
+	</tr>
 	{if $netdevinfo.purchasetime}
 	<tr class="light">
 		<td width="1%">

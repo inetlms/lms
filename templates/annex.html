@@ -1,4 +1,4 @@
-{if !$layout.ajax}{include file="header.html"}{/if}
+{if !$layout.ajax && !$incannex}{include file="header.html"}{/if}
 {$xajax}
 {literal}
 <style type="text/css">
@@ -18,12 +18,12 @@ ul.fader{clear:both;}
 </style>
 <script type="text/javascript" src="img/jquery.fader.js"></script>
 {/literal}
+ {if !$incannex}
 <p style="text-align:right;">
-     
     <a href="javascript: void(0);" onclick="document.getElementById('id_annex_edit').style.display='';"><b>Dodaj nowy plik</b>&nbsp;&nbsp;<img src="img/add.gif"></a> 
-    
     <!--// &nbsp;&nbsp;&nbsp;<a href="javascript: void(0);" onclick="xajax_annex_galeria();"><img src="img/view.gif"> <b>Galeria</b></a> //-->
 </p>
+{/if}
 <div id="galeria"></div>
 <div id="id_annex_edit" style="display:none;margin-bottom:5px;">
 
@@ -51,7 +51,7 @@ ul.fader{clear:both;}
 		    <td width="1%" class="pad" nowrap></td>
 		    <td width="99%" class="pad">
 			<div class="progress" style="position:relative;width:346px;border:solid 1px #AAAAAA;padding:1px;radius:3px">
-			    <div class="bar" style="background-color:#FFFF99;width:0%;height:20px;border-radius:3px;"></div>
+			    <div class="bar" style="background-color:#F9FF70;width:0%;height:20px;border-radius:3px;"></div>
 			    <div class="percent" style="position:absolute;display:inline-block;top:3px;left:48%;">0%</div>
 			</div>
 			<div id="status"></div>
@@ -130,4 +130,6 @@ ul.fader{clear:both;}
 </script>
 {/literal}
 
-{if !$layout.ajax}{include file="footer.html"}{/if}
+{if (!$layout.ajax && !$incannex)}
+    {include file="footer.html"}
+{/if}

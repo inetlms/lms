@@ -262,9 +262,18 @@ $layout['pagetitle'] = trans('New Node');
 if($customerid = $nodedata['ownerid'])
 {
 	include(MODULES_DIR.'/customer.inc.php');
+	$annex_info = array('section'=>'customer','ownerid'=>$customerid);
+	$SMARTY->assign('annex_info',$annex_info);
+	include(MODULES_DIR.'/customer_xajax.inc.php');
+	$LMS->InitXajax();
+	$LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
+	$SMARTY->assign('xajax', $LMS->RunXajax());
 }
 else
 	$SMARTY->assign('allnodegroups', $LMS->GetNodeGroupNames());
+
+
+
 
 if(!isset($CONFIG['phpui']['big_networks']) || !chkconfig($CONFIG['phpui']['big_networks']))
 {

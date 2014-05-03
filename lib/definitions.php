@@ -527,8 +527,8 @@ $TNODE = array(
     NODE_FOREIGN	=> 'Węzeł współdzielony z innym podmiotem',
 );
 
+define('DEV_PASSIVE',0);
 define('DEV_ACTIVE',1);
-define('DEV_PASSIVE',2);
 $DEVTYPE = array(
     DEV_ACTIVE		=> 'aktywne',
     DEV_PASSIVE		=> 'pasywne'
@@ -542,6 +542,25 @@ $LAYERTYPE = array(
     LAYER_DISTRIBUTION	=> 'dystrybucyjna',
     LAYER_BACKBONE	=> 'szkieletowa'
 );
+
+// rodzaj traktu
+define('TRACT_ABOVEGROUND',1);
+define('TRACT_UNDERGROUND',2);
+define('TRACT_UNDERGROUND_SEWER',3);
+define('TRACT_UNDERGROUND_PIPELINE',4);
+define('TRACT_RIGGING',5);
+define('TRACT_CANALROAD',6);
+
+$TYPETRACT = array(
+    TRACT_ABOVEGROUND		=> 'nadziemny',
+    TRACT_UNDERGROUND		=> 'podziemny',
+    TRACT_UNDERGROUND_SEWER	=> 'podziemny w kanalizacji',
+    TRACT_UNDERGROUND_PIPELINE	=> 'podziemny w rurciągu',
+    TRACT_RIGGING		=> 'podwieszany na lini energetycznej',
+    TRACT_CANALROAD		=> 'w kanale technicznym drogi',
+    
+);
+asort($TYPETRACT);
 
 // podstawy prawne współdzielenia węzłów
 define('POD_UMNET',1);
@@ -640,6 +659,7 @@ if(isset($SMARTY))
 	$SMARTY->assign('_PODSTAWA',$PODSTAWA);
 	$SMARTY->assign('_RAD_TERMINATE_CAUSE',$RAD_TERMINATE_CAUSE);
 	$SMARTY->assign('_RAD_SERVICE_TYPE',$RAD_SERVICE_TYPE);
+	$SMARTY->assign('_TYPETRACT',$TYPETRACT);
 }
 
 define('DEFAULT_NUMBER_TEMPLATE', '%N/LMS/%Y');

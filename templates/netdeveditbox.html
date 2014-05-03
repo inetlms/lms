@@ -273,7 +273,7 @@
 			<img src="img/radar.png" alt="">
 		</td>
 		<td width="1%" nowrap>
-			<b>Port</b>
+				<b>Port</b>
 		</td>
 		<td width="98%">
 			<input type="text" name="netdev[monit_port]" value="{if $netdevinfo.monit_port}{$netdevinfo.monit_port}{/if}" {tip text="podaj numer portu do komunikacji (opcja)"}>
@@ -286,6 +286,96 @@
 				</td>
 			        <td width="50%" style="vertical-align:top;">
 			                <table width="100%" cellpadding="3">
+	
+	<tr class="light">
+		<td width="1%" nowrap><img src="img/netdev.gif"></td>
+		<td width="1%" nowrap><b>Rodzaj urządzenia</b></td>
+		<td width="98%">
+		    {if $devicestype}
+		    <select name="netdev[typeofdevice]" style="min-width:150px;">
+			<option value=""></option>
+			{section name='devicestype' loop=$devicestype}
+			<option value="{$devicestype[devicestype].id}"{if $netdevinfo.typeofdevice == $devicestype[devicestype].id} selected{/if}>{$devicestype[devicestype].type}</option>
+			{/section}
+		    </select>
+		    {else}
+		    brak pozycji w słowniku
+		    <input type="hidden" name="netdev[typeofdevice]" value="">
+		    {/if}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" nowrap><img src="img/options.gif"></td>
+		<td width="1%" nowrap><b>Typ urządzenia</b></td>
+		<td width="98%" align="left" nowrap>
+		{foreach $_DEVTYPE as $item => $key}
+		    <input type="radio" name="netdev[devtype]" id="id_devtype_{$item}" value="{$item}" {if $netdevinfo.devtype == $item}checked{/if}>
+		    <label for="id_devtype_{$item}">&nbsp;{$key}</label>{/foreach}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" nowrap></td>
+		<td width="1%" nowrap><b>Urz. zarządzalne</b></td>
+		<td width="98%">
+		{foreach $_TN as $item => $key}
+		    <input type="radio" name="netdev[managed]" id="id_managed_{$item}" value="{$item}" {if $netdevinfo.managed == $item}checked{/if}>
+		    <label for="id_managed_{$item}">&nbsp;{$key}</label>{/foreach}
+		</td>
+	</tr>
+	
+	
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><span class="tiphelp" {tip text="Udostępnianie portów obcym podmiotom"}><b>Udostępnianie portów</b></span></td>
+	    <td width="98%" align="left">
+		{foreach $_TN as $item => $key}
+		<input type="radio" name="netdev[sharing]" id="id_sharing_{$item}" value="{$item}" {if $netdevinfo.sharing == $item}checked{/if}>
+		<label for="id_sharing_{$item}">&nbsp;{$key}</label>{/foreach}
+	    </td>
+	</tr>
+	<tr class="light">
+	    <td width="1%" nowrap></td>
+	    <td width="1%" nowrap><b>Budowa modułowa</b></td>
+	    <td width="98%" align="left">
+		{foreach $_TN as $item => $key}
+		    <input type="radio" name="netdev[modular]" id="id_modular_{$item}" value="{$item}" {if $netdevinfo.modular == $item}checked{/if}>
+		    <label for="id_modular_{$item}">&nbsp;{$key}</label>
+		{/foreach}
+	    </td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%" nowrap></td>
+	    <td width="1%" nowrap><span class="tiphelp" {tip text="Czy urządzenie pracuje w warstwie szkieletowej"}><b>Warstwa szkieletowa</b></span></td>
+	    <td width="98%" align="left">
+		{foreach $_TN as $item => $key}
+		    <input type="radio" name="netdev[backbone_layer]" id="id_backbone_{$item}" value="{$item}" {if $netdevinfo.backbone_layer == $item}checked{/if}>
+		    <label for="id_backbone_{$item}">&nbsp;{$key}</label>
+		{/foreach}
+	    </td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%" nowrap></td>
+	    <td width="1%" nowrap><span class="tiphelp" {tip text="Czy urządzenie pracuje w warstwie dystrybucyjnej"}><b>Warstwa dystrybucyjna</b></span></td>
+	    <td width="98%" align="left">
+		{foreach $_TN as $item => $key}
+		    <input type="radio" name="netdev[distribution_layer]" id="id_distribution_{$item}" value="{$item}" {if $netdevinfo.distribution_layer == $item}checked{/if}>
+		    <label for="id_distribution_{$item}">&nbsp;{$key}</label>
+		{/foreach}
+	    </td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%" nowrap></td>
+	    <td width="1%" nowrap><span class="tiphelp" {tip text="Czy urządzenie pracuje w warstwie dostępowej"}><b>Warstwa dostępowa</b></span></td>
+	    <td width="98%" align="left">
+		{foreach $_TN as $item => $key}
+		    <input type="radio" name="netdev[access_layer]" id="id_access_{$item}" value="{$item}" {if $netdevinfo.access_layer == $item}checked{/if}>
+		    <label for="id_access_{$item}">&nbsp;{$key}</label>{/foreach}
+	    </td>
+	</tr>
+	
 	<tr class="light">
 		<td width="1%">
 			<img src="img/calendar.gif" alt="">

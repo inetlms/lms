@@ -317,6 +317,7 @@ if (empty($nodeinfo['macs']))
 
 include(MODULES_DIR . '/customer.inc.php');
 
+
 if (!isset($CONFIG['phpui']['big_networks']) || !chkconfig($CONFIG['phpui']['big_networks'])) {
 	$SMARTY->assign('customers', $LMS->GetCustomerNames());
 }
@@ -324,6 +325,12 @@ if (!isset($CONFIG['phpui']['big_networks']) || !chkconfig($CONFIG['phpui']['big
 $nodeinfo = $LMS->ExecHook('node_edit_init', $nodeinfo);
 
 include(MODULES_DIR . '/nodexajax.inc.php');
+
+
+$annex_info = array('section'=>'customer','ownerid'=>$customerid);
+$SMARTY->assign('annex_info',$annex_info);
+include(MODULES_DIR.'/customer_xajax.inc.php');
+$LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
 
 $SMARTY->assign('xajax', $LMS->RunXajax());
 
