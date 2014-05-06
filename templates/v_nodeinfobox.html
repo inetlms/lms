@@ -1,0 +1,354 @@
+<table class="lmsbox">
+<thead>
+	<tr>
+		<td width="1%">
+			<img src="img/node.gif" alt="">
+		</td>
+		<td width="1%">
+			<b>Numer</b>
+		<td width="98%">
+			{$nodedata.name}
+		</td>
+	</tr>
+</thead>
+</tbody>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}IP address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Lokalizacja:</b>
+		</td>
+		<td width="98%" class="fright">
+		Adres:	{if $nodedata.sipaddr}{$nodedata.sipaddr}{else}BRAK - UZUPEŁNIJ{/if}
+			<br>
+		Miasto:	{if $nodedata.sipcity}{$nodedata.sipcity}{else}BRAK - UZUPEŁNIJ{/if}
+			<br>
+		Kod pocztowy:	{if $nodedata.sippostcode}{$nodedata.sippostcode}{else}BRAK - UZUPEŁNIJ{/if}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}IP address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Dozwolone adresy IP</b>
+		</td>
+		<td width="98%" class="fright">
+			{if $nodedata.permit neq '0.0.0.0/0'}{$nodedata.permit|replace:';':','}{else}BRAK - UZUPEŁNIJ{/if}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}IP address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Pin poczty głosowej</b>
+		</td>
+		<td width="98%" class="fright">
+			{$nodedata.mailboxpin}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}Pub. IP address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>W przypadku zajętości...</b>
+		</td>
+		<td width="98%" class="fright">
+{$nodedata.busy_action}
+
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Numer przekierowania (gdy zajęty)</b>
+		</td>
+		<td width="98%" class="fright">
+			{$nodedata.busy_forward_number}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}Pub. IP address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>W przypadku niedostępności...</b>
+		</td>
+		<td width="98%" class="fright">
+{$nodedata.unavail_action}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Numer przekierowania (gdy niedostępny)</b>
+		</td>
+		<td width="98%" class="fright">
+{$nodedata.unavail_forward_number}
+		</td>
+	</tr>
+<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Dozwolone kodeki</b>
+		</td>
+		<td width="98%" class="fright">
+{$nodedata.allow}
+		</td>
+	</tr>
+<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Niedozwolone kodeki</b>
+		</td>
+		<td width="98%" class="fright">
+			{$nodedata.disallow}
+		</td>
+	</tr>
+<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Opcja CanReInvite</b>
+		</td>
+		<td width="98%" class="fright">
+{$nodedata.canreinvite}
+		</td>
+	</tr>
+<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Sygnalizacja DTMF</b>
+		</td>
+		<td width="98%" class="fright">
+{$nodedata.dtmfmode}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>NAT</b>
+		</td>
+		<td width="98%" class="fright">
+{$nodedata.nat}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Qualify</b>
+		</td>
+		<td width="98%" class="fright">
+{$nodedata.qualify}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Zezwól na dzwonienie przez</b>
+		</td>
+		<td width="98%" class="fright">
+{$nodedata.trunks_allowed}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Taryfa konta</b>
+		</td>
+		<td width="98%" class="fright">
+{$nodedata.id_tariffs}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Abonament konta</b>
+		</td>
+		<td width="98%" class="fright">
+{$nodedata.id_subscriptions|default:'Brak'}
+		</td>
+	</tr>
+	<tr class="light">
+<td width="1%" class="fleft">
+	<img src="img/phone.gif" alt="">
+</td>
+<td width="1%" nowrap>
+	<b>Numer do połączeń wdzwanianych</b>
+</td>
+<td width="98%" class="fright">
+{if $nodedata.dialout eq 't'}TAK{else}NIE{/if}
+</td>
+</tr>
+{if $nodedata.finlimit}
+	<tr class="light">
+<td width="1%" class="fleft">
+	<img src="img/phone.gif" alt="">
+</td>
+<td width="1%" nowrap>
+	<b>Blokada połączeń po przekroczeniu kwoty<br>(możliwa do zmiany przez uzytkownika)</b>
+</td>
+<td width="98%" class="fright">
+{$nodedata.finlimit} zł
+</td>
+</tr>
+{/if}
+	<tr class="light">
+<td width="1%" class="fleft">
+	<img src="img/phone.gif" alt="">
+</td>
+<td width="1%" nowrap>
+	<b>Wysyłaj wiadomości z poczty głosowej na email</b>
+</td>
+<td width="98%" class="fright">
+{if $nodedata.voice2email eq 't'}TAK{else}NIE{/if}
+</td>
+</tr>
+{if $nodedata.voicemailaddr}
+	<tr class="light">
+<td width="1%" class="fleft">
+	<img src="img/phone.gif" alt="">
+</td>
+<td width="1%" nowrap>
+	<b>Wysyłaj pocztę głosową na</b>
+</td>
+<td width="98%" class="fright">
+{$nodedata.voicemailaddr}
+</td>
+</tr>
+	<tr class="light">
+<td width="1%" class="fleft">
+	<img src="img/phone.gif" alt="">
+</td>
+<td width="1%" nowrap>
+	<b>Wysyłaj pocztę również na główny</b>
+</td>
+<td width="98%" class="fright">
+{if $nodedata.voicetomainaddr eq 't'}TAK{else}NIE{/if}
+</td>
+</tr>
+{/if}
+	<tr class="light">
+<td width="1%" class="fleft">
+	<img src="img/phone.gif" alt="">
+</td>
+<td width="1%" nowrap>
+	<b>Wysyłaj odebrane faxy na email</b>
+</td>
+<td width="98%" class="fright">
+{if $nodedata.fax2email eq 't'}TAK{else}NIE{/if}
+</td>
+</tr>
+{if $nodedata.faxmailaddr}
+	<tr class="light">
+<td width="1%" class="fleft">
+	<img src="img/phone.gif" alt="">
+</td>
+<td width="1%" nowrap>
+	<b>Wysyłaj faxy na</b>
+</td>
+<td width="98%" class="fright">
+{$nodedata.faxmailaddr}
+</td>
+</tr>
+	<tr class="light">
+<td width="1%" class="fleft">
+	<img src="img/phone.gif" alt="">
+</td>
+<td width="1%" nowrap>
+	<b>Wysyłaj faxy również na główny</b>
+</td>
+<td width="98%" class="fright">
+{if $nodedata.faxtomainaddr eq 't'}TAK{else}NIE{/if}
+</td>
+</tr>
+{/if}
+{if $customerinfo.virtualpbx eq 't'}
+	<tr class="light">
+<td width="1%" class="fleft">
+	<img src="img/phone.gif" alt="">
+</td>
+<td width="1%" nowrap>
+	<b>Uruchom wirtualną centralę PBX na tym numerze</b>
+</td>
+<td width="98%" class="fright">
+{if $nodedata.virtualpbx eq 't'}TAK{else}NIE{/if}
+</td>
+</tr>
+{/if}
+{if $nodedata.afinlimit}
+	<tr class="light">
+<td width="1%" class="fleft">
+	<img src="img/phone.gif" alt="">
+</td>
+<td width="1%" nowrap>
+	<b>Blokada połączeń po przekroczeniu kwoty</b>
+</td>
+<td width="98%" class="fright">
+{$nodedata.afinlimit} zł
+</td>
+</tr>
+{/if}
+{if $nodedata.incuser && $nodedata.inchost}
+<tr class="light"><td width="1%" class="fleft">&nbsp;</td><td colspan="2" class="fright"><hr></td></tr>
+<tr class="light"><td width="1%" class="fleft">&nbsp;</td><td colspan="2" class="fright"><b>Ustawienia klienta SIP do połączeń z innych sieci</b></td></tr>
+<tr class="light">
+<td width="1%" class="fleft">&nbsp;</td>
+<td><b>Login</b></td><td class="fright">{$nodedata.incuser}</td></tr>
+<tr class="light">
+<td width="1%" class="fleft">&nbsp;</td>
+<td><b>Adres serwera</b></td><td class="fright">{$nodedata.inchost}</td></tr>
+<tr class="light"><td width="1%" class="fleft">&nbsp;</td><td colspan="2" class="fright"><hr></td></tr>
+{/if}
+<tr class="light">
+	<td width="1%" class="fleft">
+		<img src="img/users.gif" alt="">
+	</td>
+	<td width="1%">
+		<b>{t}Created:{/t}<br>
+		{t}Modified:{/t}</b>
+	</td>
+	<td width="98%" class="fright">
+		<nobr>{$nodedata.createdby}, {$nodedata.creationdate}<nobr><br>
+		<nobr>{if $nodedata.modifydate}{$nodedata.modifiedby}, {$nodedata.modifydate}{else}-{/if}<nobr>
+	</td>
+</tr>
+<tr class="light"><td class="fleft">&nbsp;</td>
+<td><a href="?m=v_allowedrates&amp;account={$nodedata.id}">Dozwolone strefy</a></td><td class="fright"><a href="?m=v_print&amp;account={$nodedata.id}" target="_blank">Drukuj ustawienia</a></td></tr>
+{if $customerinfo.virtualpbx eq 't'}
+<tr class="light"><td class="fleft">&nbsp;</td>
+<td><a href="?m=v_vpbx&amp;id={$nodedata.id}">Ustawienia wirtualnej centrali PBX</a></td><td class="fright">&nbsp;</td></tr>
+{/if}
+<tr class="light">
+		<td width="100%" class="FBOTTOMU" colspan="3" align="right">
+			<a href="?m=customerinfo&id={$nodedata.ownerid}">Wszystkie konta <img src="img/cancel.gif" alt=""></a>
+			<a href="?m=v_nodedel&id={$nodedata.id}" onclick="return confirmLink(this, 'Napewno usunąć konto ?')">{t}Delete{/t} <img src="img/delete.gif" alt=""></a>
+			<a href="?m=v_nodeedit&id={$nodedata.id}" accesskey="E">{t}Edit{/t} <img src="img/edit.gif" alt=""></a>
+		</td>
+	</tr>	
+</tbody>
+</table>

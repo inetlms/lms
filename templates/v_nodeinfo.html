@@ -1,0 +1,47 @@
+{include file="header.html"}
+<!--// $Id: nodeinfo.html,v 1.24 2006/01/13 18:37:01 alec Exp $ //-->
+<h1>{$layout.pagetitle}</h1>
+{include file="calendar_js.html"}
+<table width="100%" cellpadding="3">
+	<tr>
+		<td width="100%">
+			{include file="v_nodeinfobox.html"}
+		</td>
+	</tr>
+	<tr>
+		<td width="100%">
+			{include file="customerinfobox.html"}
+		</td>
+	</tr>
+	<tr>
+		<td width="100%">
+			{include file="customernodesbox.html"}
+		</td>
+	</tr>
+	<tr>
+		<td width="100%">
+			{include file="customersipbox.html"}
+		</td>
+	</tr>
+	<tr>
+		<td width="100%">
+			{include file="customerdocuments.html" limit=10}
+		</td>
+	</tr>
+	<tr>
+		<td width="100%">
+			{include file="customergroups.html"}
+		</td>
+	</tr>
+	<tr>
+		<td width="100%">
+			{include file="customerassignments.html"}
+		</td>
+	</tr>
+	<tr>
+		<td width="100%">
+			{include file="customerbalancebox.html" limit=-10}
+		</td>
+	</tr>
+</table>
+{include file="footer.html"}

@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 //EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!--// $Id: header.html,v 1.1 2008/06/13 09:15:26 alec Exp $ //-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$_language}"> 
+<head>
+  <meta content="text/html; charset={$LANGDEFS.$_language.charset}" http-equiv="content-type" />
+  <meta http-equiv="refresh" content="{math equation="x+5" x=$_config.phpui.timeout}">
+  <title>{t}Virtual Customer Service{/t}</title>
+<link type="text/css" rel="stylesheet" href="{stylefile}" />
+<script type="text/javascript" language="JavaScript" src="style/default/common.js"></script>
+<script type="text/javascript">
+function cl()
+{literal}
+{
+{/literal}
+window.opener.document.getElementById('action_{$smarty.get.id}').value='{$action}';
+window.opener.document.getElementById('actiont_{$smarty.get.id}').innerHTML='{$action_name}';
+window.close();
+{literal}
+}
+{/literal}
+</script>
+</head>
+<body {if $uplok}onload="cl();"{/if}>
+{if $err}<span style="color:#FF0000; font-weight:bold;">{$err}</span><br>{/if}
+<form action="?m=voip&f=ivr&ff=action&id={$smarty.get.id}&ivrid={$smarty.get.ivrid}" method="post">
+{if $ivrlist}
+{html_options name="ivr" options=$ivrlist}
+<input type="hidden" name="act" value="2">
+{elseif $smarty.post.act eq 4}
+Przekieruj na numer: <input type="text" name="nr">
+<br>Aby uniknąć bilingowania połączeń w obrębie jednego klienta, wpisz tu numer wewnętrzny ustawiony w konfiguracji wirtualnej centrali dla danego klienta.<br>
+<input type="hidden" name="act" value="4">
+{else}
+{html_options name="act" options=$act}
+{/if}
+<input type="submit" value="Dalej &gt;">
+</form>
+</body>
+</html>
+

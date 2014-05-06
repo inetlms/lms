@@ -58,6 +58,22 @@
 		</td>
 	</tr>
 	{/if}
+	<!--// nettelekom //-->
+	{if check_modules(82) && get_conf('voip.enabled','0')}
+	<tr>
+		<td width="100%">
+			{include file="customersipbox.html"}
+		</td>
+	</tr>
+	{/if}
+	
+	{if check_modules(82) && $isvoip}
+        <tr>
+                <td width="100%" colspan="2">
+			{include file="v_customercdr.html"}
+                </td>
+        </tr>
+	{/if}
 	{if check_modules(180)}
 	<tr>
 		<td width="100%">

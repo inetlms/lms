@@ -1,0 +1,173 @@
+{include file="header.html"}
+<!--// $Id: tariffadd.html,v 1.45 2005/10/19 13:34:49 lukas Exp $ //-->
+<h1>{$layout.pagetitle}</h1>
+<p>
+{literal}
+<script language="JavaScript">
+<!--
+function always()
+{
+//	alert(document.forms['hoursadd'].elements['hoursadd[from]']);
+document.forms['hoursadd'].elements['hoursadd[from]'].value='00:00';
+document.forms['hoursadd'].elements['hoursadd[to]'].value='23:59';
+for (var i=0; i<document.hoursadd.elements.length; i++)
+{
+	var e = document.hoursadd.elements[i];
+	if (e.type=='checkbox')
+	e.checked = true;
+}
+}
+-->
+</script>
+{/literal}
+<form method="POST" name="hoursadd" action="?m=v_trunkhouredit&c={$listdata.c}&id={$listdata.id}&id_rates={$smarty.get.id_rates}">
+<input type="submit" class="hiddenbtn">
+<input type="hidden" name="hoursadd[id_tariffs]" value="{$listdata.id}">
+{section name=ids loop=$ids}
+<input type="hidden" name="ids[]" value="{$ids[ids]}">
+{/section}
+<table class="lmsbox">
+<thead>
+	<tr>
+	    <td width="1%" class="fleftu">
+		&nbsp;
+	    </td>
+	    <td width="99%" class="frightu">
+		&nbsp;
+	    </td>
+	</tr>
+</thead>
+</tbody>
+	<tr>
+	    <td width="100%" colspan="2" class="flr">
+		<table width="100%" cellpadding="0">
+		    <tr class="light">
+			<td width="50%" valign="top">
+			    <table width="100%" cellpadding="3">
+				<tr class="light">
+				    <td width="1%">
+					<img src="img/tax.gif" alt="">
+				    </td>
+				    <td width="1%" nowrap><b>Od godz:</b></td>
+				    <td width="98%">
+					    <input type="text" size="8" name="hoursadd[from]" value="{$hoursadd.from}" {tip trigger="from"}>
+				    </td>
+				</tr>
+				<tr class="light">
+				    <td width="1%">
+					<img src="img/tax.gif" alt="">
+				    </td>
+				    <td width="1%" nowrap><b>Do godz:</b></td>
+				    <td width="98%">
+					<input type="text" size="8" name="hoursadd[to]" value="{$hoursadd.to}" {tip trigger="to"}>
+				    </td>
+				</tr>												
+				<tr class="light">
+				    <td width="1%">
+					&nbsp;
+				    </td>
+				    <td width="1%" nowrap><b>Niedziela</b></td>
+				    <td width="98%">
+					<input type="checkbox" name="days[0]" value="1"{if $days.0} checked="checked"{/if}>
+				    </td>
+				</tr>
+				
+				<tr class="light">
+				    <td width="1%">
+					&nbsp;
+				    </td>
+				    <td width="1%" nowrap><b>Poniedziałek</b></td>
+				    <td width="98%">
+		<input type="checkbox" name="days[1]" value="1"{if $days.1} checked="checked"{/if}>
+				    </td>
+				</tr>
+				
+				<tr class="light">
+				    <td width="1%">
+					&nbsp;
+				    </td>
+				    <td width="1%" nowrap><b>Wtorek</b></td>
+				    <td width="98%">
+		<input type="checkbox" name="days[2]" value="1"{if $days.2} checked="checked"{/if}>
+				    </td>
+				</tr>
+				<tr class="light">
+				    <td width="1%">
+					&nbsp;
+				    </td>
+				    <td width="1%" nowrap><b>Środa</b></td>
+				    <td width="98%">
+		<input type="checkbox" name="days[3]" value="1"{if $days.3} checked="checked"{/if}>
+				    </td>
+				</tr>
+				<tr class="light">
+				    <td width="1%">
+					&nbsp;
+				    </td>
+				    <td width="1%" nowrap><b>Czwartek</b></td>
+				    <td width="98%">
+		<input type="checkbox" name="days[4]" value="1"{if $days.4} checked="checked"{/if}>
+				    </td>
+				</tr>
+				<tr class="light">
+				    <td width="1%">
+					&nbsp;
+				    </td>
+				    <td width="1%" nowrap><b>Piątek</b></td>
+				    <td width="98%">
+		<input type="checkbox" name="days[5]" value="1"{if $days.5} checked="checked"{/if}>
+				    </td>
+				</tr>
+				<tr class="light">
+				    <td width="1%">
+					&nbsp;
+				    </td>
+				    <td width="1%" nowrap><b>Sobota</b></td>
+				    <td width="98%">
+		<input type="checkbox" name="days[6]" value="1"{if $days.6} checked="checked"{/if}>
+				    </td>
+				</tr>
+				<tr class="light">
+				    <td width="1%">
+					&nbsp;
+				    </td>
+				    <td width="1%" nowrap><b>Święta</b></td>
+				    <td width="98%">
+		<input type="checkbox" name="days[7]" value="1"{if $days.7} checked="checked"{/if}>
+				    </td>
+				</tr>
+				<tr class="light">
+				    <td width="1%">
+					&nbsp;
+				    </td>
+				    <td width="99%" nowrap colspan="2" align="center">
+				<a href="#" onclick="always(); return false;">Zawsze</a>
+</td>
+				    
+				</tr>
+				
+				<tr class="light">
+				    <td width="1%">
+					<img src="img/class.gif" alt="">
+				    </td>
+				    <td width="1%" nowrap><b>Cena netto za minutę:</b></td>
+				    <td width="98%">
+					<input type="text" size="8" name="hoursadd[price]" value="{$hoursadd.price}" {tip text="Podaj cenę" trigger="price"}>
+				    </td>
+				</tr>
+
+			</table>
+		    </td>
+		    </tr>
+		</table>
+	    </td>
+	</tr>
+	<tr class="light">
+	    <td width="100%" colspan="3" class="FBOTTOMU" align="right"> 
+	    	<a href="javascript:document.hoursadd.submit();" accesskey="s">{t}Submit{/t} <img src="img/save.gif" alt=""></a>
+		<a href="?m=v_trunkhours&c={$listdata.c}&id={$listdata.id}">{t}Cancel{/t} <img src="img/cancel.gif" alt=""></a>
+	    </td>
+	</tr>
+</tbody>
+</table></form></p>
+{include file="footer.html"}

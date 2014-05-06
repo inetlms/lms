@@ -262,6 +262,10 @@ $layout['pagetitle'] = trans('New Node');
 if($customerid = $nodedata['ownerid'])
 {
 	include(MODULES_DIR.'/customer.inc.php');
+	
+	if (get_conf('voip.enabled','0'))
+		include(MODULES_DIR.'/customer.voip.inc.php');
+	
 	$annex_info = array('section'=>'customer','ownerid'=>$customerid);
 	$SMARTY->assign('annex_info',$annex_info);
 	include(MODULES_DIR.'/customer_xajax.inc.php');

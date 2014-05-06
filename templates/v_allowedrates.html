@@ -1,0 +1,87 @@
+{include file="header.html"}
+{literal}
+<script type="text/javascript" language="JavaScript">
+<!--
+function all_uncheck(co)
+{
+for(i=0;i<co.elements.length;i++)
+if(co.elements[i].type=='checkbox')
+co.elements[i].checked='';
+}
+-->
+</script>
+{/literal}
+<form name="allowedrates" method="POST" action="?m=v_allowedrates&account={$sip}">
+<input type="submit" class="hiddenbtn">
+<input type="hidden" name="id" value="{$sip}">
+<table class="lmsbox">
+<thead>
+	<tr>
+		<td class="fleftu">
+			<img src="img/pay.gif" alt="">Zaznacz wybrane strefy
+				</td>
+		<td class="frightu" colspan="2">
+&nbsp;
+</td>
+
+	</tr>
+</thead>
+</tbody>
+	<tr>
+		<td class="fleft">
+		</td><td>
+		<table width="100%"><tr>
+		{foreach from=$alrs item=test key=k}
+		<td><label><input type="checkbox" name="alrs[]" value="{$k}"{if $alrss.$k eq 1} checked="checked"{/if}> {$test}</label></td>
+		{/foreach}
+		</tr></table></td>
+		<td class="fright"></td>
+	</tr>
+<tr><td class="fbottomu" colspan="3" align="center"><a href="#" onclick="document.allowedrates.submit();">Zapisz</a></td></tr>
+</tbody>
+</table>
+<br>
+<table class="lmsbox">
+<thead>
+	<tr>
+		<td class="fleftu" onclick="showOrHide('customerbalance');" width="99%">
+			<img src="img/pay.gif" alt="">Szczegóły...
+				</td>
+		<td class="frightu" align="right" width="1%">
+&nbsp;
+</td>
+	</tr>
+</thead>
+</tbody>
+	<tr id="customerbalance" style="display:none;">
+		<td width="100%" colspan="2" class="fall">
+			<table cellpadding="5" cellspacing="0" width="100%">
+			{cycle name=bal values="light,lucid" print=false}
+	<tr class="{cycle name=bal}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td colspan="3" align="center"><a href="#" onclick="all_uncheck(document.forms['allowedrates']);return false">Odznacz wszystkie</a></td></tr>
+			{section name=alr loop=$alr}
+			{if $smarty.section.alr.index % 3 == 0}
+	<tr class="{cycle name=bal}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">{/if}
+		<td><label><input type="checkbox" name="sz[{$alr[alr].id}]" onclick="clearcb();" value="1"{if $alr[alr].check} checked="checked"{/if}> {$alr[alr].desc}</label></td>
+		{if $smarty.section.alr.index % 3 == 2}</tr>{/if}
+		{/section}
+			</table>
+		</td></tr>
+</tbody>
+</table>
+</form>
+{literal}
+<script type="text/javascript">
+function clearcb()
+{
+el=document.forms['allowedrates'].elements['alrs[]'];
+for(i=0;i<el.length;i++)
+{
+	el2=el.item(i);
+	el2.checked=false;
+}
+}
+</script>
+{/literal}
+{include file="footer.html"}
+

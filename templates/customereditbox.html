@@ -516,6 +516,7 @@
 	        </table>
 	    </td>
 	</tr>
+	
                                     		</table>
 					</td>
 					<td width="50%" style="vertical-align:top;">
@@ -562,6 +563,8 @@
 			<b>{trans("Modified:")}</b> {if $customerinfo.moddate}{$customerinfo.modifiedby}, {$customerinfo.moddateh}{else}-{/if}
 		</td>
 	</tr>
+	
+	{if check_modules(82) && get_conf('voip.enabled','0')}<tr class="light"><td width="1%"><img src="img/voip.gif"></td><td width="99%"><fieldset><legend>| <b>VoIP Nettelekom</b> |</legend>{include file="v_customereditbox.html"}</fieldset></td></tr>{/if}
                                         	</table>
 					</td>
 				</tr>

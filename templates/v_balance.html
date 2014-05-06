@@ -1,0 +1,145 @@
+{include file="header.html"}
+<!--// $Id: invoicelist.html,v 1.64 2006/01/31 09:36:46 alec Exp $ //-->
+<h1>{$layout.pagetitle}</h1>
+{include file="calendar_js.html"}
+<form method="POST" name="page" action="?m=v_balance">
+<input type="submit" class="hiddenbtn">
+<table width="100%" cellpadding="3">
+	
+	<tr class="dark">
+		<td class="fall">
+				<b>{t}Filter:{/t} </b> 
+				Od: <input name="balance[from]" value="{$listdata.from}" onclick="cal5.popup();">&nbsp;
+				Do: <input name="balance[to]" value="{$listdata.to}" onclick="cal6.popup();"></td></tr>
+				<tr class="dark">
+		<td class="fall" colspan="8" >
+				Dla użytkownika: 
+				<select size="1" name="balance[customerid]">
+<option value="">Wszyscy</option>
+{section name=customers loop=$customers}
+				<option value="{$customers[customers].id}"{if $listdata.customerid eq $customers[customers].id} selected{/if}>{$customers[customers].customername|truncate:40:"...":true} ({$customers[customers].id|string_format:"%04d"})</option>
+{/section}
+			</select>&nbsp;<input type="submit" value="Szukaj">
+		<div>
+		<input type="checkbox" name="podzial_klient" {if $kli==1}checked='checked'{/if}>z podziałem na klienta<br>
+		<input type="checkbox" name="podzial_strefy" {if $str==1}checked='checked'{/if}>z podziałem na strefy<br>
+		<input type="radio" name="wykr" value='1' {if $listdata.wykr=="1"}checked="checked"{/if}>z wykresem &nbsp; <input type="radio" name="wykr" value='0' {if $listdata.wykr=="0"}checked="checked"{/if}>bez wykresu
+		</div>
+		</td>
+	</tr>		
+
+	<tr>  
+		<td width="100%" class="fall" align="center">
+			<p>&nbsp;</p>
+			<p>
+{if $img}<img src="{$img}" alt="graph">{/if}
+</p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>	
+{if $bd}
+	<tr>
+		<td width="100%" class="fall" align="center">
+		<p>Przychody z rozmów (z darmowymi minutami): <b>{$bd.cost|money_format}</b></p>
+		</td>
+	</tr>
+		<tr>
+		<td width="100%" class="fall" align="center">
+		<p>Przychody z rozmów (bez darmowych minut): <b>{$bd.tmp_cost|money_format}</b></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="100%" class="fall" align="center">
+		<p>Wydatki na rozmowy: <b>{$bd.trunk|money_format}</b></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="100%" class="fall" align="center">
+		<p>Przychód: <b>{$bd.cost-$bd.trunk|money_format}</b></p>
+		</td>
+	</tr>	
+{/if}
+
+
+
+	<tr class="dark">
+		<td class="fall">
+			&nbsp;
+		</td>
+	</tr>
+</table>
+
+{if $lst}
+<a href='temp/file.csv'>wersja csv</a>
+{foreach item=calosc from=$lst key=k0 name=mainloop}
+<table width=100%>  
+ <tr >
+ <td colspan=2>
+ <b>{$k0}</b>
+ </td>
+ </tr>  
+<tr><td colspan=2>                                                                                                                                                                                      
+        {$lst[$k0].wykres}                                                                                                                                                                           
+</td>       </tr>                                                                                                                                                                               
+<tr>                                                                                                                                                                                                 
+<td width=50%> 
+<table width=100% style="border:solid; border-width:2px; " cellpadding=5>
+
+	
+{foreach item=tablica from=$lst[$k0].reszta key=k name=mainloop}
+        <tr style="border:solid; border-width:2px; ">
+		<td width=40%>
+		{$k}
+		</td>
+		<td width=60%><div style="position:relative;">
+		{if $str==1}
+		<table border=1 width=100% cellpadding=3 cellspacing=3>
+		<tr>
+		<td><b>T1 (8:00 - 16:00)</b></td><td><b>T2(16:00 - 24:00)</b></td><td><b>T3(0:00 - 8:00)</b></td>
+		</tr>
+		<tr> 
+		<td style="color:#00f; font-size:8pt; font-weight:bold;">
+		
+				
+		 {if $lst[$k0].reszta[$k].sekundy.t1}
+			{$lst[$k0].reszta[$k].sekundy.t1} s &nbsp;&nbsp;{$lst[$k0].reszta[$k].koszt.t1} zł
+		{/if}
+		
+		 </td>
+		 <td style="color:#00f; font-size:8pt; font-weight:bold;">
+		 {if $lst[$k0].reszta[$k].sekundy.t2}
+		{$lst[$k0].reszta[$k].sekundy.t2} s &nbsp;&nbsp;{$lst[$k0].reszta[$k].koszt.t2} zł
+		{/if}
+		 </td>
+		 <td style="color:#00f; font-size:8pt; font-weight:bold;">
+		 {if $lst[$k0].reszta[$k].sekundy.t3}
+		{$lst[$k0].reszta[$k].sekundy.t3} s &nbsp;&nbsp;{$lst[$k0].reszta[$k].koszt.t3} zł
+		{/if}
+		 </td>
+		
+		 
+		 </tr>
+		 </table>
+		 {else}
+		   <span style="position:absolute; left:40px;">{$lst[$k0].reszta[$k].sekundy} s</span>
+		  <span style="position:absolute; right:40px;">
+		{$lst[$k0].reszta[$k].koszt} zł</span></div></td>
+		{/if}
+		</tr>
+      {/foreach} 
+	</table>
+</td>  
+<td width="50%"></td>                                                                                                                                                                                       
+</tr>                                                                                                                                                                                                
+</table>
+	<br><br>
+ {/foreach} 
+{/if}
+</form>
+<script>
+<!--
+var cal5 = new calendar(document.forms['page'].elements['balance[from]']);
+var cal6 = new calendar(document.forms['page'].elements['balance[to]']);
+-->
+</script>
+{include file="footer.html"}

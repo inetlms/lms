@@ -1,0 +1,157 @@
+{include file="header.html"}
+<!--// $Id: invoicelist.html,v 1.64 2006/01/31 09:36:46 alec Exp $ //-->
+<h1>{$layout.pagetitle}</h1>
+{include file="calendar_js.html"}
+<form method="POST" name="page" action="?m=v_cdr">
+<input type="submit" class="hiddenbtn">
+<table class="lmsbox">
+<thead>
+	<tr>
+		<td class="fall" colspan="11">
+				<b>{t}Filter:{/t} </b> 
+				Od: <input name="from" value="{$listdata.from}" onclick="cal5.popup();">&nbsp;
+				Do: <input name="to" value="{$listdata.to}" onclick="cal6.popup();">&nbsp;
+				Z numeru: <input name="fnr" value="{$listdata.fnr}">&nbsp;
+				Na numer: <input name="tnr" value="{$listdata.tnr}">&nbsp;
+				<label>Do CSV: <input type="checkbox" name="csv" value="1"></label>
+</td></tr>
+				<tr class="dark">
+		<td class="fall" colspan="11">
+				Dla użytkownika: 
+				<select size="1" name="customerid">
+<option value="">Wszyscy</option>
+{section name=customers loop=$customers}
+				<option value="{$customers[customers].id}"{if $listdata.customerid eq $customers[customers].id} selected{/if}>{$customers[customers].customername|truncate:40:"...":true} ({$customers[customers].id|string_format:"%04d"})</option>
+{/section}
+			</select>&nbsp;
+<select name="dir">
+<option value="0">wszystkie</option>
+<option value="1"{if $listdata.dir eq 1} selected="selected"{/if}>przychoodzące</option>
+<option value="2"{if $listdata.dir eq 2} selected="selected"{/if}>wychodzące</option>
+</select>&nbsp;
+Kierunek: &nbsp;
+<select name="rategroups">
+<option value="0">Wszystkie</option>
+{html_options options=$rategroups selected=$listdata.rategroups}
+</select>&nbsp;
+Status: &nbsp;
+<select name="stat">
+<option value="0">wszystkie</option>
+<option value="1"{if $listdata.stat eq 1} selected="selected"{/if}>odebrane</option>
+<option value="3"{if $listdata.stat eq 3} selected="selected"{/if}>brak odpowiedzi</option>
+<option value="4"{if $listdata.stat eq 4} selected="selected"{/if}>zajęte</option>
+<option value="5"{if $listdata.stat eq 5} selected="selected"{/if}>błąd</option>
+</select>&nbsp;
+<input type="submit" value="Szukaj">
+		</td>
+	</tr>
+	<tr>
+		<td class="fleftu" nowrap>
+			<a href="?m=v_cdr&o=id{if $listdata.direction eq "asc" && $listdata.order eq "id"},desc{/if}">{t}ID:{/t}</a> {if $listdata.order eq "id"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="fbt" nowrap>
+			<a href="?m=v_cdr&o=calldate{if $listdata.direction eq "asc" && $listdata.order eq "calldate"},desc{/if}">{t}Date:{/t}</a> {if $listdata.order eq "calldate"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="fbt" nowrap align="right">
+			<a href="?m=v_cdr&o=src{if $listdata.direction eq "asc" && $listdata.order eq "src"},desc{/if}">Z numeru:</a> {if $listdata.order eq "src"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="fbt" nowrap align="right">
+			<a href="?m=v_cdr&o=dst{if $listdata.direction eq "asc" && $listdata.order eq "dst"},desc{/if}">Na numer:</a> {if $listdata.order eq "dst"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="fbt" nowrap align="right">
+			<a href="?m=v_cdr&o=seconds{if $listdata.direction eq "asc" && $listdata.order eq "seconds"},desc{/if}">Czas połączenia:</a> {if $listdata.order eq "seconds"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="fbt" nowrap align="right">
+			<a href="?m=v_cdr&o=tmp_cost{if $listdata.direction eq "asc" && $listdata.order eq "tmp_cost"},desc{/if}">Koszt:</a> {if $listdata.order eq "tmp_cost"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="fbt" nowrap align="right">
+			<a href="?m=v_cdr&o=cost{if $listdata.direction eq "asc" && $listdata.order eq "cost"},desc{/if}">Opłata:</a> {if $listdata.order eq "cost"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="fbt" nowrap align="right">
+		Zysk:
+		</td>
+		<td class="fbt" nowrap align="center">
+		Status:
+		</td>
+		<td class="fbt" nowrap>
+			<a href="?m=v_cdr&o=name{if $listdata.direction eq "asc" && $listdata.order eq "name"},desc{/if}">Kto:</a> {if $listdata.order eq "name"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="frightu" nowrap align="right">
+		Kierunek:
+		</td>
+	</tr>
+</thead>
+</tbody>
+	{cycle values="light,lucid" print=false}
+	{section name=cdr loop=$cdr}
+	{assign var=invoice value=$cdr[cdr]}
+	{assign var=invoiceid value=$invoice.id}
+	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td class="fleft">
+			{$invoice.id}{if $invoice.monitor}<a href="?m=v_listen&id={$invoice.id}&cid={$invoice.customerid}"><img src="img/audio_icon.gif" border="0"></a><br><a href="?m=v_listen&id={$invoice.id}&cid={$invoice.customerid}&del=1">Usuń</a>{/if}
+		</td>
+		<td nowrap>
+			{$invoice.calldate}
+		</td>
+		<td nowrap align="right">
+			{$invoice.src}
+		</td>
+		<td nowrap align="right">
+			{$invoice.dst} 
+		</td>
+		<td nowrap align="right">
+			{$invoice.seconds}
+		</td>
+		<td nowrap align="right">
+{$invoice.tmp_cost}
+		</td>
+		<td nowrap align="right">
+{$invoice.cost}
+		</td>
+		<td nowrap align="right">
+{$invoice.zysk}
+		</td>
+		<td nowrap align="center">
+{$invoice.disposition}
+		</td>
+		<td>
+	{if $invoice.customerid != 9999}<a href="?m=customerinfo&id={$invoice.customerid}"{if $invoice.closed} class="blend"{/if}>{/if}{$invoice.name}{if $invoice.customerid != 9999}</a>{/if}
+		</td>
+		<td nowrap align="right" class="fright">
+{$invoice.rate|default:'[BRAK]'}
+		</td>
+	</tr>
+	{sectionelse}
+	<tr>
+		<td width="100%" class="fall" align="center"  colspan="11">
+			<p>&nbsp;</p>
+			<p><b>Brak danych.</b></p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>	
+	{/section}
+<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+<td></td><td></td><td></td><td align="right"><b>Razem:</b></td>
+<td align="right">{$listdata.seconds}</td>
+<td align="right">{$listdata.tmp_cost}</td>
+<td align="right">{$listdata.cost}</td>
+<td align="right">{$listdata.zysk}</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+	<tr class="dark">
+		<td class="fall" colspan="11">
+			&nbsp;
+		</td>
+	</tr>
+</tbody>
+</table>
+</form>
+<script>
+<!--
+var cal5 = new calendar(document.forms['page'].elements['from']);
+var cal6 = new calendar(document.forms['page'].elements['to']);
+-->
+</script>
+{include file="footer.html"}

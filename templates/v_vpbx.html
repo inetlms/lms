@@ -1,0 +1,27 @@
+{include file="header.html"}
+<!--// $Id: tarifflist.html,v 1.59 2005/06/12 11:27:22 alec Exp $ //-->
+<h1>{$layout.pagetitle}</h1>
+<form action="?m=v_vpbx&id={$smarty.get.id}" method="post">
+<table width="100%" cellpadding="5">
+{cycle values="light,lucid" print=false}
+{section name=pbx loop=$pbx.numbers}
+{assign var=pbxlocal value=$pbx.numbers[pbx]}
+<tr class="{cycle}">
+	<td width="1%" class="fleftu"><nobr>
+Numer wewnętrzny <input type="text" size="2" maxlength="2" name="pbx[{$pbxlocal}]" value="{$pbx.dialplan.$pbxlocal}">
+</nobr>
+</td>
+<td width="99%" class="frightu">
+przekieruj na {$pbxlocal}
+</td>
+</tr>
+{/section}
+<tr class="{cycle}">
+	<td width="1%" class="fleftu">&nbsp;</td>
+<td width="99%" class="frightu" align="right"><input type="submit" value="Zapisz">&nbsp;
+<a href="?m=v_nodeinfo&id={$smarty.get.id}">{t}Cancel{/t} <img src="img/cancel.gif" alt=""></a>
+</td></tr>
+</table>
+<input type="hidden" name="id" value="{$smarty.get.id}">
+</form>
+{include file="footer.html"}

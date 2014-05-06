@@ -29,6 +29,11 @@ $customerid = intval($_GET['id']);
 include(MODULES_DIR.'/infocenter.inc.php');
 include(MODULES_DIR.'/customer.inc.php');
 
+if (check_modules(82) && get_conf('voip.enabled',0)) {// nettelekom
+	include(MODULES_DIR.'/customer.voip.inc.php');
+	$invoicelist = $voip->get_billing_details2($invoicelist);
+}
+
 $annex_info = array('section'=>'customer','ownerid'=>$customerid);
 $SMARTY->assign('annex_info',$annex_info);
 include(MODULES_DIR.'/customer_xajax.inc.php');

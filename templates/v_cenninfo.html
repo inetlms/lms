@@ -1,0 +1,91 @@
+{include file="header.html"}
+<!--// $Id: tarifflist.html,v 1.59 2005/06/12 11:27:22 alec Exp $ //-->
+<h1>{$layout.pagetitle}</h1>
+<table class="lmsbox">
+<thead>
+	<tr class="dark">
+		<td width="93%" class="fleftu">
+			<img src="img/money.gif" alt="">&nbsp;<b>{t}Name:{/t}</b>
+		</td>
+		<td nowrap width="1%" valign="top" class="fbt" align="right">
+			Średnio za minutę:
+		</td>	
+		<td width="1%" class="frightu" align="right">
+			&nbsp;
+		</td>
+	</tr>
+</thead>
+</tbody>
+	{cycle values="light,lucid" print=false}
+	{section name=cenn loop=$t}
+	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td width="93%" class="fleft" class="fleft">
+			<img src="img/money.gif" alt="">&nbsp;<b>{$t[cenn].name}</b>
+		</td>
+		<td width="1%" valign="top" align="right">
+			<nobr>
+			{$t[cenn].price|string_format:"%.3f"} 
+			<nobr>
+		</td>
+		<td width="1%" class="fright" align="right">
+			<nobr>
+				<a href="?m=v_hours&c={$t[cenn].id}&id={$smarty.get.id}">Godziny</a>
+			<nobr>
+		</td>
+	</tr>
+	{/section}
+	<tr class="dark">
+		<td class="fall" colspan="3">
+			<b>{t}Customers in Subscription:{/t}</b>
+		</td>
+	</tr>
+	<tr>
+		<td width="100%" class="fall" colspan="3">
+			<table width="100%" cellpadding="2">
+				{cycle values="light,lucid" print=false}
+	{section name=l1 loop=$tariff.customers max=$tariff.rows}
+				<tr>
+					{section name=l2 loop=$tariff.customers start=$smarty.section.l1.index step=$tariff.rows}
+					<td width="33%" class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')" {cycle print=false} onclick="return self.location.href='?m=customerinfo&id={$tariff.customers[l2].id}'">
+					<img src="img/customer.gif" alt=""> <a href="?m=customerinfo&id={$tariff.customers[l2].id}">({$tariff.customers[l2].id|string_format:"%04d"}) {$tariff.customers[l2].customername|truncate:100:" ..."} {if $tariff.customers[l2].cnt > 1}({$tariff.customers[l2].cnt}){/if}</a></td>
+					{/section}{cycle print=false}
+				</tr>
+				{sectionelse}
+				<tr>
+					<td width="100%" align="center">
+						<p>&nbsp;</p>
+						<p><b>{t}No such customers with that subscription.{/t}</b></p>
+						<p>&nbsp;</p>
+					</td>
+				</tr>
+				{/section}
+			</table>
+		</td>
+	</tr>
+	<tr class="light">
+		<td class="fleftu" width="99%" colspan="2" align="center">
+			<form action="?m=v_cenninfo&id={$smarty.get.id}" method="post" onsubmit="return confirm('Bieżący cennik zostanie zmieniony! Kontynuować ?');">
+			Skopiuj cennik z: {html_options name=cennfrom options=$cennfrom} dla grupy <select name="grupa1">
+			<option value="0">...wszystkie...</option>
+			{foreach from=$rategr key=k item=v}
+			<option value="{$k}">{$v}</option>
+			{/foreach}
+			</select><input type="submit" name="act" value="Skopiuj">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			Zmień ceny o <input type="text" name="cennchange" size="2"> <select name="co"><option value="1">%</option>
+			<option value="2">gr/min</option></select> dla grupy <select name="grupa">
+			<option value="0">...wszystkie...</option>
+			{foreach from=$rategr key=k item=v}
+			<option value="{$k}">{$v}</option>
+			{/foreach}
+			</select><input type="submit" name="act" value="Zmień">
+			</form>
+		</td>
+		<td class="frightu" width="1%">
+			<a href="?m=v_numbers&id_tariff={$smarty.get.id}">Zaawansowane</a>
+		</td>
+	</tr>
+</tbody>
+</table>
+{include file="footer.html"}
+

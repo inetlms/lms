@@ -1,0 +1,48 @@
+{include file="header.html"}
+<h1>{$layout.pagetitle}</h1>
+<form name="numberadd" method="POST" action="?m=v_numbersadd">
+<input type="submit" class="hiddenbtn">
+<input type="hidden" name="n[id]" value="{$n.id}">
+<table class="lmsbox">
+<thead>
+	<tr>
+		<td width="1%" class="fleftu">
+			<img src="img/node.gif" alt="">
+		</td>
+		<td width="1%" class="FBT">
+			<b>Nazwa</b>
+		<td width="98%" class="frightu">
+			<input type="text" name="n[desc]" value="{$n.desc}" {tip trigger="name" bold=1}>
+		</td>
+	</tr>
+</thead>
+</tbody>
+	<tr>
+		<td width="1%" class="fleft">
+			<img src="img/node.gif" alt="">
+		</td>
+		<td width="1%">
+			<b>Darmowe minuty</b>
+		<td width="98%" class="fright">
+{html_options name="n[allowfree]" options=$af selected=$n.allowfree}			
+		</td>
+	</tr>
+	<tr>
+	<td width="1%" class="fleft">
+		<img src="img/node.gif" alt="">
+	</td>
+	<td width="1%">
+		<b>Grupa</b>
+	<td width="98%" class="fright">
+{html_options name="n[id_rategroups]" options=$rategroups selected=$n.id_rategroups}			
+	</td>
+</tr>
+<tr class="light">
+		<td width="100%" class="FBOTTOMU" colspan="3" align="right">
+			<a href="javascript:document.numberadd.submit();" accesskey="s">{t}Submit{/t} <img src="img/save.gif" alt=""></a>
+			<a href="?m=v_numbers">{t}Cancel{/t} <img src="img/cancel.gif" alt=""></a>
+		</td>
+	</tr>
+</tbody>
+</table></form>
+{include file="footer.html"}

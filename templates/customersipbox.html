@@ -1,0 +1,78 @@
+<!--// $Id: customersipbox.html,v 1.3 2006/01/31 08:41:24 alec Exp $ //-->
+<table class="table table-bordered" width="100%">
+	<tr class="dark hand info-hover">
+		<td width="99%" class="fleftu hand" onclick="ShowOrHideBox('sippanelbox');">
+			<img src="img/voip.gif" alt="">&nbsp;
+			<b>Konta SIP Nettelekom ({$customersip.total|default:"0"}):</b>
+		</td>
+		<td width="1%" class="frightu" align="right" nowrap>
+		</td>
+	</tr>
+        <tr id="sippanelbox" style="display:none;">
+	        <td width="100%" colspan="2" class="fall">
+	
+	
+	<table cellpadding="5" cellspacing="0" width="100%">
+	
+	{cycle values="light,lucid" print=false}
+	{if $customersip.total > 0}
+	{section name=customersip loop=$customersip}
+	{if $customersip[customersip].id}
+	<tr class="{cycle} lista {if $customersip[customersip].access=='f'} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td width="1%">
+			<a href="?m=v_nodeset&id={$customersip[customersip].id}"><img src="img/{if $customersip[customersip].access=='f'}no{/if}access.gif" alt="[ {if $customersip[customersip].access=='f'}{t}Connect{/t}{else}{t}Disconnect{/t}{/if} ]"></a>
+			
+		</td>
+		<td width="97%" onclick="return self.location.href='?m=v_nodeinfo&id={$customersip[customersip].id}';">
+			<b>{$customersip[customersip].name}</b><br>
+			<nobr>{$customersip[customersip].ipaddr}<nobr><br>
+			<nobr><b>Abonament:</b> {$customersip[customersip].subscription|default:'Brak'}<nobr><br>
+			<nobr><b>Taryfa:</b> {$customersip[customersip].tariff}<nobr><br>
+			
+		</td>
+		<td width="1%" align="right" valign="top" onclick="return self.location.href='?m=v_nodeinfo&id={$customersip[customersip].id}';">
+			({$customersip[customersip].id|string_format:"%04d"})
+		</td>
+		<td width="1%" nowrap>
+			<a href="?m=v_nodedel&id={$customersip[customersip].id}" onclick="return confirmLink(this, '{t a=$customersip[customersip].name|upper}Are you sure, you want to remove node \'$a\' from database?{/t}')"><img src="img/delete.gif" alt="[ {t}Delete{/t} ]"></a>
+			<a href="?m=v_nodeedit&id={$customersip[customersip].id}"><img src="img/edit.gif" alt="[ {t}Edit{/t} ]"></a>
+			<a href="?m=v_nodeinfo&id={$customersip[customersip].id}"><img src="img/info.gif" alt="[ {t}Info{/t} ]"></a>
+		</td>
+	</tr>
+	{/if}
+	{/section}
+	{else}
+	<tr>
+		<td width="100%" colspan="4" align="center">
+			<p>&nbsp;</p>
+			<p><b>{if $customerinfo.deleted}<font class="red">{t}That customer has been deleted.{/t}</font>{else}Ten klient nie posiada żadnego konta SIP.{/if}</b></p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>
+	{/if}
+	<tr class="light">
+		<td colspan="2" width="50%" class="ftop pad5" align="left" style="vertical-align:top;">
+			<a href="?m=v_nodeset&ownerid={$customersip.ownerid}&access=1"><img src="img/access.gif"> {t}Connect All{/t}</a><br>
+			<a href="?m=v_nodeset&ownerid={$customersip.ownerid}"><img src="img/noaccess.gif"> {t}Disconnect All{/t}</a><br>
+		</td>
+		<td colspan="2" width="50%" class="ftop pad10" align="right" style="vertical-align:top;">
+			{if $customerinfo.status eq "3" and ! $customerinfo.deleted}<a href="?m=v_nodeadd&ownerid={$customerinfo.id}">{t}New Account{/t} <img src="img/edit.gif" alt=""></a>{else}<font class="BLEND">{t}New Account{/t} <img src="img/edit.gif" alt="">{/if}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="99%" colspan="3" class="fleftu">
+			Zmień abonament dla wszystkich kont na: 
+			<form action="?m=v_masschange&ownerid={$customerinfo.id}" method="POST" name="chsubs">
+{html_options name=id_subscriptions options=$id_subscriptions onchange="if(confirm('Na pewno zmienić?')) document.forms['chsubs'].submit();"}
+			</form>
+			&nbsp;&nbsp;Zmień cennik dla wszystkich kont na: 
+			<form action="?m=v_masschange&ownerid={$customerinfo.id}" method="POST" name="chtars">
+{html_options name=id_tariffs options=$id_tariffs onchange="if(confirm('Na pewno zmienić?')) document.forms['chtars'].submit();"}
+			</form>
+		</td>
+		<td width="1%" class="frightu" nowrap valign="BOTTOM" align="right">
+		</td>
+	</tr>
+</table>
+</td></tr>
+</table>

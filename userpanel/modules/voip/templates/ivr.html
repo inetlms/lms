@@ -1,0 +1,41 @@
+{include file="header.html"}
+<table width="100%" cellspacing="0" class="icu_tab">
+        <tr>
+                <td valign="top" width="50%">
+{box title="IVR"}
+<table width="100%">
+<tr class="darkest"><th width="80%">Nazwa</th><th colspan="2">Akcja</th></tr>
+{section name=a loop=$groups}
+<TR class="dark">
+<td><a href="?m=voip&f=ivr&ff=det&id={$groups[a].id}">{$groups[a].name}</a></td>
+<td><a href="?m=voip&f=ivr&ff=edit&id={$groups[a].id}">Edytuj</a></td>
+<td><a href="?m=voip&f=ivr&ff=del&id={$groups[a].id}" onclick="return confirm('Na pewno? Wszystkie akcje i pliki wav z tego IVR zostaną usunięte!');">Usuń</a></td>
+</tr>
+{sectionelse}
+<tr><td colspan="3" align="center"><b>Brak wpisów</b></td></tr>
+{/section}
+</table>
+{/box}
+</td>
+<td valign="top" width="50%">
+{if $groupaction}
+{assign var='title' value="IVR - Edytuj"}
+{else}
+{assign var='title' value="IVR - Dodaj"}
+{/if}
+{box title=$title}
+{if $err}<span style="color:#FF0000; font-weight:bold;">{$err}</span>{/if}
+<form action="?m=voip&f=ivr&ff=add" method="post">
+<input type="text" name="group[name]" value="{$group.name}">
+&nbsp;
+<input type="hidden" name="group[id]" value="{$group.id}">
+<input type="submit" value="Zapisz"><br>
+Numery dla których IVR jest aktywny:<br>
+{html_checkboxes separator='<br>' name='group[num]' options=$num selected=$group.num}
+</form>
+{/box}
+</td>
+</tr>
+</table>
+{include file="footer.html"}
+

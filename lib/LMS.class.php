@@ -851,6 +851,9 @@ class LMS {
 						$result['contacts'][$idx]['typestr'] = implode('/', $types);
 				}
 			
+			if(get_conf('voip.enabled','0') && $this->DB->GetOne('SELECT 1 FROM v_exportedusers WHERE lmsid = ?', array($result['id'])))
+				$result['isvoip'] = 1;
+			
 			return $result;
 		}
 		else

@@ -999,6 +999,93 @@ if (get_conf('phpui.radius')) {
 	
 }
 
+
+if (get_conf('voip.enabled','0')) {
+	$menu['telefonia'] = array(
+			'name' => 'VoIP Nettelekom',
+			'img' =>'voip.gif',
+			'link' =>'?m=configlist',
+			'tip' => 'Telefonia internetowa',
+			'accesskey' =>'v',
+			'prio' => 13,
+			'index' => 82,
+			'submenu' => array(
+				array(
+					'name' => 'Lista abonamentów',
+					'link' =>'?m=v_tarifflist',
+					'prio' => '10'),
+				array(
+					'name' => 'Nowy abonament',
+					'link' => '?m=v_tariffadd',
+					'tip' => 'Nowy abonament',
+					'prio' => '20'),
+				array(
+					'name' => 'Lista cenników minut',
+					'link' =>'?m=v_cennlist',
+					'prio' => '30'),
+				array(
+					'name' => 'Nowy cennik minut',
+					'link' => '?m=v_cennadd',
+					'tip' => 'Nowy cennik minut',
+					'prio' => '40'),
+				array(
+					'name' => 'Lista grup cennikowych',
+					'link' =>'?m=v_trunkgrplist',
+					'prio' => '50'),
+				array(
+					'name' => 'Nowa grupa cennikowa',
+					'link' => '?m=v_trunkgrpadd',
+					'tip' => 'Nowa grupa cennikowa',
+					'prio' => '60'),
+				array(
+					'name' => 'Stan centrali',
+					'link' => '?m=v_state',
+					'tip' => 'Stan centrali',
+					'prio' => '110'),
+				array(
+					'name' => 'CDR',
+					'link' => '?m=v_cdr',
+					'tip' => 'Lista połączeń wychodzących',
+					'prio' => '120'),
+/*				array(
+TEMPORARY DISABLED			'name' => 'Bilans kosztów',
+					'link' => '?m=v_balance',
+					'tip' => 'Bilans kosztów',
+					'prio' => '130'),*/
+				array(
+					'name' => 'Lista stref numeracyjnych',
+					'link' => '?m=v_netlist',
+					'tip' => 'Numery',
+					'prio' => '140'),
+				array(
+					'name' => 'Nowa strefa numeracyjna',
+					'link' => '?m=v_netadd',
+					'tip' => 'Numery',
+					'prio' => '150'),
+				array(
+					'name' => 'Wzorce numerów',
+					'link' => '?m=v_numbers',
+					'tip' => 'Numery',
+					'prio' => '160'),
+				array(
+					'name' => 'Przelicz salda klientów',
+					'link' => '?m=v_checkbalance',
+					'tip' => 'Salda',
+					'prio' => '190'),
+				array(
+					'name' => 'Użycie dysku',
+					'link' => '?m=v_diskusage',
+					'tip' => '',
+					'prio' => '200'),
+				array(
+					'name' => 'Sprawozdanie UKE',
+					'link' => '?m=v_uke',
+					'tip' => '',
+					'prio' => '210')	
+				)
+		);
+}
+
 // menu item for EtherWerX STM channels management
 if (chkconfig($CONFIG['phpui']['ewx_support'])) {
 	$menu['netdevices']['submenu'][] = array(

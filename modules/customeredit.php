@@ -126,7 +126,7 @@ elseif (isset($_POST['customerdata']))
 	}
 
 	foreach($customerdata['contacts'] as $idx => $val)
-    {
+	{
 	        $phone = trim($val['phone']);
 	        $name = trim($val['name']);
             $type = !empty($val['type']) ? array_sum($val['type']) : NULL;
@@ -137,6 +137,16 @@ elseif (isset($_POST['customerdata']))
 	                $error['contact'.$idx] = trans('Phone number is required!');
 	        elseif($phone)
 	                $contacts[] = array('name' => $name, 'phone' => $phone, 'type' => $type);
+	}
+	
+	if(check_modules(82) && get_conf('voip.enabled','0') && $customerdata['isvoip'] == 1) //nettelekom
+	{
+		if($customerdata['voippoczatekum'] != '' and (!preg_match('/^\d{4}-\d{2}-\d{2}$/',$customerdata['voippoczatekum']) or !checkdate(substr($customerdata['voippoczatekum'],5,2),substr($customerdata['voippoczatekum'],-2),substr($customerdata['voippoczatekum'],0,4))))
+			$error['voippoczatekum'] = trans('Incorrect date!');
+		if($customerdata['voipkoniecum'] != '' and (!preg_match('/^\d{4}-\d{2}-\d{2}$/',$customerdata['voipkoniecum']) or !checkdate(substr($customerdata['voipkoniecum'],5,2),substr($customerdata['voipkoniecum'],-2),substr($customerdata['voipkoniecum'],0,4))))
+			$error['voipkoniecum'] = trans('Incorrect date!');
+		if($customerdata['voippoczatekum'] != '' and $customerdata['voipkoniecum'] != '' and $customerdata['voipkoniecum'] < $customerdata['voippoczatekum'])
+			$error['voippoczatekum'] = trans('Incorrect date!');
 	}
 
 	if(!$error)
@@ -156,6 +166,8 @@ elseif (isset($_POST['customerdata']))
 			$customerdata['divisionid'] = 0;
 		
 		$LMS->CustomerUpdate($customerdata);
+		if(check_modules(82) && get_conf('voip.enabled','0') && $customerdata['isvoip'])  // nettelekom
+		    $voip->update_user($customerdata);
 		
 		$DB->Execute('DELETE FROM imessengers WHERE customerid = ?', array($customerdata['id']));
 		if(isset($im))
@@ -215,6 +227,8 @@ $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 
 $customerid = $customerinfo['id'];
 include(MODULES_DIR.'/customer.inc.php');
+if (get_conf('voip.enabled','0'))
+    include(MODULES_DIR.'/customer.voip.inc.php');
 
 $annex_info = array('section'=>'customer','ownerid'=>$customerid);
 $SMARTY->assign('annex_info',$annex_info);
