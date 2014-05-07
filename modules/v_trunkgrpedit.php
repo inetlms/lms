@@ -1,5 +1,5 @@
 <?php
-$layout['pagetitle'] = 'Edytuj grupę cennikową';
+$layout['pagetitle'] = 'VoIP Nettelekom - Edytuj grupę cennikową';
 if(!isset($_GET['id'])) $SESSION->redirect('?m=v_trunkgrplist');
 $ca = $_POST['cennedit'];
 if(isset($ca))

@@ -10,7 +10,7 @@
 		{literal}}{/literal}	
 	//-->
 </script>{/if}
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <table class="lmsbox">
 <thead>
 	{if $unlockedit}<form method="POST" action="?m=v_netedit&id={$network.id}" name="netedit"><input type="submit" class="hiddenbtn">{/if}

@@ -1,5 +1,5 @@
 <?php
 $SMARTY->assign('trunklist', $voip->GetTrunkList());
-$layout['pagetitle'] = 'VOIP - lista łącz';
+$layout['pagetitle'] = 'VoIP Nettelekom - lista łącz';
 $SMARTY->display('v_trunklist.html');
 ?>

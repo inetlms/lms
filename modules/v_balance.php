@@ -31,7 +31,7 @@ $sText = html_entity_decode($sText);
 
 
 
-$layout['pagetitle'] = 'Bilans kosztów';
+$layout['pagetitle'] = 'VoIP Nettelekom - Bilans kosztów';
 $m=0;
 $balance=$_POST['balance'];
 if(isset($balance))

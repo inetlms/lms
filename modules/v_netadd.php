@@ -25,7 +25,7 @@ if(isset($_POST['netadd']))
 	$SMARTY->assign('netadd', $netadd);
 }
 
-$layout['pagetitle'] = 'Nowa strefa numeracyjna';
+$layout['pagetitle'] = 'VoIP Nettelekom - Nowa strefa numeracyjna';
 $SMARTY->display('v_netadd.html');
 
 ?>

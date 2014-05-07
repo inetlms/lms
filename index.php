@@ -177,12 +177,20 @@ $LMS->lang = $_language;
 $GG = new rfGG(GG_VER_77);
 $RAD = new radius($DB,$LMS);
 
-if(get_conf('voip.enabled','0'))
+if(get_conf('voip.enabled','0') )
 {
-	require_once(LIB_DIR.'/LMSVOIP.class.php');
-	require_once(LIB_DIR.'/floAPI.php');
-	$voip = new LMSVOIP($DB, $CONFIG['voip']);
-	$layout['v_errors'] =& $voip->errors;
+	if (fetch_url(get_conf('voip.wsdlurl')))
+	{
+	    require_once(LIB_DIR.'/LMSVOIP.class.php');
+	    require_once(LIB_DIR.'/floAPI.php');
+	    $voip = new LMSVOIP($DB, $CONFIG['voip']);
+	    $layout['v_errors'] =& $voip->errors;
+	} else {
+	    $voip = NULL;
+	    $layout['v_errors'] = 'Moduł VoIP Nettelekom został wyłączony automatycznie<br>Brak połączenia z '.get_conf('voip.wsdlurl').' !!!';
+	    $layout['v_errors_connect'] = TRUE;
+	    $CONFIG['voip']['enabled'] = 0;
+	}
 }
     else $voip = NULL;
 

@@ -93,7 +93,7 @@ if($_GET['ownerid'] && $LMS->CustomerExists($_GET['ownerid']) > 0)
 if(isset($_GET['preip']) && $nodedata['name'] == '')
 	$nodedata['name'] = $_GET['preip'];
 
-$layout['pagetitle'] = trans('Nowe konto SIP');
+$layout['pagetitle'] = 'VoIP Nettelekom - Nowe konto SIP';
 
 $customers = $voip->wsdl->GetCustomerNames();
 

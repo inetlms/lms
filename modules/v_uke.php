@@ -2,7 +2,7 @@
 
 
 $error = '';
-$layout['pagetitle'] = 'Sprawozdanie UKE';
+$layout['pagetitle'] = 'VoIP Nettelekom - Sprawozdanie UKE';
 $dir = dirname($voip->mondir);
 $file = $dir . '/tmp/UKE';
 

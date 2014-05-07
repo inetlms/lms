@@ -1,5 +1,5 @@
 <?php
-$layout['pagetitle'] = 'Edytuj cennik';
+$layout['pagetitle'] = 'VoIP Nettelekom - Edytuj cennik';
 if(!isset($_GET['id'])) $SESSION->redirect('?m=v_cennlist');
 $ca = $_POST['cennedit'];
 if(isset($ca))

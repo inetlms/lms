@@ -14,7 +14,7 @@ $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 if(!isset($_GET['ownerid']))
 	$SESSION->save('backto', $SESSION->get('backto') . '&ownerid='.$customerid);
 							
-$layout['pagetitle'] = 'Edycja konta';
+$layout['pagetitle'] = 'VoIP Nettelekom - Edycja konta';
 
 include(MODULES_DIR . '/customer.inc.php');
 include(MODULES_DIR . '/customer.voip.inc.php');

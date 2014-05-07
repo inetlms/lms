@@ -36,7 +36,7 @@ $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 if(!isset($_GET['ownerid']))
 	$SESSION->save('backto', $SESSION->get('backto').'&ownerid=' . $ownerid);
 
-$layout['pagetitle'] = 'Informacje o koncie ' . $nodeinfo['name'];
+$layout['pagetitle'] = 'VoIP Nettelekom - Informacje o koncie : ' . $nodeinfo['name'];
 
 $SMARTY->assign('nodedata', $nodeinfo);
 $SMARTY->display('v_nodeinfo.html');

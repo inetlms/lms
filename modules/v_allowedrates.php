@@ -1,5 +1,5 @@
 <?php
-$layout['pagetitle'] = 'Dozwolone strefy';
+$layout['pagetitle'] = 'VoIP Nettelekom - Dozwolone strefy';
 
 if($_POST['id'])
 {

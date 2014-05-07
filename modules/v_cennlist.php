@@ -1,5 +1,5 @@
 <?php
 $SMARTY->assign('tarifflist', $voip->wsdl->get_cenn());
-$layout['pagetitle'] = 'VOIP - lista cenników';
+$layout['pagetitle'] = 'VoIP Nettelekom - lista cenników';
 $SMARTY->display('v_cennlist.html');
 ?>

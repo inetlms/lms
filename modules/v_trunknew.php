@@ -31,7 +31,7 @@ if(isset($nodedata))
 }
 
 
-$layout['pagetitle'] = trans('Nowe łącze');
+$layout['pagetitle'] = 'VoIP Nettelekom - Nowe łącze';
 $tr = $voip->GetTrunkgrpList();
 $trunkgroups = array();
 foreach($tr as $val)

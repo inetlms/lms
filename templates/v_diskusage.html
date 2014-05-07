@@ -1,5 +1,5 @@
 {include file="header.html"}
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <table border="1" cellspacing="0" cellpadding="10">
 <form action="?m=v_diskusage" method="post">
 <tr><td align="center" colspan="3"{if $err} style="color: #F00; font-weight:bold;"{/if}>{if $err}Błąd: Próbowałeś przydzielić {$err|number_format:2} MB.<br>{/if}Pozostało do wykorzystania: {$quotaleft|number_format:2} MB</td></tr>

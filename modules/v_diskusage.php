@@ -15,7 +15,7 @@ if(isset($_POST['du']) and !empty($_POST['du']))
 	else
 		$SESSION->redirect('?m=v_diskusage');
 }
-$layout['pagetitle'] = trans('Disk usage');
+$layout['pagetitle'] = 'VoIP Nettelekom - '.trans('Disk usage');
 $c = $voip->wsdl->GetCustomers('surname');
 $s = $voip->wsdl->GetSettings();
 $maxlimit = $s[8];

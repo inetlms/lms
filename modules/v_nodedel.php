@@ -1,5 +1,5 @@
 <?php
-$layout['pagetitle'] = 'Usunięcie konta ' . $voip->wsdl->GetNodeName($_GET['id']);
+$layout['pagetitle'] = 'VoIP Nettelekom - Usunięcie konta : ' . $voip->wsdl->GetNodeName($_GET['id']);
 $SMARTY->assign('nodeid', $_GET['id']);
 
 if (!$voip->wsdl->NodeExists($_GET['id']))

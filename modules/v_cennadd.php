@@ -1,5 +1,5 @@
 <?php
-$layout['pagetitle'] = 'Nowy cennik';
+$layout['pagetitle'] = 'VoIP Nettelekom - Nowy cennik';
 $ca = $_POST['cennadd'];
 if(isset($ca))
 {

@@ -4,7 +4,7 @@
  *  $Id: $
  */
 
-$layout['pagetitle'] = 'CDR';
+$layout['pagetitle'] = 'VoIP Nettelekom - CDR';
 $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 
 if(isset($_POST['from']))

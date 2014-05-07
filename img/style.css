@@ -1328,3 +1328,72 @@ div.nodata {
         -webkit-box-shadow      : #333333 1px 1px 12px;
 
 }
+
+
+table.lmsbox,
+table.lmsbox-inner {
+    width: 100%;
+}
+
+table.lmsbox td {
+    padding: 2px;
+}
+
+table.lmsbox-inner * td {
+    padding: 2px;
+    border-spacing: 0px;
+}
+
+table.lmsbox > thead,
+table.lmsbox > tfoot,
+table.lmsbox > tbody,
+table.lmsbox-inner > thead,
+table.lmsbox-inner > tfoot {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+table.lmsbox > thead,
+table.lmsbox-inner > thead {
+    background-color: #EFEFEF;
+}
+
+table.lmsbox > tbody,
+table.lmsbox > tfoot,
+table.lmsbox-inner > tbody,
+table.lmsbox-inner > tfoot {
+    background-color: #F4F4F4;
+}
+
+table.lmsbox > thead > tr,
+table.lmsbox > tfoot > tr {
+    border-top: 1px solid black;
+}
+
+.summary {
+	text-align: right;
+	font-weight: bold;
+}
+
+.navigation {
+	text-align: center;
+	white-space: nowrap;
+	background-color: #EFEFEF;
+}
+
+.pagination {
+    background-color: #EFEFEF;
+}
+
+table.lmsbox > thead { text-align: left; }
+
+td.empty-table { text-align: center; font-weight: bold; padding: 2em; background-color: #F4F4F4; }
+
+.nobr { white-space: nowrap; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.lighter { font-weight: lighter; }
+.valign-top { vertical-align: top; }
+.valign-bottom { vertical-align: bottom; }

@@ -32,7 +32,7 @@ if(isset($tariffadd))
 	
 }
 
-$layout['pagetitle'] = 'Nowy abonament';
+$layout['pagetitle'] = 'VoIP Nettelekom - Nowy abonament';
 
 $SMARTY->assign('error', $error);
 $SMARTY->assign('tariffadd', $tariffadd);

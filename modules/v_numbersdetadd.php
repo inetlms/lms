@@ -2,7 +2,7 @@
 $idr = $_GET['id_rates'];
 if(!$idr) $SESSION->redirect('?m=v_numbers');
 $rate = $voip->wsdl->getratebyid($idr);
-$layout['pagetitle'] = 'Wzorzec dla strefy ' . $rate[0]['desc'];
+$layout['pagetitle'] = 'VoIP - Nettelekom - Wzorzec dla strefy : ' . $rate[0]['desc'];
 
 if($d = $_POST['n'])
 {

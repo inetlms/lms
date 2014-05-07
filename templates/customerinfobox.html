@@ -393,7 +393,7 @@
 		</td>
 	</tr>
 	
-	{if check_modules(82) && get_conf('voip.enabled','0') && $isvoip}<tr class="light"><td width="1%"><img src="img/voip.gif"></td><td colspan="2" width="99%"><fieldset><legend>| <b>VoIP Nettelekom</b> |</legend>{include file="v_customerinfobox.html"}</fieldset>{/if}
+	{if check_modules(82) && get_conf('voip.enabled','0') && $isvoip}<tr class="light"><td width="1%"><img src="img/voip.gif"></td><td colspan="2" width="99%"><fieldset><legend>| <b>VoIP Nettelekom</b> |</legend>{if !$isvoiperr}{include file="v_customerinfobox.html"}{else}<span style="color:red;"><img src="img/warning.png"> <b>Wystąpił błąd w pobraniu danych ze zdalnego serwera</b></span>{/if}</fieldset>{/if}
                                         	</table>
 					</td>
 				</tr>

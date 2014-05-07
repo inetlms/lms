@@ -1,17 +1,14 @@
-<table class="lmsbox">
-<thead>
-	<tr>
-		<td class="fleftu" width="99%" onclick="showOrHide('cdrpanel');" style="border-right:solid black 1px;">
-			<img src="img/phone.gif" alt="">
-			<b><a name="helpdesk">Połączenia wychodzące z ostatnich 24 godzin</a></b>
+<table width="100%" cellpadding="3" class="table table-bordered">
+	<tr class="dark hand info-hover">
+		<td class="fall" width="99%" onclick="ShowOrHideBox('v_cdrpanel');" align="left">
+			<img src="img/voip.gif" alt="">
+			<b>Połączenia wychodzące z ostatnich 24 godzin - Nettelekom</b>
 		</td>
 	</tr>
-</thead>
-</tbody>
-	<tr id="cdrpanel" style="display:none;">
+	<tr id="v_cdrpanel" style="display:none;">
 		<td width="100%" class="fall">
-<table cellpadding="3" class="lmsbox-inner">
-	<tr>
+<table cellpadding="3" width="100%">
+	<tr class="light">
 		<td class="fleftu" width="20%" nowrap>
 			<img src="img/phone.gif" alt="">&nbsp;{t}ID:{/t}<br>
 			<img src="img/calendar.gif" alt="">&nbsp;<b>Data</b>:
@@ -34,7 +31,7 @@
 	</tr>
 	{cycle values="light,lucid" print=false}
 	{section name=cdr loop=$cdr}
-	<tr class="{cycle}{if $queue[ticket].state == 2} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<tr class="{cycle} lista {if $queue[ticket].state == 2} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft">
 {$cdr[cdr].id}<br><b>{$cdr[cdr].calldate}</b>
 		</td>
@@ -70,5 +67,11 @@
 	</tr>
 </table>
 </td></tr>
-</tbody>
 </table>
+{if get_profile('v_cdrpanel')}
+<script type="text/javascript">
+<!--
+	document.getElementById('v_cdrpanel').style.display = '';
+//-->
+</script>
+{/if}

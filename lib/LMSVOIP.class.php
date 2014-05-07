@@ -1,253 +1,301 @@
 <?php
 class LMSVOIP
 {
-var $lmsdb;
-var $config;
-var $mondir;
-var $fax_outgoingdir;
-var $fax_incomingdir;
-var $fax_statusdir;
-var $rategroups;
-var $mailboxdir;
-var $dialplan_file;
-var $dialplan = array();
-var $incvoipdir;
-var $ivrdir;
-var $wsdl;
-var $errors = null;
+	var $lmsdb;
+	var $config;
+	var $mondir;
+	var $fax_outgoingdir;
+	var $fax_incomingdir;
+	var $fax_statusdir;
+	var $rategroups;
+	var $mailboxdir;
+	var $dialplan_file;
+	var $dialplan = array();
+	var $incvoipdir;
+	var $ivrdir;
+	var $wsdl;
+	var $errors = null;
 
-function LMSVOIP(&$lmsdb, &$config)
-{
-$this->lmsdb = $lmsdb;
-$this->config = $config;
-$this->mondir = $config['mondir'];
-$this->fax_outgoingdir = $config['fax_outgoingdir'];
-$this->fax_incomingdir = $config['fax_incomingdir'];
-$this->fax_statusdir = $config['fax_statusdir'];
-$this->mailboxdir = $config['mailboxdir'];
-$this->dialplan_file = $config['dialplan_file'];
-$this->incvoipdir = $config['incvoipdir'];
-$this->ivrdir = $config['ivrdir'];
-$this->wsdl = new SoapClient($config['wsdlurl'], array('login' => $config['wsdllogin'], 'password' => $config['wsdlpassword'], 'cache_wsdl' => WSDL_CACHE_NONE));
-$this->rategroups = $this->wsdl->makerategroups();
-if(!is_dir($this->mondir))
-	$this->errors = 'Katalog <B>'.dirname($this->mondir).'</B> nie jest zamontowany. Niektóre funkcjonalności mogą nie działać prawidłowo.';
-}
 
-function toutf8(&$d)
-{
-	if(is_array($d))
-	foreach($d as $key => $val)
+	function LMSVOIP(&$lmsdb, &$config)
 	{
-		$d[$key] = iconv('ISO-8859-2', 'UTF-8//IGNORE', $val);
+		$this->lmsdb = $lmsdb;
+		$this->config = $config;
+		$this->mondir = $config['mondir'];
+		$this->fax_outgoingdir = $config['fax_outgoingdir'];
+		$this->fax_incomingdir = $config['fax_incomingdir'];
+		$this->fax_statusdir = $config['fax_statusdir'];
+		$this->mailboxdir = $config['mailboxdir'];
+		$this->dialplan_file = $config['dialplan_file'];
+		$this->incvoipdir = $config['incvoipdir'];
+		$this->ivrdir = $config['ivrdir'];
+		$this->wsdl = @new SoapClient($config['wsdlurl'], array('login' => $config['wsdllogin'], 'password' => $config['wsdlpassword'], 'cache_wsdl' => WSDL_CACHE_NONE));
+		$this->rategroups = $this->wsdl->makerategroups();
+		
+		if(!is_dir($this->mondir))
+			$this->errors = 'Katalog <B>'.dirname($this->mondir).'</B> nie jest zamontowany. Niektóre funkcjonalności mogą nie działać prawidłowo.';
 	}
-	else $d = iconv('ISO-8859-2', 'UTF-8//IGNORE', $d);
-	return $d;
-}
 
-function toiso(&$d)
-{
-	if(is_array($d))
-	foreach($d as $key => $val)
+
+	function toutf8(&$d)
 	{
-		$d[$key] = iconv('UTF-8', 'ISO-8859-2//IGNORE', $val);
+		if(is_array($d))
+			foreach($d as $key => $val)
+			{
+				$d[$key] = iconv('ISO-8859-2', 'UTF-8//IGNORE', $val);
+			}
+		else 
+			$d = iconv('ISO-8859-2', 'UTF-8//IGNORE', $d);
+		
+		return $d;
 	}
-	else $d = iconv('UTF-8', 'ISO-8859-2//IGNORE', $d);
-	return $d;
-}
 
-function GetNetworkList()
-{
-if($networks = $this->lmsdb->GetAll('SELECT id, name, start, count AS size FROM v_netlist ORDER BY name'))
-{
-	$size = 0; $assigned = 0;
 
-	foreach($networks as $idx => $row)
+	function toiso(&$d)
 	{
-		$row['assigned'] = $this->wsdl->_GetNetworkList($row['start'], $row['start'] + $row['size']);
-		$row['end']=sprintf('%010s',(int)$row['start'] + $row['size'] - 1);
-		$networks[$idx] = $row;
-		$size += $row['size'];
-		$assigned += $row['assigned'];
+		if(is_array($d))
+			foreach($d as $key => $val)
+			{
+				$d[$key] = iconv('UTF-8', 'ISO-8859-2//IGNORE', $val);
+			}
+		else 
+			$d = iconv('UTF-8', 'ISO-8859-2//IGNORE', $d);
+		
+		return $d;
 	}
-	$networks['size'] = $size;
-	$networks['assigned'] = $assigned;
-}
-return $networks;
-}
 
-function NetworkExists($id)
-{
-return $this->lmsdb->GetOne('SELECT COUNT(id) FROM v_netlist WHERE id = ?', array($id));
-}
 
-function GetNetworkRecord($id)
-{
-$network = $this->lmsdb->GetRow('SELECT id, name, start, count AS size FROM v_netlist WHERE id = ?', array($id));
-
-$network['assigned'] = $this->wsdl->_GetNetworkRecord($network);
-$network['end'] = sprintf('%010s', (int)$network['start'] + $network['size'] - 1);
-$network['page'] = 1;
-$network['pages'] = 1;
-$nodes = $this->wsdl->_getnodes((int)$network['start'], (int)$network['end']);
-for($i = 0; $i < $network['size']; $i++)
-{
-$j = sprintf('%010d', (int)$network['start'] + $i);
-$network['nodes']['id'][$i] = ($nodes[$j] ? $nodes[$j]['id'] : 0 );
-$network['nodes']['name'][$i] = ($nodes[$j] ? $nodes[$j]['name'] : 0 );
-$network['nodes']['address'][$i] = $j;
-
-}
-$network['rows'] = ceil(sizeof($network['nodes']['address']) / 4);
-$network['pageassigned'] = $network['assigned'];
-$network['free'] = $network['size'] - $network['assigned'];
-return $network;
-}
-
-function NetworkUpdate($d)
-{
-$count = (int)$d['end'] - (int)$d['start'] + 1;
-$this->lmsdb->Execute('UPDATE v_netlist SET name = ?, start = ?, count = ? WHERE id = ?', array($d['name'], $d['start'], $count, $d['id']));
-}
-
-function NetworkAdd($d)
-{
-$this->lmsdb->Execute('INSERT INTO v_netlist (name, start, count) VALUES (?, ?, ?)', array($d['name'], $d['start'], $d['count']));
-return $this->lmsdb->GetLastInsertID('v_netlist');
-}
-
-function NetworkDelete($id)
-{
-$this->lmsdb->Execute('DELETE FROM v_netlist WHERE id = ?', array($id));
-}
-
-function GetNetworks()
-{
-if($netlist = $this->lmsdb->GetAll('SELECT id, name, start AS address, count AS prefix FROM v_netlist ORDER BY name'))
-return $netlist;
-}
-
-function get_billing_details($tslist)
-{
-if(is_array($tslist['id'])) foreach($tslist['id'] as $key => $val)
-{
-	if($this->lmsdb->GetOne('SELECT COUNT(id) FROM billing_details WHERE documents_id = ?', array($tslist['docid'][$key])) > 0)
-		$tslist['details'][$key] = 1;
-	else 
-		$tslist['details'][$key] = 0;
-}
-}
-
-function get_billing_details2($tslist)
-{
-if(is_array($tslist)) foreach($tslist as $key => $val) if(is_array($val))
-{
-	if($this->lmsdb->GetOne('SELECT COUNT(id) FROM billing_details WHERE documents_id = ?', array($val['id'])) > 0)
-		$tslist[$key]['details'] = 1;
-	else 
-		$tslist[$key]['details'] = 0;
-}
-return $tslist;
-}
-
-function update_user($d)
-{
-$u = $this->lmsdb->GetRow('SELECT lastname, name, email, address, zip, city, ten, pin FROM customers WHERE id = ?', array($d['id']));
-$u['password'] = md5($u['pin']);
-$d['type'] = 'postpaid';
-$this->wsdl->_update_user($d, $u);
-}
-
-function fax_outbox($u, $limit = 0)
-{
-$res = $this->lmsdb->GetAll('SELECT * FROM v_fax WHERE customerid = ? ORDER BY id DESC', array($u));
-$user = $this->wsdl->GetAstId($u);
-$status = '';
-if(is_array($res)) foreach($res as $key => $val)
-{
-	$statusfile = $this->fax_statusdir . $user . '_' . $val['uniqueid'];
-	if(is_file($statusfile))
+	function GetNetworkList()
 	{
-		$fp = fopen($statusfile, 'r');
-		while(!feof($fp))
+		if($networks = $this->lmsdb->GetAll('SELECT id, name, start, count AS size FROM v_netlist ORDER BY name'))
 		{
-			$line = fgets($fp);
-			if(substr($line, 0, 7) == 'Status:') $status = substr($line, 8);
+			$size = 0; $assigned = 0;
+			foreach($networks as $idx => $row)
+			{
+				$row['assigned'] = $this->wsdl->_GetNetworkList($row['start'], $row['start'] + $row['size']);
+				$row['end']=sprintf('%010s',(int)$row['start'] + $row['size'] - 1);
+				$networks[$idx] = $row;
+				$size += $row['size'];
+				$assigned += $row['assigned'];
+			}
+			
+			$networks['size'] = $size;
+			$networks['assigned'] = $assigned;
 		}
-		fclose($fp);
+		
+		return $networks;
 	}
-	if(!$status)
-		if($val['data'] + 600 < time()) $status = 'Błąd';
-			else $status = 'Przekazany do wysłania';
-	$res[$key]['status'] = $status;
-	if(file_exists($this->fax_outgoingdir . $user . '/' . $val['uniqueid'] . '.tif'))
-		$res[$key]['allowprint'] = true;
-}
-return $res;
-}
 
-function ui_deletefin($d,$user)
-{
-$uid = $this->wsdl->GetAstId($user);
-foreach($d as $val)
-{
-	$fname = $this->fax_incomingdir . $uid . '/' . $this->wsdl->_faxprint($user, $val, '') . '.tif';
-	if(is_file($fname))
-		@unlink($fname);
-}
-}
 
-function ui_deletefout($d, $user)
-{
-$uid = $this->wsdl->GetAstId($user);
-foreach($d as $val)
-{
-	$uniq = $this->lmsdb->GetOne('SELECT uniqueid FROM v_fax WHERE id = ? AND customerid = ?', array($val, $user));
-	if($uniq)
+	function NetworkExists($id)
 	{
-		$fname = $this->fax_outgoingdir . $uid . '/' . $uniq . '.tif';
-		$this->lmsdb->Execute('DELETE FROM v_fax WHERE id = ?', array($val));
-		@unlink($fname);
+		return $this->lmsdb->GetOne('SELECT COUNT(id) FROM v_netlist WHERE id = ?', array($id));
 	}
-}
-}
 
-function ui_faxsa($id, $user)
-{
-$out = $this->lmsdb->GetRow('SELECT nr_from, nr_to, uniqueid, filename FROM v_fax WHERE id = ? AND customerid = ?', array($id, $user));
-if(!$out) return;
-$out['id_ast_sip'] = $this->wsdl->_ui_faxsa($out['nr_from']);
-return $out;
-}
 
-function preparetofax($f, $nrfrom, $nrto, $user = 0)
-{
-$subdir = $this->wsdl->GetAstId($user);
-do
-	$filename = substr(md5(uniqid(rand(), true)), -10, 8);
-while(file_exists($this->fax_outgoingdir . $subdir . '/' . $filename . '.tif'));
-if(strlen($nrto) == 9 and $nrto[0] != '0')
-	$nrto = '0' . $nrto;
-$fname = $nrfrom . '-' . $nrto . '-' . $filename . '.tif';
-execute_program('gs', '-q -dNOPAUSE -dBATCH -r204x98 -dSAFER -sDEVICE=tiffg3 -sOutputFile=' . $this->fax_outgoingdir . $fname . ' -f ' . $f['tmp_name']);
-$this->lmsdb->Execute('INSERT INTO v_fax (nr_from, nr_to, data, customerid, uniqueid, filename) VALUES (?, ?, ?NOW?, ?, ?, ?)', array($nrfrom, $nrto, $user, $filename, $f['name']));
-}
+	function GetNetworkRecord($id)
+	{
+		$network = $this->lmsdb->GetRow('SELECT id, name, start, count AS size FROM v_netlist WHERE id = ?', array($id));
+		$network['assigned'] = $this->wsdl->_GetNetworkRecord($network);
+		$network['end'] = sprintf('%010s', (int)$network['start'] + $network['size'] - 1);
+		$network['page'] = 1;
+		$network['pages'] = 1;
+		$nodes = $this->wsdl->_getnodes((int)$network['start'], (int)$network['end']);
+		
+		for($i = 0; $i < $network['size']; $i++)
+		{
+			$j = sprintf('%010d', (int)$network['start'] + $i);
+			$network['nodes']['id'][$i] = ($nodes[$j] ? $nodes[$j]['id'] : 0 );
+			$network['nodes']['name'][$i] = ($nodes[$j] ? $nodes[$j]['name'] : 0 );
+			$network['nodes']['address'][$i] = $j;
+		}
+		
+		$network['rows'] = ceil(sizeof($network['nodes']['address']) / 4);
+		$network['pageassigned'] = $network['assigned'];
+		$network['free'] = $network['size'] - $network['assigned'];
+		
+		return $network;
+	}
 
-function preparetofax_again($f, $nrfrom, $nrto, $user = 0)
-{
-$subdir = $this->wsdl->GetAstId($user);
-if(!file_exists($this->fax_outgoingdir . $subdir . '/' . $f . '.tif')) return false;
-do
-	$filename = substr(md5(uniqid(rand(), true)), -10, 8);
-while(file_exists($this->fax_outgoingdir . $subdir . '/' . $filename . '.tif'));
-if(strlen($nrto) == 9 and $nrto[0] != '0')
-	$nrto = '0' . $nrto;
-$fname = $nrfrom . '-' . $nrto . '-' . $filename . '.tif';
-copy($this->fax_outgoingdir . $subdir . '/' . $f . '.tif', $this->fax_outgoingdir . $fname);
-$forig = $this->lmsdb->GetOne('SELECT filename FROM v_fax WHERE uniqueid = ?', array($f));
-$this->lmsdb->Execute('INSERT INTO v_fax (nr_from, nr_to, data, customerid, uniqueid, filename) VALUES (?, ?, ?NOW?, ?, ?, ?)',array($nrfrom, $nrto, $user, $filename, $forig));
-return true;
-}
+
+	function NetworkUpdate($d)
+	{
+		$count = (int)$d['end'] - (int)$d['start'] + 1;
+		$this->lmsdb->Execute('UPDATE v_netlist SET name = ?, start = ?, count = ? WHERE id = ?', array($d['name'], $d['start'], $count, $d['id']));
+	}
+
+
+	function NetworkAdd($d)
+	{
+		$this->lmsdb->Execute('INSERT INTO v_netlist (name, start, count) VALUES (?, ?, ?)', array($d['name'], $d['start'], $d['count']));
+		return $this->lmsdb->GetLastInsertID('v_netlist');
+	}
+
+
+	function NetworkDelete($id)
+	{
+		$this->lmsdb->Execute('DELETE FROM v_netlist WHERE id = ?', array($id));
+	}
+
+
+	function GetNetworks()
+	{
+		if ($netlist = $this->lmsdb->GetAll('SELECT id, name, start AS address, count AS prefix FROM v_netlist ORDER BY name'))
+			return $netlist;
+	}
+
+
+	function get_billing_details($tslist)
+	{
+		if (is_array($tslist['id'])) foreach($tslist['id'] as $key => $val)
+		{
+			if ($this->lmsdb->GetOne('SELECT COUNT(id) FROM billing_details WHERE documents_id = ?', array($tslist['docid'][$key])) > 0)
+				$tslist['details'][$key] = 1;
+			else 
+				$tslist['details'][$key] = 0;
+		}
+	}
+
+
+	function get_billing_details2($tslist)
+	{
+		if (is_array($tslist)) foreach($tslist as $key => $val) if(is_array($val))
+		{
+			if ($this->lmsdb->GetOne('SELECT COUNT(id) FROM billing_details WHERE documents_id = ?', array($val['id'])) > 0)
+				$tslist[$key]['details'] = 1;
+			else 
+				$tslist[$key]['details'] = 0;
+		}
+		
+		return $tslist;
+	}
+
+
+	function update_user($d)
+	{
+		$u = $this->lmsdb->GetRow('SELECT lastname, name, email, address, zip, city, ten, pin FROM customers WHERE id = ?', array($d['id']));
+		$u['password'] = md5($u['pin']);
+		$d['type'] = 'postpaid';
+		$this->wsdl->_update_user($d, $u);
+	}
+
+
+	function fax_outbox($u, $limit = 0)
+	{
+		$res = $this->lmsdb->GetAll('SELECT * FROM v_fax WHERE customerid = ? ORDER BY id DESC', array($u));
+		$user = $this->wsdl->GetAstId($u);
+		$status = '';
+		
+		if (is_array($res)) foreach($res as $key => $val)
+		{
+			$statusfile = $this->fax_statusdir . $user . '_' . $val['uniqueid'];
+			if (is_file($statusfile))
+			{
+				$fp = fopen($statusfile, 'r');
+				while (!feof($fp))
+				{
+					$line = fgets($fp);
+					if (substr($line, 0, 7) == 'Status:') 
+						$status = substr($line, 8);
+				}
+				
+				fclose($fp);
+			}
+			
+			if (!$status)
+				if ($val['data'] + 600 < time()) 
+					$status = 'Błąd';
+				else 
+					$status = 'Przekazany do wysłania';
+			
+			$res[$key]['status'] = $status;
+			
+			if (file_exists($this->fax_outgoingdir . $user . '/' . $val['uniqueid'] . '.tif'))
+				$res[$key]['allowprint'] = true;
+		}
+		
+		return $res;
+	}
+
+
+	function ui_deletefin($d,$user)
+	{
+		$uid = $this->wsdl->GetAstId($user);
+		foreach($d as $val)
+		{
+			$fname = $this->fax_incomingdir . $uid . '/' . $this->wsdl->_faxprint($user, $val, '') . '.tif';
+			if(is_file($fname))
+				@unlink($fname);
+		}
+	}
+
+
+	function ui_deletefout($d, $user)
+	{
+		$uid = $this->wsdl->GetAstId($user);
+		
+		foreach($d as $val)
+		{
+			$uniq = $this->lmsdb->GetOne('SELECT uniqueid FROM v_fax WHERE id = ? AND customerid = ?', array($val, $user));
+			if ($uniq)
+			{
+				$fname = $this->fax_outgoingdir . $uid . '/' . $uniq . '.tif';
+				$this->lmsdb->Execute('DELETE FROM v_fax WHERE id = ?', array($val));
+				@unlink($fname);
+			}
+		}
+	}
+
+
+	function ui_faxsa($id, $user)
+	{
+		$out = $this->lmsdb->GetRow('SELECT nr_from, nr_to, uniqueid, filename FROM v_fax WHERE id = ? AND customerid = ?', array($id, $user));
+		
+		if (!$out) return;
+		
+		$out['id_ast_sip'] = $this->wsdl->_ui_faxsa($out['nr_from']);
+		return $out;
+	}
+
+
+	function preparetofax($f, $nrfrom, $nrto, $user = 0)
+	{
+		$subdir = $this->wsdl->GetAstId($user);
+		
+		do
+			$filename = substr(md5(uniqid(rand(), true)), -10, 8);
+		while(file_exists($this->fax_outgoingdir . $subdir . '/' . $filename . '.tif'));
+		
+		if (strlen($nrto) == 9 and $nrto[0] != '0')
+			$nrto = '0' . $nrto;
+		
+		$fname = $nrfrom . '-' . $nrto . '-' . $filename . '.tif';
+		execute_program('gs', '-q -dNOPAUSE -dBATCH -r204x98 -dSAFER -sDEVICE=tiffg3 -sOutputFile=' . $this->fax_outgoingdir . $fname . ' -f ' . $f['tmp_name']);
+		$this->lmsdb->Execute('INSERT INTO v_fax (nr_from, nr_to, data, customerid, uniqueid, filename) VALUES (?, ?, ?NOW?, ?, ?, ?)', array($nrfrom, $nrto, $user, $filename, $f['name']));
+	}
+
+
+	function preparetofax_again($f, $nrfrom, $nrto, $user = 0)
+	{
+		$subdir = $this->wsdl->GetAstId($user);
+		
+		if (!file_exists($this->fax_outgoingdir . $subdir . '/' . $f . '.tif')) 
+			return false;
+		
+		do
+			$filename = substr(md5(uniqid(rand(), true)), -10, 8);
+		while(file_exists($this->fax_outgoingdir . $subdir . '/' . $filename . '.tif'));
+		
+		if (strlen($nrto) == 9 and $nrto[0] != '0')
+			$nrto = '0' . $nrto;
+		
+		$fname = $nrfrom . '-' . $nrto . '-' . $filename . '.tif';
+		copy($this->fax_outgoingdir . $subdir . '/' . $f . '.tif', $this->fax_outgoingdir . $fname);
+		$forig = $this->lmsdb->GetOne('SELECT filename FROM v_fax WHERE uniqueid = ?', array($f));
+		$this->lmsdb->Execute('INSERT INTO v_fax (nr_from, nr_to, data, customerid, uniqueid, filename) VALUES (?, ?, ?NOW?, ?, ?, ?)',array($nrfrom, $nrto, $user, $filename, $forig));
+		
+		return true;
+	}
 
 function GetTaxId()
 {

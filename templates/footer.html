@@ -3,7 +3,7 @@
 	{include file="dberrors.html"}
 {/if}
 
-{if check_conf('voip.enabled') && $layout.v_errors}
+{if (get_conf('voip.enabled','0') && $layout.v_errors) || $layout.v_errors_connect}
 	{include file="v_errors.html"}
 {/if}
 

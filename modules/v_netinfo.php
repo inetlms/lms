@@ -13,7 +13,7 @@ $SESSION->save('v_ntlp.'.$_GET['id'], $page);
 
 $network = $voip->GetNetworkRecord($_GET['id'], $page, $LMS->CONFIG['phpui']['networkhosts_pagelimit']);
 
-$layout['pagetitle'] = 'Informacje o strefie ' . $network['name'];
+$layout['pagetitle'] = 'VoIP Nettelekom - Informacje o strefie : ' . $network['name'];
 
 $SMARTY->assign('network', $network);
 $SMARTY->display('v_netinfo.html');

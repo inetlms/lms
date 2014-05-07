@@ -37,7 +37,7 @@ if(isset($tariff))
 else
 	$tariff = $voip->GetTariff($_GET['id']);
 	
-$layout['pagetitle'] = 'Edycja abonamentu ' . $tariff['name'];
+$layout['pagetitle'] = 'VoIP Nettelekom - Edycja abonamentu : ' . $tariff['name'];
 $SMARTY->assign('tariff', $tariff);
 $SMARTY->assign('error', $error);
 $SMARTY->display('v_tariffedit.html');

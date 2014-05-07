@@ -37,7 +37,7 @@ if(isset($_POST['networkdata']))
 	$network['address'] = $networkdata['address'];
 	$network['size'] = $networkdata['size'];
 }
-$layout['pagetitle'] = trans('Network Edit: $a', $network['name']);
+$layout['pagetitle'] = 'VoIP Nettelekom - '.trans('Network Edit: $a', $network['name']);
 $SMARTY->assign('unlockedit', TRUE);
 $SMARTY->assign('network', $network);
 $SMARTY->assign('error', $error);

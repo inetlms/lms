@@ -1,18 +1,17 @@
 {include file="header.html"}
 <!--// $Id: invoicelist.html,v 1.64 2006/01/31 09:36:46 alec Exp $ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {include file="calendar_js.html"}
 <form method="POST" name="page" action="?m=v_cdr">
 <input type="submit" class="hiddenbtn">
-<table class="lmsbox">
-<thead>
-	<tr>
+<table width="100%" cellpadding="3">
+	<tr class="dark">
 		<td class="fall" colspan="11">
 				<b>{t}Filter:{/t} </b> 
-				Od: <input name="from" value="{$listdata.from}" onclick="cal5.popup();">&nbsp;
-				Do: <input name="to" value="{$listdata.to}" onclick="cal6.popup();">&nbsp;
-				Z numeru: <input name="fnr" value="{$listdata.fnr}">&nbsp;
-				Na numer: <input name="tnr" value="{$listdata.tnr}">&nbsp;
+				Od: <input type="text" name="from" value="{$listdata.from}" onclick="cal5.popup();">&nbsp;
+				Do: <input type="text" name="to" value="{$listdata.to}" onclick="cal6.popup();">&nbsp;
+				Z numeru: <input type="text" name="fnr" value="{$listdata.fnr}">&nbsp;
+				Na numer: <input type="text" name="tnr" value="{$listdata.tnr}">&nbsp;
 				<label>Do CSV: <input type="checkbox" name="csv" value="1"></label>
 </td></tr>
 				<tr class="dark">
@@ -80,13 +79,11 @@ Status: &nbsp;
 		Kierunek:
 		</td>
 	</tr>
-</thead>
-</tbody>
 	{cycle values="light,lucid" print=false}
 	{section name=cdr loop=$cdr}
 	{assign var=invoice value=$cdr[cdr]}
 	{assign var=invoiceid value=$invoice.id}
-	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft">
 			{$invoice.id}{if $invoice.monitor}<a href="?m=v_listen&id={$invoice.id}&cid={$invoice.customerid}"><img src="img/audio_icon.gif" border="0"></a><br><a href="?m=v_listen&id={$invoice.id}&cid={$invoice.customerid}&del=1">Usuń</a>{/if}
 		</td>
@@ -145,13 +142,14 @@ Status: &nbsp;
 			&nbsp;
 		</td>
 	</tr>
-</tbody>
 </table>
 </form>
-<script>
+{literal}
+<script type="text/javascript">
 <!--
-var cal5 = new calendar(document.forms['page'].elements['from']);
-var cal6 = new calendar(document.forms['page'].elements['to']);
+var cal5 = new calendar(document.forms['page'].elements['from']); cal5.time_comp = false;
+var cal6 = new calendar(document.forms['page'].elements['to']); cal6.time_comp = false;
 -->
 </script>
+{/literal}
 {include file="footer.html"}

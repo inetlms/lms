@@ -1,5 +1,5 @@
 <?php
-$layout['pagetitle'] = 'Strefy numeracyjne';
+$layout['pagetitle'] = 'VoIP Nettelekom - Strefy numeracyjne';
 
 $netlist = $voip->GetNetworkList();
 $listdata['size'] = $netlist['size'];

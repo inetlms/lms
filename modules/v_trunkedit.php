@@ -31,7 +31,7 @@ if(isset($nodedata))
 }
 else $nodedata = $voip->GetTrunkToEdit($_GET['id']);
 
-$layout['pagetitle'] = trans('Edytuj łącze');
+$layout['pagetitle'] = 'VoIP Nettelekom - Edytuj łącze';
 $tr = $voip->GetTrunkgrpList();
 $trunkgroups = array();
 foreach($tr as $val)

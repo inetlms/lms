@@ -1,5 +1,5 @@
 <?php
-$layout['pagetitle'] = 'Wirtualna centrala';
+$layout['pagetitle'] = 'VoIP Nettelekom - Wirtualna centrala';
 $customer = array();
 $customer = $voip->wsdl->GetCustomer($customer, $voip->wsdl->GetNodeOwner($_GET['id']));
 if($customer['virtualpbx'] != 't') $SESSION->redirect('?m=v_nodeinfo&id=' . $_GET['id']);

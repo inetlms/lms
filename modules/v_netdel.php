@@ -18,7 +18,7 @@ if(!$error)
 	}
 	else
 	{
-		$layout['pagetitle'] = trans('Removing network $a', strtoupper($network['name']));
+		$layout['pagetitle'] = 'VoIP Nettelekom - '.trans('Removing network $a', strtoupper($network['name']));
 		$SMARTY->display('header.html');
 		echo '<H1>' . $layout['pagetitle'] . '</H1>';
 		echo '<P>' . trans('Are you sure, you want to delete that network?') . '</P>';
@@ -28,7 +28,7 @@ if(!$error)
 }
 else
 {
-	$layout['pagetitle'] = trans('Info Network: $a', $network['name']);
+	$layout['pagetitle'] = 'VoIP Nettelekom - '.trans('Info Network: $a', $network['name']);
 	$SMARTY->assign('network', $network);
 	$SMARTY->assign('error', $error);
 	$SMARTY->display('v_netinfo.html');

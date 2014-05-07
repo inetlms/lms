@@ -1,5 +1,5 @@
 <?php
-$layout['pagetitle'] = 'Wzorce numerów';
+$layout['pagetitle'] = 'VoIP Nettelekom - Wzorce numerów';
 if($nr = $_POST['numer'])
 {
 	$res = $voip->wsdl->numbers_search($nr, $_GET['id_tariff'], $_GET['trunk']);

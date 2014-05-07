@@ -1,8 +1,8 @@
 <?php
 if($_GET['id'])
-	$layout['pagetitle'] = 'Edytuj strefę numeracyjną';
+	$layout['pagetitle'] = 'VoIP Nettelekom - Edytuj strefę numeracyjną';
 else
-	$layout['pagetitle'] = 'Nowa strefa numeracyjna';
+	$layout['pagetitle'] = 'VoIP Nettelekom - Nowa strefa numeracyjna';
 if($d = $_POST['n'])
 {
 	if($voip->wsdl->checkrate($d))
