@@ -226,7 +226,9 @@ $layout['pagetitle'] = trans('Customer Edit: $a',$customerinfo['customername']);
 $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 
 $customerid = $customerinfo['id'];
+
 include(MODULES_DIR.'/customer.inc.php');
+
 if (get_conf('voip.enabled','0'))
     include(MODULES_DIR.'/customer.voip.inc.php');
 
