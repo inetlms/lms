@@ -1,0 +1,284 @@
+<!--// $Id: nodeaddbox.html,v 1.55 2006/02/13 17:01:25 chilek Exp $ //-->
+<form name="nodeadd" method="POST" action="?m=v_nodeadd{if $customerinfo.id}&ownerid={$customerinfo.id}{/if}">
+<input type="submit" class="hiddenbtn">
+<table class="lmsbox">
+<thead>
+	<tr>
+		<td width="1%" class="fleftu">
+			<img src="img/node.gif" alt="">
+		</td>
+		<td width="1%" class="FBT">
+			<b>Numer</b>
+		<td width="98%" class="frightu">
+			<input type="text" name="nodedataname" value="{$nodedata.name}" MAXLENGTH="16" {tip text="Wprowadź nr telefonu" trigger="name" bold=1}> <a href="javascript: void(0);" onclick="return v_ipchoosewin(document.nodeadd.nodedataname);">&raquo;&raquo;&raquo;</a>
+		</td>
+	</tr>
+</thead>
+</tbody>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}IP address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Lokalizacja:</b>
+		</td>
+		<td width="98%" class="fright">
+		<input type="text" name="nodedata[sipaddr]" value="{$nodedata.sipaddr}" {tip text="Wprowadź adres zainstalowanej bramki SIP" trigger="sipaddr"}>
+			<br>
+		<input type="text" name="nodedata[sipcity]" value="{$nodedata.sipcity}" {tip text="Wprowadź miasto" trigger="sipcity"}>
+			<br>
+		 <input type="text" name="nodedata[sippostcode]" value="{$nodedata.sippostcode}" {tip text="Wprowadź kod pocztowy" trigger="sippostcode"}>
+		</td>
+	</tr>
+		<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/passwd.gif" alt="{t}Password:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>{t}Password:{/t}</b>
+		</td>
+		<td width="98%" class="fright">
+			<input type="text" name="nodedata[secret]" value="{$nodedata.secret}" {tip text="Enter password (optional)" trigger="secret"}> <a href="javascript: GenPasswd();" {tip text="[ Generate random password ]"}>&raquo;&raquo;&raquo;</a>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}IP address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Dozwolone adresy IP</b>
+		</td>
+		<td width="98%" class="fright">
+			<input type="text" name="nodedata[permit]" value="{if $nodedata.permit neq '0.0.0.0/0'}{$nodedata.permit|replace:';':','}{/if}" {tip text="W formacie x.x.x.x lub x.x.x.x/y. Maksymalna maska /8. Maksymalnie 3 wpisy - oddzielone przecinkami." trigger="permit"}> 
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}IP address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Pin poczty głosowej</b>
+		</td>
+		<td width="98%" class="fright">
+			<input type="text" name="nodedata[mailboxpin]" value="{$nodedata.mailboxpin}" {tip text="Pin poczty głosowej" trigger="mailboxpin"}> 
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}Pub. IP address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>W przypadku zajętości...</b>
+		</td>
+		<td width="98%" class="fright">
+{html_options name="nodedata[busy_action]" options=$busy_action selected=$nodedata.busy_action}
+
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Numer przekierowania (gdy zajęty)</b>
+		</td>
+		<td width="98%" class="fright">
+			<input type="text" name="nodedata[busy_forward_number]" value="{$nodedata.busy_forward_number}" {tip text="Wpisz nr przekierowania" trigger="busy_forward_number"}>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}Pub. IP address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>W przypadku niedostępności...</b>
+		</td>
+		<td width="98%" class="fright">
+{html_options name="nodedata[unavail_action]" options=$unavail_action selected=$nodedata.unavail_action}
+
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Numer przekierowania (gdy niedostępny)</b>
+		</td>
+		<td width="98%" class="fright">
+			<input type="text" name="nodedata[unavail_forward_number]" value="{$nodedata.unavail_forward_number}" {tip text="Wpisz nr przekierowania" trigger="unavail_forward_number"}>
+		</td>
+	</tr>
+<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Dozwolone kodeki</b>
+		</td>
+		<td width="98%" class="fright">
+			<input type="text" name="nodedata[allow]" value="{$nodedata.allow|default:'alaw'}" {tip text="Wpisz nazwy dozwolonych kodeków" trigger="allow"}>
+		</td>
+	</tr>
+<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Niedozwolone kodeki</b>
+		</td>
+		<td width="98%" class="fright">
+			<input type="text" name="nodedata[disallow]" value="{$nodedata.disallow|default:'all'}" {tip text="Wpisz nazwy niedozwolonych kodeków" trigger="disallow"}>
+		</td>
+	</tr>
+<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Opcja CanReInvite</b>
+		</td>
+		<td width="98%" class="fright">
+{html_options name="nodedata[canreinvite]" options=$yesno selected=$nodedata.canreinvite}
+		</td>
+	</tr>
+<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Sygnalizacja DTMF</b>
+		</td>
+		<td width="98%" class="fright">
+{html_options name="nodedata[dtmfmode]" options=$dtmfmode selected=$nodedata.dtmfmode}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>NAT</b>
+		</td>
+		<td width="98%" class="fright">
+{html_options name="nodedata[nat]" options=$nat selected=$nodedata.nat}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Qualify</b>
+		</td>
+		<td width="98%" class="fright">
+{html_options name="nodedata[qualify]" options=$yesno selected=$nodedata.qualify|default:'yes'}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Zezwól na dzwonienie przez</b>
+		</td>
+		<td width="98%" class="fright">
+{html_options name="nodedata[trunks_allowed]" options=$trunks_allowed selected=$nodedata.trunks_allowed}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Taryfa konta</b>
+		</td>
+		<td width="98%" class="fright">
+{html_options name="nodedata[id_tariffs]" options=$id_tariffs selected=$nodedata.id_tariffs}
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/phone.gif" alt="{t}MAC address:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>Abonament konta</b>
+		</td>
+		<td width="98%" class="fright">
+{html_options name="nodedata[id_subscriptions]" options=$id_subscriptions selected=$nodedata.id_subscriptions}
+		</td>
+	</tr>
+	
+
+
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/customer.gif" alt="{t}Customer:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>{t}Customer:{/t}</b>
+		</td>
+		<td width="98%" class="fright">
+			<select size="1" name="nodedata[ownerid]" {tip text="Assign node to customer" trigger="customer"}>
+				{section name=customers loop=$customers}
+				<option value="{$customers[customers].id}"{if $nodedata.ownerid eq $customers[customers].id} selected{/if}>{$customers[customers].customername|truncate:40:"...":true} ({$customers[customers].id|string_format:"%04d"})</option>
+				{/section}
+			</select>
+		</td>
+	</tr>
+	{if $netdevices}
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/netdev.gif" alt="{t}Net device:{/t}">
+		</td>
+		<td width="1%" nowrap>
+			<b>{t}Net device:{/t}</b>
+		</td>
+		<td width="98%" class="fright">
+			<select size="1" name="nodedata[netdev]" {tip text="Select network device (optional)" trigger="netdev"}>
+				<option value="0"{if !$nodedata.netdev} selected{/if}>{t}- select device -{/t}</option>
+				{section name=netdevices loop=$netdevices}
+				<option value="{$netdevices[netdevices].id}"{if $netdevices[netdevices].id==$nodedata.netdev} selected{/if}>{$netdevices[netdevices].name} {$netdevices[netdevices].producer}{if $netdevices[netdevices].location} / {$netdevices[netdevices].location}{/if}</option>
+				{/section}
+			</select>
+		</td>
+	</tr>
+	{/if}
+	<tr class="light">
+		<td width="100%" class="FBOTTOMU" colspan="3" align="right">
+			<a href="javascript:document.nodeadd.submit();" accesskey="s">{t}Submit{/t} <img src="img/save.gif" alt=""></a>
+			<a href="?m={if $customerinfo.id}customerinfo&id={$customerinfo.id}{else}nodelist{/if}">{t}Cancel{/t} <img src="img/cancel.gif" alt=""></a><br>
+			<input type="checkbox" name="nodedata[reuse]" id="reuse" value="ON" class="box light" {if $nodedata.reuse}checked{/if}><a href="javascript:switchReuse()"> {t}Display this form again, when this node is saved{/t}</a>
+		</td>
+	</tr>
+</tbody>
+</table></form>
+{literal}
+<script language="javaScript">
+<!--
+	document.forms['nodeadd'].elements['nodedata[name]'].focus();
+
+	function GenPasswd()
+	{
+		var passwd = new Array();
+		var items = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		var length = {/literal}{$_config.phpui.nodepassword_length|default:"16"}{literal};
+		if(length > 32) length = 32;
+		
+		for(var i=0; i<length; i++)
+		{
+			n = Math.floor(Math.random() * items.length);
+			passwd[i] = items.substring(n, n+1);
+		}
+
+		document.forms['nodeadd'].elements['nodedata[secret]'].value = passwd.join("");
+	}	
+
+	function switchReuse()
+	{
+		document.forms['nodeadd'].elements['nodedata[reuse]'].checked = !document.forms['nodeadd'].elements['nodedata[reuse]'].checked;
+	}
+
+//-->
+</script>
+{/literal}

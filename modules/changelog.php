@@ -34,6 +34,11 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/05/05',
+	    'status'	=> '',
+	    'opis'	=> 'Dodana obsługa VoIP Nettelekomu. Włączenie modułu w konfiguracji UI -> Nettelekom zmienna enabled.',
+	),
+	array(
 	    'data'	=> '2014/05/03',
 	    'status'	=> '',
 	    'opis'	=> 'poprawka błędu przy dodawaniu nowego komputera',

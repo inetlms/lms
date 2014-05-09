@@ -1,0 +1,32 @@
+{include file="header.html"}
+<tr>
+		<td class="tabelka1_gora_p">
+</td>
+	</tr>
+	<tr>
+		<td class="tabelka1_srodek_p" valign="top">
+<table width="100%" cellspacing="0">
+	<tr>
+		<td valign="top" width="100%">
+{box title="Sprawdź koszt połączenia"}
+<table cellpadding="3" align="center">
+<form action="?m=voip&f=cost&id={$smarty.get.id}" method="post">
+{if $err}
+<tr><td colspan="2" align="center" style="color:#FF0000;">{$err}</td></tr>
+{/if}
+<tr><td>Na numer:</td><td><input type="text" name="tonr" value="{$tonr}">&nbsp;
+</td></tr>
+<tr><td colspan="2" align="center"><input type="submit" value="Sprawdź"></td></tr>
+</form>
+</table>
+{/box}
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+	<td class="tabelka2_dol_p"></td>
+</tr>
+</table>
+{include file="footer.html"}

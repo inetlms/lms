@@ -1,0 +1,11 @@
+{box title="Minuty"}
+<center>
+Pozostało darmowych
+<h1>{if $userinfo.voipfreesec eq 0}
+	<div style="color: red; white-space: nowrap;"><b>{$userinfo.voipfreesec}</b></div>
+    {else}
+	<div style="white-space: nowrap;">{$userinfo.voipfreesec}</div>
+    {/if}
+</h1>
+</center>
+{/box}

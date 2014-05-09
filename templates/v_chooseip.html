@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!--// $Id: chooseip.html,v 1.27 2005/10/19 13:34:47 lukas Exp $ //-->
+<html><head>
+<meta name="GENERATOR" content="LMS {$layout.lmsv}">
+<meta http-equiv="Content-Language" content="{$LANGDEFS.$_language.html}">
+<meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_language.charset}">
+<title>::: LMS :{if $layout.pagetitle neq ""} {$layout.pagetitle} :{/if}::</title>
+<link href="img/style.css" rel="stylesheet" type="text/css">
+<script language="JavaScript" type="text/JavaScript" src="img/common.js"> </script>
+{if $js}<script language="JavaScript">
+<!--
+	{$js}
+//-->
+</script>{/if}
+</head>
+{if ! $part}
+<frameset name="all" frameborder="0" framespacing="0" rows="55,*,27">
+	<frame scrolling="no" frameborder="0" marginheight="0" marginwidth="0" name="cal" noresize src="?m=v_chooseip&p=top">
+	<frame scrolling="always" frameborder="0" marginheight="0" marginwidth="0" name="m" noresize src="?m=v_chooseip&p=main">
+	<frame scrolling="no" frameborder="0" marginheight="0" marginwidth="0" name="down" noresize src="?m=v_chooseip&p=down">
+</frameset>
+{/if}
+{if $part eq "main"}
+<body>
+	<table width="100%" cellpadding="1">
+	{section name=iplist loop=$network.nodes.address}
+	{if $smarty.section.iplist.index is even}<tr>{/if}
+		<td width="50%" align="center" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')"{if $network.nodes.name[iplist] eq ""} onclick="sendvalue(targetfield,'{$network.nodes.address[iplist]}');"{/if}>
+			{if $network.nodes.name[iplist] neq ""}
+				<font class="blend">{$network.nodes.name[iplist]}</font>
+			{else}
+			<a href="javascript: void(0);" onclick="sendvalue(targetfield,'{$network.nodes.address[iplist]}');">{$network.nodes.address[iplist]}</a>
+			{/if}
+		</td>
+	{if $smarty.section.iplist.index is not even}</tr>{/if}
+	{sectionelse}
+	</table>
+	<table width="100%" height="100%">
+	<tr title="{t}Click to close window{/t}" onclick="parent.window.close();">
+		<td width="100%" align="center">
+			<p><b>Nie posiadasz żadnej strefy numeracyjnej<br><br>Aby dodać nową strefę zobacz menu<br>VoIP Nettelekom -> Nowa strafa numeracyjna</b></p>
+		</td>
+	</tr>			
+	{/section}
+	</table>
+</body>
+{/if}
+{if $part eq "top"}
+<body>
+<table cellpadding="5" width="100%">
+	<tr>
+		<td class="fall dark" align="center">
+			<b>Wybierz numer telefonu</b>
+		</td>
+	</tr>
+	<form target="m" name="selectnet" method="post" action="?m=v_chooseip&p=main">
+	<input type="submit" class="hiddenbtn">
+	<tr>
+		<td class="fall light" align="center">
+			<select size="1" onchange="parent.location.href='?m=v_chooseip&netid='+document.selectnet.elements['netid'].value" name="netid">
+				{section name=networks loop=$networks}
+				<option value="{$networks[networks].id}" {if $networks[networks].id eq $netid} selected {/if}>{$networks[networks].name}: {$networks[networks].address}/{$networks[networks].prefix}</option>
+				{sectionelse}
+				<option value="0">Nie posiadasz żadnej strefy numeracyjnej</option>
+				{/section}
+			</select>
+		</td>
+	</tr>
+	</form>
+</table>
+</body>
+{/if}
+</html>	

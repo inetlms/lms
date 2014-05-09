@@ -26,27 +26,13 @@
 
 
 
-$layout['pagetitle'] = 'iNET LAN Management System';
+$layout['pagetitle'] = 'iNET LAN Management System v. '.$layout['lmsvr'];
 
 $pageview = array();
-/*
-if (get_conf('homepage.box_customer',1) && !check_conf('privileges.hide_summaries')) $pageview[] = 'box_customer';
-if (get_conf('homepage.box_nodes',1) && !check_conf('privileges.hide_summaries')) $pageview[] = 'box_nodes';
-if (get_conf('homepage.box_helpdesk',1) && $LMS->RTStats()) $pageview[] = 'box_helpdesk';
-if (get_conf('homepage.box_callcenter',1)) $pageview[] = 'box_callcenter';
-if (get_conf('homepage.box_links',1) && !check_conf('privileges.hide_links')) $pageview[] = 'box_links';
-if (get_conf('homepage.box_board',1)) $pageview[] = 'box_board';
-
-if (get_conf('homepage.box_system',1) && !check_conf('privileges.hide_sysinfo')) $pageview[] = 'box_system';
-if (get_conf('homepage.box_lms',1) && !check_conf('privileges.hide_sysinfo')) $pageview[] = 'box_lms';
-
-if (get_conf('homepage.box_totd',0)) $pageview[] = 'box_totd';
-
-*/
 
 function homepage_start()
 {
-    global $pageview,$SMARTY,$LMS,$DB,$CONFIG,$layout,$_language,$PROFILE,$AUTH,$SESSION;
+    global $pageview,$SMARTY,$LMS,$DB,$CONFIG,$layout,$_language,$PROFILE,$AUTH,$SESSION,$voip;
     
     if (get_conf('homepage.box_customer') && !check_conf('privileges.hide_summaries')) $pageview[] = 'box_customer';
     if (get_conf('homepage.box_nodes') && !check_conf('privileges.hide_summaries')) $pageview[] = 'box_nodes';
@@ -64,7 +50,8 @@ function homepage_start()
     for ($i=0; $i<$count; $i++)
     {
 	if ($pageview[$i] == 'box_customer') {
-		$SMARTY->assign('customerstats', $LMS->CustomerStats());
+		$customerstats = $LMS->CustomerStats();
+		$SMARTY->assign('customerstats', $customerstats);
 		$SMARTY->assign('contractending30',$LMS->getIdContractEnding('30'));
 		$SMARTY->assign('contractending7',$LMS->getIdContractEnding('7'));
 		$SMARTY->assign('contractnodata',$LMS->getIdContractEnding('-2'));

@@ -1,0 +1,121 @@
+{if $isvoip}
+<table width="100%">
+<tr class="light">
+		<td width="1%" style="vertical-align: top">
+		</td>
+		<td width="99%">
+		<table cellpadding="2">
+<tr>
+	<td width="1%" nowrap>
+		Bilans całkowity:
+	</td>
+		<td width="98%">
+{if $customerinfo.voipbalance+$customerinfo.balance < 0}<font class="alert">{($customerinfo.voipbalance+$customerinfo.balance)|money_format}</font>{else}{($customerinfo.voipbalance+$customerinfo.balance)|default:"0"|money_format}{/if}
+		</td>
+	</tr>
+	
+	</tr>	
+		<tr>
+		<td width="1%" nowrap>
+			VoIP {t}Balance:{/t}
+		</td>
+		<td width="98%">
+{if $customerinfo.voipbalance < 0}<font class="alert">{$customerinfo.voipbalance|money_format}</font>{else}{$customerinfo.voipbalance|default:"0"|money_format}{/if}
+		</td>
+	</tr>
+	<tr>
+		<td width="1%" nowrap>
+			Koszt rozmów w bieżącym okresie rozliczeniowym
+		</td>
+		<td width="98%">
+{$customerinfo.voipbalanceact|default:"0"|money_format}
+		</td>
+	</tr>
+		<tr>
+		<td width="1%" nowrap>
+			VoIP pozostało darmowych
+		</td>
+		<td width="98%">
+{$customerinfo.voipfreesec|default:"0"} minut
+		</td>
+	</tr>
+		<tr>
+		<td width="1%">
+			{t}Created:{/t}<br>
+{t}Modified:{/t}
+		</td>
+		<td width="98%">
+{$customerinfo.voipcreationdateh}<br>
+{$customerinfo.voipmoddateh}
+		</td>
+	</tr>
+	<tr>
+		<td width="1%" nowrap>
+			VoIP początek umowy
+		</td>
+		<td width="98%">
+{if $customerinfo.voippoczatekum > $smarty.now|date_format:"%Y-%m-%d"}<font class="alert">{$customerinfo.voippoczatekum}</font>{else}{$customerinfo.voippoczatekum}{/if}
+		</td>
+	</tr>	
+{if $setl}
+	<tr>
+		<td width="99%" colspan="2" style="font-weight:bold; font-size:16px; color:#FF0000;">
+Umowa klienta kończy się przed upływem {$setl} miesięcy !
+		</td>
+	</tr>
+{/if}	
+	<tr>
+		<td width="1%" nowrap>
+			VoIP koniec umowy
+		</td>
+		<td width="98%">
+{if $customerinfo.voipkoniecum < $smarty.now|date_format:"%Y-%m-%d"}<font class="alert">{$customerinfo.voipkoniecum}</font>{else}{$customerinfo.voipkoniecum}{/if}
+		</td>
+	</tr>	
+	<tr>
+		<td width="1%" nowrap>
+			VoIP dzień wystawienia faktury
+		</td>
+		<td width="98%">
+			{$customerinfo.payday}
+		</td>
+	</tr>
+	{if $customerinfo.sumsubscriptions}
+	<tr>
+		<td width="1%" nowrap>
+			VoIP suma miesięcznych abonamentów
+		</td>
+		<td width="98%">
+			{$customerinfo.sumsubscriptions|default:0} zł netto
+		</td>
+	</tr>
+	{/if}
+	<tr>
+		<td width="1%" nowrap>
+			Wirtualna centrala PBX
+		</td>
+		<td width="98%">
+			{if $customerinfo.virtualpbx eq 't'}TAK{else}NIE{/if}
+		</td>
+	</tr>
+	<tr>
+		<td width="1%" nowrap>
+			VoIP wystawiaj fakturę
+		</td>
+		<td width="98%">
+			{if $customerinfo.invoice eq 't'}TAK{else}NIE{/if}
+		</td>
+	</tr>
+	<tr>
+		<td width="1%" nowrap>
+			Lokalizacja klienta
+		</td>
+		<td width="98%">
+			{$geoloc}
+		</td>
+	</tr>
+</table>
+</td>
+	</tr>
+</table>
+{/if}

@@ -2,6 +2,11 @@
 {if $layout.dberrors}
 	{include file="dberrors.html"}
 {/if}
+
+{if (get_conf('voip.enabled','0') && $layout.v_errors) || $layout.v_errors_connect}
+	{include file="v_errors.html"}
+{/if}
+
 <p align="center" class="blend">{trans("Page generation time:")} {gentime} {trans("sec.")} {memory}</p>
 {if get_conf('phpui.installation_name')}<p style="font-weight:bold;color:blue;" align="center">{get_conf('phpui.installation_name')}</p>{/if}
 </div>

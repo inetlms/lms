@@ -392,6 +392,8 @@
 			{if $customerinfo.moddate}{$customerinfo.modifiedby}, {$customerinfo.moddateh}{else}-{/if}
 		</td>
 	</tr>
+	
+	{if check_modules(82) && get_conf('voip.enabled','0') && $isvoip}<tr class="light"><td width="1%"><img src="img/voip.gif"></td><td colspan="2" width="99%"><fieldset><legend>| <b>VoIP Nettelekom</b> |</legend>{if !$isvoiperr}{include file="v_customerinfobox.html"}{else}<span style="color:red;"><img src="img/warning.png"> <b>Wystąpił błąd w pobraniu danych ze zdalnego serwera</b></span>{/if}</fieldset>{/if}
                                         	</table>
 					</td>
 				</tr>
@@ -406,6 +408,13 @@
 				<a href="?m=customeredit&id={$customerinfo.id}&action=recover">{trans("Restore")} <img src="img/recover.gif" alt="[ {trans("Restore")} ]"></a>
 			{else}
 				<nobr>
+				{if check_modules(82) && get_conf('voip.enabled','0')}
+				{if ! $isvoip and $smarty.get.m|truncate:2:"" neq 'v_'}
+					<a href="?m=v_export&id={$customerinfo.id}" {tip text="Kliknij aby klient mógł korzystać z VoIP Nettelekomu"}>Eksport do VOIP</a> <img src="img/voip.gif"></a> 
+				{else}
+					<a href="?m=v_voipremove&id={$customerinfo.id}" {tip text="Kliknij aby usunąć klienta z usług VoIP Nettelekomu"} onclick="return confirm('Na pewno ?');">Usuń z VOIP</a> <img src="img/voip.gif" alt=""></a>
+				{/if}&nbsp;
+				{/if}
 				{if check_modules(280)}<a href="?m=rtsearch&id={$customerinfo.id}">{trans("Tickets")}</a> <img src="img/ticket.gif" alt="[ {trans("Tickets")} ]"></a>{/if}
 				{if check_modules(200)}<a href="?m=accountlist&u={$customerinfo.id}">{trans("Accounts")} <img src="img/account.gif" alt="[ {trans("Accounts")} ]"></a>{/if}
 				{if check_modules(200)}<a href="?m=domainlist&c={$customerinfo.id}">{trans("Domains")} <img src="img/network.gif" alt="[ {trans("Domains")} ]"></a>{/if}

@@ -1,0 +1,20 @@
+{include file="header.html"}
+{title value=$layout.pagetitle}
+<table border="1" cellspacing="0" cellpadding="10">
+<form action="?m=v_diskusage" method="post">
+<tr><td align="center" colspan="3"{if $err} style="color: #F00; font-weight:bold;"{/if}>{if $err}Błąd: Próbowałeś przydzielić {$err|number_format:2} MB.<br>{/if}Pozostało do wykorzystania: {$quotaleft|number_format:2} MB</td></tr>
+<tr><th>Klient</th><th>Bieżące użycie</th><th>Max limit</th></tr>
+{section name=du loop=$du}
+<tr>
+<td><a href="?m=customerinfo&id={$du[du].lmsid}">{$du[du].surname} {$du[du].forename}</a></td>
+<td{if $du[du].quotamax * 0.8 <= $du[du].quotacurr} style="color: #F00; font-weight:bold;"{/if}>{$du[du].quotacurr}</td>
+<td><input type="text" name="du[{$du[du].id}]" value="{$du[du].quotamax}" size="6"></td>
+</tr>
+{/section}
+<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" value="Zapisz"></td>
+</form>
+<form action="?m=v_diskusage" method="post">
+<tr><td align="center" colspan="3">Adres email administratora do powiadomień o przekroczeniu limitu:<br><input type="text" name="email" value="{$email}"> <input type="submit" value="Zmień"></td></tr>
+</form>
+</table>
+{include file="footer.html"}

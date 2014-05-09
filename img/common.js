@@ -764,3 +764,10 @@ function setProfile(variable,content) {
     sendPOST('?m=profiles','action=setprofile&variable='+variable+'&content='+content);
 
 }
+
+
+function v_ipchoosewin(formfield)
+{
+    var url = '?m=v_chooseip';
+	return openSelectWindow(url,'chooseip',350,380,'true',formfield);
+}

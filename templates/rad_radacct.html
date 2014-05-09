@@ -224,11 +224,9 @@
 	</td>
 	
 	<td width="1%" class="fbt pad10" align="left" nowrap>
-	    <a href="?m=customerinfo&id={$radlist[radlist].cid}" {tip text=$radlist[radlist].customeraddress}>{$radlist[radlist].customername|truncate:30:"...":true}</a><br>
+	    <a href="?m=customerinfo&id={$radlist[radlist].cid}">{$radlist[radlist].customername|truncate:30:"...":true}</a><br>
 	    <a href="?m=nodeinfo&id={$radlist[radlist].nodeid}">
-		<span class="blends" {tip text="<b>Adres:</b> {$radlist[radlist].nodelocation}<br><b>Producent:</b> {$radlist[radlist].nodeproducer}<br><b>Model:</b> {$radlist[radlist].nodemodel}"}>
-		    {$radlist[radlist].nodename}
-		</span>
+		<span class="blends">{$radlist[radlist].nodename}</span>
 	    </a>
 	</td>
 	

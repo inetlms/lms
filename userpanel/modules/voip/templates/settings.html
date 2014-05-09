@@ -1,0 +1,93 @@
+{include file="header.html"}
+<script type="text/javascript">
+{literal}
+function change_price(sel,id)
+{
+{/literal}
+price=[];
+price[0]=0;
+price[1]={$addserv.voicemail|default:0};
+price[2]={$addserv.forward|default:0};
+{literal}
+if(price[sel]>0) document.getElementById(id).innerText='Koszt '+price[sel]+' PLN';
+else document.getElementById(id).innerText='';
+}
+{/literal}
+</script>
+<tr>
+		<td class="tabelka1_gora_p">
+</td>
+	</tr>
+	<tr>
+		<td class="tabelka1_srodek_p" valign="top">
+<table width="100%" cellspacing="0">
+	<tr>
+		<td valign="top" width="100%">
+{box title="Edytuj ustawienia"}
+<table cellpadding="3" align="center">
+<form action="?m=voip&f=settings&id={$smarty.get.id}" method="post" onsubmit="if (this.elements['sip[freeseckom]'].checked==true) return confirm('Napewno chcesz włączyć darmowe minuty dla komórek ? Pamiętaj, że w tym przypadku darmowe minuty liczone są dziesięciokrotnie.')">
+{section name=err loop=$err}
+<tr><td colspan="2" align="center" style="color:#FF0000;">{$err[err]}</td></tr>
+{/section}
+<tr><td>SIP Server:</td><td>{$sip.sipserver}</td></tr>
+<tr><td>SIP Login:</td><td>{$sip.name}</td></tr>
+<tr><td>Numer poczty głosowej:</td><td>{$sip.mailboxnumber}</td></tr>
+<tr><td>Pin poczty głosowej:</td><td><input type="password" name="sip[mailboxpin]"></td></tr>
+<tr><td>Prezentacja numeru:</td><td><input type="checkbox" name="sip[number_presentation]" class="check" value="t"{if $sip.number_presentation == 't'} checked="checked"{/if}>
+{if $addserv.number_presentation}<span style="color:#FF0000;">Wyłączenie - koszt {$addserv.number_presentation} PLN</span>{/if}
+</td></tr>
+<tr><td>Blokuj nieidentyfikowane połączenia przychodzące:</td><td><input type="checkbox" name="sip[blockanon]" class="check" value="t"{if $sip.blockanon == 't'} checked="checked"{/if}>
+{if $addserv.blockanon}<span style="color:#FF0000;">Koszt {$addserv.blockanon} PLN</span>{/if}
+</td></tr>
+<tr><td>W przypadku zajętości:</td><td>{html_options name="sip[busy_action]" options=$busy_action selected=$sip.busy_action onchange="change_price(this.selectedIndex,'s1');"} 
+<span id="s1" style="color:#FF0000;"></span>
+</td></tr>
+<tr><td>Numer przekierowania (gdy zajęty):</td><td><input type="text" name="sip[busy_forward_number]" value="{$sip.busy_forward_number}"></td></tr>
+<tr><td>W przypadku niedostępności:</td><td>{html_options name="sip[unavail_action]" options=$unavail_action selected=$sip.unavail_action onchange="change_price(this.selectedIndex,'s2');"}
+<span id="s2" style="color:#FF0000;"></span>
+</td></tr>
+<tr><td>Numer przekierowania (gdy niedostępny):</td><td><input type="text" name="sip[unavail_forward_number]" value="{$sip.unavail_forward_number}"></td></tr>
+<tr><td>Nagrywanie połączeń:</td><td><input type="checkbox" name="sip[monitor]" class="check" value="t"{if $sip.monitor == 't'} checked="checked"{/if}>
+{if $addserv.monitor}<span style="color:#FF0000;">Koszt {$addserv.monitor} PLN</span>{/if}
+</td></tr>
+<tr><td>Blokada połączeń wychodzących:</td><td><input type="checkbox" name="sip[uiaccess]" class="check" value="f"{if $sip.uiaccess == 'f'} checked="checked"{/if}></td></tr>
+<tr><td>Włącz darmowe minuty dla komórek (x10)</td><td><input type="checkbox" name="sip[freeseckom]" class="check" value="t"{if $sip.freeseckom == 't'} checked="checked"{/if}></td></tr>
+<tr><td>Zablokuj połączenia wychodzące po wyczerpaniu darmowych minut</td><td><input type="checkbox" name="sip[freeseccf]" class="check" value="t"{if $sip.freeseccf == 't'} checked="checked"{/if}></td></tr>
+<tr><td>Informuj o koszcie połączenia na nr zagraniczne</td><td><input type="checkbox" name="sip[saycost]" class="check" value="t"{if $sip.saycost== 't'} checked="checked"{/if}></td></tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr><td>Automatycznie odbieraj FAX</td><td><input type="checkbox" name="sip[faxonly]" class="check" value="t"{if $sip.faxonly == 't'} checked="checked"{/if}>
+{if $addserv.faxonly}<span style="color:#FF0000;">Koszt {$addserv.faxonly} PLN</span>{/if}
+</td></tr>
+<tr><td>Wysyłaj odebrane faxy na email</td><td><input type="checkbox" name="sip[fax2email]" class="check" value="t"{if $sip.fax2email == 't'} checked="checked"{/if}></td></tr>
+<tr><td>Adres email do wysyłania faxów<br>(jeśli nie podany, będą wysyłane na główny)</td><td><input type="text" name="sip[faxmailaddr]" value="{$sip.faxmailaddr}"></td></tr>
+<tr><td>Wysyłaj fax również na główny</td><td><input type="checkbox" name="sip[faxtomainaddr]" class="check" value="t"{if $sip.faxtomainaddr == 't'} checked="checked"{/if}></td></tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr><td>Wysyłaj wiadomości z poczty głosowej na email</td><td><input type="checkbox" name="sip[voice2email]" class="check" value="t"{if $sip.voice2email == 't'} checked="checked"{/if}></td></tr>
+<tr><td>Adres email do wysyłania poczty<br>(jeśli nie podany, będzie wysyłana na główny)</td><td><input type="text" name="sip[voicemailaddr]" value="{$sip.voicemailaddr}"></td></tr>
+<tr><td>Wysyłaj pocztę również na główny</td><td><input type="checkbox" name="sip[voicetomainaddr]" class="check" value="t"{if $sip.voicetomainaddr == 't'} checked="checked"{/if}></td></tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr><td>Numer do połączeń wdzwanianych</td><td><input type="checkbox" name="sip[dialout]" class="check" value="t"{if $sip.dialout == 't'} checked="checked"{/if}>
+{if $addserv.dialout}<span style="color:#FF0000;">Koszt {$addserv.dialout} PLN</span>{/if}
+</td></tr>
+<tr><td>Zablokuj poł. wychodzące po przekroczeniu kwoty</td><td><input type="text" name="sip[finlimit]" value="{$sip.finlimit|default:'0'}"> zł</td></tr>
+{if $user.virtualpbx eq 't'}
+<tr><td>Uruchom wirtualną centralę PBX na tym numerze</td><td><input type="checkbox" name="sip[virtualpbx]" class="check" value="t"{if $sip.virtualpbx== 't'} checked="checked"{/if}>
+{if $addserv.virtualpbx}<span style="color:#FF0000;">Koszt {$addserv.virtualpbx} PLN</span>{/if}
+</td></tr>
+{/if}
+
+<tr><td colspan="2" align="center"><input type="submit" value="Zapisz"></td></tr>
+<input type="hidden" name="sip[id]" value="{$smarty.get.id}">
+</form>
+</table>
+{/box}
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+	<td class="tabelka2_dol_p"></td>
+</tr>
+</table>
+{include file="footer.html"}

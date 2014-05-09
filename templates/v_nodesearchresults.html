@@ -1,0 +1,47 @@
+{include file="header.html"}
+<!--// $Id: nodesearchresults.html,v 1.52 2009/03/15 10:41:33 alec Exp $ //-->
+{title value=$layout.pagetitle}
+<table class="lmsbox">
+<thead>
+	<tr>
+		<td class="fleftu" width="97%">
+			<img src="img/phone.gif" alt=""><b>{t}Name:{/t}</b><br>
+			<img src="img/customer.gif" alt="">{t}Owner:{/t}</td>
+		<td class="frightu" width="1%" align="right">
+			<nobr><b>{t a=$listdata.total}Total: $a{/t}</b><nobr>
+		</td>
+	</tr>
+</thead>
+</tbody>
+	{cycle values="light,lucid" print=false}
+	{section name=nodelist loop=$nodelist}
+	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td width="95%" class="fleft" onclick="return self.location.href='?m=v_nodeinfo&id={$nodelist[nodelist].id}';">
+			<a name="{$nodelist[nodelist].id}">
+			<b>{$nodelist[nodelist].name}</b></a><br>
+			<img src="img/customer.gif" alt="">&nbsp;<a href="?m=customerinfo&id={$nodelist[nodelist].ownerid}" {tip a=$nodelist[nodelist].ownerid dynpopup='?m=customerinfoshort&id=$a'}>{$nodelist[nodelist].owner|truncate:60:" ..."|replace:" ":"&nbsp;"}</a>
+		<td class="fright" width="1%">
+			<nobr>
+			<a href="?m=v_nodedel&id={$nodelist[nodelist].id}" onclick="return confirmLink(this, '{t a=$nodelist[nodelist].name|upper}Are you sure, you want to delete SIP \'$a\' from database?{/t}')"><img src="img/delete.gif" alt="[ {t}Delete{/t} ]"></a>
+			<a href="?m=v_nodeedit&id={$nodelist[nodelist].id}"><img src="img/edit.gif" alt="[ {t}Edit{/t} ]"></a>
+			<a href="?m=v_nodeinfo&id={$nodelist[nodelist].id}"><img src="img/info.gif" alt="[ {t}Info{/t} ]"></a>
+			</nobr>
+		</td>
+	</tr>
+	{sectionelse}
+	<tr>
+		<td colspan="2" class="fall" align="center">
+			<p>&nbsp;</p>
+			<p><b>{t}No such SIP matching search criteria.{/t}</b></p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>
+	{/section}
+	<tr class="dark">
+		<td class="fall" colspan="4">
+		&nbsp;
+		</td>
+	</tr>
+</tbody>
+</table>
+{include file="footer.html"}
