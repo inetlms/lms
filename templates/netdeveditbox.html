@@ -2,7 +2,7 @@
 {include file="calendar_js.html"}
 {$xajax}
 <table width="100%" cellpadding="3">
-	<form name="netdevedit" method="POST" action="?m=netdevedit&id={$netdevinfo.id}">
+	<form name="netdevedit" method="POST" action="?m=netdev{if $action == 'add'}add{else}edit&id={$netdevinfo.id}{/if}">
 	<input type="hidden" id="old_location" value="{$netdevinfo.location}">
 	<input type="hidden" id="old_location_street" value="{$netdevinfo.location_city}">
 	<input type="hidden" id="old_location_city" value="{$netdevinfo.location_street}">
