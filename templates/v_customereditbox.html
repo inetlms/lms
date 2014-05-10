@@ -1,0 +1,122 @@
+{if $isvoip}
+<script language="Javascript" type="text/JavaScript" src="img/ajax.js"> </script>
+{literal}
+<script type="text/javascript">
+var ajax = new sack();
+
+function getPow(sel)
+{
+        var woj = sel.options[sel.selectedIndex].value;
+        document.getElementById('pow').options.length = 0;     // Empty city select box
+        document.getElementById('mia').options.length = 0;     // Empty city select box
+        if(woj.length>0){
+          ajax.requestFile = '?m=v_geoloc&type=p&id='+woj;   // Specifying which file to get
+          ajax.onCompletion = createPow;       // Specify function that will be executed after file has been found
+          ajax.runAJAX();         // Execute AJAX function
+          }
+}
+
+function createPow()
+{
+        var obj = document.getElementById('pow');
+        eval(ajax.response);    // Executing the response from Ajax as Javascript code
+}
+function getMia(sel)
+{
+        var mia = sel.options[sel.selectedIndex].value;
+        document.getElementById('mia').options.length = 0;     // Empty city select box
+        if(mia.length>0){
+          ajax.requestFile = '?m=v_geoloc&type=m&id='+mia;   // Specifying which file to get
+          ajax.onCompletion = createMia;       // Specify function that will be executed after file has been found
+          ajax.runAJAX();         // Execute AJAX function
+        }
+}
+
+function createMia()
+{
+        var obj = document.getElementById('mia');
+        eval(ajax.response);    // Executing the response from Ajax as Javascript code
+}
+</script>
+{/literal}
+<table width="100%">
+<tr class="light">
+	<td width="1%" style="vertical-align: top">
+		<img src="img/phone.gif" alt="">
+	</td>
+	<td width="99%" colspan="2">
+	<table width="100%">
+	
+<tr>
+	<td width="1%" nowrap>
+		VoIP początek umowy
+	</td>
+	<td width="99%">
+		<input type="text" name="customerdata[voippoczatekum]" value="{$customerinfo.voippoczatekum}" {tip trigger="voippoczatekum"} size="10">
+	</td>
+</tr>
+<tr>
+	<td width="1%" nowrap>
+		VoIP koniec umowy
+	</td>
+	<td width="99%">
+		<input type="text" name="customerdata[voipkoniecum]" value="{$customerinfo.voipkoniecum}" {tip trigger="voipkoniecum"} size="10">
+	</td>
+</tr>
+<tr>
+	<td width="1%" nowrap>
+		VoIP dzień wystawienia faktury
+	</td>
+	<td width="99%">
+		<input type="text" name="customerdata[payday]" value="{$customerinfo.payday|default:'1'}" size="2">
+	</td>
+</tr>
+<tr>
+	<td width="1%" nowrap>
+		Włącz wirtualną centralę PBX
+	</td>
+	<td width="99%">
+		<select name="customerdata[virtualpbx]">
+		<option value="0"{if $customerinfo.virtualpbx eq 'f'} selected="selected"{/if}>NIE</option>
+		<option value="1"{if $customerinfo.virtualpbx eq 't'} selected="selected"{/if}>TAK</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td width="1%" nowrap>
+		VoIP wystawiaj fakturę
+	</td>
+	<td width="99%">
+		<select name="customerdata[invoice]">
+		<option value="1"{if $customerinfo.invoice eq 't'} selected="selected"{/if}>tak</option>
+		<option value="0"{if $customerinfo.invoice eq 'f'} selected="selected"{/if}>nie</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td width="1%" nowrap>
+		Pozostało darmowych minut
+	</td>
+	<td width="99%">
+		<input type="text" name="customerdata[voipfreesec]" value="{$customerinfo.voipfreesec}" size="2">
+	</td>
+</tr>
+<tr>
+	<td width="1%" nowrap>
+		Lokalizacja klienta
+	</td>
+	<td width="99%">
+		województwo:<br>
+		{html_options name="customerdata[woj]" options=$woj selected=$customerinfo.woj onchange="getPow(this);"}<br>
+		powiat:<br>
+		{html_options name="customerdata[pow]" options=$pow selected=$customerinfo.pow onchange="getMia(this);" id="pow"}<br>
+		miasto/gmina:<br>
+		{html_options name="customerdata[mia]" options=$mia selected=$customerinfo.mia id="mia"}
+	</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<input type="hidden" name="customerdata[isvoip]" value="1">
+{/if}

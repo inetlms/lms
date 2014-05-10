@@ -316,6 +316,8 @@ if (empty($nodeinfo['macs']))
 	$nodeinfo['macs'][] = '';
 
 include(MODULES_DIR . '/customer.inc.php');
+if (get_conf('voip.enabled','0'))
+    include(MODULES_DIR.'/customer.voip.inc.php');
 
 
 if (!isset($CONFIG['phpui']['big_networks']) || !chkconfig($CONFIG['phpui']['big_networks'])) {

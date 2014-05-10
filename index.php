@@ -177,6 +177,22 @@ $LMS->lang = $_language;
 $GG = new rfGG(GG_VER_77);
 $RAD = new radius($DB,$LMS);
 
+if(get_conf('voip.enabled','0') )
+{
+	if (fetch_url(get_conf('voip.wsdlurl')))
+	{
+	    require_once(LIB_DIR.'/LMSVOIP.class.php');
+	    require_once(LIB_DIR.'/floAPI.php');
+	    $voip = new LMSVOIP($DB, $CONFIG['voip']);
+	    $layout['v_errors'] =& $voip->errors;
+	} else {
+	    $voip = NULL;
+	    $layout['v_errors'] = 'Moduł VoIP Nettelekom został wyłączony automatycznie<br>Brak połączenia z '.get_conf('voip.wsdlurl').' !!!';
+	    $layout['v_errors_connect'] = TRUE;
+	    $CONFIG['voip']['enabled'] = 0;
+	}
+}
+    else $voip = NULL;
 
 
 // Set some template and layout variables
@@ -193,7 +209,7 @@ $layout['smarty_version'] = SMARTY_VERSION;
 $layout['hostname'] = hostname();
 $layout['lmsv'] = 'iNET';
 $layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
-$layout['lmsvr'] = '14.05.03';
+$layout['lmsvr'] = '14.05.09';
 $layout['dberrors'] =& $DB->errors;
 $layout['dbdebug'] = $_DBDEBUG;
 $layout['popup'] = isset($_GET['popup']) ? true : false;

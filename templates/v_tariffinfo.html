@@ -1,0 +1,145 @@
+{include file="header.html"}
+<!--// $Id: tariffinfo.html,v 1.48 2005/10/19 13:34:49 lukas Exp $ //-->
+{title value=$layout.pagetitle}
+<script language="javascript">
+	<!--
+	function getText(index)
+	{literal}{{/literal}
+		{section name=lt loop=$tariffs}
+		if(index=={$tariffs[lt].id}) return '{$tariffs[lt].name} ({$tariffs[lt].value|money_format})';
+		{/section}
+	{literal}}{/literal}
+	//-->
+</script>
+<table class="lmsbox">
+<thead>
+	<tr>
+		<td width="1%" class="fleftu">
+			<img src="img/money.gif" alt="">
+		</td>
+		<td width="99%" class="frightu" nowrap>
+			<b>{$tariff.name} ({$tariff.id|string_format:"%04d"})</b>
+		</td>
+	</tr>
+</thead>
+</tbody>
+	<tr>
+	    <td width="100%" colspan="2" class="flr">
+		<table width="100%" cellpadding="0">
+		<tr class="light">
+		    <td width="50%" style="vertical-align: top;">
+			<table width="100%" cellpadding="3">
+			    <tr class="light">
+				<td width="1%" nowrap>
+				    <img src="img/value.gif" alt="">
+				</td>
+				<td width="1%"><b>{t}Value:{/t}</b></td>
+				<td width="98%">
+				    {$tariff.amount|money_format} 
+				</td>
+			    </tr>
+			    <tr class="light">
+				<td width="1%" nowrap>
+				    <img src="img/tax.gif" alt="">
+				</td>
+				<td width="1%"><b>{t}Tax:{/t}</b></td>
+				<td width="98%">{$tariff.tax}</td>
+			    </tr>
+			    <tr class="light">
+				<td width="1%" nowrap>
+				    <img src="img/class.gif" alt="">
+				</td>
+				<td width="1%"><b>Darmowych minut:</b></td>
+				<td width="98%">
+				    {$tariff.free}
+				</td>
+			    </tr>
+			    <tr class="light">
+				<td width="1%">
+				    <img src="img/customers.gif" alt="">
+				</td>
+				<td width="1%" nowrap><b>{t}Number of customers:{/t}</b></td>
+				<td width="98%">
+				    {$tariff.customerscount}
+				</td>
+			    </tr>
+			    <tr class="light">
+				<td width="1%" nowrap>
+				    <img src="img/values.gif" alt="">
+				</td>
+				<td width="1%" nowrap><b>{t}Avg. monthly income:{/t}</b></td>
+				<td width="98%">
+				    {$tariff.totalval|money_format} 
+				</td>
+			    </tr>
+			</table>
+		    </td>
+		    <td width="50%" style="vertical-align: top;">
+			<table width="100%" cellpadding="3">
+				{section name=a loop=$tariff.addserv}
+			    <tr class="light">
+				<td width="1%" nowrap>
+				    <img src="img/value.gif" alt="">
+				</td>
+				<td width="50%"><b>{$tariff.addserv[a].name}</b></td>
+				<td width="49%">
+				    {$tariff.addserv[a].price|default:0|money_format}
+				</td>
+			    </tr>
+				{/section}
+			</table>
+		    </td>
+		</tr>
+	    </table>
+	    </td>
+	</tr>
+	{if $tariff.description}
+	<tr class="light">	
+		<td width="1%" class="fleft">
+			<img src="img/info1.gif" alt="">
+		</td>
+		<td width="99%" class="fright">
+			<table width="100%" cellpadding="5"> 
+			    <tr><td class="fall superlight">
+				    {$tariff.description|replace:"\n":"<br>"}
+			    </td></tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	<tr class="light">
+	        <td align="right" class="fbottomu" colspan="2">
+			    <a href="?m=v_tariffedit&id={$tariff.id}" accesskey="E">{t}Edit{/t} <img src="img/edit.gif" alt=""></a>{if $tariff.count eq 0} <a href="?m=v_tariffdelete&id={$tariff.id}">{t}Delete{/t} <img src="img/delete.gif" alt=""></a>{/if}
+		</td>
+	</tr>
+	<tr class="dark">
+		<td class="fall" colspan="2">
+			<b>{t}Customers in Subscription:{/t}</b>
+		</td>
+	</tr>
+	<tr>
+		<td width="100%" class="fall" colspan="2">
+			<table width="100%" cellpadding="2">
+				{cycle values="light,lucid" print=false}
+	{section name=l1 loop=$tariff.customers max=$tariff.rows}
+				<tr>
+					{section name=l2 loop=$tariff.customers start=$smarty.section.l1.index step=$tariff.rows}
+					<td width="33%" class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')" {cycle print=false} onclick="return self.location.href='?m=customerinfo&id={$tariff.customers[l2].id}'">
+					<img src="img/customer.gif" alt=""> <a href="?m=customerinfo&id={$tariff.customers[l2].id}">({$tariff.customers[l2].id|string_format:"%04d"}) {$tariff.customers[l2].customername|truncate:100:" ..."} {if $tariff.customers[l2].cnt > 1}({$tariff.customers[l2].cnt}){/if}</a></td>
+					{/section}{cycle print=false}
+				</tr>
+				{sectionelse}
+				<tr>
+					<td width="100%" align="center">
+						<p>&nbsp;</p>
+						<p><b>{t}No such customers with that subscription.{/t}</b></p>
+						<p>&nbsp;</p>
+					</td>
+				</tr>
+				{/section}
+			</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+{include file="footer.html"}

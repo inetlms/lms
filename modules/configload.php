@@ -178,6 +178,15 @@ foreach($CONFIG['radius'] as $key => $val)
 			);
 }
 
+if(!empty($CONFIG['voip']) && (!$section || $section == 'voip'))
+foreach($CONFIG['voip'] as $key => $val)
+{
+	$DB->Execute('INSERT INTO uiconfig(section, var, value) VALUES(?,?,?)',
+			array('voip', $key, parse_cfg_val($val))
+			);
+}
+
+
 
 $DB->CommitTrans();
 

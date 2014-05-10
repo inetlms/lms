@@ -1,0 +1,66 @@
+{include file="header.html"}
+<!--// $Id: tarifflist.html,v 1.59 2005/06/12 11:27:22 alec Exp $ //-->
+{title value=$layout.pagetitle}
+<table class="lmsbox">
+<thead>
+	<tr>
+		<td width="1%" class="fleftu">
+			<b>Od:</b>
+		</td>
+		<td width="1%" valign="top" class="fbt" align="right">
+			<b>Do:</b>
+		</td>
+		<td nowrap width="96%" valign="top" class="fbt" align="center">
+			<b>Dni:</b>
+		</td>	
+		<td width="1%" valign="top" class="fbt" align="right">
+			<nobr><b>Cena netto za minutę:</b><nobr>
+		</td>
+		<td width="1%" class="frightu" align="right">
+			<a href="?m=v_trunkhoursadd&c={$listdata.c}&id={$listdata.id}&id_rates={$smarty.get.id_rates}">Dodaj</a>
+		</td>
+	</tr>
+</thead>
+</tbody>
+	{cycle values="light,lucid" print=false}
+	{section name=hours loop=$hours}
+	<tr class="{cycle}" onmouseover="addClass(this, 'highlight');{if $hours[hours].overlib} return overlib('{$hours[hours].overlib}',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);{/if}" onmouseout="removeClass(this, 'highlight');{if $hours[hours].overlib} nd();{/if}">
+		<td class="fleft">
+			{$hours[hours].from}
+		</td>
+		<td valign="top" align="right">
+			{$hours[hours].to}
+		</td>
+		<td valign="top" align="center">
+		{$hours[hours].days}
+		</td>
+		<td valign="top" align="right" >
+{$hours[hours].price} 
+		</td>
+		<td width="1%" class="fright" align="right">
+			<nobr>
+<a href="?m=v_trunkhourdelete&id={$listdata.id}&c={$listdata.c}&count={$smarty.section.hours.index_next}&id_rates={$smarty.get.id_rates}" onclick="return confirmLink(this,'{t}Are you sure?{/t}');"><img src="img/delete.gif" alt="[ {t}Delete{/t} ]"></a>
+				<a href="?m=v_trunkhouredit&id={$listdata.id}&c={$listdata.c}&count={$smarty.section.hours.index_next}&id_rates={$smarty.get.id_rates}"><img src="img/edit.gif" alt="[ {t}Edit{/t} ]"></a>
+			<nobr>
+		</td>
+	</tr>
+	{sectionelse}
+	<tr>
+		<td colspan="5" align="center" class="fall">
+			<p>&nbsp;</p>
+			<p><b>{t}No such subscriptions in database.{/t}</b></p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>
+	{/section}
+	<tr class="light">
+		<td class="fleftu" colspan="4" width="99%" align="right">
+			&nbsp;
+		</td>
+		<td class="frightu" width="1%">
+			&nbsp;
+		</td>
+	</tr>
+</tbody>
+</table>
+{include file="footer.html"}

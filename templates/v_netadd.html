@@ -1,0 +1,42 @@
+{include file="header.html"}
+<!--// $Id: netadd.html,v 1.33 2005/12/21 19:40:14 alec Exp $ //-->
+{title value=$layout.pagetitle}
+<p><form method="POST" action="?m=v_netadd" name="netadd">
+<input type="submit" class="hiddenbtn">
+<table class="lmsbox">
+<thead>
+	<tr>
+		<td width="1%" class="fleftu" nowrap>
+			<img src="img/network.gif" alt="">
+			<b>{t}Network name:{/t}</b>
+		</td>
+		<td class="frightu">
+			<input type="text" size="23" name="netadd[name]" value="{$netadd.name}" {tip trigger="name" bold=1}>
+		</td>
+	</tr>
+</thead>
+</tbody>
+	<tr>
+		<td width="1%" class="fleft" nowrap><img src="img/ip.gif" alt=""> <b>Początek</b></td>
+		<td class="fright"><input type="text" size="23" name="netadd[start]" value="{$netadd.start}" {tip trigger="start"}><b>
+		</tr>
+	<tr>
+		<td width="1%" class="fleft" nowrap><img src="img/mac.gif" alt=""> <b>Ilość numerów</b></td>
+		<td class="fright"><input type="text" size="23" name="netadd[count]" value="{$netadd.count}" {tip trigger="count"}></td>
+	</tr>
+	<tr class="light">
+			<tr class="light">
+		<td width="100%" class="fbottomu" colspan="2" align="right">
+			<a href="javascript:document.netadd.submit();" accesskey="s">{t}Submit{/t} <img src="img/save.gif" alt=""></a>
+			<a href="?m=v_netlist">{t}Cancel{/t} <img src="img/cancel.gif" alt=""></a>
+		</td>
+	</tr>
+</tbody>
+</table>
+</form></p>
+<script language="javaScript">
+<!--
+document.forms['netadd'].elements['netadd[name]'].focus();
+//-->
+</script>
+{include file="footer.html"}

@@ -1,0 +1,95 @@
+{include file="header.html"}
+<!-- //$Id: tariffedit.html,v 1.46 2005/10/19 13:34:49 lukas Exp $ //-->
+{title value=$layout.pagetitle}
+<p>
+<form method="POST" name="tedit" action="?m=v_tariffedit&id={$tariff.id}">
+<input type="submit" class="hiddenbtn">
+<table class="lmsbox">
+<thead>
+	<tr>
+		<td width="1%" class="fleftu">
+			<img src="img/money.gif" alt="">
+		</td>
+		<td width="1%" class="fbt" nowrap>
+			<b>{t}Name:{/t}</b>
+		</td>
+		<td width="98%" class="frightu">
+			<input type="text" value="{$tariff.name}" name="tariff[name]" {tip trigger="name" bold=1}>
+			<b>&nbsp;({$tariff.id|string_format:"%04d"})</b>
+		</td>
+	</tr>
+</thead>
+</tbody>
+	<tr>
+	    <td width="100%" colspan="3" class="flr">
+		<table width="100%" cellpadding="0">
+		    <tr class="light">
+			<td width="50%" style="vertical-align:top;">
+			    <table width="100%" cellpadding="3">
+				<tr class="light">
+				    <td width="1%">
+					<img src="img/value.gif" alt="">
+				    </td>
+				    <td width="1%"><b>{t}Value:{/t}</b></td>
+				    <td width="98%">
+					<input type="text" value="{$tariff.amount}" size="8" name="tariff[amount]" {tip text="Enter value" trigger="amount"}>
+				    </td>
+				</tr>
+				<tr class="light">
+				    <td width="1%">
+					<img src="img/tax.gif" alt="">
+				    </td>
+				    <td width="1%" nowrap><b>{t}Tax:{/t}</b></td>
+				    <td width="98%">
+<input type="text" value="{$tariff.tax}" size="2" name="tariff[tax]" {tip text="Enter value" trigger="tax"}>
+				    </td>
+				</tr>
+				<tr class="light">
+				    <td width="1%">
+					<img src="img/class.gif" alt="">
+				    </td>
+				    <td width="1%"><b>Darmowych minut:</b></td>
+				    <td width="98%">
+					<input type="text" value="{$tariff.free}" size="8" name="tariff[free]" {tip text="Wprowadz ilosc darmowych minut" trigger="free"}>
+				    </td>
+				</tr>
+				
+			    </table>
+			</td>
+			
+			<td width="50%" style="vertical-align:top;">
+			    <table width="100%" cellpadding="3">
+				{section name=a loop=$tariff.addserv}
+				<tr class="light">
+				    <td width="1%">
+					<img src="img/value.gif" alt="">
+				    </td>
+				    <td width="50%"><b>{$tariff.addserv[a].name}</b></td>
+				    <td width="49%">
+					<input type="text" value="{$tariff.addserv[a].price|default:0}" size="8" name="tariff[addserv][{$tariff.addserv[a].id}]" {tip text="Enter value"}>
+				    </td>
+				</tr>
+				{/section}
+			    </table>
+			</td>
+		    </tr>
+		</table>
+	    </td>
+	</tr>
+	<tr class="light">
+		<td width="100%" colspan="3" align="right" class="FBOTTOMU">
+			<a href="javascript:document.tedit.submit();" accesskey="S">{t}Submit{/t} <img src="img/save.gif" alt=""></a>{if $tariff.rows eq 0} <a href="?m=v_tariffdelete&id={$tariff.id}">{t}Delete{/t} <img src="img/delete.gif" alt=""></a>{/if}
+			<a href="?m=v_tariffinfo&id={$tariff.id}">{t}Cancel{/t} <img src="img/cancel.gif" alt=""></a> 
+		
+		</td>
+	</tr>
+</tbody>
+</table>
+</form>
+</p>
+<script language="javaScript">
+<!--
+document.forms['tedit'].elements['tariff[name]'].focus();
+//-->
+</script>
+{include file="footer.html"}

@@ -1,0 +1,77 @@
+<table width="100%" cellpadding="3" class="table table-bordered">
+	<tr class="dark hand info-hover">
+		<td class="fall" width="99%" onclick="ShowOrHideBox('v_cdrpanel');" align="left">
+			<img src="img/voip.gif" alt="">
+			<b>Połączenia wychodzące z ostatnich 24 godzin - Nettelekom</b>
+		</td>
+	</tr>
+	<tr id="v_cdrpanel" style="display:none;">
+		<td width="100%" class="fall">
+<table cellpadding="3" width="100%">
+	<tr class="light">
+		<td class="fleftu" width="20%" nowrap>
+			<img src="img/phone.gif" alt="">&nbsp;{t}ID:{/t}<br>
+			<img src="img/calendar.gif" alt="">&nbsp;<b>Data</b>:
+		</td>
+		<td class="fbt" width="16%" nowrap>
+			<b>Z numeru:</b>
+		</td>
+		<td class="fbt" width="16%" nowrap>
+			<b>Na numer:</b>
+		</td>
+		<td class="fbt" width="16%" nowrap>
+			<b>Czas połączenia:</b>
+		</td>
+		<td class="fbt" width="16%" nowrap>
+			<b>Koszt:</b>
+		</td>
+		<td class="frightu" width="16%" nowrap>
+			<b>Opłata:</b>
+		</td>
+	</tr>
+	{cycle values="light,lucid" print=false}
+	{section name=cdr loop=$cdr}
+	<tr class="{cycle} lista {if $queue[ticket].state == 2} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td class="fleft">
+{$cdr[cdr].id}<br><b>{$cdr[cdr].calldate}</b>
+		</td>
+		<td>
+{$cdr[cdr].src}
+		</td>
+		<td>
+{$cdr[cdr].dst}
+		</td>
+		<td>
+{$cdr[cdr].seconds}
+		</td>
+		<td>
+{$cdr[cdr].tmp_cost|money_format}
+		</td>
+		<td class="fright">
+{$cdr[cdr].cost|money_format}
+		</td>
+	</tr>
+	{sectionelse}
+	<tr>
+		<td colspan="6" class="flr" align="center">
+			<p>&nbsp;</p>
+			<p><b>Brak połączeń w wybranym okresie.</b></p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>
+	{/section}
+	<tr class="light">
+		<td colspan="6" class="fall" align="right">
+			<a href="?m=v_cdr&customerid={$customerinfo.id}">Więcej... <img src="img/save.gif" alt=""></a>
+		</td>
+	</tr>
+</table>
+</td></tr>
+</table>
+{if get_profile('v_cdrpanel')}
+<script type="text/javascript">
+<!--
+	document.getElementById('v_cdrpanel').style.display = '';
+//-->
+</script>
+{/if}

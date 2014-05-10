@@ -1,0 +1,82 @@
+{include file="header.html"}
+{literal}
+<script type="text/javascript">
+function upload(id)
+{
+a=window.open('?m=voip&f=ivr&ff=uploadfile&id='+id,'mywin','location=0,status=0,scrollbars=0,width=300,height=200');
+}
+function action(id)
+{
+{/literal}
+a=window.open('?m=voip&f=ivr&ff=action&id='+id+'&ivrid={$smarty.get.id}','mywin','location=0,status=0,scrollbars=0,width=300,height=200');
+{literal}
+}
+
+</script>
+{/literal}
+<table width="100%" cellspacing="0" class="icu_tab">
+        <tr>
+                <td valign="top" width="50%">
+{box title=$title}
+{if $err}<span style="color:#FF0000; font-weight:bold;">{$err}</span>{/if}
+<form action="?m=voip&f=ivr&ff=det&id={$smarty.get.id}" method="post">
+<table>
+<tr class="darkest"><th></th><th colspan="2">Akcja</th><th colspan="3">Zapowiedź</th></tr>
+
+<tr class="dark"><td>Powitanie</td><td colspan="2"></td><td><span id="filet_10">{$list.filet_10|default:'BRAK'}</span></td><td><a href="javascript:upload(10);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=10&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_10]" id="file_10" value="{$list.file_10}">
+<input type="hidden" name="ivr[action_10]" value="">
+
+<tr class="dark"><td>Menu</td><td colspan="2"></td><td><span id="filet_11">{$list.filet_11|default:'BRAK'}</span></td><td><a href="javascript:upload(11);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=11&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_11]" id="file_11" value="{$list.file_11}">
+<input type="hidden" name="ivr[action_11]" value="">
+
+<tr class="dark"><td>Po wybraniu "0"</td><td><span id="actiont_0">{$list.actiont_0|default:'BRAK'}</span></td><td><a href="javascript:action(0);">Edytuj</a></td><td><span id="filet_0">{$list.filet_0|default:'BRAK'}</span></td><td><a href="javascript:upload(0);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=0&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_0]" id="file_0" value="{$list.file_0}">
+<input type="hidden" name="ivr[action_0]" id="action_0" value="{$list.action_0}">
+
+<tr class="dark"><td>Po wybraniu "1"</td><td><span id="actiont_1">{$list.actiont_1|default:'BRAK'}</span></td><td><a href="javascript:action(1);">Edytuj</a></td><td><span id="filet_1">{$list.filet_1|default:'BRAK'}</span></td><td><a href="javascript:upload(1);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=1&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_1]" id="file_1" value="{$list.file_1}">
+<input type="hidden" name="ivr[action_1]" id="action_1" value="{$list.action_1}">
+
+<tr class="dark"><td>Po wybraniu "2"</td><td><span id="actiont_2">{$list.actiont_2|default:'BRAK'}</span></td><td><a href="javascript:action(2);">Edytuj</a></td><td><span id="filet_2">{$list.filet_2|default:'BRAK'}</span></td><td><a href="javascript:upload(2);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=2&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_2]" id="file_2" value="{$list.file_2}">
+<input type="hidden" name="ivr[action_2]" id="action_2" value="{$list.action_2}">
+
+<tr class="dark"><td>Po wybraniu "3"</td><td><span id="actiont_3">{$list.actiont_3|default:'BRAK'}</span></td><td><a href="javascript:action(3);">Edytuj</a></td><td><span id="filet_3">{$list.filet_3|default:'BRAK'}</span></td><td><a href="javascript:upload(3);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=3&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_3]" id="file_3" value="{$list.file_3}">
+<input type="hidden" name="ivr[action_3]" id="action_3" value="{$list.action_3}">
+
+<tr class="dark"><td>Po wybraniu "4"</td><td><span id="actiont_4">{$list.actiont_4|default:'BRAK'}</span></td><td><a href="javascript:action(4);">Edytuj</a></td><td><span id="filet_4">{$list.filet_4|default:'BRAK'}</span></td><td><a href="javascript:upload(4);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=4&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_4]" id="file_4" value="{$list.file_4}">
+<input type="hidden" name="ivr[action_4]" id="action_4" value="{$list.action_4}">
+
+<tr class="dark"><td>Po wybraniu "5"</td><td><span id="actiont_5">{$list.actiont_5|default:'BRAK'}</span></td><td><a href="javascript:action(5);">Edytuj</a></td><td><span id="filet_5">{$list.filet_5|default:'BRAK'}</span></td><td><a href="javascript:upload(5);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=5&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_5]" id="file_5" value="{$list.file_5}">
+<input type="hidden" name="ivr[action_5]" id="action_5" value="{$list.action_5}">
+
+<tr class="dark"><td>Po wybraniu "6"</td><td><span id="actiont_6">{$list.actiont_6|default:'BRAK'}</span></td><td><a href="javascript:action(6);">Edytuj</a></td><td><span id="filet_6">{$list.filet_6|default:'BRAK'}</span></td><td><a href="javascript:upload(6);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=6&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_6]" id="file_6" value="{$list.file_6}">
+<input type="hidden" name="ivr[action_6]" id="action_6" value="{$list.action_6}">
+
+<tr class="dark"><td>Po wybraniu "7"</td><td><span id="actiont_7">{$list.actiont_7|default:'BRAK'}</span></td><td><a href="javascript:action(7);">Edytuj</a></td><td><span id="filet_7">{$list.filet_7|default:'BRAK'}</span></td><td><a href="javascript:upload(7);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=7&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_7]" id="file_7" value="{$list.file_7}">
+<input type="hidden" name="ivr[action_7]" id="action_7" value="{$list.action_7}">
+
+<tr class="dark"><td>Po wybraniu "8"</td><td><span id="actiont_8">{$list.actiont_8|default:'BRAK'}</span></td><td><a href="javascript:action(8);">Edytuj</a></td><td><span id="filet_8">{$list.filet_8|default:'BRAK'}</span></td><td><a href="javascript:upload(8);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=8&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_8]" id="file_8" value="{$list.file_8}">
+<input type="hidden" name="ivr[action_8]" id="action_8" value="{$list.action_8}">
+
+<tr class="dark"><td>Po wybraniu "9"</td><td><span id="actiont_9">{$list.actiont_9|default:'BRAK'}</span></td><td><a href="javascript:action(9);">Edytuj</a></td><td><span id="filet_9">{$list.filet_9|default:'BRAK'}</span></td><td><a href="javascript:upload(9);">Edytuj</a></td><td><a href="?m=voip&f=ivr&ff=delm&mess=9&id={$smarty.get.id}">Usuń</a></td></tr>
+<input type="hidden" name="ivr[file_9]" id="file_9" value="{$list.file_9}">
+<input type="hidden" name="ivr[action_9]" id="action_9" value="{$list.action_9}">
+
+<tr colspan="5"><td><input type="submit" value="Zapisz"></td></tr>
+</table>
+</form>
+{/box}
+</td>
+</tr>
+</table>
+{include file="footer.html"}
+

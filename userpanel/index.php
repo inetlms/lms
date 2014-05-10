@@ -133,6 +133,8 @@ require_once(LIB_DIR.'/unstrip.php');
 require_once(LIB_DIR.'/common.php');
 require_once(LIB_DIR.'/LMS.class.php');
 
+
+
 $AUTH = NULL;
 $LMS = new LMS($DB, $AUTH, $CONFIG);
 
@@ -155,14 +157,42 @@ $dh  = opendir(USERPANEL_MODULES_DIR);
 
 $nomod = unserialize(get_conf('userpanel.disable_modules','a:0:{}'));
 
-while (false !== ($filename = readdir($dh))) 
-{
-    if (!in_array($filename,$nomod) && (preg_match('/^[a-zA-Z0-9]/',$filename)) && (is_dir(USERPANEL_MODULES_DIR.$filename)) && file_exists(USERPANEL_MODULES_DIR.$filename.'/configuration.php'))
-    {
-	@include(USERPANEL_MODULES_DIR.$filename.'/locale/'.$_ui_language.'/strings.php');
-	include(USERPANEL_MODULES_DIR.$filename.'/configuration.php');
-    }
-};
+if($SESSION->islogged) {
+
+	$noloadmodule = array();
+	
+	if($CONFIG['voip']['enabled'] == 1) {
+	    
+	    require_once(LIB_DIR.'/LMSVOIP.class.php');
+	    $voip=new LMSVOIP($DB,$CONFIG['voip']);
+	
+	     if (!$DB->GetOne('SELECT 1 FROM v_exportedusers WHERE lmsid = ?', array($SESSION->id)))
+	     $noloadmodule[] = 'voip';
+	} else {
+	     $noloadmodule[] = 'voip';
+	}
+	
+	while (false !== ($filename = readdir($dh))) 
+	{
+	    if (!in_array($filename,$nomod) && !in_array($filename,$noloadmodule) && (preg_match('/^[a-zA-Z0-9]/',$filename)) && (is_dir(USERPANEL_MODULES_DIR.$filename)) && file_exists(USERPANEL_MODULES_DIR.$filename.'/configuration.php'))
+	    {
+		@include(USERPANEL_MODULES_DIR.$filename.'/locale/'.$_ui_language.'/strings.php');
+		include(USERPANEL_MODULES_DIR.$filename.'/configuration.php');
+	    }
+	};
+
+} else {
+
+	while (false !== ($filename = readdir($dh))) 
+	{
+	    if (!in_array($filename,$nomod) && (preg_match('/^[a-zA-Z0-9]/',$filename)) && (is_dir(USERPANEL_MODULES_DIR.$filename)) && file_exists(USERPANEL_MODULES_DIR.$filename.'/configuration.php'))
+	    {
+		@include(USERPANEL_MODULES_DIR.$filename.'/locale/'.$_ui_language.'/strings.php');
+		include(USERPANEL_MODULES_DIR.$filename.'/configuration.php');
+	    }
+	};
+
+}
 
 $SMARTY->assignByRef('LANGDEFS', $LANGDEFS);
 $SMARTY->assignByRef('_ui_language', $LMS->ui_lang);
@@ -182,12 +212,14 @@ $layout['dberrors'] =& $DB->errors;
 $SMARTY->assignByRef('modules', $USERPANEL->MODULES);
 $SMARTY->assignByRef('layout', $layout);
 
-header('X-Powered-By: LMS/'.$layout['lmsv']);
+header('X-Powered-By: iNET LMS/'.$layout['lmsv']);
+
+
 
 if($SESSION->islogged)
 {
 	$module = isset($_GET['m']) ? $_GET['m'] : '';
-
+	
 	if (isset($USERPANEL->MODULES[$module])) $USERPANEL->MODULES[$module]['selected'] = true;
 
 	// Userpanel rights module
@@ -206,6 +238,7 @@ if($SESSION->islogged)
 	if( file_exists(USERPANEL_MODULES_DIR.$module.'/functions.php')
 	    && isset($USERPANEL->MODULES[$module]) )
         {
+	    
     		include(USERPANEL_MODULES_DIR.$module.'/functions.php');
 
 		$function = isset($_GET['f']) && $_GET['f']!='' ? $_GET['f'] : 'main';
@@ -217,6 +250,7 @@ if($SESSION->islogged)
     		    $layout['error'] = trans('Function <b>$a</b> in module <b>$b</b> not found!', $function, $module);
     		    $SMARTY->display('error.html');
 		}
+	    
         }
         // if no module selected, redirect on module with lowest prio
 	elseif ($module=='')

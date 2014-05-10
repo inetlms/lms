@@ -1,11 +1,13 @@
 <?php
 
+//echo "<pre>"; print_r($_POST); echo "</pre>"; die;
+
 
 if(isset($_POST['netdev']))
 {
 	$netdevdata = $_POST['netdev'];
-	$netdevdata['name'] = $_POST['name'];
-	$netdevdata['teryt'] = $_POST['teryt'];
+//	$netdevdata['name'] = $_POST['name'];
+//	$netdevdata['teryt'] = $_POST['teryt'];
 	if($netdevdata['ports'] == '') $netdevdata['ports'] = 1;
 	if(empty($netdevdata['clients'])) $netdevdata['clients'] = 0;
 	else $netdevdata['clients'] = intval($netdevdata['clients']);

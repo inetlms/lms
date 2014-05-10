@@ -85,25 +85,20 @@ class RADIUS {
 		$this->DB->GetAll('SELECT r.radacctid, r.acctsessionid, r.username, r.nasipaddress, r.nasporttype, r.acctstarttime, r.servicetype '
 		.', r.acctstoptime, r.acctterminatecause '
 		.', r.acctsessiontime, r.acctinputoctets, r.acctoutputoctets, r.framedipaddress, UPPER(r.callingstationid) AS callingstationid '
-		.', nas.name AS nasname, nas.netdev AS nasid '
-		.', n.id AS nodeid, n.location AS nodelocation, n.name AS nodename , c.id AS cid'
+		.', nass.name AS nasname, nass.id AS nasid '
+		.', n.id AS nodeid, n.name AS nodename , c.id AS cid'
 		.', '.$this->DB->Concat('c.lastname',"' '",'c.name').' AS customername '
-		.', '.$this->DB->Concat('c.zip',"' '",'c.city',"' '",'c.address').' AS customeraddress '
-		.', n.location AS nodelocation, n.producer AS nodeproducer, n.model AS nodemodel '
 		.($status=='open' ? ', nd.maxid AS maxid ' : ', 0 AS maxid ')
 		.'FROM radacct r '
-		.'LEFT JOIN nodes nas ON (inet_ntoa(nas.ipaddr) = r.nasipaddress) '
 		.($status=='open' ? 'JOIN ( SELECT MAX(radacctid) AS maxid, username FROM radacct GROUP BY username) nd ON (nd.username = r.username) ' : '')
+		.'JOIN nas nass ON (nass.nasname = r.nasipaddress) '
 		.($auth_login == 'id' ? 'JOIN nodes n ON (n.id = r.username) ' : '')
-		.($auth_login == 'name' ? 'JOIN nodes n ON (UPPER(n.name) = UPPER(r.username)) ' : '')
+		.($auth_login == 'name' ? 'JOIN nodes n ON (n.name = r.username) ' : '')
 		.($auth_login == 'ip' ? 'JOIN nodes n ON (inet_ntoa(n.ipaddr) = r.username) ' : '')
 		.($auth_login == 'passwd' ? 'JOIN nodes n ON (n.passwd = r.username) ' : '')
-		.'JOIN customers c ON (c.id = n.ownerid) '
-		.'WHERE 1=1 '
-		.(($cid) ? " AND c.id = '".$cid."'" : '')
-		.(($nid) ? " AND n.id = '".$nid."'" : '')
-		.($status=='open' ? ' AND (r.acctstoptime IS NULL OR r.acctstoptime=\'0000-00-00 00:00:00\') ' : '')
-		.($status=='completed' ? ' AND r.acctstoptime IS NOT NULL AND r.acctstoptime!=\'0000-00-00 00:00:00\' ' : '')
+		.'JOIN customersview c ON (c.id = n.ownerid) '
+		.($status=='open' ? ' WHERE (r.acctstoptime IS NULL OR r.acctstoptime=\'0000-00-00 00:00:00\') ' : '')
+		.($status=='completed' ? ' WHERE r.acctstoptime IS NOT NULL AND r.acctstoptime!=\'0000-00-00 00:00:00\' ' : '')
 		.($nullsession=='tak' ? ' AND r.acctsessiontime = 0 ' : '')
 		.($nullsession=='nie' ? ' AND r.acctsessiontime != 0 ' : '')
 		.($sessions=='cur' && $status=='open' ? ' AND r.radacctid = nd.maxid ' : '')
@@ -113,6 +108,8 @@ class RADIUS {
 		.(!empty($enddatefrom) ? " AND DATE(r.acctstoptime) >= '".$enddatefrom."'" : '')
 		.(!empty($enddateto) ? " AND DATE(r.acctstoptime) <= '".$enddateto."'" : '')
 		.($status=='completed' && $cause=='NULL' ? " AND r.acctterminatecause=''" : '')
+		.(($cid) ? " AND c.id = '".$cid."'" : '')
+		.(($nid) ? " AND n.id = '".$nid."'" : '')
 		.($status=='completed' && $cause!='NULL' && $cause!='ALL' ? " AND UPPER(r.acctterminatecause)='".$cause."'" : '')
 		.' ORDER BY r.acctstarttime DESC'
 		.';');
