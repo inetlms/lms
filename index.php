@@ -209,7 +209,7 @@ $layout['smarty_version'] = SMARTY_VERSION;
 $layout['hostname'] = hostname();
 $layout['lmsv'] = 'iNET';
 $layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
-$layout['lmsvr'] = '14.05.09';
+$layout['lmsvr'] = '14.05.14';
 $layout['dberrors'] =& $DB->errors;
 $layout['dbdebug'] = $_DBDEBUG;
 $layout['popup'] = isset($_GET['popup']) ? true : false;
@@ -319,18 +319,10 @@ else
 	function login_adbox()
 	{
 	    $obj = new xajaxResponse();
-	    $c = curl_init();
-	    curl_setopt($c,CURLOPT_URL,'http://www.inetlms.pl/adv/getinfo.php');
-	    curl_setopt($c,CURLOPT_RETURNTRANSFER,1);
-	    curl_setopt($c,CURLOPT_USERAGENT,'MozillaXYZ/1.0');
-	    curl_setopt($c,CURLOPT_TIMEOUT,5);
-	    $info = curl_getinfo($c);
-	    $result = curl_exec($c);
-	    if (!curl_error($c) && !empty($result))
+	    if ($result = fetch_url(INETLMS_ADV_URL))
 		$obj->assign("id_login_adbox","innerHTML",base64_decode($result));
 	    else
 		$obj->assign("id_login_adbox","innerHTML","<img src='img/logo.gif'>");
-	    @curl_close($c);
 	    return $obj;
 	}
 	
