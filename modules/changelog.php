@@ -34,6 +34,11 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/05/14',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano rejestrację kopii iNET LMS',
+	),
+	array(
 	    'data'	=> '2014/05/05',
 	    'status'	=> '',
 	    'opis'	=> 'Dodana obsługa VoIP Nettelekomu. Włączenie modułu w konfiguracji UI -> Nettelekom zmienna enabled.',

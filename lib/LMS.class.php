@@ -5066,74 +5066,62 @@ class LMS {
 	}
 
 	function GetUniqueInstallationID() {
-		if (!($uiid = $this->DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype=?', array('unique_installation_id')))) {
+		if (!($uiid = $this->DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? '.$this->DB->Limit(1).';', array('inetlms_uiid')))) {
 			list($usec, $sec) = explode(' ', microtime());
 			$uiid = md5(uniqid(rand(), true)) . sprintf('%09x', $sec) . sprintf('%07x', ($usec * 10000000));
-			$this->DB->Execute('INSERT INTO dbinfo (keytype, keyvalue) VALUES (?, ?)', array('unique_installation_id', $uiid));
+			$this->DB->Execute('INSERT INTO dbinfo (keytype, keyvalue) VALUES (?, ?)', array('inetlms_uiid', $uiid));
 		}
 		return $uiid;
 	}
+	
+	function checkupdates()
+	{
+	    return false;
+	}
 
-	function CheckUpdates($force = FALSE) {
-		$uiid = $this->GetUniqueInstallationID();
-		$time = $this->DB->GetOne('SELECT ?NOW?');
-		$content = FALSE;
-		if ($force == TRUE)
-			$lastcheck = 0;
-		elseif (!($lastcheck = $this->DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype=?', array('last_check_for_updates_timestamp'))))
-			$lastcheck = 0;
-		if ($lastcheck + $this->CONFIG['phpui']['check_for_updates_period'] < $time) {
-			list($v, ) = explode(' ', $this->_version);
-
-			if ($content = fetch_url('http://register.lms.org.pl/update.php?uiid=' . $uiid . '&v=' . $v)) {
-				if ($lastcheck == 0)
-					$this->DB->Execute('INSERT INTO dbinfo (keyvalue, keytype) VALUES (?NOW?, ?)', array('last_check_for_updates_timestamp'));
-				else
-					$this->DB->Execute('UPDATE dbinfo SET keyvalue=?NOW? WHERE keytype=?', array('last_check_for_updates_timestamp'));
-
-				$content = unserialize((string) $content);
-				$content['regdata'] = unserialize((string) $content['regdata']);
-
-				if (is_array($content['regdata'])) {
-					$this->DB->Execute('DELETE FROM dbinfo WHERE keytype LIKE ?', array('regdata_%'));
-
-					foreach (array('id', 'name', 'url', 'hidden') as $key)
-						$this->DB->Execute('INSERT INTO dbinfo (keytype, keyvalue) VALUES (?, ?)', array('regdata_' . $key, $content['regdata'][$key]));
-				}
-			}
-		}
-
-		return $content;
+	function CheckRegister() {
+		if (!$this->DB->GetOne('SELECT 1 FROM dbinfo WHERE keytype = ? AND keyvalue = ? LIMIT 1;',array('inetlms_registers',1)))
+		    return FALSE;
+		else
+		    return TRUE;
 	}
 
 	function GetRegisterData() {
-		if ($regdata = $this->DB->GetAll('SELECT * FROM dbinfo WHERE keytype LIKE ?', array('regdata_%'))) {
+		if ($regdata = $this->DB->GetAll('SELECT * FROM dbinfo WHERE keytype LIKE ?', array('inetlms_regdata_%'))) {
 			foreach ($regdata as $regline)
-				$registerdata[str_replace('regdata_', '', $regline['keytype'])] = $regline['keyvalue'];
+				$registerdata[str_replace('inetlms_regdata_', '', $regline['keytype'])] = $regline['keyvalue'];
 			return $registerdata;
 		}
 		return NULL;
-	}
+ 	}
+ 	
+ 	function updateRegister($dane)
+ 	{
+ 	    
+ 	}
 
-	function UpdateRegisterData($name, $url, $hidden) {
-		$name = rawurlencode($name);
-		$url = rawurlencode($url);
+	function UpdateRegisterData($form) {
+		
+		$dane['register'] = serialize($form);
 		$uiid = $this->GetUniqueInstallationID();
-		$url = 'http://register.lms.org.pl/register.php?uiid=' . $uiid . '&name=' . $name . '&url=' . $url . ($hidden == TRUE ? '&hidden=1' : '');
-
-		if (fetch_url($url) !== FALSE) {
-			// ok, update done, so, let we fall asleep for at least 2 seconds, let's viper put our
-			// registration data into database. in future we should read info from register.php,
-			// ie. 'Password' incorrect if we protect each installation with password (but then
-			// we should use https)
-
-			sleep(5);
-			$this->DB->Execute('DELETE FROM dbinfo WHERE keytype = ?', array('last_check_for_updates_timestamp'));
-			$this->CheckUpdates(TRUE);
-			return TRUE;
+		$urls = INETLMS_REGISTER_URL.'?uiid='.$uiid;
+		$c = curl_init();
+		curl_setopt($c,CURLOPT_URL,$urls);
+		curl_setopt($c,CURLOPT_RETURNTRANSFER,1);
+		curl_setopt($c,CURLOPT_POST,1);
+		curl_setopt($c,CURLOPT_POSTFIELDS, $dane);
+		curl_setopt($c,CURLOPT_USERAGENT,'MozillaXYZ/1.0');
+		curl_setopt($c,CURLOPT_TIMEOUT,60);
+		$info = curl_getinfo($c);
+		$result = curl_exec($c);
+		if (curl_error($c))
+		{
+			return FALSE;
 		}
-
-		return FALSE;
+		curl_close($c);
+		if (empty($result)) 
+		    return FALSE;
+		return $result;
 	}
 
 	function SendMail($recipients, $headers, $body, $files = NULL) {

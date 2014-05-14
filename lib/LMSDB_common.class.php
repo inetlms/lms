@@ -262,7 +262,7 @@ class LMSDB_common
 		return $this->_quote_value($input);
 	}
 	
-	function Limit($start,$offset=NULL)
+	function Limit($start=1,$offset=NULL)
 	{
 	    return $this->_driver_limit($start,$offset);
 	}
