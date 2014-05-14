@@ -32,7 +32,7 @@ $menu = array(
 			'tip' => trans('System information and management'),
 			'accesskey' =>'i',
 			'prio' => 0,
-			'index' => 20,
+			'index' => MODULES_ADMIN,
 			'submenu' => array(
 				array(
 					'name' => trans('Info'),
@@ -82,6 +82,12 @@ $menu = array(
 					'tip' => trans('Copyrights, authors, etc.'),
 					'prio' => 200,
 				),
+				array(
+					'name' => 'Rejestracja',
+					'link' => '?m=register',
+					'tip' => 'Informacje o rejestracji instalacji iNET LMS',
+					'prio' => 201,
+				),
 			),
 		),
 
@@ -92,7 +98,7 @@ $menu = array(
 			'tip' => trans('Customers Management'),
 			'accesskey' =>'u',
 			'prio' => 5,
-			'index' => 40,
+			'index' => MODULES_CUSTOMERS,
 			'submenu' => array(
 				array(
 					'name' => trans('List'),
@@ -141,7 +147,7 @@ $menu = array(
 			'tip' => trans('Nodes Management'),
 			'accesskey' =>'k',
 			'prio' => 10,
-			'index' => 60,
+			'index' => MODULES_NODES,
 			'submenu' => array(
 				array(
 					'name' => trans('List'),
@@ -189,7 +195,7 @@ $menu = array(
 			'tip' => trans('VoIP Management'),
 			'accesskey' =>'v',
 			'prio' => 11,
-			'index' => 80,
+			'index' => MODULES_VOIP,
 			'submenu' => array(
 				array(
 					'name' => trans('List'),
@@ -219,7 +225,7 @@ $menu = array(
 			'tip' => 'Telefonia Internetowa Hiperus',
 			'accesskey' => '',
 			'prio' => 12,
-			'index'	=> 81,
+			'index'	=> MODULES_VOIPC5,
 			'submenu' => array(
 				array(
 					'name' => 'Lista kont',
@@ -261,7 +267,7 @@ $menu = array(
 			'tip' => trans('Network Devices Management'),
 			'accesskey' =>'o',
 			'prio' => 15,
-			'index' => 100,
+			'index' => MODULES_NETDEVICES,
 			'submenu' => array(
 				array(
 					'name' => 'Interfejsy sieciowe',
@@ -323,8 +329,8 @@ $menu = array(
 			'link' =>'',
 			'tip' => '',
 			'accesskey' =>'',
-			'prio' =>16,
-			'index' => 110,
+			'prio' =>18,
+			'index' => MODULES_MONITORING,
 			'submenu' => array(
 				array(
 					'name' => 'Urządzenia sieciowe',
@@ -361,7 +367,7 @@ $menu = array(
 			'tip' => trans('IP Address Pools Management'),
 			'accesskey' =>'t',
 			'prio' => 20,
-			'index' => 120,
+			'index' => MODULES_NETWORKS,
 			'submenu' => array(
 				array(
 					'name' => trans('List'),
@@ -384,7 +390,7 @@ $menu = array(
 			'tip' => trans('Contractors Management'),
 			'accesskey' =>'u',
 			'prio' => 23,
-			'index' => 140,
+			'index' => MODULES_CONTRACTORS,
 			'submenu' => array(
 				array(
 					'name' => trans('List'),
@@ -424,7 +430,7 @@ $menu = array(
 			'tip' => 'Zarządzanie taryfami',
 			'accesskey' =>'f',
 			'prio' => 24,
-			'index' => 150,
+			'index' => MODULES_TARIFFS,
 			'submenu' => array(
 				array(
 					'name' => trans('Subscriptions List'),
@@ -454,7 +460,7 @@ $menu = array(
 			'tip' => 'Zarządzanie finansami sieci',
 			'accesskey' =>'f',
 			'prio' => 25,
-			'index' => 160,
+			'index' => MODULES_FINANCES,
 			'submenu' => array(
 				array(
 					'name' => trans('Payments List'),
@@ -556,7 +562,7 @@ $menu = array(
 			'tip' => trans('Documents Management'),
 			'accesskey' => '',
 			'prio' => 26,
-			'index' => 180,
+			'index' => MODULES_DOCUMENTS,
 			'submenu' => array(
 				array(
 					'name' => trans('List'),
@@ -598,7 +604,7 @@ $menu = array(
 			'tip' => trans('Hosting Services Management'),
 			'accesskey' =>'a',
 			'prio' => 30,
-			'index' => 200,
+			'index' => MODULES_HOSTING,
 			'submenu' => array(
 				array(
 					'name' => trans('Accounts'),
@@ -652,7 +658,7 @@ $menu = array(
 			'tip' => trans('Customers Messaging'),
 			'accesskey' =>'m',
 			'prio' => 35,
-			'index' => 220,
+			'index' => MODULES_MESSAGES,
 			'submenu' => array(
 				array(
 					'name' => trans('List'),
@@ -684,7 +690,7 @@ $menu = array(
 			'tip' => trans(''),
 			'accesskey' =>'r',
 			'prio' => 40,
-			'index' => 240,
+			'index' => MODULES_RELOAD,
 		),
 
 		'stats' => array(
@@ -694,7 +700,7 @@ $menu = array(
 			'tip' => trans('Statistics of Internet Link Usage'),
 			'accesskey' =>'x',
 			'prio' => 45,
-			'index' => 260,
+			'index' => MODULES_STATS,
 			'submenu' => array(
 				array(
 					'name' => trans('Filter'),
@@ -748,7 +754,7 @@ $menu = array(
 			'tip' => trans('Requests Tracking'),
 			'accesskey' =>'h',
 			'prio' => 50,
-			'index' => 280,
+			'index' => MODULES_HELPDESK,
 			'submenu' => array(
 				array(
 					'name' => trans('Queues List'),
@@ -802,7 +808,7 @@ $menu = array(
 			'tip' => trans('Events Tracking'),
 			'accesskey' =>'v',
 			'prio' => 55,
-			'index' => 300,
+			'index' => MODULES_TIMETABLE,
 			'submenu' => array(
 				array(
 					'name' => trans('Timetable'),
@@ -831,7 +837,7 @@ $menu = array(
 			'link' => '',
 			'tip' => '',
 			'prio' => 57,
-			'index' => 330,
+			'index' => MODULES_RAPORTY,
 			'submenu' => array(
 				array(
 				    'name' => 'UKE SIIS v4',
@@ -847,7 +853,7 @@ $menu = array(
 			'img'		=> 'dictionary.png',
 			'link'		=> '',
 			'prio'		=> 58,
-			'index'		=> 331,
+			'index'		=> MODULES_SLOWNIK,
 			'submenu'	=> array(
 				array(
 					'name' => 'Grupy klientów',
@@ -892,7 +898,7 @@ $menu = array(
 			'tip' => trans('System Configuration'),
 			'accesskey' =>'o',
 			'prio' => 60,
-			'index' => 340,
+			'index' => MODULES_CONFIG,
 			'submenu' => array(
 				array(
 					'name' => trans('User Interface'),
@@ -942,14 +948,14 @@ $menu = array(
 		
 		
 		
-				'password' => array(
+		'password' => array(
 			'name' => trans('Password'),
 			'img' => 'pass.gif',
 			'link' => '?m=chpasswd',
 			'tip' => trans('Allows you to change your password'),
 			'accesskey' => 'p',
 			'prio' => 65,
-			'index' => 320,
+			'index' => MODULES_PASSWORD,
 		),
 /*
 		'documentation' => array(
@@ -974,7 +980,7 @@ if (get_conf('phpui.radius')) {
 		'tip'		=> '',
 		'accesskey'	=> '',
 		'prio'		=> 18,
-		'index'		=> 115,
+		'index'		=> MODULES_RADIUS,
 		'submenu'	=> array(
 			array(
 				'name'		=> 'sesje otwarte',
@@ -1008,7 +1014,7 @@ if (get_conf('voip.enabled','0')) {
 			'tip' => 'Telefonia internetowa',
 			'accesskey' =>'v',
 			'prio' => 13,
-			'index' => 82,
+			'index' => MODULES_VOIPNT,
 			'submenu' => array(
 				array(
 					'name' => 'Lista abonamentów',

@@ -27,6 +27,7 @@
 // tablica z nazwami tabel które nie posiadają auto_increment / sequence
 // tablica wykorzystywana przy dumpie bazy oraz przy tworzeniu dodatkowego pliku naprawy indexów dla pgsql
 // cel: ułatwić życie jak robimy import danych dla pgsql z shell
+
 $TABLENAME_NOINDEX = array(
 			'rtattachments',
 			'dbinfo',
@@ -50,6 +51,35 @@ $TABLENAME_NOINDEX = array(
 			'hv_customers',
 			'hv_enduserlist',
 			'sessions');
+
+
+// na potrzeby menu
+define('MODULES_ADMIN',20);
+define('MODULES_CUSTOMERS',40);
+define('MODULES_NODES',60);
+define('MODULES_VOIP',80);
+define('MODULES_VOIPC5',81); // hiperus C5
+define('MODULES_VOIPNT',82); // nettelekom
+define('MODULES_NETDEVICES',100);
+define('MODULES_MONITORING',110);
+define('MODULES_RADIUS',115);
+define('MODULES_NETWORKS',120);
+define('MODULES_CONTRACTORS',140);
+define('MODULES_TARIFFS',150);
+define('MODULES_FINANCES',160);
+define('MODULES_DOCUMENTS',180);
+define('MODULES_HOSTING',200);
+define('MODULES_MESSAGES',220);
+define('MODULES_RELOAD',240);
+define('MODULES_STATS',260);
+define('MODULES_HELPDESK',280);
+define('MODULES_TIMETABLE',300);
+define('MODULES_RAPORTY',330);
+define('MODULES_SLOWNIK',331);
+define('MODULES_CONFIG',340);
+define('MODULES_PASSWORD',320);
+
+
 
 define('MONIT_NONE',0);
 define('MONIT_NODES',1);
@@ -663,5 +693,7 @@ if(isset($SMARTY))
 }
 
 define('DEFAULT_NUMBER_TEMPLATE', '%N/LMS/%Y');
+define('INETLMS_ADV_URL','http://www.inetlms.pl/adv/getinfo.php');
+define('INETLMS_REGISTER_URL','http://www.inetlms.pl/adv/registers.php');
 
 ?>

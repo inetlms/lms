@@ -1,58 +1,118 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
-<form method="post" action="?m=register" name="registerform">
-<input type="submit" class="hiddenbtn">
-<table cellpadding="3" width="100%">
-	<tr class="dark">
-		<td colspan="2" class="fall"><b>{trans("Enter/change your registration info")}</b></td>
-	</tr>
-	<tr class="light">
-		<td class="flr" width="100%" colspan="2">
-			<div align="justify">{trans("Why you should register? If you register, we will know who's using LMS. Also, you will be listed (your company name and url) on LMS website. It's free. We don't gather any e-mails, snails or other info. We just keep your company name, url, unique installation id and your LMS version (but only for statistical purposes - we can't track your version by your name or installation id). In future, we plan to make available something like 'Registered LMS site'. Summary: we will be happy if you fill form below and send it to us.")}</div>
-			<div align="right">
-				{trans("LMS Developers")}
-			</div>
-		</td>
-	</tr>
-	<tr class="light">
-		<td class="fleft" width="50%" align="right">
-			<b>{trans("Your unique installation ID:")}</b>
-		</td>
-		<td class="fright" width="50%">
-			{$uiid}
-		</td>
-	</tr>
-	<tr class="light">
-		<td class="fleft" width="50%" align="right">
-			<b>{trans("Your/company name or whatever you want to put here:")}</b>
-		</td>
-		<td class="fright" width="50%">
-			<input type="text" name="name" value="{$regdata.name|escape}" size="32">
-		</td>
-	</tr>
-	<tr class="light">
-		<td class="fleft" width="50%" align="right">
-			<b>{trans("URL of your homepage:")}</b><br>
-			{trans("(please note: it HAVE TO start with http://, otherwise, it will be considered invalid)")}
-		</td>
-		<td class="fright" width="50%">
-			<input type="text" name="url" value="{$regdata.url}" size="32">
-		</td>
-	</tr>
-	<tr class="light">
-		<td class="fleft" width="50%" align="right">
-			<b>{trans("Check this box if you don't like to be visible on LMS homepage:")}</b>
-		</td>
-		<td class="fright" width="50%">
-			<input type="checkbox" name="hidden" value="1"{if $regdata.hidden} checked{/if}>
-		</td>
-	</tr>
-	<tr class="light">
-		<td class="fbottomu" width="100%" align="center" colspan="2">
-			<a href="javascript:document.registerform.submit(); ">{trans("Send registration info")}</a>
-		</td>
-	</tr>
+{title value=$layout.pagetitle}
+{$xajax}
+<form method="post" name="register" id="register" method="POST">
+
+<table width="100%" cellpadding="3" class="table tablebordered">
+    <tr class="dark">
+	<td width="100%" class="pad10 fall dark">
+	    <b>Informacje o rejestracji iNET LMS  - {if $registers}<span style="color:green;">Twoja instalacja iNET LMS jest już zarejestrowana</span>{else}<span style="color:blue;">Twoja instalacja iNET LMS nie została jeszcze zarejestrowana</span>{/if}</b>
+	</td>
+    </tr>
+    <tr class="light">
+	<td width="100%" class="pad10 flr">
+	<br>
+	<p style="font-size:12px">
+	Dlaczego powinieneś się zarejestrować ? <br>Jeśli to zrobisz będziemy wiedzieć kto używa iNET LMS-a. 
+	Rejestracja jest darmowa. 
+	Nie wysyłamy żadnych niechcianych reklam, e-maili, ani żadnych innych informacji. 
+	Przechowujemy dane wyłącznie do celów statystycznych, żadne dane nie są i nie będą udostępniane podmiotom trzecim.
+	W przyszłości planujemy uruchomienie czegoś w stylu 'Strona Zarejestrowanych Użytkowników iNET LMS-a' gdzie będzie widoczna tylko nazwa i adres url. 
+	Podsumowanie: Będziemy wdzięczni, jeśli wypełnisz poniższy formularz i prześlesz go do nas.
+	</p>
+	<br>
+	</td>
+    </tr>
+    
+    <tr class="light">
+	<td width="100%" class="pad10 flr">
+	    <div id="id_info" style="font-size:12px;color:green;font-weight:bold;"></div>
+	    <div id="id_form_data">
+	    <table width="100%" cellpadding="3">
+		<tr>
+		    <td width="1%" nowrap align="left"><b>Twój unikalny numer rejestracji</b></td>
+		    <td width="1%"><b>:</b></td>
+		    <td width="98%" align="left">{$uiid}<input type="hidden" name="register[uiid]" value="{$uiid}"</td>
+		</tr>
+		<tr>
+		    <td width="1%" nowrap align="left"><b>Nazwa firmy</b></td>
+		    <td width="1%"><b>:</b></td>
+		    <td width="98%" align="left"><input type="text" id="id_name" name="register[name]" value="{$regdata.name}" style="width:200px;"><div id="id_name_alerts" style="color:red;"></div></td>
+		</tr>
+		<tr>
+		    <td width="1%" nowrap align="left"><b>Adres</b></td>
+		    <td width="1%"><b>:</b></td>
+		    <td width="98%" align="left"><input type="text" name="register[address]" value="{$regdata.address}" style="width:200px;"></td>
+		</tr>
+		<tr>
+		    <td width="1%" nowrap align="left"><b>Miejscowość</b></td>
+		    <td width="1%"><b>:</b></td>
+		    <td width="98%" align="left"><input type="text" name="register[city]" value="{$regdata.city}" style="width:200px;"></td>
+		</tr>
+		<tr>
+		    <td width="1%" nowrap align="left"><b>Kod pocztowy</b></td>
+		    <td width="1%"><b>:</b></td>
+		    <td width="98%" align="left"><input type="text" name="register[zip]" value="{$regdata.zip}" style="width:70px;" id="id_zip"><div id="id_zip_alerts" style="color:red;"></div></td>
+		</tr>
+		<tr>
+		    <td width="1%" nowrap align="left"><b>Adres WWW</b></td>
+		    <td width="1%"><b>:</b></td>
+		    <td width="98%" align="left"><input type="text" name="register[url]" value="{$regdata.url}" style="width:200px;" id="id_url"><div id-"id_url_alerts" style="color:red;"></div></td>
+		</tr>
+		<tr>
+		    <td width="1%" nowrap align="left"><b>Adres email</b></td>
+		    <td width="1%"><b>:</b></td>
+		    <td width="98%" align="left"><input type="text" name="register[email]" value="{$regdata.email}" style="width:200px;" id="id_email"><div id="id_email_alerts" style="color:red;"></div></td>
+		</tr>
+		<tr>
+		    <td width="1%" nowrap align="left"><b>Świadczone usługi</b></td>
+		    <td width="1%"><b>:</b></td>
+		    <td width="98%" align="left">
+			<input type="checkbox" value="1" name="register[internet]" {if $regdata.name}{if $regdata.internet}checked{/if}{else}checked{/if} id="id_internet"><label for="id_internet">Internet</label>&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" value="1" name="register[phone]" {if $regdata.phone}checked{/if} id="id_phone"><label for="id_phone">Telefonia</label>&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" value="1" name="register[tv]" {if $regdata.tv}checked{/if} id="id_tv"><label for="id_tv">Telewizja</label>&nbsp;&nbsp;&nbsp;
+		    </td>
+	    </table>
+	    <br>
+	    <table width="100%" cellpadding="5">
+		<tr>
+		    <td width="1%" class="pad10">
+			<input type="checkbox" value="1" name="register[hide]" {if $regdata.hide}checked{/if} id="id_hide">
+		    </td>
+		    <td width="99%" align="left" class="pad10">
+			<label for="id_hide"><b>Ukryj moje dane rejestracyjne</b><br>
+			<i>Zaznacz to pole, jeżeli nie chcesz aby Twoje dane (nazwa firmy i url) były widoczne na naszych stronach</i></label>
+		    </td>
+		</tr>
+		<tr>
+		    <td width="1%" class="pad10">
+			<input type="checkbox" value="1" name="register[newsletter]" {if $regdata.name}{if $regdata.newsletter}checked{/if}{else}checked{/if} id="id_newsletter">
+		    </td>
+		    <td width="99%" align="left" class="pad10">
+			<label for="id_newsletter"><b>Zapisujsz mnie do Newsletter</b><br>
+			<i>w przyszłości planujemy uruchomić newsletter, jeżeli chcesz otrzymywać od nas informacje pozostaw zaznaczone to pole<br>Pamiętaj że w każdej chwili możesz się wypisać edytując formularz rejestracyjny i odznaczając to pole.</i></label>
+		    </td>
+		</tr>
+		<tr>
+		    <td width="1%" class="pad10">
+			<input type="checkbox" value="1" {if $regdata.name}{if $regdata.infocustomer}checked{/if}{else}checked{/if} name="register[infocustomer]" id="id_infocustomer">
+		    </td>
+		    <td width="99%" class="pad10" align="left">
+			<label for="id_infocustomer"><b>Wyrażam zgodę na wysyłanie informacji o ilości podłączonych klientów</b><br>
+			<i>Zaznaczenie tego pola, pozwoli wysyłać informację <b><u>tylko o ilości</u></b> obsługiwanych klientów.<br>
+			Nie są wysyłane żadne inne informacje na temat klientów oraz z jakich usług korzystają.</i></label>
+	    </table>
+	    </div>
+	</td>
+    </tr>
+    <tr class="dark">
+	<td width="100%" align="right" class="pad5 fall">
+	    <div id="id_send_button"><a href="javascript:void(0);" onclick="xajax_formregister(xajax.getFormValues('register'));"><b>{if $registers}Aktualizuj{else}Prześlij{/if} informacje</b> <img src="img/save.gif"></a></div>
+	</td>
+    </tr>
+    
 </table>
 </form>
+{include file="load_gif.html"}
 {include file="footer.html"}

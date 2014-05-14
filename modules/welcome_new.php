@@ -30,9 +30,33 @@ $layout['pagetitle'] = 'iNET LAN Management System v. '.$layout['lmsvr'];
 
 $pageview = array();
 
+if (check_conf('privileges.superuser')) {
+    $registers = $LMS->CheckRegister();
+    $tmp = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype=? LIMIT 1;',array('inetlms_regdata_infocustomer'));
+    if ($tmp == '1')
+    {
+	$czas = $DB->getone('select keyvalue FROM dbinfo WHERE keytype=? LIMIT 1;',array('inetlms_last_update'));
+	if (!$czas) {
+	    $DB->Execute('INSERT INTO dbinfo (keytype,keyvalue) VALUES (?,?);',array('inetlms_last_update',time()));
+	} else {
+	    $czas = $czas + 1209600;
+	    if (time() > $czas) {
+		$customercount = $DB->GetOne('SELECT COUNT(id) FROM customers WHERE status=3 AND (type=0 OR type=1) AND deleted=0;');
+		$uiid = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? LIMIT 1;',array('inetlms_uiid'));
+		fetch_url(INETLMS_REGISTER_URL.'?uiid='.$uiid.'&updatecustomer='.$customercount);
+		$DB->Execute('UPDATE dbinfo SET keyvalue=? WHERE keytype = ?;',array(time(),'inetlms_last_update'));
+		if ($layout['lmsvr'] != $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? LIMIT 1;',array('inetlms_version'))) {
+		    fetch_url(INETLMS_REGISTER_URL.'?uiid='.$uiid.'&updateversion='.$layout['lmsvr']);
+		    $DB->Execute('UPDATE dbinfo SET keyvalue=? WHERE keytype = ?;',array($layout['lmsvr'],'inetlms_version'));
+		}
+	    }
+	}
+    }
+} else $registers = NULL;
+
 function homepage_start()
 {
-    global $pageview,$SMARTY,$LMS,$DB,$CONFIG,$layout,$_language,$PROFILE,$AUTH,$SESSION,$voip;
+    global $pageview,$SMARTY,$LMS,$DB,$CONFIG,$layout,$_language,$PROFILE,$AUTH,$SESSION,$voip, $registers;
     
     if (get_conf('homepage.box_customer') && !check_conf('privileges.hide_summaries')) $pageview[] = 'box_customer';
     if (get_conf('homepage.box_nodes') && !check_conf('privileges.hide_summaries')) $pageview[] = 'box_nodes';
@@ -45,6 +69,10 @@ function homepage_start()
     if (get_conf('homepage.box_totd')) $pageview[] = 'box_totd';
 
     $obj = new xajaxResponse();
+    
+    if (check_conf('privileges.superuser') && !$registers) {
+	$obj->assign("id_box_0a","innerHTML",$SMARTY->fetch("welcome_box_registers.html"));
+    }
 
     $count = sizeof($pageview);
     for ($i=0; $i<$count; $i++)
