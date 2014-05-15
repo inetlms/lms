@@ -46,7 +46,6 @@ function kick_user($rid)
     global $DB,$RAD;
     $obj = new xajaxResponse();
     $result = $RAD->disconnect_user($rid);
-
     $obj->script("self.location.href='?m=rad_radacct&status=open';");
     return $obj;
 }

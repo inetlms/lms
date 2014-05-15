@@ -51,7 +51,7 @@ class RADIUS {
 	$nas = $this->DB->GetRow('SELECT secret, coaport FROM nas WHERE nasname = ? LIMIT 1;',array($radacct['nasipaddress']));
 	
 	if ($radacct && $nas) {
-	    return $this->send_disconnect_user($radacct['username'], $radacct['nasipaddress'], ($nas['coaport'] ? $nas['coaport'] : get_conf('radius.coa_port','3799')), $nas['secret']);
+	    return $this->send_disconnect_user($radacct['username'], $radacct['nasipaddress'], (!empty($nas['coaport']) ? $nas['coaport'] : get_conf('radius.coa_port','3799')), $nas['secret']);
 	} else
 	    return FALSE;
 	
@@ -85,7 +85,7 @@ class RADIUS {
 		$this->DB->GetAll('SELECT r.radacctid, r.acctsessionid, r.username, r.nasipaddress, r.nasporttype, r.acctstarttime, r.servicetype '
 		.', r.acctstoptime, r.acctterminatecause '
 		.', r.acctsessiontime, r.acctinputoctets, r.acctoutputoctets, r.framedipaddress, UPPER(r.callingstationid) AS callingstationid '
-		.', nass.name AS nasname, nass.id AS nasid '
+		.', nass.name AS nasname, nass.netdevid AS nasid '
 		.', n.id AS nodeid, n.name AS nodename , c.id AS cid'
 		.', '.$this->DB->Concat('c.lastname',"' '",'c.name').' AS customername '
 		.($status=='open' ? ', nd.maxid AS maxid ' : ', 0 AS maxid ')
