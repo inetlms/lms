@@ -34,6 +34,11 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/05/15',
+	    'status'	=> '',
+	    'opis'	=> 'Poprawka modułu radius',
+	),
+	array(
 	    'data'	=> '2014/05/14',
 	    'status'	=> '',
 	    'opis'	=> 'Dodano rejestrację kopii iNET LMS',
