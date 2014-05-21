@@ -34,6 +34,11 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/05/21',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka dla monitoringu',
+	),
+	array(
 	    'data'	=> '2014/05/15',
 	    'status'	=> '',
 	    'opis'	=> 'Poprawka modułu radius',
