@@ -26,12 +26,24 @@ $DB->BeginTrans();
 $DB->Execute("DROP VIEW IF EXISTS customersview;");
 $DB->Execute("DROP VIEW IF EXISTS contractorview;");
 
-$DB->Execute("ALTER TABLE `customers` ADD `invoice_name` VARCHAR( 255 ) NULL DEFAULT NULL ;");
-$DB->Execute("ALTER TABLE `customers` ADD `invoice_address` VARCHAR( 255 ) NULL DEFAULT NULL;");
-$DB->Execute("ALTER TABLE `customers` ADD `invoice_zip` VARCHAR( 10 ) NULL DEFAULT NULL;");
-$DB->Execute("ALTER TABLE `customers` ADD `invoice_city` VARCHAR( 32 ) NULL DEFAULT NULL;");
-$DB->Execute("ALTER TABLE `customers` ADD `invoice_countryid` INT ( 11 ) NULL DEFAULT NULL;");
-$DB->Execute("ALTER TABLE `customers` ADD `invoice_ten` VARCHAR( 16 ) NULL DEFAULT NULL;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'customers','invoice_name'))) 
+    $DB->Execute("ALTER TABLE customers ADD invoice_name VARCHAR( 255 ) NULL DEFAULT NULL ;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'customers','invoice_address'))) 
+    $DB->Execute("ALTER TABLE customers ADD invoice_address VARCHAR( 255 ) NULL DEFAULT NULL;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'customers','invoice_zip'))) 
+    $DB->Execute("ALTER TABLE customers ADD invoice_zip VARCHAR( 10 ) NULL DEFAULT NULL;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'customers','invoice_city'))) 
+    $DB->Execute("ALTER TABLE customers ADD invoice_city VARCHAR( 32 ) NULL DEFAULT NULL;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'customers','invoice_countryid'))) 
+    $DB->Execute("ALTER TABLE customers ADD invoice_countryid INT ( 11 ) NULL DEFAULT NULL;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'customers','invoice_ten'))) 
+    $DB->Execute("ALTER TABLE customers ADD invoice_ten VARCHAR( 16 ) NULL DEFAULT NULL;");
 
 $DB->Execute("
 CREATE VIEW customersview AS

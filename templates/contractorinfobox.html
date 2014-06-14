@@ -14,6 +14,17 @@
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
 
+{if $customerinfo.division}
+	<tr class="light">
+		<td width="1%">
+			<img src="img/division.gif" alt="">
+		</td>
+		<td width="99%">
+			<a href="javascript:divisioninfo_popup('{$customerinfo.divisionid}');" {tip text="Pokaż szczegóły"}>{$customerinfo.division}</a>
+		</td>
+	</tr>
+{/if}
+
 	<tr class="light">
 		<td width="1%" style="vertical-align: top">
 			<img src="img/home.gif" alt="">
@@ -65,6 +76,16 @@
 		</td>
 		<td width="99%">
 			<a href="mailto:{$customerinfo.email}">{$customerinfo.email}</a>
+		</td>
+	</tr>
+{/if}
+{if $customerinfo.url neq ""}
+	<tr class="light">
+		<td width="1%">
+			<img src="img/Earth.png" alt="">
+		</td>
+		<td width="99%">
+			<a href="http://{$customerinfo.url}" target="_blank">{$customerinfo.url}</a>
 		</td>
 	</tr>
 {/if}

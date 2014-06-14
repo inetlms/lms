@@ -101,7 +101,11 @@ if (!get_conf('privileges.hide_callcenter'))
     $type = $_GET['type'];
     $SMARTY->assign('type',$type);
     $layout['pagetitle'] = 'Call Center';
-    if (isset($_GET['cid']) && !empty($_GET['cid'])) $layout['pagetitle'] .= ' - klient: <a href="?m=customerinfo&id='.$cid.'">'.$cusname.'</a>';
+    
+    if (isset($_GET['cid']) && !empty($_GET['cid'])) 
+	$layout['pagetitle'] .= ' - klient: <a href="?m=customerinfo&id='.$cid.'">'.$cusname.'</a>';
+    else
+	$layout['pagetitle'] .= ' - Proszę wybrać klienta żeby dodać nowe zdarzenie';
     $SMARTY->assign('customername',$cusname);
 
     $topiclist = $LMS->GetCustomerListInfoCenter($cid,$listdata['status'],$listdata['status2'],$dfrom,$dto,$listdata['order'].','.$listdata['direction']);

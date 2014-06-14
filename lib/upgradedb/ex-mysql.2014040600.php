@@ -25,11 +25,20 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("ALTER TABLE divisions ADD url varchar(255) DEFAULT NULL;");
-$DB->Execute("ALTER TABLE divisions ADD email varchar(255) DEFAULT NULL;");
-$DB->Execute("ALTER TABLE divisions ADD rpt varchar(20) DEFAULT NULL;");
-$DB->Execute("ALTER TABLE divisions ADD rjpt varchar(20) DEFAULT NULL;");
-$DB->Execute("ALTER TABLE divisions ADD rbe varchar(100) DEFAULT NULL;");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'divisions','url'))) 
+    $DB->Execute("ALTER TABLE divisions ADD url varchar(255) DEFAULT NULL;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'divisions','email'))) 
+    $DB->Execute("ALTER TABLE divisions ADD email varchar(255) DEFAULT NULL;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'divisions','rpt'))) 
+    $DB->Execute("ALTER TABLE divisions ADD rpt varchar(20) DEFAULT NULL;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'divisions','rjpt'))) 
+    $DB->Execute("ALTER TABLE divisions ADD rjpt varchar(20) DEFAULT NULL;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'divisions','rbe'))) 
+    $DB->Execute("ALTER TABLE divisions ADD rbe varchar(100) DEFAULT NULL;");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014040600', 'dbvex'));
 $DB->CommitTrans();

@@ -34,6 +34,21 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/06/14',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka błędu przy dodawaniu/edycji komputera jeżeli włączone jest wymuszone połączenie z interfejsem sieciowym, a w systemie nie zdefiniowano żadnego intefejsu sieciowego',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka dla ethercodes',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> 'update',
+	    'opis'	=> 'Naniesiono kilka poprawek odnośnie kontahentów',
+	),
+	array(
 	    'data'	=> '2014/05/21',
 	    'status'	=> '',
 	    'opis'	=> 'poprawka dla monitoringu',

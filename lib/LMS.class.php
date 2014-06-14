@@ -1570,19 +1570,38 @@ class LMS {
 
 //		if (SYSLOG) $diff['old'] = $this->getcontractor($customerdata['id']);
 
-		$res = $this->DB->Execute('UPDATE customers SET lastname=UPPER(?), name=?, address=?, zip=?, city=?, countryid=?, post_name=?, post_address=?, post_zip=?, post_city=?, 
+		$res = $this->DB->Execute('UPDATE customers SET lastname=?, name=?, address=?, zip=?, city=?, countryid=?, post_name=?, post_address=?, post_zip=?, post_city=?, 
 				post_countryid=?, email=?, account=?, ten=?, regon=?, rbe=?, pin=?, paytime=?, paytype=?, info=?, notes=?, moddate=?NOW?, modid=?, deleted=0,
-				consentdate=?, einvoice=?, invoicenotice=?, mailingnotice=? 
+				consentdate=?, einvoice=?, invoicenotice=?, mailingnotice=?, divisionid=?, url=? 
 				WHERE id=?', array(
-				$customerdata['lastname'], lms_ucwords($customerdata['name']), $customerdata['address'], $customerdata['zip'], $customerdata['city'],
-				$customerdata['countryid'], $customerdata['post_name'], $customerdata['post_address'], $customerdata['post_zip'], $customerdata['post_city'],
-				$customerdata['post_countryid'], $customerdata['email'], $customerdata['account'], $customerdata['ten'], $customerdata['regon'], $customerdata['rbe'],
-				$customerdata['pin'], $customerdata['paytime'], $customerdata['paytype'] ? $customerdata['paytype'] : null, $customerdata['info'],
-				$customerdata['notes'], isset($this->AUTH->id) ? $this->AUTH->id : 0, 
-				$customerdata['consentdate'],
-				$customerdata['einvoice'],
-				$customerdata['invoicenotice'],
-				$customerdata['mailingnotice'],
+				($customerdata['lastname'] ? $customerdata['lastname'] : ''),
+				($customerdata['name'] ? lms_ucwords($customerdata['name']) : ''),
+				($customerdata['address'] ? $customerdata['address'] : ''),
+				($customerdata['zip'] ? $customerdata['zip'] : ''),
+				($customerdata['city'] ? $customerdata['city'] : ''),
+				($customerdata['countryid'] ? $customerdata['countryid'] : NULL),
+				($customerdata['post_name'] ? $customerdata['post_name'] : NULL),
+				($customerdata['post_address'] ? $customerdata['post_address'] : NULL),
+				($customerdata['post_zip'] ? $customerdata['post_zip'] : NULL),
+				($customerdata['post_city'] ? $customerdata['post_city'] : NULL),
+				($customerdata['post_countryid'] ? $customerdata['post_countryid'] : NULL),
+				($customerdata['email'] ? $customerdata['email'] : ''),
+				($customerdata['account'] ? $customerdata['account'] : NULL),
+				($customerdata['ten'] ? $customerdata['ten'] : ''),
+				($customerdata['regon'] ? $customerdata['regon'] : ''),
+				($customerdata['rbe'] ? $customerdata['rbe'] : ''),
+				($customerdata['pin'] ? $customerdata['pin'] : ''),
+				($customerdata['paytime'] ? $customerdata['paytime'] : '-1'),
+				($customerdata['paytype'] ? $customerdata['paytype'] : NULL), 
+				($customerdata['info'] ? $customerdata['info'] : ''),
+				($customerdata['notes'] ? $customerdata['notes'] : ''),
+				(isset($this->AUTH->id) ? $this->AUTH->id : 0), 
+				($customerdata['consentdate'] ? $customerdata['consentdate'] : 0),
+				($customerdata['einvoice'] ? $customerdata['einvoice'] : NULL),
+				($customerdata['invoicenotice'] ? $customerdata['invoicenotice'] : NULL),
+				($customerdata['mailingnotice'] ? $customerdata['mailingnotice'] : NULL),
+				($customerdata['divisionid'] ? $customerdata['divisionid'] : 0),
+				($customerdata['url'] ? $customerdata['url'] : NULL),
 				$customerdata['id'] ));
 
 		if ($res) {
@@ -1599,22 +1618,61 @@ class LMS {
 		}
 		return $res;
 	}
-	
-	function ContractorAdd($customeradd) {
-	    $result = $this->DB->Execute('INSERT INTO customers (name, lastname, type, address, zip, city, countryid, email, ten, status, creationdate, post_name, post_address, post_zip, post_city, 
-					post_countryid, creatorid, info, notes, pin, regon, rbe, paytime, paytype, account, consentdate, einvoice, invoicenotice, mailingnotice) 
-					VALUES (?, UPPER(?), ?, ?, ?, ?, ?, ?, ?, ?, ?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-						array(lms_ucwords($customeradd['name']), $customeradd['lastname'], 2, $customeradd['address'], $customeradd['zip'], $customeradd['city'],
-						$customeradd['countryid'], $customeradd['email'], $customeradd['ten'], 3, $customeradd['post_name'], $customeradd['post_address'], 
-						$customeradd['post_zip'], $customeradd['post_city'], $customeradd['post_countryid'], $this->AUTH->id, $customeradd['info'], $customeradd['notes'], 
-						$customeradd['pin'], $customeradd['regon'], $customeradd['rbe'], $customeradd['paytime'],
-						!empty($customeradd['paytype']) ? $customeradd['paytype'] : NULL, $customeradd['account'],
-						$customeradd['consentdate'],
-						$customeradd['einvoice'],
-						$customeradd['invoicenotice'],
-						$customeradd['mailingnotice']
-				));
-		if ($result) {
+
+	function ContractorAdd($dane) {
+	    $result = $this->DB->Execute('INSERT INTO customers (lastname, name, status, type, email, address, zip, city, countryid, post_name, post_address, post_zip, post_city, 
+					post_countryid, ten, ssn, regon, rbe, icn, info, notes, creationdate, moddate, creatorid, modid, deleted, message, pin, cutoffstop, 
+					consentdate, einvoice, invoicenotice, mailingnotice, divisionid, paytime, paytype, invoice_name, invoice_address, invoice_zip, invoice_city,
+					invoice_countryid, invoice_ten, account, origin, url, ctying, dtying) 
+					VALUES 
+					(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;',
+					array(
+					    ($dane['lastname'] ? $dane['lastname'] : ''),
+					    ($dane['name'] ? $dane['name'] : ''),
+					    3,2,
+					    ($dane['email'] ? $dane['email'] : ''),
+					    ($dane['address'] ? $dane['address'] : ''),
+					    ($dane['zip'] ? $dane['zip'] : ''),
+					    ($dane['city'] ? $dane['city'] : ''),
+					    ($dane['countryid'] ? $dane['countryid'] : NULL),
+					    ($dane['post_name'] ? $dane['post_name'] : NULL),
+					    ($dane['post_address'] ? $dane['post_address'] : NULL),
+					    ($dane['post_zip'] ? $dane['post_zip'] : NULL),
+					    ($dane['post_city'] ? $dane['post_city'] : NULL),
+					    ($dane['post_countryid'] ? $dane['post_countryid'] : NULL),
+					    ($dane['ten'] ? $dane['ten'] : ''),
+					    ($dane['ssn'] ? $dane['ssn'] : ''),
+					    ($dane['regon'] ? $dane['regon'] : ''),
+					    ($dane['rbe'] ? $dane['rbe'] : ''),
+					    ($dane['icn'] ? $dane['icn'] : ''),
+					    ($dane['info'] ? $dane['info'] : ''),
+					    ($dane['notes'] ? $dane['notes'] : ''),
+					    time(),0,$this->AUTH->id,0,0,
+					    ($dane['message'] ? $dane['message'] : ''),
+					    ($dane['pin'] ? $dane['pin'] : 0),
+					    ($dane['cutoffstop'] ? $dane['cutoffstop'] : 0),
+					    ($dane['consentdate'] ? $dane['consentdate'] : 0),
+					    ($dane['einvoice'] ? $dane['einvoice'] : NULL),
+					    ($dane['invoicenotice'] ? $dane['invoicenotice'] : NULL),
+					    ($dane['mailingnotice'] ? $dane['mailingnotice'] : NULL),
+					    ($dane['divisionid'] ? $dane['divisionid'] : 0),
+					    ($dane['paytime'] ? $dane['paytime'] : '-1'),
+					    ($dane['paytype'] ? $dane['paytype'] : NULL),
+					    ($dane['invoice_name'] ? $dane['invoice_name'] : NULL),
+					    ($dane['invoice_address'] ? $dane['invoice_address'] : NULL),
+					    ($dane['invoice_zip'] ? $dane['invoice_zip'] : NULL),
+					    ($dane['invoice_city'] ? $dane['invoice_city'] : NULL),
+					    ($dane['invoice_countryid'] ? $dane['invoice_countryid'] : NULL),
+					    ($dane['invoice_ten'] ? $dane['invoice_ten'] : NULL),
+					    ($dane['account'] ? $dane['account'] : NULL),
+					    ($dane['origin'] ? $dane['origin'] : 0),
+					    ($dane['url'] ? $dane['url'] : NULL),
+					    ($dane['ctying'] ? $dane['ctying'] : 0),
+					    ($dane['dtying'] ? $dane['dtying'] : NULL)
+					)
+	    );
+	    
+	    if ($result) {
 			$this->UpdateCountryState($customeradd['zip'], $customeradd['stateid']);
 			if ($customeradd['post_zip'] != $customeradd['zip']) {
 				$this->UpdateCountryState($customeradd['post_zip'], $customeradd['post_stateid']);
@@ -1628,16 +1686,17 @@ class LMS {
 		} else
 			return FALSE;
 	}
-	 
+
+
 	 function GetContractor($id, $short = false) 
 	 {
 		global $CONTACTTYPES;
 
 		if ($result = $this->DB->GetRow('SELECT c.*, '
 				. $this->DB->Concat('UPPER(c.lastname)', "' '", 'c.name') . ' AS customername '
-//			. ', d.shortname AS division, d.account '
+			. ', d.shortname AS division '
 			.' FROM contractorview AS c '
-//			.' LEFT JOIN divisions d ON (d.id = c.divisionid) '
+			.' LEFT JOIN divisions d ON (d.id = c.divisionid) '
 			.' WHERE c.id = ?', array($id))) {
 			if (!$short) {
 				$result['createdby'] = $this->GetUserName($result['creatorid']);
@@ -1645,9 +1704,6 @@ class LMS {
 				$result['creationdateh'] = date('Y/m/d, H:i', $result['creationdate']);
 				$result['moddateh'] = date('Y/m/d, H:i', $result['moddate']);
 				$result['consentdate'] = $result['consentdate'] ? date('Y/m/d', $result['consentdate']) : '';
-//				$result['up_logins'] = $this->DB->GetRow('SELECT lastlogindate, lastloginip, 
-//					failedlogindate, failedloginip
-//					FROM up_customers WHERE customerid = ?', array($result['id']));
 
 				// Get country name
 				if ($result['countryid']) {
@@ -1657,10 +1713,6 @@ class LMS {
 					else if ($result['post_countryid'])
 						$result['post_country'] = $this->DB->GetOne('SELECT name FROM countries WHERE id = ?', array($result['post_countryid']));
 					
-//					if ($result['countryid'] == $result['invoice_countryid'])
-//						$result['invoice_country'] = $result['country'];
-//					else if ($result['invoice_countryid'])
-//						$result['invoice_country'] = $this->DB->GetOne('SELECT name FROM countries WHERE id = ?', array($result['invoice_countryid']));
 				}
 
 				// Get state name

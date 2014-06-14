@@ -23,7 +23,8 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("ALTER TABLE syslog ADD oid INT(11) DEFAULT NULL;");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'syslog','oid'))) 
+    $DB->Execute("ALTER TABLE syslog ADD oid INT(11) DEFAULT NULL;");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2012123100', 'dbvex'));
 
