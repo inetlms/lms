@@ -26,14 +26,29 @@
 $DB->BeginTrans();
 
 
-$DB->Execute('ALTER TABLE netdevices ADD devtype TINYINT( 1 ) NOT NULL DEFAULT 1 ;'); // 0-pasywne 1-aktywne
-$DB->Execute('ALTER TABLE netdevices ADD managed TINYINT(1) NOT NULL DEFAULT 1 ;'); // czy urządzenie jest zarządzalne
-$DB->Execute('ALTER TABLE netdevices ADD sharing TINYINT( 1 ) NOT NULL DEFAULT 0 ;'); // czy są udostępniane porty (interfejsy) dla innych ISP
-$DB->Execute('ALTER TABLE netdevices ADD modular TINYINT( 1 ) NOT NULL DEFAULT 0 ;'); // czy urz. ma budowę modułową, 
-$DB->Execute('ALTER TABLE netdevices ADD backbone_layer TINYINT( 1 ) NOT NULL DEFAULT 0 ;');	// warstwa szkieletowa
-$DB->Execute('ALTER TABLE netdevices ADD distribution_layer TINYINT( 1 ) NOT NULL DEFAULT 1 ;');	// warstwa dystrybucyjna
-$DB->Execute('ALTER TABLE netdevices ADD access_layer TINYINT( 1 ) NOT NULL DEFAULT 1 ;');	// warstwa dostępowa
-$DB->Execute('ALTER TABLE netdevices ADD typeofdevice INT UNSIGNED NOT NULL DEFAULT 0;');	// rodzaj urządzenia
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','devtype'))) 
+    $DB->Execute('ALTER TABLE netdevices ADD devtype TINYINT( 1 ) NOT NULL DEFAULT 1 ;'); // 0-pasywne 1-aktywne
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','managed'))) 
+    $DB->Execute('ALTER TABLE netdevices ADD managed TINYINT(1) NOT NULL DEFAULT 1 ;'); // czy urządzenie jest zarządzalne
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','sharing'))) 
+    $DB->Execute('ALTER TABLE netdevices ADD sharing TINYINT( 1 ) NOT NULL DEFAULT 0 ;'); // czy są udostępniane porty (interfejsy) dla innych ISP
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','modular'))) 
+    $DB->Execute('ALTER TABLE netdevices ADD modular TINYINT( 1 ) NOT NULL DEFAULT 0 ;'); // czy urz. ma budowę modułową, 
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','backbone_layer'))) 
+    $DB->Execute('ALTER TABLE netdevices ADD backbone_layer TINYINT( 1 ) NOT NULL DEFAULT 0 ;');	// warstwa szkieletowa
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','distribution_layer'))) 
+    $DB->Execute('ALTER TABLE netdevices ADD distribution_layer TINYINT( 1 ) NOT NULL DEFAULT 1 ;');	// warstwa dystrybucyjna
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','access_layer'))) 
+    $DB->Execute('ALTER TABLE netdevices ADD access_layer TINYINT( 1 ) NOT NULL DEFAULT 1 ;');	// warstwa dostępowa
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','typeofdevice'))) 
+    $DB->Execute('ALTER TABLE netdevices ADD typeofdevice INT UNSIGNED NOT NULL DEFAULT 0;');	// rodzaj urządzenia
 
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014043000', 'dbvex'));

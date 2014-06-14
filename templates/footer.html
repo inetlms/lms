@@ -2,7 +2,7 @@
 {if $layout.dberrors}
 	{include file="dberrors.html"}
 {/if}
-
+<p align="right"><img src="img/Top.png" alt="[ góra ]" title="[ do góry ]" style="border:0;cursor:pointer;" onclick="window.scroll(0,0);"></p>
 {if (get_conf('voip.enabled','0') && $layout.v_errors) || $layout.v_errors_connect}
 	{include file="v_errors.html"}
 {/if}

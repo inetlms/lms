@@ -25,19 +25,41 @@
 $DB->BeginTrans();
 //$DB->Execute("ALTER TABLE customers ADD origin INT (11) NOT NULL DEFAULT 0;");
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_name'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_name TEXT NOT NULL DEFAULT '';"); // pełna nazwa firmy
 
-$DB->Execute("ALTER TABLE documents ADD div_name TEXT NOT NULL DEFAULT '';"); // pełna nazwa firmy
-$DB->Execute("ALTER TABLE documents ADD div_address VARCHAR (255) NOT NULL DEFAULT '';"); // adres firmy
-$DB->Execute("ALTER TABLE documents ADD div_city VARCHAR (255) NOT NULL DEFAULT '';"); // miasto
-$DB->Execute("ALTER TABLE documents ADD div_zip VARCHAR (255) NOT NULL DEFAULT '';"); // kod pocztowy
-$DB->Execute("ALTER TABLE documents ADD div_countryid INT (11) NOT NULL DEFAULT 0;");
-$DB->Execute("ALTER TABLE documents ADD div_ten VARCHAR (255) NOT NULL DEFAULT '';"); // nip
-$DB->Execute("ALTER TABLE documents ADD div_regon VARCHAR (255) NOT NULL DEFAULT '';"); // regon
-$DB->Execute("ALTER TABLE documents ADD div_account VARCHAR (48) NOT NULL DEFAULT '';"); // nr konta bankowego
-$DB->Execute("ALTER TABLE documents ADD div_inv_header TEXT NOT NULL DEFAULT '';"); // nagłówek faktury
-$DB->Execute("ALTER TABLE documents ADD div_inv_footer TEXT NOT NULL DEFAULT '';"); // stopka faktury
-$DB->Execute("ALTER TABLE documents ADD div_inv_author TEXT NOT NULL DEFAULT '';"); // kto wystawił
-$DB->Execute("ALTER TABLE documents ADD div_inv_cplace TEXT NOT NULL DEFAULT '';"); // miejsce wystawienia
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_address'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_address VARCHAR (255) NOT NULL DEFAULT '';"); // adres firmy
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_city'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_city VARCHAR (255) NOT NULL DEFAULT '';"); // miasto
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_zip'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_zip VARCHAR (255) NOT NULL DEFAULT '';"); // kod pocztowy
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_countryid'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_countryid INT (11) NOT NULL DEFAULT 0;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_ten'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_ten VARCHAR (255) NOT NULL DEFAULT '';"); // nip
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_regon'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_regon VARCHAR (255) NOT NULL DEFAULT '';"); // regon
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_account'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_account VARCHAR (48) NOT NULL DEFAULT '';"); // nr konta bankowego
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_inv_header'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_inv_header TEXT NOT NULL DEFAULT '';"); // nagłówek faktury
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_inv_footer'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_inv_footer TEXT NOT NULL DEFAULT '';"); // stopka faktury
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_inv_author'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_inv_author TEXT NOT NULL DEFAULT '';"); // kto wystawił
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','div_inv_cplace'))) 
+    $DB->Execute("ALTER TABLE documents ADD div_inv_cplace TEXT NOT NULL DEFAULT '';"); // miejsce wystawienia
 
 $dl = $DB->GetAll('SELECT id, name, address, city, zip, countryid, ten, regon, 
 		account, inv_header, inv_footer, inv_author, inv_cplace 

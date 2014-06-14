@@ -170,14 +170,16 @@ if (isset($_POST['nodedata']))
 	else
 		$nodedata['netdev'] = 0;
 	
+	if ($nodedata['netdevices'] == '1') {
+	    
+	    if (get_conf('netdevices.force_connection') && !$nodedata['netdev']) {
+		$error['netdev'] = 'Proszę skonfigurować połączenie z interfejsem sieciowym';
+	    }
 	
-	if (get_conf('netdevices.force_connection') && !$nodedata['netdev']) {
-	    $error['netdev'] = 'Proszę skonfigurować połączenie z interfejsem sieciowym';
+	    if ((!empty($nodedata['netdev']) && empty($nodedata['linktechnology'])) || (get_conf('netdevices.force_connection') && empty($nodedata['linktechnology'])))
+		$error['linktechnology'] = 'Proszę wybrać technologię łącza';
 	}
 	
-	if ((!empty($nodedata['netdev']) && empty($nodedata['linktechnology'])) || (get_conf('netdevices.force_connection') && empty($nodedata['linktechnology'])))
-	    $error['linktechnology'] = 'Proszę wybrać technologię łącza';
-
 	if(!isset($nodedata['chkmac']))	$nodedata['chkmac'] = 0;
 	if(!isset($nodedata['halfduplex'])) $nodedata['halfduplex'] = 0;
 	

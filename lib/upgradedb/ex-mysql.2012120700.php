@@ -23,8 +23,11 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("ALTER TABLE documents ADD sale tinyint(1) DEFAULT 1 NOT NULL;");
-$DB->Execute("CREATE INDEX sale ON documents (sale);");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','sale'))) 
+{
+    $DB->Execute("ALTER TABLE documents ADD sale tinyint(1) DEFAULT 1 NOT NULL;");
+    $DB->Execute("CREATE INDEX sale ON documents (sale);");
+}
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2012120700', 'dbvex'));
 

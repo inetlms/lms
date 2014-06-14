@@ -23,7 +23,8 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("ALTER TABLE users ADD gadugadu varchar(20) DEFAULT NULL;");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'users','gadugadu'))) 
+    $DB->Execute("ALTER TABLE users ADD gadugadu varchar(20) DEFAULT NULL;");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2012120901', 'dbvex'));
 

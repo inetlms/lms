@@ -134,6 +134,14 @@
 			</select>
 		</td>
 	</tr>
+	    <input type="hidden" name="nodedata[netdevices]" value="1">
+	{else}
+	    <input type="hidden" name="nodedata[netdev]" value="">
+	    <input type="hidden" name="nodedata[port]" value="">
+	    <input type="hidden" name="nodedata[linktype]" value="">
+	    <input type="hidden" name="nodedata[linktechnology]" value="">
+	    <input type="hidden" name="nodedata[linkspeed]" value="">
+	    <input type="hidden" name="nodedata[netdevices]" value="0">
 	{/if}
 	<tr class="light">
 		<td style="width: 1%;">

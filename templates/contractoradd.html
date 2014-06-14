@@ -68,6 +68,20 @@
 				<tr class="light">
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
+	{if $divisions}
+		<tr>
+			<td width="1%">
+				<img src="img/division.gif" alt="">
+			</td>
+			<td width="99%">
+				<select size="1" name="contractordata[divisionid]" {tip text="Select division" trigger="divisionid"} style="min-width:300px;">
+					{foreach from=$divisions item=item}{if !$item.status}
+						<option value="{$item.id}"{if $contractorinfo.divisionid == $item.id} selected{/if}>{$item.shortname}</option>
+					{/if}{/foreach}
+				</select>
+			</td>
+		</tr>
+	{/if}
 	<tr class="light">
 		<td width="1%" style="vertical-align: top">
 			<img src="img/home.gif" alt="">
@@ -193,6 +207,14 @@
 		</td>
 		<td width="99%">
 			<input type="text" name="contractordata[email]" value="{$contractorinfo.email}" size="38" {tip text="Enter e-mail address (optional)" trigger="email" }><br>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%">
+			<img src="img/Earth.png" alt="">
+		</td>
+		<td width="99%">
+			<input type="text" name="contractordata[url]" value="{$contractorinfo.url}" size="38" {tip text="Wprowadź adres WWW (opcja)" }><br>
 		</td>
 	</tr>
 	<tr class="light">

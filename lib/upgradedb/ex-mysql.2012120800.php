@@ -25,7 +25,9 @@ $DB->BeginTrans();
 
 $DB->Execute("DROP VIEW IF EXISTS customersview");
 $DB->Execute("DROP VIEW IF EXISTS contractorview");
-$DB->Execute("ALTER TABLE customers ADD account varchar(48) DEFAULT NULL;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'customers','account'))) 
+    $DB->Execute("ALTER TABLE customers ADD account varchar(48) DEFAULT NULL;");
 
 $DB->Execute("CREATE VIEW customersview AS
 		SELECT c.* FROM customers c
