@@ -311,7 +311,7 @@ else
 		    $body .="Wiadomość została wygenerowana automatycznie, prosimy nie odpowiadać.\n";
 		    $head = array(
 			'From'	=> '"Automatyczny System Powiadomień" <'.$CONFIG['mail']['smtp_username'].'>',
-			'Subject' => "Przypomnienie ID i PIN",
+			'Subject' => $division." - przypomnienie ID i PIN",
 			'Reply-To' => 'No-Reply',
 			'To' => ''
 		    );
