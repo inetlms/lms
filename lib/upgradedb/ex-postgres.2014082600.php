@@ -22,14 +22,10 @@
  */
 
 
-
 $DB->BeginTrans();
-
 
 if (!$DB->GetOne("SELECT 1 FROM information_schema.columns WHERE table_name = ? AND column_name= ?;",array('info_center','audio_file')))
     $DB->Execute("ALTER TABLE info_center ADD audio_file TEXT DEFAULT NULL;");		// nazwa pliku audio mp3
-
-
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014082600', 'dbvex'));
 $DB->CommitTrans();
