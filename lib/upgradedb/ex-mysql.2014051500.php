@@ -1,9 +1,9 @@
 <?php
 
 /*
- * LMS version Expanded
+ *  iNET LMS
  *
- *  (C) Copyright 2012 LMS-EX Developers
+ *  (C) Copyright 2001-2012 LMS Developers
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License Version 2 as
@@ -21,16 +21,25 @@
  *
  */
 
+
+
 $DB->BeginTrans();
 
-if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','sale'))) 
-{
-    $DB->Execute("ALTER TABLE documents ADD sale tinyint(1) DEFAULT 1 NOT NULL;");
-    $DB->Execute("CREATE INDEX sale ON documents (sale);");
-}
 
-$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2012120700', 'dbvex'));
 
+$DB->Execute("DROP VIEW nas");
+
+
+$DB->Execute("
+CREATE VIEW nas AS 
+	SELECT n.id, n.netdev AS netdevid, n.name, inet_ntoa(n.ipaddr) AS nasname, d.shortname, d.nastype AS type,
+	d.clients AS ports, d.secret, d.server, d.community, d.coaport, d.description 
+	FROM nodes n 
+	JOIN netdevices d ON (n.netdev = d.id) 
+	WHERE n.nas = 1
+");
+
+$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014051500', 'dbvex'));
 $DB->CommitTrans();
 
 ?>

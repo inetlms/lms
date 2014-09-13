@@ -1,9 +1,9 @@
 <?php
 
 /*
- * LMS version Expanded
+ *  iNET LMS
  *
- *  (C) Copyright 2012 LMS-EX Developers
+ *  (C) Copyright 2001-2012 LMS Developers
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License Version 2 as
@@ -21,16 +21,26 @@
  *
  */
 
+
+
 $DB->BeginTrans();
 
-if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','sale'))) 
-{
-    $DB->Execute("ALTER TABLE documents ADD sale tinyint(1) DEFAULT 1 NOT NULL;");
-    $DB->Execute("CREATE INDEX sale ON documents (sale);");
-}
 
-$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2012120700', 'dbvex'));
+$DB->Execute("DROP VIEW IF EXISTS monit_vnodes;");
 
+
+$DB->Execute("
+ CREATE VIEW monit_vnodes AS SELECT 
+ m.id AS id, m.test_type, m.test_port, m.send_timeout, m.send_ptime, inet_ntoa(n.ipaddr) AS ipaddr, m.maxptime, m.pingtest, m.signaltest, mc.mac, 
+ COALESCE((SELECT 1 FROM nodes WHERE nodes.id = m.id AND nodes.netdev != 0),0) AS netdev, n.name 
+ FROM monitnodes m 
+ JOIN nodes n ON (n.id = m.id) 
+ JOIN macs mc ON (nodeid = m.id) 
+ WHERE m.active = 1 AND n.ipaddr !=0 AND disabled = 0;
+");
+
+
+$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014051700', 'dbvex'));
 $DB->CommitTrans();
 
 ?>

@@ -183,6 +183,7 @@ $SMARTY->assign('contractorinfo',$contractorinfo);
 $SMARTY->assign('cstateslist',$LMS->GetCountryStates());
 $SMARTY->assign('countrieslist',$LMS->GetCountries());
 $SMARTY->assign('recover',($action == 'recover' ? 1 : 0));
+$SMARTY->assign('divisions', $DB->GetAll('SELECT id, shortname, status FROM divisions ORDER BY shortname'));
 $SMARTY->display('contractoredit.html');
 
 ?>

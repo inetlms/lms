@@ -238,13 +238,16 @@ if (isset($_POST['nodeedit'])) {
 	}
 	
 	
-	if (get_conf('netdevices.force_connection') && !$nodeedit['netdev']) {
-	    $error['netdev'] = 'Proszę skonfigurować połączenie z interfejsem sieciowym';
+	if ($nodeedit['netdevices'] == '1') {
+	    
+	    if (get_conf('netdevices.force_connection') && !$nodeedit['netdev']) {
+		$error['netdev'] = 'Proszę skonfigurować połączenie z interfejsem sieciowym';
+	    }
+	
+	    if ((!empty($nodeedit['netdev']) && empty($nodeedit['linktechnology'])) || (get_conf('netdevices.force_connection') && empty($nodeedit['linktechnology'])))
+		$error['linktechnology'] = 'Proszę wybrać technologię łącza';
 	}
 	
-	if ((!empty($nodeedit['netdev']) && empty($nodeedit['linktechnology'])) || (get_conf('netdevices.force_connection') && empty($nodeedit['linktechnology'])))
-	    $error['linktechnology'] = 'Proszę wybrać technologię łącza';
-
 	if (!$nodeedit['ownerid'])
 		$error['ownerid'] = trans('Customer not selected!');
 	else if ($nodeedit['access'] && $LMS->GetCustomerStatus($nodeedit['ownerid']) < 3)

@@ -40,11 +40,14 @@ $DB->addconfig('hiperus_c5','lms_url','http://localhost/lms');
 $DB->addconfig('phpui','delete_link_in_customerbalancebox','0');
 $DB->addconfig('phpui','config_empty_value','0');
 
-$DB->Execute("ALTER TABLE users ADD modules TEXT DEFAULT NULL ;");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'users','modules'))) 
+    $DB->Execute("ALTER TABLE users ADD modules TEXT DEFAULT NULL ;");
 
-$DB->Execute("ALTER TABLE tariffs ADD active TINYINT( 1 ) NOT NULL DEFAULT '1' ;");
-
-$DB->Execute("ALTER TABLE tariffs ADD INDEX (active) ;");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'tariffs','active'))) 
+{
+    $DB->Execute("ALTER TABLE tariffs ADD active TINYINT( 1 ) NOT NULL DEFAULT '1' ;");
+    $DB->Execute("ALTER TABLE tariffs ADD INDEX (active) ;");
+}
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2012122901', 'dbvex'));
 
