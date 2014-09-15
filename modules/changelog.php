@@ -33,6 +33,17 @@ $changelog = array(
 	),
 	
 */
+
+	 array(
+            'data'      => '2014/09/15',
+            'status'    => '',
+            'opis'      => 'w /contrib/bin dodano parser dla formatu 123elixir banku BZWBK',
+
+       array(
+            'data'      => '2014/09/15',
+            'status'    => '',
+            'opis'      => 'dodano sortowanie w Sieci IP',
+
 	array(
 	    'data'	=> '2014/06/14',
 	    'status'	=> '',
