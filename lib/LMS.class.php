@@ -4022,8 +4022,42 @@ class LMS {
 			FROM networks WHERE id = ?', array($id));
 	}
 
-	function GetNetworkList($status = NULL, $hostid = NULL) 
-	{
+	function GetNetworkList($status = NULL, $hostid = NULL, $order='id,asc') 
+	{ if($order=='')
+		$order='id,asc';
+		list($order,$direction) = sscanf($order, '%[^,],%s');
+		($direction=='desc') ? $direction = 'desc' : $direction = 'asc';
+                       switch($order)
+                        {
+                        case 'name':
+                        $sqlord = ' ORDER BY n.name';
+                        break;
+                        case 'id':
+                        $sqlord = ' ORDER BY n.id';
+                        break;
+                        case 'address':
+                        $sqlord = ' ORDER BY n.address';
+                        break;
+                        case 'mask':
+                        $sqlord = ' ORDER BY n.mask';
+                        break;
+                        case 'interface':
+                        $sqlord = ' ORDER BY n.interface';
+                        break;
+                        case 'host':
+                        $sqlord = ' ORDER BY hostname';
+                        break;
+                        case 'size':
+                        $sqlord = ' ORDER BY size';
+                        break;
+                        case 'assigned':
+                        $sqlord = ' ORDER BY assigned';
+                        break;
+                        case 'online':
+                        $sqlord = ' ORDER BY online';
+                        break;
+                        }
+
 		if ($networks = $this->DB->GetAll('SELECT n.id, n.name, h.name AS hostname, inet_ntoa(address) AS address, 
 				address AS addresslong, mask, interface, gateway, dns, dns2, 
 				domain, wins, dhcpstart, dhcpend,
@@ -4048,7 +4082,7 @@ class LMS {
 				.($status == '1' ? ' AND disabled=1' : '')
 				.($status == '0' ? ' AND disabled=0' : '')
 				.($hostid ? ' AND hostid = '.intval($hostid) : '')
-				.' ORDER BY name', array(intval($this->CONFIG['phpui']['lastonline_limit'])))) {
+				.($sqlord != '' ? $sqlord.' '.$direction : ''), array(intval($this->CONFIG['phpui']['lastonline_limit'])))) {
 			$size = 0;
 			$assigned = 0;
 			$online = 0;
@@ -4062,6 +4096,8 @@ class LMS {
 			$networks['size'] = $size;
 			$networks['assigned'] = $assigned;
 			$networks['online'] = $online;
+			$networks['order'] = $order;
+			$networks['direction'] = $direction;
 		}
 		return $networks;
 	}

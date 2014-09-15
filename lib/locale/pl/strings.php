@@ -2703,5 +2703,8 @@ $_LANG['No such SIP matching search criteria.'] = 'Brak kont SIP spełniających
 $_LANG['Are you sure, you want to delete SIP \\\'$0\\\' from database?'] = 'Jesteś pewien, że chcesz usunąć konto SIP \\\'$0\\\' z bazy danych?';
 $_LANG['Disk usage'] = 'Użycie przestrzeni dyskowej';
 $_LANG['current:'] = 'aktualnie:';
+$_LANG['total'] = 'wszystkie';
+$_LANG['busy'] = 'zajęte';
+$_LANG['on-line'] = 'włączone';
 
 ?>

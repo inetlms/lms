@@ -35,23 +35,38 @@ $SESSION->save('netlist_s', $s);
 
 // hostid
 if(!isset($_GET['h']))
-	$SESSION->restore('netlist_h', $h);
+        $SESSION->restore('netlist_h', $h);
 else
-	$h = $_GET['h'];
+        $h = $_GET['h'];
 $SESSION->save('netlist_h', $h);
+
+//sort
+if (isset($_GET['o']))
+$netlist = $LMS->GetNetworkList($_GET['o']);
+else
+        $o = $_GET['o'];
+$SESSION->save('netlist_o', $o);
 
 $listdata['state'] = $s;
 $listdata['hostid'] = $h;
+$listdata['order'] = $o;
 
-$netlist = $LMS->GetNetworkList($s,$h);
+$netlist = $LMS->GetNetworkList($s,$h,$o);
+
+
+
 
 $listdata['size'] = $netlist['size'];
 $listdata['assigned'] = $netlist['assigned'];
 $listdata['online'] = $netlist['online'];
+$listdata['order'] = $netlist['order'];
+$listdata['direction'] = $netlist['direction'];
 
 unset($netlist['assigned']);
 unset($netlist['size']);
 unset($netlist['online']);
+unset($netlist['order']);
+unset($netlist['direction']);
 $listdata['total'] = sizeof($netlist);
 
 $SMARTY->assign('listdata',$listdata);
