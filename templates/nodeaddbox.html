@@ -46,7 +46,7 @@
 			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}">
 		</td>
 		<td style="width: 99%;">
-			<input type="text" name="nodedataipaddr_pub" value="{$nodedata.ipaddr_pub}" {tip text="Enter IP address (optional)" trigger="ipaddr_pub"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.nodeadd.nodedataipaddr_pub, document.editnode.nodeeditnetid);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
+			<input type="text" name="nodedataipaddr_pub" value="{$nodedata.ipaddr_pub}" {tip text="Enter IP address (optional)" trigger="ipaddr_pub"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.nodeadd.nodedataipaddr_pub, document.nodeadd.nodedatanetid);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
 	{/if}
