@@ -2706,5 +2706,5 @@ $_LANG['current:'] = 'aktualnie:';
 $_LANG['total'] = 'wszystkie';
 $_LANG['busy'] = 'zajęte';
 $_LANG['on-line'] = 'włączone';
-
+$_LANG['no nodeassignments'] = "bez powiązania"
 ?>
