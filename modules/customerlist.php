@@ -108,6 +108,12 @@ else
     $osp = $_GET['osp'];
 $SESSION->save('closp',$osp);
 
+if (!isset($_GET['block']))
+    $SESSION->restore('clblock',$block);
+else
+    $block = $_GET['block'];
+$SESSION->save('clblock',$block);
+
 		
 if (! isset($_GET['page']))
 	$SESSION->restore('clp', $_GET['page']);
@@ -122,7 +128,7 @@ if (!empty($ce)) {
     else $cetmp = NULL;
     
 	    
-$customerlist = $LMS->GetCustomerList($o, $s, $n, $g, NULL, NULL, 'AND', $ng, $d, $fletter, $st, $cetmp, $odl, $warn, $or, $osp);
+$customerlist = $LMS->GetCustomerList($o, $s, $n, $g, NULL, NULL, 'AND', $ng, $d, $fletter, $st, $cetmp, $odl, $warn, $or, $osp, $block);
 
 $listdata['total'] = $customerlist['total'];
 $listdata['order'] = $customerlist['order'];
@@ -141,6 +147,7 @@ $listdata['contractend'] = $ce;
 $listdata['odlaczeni'] = $odl;
 $listdata['warning'] = $warn;
 $listdata['osp'] = $osp;
+$listdata['block'] = $block;
 
 $page = (! $_GET['page'] ? 1 : $_GET['page']); 
 $pagelimit = (!$CONFIG['phpui']['customerlist_pagelimit'] ? $listdata['total'] : $CONFIG['phpui']['customerlist_pagelimit']);

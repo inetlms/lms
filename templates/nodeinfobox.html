@@ -456,7 +456,18 @@
 	    </td>
 	</tr>
 {/if}
-
+	<tr class="light">
+		<td style="width: 1%;">
+			<a href="?m=nodeblockade&id={$nodeinfo.id}"><img src="img/padlock{if !$nodeinfo.blockade}off{/if}.png" alt=""></a>
+		</td>
+		<td style="width:1%">
+		    <b>Blokada</b>
+		</td>
+		<td style="width: 98%;">
+			{if $nodeinfo.blockade}włączona{else}wyłączona{/if}
+		</td>
+	</tr>
+	
 	<tr class="light">
 		<td style="width: 1%;">
 			<a href="?m=nodewarn&id={$nodeinfo.id}"><img src="img/warning{if ! $nodeinfo.warning}off{else}on{/if}.gif" alt=""></a>

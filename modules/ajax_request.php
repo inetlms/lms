@@ -100,8 +100,22 @@ switch ($action)
 					$result = FALSE;
 				}
 	break;
-    
-    case 'balance_ok' :
+
+	case 'node_blockade' :
+				if ($idc) {
+				    if ($DB->Execute('UPDATE nodes SET blockade = ? WHERE ownerid = ? ;',array(intval($_POST['blockade']),$idc)))
+					$result = TRUE;
+				    else
+					$result = FALSE;
+				} elseif ($id) {
+				    if ($DB->Execute('UPDATE nodes SET blockade = ? WHERE id = ? ;',array(intval($_POST['blockade']),$id)))
+					$result = TRUE;
+				    else
+					$result = FALSE;
+				}
+	break;
+
+	case 'balance_ok' :
 			if ($DB->GetOne('SELECT 1 FROM customers WHERE deleted = 0 AND id = ? LIMIT 1;',array($idc)))
 			{
 			    $balance = $LMS->GetCustomerBalance($idc);
@@ -123,8 +137,8 @@ switch ($action)
 			    $result = true;
 			}
 			else $result = false;
-    break;
-    
+	break;
+
 
 }
 

@@ -892,7 +892,7 @@ class LMS {
 	}
 
 
-	function GetCustomerList($order = 'customername,asc', $state = NULL, $network = NULL, $customergroup = NULL, $search = NULL, $time = NULL, $sqlskey = 'AND', $nodegroup = NULL, $division = NULL, $firstletter = NULL, $status = NULL, $contractend = NULL, $odlaczeni = NULL, $warn = NULL, $origin = NULL, $osobowosc = NULL) {
+	function GetCustomerList($order = 'customername,asc', $state = NULL, $network = NULL, $customergroup = NULL, $search = NULL, $time = NULL, $sqlskey = 'AND', $nodegroup = NULL, $division = NULL, $firstletter = NULL, $status = NULL, $contractend = NULL, $odlaczeni = NULL, $warn = NULL, $origin = NULL, $osobowosc = NULL, $nodeblock = NULL) {
 		list($order, $direction) = sscanf($order, '%[^,],%s');
 
 		($direction != 'desc') ? $direction = 'asc' : $direction = 'desc';
@@ -981,6 +981,13 @@ class LMS {
 			case 2 : $warning = 2; break;
 			case 3 : $warning = 3; break;
 			default: $warning = NULL; break;
+		}
+		
+		switch ($nodeblock) {
+			case 1 : $blockade = 1; break;
+			case 2 : $blockade = 2; break;
+			case 3 : $blockade = 3; break;
+			default: $blockade = NULL; break;
 		}
 		
 
@@ -1100,13 +1107,12 @@ class LMS {
 				'SELECT c.id AS id, ' . $this->DB->Concat('UPPER(lastname)', "' '", 'c.name') . ' AS customername, 
 				status, address, zip, city, countryid, countries.name AS country, email, ten, ssn, c.info AS info, 
 				message, c.divisionid, c.paytime AS paytime, COALESCE(b.value, 0) AS balance,
-				COALESCE(t.value, 0) AS tariffvalue, s.account, s.warncount, s.online,
+				COALESCE(t.value, 0) AS tariffvalue, s.account, s.warncount, s.online, s.blockcount,
 				c.type AS customertype, cutoffstop, 
 				(SELECT max(cash.time) FROM cash WHERE cash.customerid = c.id) AS lastcash,
-				(CASE WHEN s.account = s.acsum THEN 1
-					WHEN s.acsum > 0 THEN 2	ELSE 0 END) AS nodeac,
-				(CASE WHEN s.warncount = s.warnsum THEN 1
-					WHEN s.warnsum > 0 THEN 2 ELSE 0 END) AS nodewarn
+				(CASE WHEN s.account = s.acsum THEN 1 WHEN s.acsum > 0 THEN 2	ELSE 0 END) AS nodeac,
+				(CASE WHEN s.warncount = s.warnsum THEN 1 WHEN s.warnsum > 0 THEN 2 ELSE 0 END) AS nodewarn,
+				(CASE WHEN s.blockcount = s.blocksum THEN 1 WHEN s.blocksum > 0 THEN 2 ELSE 0 END) as nodeblock 
 				FROM customersview c
 				LEFT JOIN countries ON (c.countryid = countries.id) '
 				. ($customergroup ? 'LEFT JOIN customerassignments ON (c.id = customerassignments.customerid) ' : '')
@@ -1143,6 +1149,7 @@ class LMS {
 				LEFT JOIN (SELECT ownerid,
 					SUM(access) AS acsum, COUNT(access) AS account,
 					SUM(warning) AS warnsum, COUNT(warning) AS warncount, 
+					SUM(blockade) AS blocksum, COUNT(blockade) AS blockcount,
 					(CASE WHEN MAX(lastonline) > ?NOW? - ' . intval($this->CONFIG['phpui']['lastonline_limit']) . '
 						THEN 1 ELSE 0 END) AS online
 					FROM nodes
@@ -1166,6 +1173,9 @@ class LMS {
 				. ($warn && $warning == 1 ? ' AND s.ownerid IS NOT NULL AND s.warnsum = 0 ' : '')
 				. ($warn && $warning == 2 ? ' AND s.ownerid IS NOT NULL AND s.warncount = s.warnsum' : '')
 				. ($warn && $warning == 3 ? ' AND s.ownerid IS NOT NULL AND s.warncount > s.warnsum AND s.warnsum != 0' : '')
+				. ($nodeblock && $blockade == 1 ? ' AND s.ownerid IS NOT NULL AND s.blockcount = s.blocksum ' : '')
+				. ($nodeblock && $blockade == 2 ? ' AND s.ownerid IS NOT NULL AND s.blocksum = 0 ' : '')
+				. ($nodeblock && $blockade == 3 ? ' AND s.ownerid IS NOT NULL AND s.blockcount > s.blocksum AND blocksum != 0 ' : '')
 				. ($osobowosc && $osobowosc == 1 ? ' AND c.type=0 ' : '')
 				. ($osobowosc && $osobowosc == 2 ? ' AND c.type=1 ' : '')
 				. ($odlaczeni && $disabled == 4 ? ' AND s.ownerid IS NULL' : '')
@@ -1220,7 +1230,7 @@ class LMS {
 				inet_ntoa(n.ipaddr) AS ip, n.ipaddr_pub,
 				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.passwd, n.access, n.netdev ,
 				nd.id AS devid, nd.name AS devname, nd.location AS devlocation, 
-				n.warning, n.info, n.ownerid, n.lastonline, n.location, 
+				n.warning, n.info, n.ownerid, n.lastonline, n.location, n.blockade, 
 				(SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active=1) AS monitoring, 
 				(SELECT COUNT(*) FROM nodegroupassignments WHERE nodeid = n.id) AS gcount 
 				FROM vnodes n 
@@ -2083,7 +2093,7 @@ class LMS {
 				modid=?, access=?, warning=?, ownerid=?, info=?, location=?,
 				location_city=?, location_street=?, location_house=?, location_flat=?,
 				chkmac=?, halfduplex=?, linktype=?, linkspeed=?, port=?, nas=?,
-				longitude=?, latitude=?, netid=?, linktechnology=?, access_from=?, access_to=?, typeofdevice=?, producer=?, model=?, sn=? 
+				longitude=?, latitude=?, netid=?, linktechnology=?, access_from=?, access_to=?, typeofdevice=?, producer=?, model=?, sn=?, blockade=? 
 				WHERE id=?', array($nodedata['name'],
 				$nodedata['ipaddr_pub'],
 				$nodedata['ipaddr'],
@@ -2115,6 +2125,7 @@ class LMS {
 				($nodedata['producer'] ? $nodedata['producer'] : NULL),
 				($nodedata['model'] ? $nodedata['model'] : NULL),
 				($nodedata['sn'] ? $nodedata['sn'] : NULL),
+				($nodedata['blockade'] ? 1 : 0),
 				$nodedata['id']
 		)	);
 		
@@ -2365,7 +2376,7 @@ class LMS {
 			$net = $this->GetNetworkParams($network);
 
 		if ($nodelist = $this->DB->GetAll('SELECT n.id AS id, n.ipaddr, inet_ntoa(n.ipaddr) AS ip, n.ipaddr_pub,
-				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.mac, n.name, n.ownerid, n.access, n.warning,
+				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.mac, n.name, n.ownerid, n.access, n.warning, n.blockade, 
 				n.linktype, n.linkspeed, n.linktechnology,
 				n.netdev, n.lastonline, n.info, (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id LIMIT 1) AS monitoring, '
 				. $this->DB->Concat('c.lastname', "' '", 'c.name') . ' AS owner '
@@ -2461,6 +2472,72 @@ class LMS {
 			return $this->DB->Execute('UPDATE nodes SET access=0 WHERE ownerid=?', array($id));
 		}
 	}
+	
+	
+	function NodeBlockade($id, $access = -1) {
+		if ($access != -1) {
+			if ($access)
+			{
+				$return = $this->DB->Execute('UPDATE nodes SET blockade = 1 WHERE id = ?
+					AND EXISTS (SELECT 1 FROM customers WHERE id = ownerid 
+						AND status = 3)', array($id));
+				if (SYSLOG && $return) 
+				{
+				    $tmp = $this->DB->GetRow('SELECT name, ownerid FROM nodes WHERE id=? LIMIT 1;',array($id));
+				    addlogs('włączono blokadę, komputer: '.$tmp['name'].', klient: '.$this->getcustomername($tmp['ownerid']),'e=acl;m=node;n='.$id.';c='.$tmp['ownerid'].';');
+				    unset($tmp);
+				}
+				return $return;
+			}
+			else
+			{
+				$return = $this->DB->Execute('UPDATE nodes SET blockade = 0 WHERE id = ?', array($id));
+				if (SYSLOG && $return)
+				{
+				    $tmp = $this->DB->GetRow('SELECT name, ownerid FROM nodes WHERE id=? LIMIT 1;',array($id));
+				    addlogs('wyłączono blokadę, komputer: '.$tmp['name'].', klient: '.$this->getcustomername($tmp['ownerid']),'e=acl;m=node;n='.$id.';c='.$tmp['ownerid'].';');
+				}
+				return $return;
+			}
+		}
+		elseif ($this->DB->GetOne('SELECT blockade FROM nodes WHERE id = ?', array($id)) == 1) {
+		
+			$return = $this->DB->Execute('UPDATE nodes SET blockade = 0 WHERE id = ?', array($id));
+			if (SYSLOG && $return)
+			{
+			    $tmp = $this->DB->GetRow('SELECT name, ownerid FROM nodes WHERE id=? LIMIT 1;',array($id));
+			    addlogs('wyłączono blokadę, komputer: '.$tmp['name'].', klient: '.$this->getcustomername($tmp['ownerid']),'e=acl;m=node;n='.$id.';c='.$tmp['ownerid'].';');
+			}
+			return $return;
+		}
+		else {
+			$return = $this->DB->Execute('UPDATE nodes SET blockade = 1 WHERE id = ?
+					AND EXISTS (SELECT 1 FROM customers WHERE id = ownerid 
+						AND status = 3)', array($id));
+			if (SYSLOG && $return)
+			{
+			    $tmp = $this->DB->GetRow('SELECT name, ownerid FROM nodes WHERE id=? LIMIT 1;',array($id));
+			    addlogs('włączono blokadę, komputer: '.$tmp['name'].', klient: '.$this->getcustomername($tmp['ownerid']),'e=acl;m=node;n='.$id.';c='.$tmp['ownerid'].';');
+			}
+			return $return;
+		}
+	}
+
+	function NodeBlockadeU($id, $access = FALSE) {
+		
+		if (SYSLOG) $cusname = $this->getcustomername($id);
+		if ($access) {
+			if ($this->DB->GetOne('SELECT status FROM customers WHERE id = ?', array($id)) == 3) {
+				if (SYSLOG) addlogs('włączono blokadę komputerów klienta: '.$cusname,'e=acl;m=node;c='.$id);
+				return $this->DB->Execute('UPDATE nodes SET blockade=1 WHERE ownerid=?', array($id));
+			}
+		} else {
+			if (SYSLOG) addlogs('wyłączono blokadę komputerów klienta: '.$cusname,'e=acl;m=node;c='.$id);
+			return $this->DB->Execute('UPDATE nodes SET blockade=0 WHERE ownerid=?', array($id));
+		}
+	}
+	
+	
 
 	function NodeSetWarn($id, $warning = FALSE) {
 		
@@ -2536,9 +2613,9 @@ class LMS {
 			passwd, creatorid, creationdate, access, warning, info, netdev,
 			location, location_city, location_street, location_house, location_flat,
 			linktype, linkspeed, port, chkmac, halfduplex, nas, longitude, latitude, netid, linktechnology, 
-			access_from, access_to, typeofdevice, producer, model, sn)
+			access_from, access_to, typeofdevice, producer, model, sn, blockade)
 			VALUES (?, inet_aton(?), inet_aton(?), ?, ?, ?,
-			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($nodedata['name']),
+			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($nodedata['name']),
 						$nodedata['ipaddr'],
 						$nodedata['ipaddr_pub'],
 						$nodedata['ownerid'],
@@ -2569,6 +2646,7 @@ class LMS {
 						($nodedata['producer'] ? $nodedata['producer'] : NULL),
 						($nodedata['model'] ? $nodedata['model'] : NULL),
 						($nodedata['sn'] ? $nodedata['sn'] : NULL),
+						($nodedata['blockade'] ? 1 : 0),
 				))) 
 			{
 			    
@@ -3467,8 +3545,8 @@ class LMS {
 				burst_limit_dn, burst_threshold_dn, burst_time_dn,
 				burst_limit_up_n, burst_threshold_up_n, burst_time_up_n,
 				burst_limit_dn_n, burst_threshold_dn_n, burst_time_dn_n,
-				start_night_h, start_night_m, stop_night_h, stop_night_m)
-				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+				start_night_h, start_night_m, stop_night_h, stop_night_m, relief)
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
 				array(
 				$tariff['name'],
 				($tariff['description'] ? $tariff['description'] : ''),
@@ -3519,6 +3597,7 @@ class LMS {
 				($tariff['start_night_m'] ? $tariff['start_night_m'] : 0),
 				($tariff['stop_night_h'] ? $tariff['stop_night_h'] : 0),
 				($tariff['stop_night_m'] ? $tariff['stop_night_m'] : 0),
+				($tariff['relief'] ? $tariff['relief'] : '0.00'),
 				));
 		if ($result)
 		{
@@ -3546,7 +3625,7 @@ class LMS {
 				burst_limit_dn=?, burst_threshold_dn=?, burst_time_dn=?,
 				burst_limit_up_n=?, burst_threshold_up_n=?, burst_time_up_n=?,
 				burst_limit_dn_n=?, burst_threshold_dn_n=?, burst_time_dn_n=?,
-				start_night_h=?, start_night_m=?, stop_night_h=?, stop_night_m=? 
+				start_night_h=?, start_night_m=?, stop_night_h=?, stop_night_m=?, relief=? 
 				WHERE id=?', array(
 					$tariff['name'],
 					($tariff['description'] ? $tariff['description'] : ''),
@@ -3597,6 +3676,7 @@ class LMS {
 					($tariff['start_night_m'] ? $tariff['start_night_m'] : 0), 
 					($tariff['stop_night_h'] ? $tariff['stop_night_h'] : 0),
 					($tariff['stop_night_m'] ? $tariff['stop_night_m'] : 0),
+					($tariff['relief'] ? $tariff['relief'] : '0.00'),
 					$tariff['id']
 				));
 	}
@@ -3700,7 +3780,7 @@ class LMS {
 	function GetTariffs() {
 		return $this->DB->GetAll('SELECT t.id, t.name, t.value, uprate, taxid, prodid,
 				downrate, upceil, downceil, climit, plimit, taxes.value AS taxvalue,
-				taxes.label AS tax, t.period
+				taxes.label AS tax, t.period, t.relief 
 				FROM tariffs t
 				LEFT JOIN taxes ON t.taxid = taxes.id 
 				WHERE t.active = 1 
@@ -3970,8 +4050,8 @@ class LMS {
 			$netadd['mask'] = prefix2mask($netadd['prefix']);
 
 		if ($this->DB->Execute('INSERT INTO networks (name, address, mask, interface, gateway, 
-				dns, dns2, domain, wins, dhcpstart, dhcpend, notes, hostid) 
-				VALUES (?, inet_aton(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($netadd['name']),
+				dns, dns2, domain, wins, dhcpstart, dhcpend, notes, hostid, ipnat) 
+				VALUES (?, inet_aton(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($netadd['name']),
 						$netadd['address'],
 						$netadd['mask'],
 						strtolower($netadd['interface']),
@@ -3984,6 +4064,7 @@ class LMS {
 						$netadd['dhcpend'],
 						$netadd['notes'],
 						($netadd['hostid'] ? $netadd['hostid'] : NULL),
+						($netadd['ipnat'] ? $netadd['ipnat'] : ''),
 				)))
 			return $this->DB->GetOne('SELECT id FROM networks WHERE address = inet_aton(?)', array($netadd['address']));
 		else
@@ -4060,7 +4141,7 @@ class LMS {
 
 		if ($networks = $this->DB->GetAll('SELECT n.id, n.name, h.name AS hostname, inet_ntoa(address) AS address, 
 				address AS addresslong, mask, interface, gateway, dns, dns2, 
-				domain, wins, dhcpstart, dhcpend,
+				domain, wins, dhcpstart, dhcpend, ipnat,
 				mask2prefix(inet_aton(mask)) AS prefix,
 				broadcast(address, inet_aton(mask)) AS broadcastlong,
 				inet_ntoa(broadcast(address, inet_aton(mask))) AS broadcast,
@@ -4139,7 +4220,7 @@ class LMS {
 	function NetworkUpdate($networkdata) {
 		return $this->DB->Execute('UPDATE networks SET name=?, address=inet_aton(?), 
 			mask=?, interface=?, gateway=?, dns=?, dns2=?, domain=?, wins=?, 
-			dhcpstart=?, dhcpend=?, notes=?, hostid=? WHERE id=?', array(strtoupper($networkdata['name']),
+			dhcpstart=?, dhcpend=?, notes=?, hostid=?, ipnat=? WHERE id=?', array(strtoupper($networkdata['name']),
 						$networkdata['address'],
 						$networkdata['mask'],
 						strtolower($networkdata['interface']),
@@ -4152,6 +4233,7 @@ class LMS {
 						$networkdata['dhcpend'],
 						$networkdata['notes'],
 						($networkdata['hostid'] ? $networkdata['hostid'] : NULL),
+						($networkdata['ipnat'] ? $networkdata['ipnat'] : ''),
 						$networkdata['id'],
 				));
 	}
@@ -4238,7 +4320,7 @@ class LMS {
 	function GetNetworkRecord($id, $page = 0, $plimit = 4294967296, $firstfree = false) {
 		$network = $this->DB->GetRow('SELECT id, name, inet_ntoa(address) AS address, 
 				address AS addresslong, mask, interface, gateway, dns, dns2, 
-				domain, wins, dhcpstart, dhcpend, hostid,
+				domain, wins, dhcpstart, dhcpend, hostid, ipnat,
 				mask2prefix(inet_aton(mask)) AS prefix,
 				inet_ntoa(broadcast(address, inet_aton(mask))) AS broadcast, 
 				notes 

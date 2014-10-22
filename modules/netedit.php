@@ -131,6 +131,9 @@ if(isset($_POST['networkdata']))
 
 	if($networkdata['wins']!='' && !check_ip($networkdata['wins']))
 		$error['wins'] =  trans('Incorrect WINS server IP address!');
+	
+	if ($networkdata['ipnat'] != '' && !check_ip($networkdata['ipnat']))
+		$error['ipnat'] = 'Błędnie podany adres IP';
 
 	if($networkdata['gateway']!='') {
 		if(!check_ip($networkdata['gateway']))
@@ -186,6 +189,7 @@ if(isset($_POST['networkdata']))
 	$network['dns2'] = $networkdata['dns2'];
 	$network['notes'] = $networkdata['notes'];
 	$network['hostid'] = $networkdata['hostid'];
+	$network['ipnat'] = $networkdata['ipnat'];
 }
 
 $networks = $LMS->GetNetworks();
