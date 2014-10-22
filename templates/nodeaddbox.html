@@ -253,7 +253,7 @@
 		    <b>Status</b>
 		</td>
 		<td style="width: 98%;">
-			<select size="1" name="nodedata[access]" {tip text="Select node status" trigger="access"} style="width:150px;">
+			<select name="nodedata[access]" {tip text="Select node status" trigger="access"} style="width:150px;">
 				<option value="1"{if $nodedata.access} selected{/if}>{trans("connected<!singular>")}</option>
 				<option value="0"{if ! $nodedata.access} selected{/if}>{trans("disconnected<!singular>")}</option>
 			</select>
@@ -273,15 +273,29 @@
 	</tr>
 	<tr class="light">
 		<td style="width: 1%;">
-			<img src="img/warning{if !$nodedata.warning}off{else}on{/if}.gif" alt="">
+			<img src="img/padlock.png" alt="">
+		</td>
+		<td style="width:1%">
+		    <b>Blokada</b>
+		</td>
+		<td style="width: 98%;">
+			<select name="nodedata[blockade]" {tip text="Ustaw blokadę urządzenia"} style="width:150px;">
+				<option value="1"{if $nodedata.blockade} selected{/if}>włączona</option>
+				<option value="0"{if ! $nodedata.blockade} selected{/if}>wyłączona</option>
+			</select>
+		</td>
+	</tr>
+	<tr class="light">
+		<td style="width: 1%;">
+			<img src="img/warningon.gif" alt="">
 		</td>
 		<td style="width:1%">
 		    <b>Powiadomienie</b>
 		</td>
 		<td style="width: 98%;">
-			<select size="1" name="nodedata[warning]" {tip text="Set notice for node"} style="width:150px;">
-				<option value="1"{if $nodedata.warning} selected{/if}>{trans("enabled")}</option>
-				<option value="0"{if ! $nodedata.warning} selected{/if}>{trans("disabled")}</option>
+			<select name="nodedata[warning]" {tip text="Set notice for node"} style="width:150px;">
+				<option value="1"{if $nodedata.warning} selected{/if}>włączone</option>
+				<option value="0"{if ! $nodedata.warning} selected{/if}>wyłączone</option>
 			</select>
 		</td>
 	</tr>

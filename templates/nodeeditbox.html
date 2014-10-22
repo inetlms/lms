@@ -262,7 +262,7 @@
 		    <b>Status</b>
 		</td>
 		<td style="width: 98%;">
-			<select size="1" name="nodeedit[access]" {tip text="Select node status" trigger="access"} style="width:150px;">
+			<select name="nodeedit[access]" {tip text="Select node status" trigger="access"} style="width:150px;">
 				<option value="1"{if $nodeinfo.access} selected{/if}>{trans("connected<!singular>")}</option>
 				<option value="0"{if ! $nodeinfo.access} selected{/if}>{trans("disconnected<!singular>")}</option>
 			</select>
@@ -281,6 +281,20 @@
 		</td>
 	</tr>
 	<tr class="light">
+	    <td width="1%">
+		<img src="img/padlock.png">
+	    </td>
+	    <td width="1%" nowrap>
+		<b>Blokada urządzenia</b>
+	    </td>
+	    <td width="98%">
+		    <select name="nodeedit[blockade]" {tip text="Ustaw blokadę dla urządzenia"} style="width:150px;">
+			<option value="1"{if $nodeinfo.blockade} selected{/if}>włączona</option>
+			<option value="0"{if !$nodeinfo.blockade} selected{/if}>wyłączona</option>
+		    </select>
+	    </td>
+	</tr>
+	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/warning{if !$nodeinfo.warning}off{else}on{/if}.gif" alt="">
 		</td>
@@ -288,7 +302,7 @@
 		    <b>Powiadomienia</b>
 		</td>
 		<td style="width: 98%;">
-			<select size="1" name="nodeedit[warning]" {tip text="Set notice for node"} style="width:150px;">
+			<select name="nodeedit[warning]" {tip text="Set notice for node"} style="width:150px;">
 				<option value="1"{if $nodeinfo.warning} selected{/if}>{trans("enabled")}</option>
 				<option value="0"{if ! $nodeinfo.warning} selected{/if}>{trans("disabled")}</option>
 			</select>

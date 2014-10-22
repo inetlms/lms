@@ -72,6 +72,27 @@ function setnodewarning($idek)
   return $obj;
 }
 
+function setnodeblockade($idek)
+{
+    global $DB;
+    $obj = new xajaxResponse();
+    $tmp = $DB->GetOne('SELECT blockade FROM nodes WHERE id = ? LIMIT 1 ;',array($idek));
+    $tmp = intval($tmp);
+    if ($tmp == 1) $tmp = 0 ; else $tmp = 1;
+    $DB->Execute('UPDATE nodes SET blockade = ? WHERE id = ? ;',array($tmp,$idek));
+    if (SYSLOG) {
+	addlogs(($tmp ? 'włączono' : 'wyłączono').' blokadę dla komputera','e=warn;m=node;n='.$idek);
+    }
+    
+    if ($tmp == 0) {
+      $obj->script("document.getElementById('src_blockade".$idek."').src='img/padlockoff.png';");
+    } else {
+      $obj->script("document.getElementById('src_blockade".$idek."').src='img/padlock.png';");
+    }
+  
+  return $obj;
+}
+
 $layout['pagetitle'] = trans('Nodes List');
 
 $SESSION->save('backto', $_SERVER['QUERY_STRING']);
@@ -142,7 +163,7 @@ $SMARTY->assign('nodegroups', $LMS->GetNodeGroupNames());
 $SMARTY->assign('customergroups', $LMS->CustomergroupGetAll());
 
 $LMS->InitXajax();
-$LMS->RegisterXajaxFunction(array('setnodeaccess','setnodewarning'));
+$LMS->RegisterXajaxFunction(array('setnodeaccess','setnodewarning','setnodeblockade'));
 $SMARTY->assign('xajax',$LMS->RunXajax());
 
 $SMARTY->display('nodelist.html');

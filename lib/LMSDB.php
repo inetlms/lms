@@ -38,10 +38,14 @@ require_once(LMSDB_DIR.'/LMSDB_common.class.php');
 function DBInit($dbtype, $dbhost, $dbuser, $dbpasswd, $dbname, $debug = false)
 {
     $dbtype = strtolower($dbtype);
-
-	if (!file_exists(LMSDB_DIR."/LMSDB_driver_$dbtype.class.php") )
+	
+	if (!file_exists(LMSDB_DIR."/LMSDB_driver_$dbtype.class.php") ) {
+		
 		trigger_error('Unable to load driver for "'.$dbtype.'" database!', E_USER_WARNING);
+		
+	}
 	else {
+		
 		require_once(LMSDB_DIR."/LMSDB_driver_$dbtype.class.php");
 		$drvname = "LMSDB_driver_$dbtype";
 		$DB = new $drvname($dbhost, $dbuser, $dbpasswd, $dbname);
@@ -58,6 +62,7 @@ function DBInit($dbtype, $dbhost, $dbuser, $dbpasswd, $dbname, $debug = false)
 
 			return $DB;
 	    }
+	    
     }
 
 	return FALSE;

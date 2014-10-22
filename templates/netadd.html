@@ -50,15 +50,23 @@
 		<td width="1%" class="fleft" nowrap><img src="img/dhcpend.gif" alt=""> <b>{trans("End of DHCP range:")}</b></td>
 		<td class="fright"><input type="text" size="23" name="netadd[dhcpend]" value="{$netadd.dhcpend}" {tip text="Enter end of DHCP range (optional)" trigger="dhcpend"}></td>
 	</tr>
-	<tr> 
+	<tr class="light"> 
 		<td style="width: 1%;" class="fleft bold nobr"><img src="img/host.gif" alt="">{trans("Host:")}</td>
-		<td>
-			<select size="1" name="netadd[hostid]" {tip text="Select host" trigger="hostid"}>
+		<td class="fright" width="99%">
+			<select size="1" name="netadd[hostid]" {tip text="Select host" trigger="hostid"} style="min-width:125px;">
 				<option value="0">{trans("- none -")}</option>
 				{foreach $hostlist as $host}
 				<option value="{$host.id}"{if $host.id eq $netadd.hostid} selected{/if}>{$host.name}</option>
 				{/foreach}
 			</select>
+		</td>
+	</tr>
+	<tr class="light">
+		<td style="width:1%;" class="fleft bold nobr">
+		    <img src="img/ip.gif" alt=""> IP Nat
+		</td>
+		<td width="99%" class="fright">
+		    <input type="text" name="netadd[ipnat]" value="{$netadd.ipnat}" {tip text="IP na który jest natowana klasa (opcja)" trigger="ipnat"}>
 		</td>
 	</tr>
 	<tr class="light">

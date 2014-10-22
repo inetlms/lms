@@ -260,7 +260,7 @@ if (isset($_POST['nodeedit'])) {
 			$nodeedit['location_house'] = null;
 			$nodeedit['location_flat'] = null;
 		}
-
+		
 		$nodeedit = $LMS->ExecHook('node_edit_before', $nodeedit);
 		$nodeedit['access_from'] = $access_from;
 		$nodeedit['access_to'] = $access_to;
@@ -303,6 +303,7 @@ if (isset($_POST['nodeedit'])) {
 	$nodeinfo['linktype'] = $nodeedit['linktype'];
 	$nodeinfo['linktechnology'] = $nodeedit['linktechnology'];
 	$nodeinfo['linkspeed'] = $nodeedit['linkspeed'];
+	$nodeinfo['blockade'] = $nodeedit['blockade'];
 	
 
 	if ($nodeedit['ipaddr_pub'] == '0.0.0.0')

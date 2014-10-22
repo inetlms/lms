@@ -60,6 +60,22 @@
 	}
     } 
     
+    function setCustomerBlockade(idek)
+    {
+	if(document.getElementById('stblockade'+idek).value=='1')
+	{
+	    document.getElementById('stblockade'+idek).value='0';
+	    document.getElementById('src_blockade'+idek).src='img/padlockoff.png';
+	    sendPOST('?m=ajax_request','action=node_blockade&idc='+idek+'&blockade=0');
+	}
+	else
+	{
+	    document.getElementById('stblockade'+idek).value='1';
+	    document.getElementById('src_blockade'+idek).src='img/padlock.png';
+	    sendPOST('?m=ajax_request','action=node_blockade&idc='+idek+'&blockade=1');
+	}
+    } 
+    
 //-->
 </script>
 {/literal}
@@ -206,6 +222,17 @@
 					    </select>
 					</td>
 					
+					
+					<td width="1%" nowrap class="pad5" align="right">Blokady:</td>
+					<td width="1%" nowrap class="pad5">
+					    <select name="block" onchange="document.choosefilter.submit();" {if $listdata.block}class="active"{/if} style="min-width:150px;">
+						<option value=""{if !$listdata.block} selected{/if}>- wszystkie -</option>
+						<option value="1" {if $listdata.block=='1'} selected{/if}>włączone</option>
+						<option value="2" {if $listdata.block=='2'} selected{/if}>wyłączone</option>
+						<option value="3" {if $listdata.block=='3'} selected{/if}>częściowo</option>
+					    </select>
+					</td>
+					
 					<td width="1%" nowrap class="pad5" align="right">Zobowiązania:</td>
 					<td width="1%" nowrap class="pad5">
 					    <select size="1" name="ce" onchange="document.choosefilter.submit();" {if $listdata.contractend}class="active"{/if} style="min-width:150px;">
@@ -220,8 +247,6 @@
 					    </select>
 					</td>
 					
-					<td width="1%" class="pad5" nowrap>
-					</td>
 					
 					<td width="auto"></td>
 				    </tr>
@@ -309,30 +334,49 @@
 			{if $customerlist[customerlist].account}
 			    {if $customerlist[customerlist].status eq 3}
 				{if $customerlist[customerlist].nodeac eq 1}
-				    <input type="hidden" id="staccess{$idek}" value="1"><img src="img/access.gif" id="src_access{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerAccess({$idek});">
+				    <input type="hidden" id="staccess{$idek}" value="1"><img src="img/access.gif" id="src_access{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerAccess({$idek});"  title="[ Włacz/Wyłącz komputery ]">
 				{else}
 				    {if $customerlist[customerlist].nodeac eq 2}
-					<input type="hidden" id="staccess{$idek}" value="0"><img src="img/mixaccess.gif" id="src_access{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerAccess({$idek});">
+					<input type="hidden" id="staccess{$idek}" value="0"><img src="img/mixaccess.gif" id="src_access{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerAccess({$idek});" title="[ Włacz/Wyłącz komputery ]">
 				    {else}
-					<input type="hidden" id="staccess{$idek}" value="0"><img src="img/noaccess.gif" id="src_access{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerAccess({$idek});">
+					<input type="hidden" id="staccess{$idek}" value="0"><img src="img/noaccess.gif" id="src_access{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerAccess({$idek});" title="[ Włacz/Wyłącz komputery ]">
 				    {/if}
 				{/if}
 			    {else}
 				<img src="img/empty.gif" width="16">
 			    {/if} 
 			{/if}
+			
+			{if $customerlist[customerlist].blockcount}
+			    {if $customerlist[customerlist].status eq 3}
+				{if $customerlist[customerlist].nodeblock >= 1}
+				    <input type="hidden" id="stblockade{$idek}" value="1">
+				    {if $customerlist[customerlist].nodeblock eq 1}
+					<img src="img/padlock.png" id="src_blockade{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerBlockade('{$idek}');" title="[ Włącz/Wyłącz blokadę ]">
+				    {else}
+					<img src="img/padlockmix.png" id="src_blockade{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerBlockade('{$idek}');" title="[ Włącz/Wyłącz blokadę ]">
+				    {/if}
+				{else}
+					<input type="hidden" id="stblockade{$idek}" value="0">
+					<img src="img/padlockoff.png" id="src_blockade{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerBlockade('{$idek}');" title="[ Włącz/Wyłącz blokadę ]">
+				{/if}
+			    {else}
+				<img src="img/empty.gif" width="16">
+			    {/if}
+			{/if}
+			
 			{if $customerlist[customerlist].warncount}
 			    {if $customerlist[customerlist].status eq 3}
 				{if $customerlist[customerlist].nodewarn >= 1}
 				    <input type="hidden" id="stwarning{$idek}" value="1">
 				    {if $customerlist[customerlist].nodewarn eq 1}
-					<img src="img/warningon.gif" id="src_warning{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerWarning('{$idek}');">
+					<img src="img/warningon.gif" id="src_warning{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerWarning('{$idek}');" title="[ Włacz/Wyłącz powiadomienia ]">
 				    {else}
-					<img src="img/warningmix.gif" id="src_warning{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerWarning('{$idek}');">
+					<img src="img/warningmix.gif" id="src_warning{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerWarning('{$idek}');" title="[ Włacz/Wyłącz powiadomienia ]">
 				    {/if}
 				{else}
 				    <input type="hidden" id="stwarning{$idek}" value="0">
-				    <img src="img/warningoff.gif" id="src_warning{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerWarning('{$idek}');">
+				    <img src="img/warningoff.gif" id="src_warning{$idek}" border="0" style="cursor:pointer;" onclick="setCustomerWarning('{$idek}');" title="[ Włacz/Wyłącz powiadomienia ]">
 				{/if}
 			    {else}
 				<img src="img/empty.gif" width="16">

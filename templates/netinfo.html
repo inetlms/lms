@@ -96,7 +96,7 @@
 	</tr>
 	<tr class="light">
 		<td width="2%" class="fleft">
-			<nobr><img src="img/wins.gif" alt=""> <b>{trans("WINS server:")}</b><nobr>
+			<nobr><img src="img/wins.gif" alt=""> <b>{trans("WINS server:")}</b></nobr>
 		</td>
 		<td width="48%">
 			{if $unlockedit}
@@ -106,7 +106,7 @@
 			{/if}
 		</td>
 		<td width="2%">
-			<nobr><img src="img/node.gif" alt=""> <b>{trans("Domain:")}</b><nobr>
+			<nobr><img src="img/node.gif" alt=""> <b>{trans("Domain:")}</b></nobr>
 		</td>
 		<td width="48%" class="fright">
 			{if $unlockedit}
@@ -118,12 +118,12 @@
 	</tr>
 	{if $network.hostid || $unlockedit}
 	<tr class="light"> 
-		<td style="width: 2%;" class="fleft bold nobr">
+		<td width="2%" class="fleft bold nobr">
 			<img src="img/host.gif" alt=""> {trans("Host:")}
 		</td>
-		<td style="width: 98%;" colspan="3">
+		<td width="48%">
 			{if $unlockedit}
-			<select size="1" name="networkdata[hostid]" {tip text="Wybierz host" trigger="hostid"}>
+			<select size="1" name="networkdata[hostid]" {tip text="Wybierz host" trigger="hostid"} style="min-width:125px;">
 				<option value="0">{trans("- none -")}</option>
 				{foreach $hostlist as $host}
 				<option value="{$host.id}"{if $host.id eq $network.hostid} selected{/if}>{$host.name}</option>
@@ -131,6 +131,16 @@
 			</select>
 			{else}
 			{$network.hostname}
+			{/if}
+		</td>
+		<td width="2%">
+			<nobr><img src="img/ip.gif" alt=""><b> IP Nat</b></nobr>
+		</td>
+		<td width="48%" class="fright">
+			{if $unlockedit}
+			    <input type="text" name="networkdata[ipnat]" value="{$network.ipnat}" {tip text="IP na który jest natowana klasa (opcja)" trigger="ipnat"}>
+			{else}
+			    {$network.ipnat}
 			{/if}
 		</td>
 	</tr>

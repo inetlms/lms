@@ -11,6 +11,16 @@ function setstatus(access)
 	document.custnodeslist.submit();
 }
 
+function setblockade(access)
+{
+	if(access)
+		document.custnodeslist.action = '?m=nodeblockade&access=1';
+	else
+		document.custnodeslist.action = '?m=nodeblockade';
+
+	document.custnodeslist.submit();
+}
+
 function setwarning(warning)
 {
 	if(warning)
@@ -127,6 +137,7 @@ function setgroup(act)
 				
 				{if get_conf('monit.live_ping')}<img src="img/ping.gif" {tip text="Pinguj urzadzenie"} style="cursor:pointer;" onclick="window.open('?m=nodeping&packetsize=64&ip={$customernodes[customernodes].ip}','pingnode{$customernodes[customernodes].ip}','width=400,height=450')">{/if}
 				<a href="?m=nodeset&id={$customernodes[customernodes].id}"><img src="img/{if ! $customernodes[customernodes].access}no{/if}access.gif" alt="[ {if ! $customernodes[customernodes].access}{trans("Connect")}{else}{trans("Disconnect")}{/if} ]" title="[ {if ! $customernodes[customernodes].access}{trans("Connect")}{else}{trans("Disconnect")}{/if} ]"></a>
+				<a href="?m=nodeblockade&id={$customernodes[customernodes].id}"><img src="img/padlock{if !$customernodes[customernodes].blockade}off{/if}.png"></a>
 				<a href="?m=nodewarn&id={$customernodes[customernodes].id}"><img src="img/warning{if ! $customernodes[customernodes].warning}off{else}on{/if}.gif" alt="[ {if ! $customernodes[customernodes].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]" title="[ {if ! $customernodes[customernodes].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]"></a>
 				<a href="?m=nodedel&id={$customernodes[customernodes].id}" onclick="return confirmLink(this, '{t a=$customernodes[customernodes].name}Are you sure, you want to remove node \'$a\' from database?{/t}')"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
 				<a href="?m=nodeedit&id={$customernodes[customernodes].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>

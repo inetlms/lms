@@ -119,6 +119,10 @@ if(isset($_POST['netadd']))
 			$error['dhcpend'] = trans('End of DHCP range has to be equal or greater than start!');
 	}
 	
+	if ($netadd['ipnat'] != '' && !check_ip($netadd['ipnat'])) {
+	    $error['ipnat'] = 'Błędnie podano adres IP';
+	}
+	
 	if(empty($error))
 	{
 		$SESSION->redirect('?m=netinfo&id='.$LMS->NetworkAdd($netadd));
