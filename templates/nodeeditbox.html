@@ -27,7 +27,7 @@
 			<img src="img/host.gif">
 		</td>
 		<td style="width: 99%;" colspan="2">
-			<div id="id_host_name">{$nodeinfo.hostname}</div>
+			<div id="id_host_name">{if $nodeinfo.hostname}{$nodeinfo.hostname}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}</div>
 		</td>
 	</tr>
 	
@@ -55,7 +55,7 @@
 			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}">
 		</td>
 		<td style="width: 99%;" colspan="2">
-			<input type="text" name="nodeeditipaddrpub" {if $nodeinfo.ip_pub != "0.0.0.0"}value="{$nodeinfo.ip_pub}"{/if} {tip text="Enter IP address (optional)" trigger="ipaddr_pub"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.editnode.nodeeditipaddrpub, null, {if $nodeinfo.netpubid}{$nodeinfo.netpubid}{else}0{/if});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
+			<input type="text" name="nodeeditipaddrpub" {if $nodeinfo.ip_pub != "0.0.0.0"}value="{$nodeinfo.ip_pub}"{/if} {tip text="Enter IP address (optional)" trigger="ipaddr_pub"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.editnode.nodeeditipaddrpub, document.editnode.nodeeditnetid, {if $nodeinfo.netpubid}{$nodeinfo.netpubid}{else}0{/if});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
 	{/if}
