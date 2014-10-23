@@ -102,9 +102,9 @@
 					    <!--//
 					    <option value="0"{if $listdata.state eq 0} selected{/if}>{trans("- all customers -")}</option>
 					    //-->
-					    <option value="3"{if $listdata.state eq 3} selected{/if}>{trans("connected<!plural>")}</option>
-					    <option value="2"{if $listdata.state eq 2} selected{/if}>{trans("awaiting")}</option>
-					    <option value="1"{if $listdata.state eq 1} selected{/if}>{trans("interested<!plural>")}</option>
+					    {foreach $_CSTATUS as $item => $key}
+						<option value="{$item}"{if $listdata.state eq $item} selected{/if}>{$key}</option>
+					    {/foreach}
 					    <option value="4"{if $listdata.state eq 4} selected{/if}>{trans("deleted<!plural>")}</option>
 					    <!--//
 					    <option value="15"{if $listdata.state eq 15} selected{/if}>rozwiązana umowa</option>
@@ -112,7 +112,7 @@
 					    <!--//
 					    <option value="5"{if $listdata.state eq 5} selected{/if}>{trans("disconnected<!plural>")}</option>
 					    //-->
-					    </select>
+4					    </select>
 					</td>
 					
 					<td width="1%" nowrap class="pad5" align="right">{trans("Division")}:</td>

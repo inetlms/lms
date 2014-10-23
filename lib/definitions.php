@@ -183,6 +183,26 @@ $CTYPES = array(
 //    CTYPES_RESELLER	=> 'reseller'
 );
 
+
+//define('CSTATUS_ZAWIESZONY',8);
+//define('CSTATUS_NIEPLACI',6);
+//define('CSTATUS_REZYGNACJA',7);
+
+define('CSTATUS_PODLACZONY',3);
+define('CSTATUS_ZAINTERESOWANY',1);
+define('CSTATUS_OCZEKUJACY',2);
+define('CSTATUS_ODLACZONY',5);
+
+$CSTATUS = array(
+	CSTATUS_PODLACZONY	=> 'podłączony',
+	CSTATUS_ZAINTERESOWANY	=> 'zainteresowany',
+	CSTATUS_OCZEKUJACY	=> 'oczekujący',
+//	CSTATUS_ZAWIESZONY	=> 'zawieszony',
+//	CSTATUS_NIEPLACI	=> 'nie płacący',
+//	CSTATUS_REZYGNACJA	=> 'rezygnacja',
+	CSTATUS_ODLACZONY	=> 'odłączony',
+);
+
 // Helpdesk ticket status
 define('RT_NEW', 0);
 define('RT_OPEN', 1);
@@ -229,9 +249,11 @@ define('DOC_ANNEX', -2);
 define('DOC_PROTOCOL', -3);
 define('DOC_ORDER', -4);
 define('DOC_SHEET', -5);
-define('DOC_OTHER', -10);
+define('DOC_OTHER', -128);
+define('DOC_BILLING',-10);
 
 $DOCTYPES = array(
+    DOC_BILLING		=> 'billing',
     DOC_INVOICE 	=>	trans('Invoice'),
     DOC_INVOICE_PRO	=>	trans('Pro Forma Invoice'),
     DOC_INVOICE_PURCHASE =>	trans('purchase invoice'),
@@ -662,6 +684,7 @@ $RAD_SERVICE_TYPE = array(
 if(isset($SMARTY))
 {
 	$SMARTY->assign('_CTYPES',$CTYPES);
+	$SMARTY->assign('_CSTATUS',$CSTATUS);
 	$SMARTY->assign('_DOCTYPES', $DOCTYPES);
 	$SMARTY->assign('_PERIODS', $PERIODS);
 	$SMARTY->assign('_GUARANTEEPERIODS', $GUARANTEEPERIODS);

@@ -355,10 +355,14 @@ switch($action)
 
 			// delete old receipt 
 			$DB->Execute('DELETE FROM documents WHERE id = ?', array($receipt['id']));
+			
+			$fullnumber = docnumber($documentedit['number'],
+			$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($documentedit['numberplanid'])),
+			$document['cdate']);
 		
 			// re-add receipt 
-			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, customerid, userid, name, address, zip, city, closed)
-					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, customerid, userid, name, address, zip, city, closed, fullnumber)
+					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 					array(	DOC_RECEIPT,
 						$receipt['number'],
 						$receipt['extnumber'] ? $receipt['extnumber'] : '',
@@ -370,7 +374,8 @@ switch($action)
 						$customer['address'],
 						$customer['zip'],
 						$customer['city'],
-						$receipt['closed']
+						$receipt['closed'],
+						($fullnumber ? $fullnumber : 0),
 						));
 			$DB->UnLockTables();
 						
@@ -421,8 +426,12 @@ switch($action)
 			// delete old receipt 
 			$DB->Execute('DELETE FROM documents WHERE id = ?', array($receipt['id']));
 			
-			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, userid, name, closed)
-			    		VALUES(?, ?, ?, ?, ?, ?, ?, ?)',
+			$fullnumber = docnumber($receipt['number'],
+				$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($receipt['numberplanid'])),
+				$receipt['cdate']);
+			
+			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, userid, name, closed,fullnumber)
+			    		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
 			                array(  DOC_RECEIPT,
 					        $receipt['number'],
 						$receipt['extnumber'] ? $receipt['extnumber'] : '',
@@ -430,7 +439,8 @@ switch($action)
 						$receipt['cdate'],
 						$AUTH->id,
 						$receipt['o_type'] == 'advance' ? $receipt['adv_name'] : $receipt['other_name'],
-						$receipt['closed']
+						$receipt['closed'],
+						($fullnumber ? $fullnumber : NULL),
 					));
 			$DB->UnLockTables();
 						

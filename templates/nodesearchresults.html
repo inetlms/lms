@@ -59,6 +59,7 @@
 		</td>
 		<td style="width: 1%; white-space: nowrap;">
 			<a href="?m=nodeset&id={$nodelist[nodelist].id}"><img src="img/{if ! $nodelist[nodelist].access}no{/if}access.gif" alt="{if ! $nodelist[nodelist].access}[ {trans("Disconnect")} ]{else}[ {trans("Connect")} ]{/if}"></a>
+			<a href="?m=nodeblockade&id={$nodelist[nodelist].id}"><img src="img/padlock{if !$nodelist[nodelist].blockade}off{/if}.png"></a>
 			<a href="?m=nodewarn&id={$nodelist[nodelist].id}"><img src="img/warning{if ! $nodelist[nodelist].warning}off{else}on{/if}.gif" alt="{if ! $nodelist[nodelist].warning}[ {trans("Enable notices")} ]{else}[ {trans("Disable notices")} ]{/if}"></a>
 			<a href="?m=nodedel&id={$nodelist[nodelist].id}" onclick="return confirmLink(this, '{t a=$nodelist[nodelist].name}Are you sure, you want to delete node \'$a\' from database?{/t}')"><img src="img/delete.gif" alt="[ {trans("Delete")} ]"></a>
 			<a href="?m=nodeedit&id={$nodelist[nodelist].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]"></a>
