@@ -53,8 +53,8 @@ if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = 
 if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'promotionassignments','selectionid'))) 
     $DB->Execute("ALTER TABLE promotionassignments ADD selectionid tinyint NOT NULL DEFAULT 0");
 
-if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'templates','subject'))) 
-    $DB->Execute("ALTER TABLE templates ADD subject varchar(255) NOT NULL DEFAULT ''");
+//if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'templates','subject'))) 
+//    $DB->Execute("ALTER TABLE templates ADD subject varchar(255) NOT NULL DEFAULT ''");
 
 if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'documents','fullnumber'))) 
 {
