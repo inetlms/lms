@@ -34,6 +34,21 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/10/22',
+	    'status'	=> '',
+	    'opis'	=> 'zmiany dot. uzupełnienia pól w documents div_*, dokumenty KP, KW które są wystawione dla klientów spoza naszej sieci dane są brane na podstawie default_division',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano zmienną w UI phpui.default_division jest to domyślne ID firmy dla dokumentów wystawianych dla klientów nie będącymi klientami sieci / brak ich na liście',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano szybkie wyszukiwanie klienta na podstawie numeru dokumentu',
+	),
+	array(
 	    'data'	=> '2014/10/21',
 	    'status'	=> '',
 	    'opis'	=> 'dodano dodatkowe pole blokada dla komputerów, do wykorzystania np. na przekierowanie o całkowitej blokadzie usług',

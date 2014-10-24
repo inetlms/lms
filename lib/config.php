@@ -151,6 +151,7 @@ $DEFAULTS = array(
 		'dir_ftp'	=> '',
 	),
 	'phpui' => array(
+		'default_division' => 0,
 		'lang' => '',
 		'iphistory' => 1,
 		'iphistory_pagelimit' => 50,

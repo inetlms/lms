@@ -3487,6 +3487,7 @@ class LMS {
 				d.div_ten AS division_ten, d.div_regon AS division_regon, d.div_account AS account,
 				d.div_inv_header AS division_header, d.div_inv_footer AS division_footer,
 				d.div_inv_author AS division_author, d.div_inv_cplace AS division_cplace,
+				d.fullnumber,
 				c.pin AS customerpin, c.divisionid AS current_divisionid,
 				c.post_name, c.post_address, c.post_zip, c.post_city, c.post_countryid
 				FROM documents d

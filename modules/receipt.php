@@ -43,8 +43,11 @@ function GetReceipt($id)
 
 		foreach($receipt['contents'] as $row)
 			$receipt['total'] += $row['value'];
-
-		$receipt['number'] = docnumber($receipt['number'], $receipt['template'], $receipt['cdate'], $receipt['extnumber']);
+		
+		if (!$receipt['fullnumber'])
+		    $receipt['number'] = docnumber($receipt['number'], $receipt['template'], $receipt['cdate'], $receipt['extnumber']);
+		else
+		    $receipt['number'] = $receipt['fullnumber'];
 
 		if($receipt['total'] < 0)
 		{

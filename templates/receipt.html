@@ -7,9 +7,9 @@
 <table align="center" width="580" cellpadding="3">
 	<tr>
 		<td width="34%" colspan="2" class="ftopu" valign="top">
-			{$receipt.d_name}<br>
-			{$receipt.d_address}<br>
-			{$receipt.d_zip} {$receipt.d_city}
+			{if !$receipt.div_name}{$receipt.d_name}{else}{$receipt.div_name}{/if}<br>
+			{if !$receipt.div_address}{$receipt.d_address}{else}{$receipt.div_address}{/if}<br>
+			{if !$receipt.div_zip}{$receipt.d_zip}{else}{$receipt.div_zip}{/if} {if !$receipt.div_city}{$receipt.d_city}{else}{$receipt.div_city}{/if}
 		</td>
 		<td colspan="2" width="34%" class="headgrey hdf" align="center" nowrap>
 			{if $receipt.type == "out"}
@@ -135,7 +135,7 @@
 	</tr>
 	<tr>
 		<td colspan="6" align="right">
-			<font class="small">Copyright &copy; 2001-2012 LMS Developers</font>
+			<font class="small">Copyright &copy; 2012-{$smarty.now|date_format:"%Y"} iNET LMS Developers</font>
 		</td>
 	</tr>
 </table>
@@ -152,9 +152,9 @@
 <table align="center" width="580" cellpadding="3">
 	<tr>
 		<td width="34%" colspan="2" class="ftopu" valign="top">
-			{$receipt.d_name}<br>
-			{$receipt.d_address}<br>
-			{$receipt.d_zip} {$receipt.d_city}
+			{if !$receipt.div_name}{$receipt.d_name}{else}{$receipt.div_name}{/if}<br>
+			{if !$receipt.div_address}{$receipt.d_address}{else}{$receipt.div_address}{/if}<br>
+			{if !$receipt.div_zip}{$receipt.d_zip}{else}{$receipt.div_zip}{/if} {if !$receipt.div_city}{$receipt.d_city}{else}{$receipt.div_city}{/if}
 		</td>
 		<td colspan="2" width="34%" class="headgrey hdf" align="center" nowrap>
 			{if $receipt.type == "out"}
@@ -277,7 +277,7 @@
 	</tr>
 	<tr>
 		<td colspan="6" align="right">
-			<font class="small">Copyright &copy; 2001-2012 LMS Developers</font>
+			<font class="small">Copyright &copy; 2012-{$smarty.now|date_format:"%Y"} iNET LMS Developers</font>
 		</td>
 	</tr>
 </table>
