@@ -1092,6 +1092,45 @@ TEMPORARY DISABLED			'name' => 'Bilans kosztów',
 		);
 }
 
+if (get_conf('registryequipment.enabled')) {
+	$menu['registryequipment'] = array(
+		'name'		=> 'Ew. Pojazdów',
+		'img'		=> 'car.png',
+		'link'		=> '',
+		'tip'		=> '',
+		'prio'		=> 31,
+		'index'		=> MODULES_REGISTRYEQUIPMENT,
+		'submenu'	=> array(
+			array(
+				'name'	=> 'Lista pojazdów',
+				'link'  => '?m=re_carlist',
+				'prio' => 1,
+			),
+			array(
+				'name' => 'Nowy pojazd',
+				'link' => '?m=re_caradd',
+				'prio' => 2,
+			),
+//			array(
+//				'name' => 'Ubezpieczenia',
+//				'link' => '?m=re_insurance',
+//				'prio' => 10,
+//			),
+			array(
+				'name' => 'Rodzaje pojazdów',
+				'link' => '?m=re_dictionarycartype',
+				'prio' => 50,
+			),
+			array(
+				'name' => 'Rodzaje zdarzeń',
+				'link' => '?m=re_dictionaryevent',
+				'prio' => 60,
+			),
+		),
+	);
+}
+
+
 // menu item for EtherWerX STM channels management
 if (chkconfig($CONFIG['phpui']['ewx_support'])) {
 	$menu['netdevices']['submenu'][] = array(

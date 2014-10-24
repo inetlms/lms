@@ -34,6 +34,11 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/10/25',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano prostą ewidencję pojazdów',
+	),
+	array(
 	    'data'	=> '2014/10/22',
 	    'status'	=> '',
 	    'opis'	=> 'zmiany dot. uzupełnienia pól w documents div_*, dokumenty KP, KW które są wystawione dla klientów spoza naszej sieci dane są brane na podstawie default_division',

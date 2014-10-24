@@ -78,7 +78,7 @@ define('MODULES_RAPORTY',330);
 define('MODULES_SLOWNIK',331);
 define('MODULES_CONFIG',340);
 define('MODULES_PASSWORD',320);
-
+define('MODULES_REGISTRYEQUIPMENT',350); // środki trwałe
 
 
 define('MONIT_NONE',0);

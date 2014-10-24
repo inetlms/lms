@@ -1,0 +1,49 @@
+{include file="header.html"}
+{title value=$layout.pagetitle}
+
+<table width="100%" cellpadding="5" cellspacing="0" class="table">
+    {math assign='cnt' equation="1+y" y=$tucklist|count}
+    
+    <tr class="dark">
+    
+    {section name="tucklist" loop=$tucklist}
+	<td width="1%" class="fleftu{if $tucklist[tucklist].tuck == $tuck} active{/if}" nowrap style="cursor:pointer;padding-left:10px;padding-right:10px;" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');" onclick="self.location.href='?m=re_carinfo&idc={$idc}&tuck={$tucklist[tucklist].tuck}';">
+	    <strong{if $tucklist[tucklist].tip} {tip text=$tucklist[tucklist].tip}{/if}>{$tucklist[tucklist].name}</strong>
+	</td>
+    {/section}
+    <td width="auto" class="fall"></td>
+    
+    </tr>
+
+</table>
+<p>
+<div id="id_data"></div>
+
+{if $tuck == 'base'}
+    
+    {if $action =='edit'}
+	{include file="re_caredit.html"}
+    {else}
+	{include file="re_carinfobox.html"}
+    {/if}
+
+{else if $tuck == 'assurance'}
+
+    {include file="re_assurance.html"}
+
+{else if $tuck == 'event'}
+
+    {include file="re_event.html"}
+
+{else if $tuck == 'users'}
+
+    {include file="re_users.html"}
+
+{else if $tuck == 'annex'}
+
+    {include file="annex.html"}
+    
+{/if}
+</p>
+
+{include file="footer.html"}

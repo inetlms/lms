@@ -38,7 +38,7 @@ if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = 
     $DB->Execute("ALTER TABLE templates ADD subject varchar(255) NOT NULL DEFAULT ''");
 
 
-$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014102400', 'dbversion'));
+$DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014102400', 'dbvex'));
 
 $DB->CommitTrans();
 

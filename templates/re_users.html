@@ -1,0 +1,80 @@
+{if $edituser}
+    {$xajax}
+    
+    <form name="caruser" id="caruser" method="POST" action="?m=re_carinfo&tuck=users&idc={$idc}">
+	<input type="hidden" name="caruser[id]" value="{$userinfo.id}">
+	<input type="hidden" name="caruser[idcar]" value="{$idc}">
+	<table width="100%" cellpadding="4">
+	    <tr class="dark pgdark">
+		<td width="100%" align="left" class="fall pad10" colspan="4">
+		    <b>{if $userinfo.id}Edycja użytkownika{else}Nowy użytkownik{/if}</b>
+		</td>
+	    </tr>
+	    <tr class="light pglight">
+		<td width="1%" class="fleftu pad10" nowrap style="height:40px;">
+		    Użytkownik : 
+			<select name="caruser[iduser]">
+			{section name='userlist' loop=$userlist}
+			<option value="{$userlist[userlist].id}" {if $userlist[userlist].id == $userinfo.iduser}selected{/if}>{$userlist[userlist].name}</option>
+			{/section}
+			</select>
+		</td>
+		<td width="1%" class="fbottom pad10" nowrap>
+		    od dnia : <input type="text" name="caruser[dfrom]" style="width:100px;" class="tcal" id="id_from" value="{if $userinfo.dfrom}{$userinfo.dfrom|date_format:'Y-m-d'}{/if}"><img src="img/cancel.gif" style="width:14px;cursor:pointer;" title="wyczyść datę" onclick="document.getElementById('id_from').value='';">
+		</td>
+		<td width="1%" class="fbottom pad10" nowrap>
+		    do dnia : <input type="text" name="caruser[dto]" style="width:100px;" class="tcal" id="id_to" value="{if $userinfo.dto}{$userinfo.dto|date_format:'Y-m-d'}{/if}"><img src="img/cancel.gif" style="width:14px;cursor:pointer;" title="wyczyść datę" onclick="document.getElementById('id_to').value='';">
+		</td>
+		<td width="97%" class="frightu pad10" nowrap align="right">&nbsp;</td>
+	    </tr>
+	    <tr class="dark pgdark">
+		<td width="100%" class="fall pad10" align="right" colspan="4">
+		    <a href="javascript:void(0);" onclick="document.caruser.submit();"><b>{trans('Save')}</b> <img src="img/save.gif"></a>
+		    <a href="javascript:void(0);" onclick="self.location.href='?m=re_carinfo&tuck=users&idc={$idc}';"><b>{trans('Cancel')}</b> <img src="img/cancel.gif"></a>
+		</td>
+	    </tr>
+	</table>
+    </form>
+    <br>
+    {include file="load_gif.html"}
+{/if}
+<table width="100%" cellpadding="3" class="table">
+    
+    <tr class="dark">
+	    <td width="1%" nowrap class="fleftu pad10" align="center"><b>Od dnia</b></td>
+	    <td width="1%" nowrap class="fbt pad10" align="center"><b>Do dnia</b></td>
+	    <td width="1%" nowrap class="fbt pad10" align="left"><b>Imię i nazwisko</b></td>
+	    <td width="96%" class="fbt">&nbsp;</td>
+	    <td width="1%" nowrap class="frightu pad" align="right">
+		<img onclick="self.location.href='?m=re_carinfo&tuck=users&idc={$idc}&adduser';" src="img/add.gif" title="[ dodaj użytkownika ]" alt="[ dodaj ]" style="cursor:pointer;">
+	    </td>
+    </tr>
+    
+    {cycle values="lucid,light" print=false}
+    {section name='users' loop=$users}
+	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	    <td width="1%" nowrap class="fleft pad10" align="right">{if $users[users].dfrom}{$users[users].dfrom|date_format:'Y/m/d'}{/if}</td>
+	    <td width="1%" nowrap class="pad10" align="right">{if $users[users].dto}{$users[users].dto|date_format:'Y/m/d'}{/if}</td>
+	    <td width="1%" nowrap class="pad10" align="left">{$users[users].name} ({$users[users].login})</td>
+	    <td width="96%"></td>
+	    <td width="1%" nowrap class="fright pad" align="right">
+		<a href="?m=re_carinfo&tuck=users&idc={$idc}&deluser={$users[users].id}" onclick="return confirmLink(this,'Potwierdź usunięcie użytkownika');"><img src="img/delete.gif"></a>
+		<img src="img/edit.gif" style="cursor:pointer;" onclick="self.location.href='?m=re_carinfo&tuck=users&idc={$idc}&edituser={$users[users].id}';">
+	    </td>
+	</tr>
+    {sectionelse}
+	<tr class="light">
+	    <td width="100%" class="fall" align="center" colspan="5">
+	    <p><br><b>nie dodano jeszcze żadnego użytkownika</b><br><br></p>
+	    </td>
+	</tr>
+    {/section}
+    
+    <tr class="dark">
+	<td width="100%" class="fall pad" align="right" colspan="5">
+	    <a href="?m=re_carinfo&tuck=users&idc={$idc}&adduser"><b>Dodaj użytkownika</b> <img src='img/add.gif'></a>
+	</td>
+    </tr>
+
+</table>
+

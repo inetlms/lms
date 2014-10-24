@@ -177,6 +177,10 @@ $LMS->lang = $_language;
 $GG = new rfGG(GG_VER_77);
 $RAD = new radius($DB,$LMS);
 
+if (get_conf('registryequipment.enabled')) {
+	require_once(LIB_DIR.'/Registry.Equipment.class.php');
+}
+
 if(get_conf('voip.enabled','0') )
 {
 	if (fetch_url(get_conf('voip.wsdlurl')))
@@ -209,7 +213,7 @@ $layout['smarty_version'] = SMARTY_VERSION;
 $layout['hostname'] = hostname();
 $layout['lmsv'] = 'iNET';
 $layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
-$layout['lmsvr'] = '14.10.24';
+$layout['lmsvr'] = '14.10.25';
 $layout['dberrors'] =& $DB->errors;
 $layout['dbdebug'] = $_DBDEBUG;
 $layout['popup'] = isset($_GET['popup']) ? true : false;
