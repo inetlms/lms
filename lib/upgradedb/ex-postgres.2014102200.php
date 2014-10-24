@@ -54,10 +54,6 @@ if (!$DB->GetOne("SELECT 1 FROM information_schema.columns WHERE table_name = ? 
 	$DB->Execute("ALTER TABLE promotionassignments ADD selectionid smallint NOT NULL DEFAULT 0");
 
 
-//if (!$DB->GetOne("SELECT 1 FROM information_schema.columns WHERE table_name = ? AND column_name= ?;",array('templates','subject')))
-//	$DB->Execute("ALTER TABLE templates ADD subject varchar(255) NOT NULL DEFAULT ''");
-
-
 if (!$DB->GetOne("SELECT 1 FROM information_schema.columns WHERE table_name = ? AND column_name= ?;",array('documents','fullnumber')))
 {
 	$DB->Execute("ALTER TABLE documents ADD fullnumber varchar(50) DEFAULT NULL");
