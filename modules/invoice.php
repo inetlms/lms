@@ -24,6 +24,7 @@
  *  $Id$
  */
 
+
 if(strtolower($CONFIG['invoices']['type']) == 'pdf')
 {
     include('invoice_tcpdf.php');
@@ -208,7 +209,11 @@ elseif(isset($_GET['fetchallinvoicesproforma']))
 elseif($invoice = $LMS->GetInvoiceContent($_GET['id']))
 {
 
-	$number = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	if (!$invoice['fullnumber'])
+	    $number = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	else
+	    $number = $invoice['fullnumber'];
+	
 	if(!isset($invoice['invoice'])) {
 		if ($invoice['type'] == DOC_INVOICE_PRO)
 		    $layout['pagetitle'] = 'Faktura Pro Forma Nr.'.$number;

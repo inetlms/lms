@@ -23,9 +23,9 @@
  *
  *  $Id$
  */
-
+// 2014090600
 define('DBVERSION', '2014032900'); // here should be always the newest version of database!
-define('DBVEX','2014102100'); // wersja bazy LMS iNET
+define('DBVEX','2014102500'); // wersja bazy LMS iNET
 				 // it placed here to avoid read disk every time when we call this file.
 
 /*
@@ -46,6 +46,7 @@ function getdir($pwd = './', $pattern = '^.*$')
 	}
 	return $files;
 }
+
 
 if($dbversion = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ?',array('dbversion'))) {
 	if(DBVERSION > $dbversion)
@@ -76,6 +77,8 @@ if($dbversion = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ?',arra
 	}
 }
 $layout['dbschversion'] = isset($lastupgrade) ? $lastupgrade : DBVERSION;
+
+$layout['dbschversion'] = DBVERSION;
 
 
 

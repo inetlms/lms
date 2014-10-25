@@ -46,6 +46,13 @@ tr.lista td {
     cursor			: pointer;
 }
 
+tr.display td,
+TR.display TD {
+/*    padding-top			: 2px; */
+/*    padding-bottom		: 2px; */
+height:20px;
+}
+
 TR.info, 
 tr.info { 
     background-color		: #DDDDDD;
@@ -685,18 +692,25 @@ div.multiselectlayer ul li input {
 
 .dark,
 .DARK { 
-    background-color		: #ebebeb; 
+    background-color		: #E3E3E3; 
 }
 
 .light,
 .LIGHT {
-//    background-color		: #EFEFEF; 
         background-color		: #F4F4F4; 
 }
 
 .lucid,
 .LUCID {
-    background-color		: #ffffff; 
+    background-color		: #ececec; 
+}
+
+.pgdark {
+    background			: #CECF9C;
+}
+
+.pglight {
+    background-color			: #F3F3E9;
 }
 
 .superlight,
@@ -1312,7 +1326,23 @@ div.nodata {
 
 .nav-header {
     height:24px;
-    }
+}
+
+.nav-tuck {
+    height			: 24px;
+    color			: #000000;
+    background			: #EBF8A4;
+}
+
+.nav-tuck td {
+    border-color		: #A2D246;
+}
+
+.nav-tuck .active {
+    background			: #A2D246;
+}
+
+
 
 .listradiuscorners {
         font-family             : Tahoma, Verdana, Arial, Helvetica;`

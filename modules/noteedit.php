@@ -142,9 +142,24 @@ switch($action)
 
 			$cdate = !empty($note['cdate']) ? $note['cdate'] : time();
 			
+			$division = $DB->GetRow('SELECT name, shortname, address, city, zip, countryid, ten, regon,
+				account, inv_header, inv_footer, inv_author, inv_cplace 
+				FROM divisions WHERE id = ? ;',array($customer['divisionid']));
+
+			if ($note['numberplanid'])
+				$fullnumber = docnumber($note['number'],
+					$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($note['numberplanid'])),
+					$cdate);
+			else
+				$fullnumber = null;
+
+			
 			$DB->Execute('UPDATE documents SET number = ?, numberplanid = ?,
                                 cdate = ?, customerid = ?, name = ?, address = ?, paytime = ?,
 				ten = ?, ssn = ?, zip = ?, city = ?, countryid = ?, divisionid = ?
+				div_name=?, div_shortname=?, div_address=?, div_city=?, div_zip=?, div_countryid=?,
+				div_ten=?, div_regon=?, div_account=?, div_inv_header=?, div_inv_footer=?, 
+				div_inv_author=?, div_inv_cplace=?, fullnumber=? 
 				WHERE id = ?',
 				array($note['number'],
 				        !empty($note['numberplanid']) ? $note['numberplanid'] : 0,
@@ -159,6 +174,20 @@ switch($action)
 				        $customer['city'],
 				        $customer['countryid'],
 				        $customer['divisionid'],
+				        ($division['name'] ? $division['name'] : ''),
+				        ($division['shortname'] ? $division['shortname'] : ''),
+				        ($division['address'] ? $division['address'] : ''),
+				        ($division['city'] ? $division['city'] : ''),
+				        ($division['zip'] ? $division['zip'] : ''),
+				        ($division['countryid'] ? $division['countryid'] : 0),
+				        ($division['ten'] ? $division['ten'] : ''),
+				        ($division['regon'] ? $division['regon'] : ''),
+				        ($division['account'] ? $division['account'] : ''),
+				        ($division['inv_header'] ? $division['inv_header'] : ''),
+				        ($division['inv_footer'] ? $division['inv_footer'] : ''),
+				        ($division['inv_author'] ? $division['inv_author'] : ''),
+				        ($division['inv_cplace'] ? $division['inv_cplace'] : ''),
+				        ($fullnumber ? $fullnumber : NULL),
 					$note['id']
 			        ));
 			

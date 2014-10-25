@@ -231,7 +231,11 @@ function invoice_simple_form_fill() {
 	/* title */
 	$pdf->Text(7, 249, 'Zapłata za fakturę numer:');
 	$pdf->SetFont('courier', 'B', 10);
-	$pdf->Text(7, 253, docnumber($invoice['number'], $invoice['template'], $invoice['cdate']));
+	if (!$invoice['fullnumber'])
+	    $tmp = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	else
+	    $tmp = $invoice['fullnumber'];
+	$pdf->Text(7, 253, $tmp);
 
 	/* amount */
 	$pdf->SetFont('courier', 'B', 10);
@@ -273,7 +277,11 @@ function invoice_main_form_fill() {
 	$pdf->Text(67, 252.5, $invoice['address'] . ', ' . $invoice['zip'] . ' ' . $invoice['city']);
 
 	/* barcode */
-	$barcode = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	if (!$invoice['fullnumber'])
+	    $barcode = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	else
+	    $barcode = $invoice['fullnumber'];
+	
 	if (!empty($barcode)) {
 		$style = array(
 				'position' => 'L',
@@ -296,7 +304,11 @@ function invoice_main_form_fill() {
 	/* title */
 	$pdf->Text(127, 262, 'Zapłata za fakturę numer:');
 	$pdf->SetFont('courier', 'B', 10);
-	$pdf->Text(127, 266, docnumber($invoice['number'], $invoice['template'], $invoice['cdate']));
+	if (!$invoice['fullnumber'])
+	    $tmp = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	else
+	    $tmp = $invoice['fullnumber'];
+	$pdf->Text(127, 266, $tmp);
 
 	/* deadline */
 	$paytype = $invoice['paytype'];
@@ -323,7 +335,11 @@ function invoice_title() {
 
 	$pdf->SetY(30);
 	$pdf->SetFont('arial', 'B', 16);
-	$docnumber = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	if (!$invoice['fullnumber'])
+	    $docnumber = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	else
+	    $docnumber = $invoice['fullnumber'];
+	
 	if (isset($invoice['invoice']))
 		$title = trans('Credit Note No. $a', $docnumber);
 	else {
@@ -336,7 +352,11 @@ function invoice_title() {
 
 	if (isset($invoice['invoice'])) {
 		$pdf->SetFont('arial', 'B', 12);
-		$docnumber = docnumber($invoice['invoice']['number'], $invoice['invoice']['template'], $invoice['invoice']['cdate']);
+		if (!$invoice['invoice']['fullnumber'])
+		    $docnumber = docnumber($invoice['invoice']['number'], $invoice['invoice']['template'], $invoice['invoice']['cdate']);
+		else
+		    $docnumber = $invoice['invoice']['fullnumber'];
+		
 		if ($invoice['type'] == DOC_INVOICE_PRO)
 		    
 		    $title = trans('for Pro Forma Invoice No. $a', $docnumber);
@@ -502,7 +522,11 @@ function invoice_body_standard() {
 	invoice_dates();
 	invoice_expositor();
 	invoice_footnote();
-	$docnumber = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	if (!$invoice['fullnumber'])
+	    $docnumber = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	else
+	    $docnumber = $invoice['fullnumber'];
+	
 	if ($invoice['type'] == DOC_INVOICE_PRO)
 	    $pdf->SetTitle(trans('Faktura Pro Forma. $a', $docnumber));
 	else
@@ -532,7 +556,7 @@ function invoice_body_standard() {
 
 	/* set document digital signature & protection */
 	if (file_exists($cert) && file_exists($key)) {
-		$pdf->setSignature($cert, $key, 'lms-invoices', '', 1, $info);
+		$pdf->setSignature($cert, $key, 'inetlms-invoices', '', 1, $info);
 		$pdf->setSignatureAppearance(13, 10, 50, 20);
 	}
 	$pdf->SetProtection(array('modify', 'copy', 'annot-forms', 'fill-forms', 'extract', 'assemble'), '', 'PASSWORD_CHANGEME', '1');
@@ -557,8 +581,11 @@ function invoice_body_ft0100() {
 	/* fill FT-0100 form */
 	invoice_simple_form_fill();
 	invoice_main_form_fill();
-
-	$docnumber = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	if (!$invoice['fullnumber'])
+	    $docnumber = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+	else
+	    $docnumber = $invoice['fullnumber'];
+	
 	if ($invoice['type'] == DOC_INVOICE_PRO)
 	    $pdf->SetTitle('Faktura Pro Forma Nr. '.$docnumber);
 	else
@@ -587,7 +614,7 @@ function invoice_body_ft0100() {
 
 	/* set document digital signature & protection */
 	if (file_exists($cert) && file_exists($key)) {
-		$pdf->setSignature($cert, $key, 'lms-invoices', '', 1, $info);
+		$pdf->setSignature($cert, $key, 'inetlms-invoices', '', 1, $info);
 		$pdf->setSignatureAppearance(13, 10, 50, 20);
 	}
 	$pdf->SetProtection(array('modify', 'copy', 'annot-forms', 'fill-forms', 'extract', 'assemble'), '', 'PASSWORD_CHANGEME', '1');

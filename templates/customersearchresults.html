@@ -99,6 +99,25 @@
 					{/if}
 				{/if}
 			{/if}
+			
+			{if $customerlist[customerlist].blockcount}
+			    {if $customerlist[customerlist].status eq 3}
+				{if $customerlist[customerlist].nodeblock >= 1}
+				    {if $customerlist[customerlist].nodeblock eq 1}
+					<a href="?m=nodeblockade&ownerid={$customerlist[customerlist].id}"><img src="img/padlock.png" border="0"></a>
+				    {else}
+					<a href="?m=nodeblockade&ownerid={$customerlist[customerlist].id}"><img src="img/padlockmix.png"></a>
+				    {/if}
+				{else}
+					
+					<a href="?m=nodeblockade&ownerid={$customerlist[customerlist].id}&blockade"><img src="img/padlockoff.png"></a>
+				{/if}
+			    {else}
+				<img src="img/empty.gif" width="16">
+			    {/if}
+			{/if}
+			
+			
 			{if $customerlist[customerlist].warncount}
 				{if $customerlist[customerlist].status eq 3}
 					{if $customerlist[customerlist].nodewarn eq 1}

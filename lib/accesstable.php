@@ -145,6 +145,9 @@ $access['table'][48]['privilege']	= 'reopen_callcenter';
 $access['table'][49]['name']		= 'Historia adresów IP';
 $access['table'][49]['allow_reg']	= '^(iphistory)$';
 
+$access['table'][50]['name']		= 'Ewidencja pojazdów';
+$access['table'][50]['allow_reg']	= '^(re_)$';
+
 $access['table'][102]['name']		= 'Obsługa VoIP HIPERUS C5 - Pełny dostęp';
 $access['table'][102]['allow_reg'] 	= '^hv_*';
 

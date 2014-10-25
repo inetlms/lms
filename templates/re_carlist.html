@@ -1,0 +1,47 @@
+{include file="header.html"}
+{title value=$layout.pagetitle}
+
+<table width="100%" cellpadding="3">
+    <tr class="dark">
+	<td width="1%" nowrap class="fleftu pad10"><b>Nr. rej.</b></td>
+	<td width="1%" nowrap class="fbt pad10"><b>Marka</b></td>
+	<td width="1%" nowrap class="fbt pad10"><b>Model</b></td>
+	<td width="1%" nowrap class="fbt pad10"><b>Rodzaj pojazdu</b></td>
+	<td width="1%" nowrap class="fbt pad10"><b>Pojemność</b></td>
+	<td width="1%" nowrap class="fbt pad10"><b>Moc</b></td>
+	<td width="auto" class="fbt"></td>
+	<td width="1%" nowrap class="frightu pad10">&nbsp;</td>
+    </tr>
+    
+    
+    {cycle values="lucid,light" print=false}
+    {section name=carlist loop=$carlist}
+
+    <tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td width="1%" nowrap class="fleft pad10" onclick="self.location.href='?m=re_carinfo&idc={$carlist[carlist].id}';">{$carlist[carlist].dr_a}</td>
+	<td width="1%" nowrap class="fbt pad10" onclick="self.location.href='?m=re_carinfo&idc={$carlist[carlist].id}';">{$carlist[carlist].dr_d1}</td>
+	<td width="1%" nowrap class="fbt pad10" onclick="self.location.href='?m=re_carinfo&idc={$carlist[carlist].id}';">{$carlist[carlist].dr_d3}</td>
+	<td width="1%" nowrap class="fbt pad10" onclick="self.location.href='?m=re_carinfo&idc={$carlist[carlist].id}';">{$carlist[carlist].cartype_name}</td>
+	
+	<td width="1%" nowrap class="fbt pad10" align="right" onclick="self.location.href='?m=re_carinfo&idc={$carlist[carlist].id}';">{if $carlist[carlist].dr_p1}{$carlist[carlist].dr_p1} cm3{else}b.d.{/if}</td>
+	<td width="1%" nowrap class="fbt pad10" align="right" onclick="self.location.href='?m=re_carinfo&idc={$carlist[carlist].id}';">{if $carlist[carlist].dr_p2}{$carlist[carlist].dr_p2} kW{else}b.d.{/if}</td>
+	
+	<td width="auto" class="fbt" onclick="self.location.href='?m=re_carinfo&idc={$carlist[carlist].id}';"></td>
+	<td width="1%" nowrap class="frightu pad5" align="right">
+	    <a href="?m=re_carlist&delcar={$carlist[carlist].id}" onclick="return confirmLink(this,'Potwierdź usunięcie pojazdu\r\nWszystkie informacje zostaną\r\nusunięte z bazy danych !!!');"><img src="img/delete.gif"></a>
+	    <a href="?m=re_caredit&idc={$carlist[carlist].id}"><img src="img/edit.gif" title="[ Edycja ]"></a>
+	</td>
+    </tr>
+    
+    {sectionelse}
+    <tr class="light">
+	<td width="100%" class="fall" colspan="8" align="center">
+	    <br><p><b>Brak pojazdów na liście</b><br><a href="?m=re_caradd">Dodaj nowy pojazd</a></p><br>
+	</td>
+    <tr>
+    {/section}
+    
+    
+</table>
+
+{include file="footer.html"}

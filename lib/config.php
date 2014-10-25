@@ -150,7 +150,12 @@ $DEFAULTS = array(
 		'dir_local'	=> '',
 		'dir_ftp'	=> '',
 	),
+	'registryequipment' => array(
+		'enabled' => 1, // włączenie modułu
+		'car_eventdic' => 1,// zdarzenia tylko ze słownika dla pojazdów
+	),
 	'phpui' => array(
+		'default_division' => 0,
 		'lang' => '',
 		'iphistory' => 1,
 		'iphistory_pagelimit' => 50,

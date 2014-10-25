@@ -189,15 +189,19 @@ if (isset($_POST['document'])) {
 
 		$DB->BeginTrans();
 		
-		$division = $DB->GetRow('SELECT name, address, city, zip, countryid, ten, regon,
+		$division = $DB->GetRow('SELECT name, shortname, address, city, zip, countryid, ten, regon,
 				account, inv_header, inv_footer, inv_author, inv_cplace 
 				FROM divisions WHERE id = ? ;',array($customer['divisionid']));
 		
+		$fullnumber = docnumber($document['number'],
+			$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($document['numberplanid'])),
+			$time);
+		
 		$DB->Execute('INSERT INTO documents (type, number, numberplanid, cdate, 
 			customerid, userid, name, address, zip, city, ten, ssn, divisionid, 
-			div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
-			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace,closed)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
+			div_name, div_shortname, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
+			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace,closed, fullnumber)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
 				$document['type'],
 				$document['number'],
 				$document['numberplanid'],
@@ -212,6 +216,7 @@ if (isset($_POST['document'])) {
 				$customer['ssn'] ? $customer['ssn'] : '',
 				$customer['divisionid'],
 				($division['name'] ? $division['name'] : ''),
+				($division['shortname'] ? $division['shortname'] : ''),
 				($division['address'] ? $division['address'] : ''), 
 				($division['city'] ? $division['city'] : ''), 
 				($division['zip'] ? $division['zip'] : ''),
@@ -223,7 +228,8 @@ if (isset($_POST['document'])) {
 				($division['inv_footer'] ? $division['inv_footer'] : ''), 
 				($division['inv_author'] ? $division['inv_author'] : ''), 
 				($division['inv_cplace'] ? $division['inv_cplace'] : ''),
-				isset($document['closed']) ? 1 : 0
+				isset($document['closed']) ? 1 : 0,
+				($fullnumber ? $fullnumber : NULL),
 		));
 		
 		$docid = $DB->GetLastInsertID('documents');

@@ -162,6 +162,8 @@ if(isset($_GET['search']))
 	$SMARTY->assign('pagelimit',$pagelimit);
 	$SMARTY->assign('page',$page);
 	$SMARTY->assign('start',$start);
+	$SMARTY->assign('contactlist', $DB->GetAllByKey('SELECT customerid, MIN(phone) AS phone
+						FROM customercontacts WHERE phone != \'\' GROUP BY customerid', 'customerid'));
 
 	if(isset($_GET['print']))
 	{
