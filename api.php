@@ -80,14 +80,14 @@ require_once(LIB_DIR.'/unstrip.php');
 require_once(LIB_DIR.'/common.php');
 require_once(LIB_DIR.'/LMS.class.php');
 require_once(LIB_DIR.'/GaduGadu.class.php');
-require_once(LIB_DIR.'/Monitoring.class.php');
+
 
 $AUTH = NULL;
 $LMS = new LMS($DB, $AUTH, $CONFIG);
 $LMS->ui_lang = $_ui_language;
 $LMS->lang = $_language;
 $GG = new rfGG(GG_VER_77);
-$MONIT = new Monitoring($DB);
+
 
 $currenttime = time(); // akualny czas
 
