@@ -1173,9 +1173,9 @@ class LMS {
 				. ($warn && $warning == 1 ? ' AND s.ownerid IS NOT NULL AND s.warnsum = 0 ' : '')
 				. ($warn && $warning == 2 ? ' AND s.ownerid IS NOT NULL AND s.warncount = s.warnsum' : '')
 				. ($warn && $warning == 3 ? ' AND s.ownerid IS NOT NULL AND s.warncount > s.warnsum AND s.warnsum != 0' : '')
-				. ($nodeblock && $blockade == 1 ? ' AND s.ownerid IS NOT NULL AND s.blockcount = 0 ' : '')
-				. ($nodeblock && $blockade == 2 ? ' AND s.ownerid IS NOT NULL AND s.blocksum =  s.blocksum' : '')
-				. ($nodeblock && $blockade == 3 ? ' AND s.ownerid IS NOT NULL AND s.blockcount > s.blocksum AND blocksum != 0 ' : '')
+				. ($nodeblock && $blockade == 1 ? ' AND s.ownerid IS NOT NULL AND s.blocksum = 0 ' : '')
+				. ($nodeblock && $blockade == 2 ? ' AND s.ownerid IS NOT NULL AND s.blockcount =  s.blocksum' : '')
+				. ($nodeblock && $blockade == 3 ? ' AND s.ownerid IS NOT NULL AND s.blockcount > s.blocksum AND s.blocksum != 0 ' : '')
 				. ($osobowosc && $osobowosc == 1 ? ' AND c.type=0 ' : '')
 				. ($osobowosc && $osobowosc == 2 ? ' AND c.type=1 ' : '')
 				. ($odlaczeni && $disabled == 4 ? ' AND s.ownerid IS NULL' : '')
@@ -2393,6 +2393,8 @@ class LMS {
 				. ($status == 2 ? ' AND n.access = 0' : '') //disconnected
 				. ($status == 3 ? ' AND n.lastonline > ?NOW? - ' . intval($this->CONFIG['phpui']['lastonline_limit']) : '') //online
 				. ($status == 4 ? ' AND NOT EXISTS (SELECT * FROM nodeassignments na  WHERE n.id = na.nodeid)' : '') //without nodeassignments
+				. ($status == 5 ? ' AND n.blockade = 1' : '') // z blokadą
+				. ($status == 6 ? ' AND n.warning = 1' : '') // z powiadomieniem
 				. ($customergroup ? ' AND customergroupid = ' . intval($customergroup) : '')
 				. ($nodegroup ? ' AND nodegroupid = ' . intval($nodegroup) : '')
 				. (isset($searchargs) ? $searchargs : '')

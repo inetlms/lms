@@ -19,7 +19,9 @@
 					<option value="1"{if $listdata.state eq 1} selected{/if}>{trans("connected<!plural:item>")}</option>
 					<option value="2"{if $listdata.state eq 2} selected{/if}>{trans("disconnected<!plural:item>")}</option>
 					<option value="3"{if $listdata.state eq 3} selected{/if}>{trans("online")}</option>
-					<option value="4"{if $listdata.state eq 4} selected{/if}>{trans("no nodeassignments")}</option>
+					<option value="4"{if $listdata.state eq 4} selected{/if}>{trans("no nodeassignments")}</option> 
+					<option value="5"{if $listdata.state eq 5} selected{/if}>{trans("with blockade")}</option> 
+					<option value="6"{if $listdata.state eq 6} selected{/if}>{trans("with warning")}</option> 
 				</select><nobr>&nbsp;
 				<nobr>{trans("Network:")}
 				<select size="1" name="n" onchange="document.choosefilter.submit();" {if $listdata.network} class="active"{/if}>
