@@ -120,8 +120,8 @@ if (defined('Smarty::SMARTY_VERSION'))
 	$ver_chunks = preg_split('/[- ]/', Smarty::SMARTY_VERSION);
 else
 	$ver_chunks = NULL;
-if (count($ver_chunks) != 2 || version_compare('3.0', $ver_chunks[1]) > 0)
-	die('<B>Wrong version of Smarty engine! We support only Smarty-3.x greater than 3.0.</B>');
+if (count($ver_chunks) < 2 || version_compare('3.1', $ver_chunks[1]) > 0)
+	die('<B>Wrong version of Smarty engine! We support only Smarty-3.x greater than 3.1.</B> - '.Smarty::SMARTY_VERSION);
 
 define('SMARTY_VERSION', $ver_chunks[1]);
 
@@ -177,6 +177,10 @@ $LMS->ui_lang = $_ui_language;
 $LMS->lang = $_language;
 $GG = new rfGG(GG_VER_77);
 $RAD = new radius($DB,$LMS);
+
+if (get_conf('registryequipment.enabled')) {
+	require_once(LIB_DIR.'/Registry.Equipment.class.php');
+}
 
 if(get_conf('voip.enabled','0') )
 {
