@@ -82,7 +82,9 @@ $layout['dbschversion'] = DBVERSION;
 
 
 
-if ($layout['dbschversion'] == '2014032900')
+//if ($layout['dbschversion'] == '2014032900')
+
+if ($DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? LIMIT 1;',array('dbversion')) == '2014032900')
 {
     $dbex = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ?',array('dbvex'));
 
@@ -127,4 +129,5 @@ if ($layout['dbschversion'] == '2014032900')
 $layout['dbschversionex'] = isset($lastupgradeex) ? $lastupgradeex : DBVEX;
 
 } // end if defined no check
+
 ?>
