@@ -26,68 +26,7 @@
 
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 
-if (is_readable('lms.ini'))
-	$CONFIG_FILE = 'lms.ini';
-elseif (is_readable('/etc/lms/lms.ini'))
-	$CONFIG_FILE = '/etc/lms/lms.ini';
-else
-    die;
-
-$CONFIG = (array) parse_ini_file($CONFIG_FILE, true);
-
-$CONFIG['directories']['sys_dir'] = (!isset($CONFIG['directories']['sys_dir']) ? getcwd() : $CONFIG['directories']['sys_dir']);
-$CONFIG['directories']['lib_dir'] = (!isset($CONFIG['directories']['lib_dir']) ? $CONFIG['directories']['sys_dir'].'/lib' : $CONFIG['directories']['lib_dir']);
-$CONFIG['directories']['doc_dir'] = (!isset($CONFIG['directories']['doc_dir']) ? $CONFIG['directories']['sys_dir'].'/documents' : $CONFIG['directories']['doc_dir']);
-$CONFIG['directories']['modules_dir'] = (!isset($CONFIG['directories']['modules_dir']) ? $CONFIG['directories']['sys_dir'].'/modules' : $CONFIG['directories']['modules_dir']);
-$CONFIG['directories']['backup_dir'] = (!isset($CONFIG['directories']['backup_dir']) ? $CONFIG['directories']['sys_dir'].'/backups' : $CONFIG['directories']['backup_dir']);
-$CONFIG['directories']['config_templates_dir'] = (!isset($CONFIG['directories']['config_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/config_templates' : $CONFIG['directories']['config_templates_dir']);
-$CONFIG['directories']['smarty_compile_dir'] = (!isset($CONFIG['directories']['smarty_compile_dir']) ? $CONFIG['directories']['sys_dir'].'/templates_c' : $CONFIG['directories']['smarty_compile_dir']);
-$CONFIG['directories']['smarty_templates_dir'] = (!isset($CONFIG['directories']['smarty_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/templates' : $CONFIG['directories']['smarty_templates_dir']);
-
-define('SYS_DIR', $CONFIG['directories']['sys_dir']);
-define('LIB_DIR', $CONFIG['directories']['lib_dir']);
-define('DOC_DIR', $CONFIG['directories']['doc_dir']);
-define('BACKUP_DIR', $CONFIG['directories']['backup_dir']);
-define('MODULES_DIR', $CONFIG['directories']['modules_dir']);
-define('SMARTY_COMPILE_DIR', $CONFIG['directories']['smarty_compile_dir']);
-define('SMARTY_TEMPLATES_DIR', $CONFIG['directories']['smarty_templates_dir']);
-
-require_once(LIB_DIR.'/config.php');
-
-$_DBTYPE = $CONFIG['database']['type'];
-$_DBHOST = $CONFIG['database']['host'];
-$_DBUSER = $CONFIG['database']['user'];
-$_DBPASS = $CONFIG['database']['password'];
-$_DBNAME = $CONFIG['database']['database'];
-
-require(LIB_DIR.'/LMSDB.php');
-
-$DB = DBInit($_DBTYPE, $_DBHOST, $_DBUSER, $_DBPASS, $_DBNAME);
-
-if(!$DB)
-{
-	die("Fatal error: cannot connect to database!\n");
-}
-
-if($cfg = $DB->GetAll('SELECT section, var, value FROM uiconfig WHERE disabled=0'))
-	foreach($cfg as $row)
-		$CONFIG[$row['section']][$row['var']] = $row['value'];
-
-
-require_once(LIB_DIR.'/language.php');
-include_once(LIB_DIR.'/definitions.php');
-require_once(LIB_DIR.'/unstrip.php');
-require_once(LIB_DIR.'/common.php');
-require_once(LIB_DIR.'/LMS.class.php');
-require_once(LIB_DIR.'/GaduGadu.class.php');
-//require_once(LIB_DIR.'/Monitoring.class.php');
-
-$AUTH = NULL;
-$LMS = new LMS($DB, $AUTH, $CONFIG);
-$LMS->ui_lang = $_ui_language;
-$LMS->lang = $_language;
-$GG = new rfGG(GG_VER_77);
-//$MONIT = new Monitoring($DB);
+include('/etc/lms/init_lms.php');
 
 $currenttime = time(); // akualny czas
 

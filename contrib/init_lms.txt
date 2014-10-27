@@ -1,0 +1,2 @@
+plik init_lms.php należy umieścic w /etc/lms
+i aktualizować go razem z iNET LMS !!!
