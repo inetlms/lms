@@ -33,6 +33,13 @@ $changelog = array(
 	),
 	
 */
+        array(
+            'data'      => '2014/10/26',
+            'status'    => '',
+            'opis'      => 'w liście komputerów dodano status "z blokadą" i "z powiadomieniem"',
+        ),
+
+
 	array(
 	    'data'	=> '2014/10/25',
 	    'status'	=> '',
