@@ -24,7 +24,7 @@
  *  $Id$
  */
 // 2014090600
-define('DBVERSION', '2014032900'); // here should be always the newest version of database!
+define('DBVERSION', '2014032901'); // here should be always the newest version of database!
 define('DBVEX','2014102500'); // wersja bazy LMS iNET
 				 // it placed here to avoid read disk every time when we call this file.
 
@@ -84,7 +84,7 @@ $layout['dbschversion'] = DBVERSION;
 
 //if ($layout['dbschversion'] == '2014032900')
 
-if ($DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? LIMIT 1;',array('dbversion')) == '2014032900')
+if ($DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? LIMIT 1;',array('dbversion')) == '2014032901')
 {
     $dbex = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ?',array('dbvex'));
 

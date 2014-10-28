@@ -39,7 +39,7 @@ class Profile
 	{
 		$this->DB =& $DB;
 		$this->AUTH =& $AUTH;
-		if ($dane = $this->DB->GetOne('SELECT profiles FROM users WHERE id = ? '.$this->DB->Limit(1).' ;',array($this->AUTH->id))) 
+		if ($this->AUTH->id && $dane = $this->DB->GetOne('SELECT profiles FROM users WHERE id = ? '.$this->DB->Limit(1).' ;',array($this->AUTH->id))) 
 		{
 			$this->settings = unserialize($dane);
 		}

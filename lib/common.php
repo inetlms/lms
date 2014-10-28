@@ -1088,5 +1088,31 @@ function seconds_to_hours($seconds)
     return sprintf("%02d:%02d:%02d",$h,$m,$s);
 }
 
+function check_date($data) {
+	
+	if(preg_match('/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/',$data))
+	{
+		list($y, $m, $d) = explode('/', $data);
+		if(checkdate($m, $d, $y))
+			return TRUE;
+		else
+			return FALSE;
+	} else
+	    return FALSE;
+}
+
+
+function check_natural($val) {
+
+    if(!empty($val)) {
+	if (!preg_match('/^[0-9]+\.[0-9]{1,2}+$/ ', $val) && !preg_match('/^[0-9]+$/', $val))
+	    return FALSE;
+	else
+	    return TRUE;
+    } else
+	return FALSE;
+}
+
+
 
 ?>

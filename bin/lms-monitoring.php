@@ -108,11 +108,6 @@ if (!$quiet)
 
 if (!is_readable($CONFIG_FILE))
 	die("Nie mozna odczytac pliku konfiguracyjnego file [".$CONFIG_FILE."]!\n");
-	
-//$ch = curl_init();
-
-if (!$ch)
-	die("Blad krytyczny: Nie zainicjowano biblioteki curl !\n");
 
 $CONFIG = (array) parse_ini_file($CONFIG_FILE, true);
 

@@ -253,7 +253,7 @@ switch($action)
 		
 		if ($cnote['numberplanid'])
 		    $fullnumber = docnumber($cnote['number'],
-				$DB->GetOne('SELECT template FROM numberplans WHERE id = ? LIMIT 1;',array($cnote['numberplanid')),
+				$DB->GetOne('SELECT template FROM numberplans WHERE id = ? LIMIT 1;',array($cnote['numberplanid'])),
 				$cnote['cdate']);
 		else
 		    $fullnumber = NULL;
