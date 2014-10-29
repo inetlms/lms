@@ -106,7 +106,6 @@ else
 if (count($ver_chunks) < 2 || version_compare('3.1', $ver_chunks[1]) > 0)
 	die('<B>Wrong version of Smarty engine! We support only Smarty-3.x greater than 3.1.</B> - '.Smarty::SMARTY_VERSION);
 
-
 define('SMARTY_VERSION', $ver_chunks[1]);
 
 // Read configuration of LMS-UI from database
