@@ -43,10 +43,10 @@ function savecars($forms)
 		$obj->script("addClassId('dr_a','alerts');");
 		$obj->assign("dr_a_alerts","innerHTML",$inf);
 		$blad = true;
-	} elseif (strlen($form['dr_a']) != 7) {
-		$obj->script("addClassId('dr_a','alerts');");
-		$obj->assign("dr_a_alerts","innerHTML","Błędnie podano nr. rejestracyjny");
-		$blad = true;
+//	} elseif (strlen($form['dr_a']) != 7) {
+//		$obj->script("addClassId('dr_a','alerts');");
+//		$obj->assign("dr_a_alerts","innerHTML","Błędnie podano nr. rejestracyjny");
+//		$blad = true;
 	} elseif ($RE->checkissetnrrej($form['dr_a'],$id)) {
 		$obj->script("addClassId('dr_a','alerts');");
 		$obj->assign("dr_a_alerts","innerHTML","Podany nr. rejestracyjny jest już bazie !!!");
