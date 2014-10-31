@@ -34,6 +34,12 @@ $changelog = array(
 	
 */
         array(
+            'data'      => '2014/10/31',
+            'status'    => '',
+            'opis'      => 'dodano filtr w liście klientów "blokady/ zawieszone blokowanie" - dla klientów z zawieszonym blokowaniem oraz "zobowiązania / zawieszone naliczanie" - dla klientów z zawieszonym naliczaniem dodanych taryf',
+        ),
+    
+        array(
             'data'      => '2014/10/26',
             'status'    => '',
             'opis'      => 'w liście komputerów dodano status "z blokadą" i "z powiadomieniem"',

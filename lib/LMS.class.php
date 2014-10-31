@@ -103,6 +103,8 @@ class LMS {
 	    -3		: bez jakich kolwiek zobowiązań
 	    FALSE	: domyślnie 30 dni, w ciągu 30 dni
 	    $>0	: w ciągu ilu dni kończy się zobowiązanie
+         *  -4          : zawieszona taryfa
+         * -10 do -17   : okres naliczania
 	*/
 	if ( (is_null($dni))||($dni>'0'))
 	{
@@ -141,7 +143,64 @@ class LMS {
 	    .' AND NOT EXISTS (SELECT 1 FROM assignments aa WHERE aa.customerid=a.customerid AND aa.datefrom>=(a.dateto-86400) LIMIT 1)'
 	    ;
 	}
-	
+        elseif ($dni=='-4')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.suspended=1 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-15')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=5 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-17')
+	{
+	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=7 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-14')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=4 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-13')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=3 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-12')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=2 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-11')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=1 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-10')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=0 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        
 	return $this->DB->GetCol($zap);
     }
 
@@ -987,6 +1046,7 @@ class LMS {
 			case 1 : $blockade = 1; break;
 			case 2 : $blockade = 2; break;
 			case 3 : $blockade = 3; break;
+                        case 4 : $blockade = 4; break;
 			default: $blockade = NULL; break;
 		}
 		
@@ -1173,9 +1233,10 @@ class LMS {
 				. ($warn && $warning == 1 ? ' AND s.ownerid IS NOT NULL AND s.warnsum = 0 ' : '')
 				. ($warn && $warning == 2 ? ' AND s.ownerid IS NOT NULL AND s.warncount = s.warnsum' : '')
 				. ($warn && $warning == 3 ? ' AND s.ownerid IS NOT NULL AND s.warncount > s.warnsum AND s.warnsum != 0' : '')
-				. ($nodeblock && $blockade == 1 ? ' AND s.ownerid IS NOT NULL AND s.blockcount = s.blocksum ' : '')
-				. ($nodeblock && $blockade == 2 ? ' AND s.ownerid IS NOT NULL AND s.blocksum = 0' : '')
+				. ($nodeblock && $blockade == 1 ? ' AND s.ownerid IS NOT NULL AND s.blocksum = 0 ' : '')
+				. ($nodeblock && $blockade == 2 ? ' AND s.ownerid IS NOT NULL AND s.blockcount =  s.blocksum' : '')
 				. ($nodeblock && $blockade == 3 ? ' AND s.ownerid IS NOT NULL AND s.blockcount > s.blocksum AND s.blocksum != 0 ' : '')
+                                . ($nodeblock && $blockade == 4 ? ' AND s.ownerid IS NOT NULL AND c.cutoffstop >= ?NOW? ' : '')
 				. ($osobowosc && $osobowosc == 1 ? ' AND c.type=0 ' : '')
 				. ($osobowosc && $osobowosc == 2 ? ' AND c.type=1 ' : '')
 				. ($odlaczeni && $disabled == 4 ? ' AND s.ownerid IS NULL' : '')
