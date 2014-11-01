@@ -230,6 +230,7 @@
 						<option value="1" {if $listdata.block=='1'} selected{/if}>włączone</option>
 						<option value="2" {if $listdata.block=='2'} selected{/if}>wyłączone</option>
 						<option value="3" {if $listdata.block=='3'} selected{/if}>częściowo</option>
+                                                <option value="4" {if $listdata.block=='4'} selected{/if}>zawieszenie blokowania</option>
 					    </select>
 					</td>
 					
@@ -244,6 +245,14 @@
 					    <option value="-1" {if $listdata.contractend=='-1'} selected {/if}>przeterminowane</option>
 					    <option value="-2" {if $listdata.contractend=='-2'} selected {/if}>bezterminowe</option>
 					    <option value="-3" {if $listdata.contractend=='-3'} selected {/if}>bez zobowiązań</option>
+                                            <option value="-4" {if $listdata.contractend=='-4'} selected {/if}>zawieszone naliczanie</option>
+                                            <option value="-15" {if $listdata.contractend=='-15'} selected {/if}>naliczanie roczne</option>
+                                            <option value="-17" {if $listdata.contractend=='-17'} selected {/if}>naliczanie półroczne</option> 
+                                            <option value="-14" {if $listdata.contractend=='-14'} selected {/if}>naliczanie kwartalne</option>                                         
+                                            <option value="-13" {if $listdata.contractend=='-13'} selected {/if}>naliczanie miesięczne</option>
+                                            <option value="-12" {if $listdata.contractend=='-12'} selected {/if}>naliczanie tygodniowe</option>
+                                            <option value="-11" {if $listdata.contractend=='-11'} selected {/if}>naliczanie codzienne</option>
+                                            <option value="-10" {if $listdata.contractend=='-10'} selected {/if}>naliczenie jednorazowe</option>
 					    </select>
 					</td>
 					
