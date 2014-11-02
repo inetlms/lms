@@ -8037,10 +8037,59 @@ class LMS {
 	return $result;
     }
     
+    /*********************************
+    *     Linie telekomunikacyjne    *
+    *********************************/
+    
+    function delTeleLine($id)
+    {
+	if (SYSLOG) {
+	    $nazwa = $this->DB->GetOne('SELECT name FROM teleline WHERE id = ? LIMIT 1;',array($id));
+	    addlogs('Usunięcie linii telekomunikacyjnej '.$nazwa,'e=del;m=netdev;');
+	}
+	
+	$this->DB->BeginTrans();
+	//$DB->Execute('UPDATE fiberlineassign SET fiberline=0 WHERE fiberline = ?;',array($id));
+	$this->DB->Execute('UPDATE netlinks SET teleline=0 WHERE teleline = ?;',array($id));
+	$this->DB->Execute('DELETE FROM teleline WHERE id=?;',array($id));
+	$this->DB->CommitTrans();
+    }
+    
+    
+    function updateTeleLine($form)
+    {
+    
+	$this->DB->Execute('UPDATE teleline SET name=?, description=? WHERE id = ? ;',
+	    array(
+		$form['name'],
+		($form['description'] ? $form['description'] : NULL),
+		intval($form['id'])
+	    )
+	);
+    }
+    
+    
+    function addTeleLine($form)
+    {
+	$this->DB->Execute('INSERT INTO teleline (name,description,active) VALUES (?,?,?) ;',
+	    array(
+		$form['name'],
+		($form['description'] ? $form['description'] : NULL),
+		1
+	    )
+	);
+	
+	return $this->DB->getlastinsertid('teleline');
+    }
+    
     
     function getTeleLine()
     {
-	return $this->DB->GetAll('SELECT l.*, (SELECT COUNT(*) FROM telelineassign a WHERE a.teleline = l.id) AS countlink FROM teleline l ORDER BY name ASC;');
+	$result = $this->DB->GetAll('SELECT l.*, 
+				    (SELECT COUNT(*) FROM netlinks n WHERE n.teleline = l.id) AS countlink 
+				    FROM teleline l 
+				    ORDER BY name ASC;');
+	return $result;
     }
 
 

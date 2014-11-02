@@ -285,31 +285,38 @@ $menu = array(
 					'name' => 'Węzły',
 					'link' => '?m=networknodelist',
 					'tip' => 'Węzły sieciowe',
-					'prio' => 21,
+					'prio' => 30,
 				),
 				array(
 					'name' => 'Nowy Węzeł',
 					'link' => '?m=networknodeadd',
 					'tip' => 'Dodaj nowy węzeł sieciowy',
-					'prio' => 22,
-				),
-				array(
-					'name' => trans('Search'),
-					'link' => '?m=netdevsearch',
-					'tip' => trans('Allows you to search device'),
-					'prio' => 30,
-				),
-				array(
-					'name' => trans('Map'),
-					'link' => '?m=netdevmap',
-					'tip' => trans('Network map display'),
 					'prio' => 40,
+				),
+				array(
+					'name' => 'Linie telekomunikacyjne',
+					'link' => '?m=teleline',
+					'tip' => 'Lista linii telekomunikacyjnych',
+					'prio' => 50,
 				),
 				array(
 					'name' => trans('Hosts'),
 					'link' => '?m=hostlist',
 					'tip' => trans('List of Hosts'),
 					'prio' => 60,
+				),
+				
+				array(
+					'name' => trans('Map'),
+					'link' => '?m=netdevmap',
+					'tip' => trans('Network map display'),
+					'prio' => 70,
+				),
+				array(
+					'name' => trans('Search'),
+					'link' => '?m=netdevsearch',
+					'tip' => trans('Allows you to search device'),
+					'prio' => 80,
 				),
 				
 			
