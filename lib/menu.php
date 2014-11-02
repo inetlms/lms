@@ -293,12 +293,12 @@ $menu = array(
 					'tip' => 'Dodaj nowy węzeł sieciowy',
 					'prio' => 40,
 				),
-				array(
-					'name' => 'Linie telekomunikacyjne',
-					'link' => '?m=teleline',
-					'tip' => 'Lista linii telekomunikacyjnych',
-					'prio' => 50,
-				),
+//				array(
+//					'name' => 'Linie telekomunikacyjne',
+//					'link' => '?m=teleline',
+//					'tip' => 'Lista linii telekomunikacyjnych',
+//					'prio' => 50,
+//				),
 				array(
 					'name' => trans('Hosts'),
 					'link' => '?m=hostlist',

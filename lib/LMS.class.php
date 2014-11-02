@@ -1293,8 +1293,10 @@ class LMS {
 				nd.id AS devid, nd.name AS devname, nd.location AS devlocation, 
 				n.warning, n.info, n.ownerid, n.lastonline, n.location, n.blockade, 
 				(SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active=1) AS monitoring, 
-				(SELECT COUNT(*) FROM nodegroupassignments WHERE nodeid = n.id) AS gcount 
+				(SELECT COUNT(*) FROM nodegroupassignments WHERE nodeid = n.id) AS gcount,
+				n.netid, net.name AS netname 
 				FROM vnodes n 
+				JOIN networks net ON net.id = n.netid 
 				LEFT JOIN netdevices nd ON (nd.id = n.netdev) 
 				WHERE ownerid = ?
 				ORDER BY name ASC ' . ($count ? 'LIMIT ' . $count : ''), array($id))) {
@@ -1305,11 +1307,11 @@ class LMS {
 				$ids[$node['id']] = $idx;
 				$result[$idx]['lastonlinedate'] = lastonline_date($node['lastonline']);
 
-				foreach ($networks as $net)
-					if (isipin($node['ip'], $net['address'], $net['mask'])) {
-						$result[$idx]['network'] = $net;
-						break;
-					}
+//				foreach ($networks as $net)
+//					if (isipin($node['ip'], $net['address'], $net['mask'])) {
+//						$result[$idx]['network'] = $net;
+//						break;
+//					}
 
 				if ($node['ipaddr_pub'])
 					foreach ($networks as $net)
@@ -4221,13 +4223,13 @@ class LMS {
 				pow(2,(32 - mask2prefix(inet_aton(mask)))) AS size, disabled, 
 				(SELECT COUNT(*) 
 					FROM nodes 
-					WHERE (ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
-						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask)))
+					WHERE netid = n.id AND ((ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
+						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask))))
 				) AS assigned,
 				(SELECT COUNT(*) 
 					FROM nodes 
-					WHERE ((ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
-						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask))))
+					WHERE netid = n.id AND (((ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
+						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask)))))
 						AND (?NOW? - lastonline < ?)
 				) AS online 
 				FROM networks n 
