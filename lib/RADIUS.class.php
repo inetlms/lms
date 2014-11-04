@@ -44,10 +44,15 @@ class RADIUS {
 	    return $result;
     }
     
-   function GetRadaccidByName($name)  
+    function GetRadaccidByName($name)  
     {
         return $this->DB->GetOne('SELECT radacctid FROM radacct WHERE (acctstoptime IS NULL OR acctstoptime=\'0000-00-00 00:00:00\') AND  username = ? LIMIT 1;',array($name));
     } //pobiera radacctid po nazwie użytkownika (login pppoe) z aktualnej sesji zapisanej w tabeli radacct
+    
+    function GetacctidByName($name)
+    {
+ 	return $this->DB->GetOne('SELECT acctsessionid FROM radacct WHERE (acctstoptime IS NULL OR acctstoptime=\'0000-00-00 00:00:00\') AND  username = ? LIMIT 1;',array($name));
+     } //pobiera acctsessionid po nazwie użytkownika (login pppoe) z aktualnej sesji zapisanej w tabeli radacct
     
     function disconnect_user($radacctid)
     {
