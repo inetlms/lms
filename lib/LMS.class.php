@@ -3443,7 +3443,23 @@ class LMS {
 			$result['totalbase'] = 0;
 			$result['totaltax'] = 0;
 			$result['total'] = 0;
-
+			
+			if ($firma = $this->DB->getrow('SELECT shortname,name,address,city,zip,ten,account,inv_header,inv_footer,inv_author,inv_cplace 
+				FROM divisions WHERE id = ? LIMIT 1;',array($result['divisionid'])))
+			{
+			    if (empty($result['division_name'])) $result['division_name'] = $firma['name'];
+			    if (empty($result['division_shortname'])) $result['division_shortname'] = $firma['name'];
+			    if (empty($result['division_address'])) $result['division_address'] = $firma['address'];
+			    if (empty($result['division_zip'])) $result['division_zip'] = $firma['zip'];
+			    if (empty($result['division_city'])) $result['division_city'] = $firma['city'];
+			    if (empty($result['division_ten'])) $result['division_ten'] = $firma['ten'];
+			    if (empty($result['account'])) $result['account'] = $firma['account'];
+			    if (empty($result['division_header'])) $result['division_header'] = $firma['inv_header'];
+			    if (empty($result['division_footer'])) $result['division_footer'] = $firma['inv_footer'];
+			    if (empty($result['division_author'])) $result['division_author'] = $firma['inv_author'];
+			    if (empty($result['division_cplace'])) $result['division_cplace'] = $firma['inv_cplace'];
+			}
+			
 			if ($result['reference'])
 				$result['invoice'] = $this->GetInvoiceContent($result['reference']);
 
