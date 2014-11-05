@@ -5617,6 +5617,27 @@ class LMS {
 				    return MSG_SENT;
 				return $ret;
 			break;
+			case 'serwersms' :
+				if ($msg_len < 160)
+					$type_sms = 'sms';
+				else 
+				    if ($msg_len <= 459)
+					$type_sms = 'concat';
+				    else
+					return trans('SMS Message too long!');
+				$param = array();
+				$param['numer'] = $number;
+				$param['wiadomosc'] = $message;
+				$param['test'] = 0;
+				if (!get_conf('sms.smsapi_eco',1) && get_conf('sms.from','')) {
+				    $param['nadawca'] = get_conf('sms.from');
+				}
+				$result = SerwerSMS::wyslij_sms($param);
+				if ($result)
+				    return MSG_SENT;
+				else
+				    return FALSE;
+			break;
 			case 'smstools':
 				$dir = !empty($this->CONFIG['sms']['smstools_outdir']) ? $this->CONFIG['sms']['smstools_outdir'] : '/var/spool/sms/outgoing';
 

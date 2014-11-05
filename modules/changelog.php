@@ -33,6 +33,11 @@ $changelog = array(
 	),
 	
 */
+	array(
+	    'data'	=> '2014/11/05',
+	    'status'	=> '',
+	    'opis'	=> 'dodano obsługę serwisu SerwerSMS',
+	),
         array(
             'data'      => '2014/10/31',
             'status'    => '',
