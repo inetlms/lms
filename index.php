@@ -198,7 +198,9 @@ if(get_conf('voip.enabled','0') )
 }
     else $voip = NULL;
 
-
+if (get_conf('sms.service') == 'serwersms') {
+    require_once(LIB_DIR.'/SerwerSMS_api.php');
+}
 // Set some template and layout variables
 
 $SMARTY->template_dir = SMARTY_TEMPLATES_DIR;

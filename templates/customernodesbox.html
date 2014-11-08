@@ -127,7 +127,7 @@ function setgroup(act)
 				{/if}
 			    </td>
 			    <td align="right" nowrap>
-				<b><a href="?m=netinfo&id={$customernodes[customernodes].network.id}">{$customernodes[customernodes].network.name|truncate:"20":"...":true}</a></b> {if $customernodes[customernodes].network_pub} (<b><a href="?m=netinfo&id={$customernodes[customernodes].network_pub.id}">{$customernodes[customernodes].network_pub.name|truncate:"20":"...":true}</a></b>){/if}
+				<b><a href="?m=netinfo&id={$customernodes[customernodes].netid}">{$customernodes[customernodes].netname|truncate:"20":"...":true}</a></b> {if $customernodes[customernodes].network_pub} (<b><a href="?m=netinfo&id={$customernodes[customernodes].network_pub.id}">{$customernodes[customernodes].network_pub.name|truncate:"20":"...":true}</a></b>){/if}
 			    </td>
 			    <td nowrap align="right">
 				

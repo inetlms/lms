@@ -3,6 +3,7 @@ uploadfiles/*
 userpanel/templates_c/*
 backups/*
 tmp/*
+rrd/*
 lms.ini
 *~
 *.swp

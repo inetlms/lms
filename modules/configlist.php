@@ -734,7 +734,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 				switch($item['var'])
 				{
 					case 'service':
-						$config[$idx]['description'] = 'Domyślny typ serwisu używanego do wysyłania wiadomości, dozwolone smscenter, smsapi i smstools';
+						$config[$idx]['description'] = 'Domyślny typ serwisu używanego do wysyłania wiadomości, dozwolone smscenter, smsapi , smstools , serwersms';
 					break;
 
 					case 'prefix':
@@ -758,7 +758,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					break;
 					
 					case 'smsapi_eco':
-						$config[$idx]['description'] = 'SMSAPI - Wysyłka ekonomicznej wiadomości, bez pola nadawcy. DEF.: 1';
+						$config[$idx]['description'] = 'SMSAPI / SerwerSMS - Wysyłka ekonomicznej wiadomości, bez pola nadawcy. DEF.: 1';
 					break;
 					
 					case 'smsapi_fast':

@@ -32,15 +32,15 @@
 
 
 <table width="100%" cellpadding="3" cellspacing="0" class="table">
-<tr class="dark nav-header">
+<tr class="pgdark nav-header">
 	<td width="100%" colspan="2" class="fall" align="left"><strong>{if $actions == 'edit'}Edycja danych węzła : {$networknodeinfo.name}{else}Dodaj nowy węzeł{/if}</strong></td>
 </tr>
 
-<tr class="light">
+<tr class="pglight">
 <td width="50%" align="left" class="fleft pad" style="vertical-align:top;">
 <table width="100%" cellpadding="2">
 
-	<tr>
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">
 		    <strong>Nazwa węzła</strong>
 		</td>
@@ -50,7 +50,7 @@
 		</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">
 		    Rodzaj węzła
 		</td>
@@ -62,7 +62,7 @@
 		</td>
 	</tr>
 
-	<tr class="light" id="id_view_used_teryt">
+	<tr class="pglight" id="id_view_used_teryt">
 		<td width="1%" nowrap class="pad" align="left">
 		    <label for="teryt">Użyj bazy TERYT</label>
 		    <input type="checkbox" name="teryt" value="1" id="teryt" onchange="check_use_teryt();" {if $networknodeinfo.teryt} checked {/if}>
@@ -72,7 +72,7 @@
 		</td>
 	</tr>
 	
-	<tr class="light" id="id_view_location" style="display:none;">
+	<tr class="pglight" id="id_view_location" style="display:none;">
 		<td width="1%" nowrap class="pad" align="left">Loklalizacja</td>
 		<td width="99%" nowrap class="pad">
 		    <input type="text" name="networknode[location]" id="location" readonly style="width:200px;" value="{$networknodeinfo.location}">
@@ -80,7 +80,7 @@
 		</td>
 	</tr>
 
-	<tr class="light" id="id_view_states">
+	<tr class="pglight" id="id_view_states">
 		<td width="1%" nowrap class="pad" align="left">
 		    Województwo
 		</td>
@@ -90,7 +90,7 @@
 		</td>
 	</tr>
 
-	<tr class="light" id="id_view_districts">
+	<tr class="pglight" id="id_view_districts">
 		<td width="1%" nowrap class="pad" align="left">
 		    Powiat
 		</td>
@@ -100,7 +100,7 @@
 		</td>
 	</tr>
 
-	<tr class="light" id="id_view_boroughs">
+	<tr class="pglight" id="id_view_boroughs">
 		<td width="1%" nowrap class="pad" align="left">
 		    Gmina
 		</td>
@@ -110,7 +110,7 @@
 		</td>
 	</tr>
 
-	<tr class="light" id="id_view_city">
+	<tr class="pglight" id="id_view_city">
 		<td width="1%" nowrap class="pad" align="left">
 		    Miejscowość
 		</td>
@@ -120,7 +120,7 @@
 		</td>
 	</tr>
 
-	<tr class="light" id="id_view_street">
+	<tr class="pglight" id="id_view_street">
 		<td width="1%" nowrap class="pad" align="left">
 		    Ulica
 		</td>
@@ -131,7 +131,7 @@
 	
 	
 
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">
 		    Numer porządkowy budynku
 		</td>
@@ -141,7 +141,7 @@
 		</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">
 		    Numer mieszkania
 		</td>
@@ -150,7 +150,7 @@
 		</td>
 	</tr>
 
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">
 		    Kod Pocztowy
 		</td>
@@ -160,7 +160,7 @@
 		</td>
 	</tr>
 
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">
 		    <span class="tiphelp" {tip text="Proszę podać numer działki jeżeli nie ma podanego adresu"}>Numer działki ewidencyjnej</span>
 		</td>
@@ -170,7 +170,7 @@
 		</td>
 	</tr>
 
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">
 		    Szerokość geografczna
 		</td>
@@ -180,7 +180,7 @@
 		</td>
 	</tr>
 
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">
 		    Długość geograficzna
 		</td>
@@ -190,7 +190,7 @@
 		</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">
 		    <span class="tiphelp" {tip text="Typ budynku/obiektu w którym znajduje się węzeł.<br>Wymagane dla węzła własnego"}>Typ obiektu</span>
 		</td>
@@ -200,30 +200,30 @@
 		</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Powierzchnia całkowita pomieszczeń udostępnionych dla węzła"}>Powierzchnia całkowita</span></td>
 		<td width="99%" nowrap class="pad">
-			<input type="text" style="width:110px;" name="networknode[room_area]" id="id_room_area" value="{$networknodeinfo.room_area}">
+			<input type="number" style="width:110px;" name="networknode[room_area]" id="id_room_area" value="{$networknodeinfo.room_area}">
 			&nbsp;m2
 		</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 	    <td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Powierzchnia wolna pomieszczeń udostępnionych dla węzła"}>Powierzchnia wolna</span></td>
 	    <td width="99%" nowrap class="pad">
-		<input type="text" style="width:110px;" name="networknode[room_area_empty]" id="id_room_area_empty" value="{$networknodeinfo.room_area_empty}">
+		<input type="number" style="width:110px;" name="networknode[room_area_empty]" id="id_room_area_empty" value="{$networknodeinfo.room_area_empty}">
 		&nbsp;m2
 	    </td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Możliwość udostępnienia innym podmiotom powierzchni w obiekcie, w którym znajduje się węzeł"}>Udostępnienie obcym podmiotom</span></td>
 		<td width="99%" nowrap class="pad">
 		{foreach $_TN as $item => $key}<input type="radio" name="networknode[available_surface]" id="id_available_surface_{$item}" value="{$item}" {if $networknodeinfo.available_surface == $item}checked{/if}><label for="id_available_surface_{$item}">&nbsp;{$key}</label>{/foreach}
 		</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left"><span class="tiphelp" {tip text="Węzeł współfinansowany ze środków unijnych"}>Współfinansowany z EU</span></td>
 		<td width="99%" nowrap class="pad">
 		{foreach $_TN as $item => $key}<input type="radio" name="networknode[eu]" id="id_eu_{$item}" value="{$item}" {if $networknodeinfo.eu == $item}checked{/if}><label for="id_eu_{$item}">&nbsp;{$key}</label>{/foreach}
@@ -231,21 +231,21 @@
 	</tr>
 	
 	
-	<tr class="light">
+	<tr class="pglight">
 	    <td width="1%" nowrap align="left" class="pad"><span class="tiphelp" {tip text="Liczba podmiotów obcych w obiekcie"}>Podmioty obce</span></td>
 	    <td width="99%" align="left" class="pad">
 		<input type="number" name="networknode[foreign_entity]" id="id_foreign_entity" value="{$networknodeinfo.foreign_entity}" style="width:110px;">
 	    </td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 	    <td width="1%" nowrap align="left" class="pad"><span class="tiphelp" {tip text="Liczba podmiotów posiadających zakończenia światłowodowe w obiekcie"}>Podmioty ze światłem</span></td>
 	    <td width="99%" align="left" class="pad">
 		<input type="number" name="networknode[entity_fiber_end]" id="id_entity_fiber_end" value="{$networknodeinfo.entity_fiber_end}" style="width:110px;">
 	    </td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap align="left" class="pad" style="vertical-align:top;">
 		    Notatka
 		</td>
@@ -259,83 +259,83 @@
 <td width="50%" align="left" class="fright pad" style="vertical-align:top;">
     <table width="100%" cellpadding="2">
 	
-	<tr class="light">
+	<tr class="pglight">
 	    <td width="1%" nowrap>
 		<span class="tiphelp" {tip text="Przepustowość całkowita węzła w Mb/s"}>Przepustowość całkowita</span>
 	    </td>
 	    <td width="99%" class="pad" align="left">
-		<input type="text" name="networknode[total_bandwidth]" id="id_total_bandwidth" value="{$networknodeinfo.total_bandwidth}" style="width:100px;"> Mb/s
+		<input type="number" name="networknode[total_bandwidth]" id="id_total_bandwidth" value="{$networknodeinfo.total_bandwidth}" style="width:100px;"> Mb/s
 		<div id="id_total_bandwidth_alerts" style="color:blue;"></div>
 	    </td>
 	</tr>
-	<tr class="light">
+	<tr class="pglight">
 	    <td width="1%" nowrap>
 		<span class="tiphelp" {tip text="Przepustowość na potrzeby usług szerokopasmowego dostępu do Internetu w Mb/s, uwzględniona w przepustowości całkowitej"}>Przepustowość dla Internetu</span>
 	    </td>
 	    <td width="99%" class="pad" align="left">
-		<input type="text" name="networknode[bandwidth_broadband]" id="id_bandwidth_broadband" value="{$networknodeinfo.bandwidth_broadband}" style="width:100px;"> Mb/s
+		<input type="number" name="networknode[bandwidth_broadband]" id="id_bandwidth_broadband" value="{$networknodeinfo.bandwidth_broadband}" style="width:100px;"> Mb/s
 		<div id="id_bandwidth_broadband_alerts" style="color:blue;"></div>
 	    </td>
 	</tr>
 	</tr>
-	<tr class="light">
+	<tr class="pglight">
 	    <td width="1%" nowrap align="left"><span class="tiphelp" {tip text="Maksymalna możliwa wysokość zawieszenia anten nad poziomem gruntu"}>Wysokość zawieszenia anten</span></td>
 	    <td width="99%" class="pad" nowrap><input type="number" name="networknode[height_anten]" id="id_height_anten" value="{$networknodeinfo.height_anten}" style="width:100px;"></td>
 	</tr>
-	<tr class="light">
+	<tr class="pglight">
 	    <td width="1%" nowrap align="left"><span class="tiphelp" {tip text="Możliwość instalacji anten dla radiowej sieci dostępowej lub anten dla radiolinii"}>Możliwość intalacji anten</span></td>
 	    <td width="99%" class="pad" nowrap>{foreach $_TN as $item => $key}<input type="radio" name="networknode[instofanten]" id="id_instofanten{$item}" value="{$item}" {if $networknodeinfo.instofanten == $item} checked{/if}><label for="id_instofanten{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 	    <td width="1%" nowrap align="left">Możliwość intalacji masztu</td>
 	    <td width="99%" class="pad" nowrap>{foreach $_TN as $item => $key}<input type="radio" name="networknode[instmast]" id="id_instmast{$item}" value="{$item}" {if $networknodeinfo.instmast == $item}checked{/if}><label for="id_instmast{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">Warstwa szkieletowa</td>
 		<td width="99%" nowrap class="pad">{foreach $_TN as $item => $key}<input type="radio" name="networknode[backbone_layer]" id="id_backbone_{$item}" value="{$item}" {if $networknodeinfo.backbone_layer == $item}checked{/if}><label for="id_backbone_{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">Warstwa dystrybucyjna</td>
 		<td width="99%" nowrap class="pad">{foreach $_TN as $item => $key}<input type="radio" name="networknode[distribution_layer]" id="id_distribution_{$item}" value="{$item}" {if $networknodeinfo.distribution_layer == $item}checked{/if}><label for="id_distribution_{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap class="pad" align="left">Warstwa dostępowa</td>
 		<td width="99%" nowrap class="pad">{foreach $_TN as $item => $key}<input type="radio" name="networknode[access_layer]" id="id_access_{$item}" value="{$item}" {if $networknodeinfo.access_layer == $item}checked{/if}><label for="id_access_{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 	    <td width="1%" nowrap class="pad" align="left">Udostępnianie portów</td>
 	    <td width="99%" nowrap class="pad">{foreach $_TN as $item => $key}<input type="radio" name="networknode[sharing]" id="id_sharing_{$item}" value="{$item}" {if $networknodeinfo.sharing == $item}checked{/if}><label for="id_sharing_{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 	    <td width="1%" nowrap align="left">Podłoga techniczna</td>
 	    <td width="99%" class="pad">{foreach $_TNC as $item => $key}<input type="radio" name="networknode[technical_floor]" id="id_technical_floor{$item}" value="{$item}" {if $networknodeinfo.technical_floor == $item} checked {/if}><label for="id_technical_floor{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap align="left">Sufit techniczny</td>
 		<td width="99%" class="pad" nowrap>{foreach $_TNC as $item => $key}<input type="radio" name="networknode[technical_ceiling]" id="id_technical_ceiling{$item}" value="{$item}" {if $networknodeinfo.technical_ceiling == $item} checked {/if}><label for="id_technical_ceiling{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap align="left">Klimatyzacja</td>
 		<td width="99%" class="pad" nowrap>{foreach $_TNC as $item => $key}<input type="radio" name="networknode[air_conditioning]" id="id_air_conditioning{$item}" value="{$item}" {if $networknodeinfo.air_conditioning == $item} checked {/if}><label for="id_air_conditioning{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap align="left">Przyłacze telekomunikacyjne</td>
 		<td width="99%" class="pad">{foreach $_TN as $item => $key}<input type="radio" name="networknode[telecommunication]" id="id_telecommunication{$item}" value="{$item}" {if $networknodeinfo.telecommunication == $item} checked {/if}><label for="id_telecommunication{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap align="left"><span class="tiphelp" {tip text="Możliwość udostępnienia przyłącza światłowodowego"}>Udostępnianie światłowodu</span></td>
 		<td width="99%" class="pad">{foreach $_TN as $item => $key}<input type="radio" name="networknode[sharing_fiber]" id="id_sharing_fiber{$item}" value="{$item}" {if $networknodeinfo.sharing_fiber == $item} checked {/if}><label for="id_sharing_fiber{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap align="left">Gwarantowane zasilanie</td>
 		<td width="99%" align="left" class="pad">
 		    <input type="checkbox" name="networknode[dc12]" id="id_dc12" value="1" {if $networknodeinfo.dc12} checked {/if}><label for="id_dc12">DC 12V</label>&nbsp;&nbsp;&nbsp;
@@ -345,17 +345,17 @@
 		</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap><span class="tiphelp" {tip text="Wykorzystanie na potrzeby usług szerokopasmowych"}>Usługi szerokopasmowe</span></td>
 		<td width="99%" align="left">{foreach $_TN as $item => $key}<input type="radio" name="networknode[service_broadband]" id="id_service_broadband{$item}" value="{$item}" {if $networknodeinfo.service_broadband == $item} checked{/if}><label for="id_service_broadband{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 	    <td width="1%" nowrap><span class="tiphelp" {tip text="Wykorzystanie na potrzeby usług głosowych"}>Usługi głosowe</span></td>
 	    <td width="99%" align="left">{foreach $_TN as $item => $key}<input type="radio" value="{$item}" name="networknode[service_voice]" id="id_service_voice{$item}" {if $networknodeinfo.service_voice == $item} checked {/if}><label for="id_service_voice{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 	
-	<tr class="light">
+	<tr class="pglight">
 		<td width="1%" nowrap align="left" style="vertical-align:top;">Inne przeznaczenie</td>
 		<td width="99%" nowrap class="pad" style="vertical-align:top;"><textarea style="width:200px;" rows="5" name="networknode[service_other]" id="id_service_other">{$networknodeinfo.service_other}</textarea></td>
 	</tr>
@@ -365,7 +365,7 @@
 </td>
 </tr>
 
-<tr class="dark nav-footer">
+<tr class="pgdark nav-footer">
     <td width="1%" class="fleftu pad" align="left">
 	<div id="id_warn_view"></div>
     </td>

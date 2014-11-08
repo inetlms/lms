@@ -33,6 +33,16 @@ $changelog = array(
 	),
 	
 */
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka konwersji faktury PRO na VAT oraz poprawka odczytu danych firmy na fakturze jeżli pola div_* są puste w tabeli documents',
+	),
+	array(
+	    'data'	=> '2014/11/05',
+	    'status'	=> '',
+	    'opis'	=> 'dodano obsługę serwisu SerwerSMS',
+	),
         array(
             'data'      => '2014/10/31',
             'status'    => '',

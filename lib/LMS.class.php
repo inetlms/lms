@@ -1293,8 +1293,10 @@ class LMS {
 				nd.id AS devid, nd.name AS devname, nd.location AS devlocation, 
 				n.warning, n.info, n.ownerid, n.lastonline, n.location, n.blockade, 
 				(SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active=1) AS monitoring, 
-				(SELECT COUNT(*) FROM nodegroupassignments WHERE nodeid = n.id) AS gcount 
+				(SELECT COUNT(*) FROM nodegroupassignments WHERE nodeid = n.id) AS gcount,
+				n.netid, net.name AS netname 
 				FROM vnodes n 
+				JOIN networks net ON net.id = n.netid 
 				LEFT JOIN netdevices nd ON (nd.id = n.netdev) 
 				WHERE ownerid = ?
 				ORDER BY name ASC ' . ($count ? 'LIMIT ' . $count : ''), array($id))) {
@@ -1305,11 +1307,11 @@ class LMS {
 				$ids[$node['id']] = $idx;
 				$result[$idx]['lastonlinedate'] = lastonline_date($node['lastonline']);
 
-				foreach ($networks as $net)
-					if (isipin($node['ip'], $net['address'], $net['mask'])) {
-						$result[$idx]['network'] = $net;
-						break;
-					}
+//				foreach ($networks as $net)
+//					if (isipin($node['ip'], $net['address'], $net['mask'])) {
+//						$result[$idx]['network'] = $net;
+//						break;
+//					}
 
 				if ($node['ipaddr_pub'])
 					foreach ($networks as $net)
@@ -3441,7 +3443,23 @@ class LMS {
 			$result['totalbase'] = 0;
 			$result['totaltax'] = 0;
 			$result['total'] = 0;
-
+			
+			if ($firma = $this->DB->getrow('SELECT shortname,name,address,city,zip,ten,account,inv_header,inv_footer,inv_author,inv_cplace 
+				FROM divisions WHERE id = ? LIMIT 1;',array($result['divisionid'])))
+			{
+			    if (empty($result['division_name'])) $result['division_name'] = $firma['name'];
+			    if (empty($result['division_shortname'])) $result['division_shortname'] = $firma['name'];
+			    if (empty($result['division_address'])) $result['division_address'] = $firma['address'];
+			    if (empty($result['division_zip'])) $result['division_zip'] = $firma['zip'];
+			    if (empty($result['division_city'])) $result['division_city'] = $firma['city'];
+			    if (empty($result['division_ten'])) $result['division_ten'] = $firma['ten'];
+			    if (empty($result['account'])) $result['account'] = $firma['account'];
+			    if (empty($result['division_header'])) $result['division_header'] = $firma['inv_header'];
+			    if (empty($result['division_footer'])) $result['division_footer'] = $firma['inv_footer'];
+			    if (empty($result['division_author'])) $result['division_author'] = $firma['inv_author'];
+			    if (empty($result['division_cplace'])) $result['division_cplace'] = $firma['inv_cplace'];
+			}
+			
 			if ($result['reference'])
 				$result['invoice'] = $this->GetInvoiceContent($result['reference']);
 
@@ -4221,13 +4239,13 @@ class LMS {
 				pow(2,(32 - mask2prefix(inet_aton(mask)))) AS size, disabled, 
 				(SELECT COUNT(*) 
 					FROM nodes 
-					WHERE (ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
-						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask)))
+					WHERE netid = n.id AND ((ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
+						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask))))
 				) AS assigned,
 				(SELECT COUNT(*) 
 					FROM nodes 
-					WHERE ((ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
-						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask))))
+					WHERE netid = n.id AND (((ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
+						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask)))))
 						AND (?NOW? - lastonline < ?)
 				) AS online 
 				FROM networks n 
@@ -5614,6 +5632,27 @@ class LMS {
 				if(sizeof($ret_status)>0 && $ret_status[0] == 'OK')
 				    return MSG_SENT;
 				return $ret;
+			break;
+			case 'serwersms' :
+				if ($msg_len < 160)
+					$type_sms = 'sms';
+				else 
+				    if ($msg_len <= 459)
+					$type_sms = 'concat';
+				    else
+					return trans('SMS Message too long!');
+				$param = array();
+				$param['numer'] = $number;
+				$param['wiadomosc'] = $message;
+				$param['test'] = 0;
+				if (!get_conf('sms.smsapi_eco',1) && get_conf('sms.from','')) {
+				    $param['nadawca'] = get_conf('sms.from');
+				}
+				$result = SerwerSMS::wyslij_sms($param);
+				if ($result)
+				    return MSG_SENT;
+				else
+				    return FALSE;
 			break;
 			case 'smstools':
 				$dir = !empty($this->CONFIG['sms']['smstools_outdir']) ? $this->CONFIG['sms']['smstools_outdir'] : '/var/spool/sms/outgoing';
@@ -8098,10 +8137,59 @@ class LMS {
 	return $result;
     }
     
+    /*********************************
+    *     Linie telekomunikacyjne    *
+    *********************************/
+    
+    function delTeleLine($id)
+    {
+	if (SYSLOG) {
+	    $nazwa = $this->DB->GetOne('SELECT name FROM teleline WHERE id = ? LIMIT 1;',array($id));
+	    addlogs('Usunięcie linii telekomunikacyjnej '.$nazwa,'e=del;m=netdev;');
+	}
+	
+	$this->DB->BeginTrans();
+	//$DB->Execute('UPDATE fiberlineassign SET fiberline=0 WHERE fiberline = ?;',array($id));
+	$this->DB->Execute('UPDATE netlinks SET teleline=0 WHERE teleline = ?;',array($id));
+	$this->DB->Execute('DELETE FROM teleline WHERE id=?;',array($id));
+	$this->DB->CommitTrans();
+    }
+    
+    
+    function updateTeleLine($form)
+    {
+    
+	$this->DB->Execute('UPDATE teleline SET name=?, description=? WHERE id = ? ;',
+	    array(
+		$form['name'],
+		($form['description'] ? $form['description'] : NULL),
+		intval($form['id'])
+	    )
+	);
+    }
+    
+    
+    function addTeleLine($form)
+    {
+	$this->DB->Execute('INSERT INTO teleline (name,description,active) VALUES (?,?,?) ;',
+	    array(
+		$form['name'],
+		($form['description'] ? $form['description'] : NULL),
+		1
+	    )
+	);
+	
+	return $this->DB->getlastinsertid('teleline');
+    }
+    
     
     function getTeleLine()
     {
-	return $this->DB->GetAll('SELECT l.*, (SELECT COUNT(*) FROM telelineassign a WHERE a.teleline = l.id) AS countlink FROM teleline l ORDER BY name ASC;');
+	$result = $this->DB->GetAll('SELECT l.*, 
+				    (SELECT COUNT(*) FROM netlinks n WHERE n.teleline = l.id) AS countlink 
+				    FROM teleline l 
+				    ORDER BY name ASC;');
+	return $result;
     }
 
 
