@@ -84,7 +84,7 @@ $layout['dbschversion'] = DBVERSION;
 
 //if ($layout['dbschversion'] == '2014032900')
 
-if ($DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? LIMIT 1;',array('dbversion')) == '2014032901')
+if ($DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? LIMIT 1;',array('dbversion')) >= '2014032901')
 {
     $dbex = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ?',array('dbvex'));
 
