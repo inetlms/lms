@@ -1,0 +1,38 @@
+{include file="header.html"}
+<!--// tvpackageslist.html,v 1.2 23/08/2011 19:00:00 ITMSOFT $ //-->
+<H1>{$layout.pagetitle}</H1>
+<TABLE cellpadding="5" cellspacing="0" WIDTH="100%">
+	<tr class="dark">
+		<td>Grupa</td>
+		<td>ID</td>
+		<td>Nazwa produktu</td>
+		<td>Opis produktu</td>
+		<!--<td>Alternatywny opis</td>-->
+		<td>Aktywny od</td>
+		<td>Aktywny do</td>
+		<!--<td>Lista produktów wymaganych</td>-->
+		<!--<td>Lista produktów nie łączączych się</td>-->
+	</tr>
+	{foreach from=$list item=type}
+	<TR>
+		<td colpan="10"><B>{$type.pkgt_name}</b></td>
+	</tr>
+	{foreach from=$type.packages item=item}
+	<TR class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">			
+		<TD></TD>
+		<TD valign="top"><B>{$item.package_id}</B></TD>
+		<TD valign="top">{$item.pkg_name}</TD>
+		<TD valign="top">{$item.pkg_desc}</TD>
+		<!--<TD valign="top">{$item.pkg_tvpanel_desc}</TD>-->
+		<TD valign="top">{$item.pkg_valid_from}</TD>
+		<TD valign="top">{$item.pkg_valid_to}</TD>
+		<!--<TD valign="top">{$item.pkg_autoinclude|replace:',':', '}</TD>-->
+		<!--<TD valign="top">{$item.pkg_denied|replace:',':', '}</TD>-->	
+	</TR>
+	{/foreach}
+	{/foreach}
+
+</table>	
+	
+	
+{include file="footer.html"}

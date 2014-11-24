@@ -404,6 +404,11 @@
 	<tr class="light">
 		<td width="100%" class="fbottomu" align="right">
 //-->
+			{if get_conf('jambox.enabled') && check_modules(360)}
+			
+			    <a href="?m=customerinfo&id={$customerinfo.id}&tvexport=1">Eksport do SMS <img src="img/tv_icon.png"></a> 
+			
+			{/if}
 			{if $customerinfo.deleted}
 				<a href="?m=customeredit&id={$customerinfo.id}&action=recover">{trans("Restore")} <img src="img/recover.gif" alt="[ {trans("Restore")} ]"></a>
 			{else}

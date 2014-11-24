@@ -2114,7 +2114,7 @@ class LMS {
 	}
 
 	function NodeUpdate($nodedata, $deleteassignments = FALSE) {
-	
+//	echo "<pre>"; print_r($nodedata); echo "</pre>"; die;
 		if (SYSLOG) {
 		    $diff['old'] = $this->getnode($nodedata['id']);
 		}
@@ -2346,19 +2346,13 @@ class LMS {
 			else
 			    $result['acces_to'] = '';
 			$result['lastonlinedate'] = lastonline_date($result['lastonline']);
-			$result['networkname'] = $this->DB->GetOne('SELECT name FROM networks WHERE id=? LIMIT 1;',array($result['netid']));
+			$result['networkname'] = $result['netname'] = $this->DB->GetOne('SELECT name FROM networks WHERE id=? LIMIT 1;',array($result['netid']));
 			$result['hostname'] = $this->DB->GetOne('SELECT h.name FROM networks n LEFT JOIN hosts h ON (h.id = n.hostid) WHERE n.id = ? LIMIT 1;',array($result['netid']));
 
 			$result['mac'] = preg_split('/,/', $result['mac']);
 			foreach ($result['mac'] as $mac)
 				$result['macs'][] = array('mac' => $mac, 'producer' => get_producer($mac));
 			unset($result['mac']);
-
-			if ($net = $this->DB->GetRow('SELECT id, name FROM networks
-				WHERE address = (inet_aton(?) & inet_aton(mask))', array($result['ip']))) {
-				$result['netid'] = $net['id'];
-				$result['netname'] = $net['name'];
-			}
 
 			return $result;
 		} else
@@ -4116,15 +4110,20 @@ class LMS {
 
 	function IsIPFree($ip, $netid = 0) 
 	{
-		if ($netid)
-			return !($this->DB->GetOne('SELECT id FROM nodes WHERE (ipaddr=inet_aton(?) AND netid=?) OR ipaddr_pub=inet_aton(?)', array($ip, $netid, $ip)) ? TRUE : FALSE);
-		else
+		if ($netid){
+			return !($this->DB->GetOne('SELECT id FROM nodes WHERE (ipaddr=inet_aton(?) AND netid=?) OR (ipaddr_pub=inet_aton(?) AND netid=?)', array($ip, $netid, $ip, $netid)) ? TRUE : FALSE);
+			
+		} else {
 			return !($this->DB->GetOne('SELECT id FROM nodes WHERE ipaddr=inet_aton(?) OR ipaddr_pub=inet_aton(?)', array($ip, $ip)) ? TRUE : FALSE);
+		}
 	}
 
 
-	function IsIPGateway($ip) {
-		return ($this->DB->GetOne('SELECT gateway FROM networks WHERE gateway = ?', array($ip)) ? TRUE : FALSE);
+	function IsIPGateway($ip, $netid = 0) {
+		if ($netid)
+		    return ($this->DB->GetOne('SELECT gateway FROM networks WHERE gateway = ? AND netid = ?', array($ip, $netid)) ? TRUE : FALSE);
+		else
+		    return ($this->DB->GetOne('SELECT gateway FROM networks WHERE gateway = ?', array($ip)) ? TRUE : FALSE);
 	}
 
 	function GetPrefixList() {
@@ -4157,7 +4156,7 @@ class LMS {
 						($netadd['hostid'] ? $netadd['hostid'] : NULL),
 						($netadd['ipnat'] ? $netadd['ipnat'] : ''),
 				)))
-			return $this->DB->GetOne('SELECT id FROM networks WHERE address = inet_aton(?)', array($netadd['address']));
+			return $this->DB->getLastInsertId('networks');
 		else
 			return FALSE;
 	}
@@ -4300,9 +4299,14 @@ class LMS {
 	}
 
 
-	function NetworkShift($network = '0.0.0.0', $mask = '0.0.0.0', $shift = 0) {
-		return ($this->DB->Execute('UPDATE nodes SET ipaddr = ipaddr + ? 
-				WHERE ipaddr >= inet_aton(?) AND ipaddr <= inet_aton(?)', array($shift, $network, getbraddr($network, $mask)))
+	function NetworkShift($network = '0.0.0.0', $mask = '0.0.0.0', $shift = 0, $netid = NULL) {
+		if ($netid)
+		$result = $this->DB->Execute('UPDATE nodes SET ipaddr = ipaddr + ? 
+				WHERE ipaddr >= inet_aton(?) AND ipaddr <= inet_aton(?) AND netid=?', array($shift, $network, getbraddr($network, $mask),$netid));
+		else
+		$result = $this->DB->Execute('UPDATE nodes SET ipaddr = ipaddr + ? 
+				WHERE ipaddr >= inet_aton(?) AND ipaddr <= inet_aton(?)', array($shift, $network, getbraddr($network, $mask)));
+		return ($result 
 				+ $this->DB->Execute('UPDATE nodes SET ipaddr_pub = ipaddr_pub + ? 
 				WHERE ipaddr_pub >= inet_aton(?) AND ipaddr_pub <= inet_aton(?)', array($shift, $network, getbraddr($network, $mask))));
 	}
@@ -4400,7 +4404,7 @@ class LMS {
 			while (in_array($i, (array) $destnodes))
 				$i++;
 
-			if (!$this->DB->Execute('UPDATE nodes SET ipaddr=? WHERE ipaddr=?', array($i, $ip)))
+			if (!$this->DB->Execute('UPDATE nodes SET ipaddr=?, netid=? WHERE netid=? AND ipaddr=?', array($i, $dst, $src, $ip)))
 				$this->DB->Execute('UPDATE nodes SET ipaddr_pub=? WHERE ipaddr_pub=?', array($i, $ip));
 
 			$counter++;
@@ -4408,6 +4412,8 @@ class LMS {
 
 		return $counter;
 	}
+
+
 	function GetNetworkRecord($id, $page = 0, $plimit = 4294967296, $firstfree = false) {
 		$network = $this->DB->GetRow('SELECT id, name, inet_ntoa(address) AS address, 
 				address AS addresslong, mask, interface, gateway, dns, dns2, 
@@ -4782,8 +4788,10 @@ class LMS {
 	}
 
 	function GetNetDevIPs($id) {
+	    $result['networkname'] = $result['netname'] = $this->DB->GetOne('SELECT name FROM networks WHERE id=? LIMIT 1;',array($result['netid']));
 		return $this->DB->GetAll('SELECT id, name, mac, ipaddr, inet_ntoa(ipaddr) AS ip, 
-			ipaddr_pub, inet_ntoa(ipaddr_pub) AS ip_pub, access, info, port , 
+			ipaddr_pub, inet_ntoa(ipaddr_pub) AS ip_pub, access, info, port , netid,
+			(SELECT n.name FROM networks n WHERE n.id = netid LIMIT 1) AS netname,
 			(SELECT 1 FROM monitnodes WHERE monitnodes.id = vnodes.id and monitnodes.active=1) AS monitoring ,
 			(SELECT 1 FROM monitnodes WHERE monitnodes.id = vnodes.id and monitnodes.active=1 AND monitnodes.signaltest=1) AS monitoringsignal 
 			FROM vnodes 

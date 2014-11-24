@@ -94,6 +94,8 @@ if (isset($_POST['nodeedit'])) {
 	$nodeedit['ipaddr'] = $_POST['nodeeditipaddr'];
 	$nodeedit['ipaddr_pub'] = $_POST['nodeeditipaddrpub'];
 	
+
+//	echo "MODUEL<br><br><br><pre>"; print_r($nodeedit); echo "</pre>"; die;
 	foreach ($nodeedit['macs'] as $key => $value)
 		$nodeedit['macs'][$key] = str_replace('-', ':', $value);
 
@@ -118,7 +120,7 @@ if (isset($_POST['nodeedit'])) {
 			if ($ip != $nodeedit['ipaddr'] && !$LMS->IsIPFree($nodeedit['ipaddr'],$nodeedit['netid']))
 				$error['ipaddr'] = trans('Specified IP address is in use!');
 			
-			elseif ($ip != $nodeedit['ipaddr'] && $LMS->IsIPGateway($nodeedit['ipaddr']))
+			elseif ($ip != $nodeedit['ipaddr'] && $LMS->IsIPGateway($nodeedit['ipaddr'],$nodeedit['netid']))
 				$error['ipaddr'] = trans('Specified IP address is network gateway!');
 		}
 		else

@@ -1137,6 +1137,68 @@ if (get_conf('registryequipment.enabled')) {
 	);
 }
 
+if (get_conf('jambox.enabled',0)) {
+	$menu['TV'] = array( 
+			'name' => 'TV Jambox',
+			'img' =>'tv_icon.png',
+			'tip' => 'TV Management',
+			'accesskey' =>'t',
+			'prio' => 14,
+			'index' => MODULES_JAMBOX,
+			'submenu' => array(
+				array(
+					'name' => trans('Lista klientów'),
+					'link' => '?m=tvcustomers',
+					'tip' => trans('Lista klientów'),
+					'prio' => 10,
+				),
+				array(
+					'name' => trans('Lista pakietów'),
+					'link' => '?m=tvpackageslist',
+					'tip' => trans('Lista dostępnych pakietów'),
+					'prio' => 20,
+				),
+				array(
+					'name' => trans('Lista STB'),
+					'link' => '?m=tvstblist',
+					'tip' => trans('Lista STB'),
+					'prio' => 30,
+				),				
+				array(
+					'name' => trans('Podziel podsieć'),
+					'link' => '?m=tvsubnetlist',
+					'tip' => trans('Podziel podsieć'),
+					'prio' => 40,
+				),				
+				array(
+					'name' => trans('Bilingi'),
+					'link' => '?m=tvbillingevents',
+					'tip' => trans('Lista zdarzeń bilingowych'),
+					'prio' => 50,
+				),
+//				array(
+//					'name' => trans('Lista wiadomości'),
+//					'link' => '?m=tvmessages',
+//					'tip' => trans('Lista wiadomości'),
+//					'prio' => 60,
+//				),
+				array(
+					'name' => trans('Nowa wiadomość'),
+					'link' => '?m=tvmessagessend',
+					'tip' => trans('Nowa wiadomość'),
+					'prio' => 61,
+				),			
+				array(
+					'name' => trans('Odśwież dane'),
+					'link' => '?m=tvcleancache',
+					'tip' => trans('Odśwież dane'),
+					'prio' => 71,
+				),												
+			),
+		);								
+		
+}
+
 
 // menu item for EtherWerX STM channels management
 if (chkconfig($CONFIG['phpui']['ewx_support'])) {

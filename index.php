@@ -201,6 +201,11 @@ if(get_conf('voip.enabled','0') )
 if (get_conf('sms.service') == 'serwersms') {
     require_once(LIB_DIR.'/SerwerSMS_api.php');
 }
+
+if (get_conf('jambox.enabled',0)) {
+    require_once(LIB_DIR.'/LMS.tv.class.php');
+    $LMSTV = new LMSTV($DB,$AUTH,$CONFIG);
+}
 // Set some template and layout variables
 
 $SMARTY->template_dir = SMARTY_TEMPLATES_DIR;
@@ -215,7 +220,7 @@ $layout['smarty_version'] = SMARTY_VERSION;
 $layout['hostname'] = hostname();
 $layout['lmsv'] = 'iNET';
 $layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
-$layout['lmsvr'] = '14.10.25';
+$layout['lmsvr'] = '14.11.24';
 $layout['dberrors'] =& $DB->errors;
 $layout['dbdebug'] = $_DBDEBUG;
 $layout['popup'] = isset($_GET['popup']) ? true : false;

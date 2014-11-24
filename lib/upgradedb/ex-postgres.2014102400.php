@@ -23,7 +23,7 @@
 
 $DB->BeginTrans();
 
-if ($DB->GetOne('SELECT 1 FROM pg_tables WHERE tablename = ?;',array('templates')))
+if (!$DB->GetOne('SELECT 1 FROM pg_tables WHERE tablename = ?;',array('templates')))
 {
 $DB->Execute("
 	CREATE SEQUENCE templates_id_seq;

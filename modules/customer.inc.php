@@ -23,6 +23,8 @@
  *
  *  $Id$
  */
+if (get_conf('jambox.enabled',0))
+    require_once(MODULES_DIR.'/customer.tv.inc.php');
 
 if($layout['module'] != 'customeredit')
 {

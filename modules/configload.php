@@ -186,6 +186,14 @@ foreach($CONFIG['voip'] as $key => $val)
 			);
 }
 
+if(!empty($CONFIG['jambox']) && (!$section || $section == 'jambox'))
+foreach($CONFIG['jambox'] as $key => $val)
+{
+	$DB->Execute('INSERT INTO uiconfig(section, var, value) VALUES(?,?,?)',
+			array('jambox', $key, parse_cfg_val($val))
+			);
+}
+
 
 
 $DB->CommitTrans();

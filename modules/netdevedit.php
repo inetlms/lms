@@ -300,7 +300,10 @@ switch ($action) {
 
 		$subtitle = trans('New IP address');
 		$nodeipdata = $_POST['ipadd'];
+		$nodeipdata['netid'] = $_POST['nodeeditnetid'];
 		$nodeipdata['ownerid'] = 0;
+		
+//		echo "<pre>"; print_r($nodeipdata); echo "</pre>"; die;
 		foreach ($nodeipdata['macs'] as $key => $value)
 			$nodeipdata['macs'][$key] = str_replace('-', ':', $value);
 
@@ -327,7 +330,7 @@ switch ($action) {
 			$error['ipaddr'] = trans('Incorrect IP address!');
 		elseif (!$LMS->IsIPValid($nodeipdata['ipaddr']))
 			$error['ipaddr'] = trans('Specified address does not belongs to any network!');
-		elseif (!$LMS->IsIPFree($nodeipdata['ipaddr']))
+		elseif (!$LMS->IsIPFree($nodeipdata['ipaddr'],$nodeipdata['netid']))
 			$error['ipaddr'] = trans('Specified IP address is in use!');
 
 		if ($nodeipdata['ipaddr_pub'] != '0.0.0.0' && $nodeipdata['ipaddr_pub'] != '') {
@@ -384,6 +387,7 @@ switch ($action) {
 
 		$subtitle = trans('IP address edit');
 		$nodeipdata = $_POST['ipadd'];
+//		$nodeipdata['netid'] = $_POST['nodeeditnetid'];
 		$nodeipdata['ownerid'] = 0;
 		$error = array();
 		
@@ -413,7 +417,7 @@ switch ($action) {
 			$error['ipaddr'] = trans('Incorrect IP address!');
 		elseif (!$LMS->IsIPValid($nodeipdata['ipaddr']))
 			$error['ipaddr'] = trans('Specified address does not belongs to any network!');
-		elseif (!$LMS->IsIPFree($nodeipdata['ipaddr']) &&
+		elseif (!$LMS->IsIPFree($nodeipdata['ipaddr'],$nodeipdata['netid']) &&
 				$LMS->GetNodeIPByID($_GET['ip']) != $nodeipdata['ipaddr'])
 			$error['ipaddr'] = trans('IP address is in use!');
 

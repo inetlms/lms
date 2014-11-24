@@ -76,6 +76,18 @@
                 </td>
         </tr>
 	{/if}
+	{if get_conf('jambox.enabled') && check_modules(360)}
+	<tr>
+	    <td width="100%">
+		{include file="customertvjamboxaccountsbox.html"}
+	    </td>
+	</tr>
+	<tr>
+	    <td width="100%">
+		{include file="customertvmessages.html"}
+	    </td>
+	</tr>
+	{/if}
 	{if check_modules(180)}
 	<tr>
 		<td width="100%">

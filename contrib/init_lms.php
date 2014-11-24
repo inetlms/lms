@@ -203,6 +203,11 @@ if (get_conf('sms.service') == 'serwersms') {
     require_once(LIB_DIR.'/SerwerSMS_api.php');
 }
 
+if (get_conf('jambox.enabled',0)) {
+    require_once(LIB_DIR.'/LMS.tv.class.php');
+    $LMSTV = new LMSTV($DB,$AUTH,$CONFIG);
+}
+
 // Set some template and layout variables
 
 ?>

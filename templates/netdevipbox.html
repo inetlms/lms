@@ -13,17 +13,18 @@
 	        <td width="100%" class="fall" colspan="2">
 		        <table cellpadding="5" cellspacing="0" width="100%">
 	<tr class="dark">
-	        <td width="96%" class="fleftu"><b>{trans("Name:")}</b></td>
+	        <td width="95%" class="fleftu"><b>{trans("Name:")}</b></td>
 		<td width="1%" class="fbt" align="right">{trans("ID:")}</td>
 		<td width="1%" class="fbt" align="right">{trans("Address:")}</td>
 		<td width="1%" class="fbt" align="right">{trans("MAC:")}</td>
+		<td width="1%" class="fbt" align="center">Sieć</td>
 		<td width="1%" class="frightu">&nbsp;</td>
 	</tr>
 	{if $netdevips}
 	{cycle values="light,lucid" print=false}
 	{section name=list loop=$netdevips}
 	<tr class="{cycle} lista{if ! $netdevips[list].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td width="96%" onclick="return self.location.href='?m=netdevinfo&id={if $netdevinfo.id}{$netdevinfo.id}{else}{$netdevedit.id}{/if}&ip={$netdevips[list].id}';">
+		<td width="95%" onclick="return self.location.href='?m=netdevinfo&id={if $netdevinfo.id}{$netdevinfo.id}{else}{$netdevedit.id}{/if}&ip={$netdevips[list].id}';">
 		
 			<b>{$netdevips[list].name}</b>
 			{if $netdevips[list].location}<br>
@@ -39,6 +40,9 @@
 		<td width="1%" onclick="return self.location.href='?m=netdevinfo&id={if $netdevinfo.id}{$netdevinfo.id}{else}{$netdevedit.id}{/if}&ip={$netdevips[list].id}';">
 			{$netdevips[list].mac|replace:",":"<br>"}
 		</td>
+		<td  width="1%">
+		    <a href="?m=netinfo&id={$netdevips[list].netid}">{$netdevips[list].netname}</td>
+		</td>
 		<td width="1%" nowrap align="right">
 			<img src="img/radar.png" {tip a=$netdevips[list].id dynpopup='?m=monitchartshort&chart=ping&type=netdev&time=-1d&id=$a' sticky=0}>&nbsp;
 			{if get_conf('monit.live_ping')} <img src="img/ping.gif" {tip text="Pinguj urzadzenie"} style="cursor:pointer;" onclick="window.open('?m=nodeping&packetsize=64&ip={$netdevips[list].ip}&netdev={$netdevips[list].id}','pingnode{$netdevips[list].ip}','width=400,height=450')">{/if}
@@ -51,7 +55,7 @@
 	{/section}
 	{else}
         <tr>
-    		<td colspan="5" align="center">
+    		<td colspan="6" align="center">
 			<p>&nbsp;</p>
 			<p><b>{trans("No IP addresses on device.")}</b></p>
 			<p>&nbsp;</p>
@@ -59,7 +63,7 @@
 	</tr>
 	{/if}
 	<tr class="light">
-		<td width="100%" colspan="5" class="ftop">
+		<td width="100%" colspan="6" class="ftop">
 			<img src="img/access.gif">
 			<a href="?m=netdevedit&id={if $netdevinfo.id}{$netdevinfo.id}{else}{$netdevedit.id}{/if}&action=ipset&access=1">{trans("Connect")}</a>/<a href="?m=netdevedit&id={if $netdevinfo.id}{$netdevinfo.id}{else}{$netdevedit.id}{/if}&action=ipset">{trans("Disconnect")}</a>
 		</td>

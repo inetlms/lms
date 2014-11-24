@@ -729,6 +729,33 @@ function GetConfigList($order='var,asc', $section='', $search='')
 
 				} //end: var
 			break;
+			
+			
+			case 'jambox':
+				switch($item['var'])
+				{
+				    case 'numberplanid':
+					$config[$idx]['description'] = 'ID planu numeracyjnego dla wystawianych faktur VAT za TV';
+				    break;
+				    
+				    case 'enabled':
+					$config[$idx]['description'] = '1 - właczenie , 0 - wyłączenie modułu w systemie';
+				    break;
+				    
+				    case 'login':
+					$config[$idx]['description'] = 'Imię i Nazwisko';
+				    break;
+				    
+				    case 'haslo':
+					$config[$idx]['description'] = 'Hasło do sms w MD5';
+				    break;
+				    
+				    case 'serwer':
+					$config[$idx]['description'] = 'namiary na serwer<br>Piaskownica : https://sms.sgtsa.pl/test/xmlrpc<br>Produkcja : https://sms.agtsa.pl/sms/xmlrpc';
+				    break;
+				    
+				}
+			break;
 
 			case 'sms':
 				switch($item['var'])

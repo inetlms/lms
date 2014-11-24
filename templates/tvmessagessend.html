@@ -1,0 +1,114 @@
+{include file="header.html"}
+
+<!--// tvmessagessend.html,v 1.2 23/08/2011 19:00:00 ITMSOFT $ //-->
+
+<H1>{$layout.pagetitle}</H1>
+
+{if $send_to|@count > 0}
+<H2 style="color: green">Wysyłano poprawnie {$send_to} wiadomości.</H2>
+{/if}
+
+{if $customerdata}
+<H3>Wysyłasz wiadomość do {$customerdata.customername}</H3>
+{else}
+<H3>Wysyłasz wiadomość do wszystkich aktywnych Klientów</H3>
+{/if}
+
+<form method="post" name="meldinger" id="meldinger">
+<table>
+	<tbody><tr class="dark">
+		<td valign="top" width="200px">Teaser:</td>
+
+		<td valign="top" class="dark"><textarea rows="6" name="msg_body" id="msg_body" cols="45">{$msg_body}</textarea></td>
+		<td valign="top"><div>
+			Teaser, to krótka wiadomość, która wyświetla się w rogu TVPORTALU.
+			<br> 
+			Dozwolone tagi: &lt;b&gt;&lt;strong&gt;&lt;u&gt;&lt;i&gt;&lt;l&gt;&lt;font&gt;.
+			<br>
+			Znak nowej linii zostanie automatycznie zamieniony na &lt;br /&gt;.</div>
+		</td>
+	</tr>
+	<tr class="dark">
+		<td valign="top" width="200px">Teaser start:</td>
+		<td valign="top" class="dark"><input name="msg_teaser_valid_from" id="msg_teaser_valid_from" value="{$msg_teaser_valid_from}" OnClick="cal1.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" SIZE="10" type="text"></td>
+		<td><div>Data od kiedy teaser ma się pokazywać klientowi na ekranie TV w TVPORTALU</div></td>
+
+	</tr>
+	<tr class="dark">
+		<td valign="top" width="200px">Teaser koniec:</td>
+		<td valign="top" class="dark"><input name="msg_teaser_valid_to" id="msg_teaser_valid_to" value="{$msg_teaser_valid_to}" OnClick="cal2.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" SIZE="10" type="text"></td>
+		<td><div>Data do kiedy teaser ma się pokazywać klientowi na ekranie TV w TVPORTALU</div></td>
+	</tr>		
+	<tr class="dark">
+		<td valign="top">Wiadomość rozszerzona:</td>
+
+		<td valign="top" class="dark"><textarea rows="20" cols="45" name="msg_body_extended" id="msg_body_extended">{$msg_body_extended}</textarea>
+		</td>
+		<td valign="top">
+				
+			<div>
+			Wiadomość rozszerzona będzie widoczna po kliknięciu na teaser.
+			<br>
+
+			Dozwolone tagi: &lt;p&gt;&lt;a&gt;&lt;b&gt;&lt;strong&gt;&lt;u&gt;&lt;i&gt;&lt;l&gt;&lt;font&gt;&lt;img&gt;.
+			<br>
+			Znak nowej linii zostanie automatycznie zamieniony na &lt;br /&gt;.</div>
+
+		</td> 
+	</tr>
+	<tr class="dark">
+		<td valign="top" width="200px">Wiadomość rozszerzona start:</td>
+		<td valign="top" class="dark"><input name="msg_valid_from" id="msg_valid_from" value="{$msg_valid_from}" OnClick="cal3.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" SIZE="10" type="text"></td>
+		<td><div>Data od kiedy cała wiadomość ma się pokazywać klientowi w archiwum w TVPANELU</div></td>
+	</tr>
+	<tr class="dark">
+		<td valign="top" width="200px">Wiadomość rozszerzona end:</td>
+		<td valign="top" class="dark"><input name="msg_valid_to" id="msg_valid_to" value="{$msg_valid_to}" OnClick="cal4.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" SIZE="10" type="text"></td>
+		<td><div>Data do kiedy cała wiadomość ma się pokazywać klientowi w archiwum w TVPANELU</div></td>
+	</tr>	
+	<tr class="dark">
+		<td valign="top" width="200px">Priorytet wyświetlania:</td>
+		<td valign="top" class="dark"><input name="msg_show_priority" id="msg_show_priority" value="{$msg_show_priority}" size="10" type="text"></td>
+		<td><div>Wartość liczbowa, ustalająca kolejność wyświetlania się nieprzeczytanych teaserów, wyświetlanych w tym samym czasie. W im mniejsza wartość tym ważniejszy priorytet, mogą być wartości ujemne.</div></td>
+	</tr>
+	<tr class="dark">
+		<td valign="top" width="200px">Potwierdzenie odczytania:</td>
+		<td valign="top" class="dark">
+			<select name="msg_prio" id="msg_prio">
+				<option value="1">Po kliknięciu (wejściu do TVPANELu)</option>
+				<option value="0">Po podaniu PINu</option>
+
+				<option value="2">Po wyświetleniu teasera</option> 
+			</select>
+		</td>
+		<td><div>Konfiguracja sposobu oznaczenia wiadomości jako przeczytanej przez klienta. W momencie wystąpienia jednego z wymienionych zdarzeń, wiadomość zostanie oznaczona jako przeczytana a teaser zniknie z TVPORTALU.</div></td>
+	</tr>
+	<tr class="dark">
+		<td valign="top" width="200px"></td>
+		<td valign="top" class="dark">
+			<a href="javascript:document.meldinger.submit();" accesskey="S" style="float: right;">Wyślij <img src="img/save.gif" alt=""></a>
+		</td>
+		<td></td>
+	</tr>	
+</table>
+
+<script>
+	var cal1 = new calendar(document.forms['meldinger'].elements['msg_teaser_valid_from']);
+	cal1.time_comp = false;
+	
+	var cal2 = new calendar(document.forms['meldinger'].elements['msg_teaser_valid_to']);
+	cal2.time_comp = false;
+	
+	var cal3 = new calendar(document.forms['meldinger'].elements['msg_valid_from']);
+	cal3.time_comp = false;
+	
+	var cal4 = new calendar(document.forms['meldinger'].elements['msg_valid_to']);
+	cal4.time_comp = false;
+</script>	
+
+<input type="hidden" id="cust_number" name="cust_number" value="{$cust_number}" />
+<input type="hidden" id="customerid" name="customerid" value="{$customerid}" />
+<input type="hidden" id="m" name="m" value="tvmessagesend" />
+
+</form>
+{include file="footer.html"}

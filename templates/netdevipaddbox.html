@@ -20,6 +20,27 @@
 				<tr class="light">
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
+	<input type="hidden" name="nodeeditnetid" id="nodeeditnetid" value="{$netdevinfo.id}">
+	
+	<tr class="light">
+		<td style="width: 1%;">
+			<img src="img/host.gif">
+		</td>
+		<td style="width: 99%;" colspan="2">
+			<div id="id_host_name">{if $nodeipdata.hostname}{$nodeipdata.hostname}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}</div>
+		</td>
+	</tr>
+	
+	<tr class="light">
+		<td style="width: 1%;">
+			<img src="img/network.gif">
+		</td>
+		<td style="width: 99%;" colspan="2">
+			<div id="id_network_name">{$nodeipdata.networkname}</div>
+		</td>
+	</tr>
+	
+	
 	<tr class="light">
 		<td width="1%">
 			<img src="img/ip.gif" alt="">
@@ -28,7 +49,7 @@
 			<b>{trans("IP address:")}</b>
 		</td>
 		<td width="98%">
-			<input type="text" name="ipadd[ipaddr]" value="{$nodeipdata.ipaddr}" {tip text="Enter IP address" trigger="ipaddr"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.editipaddr['ipadd[ipaddr]'],0,{$netdevinfo.id});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
+			<input type="text" name="ipadd[ipaddr]" value="{$nodeipdata.ipaddr}" {tip text="Enter IP address" trigger="ipaddr"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.editipaddr['ipadd[ipaddr]'],document.editipaddr.nodeeditnetid,{$netdevinfo.id});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
 	{if check_conf('phpui.public_ip')}

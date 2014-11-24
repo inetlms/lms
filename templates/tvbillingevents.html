@@ -1,0 +1,64 @@
+{include file="header.html"}
+{include file="calendar_js.html"}
+<!--// tvbillingevents.html,v 1.2 23/08/2011 19:00:00 ITMSOFT $ //-->
+<H1>{$layout.pagetitle}</H1>
+
+<TABLE WIDTH="100%" CELLPADDING="3">
+	
+	<tr class="DARK">
+		<td class="fall" colspan="16">
+		<div style="float:right">
+		<b>Filtr:</b> 
+		<form name="befilter" method="get" action="?m=tvbillingevents">
+		#ID raportu: <INPUT type="TEXT" name="group_id" id="group_id" value="{$group_id}" SIZE="10"> 
+		lub/i data od: <INPUT type="TEXT" name="start_date" id="start_date" value="{$start_date}" onClick="calbe123.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.', HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" SIZE="10">
+		data do: <INPUT type="TEXT" name="end_date" id="end_date" value="{$end_date}" onClick="calbe124.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" SIZE="10">
+		<input type="hidden" name="m" id="m" value="tvbillingevents" />
+		<input type="submit" value="OK">
+		</form>
+		<a href="?m={$layout.module}">[ bieżący miesiąc ]</a>
+		<a href="?m={$layout.module}&docid=-1&start_date=&end_date=">[ pominięte przy bilingowaniu ]</a>
+		<a href="?m={$layout.module}&docid=&start_date=&end_date=">[ wszystkie ]</a>
+		</div>				
+		</td>
+	</tr>		
+		<tr class="dark">
+		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=beid&direction={if $direction eq "asc" && $order eq "beid"}desc{/if}">#ID:</A></B> {if $order eq "beid"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=account_id&direction={if $direction eq "asc" && $order eq "account_id"}desc{/if}">ID konta klienckiego:</A></B> {if $order eq "account_id"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=be_selling_date&direction={if $direction eq "asc" && $order eq "be_selling_date"}desc{/if}">Data sprzedaży:</A></B> {if $order eq "be_selling_date"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=be_desc&direction={if $direction eq "asc" && $order eq "be_desc"}desc{/if}">Opis obciążenia:</A></B> {if $order eq "be_desc"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=be_vat&direction={if $direction eq "asc" && $order eq "be_vat"}desc{/if}">Stawka VAT:</A></B> {if $order eq "be_vat"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=be_gross&direction={if $direction eq "asc" && $order eq "be_gross"}desc{/if}">Kwota brutto jaką powinien zostać obciążony abonent:</A></B> {if $order eq "be_gross"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=be_b2b_netto&direction={if $direction eq "asc" && $order eq "be_b2b_netto"}desc{/if}">Kwota rozliczeniowa netto:</A></B> {if $order eq "be_b2b_netto"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=cust_number&direction={if $direction eq "asc" && $order eq "cust_number"}desc{/if}">ID SMS:</A></B> {if $order eq "cust_number"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=customerid&direction={if $direction eq "asc" && $order eq "customerid"}desc{/if}">ID LMS:</A></B> {if $order eq "customerid"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=group_id&direction={if $direction eq "asc" && $order eq "group_id"}desc{/if}">ID raportu:</A></B> {if $order eq "group_id"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=docid&direction={if $direction eq "asc" && $order eq "docid"}desc{/if}">Faktura:</A></B> {if $order eq "docid"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+	</tr>
+	{foreach from=$eventslist item=item}
+	<TR class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<TD><B>{$item.beid}</B></TD>
+		<TD>{$item.account_id}</TD>
+		<TD>{$item.be_selling_date}</TD>
+		<TD>{$item.be_desc}</TD>
+		<TD>{$item.be_vat}</TD>
+		<TD>{$item.be_gross}</TD>
+		<TD>{$item.be_b2b_netto}</TD>
+		<TD valign="top"><a href="{$smsurl}customer/show/id/{$item.cust_number|substr:3:6}">{$item.cust_number} <img src="img/customer.gif" alt="[ Klient w SMS ]"></a></TD>
+		<TD valign="top"><B><a href="?m=customerinfo&id={$item.customerid}">{$item.customerid} <img src="img/customer.gif" alt="[ Klient w LMS ]"></a></B></TD>
+		<TD>{$item.group_id}</TD>
+		<TD>{if $item.docid > 0}<a href="?m=invoice&amp;id={$item.docid}" target="_blank"><img src="img/print.gif" alt="[ Faktura ]" onmouseover="return overlib('<iframe id=&quot;autoiframe&quot; width=100 height=10 frameborder=0 scrolling=no src=&quot;?m=number&amp;id={$item.docid}&amp;popup=1&quot;></iframe>',HAUTO,VAUTO,OFFSETX,30,OFFSETY,15);" onmouseout="nd();"></a>{/if}</TD>
+						
+	</TR>
+	{/foreach}
+	
+</table>		
+{include file="footer.html"}
+
+
+		<script>
+			var calbe123 = new calendar(document.forms['befilter'].elements['start_date']);
+			calbe123.time_comp = false;
+			var calbe124 = new calendar(document.forms['befilter'].elements['end_date']);
+			calbe124.time_comp = false;
+		</script>	

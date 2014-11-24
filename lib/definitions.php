@@ -79,7 +79,7 @@ define('MODULES_SLOWNIK',331);
 define('MODULES_CONFIG',340);
 define('MODULES_PASSWORD',320);
 define('MODULES_REGISTRYEQUIPMENT',350); // środki trwałe
-
+define('MODULES_JAMBOX',360);
 
 define('MONIT_NONE',0);
 define('MONIT_NODES',1);
@@ -623,7 +623,7 @@ define('POD_USLUGA',5);
 define('POD_OTHER',100);
 
 $PODSTAWA = array(
-    POD_UMNET	=> 'Umowa o dostęp do sieci telekomunikacyjnej',
+    POD_NET	=> 'Umowa o dostęp do sieci telekomunikacyjnej',
     POD_UMBSA	=> 'Umowa BSA na sieci innego podmiotu',
     POD_UMLLU	=> 'Umowa LLU na sieci innego podmiotu',
     POD_ODSP	=> 'Prosta odsprzedaż usług na sieci innego podmiotu',

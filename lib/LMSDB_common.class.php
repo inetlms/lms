@@ -346,11 +346,11 @@ class LMSDB_common
 		return $this->_driver_groupconcat($field, $separator);
 	}
 	
-	function addconfig($section,$var,$value,$def = '')
+	function addconfig($section,$var,$value,$def = '',$description='')
 	{
 	    if (is_null($value) || empty($value)) $value = $def;
 	    if (!$this->GetOne('SELECT 1 FROM uiconfig WHERE section=? AND var=? LIMIT 1;',array($section,$var)))
-		$this->Execute('INSERT INTO uiconfig (section, var, value) VALUES (?,?,?);',array($section,$var,$value));
+		$this->Execute('INSERT INTO uiconfig (section, var, value, description) VALUES (?,?,?,?);',array($section,$var,$value,$description));
 	}
 }
 

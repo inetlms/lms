@@ -170,7 +170,7 @@ if(isset($_POST['networkdata']))
 	if(empty($error))
 	{
 	        if(isset($networkdata['needshft']) && $networkdata['needshft'])
-		        $LMS->NetworkShift($network['address'],$network['mask'],$networkdata['addresslong'] - $network['addresslong']);
+		        $LMS->NetworkShift($network['address'],$network['mask'],$networkdata['addresslong'] - $network['addresslong'], $networkdata['id']);
 
 		$LMS->NetworkUpdate($networkdata);
 		$SESSION->redirect('?m=netinfo&id='.$networkdata['id']);

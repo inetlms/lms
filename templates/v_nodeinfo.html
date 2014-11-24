@@ -23,6 +23,18 @@
 			{include file="customersipbox.html"}
 		</td>
 	</tr>
+	{if get_conf('jambox.enabled') && check_modules(360)}
+	<tr>
+	    <td width="100%">
+		{include file="customertvjamboxaccountsbox.html"}
+	    </td>
+	</tr>
+	<tr>
+	    <td width="100%">
+		{include file="customertvmessages.html"}
+	    </td>
+	</tr>
+	{/if}
 	<tr>
 		<td width="100%">
 			{include file="customerdocuments.html" limit=10}

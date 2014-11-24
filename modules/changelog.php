@@ -34,6 +34,16 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/11/24',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka błędów przy nadawaniu adresów IP',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano obsługę <b>SGT Jambox</b> :)<br><b>UWAGA</b> - należy uzupełnić zmienne konfiguracyjne w UI sekcja Jambox, moduł nie korzysta już z lmstv.ini !!!',
+	),
+	array(
 	    'data'	=> '',
 	    'status'	=> '',
 	    'opis'	=> 'poprawka konwersji faktury PRO na VAT oraz poprawka odczytu danych firmy na fakturze jeżli pola div_* są puste w tabeli documents',

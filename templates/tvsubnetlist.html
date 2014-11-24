@@ -1,0 +1,55 @@
+{include file="header.html"}
+<!--// tvsubnetlist.html,v 1.2 23/08/2011 19:00:00 ITMSOFT $ //-->
+
+{literal}<style>
+.errormsg {
+	 color: white;
+	 padding: 10px 0px;
+	 width: 100%;
+	 margin-top: 5px;
+	 margin-bottom: 5px;
+	 text-align: center;
+	 font-weight: bold;
+	 background-color: red;
+	 
+}
+</style>{/literal}
+
+{if $errormsg}
+	<div class="errormsg">{$errormsg}</div>
+{/if}
+
+<H1>{$layout.pagetitle}</H1>
+<TABLE cellpadding="5" cellspacing="0" WIDTH="100%">
+	<tr class="dark">
+		<td><a href="?m={$layout.module}&order=subnet_id&direction={if $direction eq "asc" && $order eq "subnet_id"}desc{/if}">ID:</A></B> {if $order eq "subnet_id"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&order=subnet_name&direction={if $direction eq "asc" && $order eq "subnet_name"}desc{/if}">Nazwa:</A></B> {if $order eq "subnet_name"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&order=subnet_net&direction={if $direction eq "asc" && $order eq "subnet_net"}desc{/if}">IP:</A></B> {if $order eq "subnet_net"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&order=subnet_mask&direction={if $direction eq "asc" && $order eq "subnet_mask"}desc{/if}">Maska:</A></B> {if $order eq "subnet_mask"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td align="right">Funkcje:</td>
+	</tr>
+	{foreach from=$list item=item}
+	<TR class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">			
+		<TD>{$item.subnet_id}</TD>
+		<TD valign="top"><b>{$item.subnet_name}</b></TD>
+		<TD valign="top">{$item.subnet_net}</TD>
+		<TD valign="top">{$item.subnet_mask}</TD>
+		<TD valign="top" align="right"><a href="#tv-edit-account" class="hand" onclick="showOrHide('split-subnet{$item.subnet_id}');">Podziel <img src="img/ip.gif" alt="[ Podziel podsieć ]"></a>
+		<div id="split-subnet{$item.subnet_id}" style="display: none">
+			<form action="?m=tvsubnetlist" method="post" id="formsplitsubnet{$item.subnet_id}" name="formsplitsubnet{$item.subnet_id}">
+				Nazwa1: <input type="text" id="subnet_name1" name="subnet_name1" value="{$item.subnet_name}.1" size="" />
+				Nazwa2: <input type="text" id="subnet_name2" name="subnet_name2" value="{$item.subnet_name}.2" size="" />
+				<input type="hidden" value="tvsubnetlist" name="m" id="m">
+				<input type="hidden" value="{$item.subnet_id}" name="subnet_id" id="subnet_id">
+				&nbsp;&nbsp; 
+				<a href="javascript:document.formsplitsubnet{$item.subnet_id}.submit();" accesskey="S" style="float:right">OK <img src="img/save.gif" alt=""></a>			
+			</form>
+		</div>
+		</TD>	
+	</TR>
+	{/foreach}
+
+</table>	
+	
+	
+{include file="footer.html"}

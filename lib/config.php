@@ -100,6 +100,15 @@ function get_conf($name, $default = null)
 */
 
 $DEFAULTS = array(
+	'jambox' => array(
+	    'cache'	=> 1,
+	    'cache_lifetime' => '472000',
+	    'enabled'	=> 0,
+	    'haslo'	=> 'haslodosmswmd5',
+	    'login'	=> 'Imie i nazwisko',
+	    'serwer'	=> 'https://sms.sgtsa.pl/test/xmlrpc',
+	    'numberplanid' => 1,
+	),
 	'radius' => array(
 		'coa_port'		=> 3799,
 		'auth_login'		=> 'id',
