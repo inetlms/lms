@@ -28,7 +28,7 @@ $DB->BeginTrans();
 
 $divid = $DB->GetOne('SELECT MIN(id) AS id FROM divisions WHERE status = ? LIMIT 1;',array(0));
 
-$DB->addconfig('phpui','default_division',($divid ? $divid : 0));
+$DB->addconfig('phpui','default_division',($divid ? $divid : '0'));
 
 
 

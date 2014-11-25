@@ -23,7 +23,7 @@
 
 $DB->BeginTrans();
 
-if (!$tmp = $DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'monit_port'))) 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','monit_port'))) 
 {
     $DB->Execute("ALTER TABLE netdevices ADD monit_port VARCHAR(5) DEFAULT NULL;");
 }

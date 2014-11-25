@@ -26,6 +26,7 @@ $DB->BeginTrans();
 $DB->Execute("DROP VIEW vnodes");
 $DB->Execute("DROP VIEW vmacs");
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'nodes','netid'))) 
 $DB->Execute("ALTER TABLE nodes ADD COLUMN netid int(11) NOT NULL DEFAULT '0'");
 
 $DB->Execute("ALTER TABLE nodes DROP INDEX ipaddr");

@@ -37,10 +37,20 @@ $DB->Execute("CREATE TABLE cashsources (
         PRIMARY KEY (id),
         UNIQUE KEY name (name)
 ) ENGINE=MyISAM");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'cash','importid'))) 
 $DB->Execute("ALTER TABLE cash ADD importid int(11) DEFAULT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'cash','sourceid'))) 
 $DB->Execute("ALTER TABLE cash ADD sourceid int(11) DEFAULT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'cashimport','sourceid'))) 
 $DB->Execute("ALTER TABLE cashimport ADD sourceid int(11) DEFAULT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'cash','importid'))) 
 $DB->Execute("ALTER TABLE cash ADD INDEX importid (importid)");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'cash','sourceid'))) 
 $DB->Execute("ALTER TABLE cash ADD INDEX sourceid (sourceid)");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2009060200', 'dbversion'));

@@ -23,11 +23,22 @@
 
 $DB->BeginTrans();
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'rtqueues','newticketsubject'))) 
 $DB->Execute("ALTER TABLE rtqueues ADD COLUMN newticketsubject varchar(255) NOT NULL DEFAULT ''");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'rtqueues','newticketbody'))) 
 $DB->Execute("ALTER TABLE rtqueues ADD COLUMN newticketbody text NOT NULL DEFAULT ''");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'rtqueues','newmessagesubject'))) 
 $DB->Execute("ALTER TABLE rtqueues ADD COLUMN newmessagesubject varchar(255) NOT NULL DEFAULT ''");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'rtqueues','newmessagebody'))) 
 $DB->Execute("ALTER TABLE rtqueues ADD COLUMN newmessagebody text NOT NULL DEFAULT ''");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'rtqueues','resolveticketsubject'))) 
 $DB->Execute("ALTER TABLE rtqueues ADD COLUMN resolveticketsubject varchar(255) NOT NULL DEFAULT ''");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'rtqueues','resolveticketbody'))) 
 $DB->Execute("ALTER TABLE rtqueues ADD COLUMN resolveticketbody text NOT NULL DEFAULT ''");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014020400', 'dbversion'));

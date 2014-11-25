@@ -76,9 +76,6 @@ CREATE VIEW vmacs AS
 	JOIN macs m ON (n.id = m.nodeid);
 ");
 
-
-
-
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014040603', 'dbvex'));
 $DB->CommitTrans();
 

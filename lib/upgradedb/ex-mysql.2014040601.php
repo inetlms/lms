@@ -37,7 +37,9 @@ CREATE TABLE IF NOT EXISTS notatnik (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 ");
-$DB->Execute("ALTER TABLE notatnik ADD INDEX (iduser);");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'notatnik','iduser'))) 
+	$DB->Execute("ALTER TABLE notatnik ADD INDEX (iduser);");
 
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014040601', 'dbvex'));

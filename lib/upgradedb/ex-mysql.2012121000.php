@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS monitnodes (
 ");
 
 $DB->Execute("
-    create table monittime (
+    create table if not exists monittime (
 	id bigint not null auto_increment,
 	nodeid int default null,
 	ownid int default null,

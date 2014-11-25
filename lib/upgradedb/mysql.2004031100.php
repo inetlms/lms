@@ -24,9 +24,10 @@
  *  $Id$
  */
 
-$DB->Execute("ALTER TABLE rtmessages ADD createtime INT(11) DEFAULT 0 NOT NULL");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'rtmessages','createtime'))) 
+    $DB->Execute("ALTER TABLE rtmessages ADD createtime INT(11) DEFAULT 0 NOT NULL");
 
-$DB->Execute("CREATE TABLE rtattachments (messageid INT DEFAULT 0 NOT NULL, filename VARCHAR(255) NOT NULL, contenttype VARCHAR(255) NOT NULL)");
+$DB->Execute("CREATE TABLE IF NOT EXISTS rtattachments (messageid INT DEFAULT 0 NOT NULL, filename VARCHAR(255) NOT NULL, contenttype VARCHAR(255) NOT NULL)");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?",array('2004031100', 'dbversion'));
 

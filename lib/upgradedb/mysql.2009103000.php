@@ -22,13 +22,22 @@
  *
  */
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'domains','master'))) 
 $DB->Execute("ALTER TABLE domains ADD master VARCHAR(128) DEFAULT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'domains','last_check'))) 
 $DB->Execute("ALTER TABLE domains ADD last_check INT(11) DEFAULT NULL");
-$DB->Execute("ALTER TABLE domains ADD type    VARCHAR(6) NOT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'domains','type'))) 
+$DB->Execute("ALTER TABLE domains ADD type VARCHAR(6) NOT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'domains','notified_serial'))) 
 $DB->Execute("ALTER TABLE domains ADD notified_serial INT(11) DEFAULT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'domains','account'))) 
 $DB->Execute("ALTER TABLE domains ADD account VARCHAR(40) DEFAULT NULL");
 
-$DB->Execute("CREATE TABLE records (
+$DB->Execute("CREATE TABLE IF NOT EXISTS records (
   id              INT(11) auto_increment,
   domain_id       INT(11) DEFAULT NULL,
   name            VARCHAR(255) DEFAULT NULL,
@@ -42,7 +51,7 @@ $DB->Execute("CREATE TABLE records (
   INDEX name_type (name, type, domain_id)
 )");
 
-$DB->Execute("CREATE TABLE supermasters (
+$DB->Execute("CREATE TABLE IF NOT EXISTS supermasters (
   id            INT(11) auto_increment,
   ip 		VARCHAR(25) NOT NULL,
   nameserver 	VARCHAR(255) NOT NULL,

@@ -24,7 +24,7 @@
 $DB->BeginTrans();
 
 $DB->Execute("
-CREATE TABLE contractorgroups (
+CREATE TABLE IF NOT EXISTS contractorgroups (
   id int(11) NOT NULL auto_increment, 
   name varchar(255) NOT NULL DEFAULT '', 
   description text NOT NULL, 
@@ -34,7 +34,7 @@ CREATE TABLE contractorgroups (
 ");
 
 $DB->Execute("
-CREATE TABLE contractorassignments (
+CREATE TABLE IF NOT EXISTS contractorassignments (
   id int(11) NOT NULL auto_increment, 
   contractorgroupid int(11) NOT NULL REFERENCES contractorgroups (id) ON DELETE CASCADE ON UPDATE CASCADE,
   customerid int(11) NOT NULL REFERENCES customers (id) ON DELETE CASCADE ON UPDATE CASCADE,

@@ -78,8 +78,11 @@ if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = 
 
 $DB->Execute("DROP VIEW IF EXISTS monit_vnodes;");
 
-$DB->Execute("ALTER TABLE monitnodes ADD disabled TINYINT( 1 ) NOT NULL DEFAULT 0;");
-$DB->Execute("ALTER TABLE monitnodes ADD src_netdev integer not null default '0';");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'monitnodes','disabled'))) 
+	$DB->Execute("ALTER TABLE monitnodes ADD disabled TINYINT( 1 ) NOT NULL DEFAULT 0;");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'monitnodes','src_netdev'))) 
+	$DB->Execute("ALTER TABLE monitnodes ADD src_netdev integer not null default '0';");
 
 $DB->Execute("
  CREATE VIEW monit_vnodes AS SELECT 

@@ -28,7 +28,7 @@ $DB->addconfig('phpui','iphistory','1');
 $DB->addconfig('phpui','iphistory_pagelimit','50');
 
 $DB->Execute("
-CREATE TABLE iphistory (
+CREATE TABLE IF NOT EXISTS iphistory (
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 nodeid int not null default 0,
 ipaddr INT UNSIGNED NOT NULL ,

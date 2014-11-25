@@ -26,7 +26,10 @@ $DB->BeginTrans();
 $DB->Execute("DROP VIEW vnodes");
 $DB->Execute("DROP VIEW vmacs");
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netlinks','technology'))) 
 $DB->Execute("ALTER TABLE netlinks ADD technology int(11) DEFAULT '0' NOT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'nodes','linktechnology'))) 
 $DB->Execute("ALTER TABLE nodes ADD linktechnology int(11) DEFAULT '0' NOT NULL");
 
 $DB->Execute("CREATE VIEW vnodes AS

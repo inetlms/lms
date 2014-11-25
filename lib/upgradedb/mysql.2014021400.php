@@ -23,8 +23,10 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("INSERT INTO uiconfig (section, var, value) VALUES(?, ?, ?)",
-	array('userpanel', 'tickets_from_selected_queues', '0'));
+//$DB->Execute("INSERT INTO uiconfig (section, var, value) VALUES(?, ?, ?)",
+//	array('userpanel', 'tickets_from_selected_queues', '0'));
+
+$DB->addconfig('userpanel', 'tickets_from_selected_queues', '0');
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014021400', 'dbversion'));
 

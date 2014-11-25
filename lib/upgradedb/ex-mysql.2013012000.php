@@ -54,21 +54,21 @@ $tmp = array(
 );
 
 $DB->Execute('DELETE FROM uiconfig WHERE section=? ;',array('monit'));
-$DB->addconfig('monit','active_monitoring',$tmp['active_monitoring'],0);
+$DB->addconfig('monit','active_monitoring',$tmp['active_monitoring'],'0');
 $DB->addconfig('monit','display_chart_in_node_box','1');
 $DB->addconfig('monit','live_ping','1');
-$DB->addconfig('monit','netdev_test',$tmp['netdev_test'],1);
+$DB->addconfig('monit','netdev_test',$tmp['netdev_test'],'1');
 $DB->addconfig('monit','netdev_test_type',$tmp['netdev_test-type'],'icmp');
-$DB->addconfig('monit','node_test',$tmp['node_test'],1);
+$DB->addconfig('monit','node_test',$tmp['node_test'],'1');
 $DB->addconfig('monit','node_test_type',$tmp['node_test_type'],'icmp');
-$DB->addconfig('monit','owner_test',$tmp['owner_test'],1);
+$DB->addconfig('monit','owner_test',$tmp['owner_test'],'1');
 $DB->addconfig('monit','owner_test_type',$tmp['owner_test_type'],'icmp');
 $DB->addconfig('monit','packetsize',$tmp['packetsize'],'32');
 $DB->addconfig('monit','rrdtool_dir','/usr/bin/rrdtool');
 $DB->addconfig('monit','signal_test','0','0');
-$DB->addconfig('monit','step_test_netdev',$tmp['step_test_netdev'],5);
-$DB->addconfig('monit','step_test_nodes',$tmp['step_test_nodes'],10);
-$DB->addconfig('monit','step_test_owner',$tmp['step_test_owner'],10);
+$DB->addconfig('monit','step_test_netdev',$tmp['step_test_netdev'],'5');
+$DB->addconfig('monit','step_test_nodes',$tmp['step_test_nodes'],'10');
+$DB->addconfig('monit','step_test_owner',$tmp['step_test_owner'],'10');
 $DB->addconfig('monit','step_test_signal','5');
 $DB->addconfig('monit','test_script_dir',$tmp['test_script_dir'],'/usr/local/sbin/lms-monitoring.pl');
 unset($tmp);

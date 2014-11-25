@@ -5349,7 +5349,7 @@ class LMS {
 	}
 
 	function CheckRegister() {
-		if (!$this->DB->GetOne('SELECT 1 FROM dbinfo WHERE keytype = ? AND keyvalue = ? LIMIT 1;',array('inetlms_registers',1)))
+		if (!$this->DB->GetOne('SELECT 1 FROM dbinfo WHERE keytype = ? AND keyvalue = ? LIMIT 1;',array('inetlms_registers','1')))
 		    return FALSE;
 		else
 		    return TRUE;

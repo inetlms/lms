@@ -24,12 +24,12 @@
 
 $DB->BeginTrans();
 
-$DB->addconfig('sms','smsapi_eco',1);
-$DB->addconfig('sms','smsapi_fast',0,0);
-$DB->addconfig('sms','smsapi_nounicode',1);
-$DB->addconfig('sms','smsapi_normalize',1);
-$DB->addconfig('sms','smsapi_max_parts',3);
-$DB->addconfig('sms','smsapi_skip_foreign',1);
+$DB->addconfig('sms','smsapi_eco','1');
+$DB->addconfig('sms','smsapi_fast','0','0');
+$DB->addconfig('sms','smsapi_nounicode','1');
+$DB->addconfig('sms','smsapi_normalize','1');
+$DB->addconfig('sms','smsapi_max_parts','3');
+$DB->addconfig('sms','smsapi_skip_foreign','1');
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2013021205', 'dbvex'));
 $DB->CommitTrans();

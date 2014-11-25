@@ -26,8 +26,12 @@
 
 // Some stuff by maniac.
 
-$DB->Execute("ALTER TABLE users ADD message TEXT DEFAULT '' NOT NULL");
-$DB->Execute("ALTER TABLE nodes ADD warning BOOL DEFAULT '0' NOT NULL");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'users','message'))) 
+    $DB->Execute("ALTER TABLE users ADD message TEXT DEFAULT '' NOT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'nodes','warning'))) 
+    $DB->Execute("ALTER TABLE nodes ADD warning BOOL DEFAULT '0' NOT NULL");
+
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?",array('2004031000', 'dbversion'));
 
 ?>

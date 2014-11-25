@@ -46,7 +46,9 @@ if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = 
 if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'tariffs','active'))) 
 {
     $DB->Execute("ALTER TABLE tariffs ADD active TINYINT( 1 ) NOT NULL DEFAULT '1' ;");
-    $DB->Execute("ALTER TABLE tariffs ADD INDEX (active) ;");
+    
+    if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'tariffs','active'))) 
+	$DB->Execute("ALTER TABLE tariffs ADD INDEX (active) ;");
 }
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2012122901', 'dbvex'));

@@ -23,12 +23,23 @@
  *
  *  $Id$
  */
-					
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'tariffs','uprate_n'))) 
 $DB->Execute("ALTER TABLE tariffs ADD uprate_n int(11) DEFAULT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'tariffs','upceil_n'))) 
 $DB->Execute("ALTER TABLE tariffs ADD upceil_n int(11) DEFAULT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'tariffs','downrate_n'))) 
 $DB->Execute("ALTER TABLE tariffs ADD downrate_n int(11) DEFAULT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'tariffs','downceil_n'))) 
 $DB->Execute("ALTER TABLE tariffs ADD downceil_n int(11) DEFAULT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'tariffs','climit_n'))) 
 $DB->Execute("ALTER TABLE tariffs ADD climit_n int(11) DEFAULT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'tariffs','plimit_n'))) 
 $DB->Execute("ALTER TABLE tariffs ADD plimit_n int(11) DEFAULT NULL");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2009101600', 'dbversion'));
