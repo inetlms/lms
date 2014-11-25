@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS notatnik (
 ) ENGINE=InnoDB;
 ");
 
-if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'notatnik','iduser'))) 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'notatnik','iduser'))) 
 	$DB->Execute("ALTER TABLE notatnik ADD INDEX (iduser);");
 
 

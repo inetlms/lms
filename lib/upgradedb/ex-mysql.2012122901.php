@@ -47,7 +47,7 @@ if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = 
 {
     $DB->Execute("ALTER TABLE tariffs ADD active TINYINT( 1 ) NOT NULL DEFAULT '1' ;");
     
-    if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'tariffs','active'))) 
+    if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'tariffs','active'))) 
 	$DB->Execute("ALTER TABLE tariffs ADD INDEX (active) ;");
 }
 

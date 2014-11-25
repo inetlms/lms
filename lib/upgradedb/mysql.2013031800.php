@@ -39,7 +39,7 @@ $DB->Execute("UPDATE location_streets SET typeid = NULL WHERE typeid IS NOT NULL
 //	ADD FOREIGN KEY (typeid) REFERENCES location_street_types (id) ON DELETE SET NULL ON UPDATE CASCADE");
 $DB->Execute("DELETE FROM pna WHERE cityid NOT IN (SELECT id FROM location_cities) OR streetid NOT IN (SELECT id FROM location_streets)");
 
-if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'pna','streetid'))) 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'pna','streetid'))) 
 $DB->Execute("ALTER TABLE pna ADD INDEX (streetid),
 	ADD INDEX (cityid)");
 //$DB->Execute("ALTER TABLE pna ADD FOREIGN KEY (cityid) REFERENCES location_cities (id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -64,17 +64,17 @@ $DB->Execute("DELETE FROM rtnotes WHERE ticketid NOT IN (SELECT id FROM rtticket
 //	ADD FOREIGN KEY (userid) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE");
 //$DB->Execute("ALTER TABLE rttickets ADD FOREIGN KEY (queueid) REFERENCES rtqueues (id) ON DELETE CASCADE ON UPDATE CASCADE");
 $DB->Execute("DELETE FROM rtrights WHERE queueid NOT IN (SELECT id FROM rtqueues) OR userid NOT IN (SELECT id FROM users)");
-if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'rtrights','queueid'))) 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'rtrights','queueid'))) 
 $DB->Execute("ALTER TABLE rtrights ADD INDEX (queueid)");
 //$DB->Execute("ALTER TABLE rtrights ADD FOREIGN KEY (userid) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
 //	ADD FOREIGN KEY (queueid) REFERENCES rtqueues (id) ON DELETE CASCADE ON UPDATE CASCADE");
 $DB->Execute("DELETE FROM rtcategoryusers WHERE userid NOT IN (SELECT id FROM users) OR categoryid NOT IN (SELECT id FROM rtcategories)");
-if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'rtcategoryusers','categoryid'))) 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'rtcategoryusers','categoryid'))) 
 $DB->Execute("ALTER TABLE rtcategoryusers ADD INDEX (categoryid)");
 //$DB->Execute("ALTER TABLE rtcategoryusers ADD FOREIGN KEY (userid) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
 //	ADD FOREIGN KEY (categoryid) REFERENCES rtcategories (id) ON DELETE CASCADE ON UPDATE CASCADE");
 $DB->Execute("DELETE FROM rtticketcategories WHERE ticketid NOT IN (SELECT id FROM rttickets) OR categoryid NOT IN (SELECT id FROM rtcategories)");
-if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'rtticketcategories','categoryid'))) 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = ? AND TABLE_NAME = ? AND INDEX_NAME = ? ;",array($DB->_dbname,'rtticketcategories','categoryid'))) 
 $DB->Execute("ALTER TABLE rtticketcategories ADD INDEX (categoryid)");
 //$DB->Execute("ALTER TABLE rtticketcategories ADD FOREIGN KEY (ticketid) REFERENCES rttickets (id) ON DELETE CASCADE ON UPDATE CASCADE,
 //	ADD FOREIGN KEY (categoryid) REFERENCES rtcategories (id) ON DELETE CASCADE ON UPDATE CASCADE");
