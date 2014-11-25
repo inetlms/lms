@@ -34,8 +34,8 @@ $DB->Execute("
 	primary key(id));
 ");
 
-$DB->Execute("DROP VIEW vnodes ;");
-$DB->Execute("DROP VIEW vmacs;");
+$DB->Execute("DROP VIEW IF EXISTS vnodes ;");
+$DB->Execute("DROP VIEW IF EXISTS vmacs;");
 
 
 $DB->Execute("ALTER TABLE nodes ADD access_from INTEGER DEFAULT 0;");
@@ -47,14 +47,14 @@ $DB->Execute("ALTER TABLE nodes ADD sn VARCHAR( 64 ) DEFAULT NULL;");
 
 
 $DB->Execute("
-    CREATE VIEW vnodes AS
+    CREATE VIEW IF NOT EXISTS vnodes AS
     SELECT n.*, m.mac
     FROM nodes n
     LEFT JOIN (SELECT nodeid, array_to_string(array_agg(mac), ',') AS mac
         FROM macs GROUP BY nodeid) m ON (n.id = m.nodeid);
 ");
 $DB->Execute("
-CREATE VIEW vmacs AS 
+CREATE VIEW IF NOT EXISTS vmacs AS 
 	SELECT n.*, m.mac, m.id AS macid 
 	FROM nodes n 
 	JOIN macs m ON (n.id = m.nodeid);

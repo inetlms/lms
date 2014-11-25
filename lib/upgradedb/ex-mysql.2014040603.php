@@ -34,8 +34,8 @@ $DB->Execute("
 ) ENGINE=InnoDB;
 ");
 
-$DB->Execute("DROP VIEW vnodes ;");
-$DB->Execute("DROP VIEW vmacs;");
+$DB->Execute("DROP VIEW IF EXISTS vnodes ;");
+$DB->Execute("DROP VIEW IF EXISTS vmacs;");
 
 
 if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
@@ -64,13 +64,13 @@ if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = 
 
 
 $DB->Execute("
-CREATE VIEW vnodes AS 
+CREATE VIEW IF NOT EXISTS vnodes AS 
 	SELECT n.*, m.mac 
 	FROM nodes n 
 	LEFT JOIN vnodes_mac m ON (n.id = m.nodeid);
 ");
 $DB->Execute("
-CREATE VIEW vmacs AS 
+CREATE VIEW IF NOT EXISTS vmacs AS 
 	SELECT n.*, m.mac, m.id AS macid 
 	FROM nodes n 
 	JOIN macs m ON (n.id = m.nodeid);

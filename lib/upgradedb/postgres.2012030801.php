@@ -26,9 +26,9 @@ $DB->BeginTrans();
 
 // name2 support for teryt location_street
 $DB->Execute("
-	DROP VIEW teryt_ulic;
+	DROP VIEW IF EXISTS teryt_ulic;
 	ALTER TABLE location_streets ADD name2 varchar(128) DEFAULT NULL;
-	CREATE VIEW teryt_ulic AS
+	CREATE VIEW IF NOT EXISTS teryt_ulic AS
 		SELECT st.ident AS woj, d.ident AS pow, b.ident AS gmi, b.type AS rodz_gmi,
 			c.ident AS sym, s.ident AS sym_ul, s.name AS nazwa_1, s.name2 AS nazwa_2, t.name AS cecha, s.id
 		FROM location_streets s
@@ -41,16 +41,16 @@ $DB->Execute("
 
 // netlink and node link speed support
 $DB->Execute("
-	DROP VIEW vnodes;
-	DROP VIEW vmacs;
+	DROP VIEW IF EXISTS vnodes;
+	DROP VIEW IF EXISTS vmacs;
 	ALTER TABLE netlinks ADD speed integer DEFAULT 100000 NOT NULL;
 	ALTER TABLE nodes ADD linkspeed integer DEFAULT 100000 NOT NULL;
-	CREATE VIEW vnodes AS
+	CREATE VIEW IF NOT EXISTS vnodes AS
 		SELECT n.*, m.mac
 		FROM nodes n
 		LEFT JOIN (SELECT nodeid, array_to_string(array_agg(mac), ',') AS mac
 			FROM macs GROUP BY nodeid) m ON (n.id = m.nodeid);
-	CREATE VIEW vmacs AS
+	CREATE VIEW IF NOT EXISTS vmacs AS
 	SELECT n.*, m.mac, m.id AS macid
 		FROM nodes n
 		JOIN macs m ON (n.id = m.nodeid);

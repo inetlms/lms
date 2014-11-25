@@ -27,8 +27,8 @@
 $DB->BeginTrans();
 
 $DB->Execute("
-	DROP VIEW vnodes;
-	DROP VIEW vmacs;
+	DROP VIEW IF EXISTS vnodes;
+	DROP VIEW IF EXISTS vmacs;
 ");
 
 $DB->Execute("ALTER TABLE nodes ADD longitude numeric(10, 6) DEFAULT NULL");
@@ -36,12 +36,12 @@ $DB->Execute("ALTER TABLE nodes ADD latitude numeric(10, 6) DEFAULT NULL");
 
 
 $DB->Execute("
-	CREATE VIEW vnodes AS
+	CREATE VIEW IF NOT EXISTS vnodes AS
 	SELECT n.*, m.mac
 		FROM nodes n
 		LEFT JOIN (SELECT nodeid, array_to_string(array_agg(mac), ',') AS mac
 			FROM macs GROUP BY nodeid) m ON (n.id = m.nodeid);
-	CREATE VIEW vmacs AS
+	CREATE VIEW IF NOT EXISTS vmacs AS
 	SELECT n.*, m.mac, m.id AS macid
 		FROM nodes n
 		JOIN macs m ON (n.id = m.nodeid);

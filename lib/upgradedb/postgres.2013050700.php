@@ -26,8 +26,8 @@ $DB->BeginTrans();
 $DB->Execute("SET CONSTRAINTS ALL IMMEDIATE");
 
 $DB->Execute("
-	DROP VIEW vnodes;
-	DROP VIEW vmacs;
+	DROP VIEW IF EXISTS vnodes;
+	DROP VIEW IF EXISTS vmacs;
 ");
 
 $DB->Execute("ALTER TABLE nodes ADD COLUMN netid integer NOT NULL DEFAULT 0");
@@ -46,12 +46,12 @@ if (!empty($nodes))
 //$DB->Execute("ALTER TABLE nodes ADD CONSTRAINT nodes_netid_fkey FOREIGN KEY (netid) REFERENCES networks (id) ON DELETE CASCADE ON UPDATE CASCADE");
 
 $DB->Execute("
-	CREATE VIEW vnodes AS
+	CREATE VIEW IF NOT EXISTS vnodes AS
 	SELECT n.*, m.mac
 		FROM nodes n
 		LEFT JOIN (SELECT nodeid, array_to_string(array_agg(mac), ',') AS mac
 			FROM macs GROUP BY nodeid) m ON (n.id = m.nodeid);
-	CREATE VIEW vmacs AS
+	CREATE VIEW IF NOT EXISTS vmacs AS
 	SELECT n.*, m.mac, m.id AS macid
 		FROM nodes n
 		JOIN macs m ON (n.id = m.nodeid);

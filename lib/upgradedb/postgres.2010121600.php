@@ -24,9 +24,9 @@
 $DB->BeginTrans();
 
 $DB->Execute("
-    DROP VIEW customersview;
-    DROP VIEW vnodes;
-    DROP VIEW vmacs;
+    DROP VIEW IF EXISTS customersview;
+    DROP VIEW IF EXISTS vnodes;
+    DROP VIEW IF EXISTS vmacs;
 
     ALTER TABLE customers ADD post_address varchar(255) DEFAULT NULL;
     ALTER TABLE customers ADD post_zip varchar(10) DEFAULT NULL;
@@ -93,20 +93,20 @@ $DB->Execute("
     ALTER TABLE customers DROP serviceaddr;
     ALTER TABLE nodes DROP location;
 
-    CREATE VIEW customersview AS
+    CREATE VIEW IF NOT EXISTS customersview AS
         SELECT c.* FROM customers c
         WHERE NOT EXISTS (
             SELECT 1 FROM customerassignments a
             JOIN excludedgroups e ON (a.customergroupid = e.customergroupid)
             WHERE e.userid = lms_current_user() AND a.customerid = c.id);
 
-    CREATE VIEW vnodes AS
+    CREATE VIEW IF NOT EXISTS vnodes AS
     SELECT n.*, m.mac
 	    FROM nodes n
 	    LEFT JOIN (SELECT nodeid, array_to_string(array_agg(mac), ',') AS mac
 		    FROM macs GROUP BY nodeid) m ON (n.id = m.nodeid);
 
-    CREATE VIEW vmacs AS
+    CREATE VIEW IF NOT EXISTS vmacs AS
     SELECT n.*, m.mac, m.id AS macid
         FROM nodes n
         JOIN macs m ON (n.id = m.nodeid);

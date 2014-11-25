@@ -23,9 +23,9 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("DROP VIEW customersview");
-$DB->Execute("DROP VIEW vnodes");
-$DB->Execute("DROP VIEW vmacs");
+$DB->Execute("DROP VIEW IF EXISTS customersview");
+$DB->Execute("DROP VIEW IF EXISTS vnodes");
+$DB->Execute("DROP VIEW IF EXISTS vmacs");
 
 $DB->Execute("ALTER TABLE customers ADD post_address varchar(255) DEFAULT NULL");
 $DB->Execute("ALTER TABLE customers ADD post_zip varchar(10) DEFAULT NULL");
@@ -88,19 +88,19 @@ if (is_array($data)) {
 $DB->Execute("ALTER TABLE customers DROP serviceaddr");
 $DB->Execute("ALTER TABLE nodes DROP location");
 
-$DB->Execute("CREATE VIEW customersview AS
+$DB->Execute("CREATE VIEW IF NOT EXISTS customersview AS
     SELECT c.* FROM customers c
     WHERE NOT EXISTS (
         SELECT 1 FROM customerassignments a
         JOIN excludedgroups e ON (a.customergroupid = e.customergroupid)
         WHERE e.userid = lms_current_user() AND a.customerid = c.id)");
 
-$DB->Execute("CREATE VIEW vnodes AS
+$DB->Execute("CREATE VIEW IF NOT EXISTS vnodes AS
 	SELECT n.*, m.mac
 	FROM nodes n
     LEFT JOIN vnodes_mac m ON (n.id = m.nodeid)");
 
-$DB->Execute("CREATE VIEW vmacs AS
+$DB->Execute("CREATE VIEW IF NOT EXISTS vmacs AS
     SELECT n.*, m.mac, m.id AS macid
     FROM nodes n
     JOIN macs m ON (n.id = m.nodeid)");

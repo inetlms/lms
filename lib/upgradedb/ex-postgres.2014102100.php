@@ -28,21 +28,21 @@ $DB->BeginTrans();
 $DB->Execute("ALTER TABLE networks ADD ipnat VARCHAR( 16 ) DEFAULT '';");
 $DB->Execute("ALTER TABLE tariffs ADD relief NUMERIC(9,2) NOT NULL DEFAULT '0.00';");
 
-$DB->Execute("DROP VIEW vnodes ;");
-$DB->Execute("DROP VIEW vmacs;");
+$DB->Execute("DROP VIEW IF EXISTS vnodes ;");
+$DB->Execute("DROP VIEW IF EXISTS vmacs;");
 
 
 $DB->Execute("ALTER TABLE nodes ADD blockade SMALLINT DEFAULT 0;");
 
 $DB->Execute("
-    CREATE VIEW vnodes AS
+    CREATE VIEW IF NOT EXISTS vnodes AS
     SELECT n.*, m.mac
     FROM nodes n
     LEFT JOIN (SELECT nodeid, array_to_string(array_agg(mac), ',') AS mac
         FROM macs GROUP BY nodeid) m ON (n.id = m.nodeid);
 ");
 $DB->Execute("
-CREATE VIEW vmacs AS 
+CREATE VIEW IF NOT EXISTS vmacs AS 
 	SELECT n.*, m.mac, m.id AS macid 
 	FROM nodes n 
 	JOIN macs m ON (n.id = m.nodeid);
