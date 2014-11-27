@@ -747,7 +747,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 				    break;
 				    
 				    case 'haslo':
-					$config[$idx]['description'] = 'Hasło do sms w MD5';
+					$config[$idx]['description'] = 'Hasło do sms';
 				    break;
 				    
 				    case 'serwer':
