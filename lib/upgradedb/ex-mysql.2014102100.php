@@ -46,13 +46,13 @@ if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = 
 
 
 $DB->Execute("
-CREATE VIEW IF NOT EXISTS vnodes AS 
+CREATE OR REPLACEVIEW vnodes AS 
 	SELECT n.*, m.mac 
 	FROM nodes n 
 	LEFT JOIN vnodes_mac m ON (n.id = m.nodeid);
 ");
 $DB->Execute("
-CREATE VIEW IF NOT EXISTS vmacs AS 
+CREATE OR REPLACE VIEW vmacs AS 
 	SELECT n.*, m.mac, m.id AS macid 
 	FROM nodes n 
 	JOIN macs m ON (n.id = m.nodeid);

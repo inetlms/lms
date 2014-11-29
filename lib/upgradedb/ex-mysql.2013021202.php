@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS customerorigin (
 ");
 
 $DB->Execute("
-CREATE VIEW IF NOT EXISTS customersview AS
+CREATE OR REPLACE VIEW customersview AS
 SELECT c.* FROM customers c
 WHERE NOT EXISTS (
 SELECT 1 FROM customerassignments a
@@ -56,7 +56,7 @@ AND c.type IN ('0','1');
 ");
 
 $DB->Execute("
-CREATE VIEW IF NOT EXISTS contractorview AS
+CREATE OR REPLACE VIEW contractorview AS
 SELECT c.* FROM customers c
 WHERE c.type = '2';
 ");

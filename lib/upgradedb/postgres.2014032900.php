@@ -29,12 +29,12 @@ $DB->Execute("
 	DROP VIEW IF EXISTS vmacs;
 	ALTER TABLE netlinks ADD technology integer DEFAULT 0 NOT NULL;
 	ALTER TABLE nodes ADD linktechnology integer DEFAULT 0 NOT NULL;
-	CREATE VIEW IF NOT EXISTS vnodes AS
+	CREATE VIEW vnodes AS
 		SELECT n.*, m.mac
 		FROM nodes n
 		LEFT JOIN (SELECT nodeid, array_to_string(array_agg(mac), ',') AS mac
 			FROM macs GROUP BY nodeid) m ON (n.id = m.nodeid);
-	CREATE VIEW IF NOT EXISTS vmacs AS
+	CREATE VIEW vmacs AS
 	SELECT n.*, m.mac, m.id AS macid
 		FROM nodes n
 		JOIN macs m ON (n.id = m.nodeid);

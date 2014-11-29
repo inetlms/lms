@@ -36,12 +36,12 @@ $DB->Execute("ALTER TABLE nodes ADD latitude numeric(10, 6) DEFAULT NULL");
 
 
 $DB->Execute("
-	CREATE VIEW IF NOT EXISTS vnodes AS
+	CREATE VIEW vnodes AS
 	SELECT n.*, m.mac
 		FROM nodes n
 		LEFT JOIN (SELECT nodeid, array_to_string(array_agg(mac), ',') AS mac
 			FROM macs GROUP BY nodeid) m ON (n.id = m.nodeid);
-	CREATE VIEW IF NOT EXISTS vmacs AS
+	CREATE VIEW vmacs AS
 	SELECT n.*, m.mac, m.id AS macid
 		FROM nodes n
 		JOIN macs m ON (n.id = m.nodeid);
