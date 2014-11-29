@@ -29,7 +29,7 @@ if (!$DB->GetOne('SELECT 1 FROM pg_tables WHERE tablename = ?;',array('tv_billin
 {
 
     $DB->Execute("
-	REATE TABLE tv_billingevent (
+	CREATE TABLE tv_billingevent (
 	id serial not null,
 	customerid int NOT NULL,
 	account_id int NOT NULL,

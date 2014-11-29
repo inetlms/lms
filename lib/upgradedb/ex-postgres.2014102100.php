@@ -28,7 +28,7 @@ $DB->BeginTrans();
 $DB->Execute("ALTER TABLE networks ADD ipnat VARCHAR( 16 ) DEFAULT '';");
 $DB->Execute("ALTER TABLE tariffs ADD relief NUMERIC(9,2) NOT NULL DEFAULT '0.00';");
 
-$DB->Execute("DROP VIEW IF EXISTS vnodes ;");
+$DB->Execute("DROP VIEW IF EXISTS vnodes;");
 $DB->Execute("DROP VIEW IF EXISTS vmacs;");
 
 
