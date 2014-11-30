@@ -46,7 +46,7 @@ if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = 
 
 
 $DB->Execute("
-CREATE OR REPLACEVIEW vnodes AS 
+CREATE OR REPLACE VIEW vnodes AS 
 	SELECT n.*, m.mac 
 	FROM nodes n 
 	LEFT JOIN vnodes_mac m ON (n.id = m.nodeid);
