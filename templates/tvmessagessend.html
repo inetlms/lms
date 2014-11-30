@@ -2,16 +2,16 @@
 
 <!--// tvmessagessend.html,v 1.2 23/08/2011 19:00:00 ITMSOFT $ //-->
 
-<H1>{$layout.pagetitle}</H1>
+<h1>{$layout.pagetitle}</h1>
 
 {if $send_to|@count > 0}
-<H2 style="color: green">Wysyłano poprawnie {$send_to} wiadomości.</H2>
+<H2 style="color: green">Wysyłano poprawnie {$send_to} wiadomości.</h2>
 {/if}
 
 {if $customerdata}
-<H3>Wysyłasz wiadomość do {$customerdata.customername}</H3>
+<h3>Wysyłasz wiadomość do {$customerdata.customername}</h3>
 {else}
-<H3>Wysyłasz wiadomość do wszystkich aktywnych Klientów</H3>
+<h3>Wysyłasz wiadomość do wszystkich aktywnych Klientów</h3>
 {/if}
 
 <form method="post" name="meldinger" id="meldinger">
@@ -30,13 +30,13 @@
 	</tr>
 	<tr class="dark">
 		<td valign="top" width="200px">Teaser start:</td>
-		<td valign="top" class="dark"><input name="msg_teaser_valid_from" id="msg_teaser_valid_from" value="{$msg_teaser_valid_from}" OnClick="cal1.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" SIZE="10" type="text"></td>
+		<td valign="top" class="dark"><input name="msg_teaser_valid_from" id="msg_teaser_valid_from" value="{$msg_teaser_valid_from}" onclick="cal1.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" size="10" type="text"></td>
 		<td><div>Data od kiedy teaser ma się pokazywać klientowi na ekranie TV w TVPORTALU</div></td>
 
 	</tr>
 	<tr class="dark">
 		<td valign="top" width="200px">Teaser koniec:</td>
-		<td valign="top" class="dark"><input name="msg_teaser_valid_to" id="msg_teaser_valid_to" value="{$msg_teaser_valid_to}" OnClick="cal2.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" SIZE="10" type="text"></td>
+		<td valign="top" class="dark"><input name="msg_teaser_valid_to" id="msg_teaser_valid_to" value="{$msg_teaser_valid_to}" onclick="cal2.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" size="10" type="text"></td>
 		<td><div>Data do kiedy teaser ma się pokazywać klientowi na ekranie TV w TVPORTALU</div></td>
 	</tr>		
 	<tr class="dark">
@@ -58,12 +58,12 @@
 	</tr>
 	<tr class="dark">
 		<td valign="top" width="200px">Wiadomość rozszerzona start:</td>
-		<td valign="top" class="dark"><input name="msg_valid_from" id="msg_valid_from" value="{$msg_valid_from}" OnClick="cal3.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" SIZE="10" type="text"></td>
+		<td valign="top" class="dark"><input name="msg_valid_from" id="msg_valid_from" value="{$msg_valid_from}" onclick="cal3.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" size="10" type="text"></td>
 		<td><div>Data od kiedy cała wiadomość ma się pokazywać klientowi w archiwum w TVPANELU</div></td>
 	</tr>
 	<tr class="dark">
 		<td valign="top" width="200px">Wiadomość rozszerzona end:</td>
-		<td valign="top" class="dark"><input name="msg_valid_to" id="msg_valid_to" value="{$msg_valid_to}" OnClick="cal4.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" SIZE="10" type="text"></td>
+		<td valign="top" class="dark"><input name="msg_valid_to" id="msg_valid_to" value="{$msg_valid_to}" onclick="cal4.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" size="10" type="text"></td>
 		<td><div>Data do kiedy cała wiadomość ma się pokazywać klientowi w archiwum w TVPANELU</div></td>
 	</tr>	
 	<tr class="dark">

@@ -2,9 +2,9 @@
 
 <!--// tvmessages.html,v 1.2 23/08/2011 19:00:00 ITMSOFT $ //-->
 
-<H1>{$layout.pagetitle}</H1>
+<h1>{$layout.pagetitle}</h1>
 
-<a href="?m=tvmessagessend">Wyślij nową wiadomość do wszystkich klientów >></A>
+<a href="?m=tvmessagessend">Wyślij nową wiadomość do wszystkich klientów >></a>
 <br />
 <div style="float:right; margin-bottom: 5px;">
 <b>Pokaż stronę: </b>
@@ -17,45 +17,45 @@
 	{/section}
 </div>
 
-<a href="?m=tvmessages&meldinger_delete_all=1" onclick="return confirmLink(this, 'Czy na pewno chcesz wykasować wszystkie wiadomości?')">Usuń wszystkie <img src="img/cancel.gif"></A>
+<a href="?m=tvmessages&meldinger_delete_all=1" onclick="return confirmLink(this, 'Czy na pewno chcesz wykasować wszystkie wiadomości?')">Usuń wszystkie <img src="img/cancel.gif"></a>
 
-<TABLE cellpadding="5" cellspacing="0" WIDTH="100%">
+<table cellpadding="5" cellspacing="0" width="100%">
 	<tr class="dark">
-		<td><a href="?m={$layout.module}&page={$page}&order=id&direction={if $direction eq "asc" && $order eq "id"}desc{/if}">#ID:</A></B> {if $order eq "id"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=customerid&direction={if $direction eq "asc" && $order eq "customerid"}desc{/if}">Klient w LMS:</A></B> {if $order eq "customerid"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=cust_number&direction={if $direction eq "asc" && $order eq "cust_number"}desc{/if}">Klient w SMS:</A></B> {if $order eq "cust_number"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=msg_body&direction={if $direction eq "asc" && $order eq "msg_body"}desc{/if}">Nagłówek:</A></B> {if $order eq "msg_body"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=msg_teaser_impressions&direction={if $direction eq "asc" && $order eq "msg_teaser_impressions"}desc{/if}">Wyświetleń:</A></B> {if $order eq "msg_teaser_impressions"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=msg_body_extended&direction={if $direction eq "asc" && $order eq "msg_body_extended"}desc{/if}">Treść:</A></B> {if $order eq "msg_body_extended"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=msg_impressions&direction={if $direction eq "asc" && $order eq "msg_impressions"}desc{/if}">Wyświetleń:</A></B> {if $order eq "msg_impressions"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=msg_prio&direction={if $direction eq "asc" && $order eq "msg_prio"}desc{/if}">Priorytet:</A></B> {if $order eq "msg_prio"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=msg_created_date&direction={if $direction eq "asc" && $order eq "msg_created_date"}desc{/if}">Data:</A></B> {if $order eq "msg_created_date"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=msg_valid_from&direction={if $direction eq "asc" && $order eq "msg_valid_from"}desc{/if}">Nagł od:</A></B> {if $order eq "msg_valid_from"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=msg_valid_to&direction={if $direction eq "asc" && $order eq "msg_valid_to"}desc{/if}">Nagł do:</A></B> {if $order eq "msg_valid_to"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=msg_teaser_valid_from&direction={if $direction eq "asc" && $order eq "msg_teaser_valid_from"}desc{/if}">Treść od:</A></B> {if $order eq "msg_teaser_valid_from"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=msg_teaser_valid_to&direction={if $direction eq "asc" && $order eq "msg_teaser_valid_to"}desc{/if}">Treść do:</A></B> {if $order eq "msg_teaser_valid_to"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&page={$page}&order=msg_status&direction={if $direction eq "asc" && $order eq "msg_status"}desc{/if}">Przeczytana:</A></B> {if $order eq "msg_status"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=id&direction={if $direction eq "asc" && $order eq "id"}desc{/if}">#ID:</a></b> {if $order eq "id"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=customerid&direction={if $direction eq "asc" && $order eq "customerid"}desc{/if}">Klient w LMS:</a></b> {if $order eq "customerid"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=cust_number&direction={if $direction eq "asc" && $order eq "cust_number"}desc{/if}">Klient w SMS:</a></b> {if $order eq "cust_number"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=msg_body&direction={if $direction eq "asc" && $order eq "msg_body"}desc{/if}">Nagłówek:</a></b> {if $order eq "msg_body"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=msg_teaser_impressions&direction={if $direction eq "asc" && $order eq "msg_teaser_impressions"}desc{/if}">Wyświetleń:</a></b> {if $order eq "msg_teaser_impressions"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=msg_body_extended&direction={if $direction eq "asc" && $order eq "msg_body_extended"}desc{/if}">Treść:</a></b> {if $order eq "msg_body_extended"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=msg_impressions&direction={if $direction eq "asc" && $order eq "msg_impressions"}desc{/if}">Wyświetleń:</a></b> {if $order eq "msg_impressions"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=msg_prio&direction={if $direction eq "asc" && $order eq "msg_prio"}desc{/if}">Priorytet:</a></b> {if $order eq "msg_prio"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=msg_created_date&direction={if $direction eq "asc" && $order eq "msg_created_date"}desc{/if}">Data:</a></b> {if $order eq "msg_created_date"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=msg_valid_from&direction={if $direction eq "asc" && $order eq "msg_valid_from"}desc{/if}">Nagł od:</a></b> {if $order eq "msg_valid_from"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=msg_valid_to&direction={if $direction eq "asc" && $order eq "msg_valid_to"}desc{/if}">Nagł do:</a></b> {if $order eq "msg_valid_to"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=msg_teaser_valid_from&direction={if $direction eq "asc" && $order eq "msg_teaser_valid_from"}desc{/if}">Treść od:</a></b> {if $order eq "msg_teaser_valid_from"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=msg_teaser_valid_to&direction={if $direction eq "asc" && $order eq "msg_teaser_valid_to"}desc{/if}">Treść do:</a></b> {if $order eq "msg_teaser_valid_to"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=msg_status&direction={if $direction eq "asc" && $order eq "msg_status"}desc{/if}">Przeczytana:</a></b> {if $order eq "msg_status"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
 		<td>Funkcje</td>
 	</tr>
 	{foreach from=$list item=item}
-	<TR class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<TD>{$item.id}</TD>
-		<TD valign="top"><a href="?m=customerinfo&id={$item.customerid}" onmouseover="return overlib('<iframe id=&quot;autoiframe&quot; width=100 height=10 frameborder=0 scrolling=no src=&quot;?m=customerinfoshort&amp;id={$item.customerid}&amp;popup=1&quot;></iframe>',HAUTO,VAUTO,OFFSETX,30,OFFSETY,15);" onmouseout="nd();">{$item.customerid} <img src="img/customer.gif" alt="[ Klient w LMS ]"></a></td>
-		<TD valign="top"><a href="{$smsurl}customer/show/id/{$item.cust_number|substr:3:6}">{$item.cust_number} <img src="img/customer.gif" alt="[ Klient w SMS ]"></a></TD>
-		<TD valign="top"><div id="msg3{$item.id}" style="display: block">{$item.msg_body|substr:0:20}...</div> <div id="msg4{$item.id}" style="display: none">{$item.msg_body}</div></TD>
-		<TD valign="top">{$item.msg_teaser_impressions}</TD>
-		<TD valign="top" onclick="showOrHide('msg1{$item.id}');showOrHide('msg2{$item.id}');showOrHide('msg3{$item.id}');showOrHide('msg4{$item.id}');"><div id="msg1{$item.id}" style="display: block">{$item.msg_body_extended|substr:0:20}...</div> <div id="msg2{$item.id}" style="display: none">{$item.msg_body_extended}</div></TD>
-		<TD valign="top">{$item.msg_impressions}</TD>
-		<TD valign="top">{$item.msg_prio}</TD>
-		<TD valign="top">{$item.msg_created_date}</TD>
-		<TD valign="top">{$item.msg_valid_from}</TD>
-		<TD valign="top">{$item.msg_valid_to}</TD>
-		<TD valign="top">{$item.msg_teaser_valid_from}</TD>
-		<TD valign="top">{$item.msg_teaser_valid_to}</TD>
-		<TD valign="top">{$item.msg_status}</TD>
-		<TD><a href="?m=tvmessages&id={$customerinfo.id}&meldinger_delete={$item.id}" onclick="return confirmLink(this, 'Czy na pewno chcesz wykasować wiadomość?')">Usuń <img src="img/cancel.gif"></a></TD>
+	<tr class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td>{$item.id}</td>
+		<td valign="top"><a href="?m=customerinfo&id={$item.customerid}" onmouseover="return overlib('<iframe id=&quot;autoiframe&quot; width=100 height=10 frameborder=0 scrolling=no src=&quot;?m=customerinfoshort&amp;id={$item.customerid}&amp;popup=1&quot;></iframe>',HAUTO,VAUTO,OFFSETX,30,OFFSETY,15);" onmouseout="nd();">{$item.customerid} <img src="img/customer.gif" alt="[ Klient w LMS ]"></a></td>
+		<td valign="top"><a href="{$smsurl}customer/show/id/{$item.cust_number|substr:3:6}">{$item.cust_number} <img src="img/customer.gif" alt="[ Klient w SMS ]"></a></td>
+		<td valign="top"><div id="msg3{$item.id}" style="display: block">{$item.msg_body|substr:0:20}...</div> <div id="msg4{$item.id}" style="display: none">{$item.msg_body}</div></td>
+		<td valign="top">{$item.msg_teaser_impressions}</td>
+		<td valign="top" onclick="showOrHide('msg1{$item.id}');showOrHide('msg2{$item.id}');showOrHide('msg3{$item.id}');showOrHide('msg4{$item.id}');"><div id="msg1{$item.id}" style="display: block">{$item.msg_body_extended|substr:0:20}...</div> <div id="msg2{$item.id}" style="display: none">{$item.msg_body_extended}</div></td>
+		<td valign="top">{$item.msg_impressions}</td>
+		<td valign="top">{$item.msg_prio}</td>
+		<td valign="top">{$item.msg_created_date}</td>
+		<td valign="top">{$item.msg_valid_from}</td>
+		<td valign="top">{$item.msg_valid_to}</td>
+		<td valign="top">{$item.msg_teaser_valid_from}</td>
+		<td valign="top">{$item.msg_teaser_valid_to}</td>
+		<td valign="top">{$item.msg_status}</td>
+		<td><a href="?m=tvmessages&id={$customerinfo.id}&meldinger_delete={$item.id}" onclick="return confirmLink(this, 'Czy na pewno chcesz wykasować wiadomość?')">Usuń <img src="img/cancel.gif"></a></td>
 		
-	</TR>
+	</tr>
 	{/foreach}
 </table>		
 <br />

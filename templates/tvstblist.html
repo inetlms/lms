@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// tvstblist.html,v 1.2 23/08/2011 19:00:00 ITMSOFT $ //-->
-<H1>{$layout.pagetitle}</H1>
+<h1>{$layout.pagetitle}</h1>
 
 {literal}<style>
 .errormsg {
@@ -19,8 +19,8 @@
 	<div class="errormsg">{$errormsg}</div>
 {/if}
 
-<TABLE cellpadding="5" cellspacing="0" WIDTH="100%">
-	<tr class="DARK">
+<table cellpadding="5" cellspacing="0" width="100%">
+	<tr class="dark">
 		<td class="fall" colspan="16">
 			
 		<div style="float:left">
@@ -45,7 +45,7 @@
 		
 		<div style="float:right">
 		<b>Filtr:</b> <form name="filter" method="get" action="?m=tvstblist">
-			<select onChange="filter.submit()" name="show_mode">
+			<select onchange="filter.submit()" name="show_mode">
 				<option value="" {if $show_mode eq ""}selected{/if}> - wszystkie - </option> 
 				<option value="stock" {if $show_mode eq "stock"}selected{/if}> na magazynie </option>
 				<option value="customer" {if $show_mode eq "customer"}selected{/if}> u klientów </option>
@@ -57,56 +57,56 @@
 		</td>
 	</tr>		
 	
-	<tr class="DARK" class="fall">
+	<tr class="dark" class="fall">
 		<td></td>
-		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=id&direction={if $direction eq "asc" && $order eq "id"}desc{/if}">ID:</A></B> {if $order eq "id"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_mac&direction={if $direction eq "asc" && $order eq "stb_mac"}desc{/if}">MAC:</A></B> {if $order eq "stb_mac"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_serial&direction={if $direction eq "asc" && $order eq "stb_serial"}desc{/if}">Serial:</A></B> {if $order eq "stb_serial"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_model&direction={if $direction eq "asc" && $order eq "stb_model"}desc{/if}">Model:</A></B> {if $order eq "stb_model"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_usage&direction={if $direction eq "asc" && $order eq "stb_usage"}desc{/if}">Lokacja:</A></B> {if $order eq "stb_usage"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_ip&direction={if $direction eq "asc" && $order eq "stb_ip"}desc{/if}">IP:</A></B> {if $order eq "stb_ip"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=cust_number&direction={if $direction eq "asc" && $order eq "cust_number"}desc{/if}">Klient w SMS:</A></B> {if $order eq "cust_number"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=customerid&direction={if $direction eq "asc" && $order eq "customerid"}desc{/if}">Klient w LMS:</A></B> {if $order eq "customerid"}<IMG SRC="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=id&direction={if $direction eq "asc" && $order eq "id"}desc{/if}">ID:</a></b> {if $order eq "id"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_mac&direction={if $direction eq "asc" && $order eq "stb_mac"}desc{/if}">MAC:</a></b> {if $order eq "stb_mac"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_serial&direction={if $direction eq "asc" && $order eq "stb_serial"}desc{/if}">Serial:</a></b> {if $order eq "stb_serial"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_model&direction={if $direction eq "asc" && $order eq "stb_model"}desc{/if}">Model:</a></b> {if $order eq "stb_model"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_usage&direction={if $direction eq "asc" && $order eq "stb_usage"}desc{/if}">Lokacja:</a></b> {if $order eq "stb_usage"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_ip&direction={if $direction eq "asc" && $order eq "stb_ip"}desc{/if}">IP:</a></b> {if $order eq "stb_ip"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=cust_number&direction={if $direction eq "asc" && $order eq "cust_number"}desc{/if}">Klient w SMS:</a></b> {if $order eq "cust_number"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=customerid&direction={if $direction eq "asc" && $order eq "customerid"}desc{/if}">Klient w LMS:</a></b> {if $order eq "customerid"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
 		<td align="right">Funkcje:</td>
 	</tr>
 	{foreach from=$list item=item}
-	<TR class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<TD></TD>
-		<TD valign="top"><B>{$item.stb_id}</B></TD>
-		<TD valign="top">{$item.stb_mac}</TD>
-		<TD valign="top"><B><a href="{$smsurl}stock/tracestb/stb/{$item.stb_serial}">{$item.stb_serial} <img src="img/node_on.png" alt="[ STB w SMS ]"></a></TD>
-		<TD valign="top">{$item.stb_model}</TD>
-		<TD valign="top">{$item.stb_usage}</TD>
-		<TD valign="top">{$item.stb_ip}</TD>
-		<TD valign="top">
+	<tr class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td></td>
+		<td valign="top"><b>{$item.stb_id}</b></td>
+		<td valign="top">{$item.stb_mac}</td>
+		<td valign="top"><b><a href="{$smsurl}stock/tracestb/stb/{$item.stb_serial}">{$item.stb_serial} <img src="img/node_on.png" alt="[ STB w SMS ]"></a></td>
+		<td valign="top">{$item.stb_model}</td>
+		<td valign="top">{$item.stb_usage}</td>
+		<td valign="top">{$item.stb_ip}</td>
+		<td valign="top">
 			{if $item.stb_usage eq 'customer'}
-			<B><a href="{$smsurl}customer/show/id/{$item.cust_number|substr:3:6}">{$item.cust_number} <img src="img/customer.gif" alt="[ Klient w SMS ]"></a></B>
+			<b><a href="{$smsurl}customer/show/id/{$item.cust_number|substr:3:6}">{$item.cust_number} <img src="img/customer.gif" alt="[ Klient w SMS ]"></a></b>
 			{/if}
-		</TD>
-		<TD valign="top">
+		</td>
+		<td valign="top">
 			{if $item.stb_usage eq 'customer'}
-			<B><a href="?m=customerinfo&id={$item.customerid}">{$item.customerid} <img src="img/customer.gif" alt="[ Klient w LMS ]"></a></B>
+			<b><a href="?m=customerinfo&id={$item.customerid}">{$item.customerid} <img src="img/customer.gif" alt="[ Klient w LMS ]"></a></b>
 			{/if}
-		</TD>
-		<TD valign="top" align="right">
+		</td>
+		<td valign="top" align="right">
 			{if $item.stb_usage eq 'stock'}
 			<a href="?m=tvstblist&show_mode={$show_mode}&rem={$item.stb_mac}">Usuń z bazy <img src="img/delete.gif" alt="[ Usuń z bazy ]"></a>
 			{/if}
 			<a href="{$smsurl}stock/tracestb/stb/{$item.stb_serial}">Testuj STB <img src="img/netdev_model.gif" alt="[ Testuj STB w SMS ]"></a>
-		</TD>
-	</TR>
+		</td>
+	</tr>
 	{/foreach}
-	<TR CLASS="light">	
-		<TD COLSPAN="4" CLASS="fleftu" ALIGN="right">
-			<B>
-				{t}Total:{/t}<BR>
-			</B>
-		</TD>
-		<TD COLSPAN="10" CLASS="frightu" VALIGN="TOP">
-			<B>
+	<tr class="light">	
+		<td colspan="4" class="fleftu" align="right">
+			<b>
+				{t}Total:{/t}<br>
+			</b>
+		</td>
+		<td colspan="10" class="frightu" valign="top">
+			<b>
 				{if $list|@count}{$list|@count}{else}0{/if}
-			</B>
-		</TD>
-	</TR>		
+			</b>
+		</td>
+	</tr>		
 </table>
 {include file="footer.html"}

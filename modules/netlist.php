@@ -41,8 +41,8 @@ else
 $SESSION->save('netlist_h', $h);
 
 //sort
-if (isset($_GET['o']))
-$netlist = $LMS->GetNetworkList($_GET['o']);
+if (!isset($_GET['o']))
+    $SESSION->restore('netlist_o',$o);
 else
         $o = $_GET['o'];
 $SESSION->save('netlist_o', $o);
