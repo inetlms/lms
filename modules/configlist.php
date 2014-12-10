@@ -787,6 +787,10 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'mt_debug':
 						$config[$idx]['description'] = 'włączenie dodatkowych informacji, używać w razie problemów z wysyłką';
 					break;
+					
+					case 'mt_partreverse':
+						$config[$idx]['description'] = 'odwraca kolejność wysyłanych części<br>Wartość 0 : wysyłka jest w kolejności od pierwszej do ostatniej części<br>Wartość 1 : wysyłka w kolejności od ostatniej do pierwszej';
+					break;
 
 					case 'prefix':
 						$config[$idx]['description'] = trans('Country prefix code, needed for number validation. Default: 48');

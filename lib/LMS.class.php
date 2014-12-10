@@ -5719,7 +5719,7 @@ class LMS {
 				$usb = get_conf('sms.mt_usb','usb1');
 				
 				if (count($part) > 0) {
-				    if (count($part) > 1)
+				    if (get_conf('sms.mt_partreverse',false) && count($part) > 1)
 					$part = array_reverse($part);
 					
 				    for ($p=0; $p<count($part); $p++) {
