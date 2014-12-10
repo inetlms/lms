@@ -23,7 +23,7 @@
 /**
  * @see Zend_Ldap_Filter_String
  */
-require_once 'Zend/Ldap/Filter/String.php';
+require_once LIB_DIR.'/Zend/Ldap/Filter/String.php';
 
 
 /**

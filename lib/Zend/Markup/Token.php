@@ -23,7 +23,7 @@
 /**
  * @see Zend_Markup_TokenList
  */
-require_once 'Zend/Markup/TokenList.php';
+require_once LIB_DIR.'/Zend/Markup/TokenList.php';
 
 /**
  * @category   Zend

@@ -23,7 +23,7 @@
 /**
  * @see Zend_Cache_Core
  */
-require_once 'Zend/Cache/Core.php';
+require_once LIB_DIR.'/Zend/Cache/Core.php';
 
 
 /**

@@ -19,9 +19,9 @@
  * @version    $Id$
  */
 
-require_once 'Zend/Tool/Framework/Registry.php';
-require_once 'Zend/Tool/Framework/Provider/Interface.php';
-require_once 'Zend/Version.php';
+require_once LIB_DIR.'/Zend/Tool/Framework/Registry.php';
+require_once LIB_DIR.'/Zend/Tool/Framework/Provider/Interface.php';
+require_once LIB_DIR.'/Zend/Version.php';
 
 /**
  * Version Provider

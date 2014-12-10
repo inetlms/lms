@@ -141,7 +141,7 @@ class Zend_Gdata_Gapps_EmailListRecipientQuery extends Zend_Gdata_Gapps_Query
         if ($this->_emailListName !== null) {
             $uri .= '/' . $this->_emailListName;
         } else {
-            require_once 'Zend/Gdata/App/InvalidArgumentException.php';
+            require_once LIB_DIR.'/Zend/Gdata/App/InvalidArgumentException.php';
             throw new Zend_Gdata_App_InvalidArgumentException(
                     'EmailListName must not be null');
         }

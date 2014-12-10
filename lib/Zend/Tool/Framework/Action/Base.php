@@ -23,7 +23,7 @@
 /**
  * @see Zend_Tool_Framework_Action_Interface
  */
-require_once 'Zend/Tool/Framework/Action/Interface.php';
+require_once LIB_DIR.'/Zend/Tool/Framework/Action/Interface.php';
 
 /**
  * @category   Zend

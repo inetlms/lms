@@ -23,7 +23,7 @@
 /**
  * @see Zend_Application_Resource_ResourceAbstract
  */
-require_once 'Zend/Application/Resource/ResourceAbstract.php';
+require_once LIB_DIR.'/Zend/Application/Resource/ResourceAbstract.php';
 
 /**
  * Resource for creating database adapter

@@ -5393,6 +5393,48 @@ class LMS {
 		return $result;
 	}
 
+
+	// dzielenie długiego tekstu na części o okreśnlonej długości,
+	// funkcja rozdziela na słowa
+	function share_news($string,$maxchar=158,$separator=" ") {
+		
+		$result = $tmp = array();
+		
+		$string = preg_replace("/\r/", "", $string);
+		$string = iconv("UTF-8","ASCII//TRANSLIT",$string);
+		$czesci = (ceil(mb_strlen($string)/$maxchar)-1);
+		
+		$tab1 = explode($separator,$string);
+		$c = 0; // część
+		
+		for ($i=0; $i<count($tab1); $i++) {
+			$tmp[] = $tab1[$i];
+			$tmpstr = implode($separator,$tmp);
+			
+			if (strlen($tmpstr) > $maxchar && $c != $czesci) {
+				$x = (count($tmp)-1);
+				$_tmp = $tmp[$x];
+				unset($tmp[$x]);
+				$result[$c] = $tmp;
+				$c++;
+				$tmp = array();
+				$tmp[] = $_tmp;
+			} 
+			elseif ($c == $czesci && $i==(count($tab1)-1)) {
+				$result[] = $tmp;
+			}
+		}
+		
+		$return = array();
+		
+		for ($i=0;$i<count($result);$i++)
+			$return[] = implode($separator,$result[$i]);
+		
+		
+		return $return;
+	}
+
+
 	function SendMail($recipients, $headers, $body, $files = NULL) {
 		@include_once('Mail.php');
 		if (!class_exists('Mail'))
@@ -5458,6 +5500,7 @@ class LMS {
 	}
 
 	function SendSMS($number, $message, $messageid = 0) {
+		global $MT;
 		$msg_len = mb_strlen($message);
 
 		if (!$msg_len) {
@@ -5473,8 +5516,10 @@ class LMS {
 		$number = preg_replace('/^0+/', '', $number);
 
 		// add prefix to the number if needed
-		if ($prefix && substr($number, 0, strlen($prefix)) != $prefix)
+		if ($prefix && substr($number, 0, strlen($prefix)) != $prefix) {
+		    if (strtoupper(get_conf('sms.service'))  != 'MIKROTIK')
 			$number = $prefix . $number;
+		}
 
 		// message ID must be unique
 		if (!$messageid) {
@@ -5661,6 +5706,45 @@ class LMS {
 				    return MSG_SENT;
 				else
 				    return FALSE;
+			break;
+			case 'mikrotik' :
+			    $MT->debug = (get_conf('sms.mt_debug',false) ? true : false);
+			    $MT->port = get_conf('sms.mt_port',8728);
+			    $blad = false;
+			    
+			    if ($MT->connect(get_conf('sms.mt_host'),get_conf('sms.mt_username'),get_conf('sms.mt_password'))) {
+			    
+				$part = $this->share_news($message);
+				$cmd = "/tool/sms/send";
+				$usb = get_conf('sms.mt_usb','usb1');
+				
+				if (count($part) > 0) {
+				    if (count($part) > 1)
+					$part = array_reverse($part);
+					
+				    for ($p=0; $p<count($part); $p++) {
+					$mess = $part[$p];
+					$vars = array(
+					    "phone-number"	=> "$number",
+					    "port"		=> "$usb",
+					    "message"	=> "$mess",
+					);
+					
+					if (!$MT->comm($cmd,$vars)) $blad = true;
+					if ($p < count($part)) usleep(1500);
+				    }
+				}
+				
+				$MT->disconnect();
+			    } else $blad = true;
+			    
+			    if (!$blad)
+				return MSG_SENT;
+			    else
+				return FALSE;
+			    
+			    
+			    
 			break;
 			case 'smstools':
 				$dir = !empty($this->CONFIG['sms']['smstools_outdir']) ? $this->CONFIG['sms']['smstools_outdir'] : '/var/spool/sms/outgoing';

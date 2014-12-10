@@ -23,7 +23,7 @@
 /**
  * @see Zend_Service_Ebay_Finding_Abstract
  */
-require_once 'Zend/Service/Ebay/Finding/Abstract.php';
+require_once LIB_DIR.'/Zend/Service/Ebay/Finding/Abstract.php';
 
 /**
  * @category   Zend

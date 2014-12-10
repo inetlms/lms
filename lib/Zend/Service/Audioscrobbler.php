@@ -25,10 +25,10 @@
 /**
  * @see Zend_Http_Client
  */
-require_once 'Zend/Http/Client.php';
+require_once LIB_DIR.'/Zend/Http/Client.php';
 
 /** @see Zend_Xml_Security */
-require_once 'Zend/Xml/Security.php';
+require_once LIB_DIR.'/Zend/Xml/Security.php';
 
 /**
  * @category   Zend
@@ -166,19 +166,19 @@ class Zend_Service_Audioscrobbler
             /**
              * @see Zend_Http_Client_Exception
              */
-            require_once 'Zend/Http/Client/Exception.php';
+            require_once LIB_DIR.'/Zend/Http/Client/Exception.php';
             throw new Zend_Http_Client_Exception('Could not find: ' . $this->_client->getUri());
         } elseif (preg_match('/No user exists with this name/', $responseBody)) {
             /**
              * @see Zend_Http_Client_Exception
              */
-            require_once 'Zend/Http/Client/Exception.php';
+            require_once LIB_DIR.'/Zend/Http/Client/Exception.php';
             throw new Zend_Http_Client_Exception('No user exists with this name');
         } elseif (!$response->isSuccessful()) {
             /**
              * @see Zend_Http_Client_Exception
              */
-            require_once 'Zend/Http/Client/Exception.php';
+            require_once LIB_DIR.'/Zend/Http/Client/Exception.php';
             throw new Zend_Http_Client_Exception('The web service ' . $this->_client->getUri() . ' returned the following status code: ' . $response->getStatus());
         }
 
@@ -189,7 +189,7 @@ class Zend_Service_Audioscrobbler
             /**
              * @see Zend_Service_Exception
              */
-            require_once 'Zend/Service/Exception.php';
+            require_once LIB_DIR.'/Zend/Service/Exception.php';
             $exception = new Zend_Service_Exception('Response failed to load with SimpleXML');
             $exception->error    = $this->_error;
             $exception->response = $responseBody;

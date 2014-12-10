@@ -21,13 +21,13 @@
 
 
 /** @see Zend_Db_Table */
-require_once 'Zend/Db/Table.php';
+require_once LIB_DIR.'/Zend/Db/Table.php';
 
 /**
  * @see Zend_Registry
  * Seems to fix the file not being included by Zend_Db_Table...
  */
-require_once 'Zend/Registry.php';
+require_once LIB_DIR.'/Zend/Registry.php';
 
 /**
  * @category   Zend

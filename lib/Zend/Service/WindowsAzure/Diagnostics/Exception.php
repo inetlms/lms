@@ -20,7 +20,7 @@
  * @version    $Id$
  */
 
-require_once 'Zend/Service/WindowsAzure/Exception.php';
+require_once LIB_DIR.'/Zend/Service/WindowsAzure/Exception.php';
 
 /**
  * @category   Zend

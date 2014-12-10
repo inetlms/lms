@@ -22,7 +22,7 @@
 /**
  * @see Zend_Exception
  */
-require_once 'Zend/Exception.php';
+require_once LIB_DIR.'/Zend/Exception.php';
 
 /**
  * Exception class for Zend_Application

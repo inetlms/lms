@@ -24,7 +24,7 @@
 /**
  * @see Zend_Feed_Exception
  */
-require_once 'Zend/Feed/Exception.php';
+require_once LIB_DIR.'/Zend/Feed/Exception.php';
 
 
 /**

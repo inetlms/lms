@@ -19,7 +19,7 @@
  */
 
 /** Zend_Form */
-require_once 'Zend/Form.php';
+require_once LIB_DIR.'/Zend/Form.php';
 
 /**
  * Zend_Form_SubForm

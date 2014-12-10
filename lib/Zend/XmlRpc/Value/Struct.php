@@ -24,7 +24,7 @@
 /**
  * Zend_XmlRpc_Value_Collection
  */
-require_once 'Zend/XmlRpc/Value/Collection.php';
+require_once LIB_DIR.'/Zend/XmlRpc/Value/Collection.php';
 
 
 /**

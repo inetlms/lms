@@ -21,7 +21,7 @@
 
 
 /** Zend_Pdf_Element */
-require_once 'Zend/Pdf/Element.php';
+require_once LIB_DIR.'/Zend/Pdf/Element.php';
 
 /**
  * PDF file 'string' element implementation

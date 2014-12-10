@@ -22,7 +22,7 @@
 /**
  * @see Zend_Markup_Token
  */
-require_once 'Zend/Markup/Token.php';
+require_once LIB_DIR.'/Zend/Markup/Token.php';
 
 /**
  * @category   Zend

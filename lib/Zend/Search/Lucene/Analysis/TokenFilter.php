@@ -22,7 +22,7 @@
 
 
 /** Zend_Search_Lucene_Analysis_Token */
-require_once 'Zend/Search/Lucene/Analysis/Token.php';
+require_once LIB_DIR.'/Zend/Search/Lucene/Analysis/Token.php';
 
 
 /**

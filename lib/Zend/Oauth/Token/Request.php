@@ -20,7 +20,7 @@
  */
 
 /** Zend_Oauth_Token */
-require_once 'Zend/Oauth/Token.php';
+require_once LIB_DIR.'/Zend/Oauth/Token.php';
 
 /**
  * @category   Zend

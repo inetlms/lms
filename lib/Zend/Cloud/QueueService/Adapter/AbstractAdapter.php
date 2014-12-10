@@ -17,9 +17,9 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-require_once 'Zend/Cloud/QueueService/Adapter.php';
-require_once 'Zend/Cloud/QueueService/Message.php';
-require_once 'Zend/Cloud/QueueService/MessageSet.php';
+require_once LIB_DIR.'/Zend/Cloud/QueueService/Adapter.php';
+require_once LIB_DIR.'/Zend/Cloud/QueueService/Message.php';
+require_once LIB_DIR.'/Zend/Cloud/QueueService/MessageSet.php';
 
 /**
  * Abstract queue adapter

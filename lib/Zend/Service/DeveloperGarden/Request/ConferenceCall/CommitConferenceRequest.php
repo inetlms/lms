@@ -23,7 +23,7 @@
 /**
  * @see Zend_Service_DeveloperGarden_Request_RequestAbstract
  */
-require_once 'Zend/Service/DeveloperGarden/Request/RequestAbstract.php';
+require_once LIB_DIR.'/Zend/Service/DeveloperGarden/Request/RequestAbstract.php';
 
 /**
  * @category   Zend

@@ -23,7 +23,7 @@
 /**
  * Zend_Db_Exception
  */
-require_once 'Zend/Db/Exception.php';
+require_once LIB_DIR.'/Zend/Db/Exception.php';
 
 /**
  * @category   Zend

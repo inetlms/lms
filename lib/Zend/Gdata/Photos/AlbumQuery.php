@@ -134,11 +134,11 @@ class Zend_Gdata_Photos_AlbumQuery extends Zend_Gdata_Photos_UserQuery
         } elseif ($this->getAlbumName() === null && $this->getAlbumId() !== null) {
             $uri .= '/albumid/' . $this->getAlbumId();
         } elseif ($this->getAlbumName() !== null && $this->getAlbumId() !== null) {
-            require_once 'Zend/Gdata/App/InvalidArgumentException.php';
+            require_once LIB_DIR.'/Zend/Gdata/App/InvalidArgumentException.php';
             throw new Zend_Gdata_App_InvalidArgumentException(
                     'AlbumName and AlbumId cannot both be non-null');
         } else {
-            require_once 'Zend/Gdata/App/InvalidArgumentException.php';
+            require_once LIB_DIR.'/Zend/Gdata/App/InvalidArgumentException.php';
             throw new Zend_Gdata_App_InvalidArgumentException(
                     'AlbumName and AlbumId cannot both be null');
         }

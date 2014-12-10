@@ -23,7 +23,7 @@
 /**
  * @see Zend_Acl_Role_Interface
  */
-require_once 'Zend/Acl/Role/Interface.php';
+require_once LIB_DIR.'/Zend/Acl/Role/Interface.php';
 
 
 /**

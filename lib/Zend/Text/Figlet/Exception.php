@@ -22,7 +22,7 @@
 /**
  * @see Zend_Text_Exception
  */
-require_once 'Zend/Text/Exception.php';
+require_once LIB_DIR.'/Zend/Text/Exception.php';
 
 /**
  * Exception class for Zend_Figlet

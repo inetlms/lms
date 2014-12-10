@@ -761,7 +761,31 @@ function GetConfigList($order='var,asc', $section='', $search='')
 				switch($item['var'])
 				{
 					case 'service':
-						$config[$idx]['description'] = 'Domyślny typ serwisu używanego do wysyłania wiadomości, dozwolone smscenter, smsapi , smstools , serwersms';
+						$config[$idx]['description'] = 'Domyślny typ serwisu używanego do wysyłania wiadomości, dozwolone smscenter, smsapi , smstools , serwersms, mikrotik';
+					break;
+					
+					case 'mt_host':
+						$config[$idx]['description'] = 'adres IP mikrotika';
+					break;
+					
+					case 'mt_password':
+						$config[$idx]['description'] = 'hasło do zalogowania się';
+					break;
+					
+					case 'mt_usb':
+						$config[$idx]['description'] = 'port usb do którego jest podpięty modem';
+					break;
+					
+					case 'mt_username':
+						$config[$idx]['description'] = 'nazwa użytkownika';
+					break;
+					
+					case 'mt_port':
+						$config[$idx]['description'] = 'port na którym działa API na MT';
+					break;
+					
+					case 'mt_debug':
+						$config[$idx]['description'] = 'włączenie dodatkowych informacji, używać w razie problemów z wysyłką';
 					break;
 
 					case 'prefix':

@@ -22,7 +22,7 @@
 /**
  * @see Zend_Paginator_Adapter_Interface
  */
-require_once 'Zend/Paginator/Adapter/Interface.php';
+require_once LIB_DIR.'/Zend/Paginator/Adapter/Interface.php';
 
 /**
  * @category   Zend

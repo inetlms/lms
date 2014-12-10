@@ -39,7 +39,7 @@ require_once "Zend/OpenId/Consumer/Storage.php";
 /**
  * @see Zend_Http_Client
  */
-require_once 'Zend/Http/Client.php';
+require_once LIB_DIR.'/Zend/Http/Client.php';
 
 /**
  * OpenID consumer implementation

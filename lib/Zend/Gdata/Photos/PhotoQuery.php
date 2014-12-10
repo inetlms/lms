@@ -87,7 +87,7 @@ class Zend_Gdata_Photos_PhotoQuery extends Zend_Gdata_Photos_AlbumQuery
         if ($this->getPhotoId() !== null) {
             $uri .= '/photoid/' . $this->getPhotoId();
         } else {
-            require_once 'Zend/Gdata/App/InvalidArgumentException.php';
+            require_once LIB_DIR.'/Zend/Gdata/App/InvalidArgumentException.php';
             throw new Zend_Gdata_App_InvalidArgumentException(
                     'PhotoId cannot be null');
         }

@@ -18,7 +18,7 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-require_once 'Zend/Stdlib/Exception.php';
+require_once LIB_DIR.'/Zend/Stdlib/Exception.php';
 
 /**
  * Invalid callback exception

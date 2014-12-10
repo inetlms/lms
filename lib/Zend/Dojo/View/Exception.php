@@ -23,7 +23,7 @@
 /**
  * @see Zend_Dojo_Exception
  */
-require_once 'Zend/Dojo/Exception.php';
+require_once LIB_DIR.'/Zend/Dojo/Exception.php';
 
 /**
  * @category   Zend

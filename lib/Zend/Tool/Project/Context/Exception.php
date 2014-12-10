@@ -19,7 +19,7 @@
  * @version    $Id$
  */
 
-require_once 'Zend/Tool/Project/Exception.php';
+require_once LIB_DIR.'/Zend/Tool/Project/Exception.php';
 
 /**
  * @category   Zend

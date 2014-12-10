@@ -21,7 +21,7 @@
 /**
  * Zend_XmlRpc_Request
  */
-require_once 'Zend/XmlRpc/Request.php';
+require_once LIB_DIR.'/Zend/XmlRpc/Request.php';
 
 /**
  * XmlRpc Request object -- Request via STDIN

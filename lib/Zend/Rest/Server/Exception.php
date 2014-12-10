@@ -24,7 +24,7 @@
 /**
  * Zend_Rest_Exception
  */
-require_once 'Zend/Rest/Exception.php';
+require_once LIB_DIR.'/Zend/Rest/Exception.php';
 
 
 /**

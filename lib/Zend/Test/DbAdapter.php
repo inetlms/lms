@@ -33,7 +33,7 @@ require_once "Zend/Test/DbStatement.php";
 /**
  * @see Zend_Db_Profiler
  */
-require_once 'Zend/Db/Profiler.php';
+require_once LIB_DIR.'/Zend/Db/Profiler.php';
 
 /**
  * Testing Database Adapter which acts as a stack for SQL Results

@@ -34,6 +34,16 @@ $changelog = array(
 	
 */
 	array(
+	    'data'	=> '2014/12/10',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano obsługę wysyłek sms za pomocą Mikrotika,<br>konfiguracja w UI sekcja sms',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawa ścieżek include w ZEND na potrzeby Jambox',
+	),
+	array(
 	    'data'	=> '2014/11/24',
 	    'status'	=> '',
 	    'opis'	=> 'poprawka błędów przy nadawaniu adresów IP',

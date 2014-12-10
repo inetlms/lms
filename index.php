@@ -164,6 +164,7 @@ require_once(LIB_DIR.'/Session.class.php');
 require_once(LIB_DIR.'/GaduGadu.class.php');
 require_once(LIB_DIR.'/LMS.Hiperus.class.php');
 require_once(LIB_DIR.'/RADIUS.class.php');
+require_once(LIB_DIR.'/Routeros_api.class.php');
 
 
 // Initialize Session, Auth and LMS classes
@@ -176,6 +177,7 @@ $LMS->ui_lang = $_ui_language;
 $LMS->lang = $_language;
 $GG = new rfGG(GG_VER_77);
 $RAD = new radius($DB,$LMS);
+$MT = new routeros_api();
 
 if (get_conf('registryequipment.enabled')) {
 	require_once(LIB_DIR.'/Registry.Equipment.class.php');
@@ -220,7 +222,7 @@ $layout['smarty_version'] = SMARTY_VERSION;
 $layout['hostname'] = hostname();
 $layout['lmsv'] = 'iNET';
 $layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
-$layout['lmsvr'] = '14.11.24';
+$layout['lmsvr'] = '14.12.10';
 $layout['dberrors'] =& $DB->errors;
 $layout['dbdebug'] = $_DBDEBUG;
 $layout['popup'] = isset($_GET['popup']) ? true : false;

@@ -114,7 +114,7 @@ abstract class Zend_Gdata_Gapps_Query extends Zend_Gdata_Query
              return Zend_Gdata_Gapps::APPS_BASE_FEED_URI . '/' . $this->_domain;
          }
          else {
-             require_once 'Zend/Gdata/App/InvalidArgumentException.php';
+             require_once LIB_DIR.'/Zend/Gdata/App/InvalidArgumentException.php';
              throw new Zend_Gdata_App_InvalidArgumentException(
                  'Domain must be specified.');
          }

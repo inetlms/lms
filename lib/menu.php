@@ -1170,18 +1170,18 @@ if (get_conf('jambox.enabled',0)) {
 					'tip' => trans('Podziel podsieć'),
 					'prio' => 40,
 				),				
-				array(
-					'name' => trans('Bilingi'),
-					'link' => '?m=tvbillingevents',
-					'tip' => trans('Lista zdarzeń bilingowych'),
-					'prio' => 50,
-				),
 //				array(
-//					'name' => trans('Lista wiadomości'),
-//					'link' => '?m=tvmessages',
-//					'tip' => trans('Lista wiadomości'),
-//					'prio' => 60,
+//					'name' => trans('Bilingi'),
+//					'link' => '?m=tvbillingevents',
+//					'tip' => trans('Lista zdarzeń bilingowych'),
+//					'prio' => 50,
 //				),
+				array(
+					'name' => trans('Lista wiadomości'),
+					'link' => '?m=tvmessages',
+					'tip' => trans('Lista wiadomości'),
+					'prio' => 60,
+				),
 				array(
 					'name' => trans('Nowa wiadomość'),
 					'link' => '?m=tvmessagessend',
