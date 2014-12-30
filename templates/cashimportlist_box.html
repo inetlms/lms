@@ -142,7 +142,12 @@
 					<a href="?m=nodewarn&ownerid={$lista[list].customerid}" {if $customerlist[customerlist].message}{tip text=$customerlist[customerlist].message}{/if}><img src="img/warning{if $lista[list].nodewarn eq 1}on{else}mix{/if}.gif" alt="[ {trans("Disable notices for all")} ]" title="[ {trans("Disable notices for all")} ]"></a>
 				    {/if}
 				{/if}
-			{/if}
+                                {if $lista[list].blockadecount}
+                                    {if $lista[list].nodeblockade eq 1 || $lista[list].nodeblockade eq 2}
+                                        <a href="?m=nodeblockade&ownerid={$lista[list].customerid}"><img src="img/padlock.png" alt="[ {trans("Remove lock")} ]" title="[ {trans("Remove lock")} ]"></a>
+                                    {/if}    
+                                {/if}			
+            {/if}
 		    </td>
 		</tr>
 	    {sectionelse}

@@ -178,16 +178,18 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled') {
     {
 	$sql = 'SELECT l.id, l.date, l.value, l.customer, l.description, l.customerid, l.closed, l.sourcefileid, '
 	    .($DB->concat('UPPER(c.lastname)',"' '",'c.name')).' AS customers, '
-	    .'c.type, c.status, c.deleted, c.message, s.account, s.warncount,
+	    .'c.type, c.status, c.deleted, c.message, s.account, s.warncount, s.blockadecount,
 	    (CASE WHEN s.account = s.acsum THEN 1 WHEN s.acsum > 0 THEN 2 ELSE 0 END) AS nodeac,
-	    (CASE WHEN s.warncount = s.warnsum THEN 1 WHEN s.warnsum > 0 THEN 2 ELSE 0 END) AS nodewarn, 
+	    (CASE WHEN s.warncount = s.warnsum THEN 1 WHEN s.warnsum > 0 THEN 2 ELSE 0 END) AS nodewarn,
+	    (CASE WHEN s.blockadecount = s.blockadesum THEN 1 WHEN s.blockadesum > 0 THEN 2 ELSE 0 END) AS nodeblockade, 
 	    COALESCE(b.value, 0) AS balance, 
 	    COALESCE((SELECT SUM(cv.value) FROM cash cv WHERE cv.customerid = c.id AND cv.time <= l.date), 0) AS bbalance '
 	    .' FROM cashimport l 
 	    LEFT JOIN customers c ON (c.id = l.customerid) 
 	    LEFT JOIN (SELECT ownerid,
 		SUM(access) AS acsum, COUNT(access) AS account,
-		SUM(warning) AS warnsum, COUNT(warning) AS warncount 
+		SUM(warning) AS warnsum, COUNT(warning) AS warncount,
+		SUM(blockade) AS blockadesum, COUNT(blockade) AS blockadecount 
 		FROM nodes
 		WHERE ownerid > 0
 		GROUP BY ownerid
@@ -210,16 +212,18 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled') {
     {
 	$sql = 'SELECT l.id, l.date, l.value, l.customer, l.description, l.customerid, l.closed, l.sourcefileid, '
 	    .($DB->concat('UPPER(c.lastname)',"' '",'c.name')).' AS customers, '
-	    .'c.type, c.status, c.deleted, c.message, s.account, s.warncount,
+	    .'c.type, c.status, c.deleted, c.message, s.account, s.warncount, s.blockadecount,
 	    (CASE WHEN s.account = s.acsum THEN 1 WHEN s.acsum > 0 THEN 2 ELSE 0 END) AS nodeac,
-	    (CASE WHEN s.warncount = s.warnsum THEN 1 WHEN s.warnsum > 0 THEN 2 ELSE 0 END) AS nodewarn, 
+	    (CASE WHEN s.warncount = s.warnsum THEN 1 WHEN s.warnsum > 0 THEN 2 ELSE 0 END) AS nodewarn,
+	    (CASE WHEN s.blockadecount = s.blockadesum THEN 1 WHEN s.blockadesum > 0 THEN 2 ELSE 0 END) AS nodeblockade, 
 	    COALESCE(b.value, 0) AS balance, 
 	    COALESCE((SELECT SUM(cv.value) FROM cash cv WHERE cv.customerid = c.id AND cv.time <= l.date), 0) AS bbalance '
 	    .' FROM cashimport l 
 	    LEFT JOIN customers c ON (c.id = l.customerid) 
 	    LEFT JOIN (SELECT ownerid,
 		SUM(access) AS acsum, COUNT(access) AS account,
-		SUM(warning) AS warnsum, COUNT(warning) AS warncount 
+		SUM(warning) AS warnsum, COUNT(warning) AS warncount,
+		SUM(blockade) AS blockadesum, COUNT(blockade) AS blockadecount 
 		FROM nodes
 		WHERE ownerid > 0
 		GROUP BY ownerid
