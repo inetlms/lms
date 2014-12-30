@@ -623,7 +623,7 @@ define('POD_USLUGA',5);
 define('POD_OTHER',100);
 
 $PODSTAWA = array(
-    POD_NET	=> 'Umowa o dostęp do sieci telekomunikacyjnej',
+    POD_UMNET	=> 'Umowa o dostęp do sieci telekomunikacyjnej',
     POD_UMBSA	=> 'Umowa BSA na sieci innego podmiotu',
     POD_UMLLU	=> 'Umowa LLU na sieci innego podmiotu',
     POD_ODSP	=> 'Prosta odsprzedaż usług na sieci innego podmiotu',
