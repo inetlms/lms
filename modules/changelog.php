@@ -33,6 +33,12 @@ $changelog = array(
 	),
 	
 */
+  array(
+            'data'      => '2014/12/31',
+            'status'    => '',
+            'opis'      => '- Dodano przycisk wyłączający blokadę w "Finanse/Historia importów "<br> - Aktualizacja TCPDF do wersji 5.9.209',
+        ),
+
 	array(
 	    'data'	=> '2014/12/10',
 	    'status'	=> '',
