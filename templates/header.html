@@ -2,8 +2,8 @@
 <!--// $Id$ //-->
 <html>
 <head>
-    <title>::: LMS :{if $layout.pagetitle neq ""} {$layout.pagetitle|striphtml} :{/if}::</title>
-    <meta name="GENERATOR" content="LMS {$layout.lmsv}">
+    <title>::: {$layout.lmsv} :{if $layout.pagetitle neq ""} {$layout.pagetitle|striphtml} :{/if}::</title>
+    <meta name="GENERATOR" content="{$layout.lmsv}">
     <meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
     <meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0, post-check=0, pre-check=0">
@@ -77,7 +77,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td nowrap align="center"><font style="font-size: 7pt;">&nbsp;<br><b>{$layout.lmsv} LMS<br>{if $layout.lmsvr}({$layout.lmsvr})<br>{/if}DB: {$layout.dbschversionex}<br>@ {$layout.hostname}</b></font>&nbsp;<br>&nbsp;<br></td>
+			<td nowrap align="center"><font style="font-size: 7pt;">&nbsp;<br><b>{$layout.lmsv}<br>{if $layout.lmsvr}({$layout.lmsvr})<br>{/if}DB: {$layout.dbschversionex}<br>@ {$layout.hostname}</b></font>&nbsp;<br>&nbsp;<br></td>
 		</tr>
 	</table>
 	<script type="text/javascript">
