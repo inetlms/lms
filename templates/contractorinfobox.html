@@ -298,17 +298,11 @@
 		</td>
 	</tr>
 	{/if}
-	{if !check_conf('privileges.hide_finances') && 2==1}
+	{if !check_conf('privileges.hide_finances')}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/money.gif" alt="">
-		</td>
-		<td width="1%">
-			<b>{trans("Balance:")}</b>
-		</td>
-		<td width="98%">
-			{if $customerinfo.balance < 0}<font class="alert">{$customerinfo.balance|money_format}</font>{else}{$customerinfo.balance|default:"0"|money_format}{/if}
-		</td>
+		<td width="1%"><img src="img/money.gif" alt=""></td>
+		<td width="1%"><b>{trans("Balance:")}</b></td>
+		<td width="98%">{if $customerinfo.balance < 0}<font class="alert" style="font-weight:bold;">{/if}{if $customerinfo.balance > 0}<font class="surplus" style="font-weight:bold;">+{/if}{$customerinfo.balance|default:"0"|money_format}{if $customerinfo.balance != 0}</font>{/if}</td>
 	</tr>
 	{/if}
 	{if 2==1}

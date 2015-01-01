@@ -37,10 +37,13 @@ $SMARTY->assignByRef('othercustomergroups', $othercustomergroups);
 $balancelist = $LMS->GetCustomerBalanceList($customerid);
 $SMARTY->assignByRef('balancelist', $balancelist);
 
+$taxeslist = $LMS->GetTaxes();
+$SMARTY->assignByRef('taxeslist', $taxeslist);
+
 $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 
 $layout['pagetitle'] = trans('Contractor Info: $a',$customerinfo['customername']);
-
+//echo "<pre>"; print_r($customerinfo); echo "</pre>"; die;
 $SMARTY->display('contractorinfo.html');
 
 ?>

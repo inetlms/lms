@@ -32,13 +32,27 @@ $changelog = array(
 	    'opis'	=> '',
 	),
 	
-*/
-  array(
-            'data'      => '2014/12/31',
-            'status'    => '',
-            'opis'      => '- Dodano przycisk wyłączający blokadę w "Finanse/Historia importów "<br> - Aktualizacja TCPDF do wersji 5.9.209',
-        ),
-
+*/	
+	array(
+	    'data'	=> '2015/01/01',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka wystawiania faktur oraz rozliczeń konta kontrahenta',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'aktualizacja bazy ethercodes',
+	),
+	array(
+	    'data'	=> '2014/12/31',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano przycisk wyłączający blokadę w "Finanse/Historia importów"',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Aktualizacja TCPDF do wersji 5.9.209',
+	),
 	array(
 	    'data'	=> '2014/12/10',
 	    'status'	=> '',

@@ -1297,7 +1297,7 @@
 00-05-0F:		Tanaka S/S Ltd.
 00-05-10:		Infinite Shanghai Communication Terminals Ltd.
 00-05-11:		Complementary Technologies Ltd
-00-05-12:		MeshNetworks, Inc.
+00-05-12:		Zebra Technologies Inc
 00-05-13:		VTLinx Multimedia Systems, Inc.
 00-05-14:		KDT Systems Co., Ltd.
 00-05-15:		Nuark Co., Ltd.
@@ -1603,7 +1603,7 @@
 00-06-41:		ITCN
 00-06-42:		Genetel Systems Inc.
 00-06-43:		SONO Computer Co., Ltd.
-00-06-44:		Neix,Inc
+00-06-44:		neix,Inc
 00-06-45:		Meisei Electric Co. Ltd.
 00-06-46:		ShenZhen XunBao Network Technology Co Ltd
 00-06-47:		Etrali S.A.
@@ -1857,7 +1857,7 @@
 00-07-3F:		Woojyun Systec Co., Ltd.
 00-07-40:		Buffalo Inc.
 00-07-41:		Sierra Automated Systems
-00-07-42:		Current Technologies, LLC
+00-07-42:		Ormazabal
 00-07-43:		Chelsio Communications
 00-07-44:		Unico, Inc.
 00-07-45:		Radlan Computer Communications Ltd.
@@ -4640,7 +4640,7 @@
 00-12-3A:		Posystech Inc., Co.
 00-12-3B:		KeRo Systems ApS
 00-12-3C:		Second Rule LLC
-00-12-3D:		GES
+00-12-3D:		GES Co, Ltd
 00-12-3E:		ERUNE technology Co., Ltd.
 00-12-3F:		Dell Inc
 00-12-40:		AMOI ELECTRONICS CO.,LTD
@@ -5268,7 +5268,7 @@
 00-14-AE:		Wizlogics Co., Ltd.
 00-14-AF:		Datasym POS Inc.
 00-14-B0:		Naeil Community
-00-14-B1:		Avitec AB
+00-14-B1:		Axell Wireless Limited
 00-14-B2:		mCubelogics Corporation
 00-14-B3:		CoreStar International Corp
 00-14-B4:		General Dynamics United Kingdom Ltd
@@ -5459,7 +5459,7 @@
 00-15-6D:		Ubiquiti Networks Inc.
 00-15-6E:		A. W. Communication Systems Ltd
 00-15-6F:		Xiranet Communications GmbH
-00-15-70:		Symbol TechnologiesWholly owned Subsidiary of Motorola
+00-15-70:		Zebra Technologies Inc
 00-15-71:		Nolan Systems
 00-15-72:		Red-Lemon
 00-15-73:		NewSoft  Technology Corporation
@@ -6440,7 +6440,7 @@
 00-19-42:		ON SOFTWARE INTERNATIONAL LIMITED
 00-19-43:		Belden
 00-19-44:		Fossil Partners, L.P.
-00-19-45:		Ten-Tec Inc.
+00-19-45:		RF COncepts, LLC
 00-19-46:		Cianet Industria e Comercio S/A
 00-19-47:		Scientific Atlanta, A Cisco Company
 00-19-48:		AireSpider Networks
@@ -6551,7 +6551,7 @@
 00-19-B1:		Arrow7 Corporation
 00-19-B2:		XYnetsoft Co.,Ltd
 00-19-B3:		Stanford Research Systems
-00-19-B4:		VideoCast Ltd.
+00-19-B4:		Intellio Ltd
 00-19-B5:		Famar Fueguina S.A.
 00-19-B6:		Euro Emme s.r.l.
 00-19-B7:		Nokia Danmark A/S
@@ -7080,7 +7080,7 @@
 00-1B-C2:		Integrated Control Technology Limitied
 00-1B-C3:		Mobisolution Co.,Ltd
 00-1B-C4:		Ultratec, Inc.
-00-1B-C5:		IEEE Registration Authority
+00-1B-C5:		IEEE REGISTRATION AUTHORITY  - Please see OUI36/MA-S public listing for more information.
 00-1B-C6:		Strato Rechenzentrum AG
 00-1B-C7:		StarVedia Technology Inc.
 00-1B-C8:		MIURA CO.,LTD
@@ -9035,7 +9035,7 @@
 00-23-65:		ELKA-Elektronik GmbH
 00-23-66:		Beijing Siasun Electronic System Co.,Ltd.
 00-23-67:		UniControls a.s.
-00-23-68:		Motorola
+00-23-68:		Zebra Technologies Inc
 00-23-69:		Cisco-Linksys, LLC
 00-23-6A:		SmartRG Inc
 00-23-6B:		Xembedded, Inc.
@@ -11032,6 +11032,7 @@
 00-6D-FB:		Vutrix (UK) Ltd
 00-70-B0:		M/A-COM INC. COMPANIES
 00-70-B3:		DATA RECALL LTD.
+00-71-C2:		PEGATRON CORPORATION
 00-71-CC:		Hon Hai Precision Ind. Co.,Ltd.
 00-73-8D:		Tinno Mobile Technology Corp
 00-73-E0:		Samsung Electronics Co.,Ltd
@@ -11039,6 +11040,7 @@
 00-75-E1:		Ampt, LLC
 00-78-9E:		SAGEMCOM
 00-7D-FA:		Volkswagen Group of America
+00-7E-56:		China Dragon Technology Limited
 00-7F-28:		Actiontec Electronics, Inc
 00-80-00:		MULTITECH SYSTEMS, INC.
 00-80-01:		PERIPHONICS CORPORATION
@@ -11199,7 +11201,7 @@
 00-80-9C:		LUXCOM, INC.
 00-80-9D:		Commscraft Ltd.
 00-80-9E:		DATUS GMBH
-00-80-9F:		ALCATEL BUSINESS SYSTEMS
+00-80-9F:		Alcatel-Lucent Enterprise
 00-80-A0:		EDISA HEWLETT PACKARD S/A
 00-80-A1:		MICROTEST, INC.
 00-80-A2:		CREATIVE ELECTRONIC SYSTEMS
@@ -11818,7 +11820,7 @@
 00-A0-F5:		RADGUARD LTD.
 00-A0-F6:		AutoGas Systems Inc.
 00-A0-F7:		V.I COMPUTER CORP.
-00-A0-F8:		SYMBOL TECHNOLOGIES, INC.
+00-A0-F8:		Zebra Technologies Inc
 00-A0-F9:		BINTEC COMMUNICATIONS GMBH
 00-A0-FA:		Marconi Communication GmbH
 00-A0-FB:		TORAY ENGINEERING CO., LTD.
@@ -12778,6 +12780,7 @@
 04-8B-42:		Skspruce Technology Limited
 04-8C-03:		ThinPAD Technology (Shenzhen)CO.,LTD
 04-8D-38:		Netcore Technology Inc.
+04-92-EE:		iway AG
 04-94-A1:		CATCH THE WIND INC
 04-98-F3:		ALPS Electric Co,. Ltd.
 04-99-E6:		Shenzhen Yoostar Technology Co., Ltd
@@ -12791,6 +12794,7 @@
 04-B3-B6:		Seamap (UK) Ltd
 04-B4-66:		BSP Co., Ltd.
 04-BD-70:		HUAWEI TECHNOLOGIES CO.,LTD
+04-BD-88:		Aruba Networks
 04-BF-A8:		ISB Corporation
 04-C0-5B:		Tigo Energy
 04-C0-6F:		Shenzhen Huawei Communication Technologies Co., Ltd
@@ -12799,6 +12803,7 @@
 04-C5-A4:		CISCO SYSTEMS, INC.
 04-C8-80:		Samtec Inc
 04-C9-91:		Phistek INC.
+04-C9-D9:		EchoStar Technologies Corp
 04-CB-1D:		Traka plc
 04-CE-14:		Wilocity LTD.
 04-CF-25:		MANYCOLORS, INC.
@@ -13021,6 +13026,7 @@
 08-5B-0E:		Fortinet, Inc.
 08-5D-DD:		Mercury Corporation
 08-60-6E:		ASUSTek COMPUTER INC.
+08-62-66:		ASUSTek COMPUTER INC.
 08-63-61:		Huawei Technologies Co., Ltd
 08-68-D0:		Japan System Design
 08-68-EA:		EITO ELECTRONICS CO., LTD.
@@ -13064,6 +13070,7 @@
 08-CD-9B:		samtec automotive electronics & software GmbH
 08-D0-9F:		CISCO SYSTEMS, INC.
 08-D2-9A:		Proformatique
+08-D3-4B:		Techman Electronics (Changshu) Co., Ltd.
 08-D4-0C:		Intel Corporate
 08-D4-2B:		Samsung Electronics
 08-D5-C0:		Seers Technology Co., Ltd
@@ -13094,6 +13101,7 @@
 0C-12-62:		zte corporation
 0C-13-0B:		Uniqoteq Ltd.
 0C-14-20:		Samsung Electronics Co.,Ltd
+0C-15-39:		Apple
 0C-15-C5:		SDTEC Co., Ltd.
 0C-17-F1:		TELECSYS
 0C-19-1F:		Inform Electronik
@@ -13113,6 +13121,7 @@
 0C-3E-9F:		Apple, Inc
 0C-46-9D:		MS Sedco
 0C-47-3D:		Hitron Technologies. Inc
+0C-48-85:		LG Electronics
 0C-4C-39:		Mitrastar Technology
 0C-4D-E9:		Apple
 0C-4F-5A:		ASA-RT s.r.l.
@@ -13162,6 +13171,8 @@
 0C-AF-5A:		GENUS POWER INFRASTRUCTURES LIMITED
 0C-B3-19:		Samsung Elec Co.,Ltd
 0C-B4-EF:		Digience Co.,Ltd.
+0C-B5-DE:		Alcatel Lucent
+0C-BC-9F:		Apple
 0C-BD-51:		TCT Mobile Limited
 0C-BF-15:		Genetec
 0C-C0-C0:		MAGNETI MARELLI SISTEMAS ELECTRONICOS MEXICO
@@ -13235,6 +13246,7 @@
 10-22-79:		ZeroDesktop, Inc.
 10-27-BE:		TVIP
 10-28-31:		Morion Inc.
+10-2C-83:		XIMEA
 10-2D-96:		Looxcie Inc.
 10-2E-AF:		Texas Instruments
 10-2F-6B:		Microsoft Corporation
@@ -13272,6 +13284,7 @@
 10-71-F9:		Cloud Telecomputers, LLC
 10-76-8A:		EoCell
 10-77-B1:		Samsung Electronics Co.,LTD
+10-78-73:		Shenzhen Jinkeyi Communication Co., Ltd.
 10-78-CE:		Hanvit SI, Inc.
 10-78-D2:		ELITEGROUP COMPUTER SYSTEM CO., LTD.
 10-7A-86:		U&U ENGINEERING INC.
@@ -13299,6 +13312,7 @@
 10-BA-A5:		GANA I&C CO., LTD
 10-BD-18:		CISCO SYSTEMS, INC.
 10-BF-48:		ASUSTEK COMPUTER INC.
+10-C0-7C:		Blu-ray Disc Association
 10-C2-BA:		UTT Co., Ltd.
 10-C3-7B:		ASUSTek COMPUTER INC.
 10-C5-86:		BIO SOUND LAB CO., LTD.
@@ -13309,6 +13323,7 @@
 10-CA-81:		PRECIA
 10-CC-DB:		AXIMUM PRODUITS ELECTRONIQUES
 10-D1-DC:		INSTAR Deutschland GmbH
+10-D3-8A:		Samsung Electronics Co.,Ltd
 10-D5-42:		Samsung Electronics Co.,Ltd
 10-DD-B1:		Apple
 10-DD-F4:		Maxway Electronics CO.,LTD
@@ -13317,6 +13332,7 @@
 10-E3-C7:		Seohwa Telecom
 10-E4-AF:		APR, LLC
 10-E6-AE:		Source Technologies, LLC
+10-E8-78:		Alcatel-Lucent
 10-E8-EE:		PhaseSpace
 10-EA-59:		Cisco SPVTG
 10-EE-D9:		Canoga Perkins Corporation
@@ -13375,6 +13391,7 @@
 14-60-80:		zte corporation
 14-63-08:		JABIL CIRCUIT (SHANGHAI) LTD.
 14-6A-0B:		Cypress Electronics Limited
+14-6B-72:		Shenzhen Fortune Ship Technology Co., Ltd.
 14-6E-0A:		PRIVATE
 14-73-73:		TUBITAK UEKAE
 14-74-11:		RIM
@@ -13461,7 +13478,9 @@
 18-34-51:		Apple
 18-36-FC:		Elecsys International Corporation
 18-38-25:		Wuhan Lingjiu High-tech Co.,Ltd.
+18-38-64:		CAP-TECH INTERNATIONAL CO., LTD.
 18-39-19:		Unicoi Systems
+18-3A-2D:		Samsung Electronics Co.,Ltd
 18-3B-D2:		BYD Precision Manufacture Company Ltd.
 18-3D-A2:		Intel Corporate
 18-3F-47:		Samsung Electronics Co.,Ltd
@@ -13476,6 +13495,7 @@
 18-53-E0:		Hanyang Digitech Co.Ltd
 18-55-0F:		Cisco SPVTG
 18-59-33:		Cisco SPVTG
+18-59-36:		XIAOMI INC
 18-5A-E8:		Zenotech.Co.,Ltd
 18-62-2C:		SAGEMCOM SAS
 18-64-72:		Aruba Networks
@@ -13508,6 +13528,7 @@
 18-9A-67:		CSE-Servelec Limited
 18-9C-5D:		Cisco
 18-9E-FC:		Apple
+18-A3-E8:		Fiberhome Telecommunication Tech.Co.,Ltd.
 18-A9-05:		Hewlett-Packard Company
 18-A9-58:		PROVISION THAI CO., LTD.
 18-A9-9B:		Dell Inc
@@ -13518,13 +13539,16 @@
 18-AF-61:		Apple, Inc
 18-AF-8F:		Apple
 18-AF-9F:		DIGITRONIC Automationsanlagen GmbH
+18-B1-69:		Sonicwall
 18-B2-09:		Torrey Pines Logic, Inc
 18-B3-BA:		Netlogic AB
 18-B4-30:		Nest Labs Inc.
 18-B5-91:		I-Storm
 18-B7-9E:		Invoxia
+18-BD-AD:		L-TECH CORPORATION
 18-C0-86:		Broadcom Corporation
 18-C4-51:		Tucson Embedded Systems
+18-C5-8A:		HUAWEI TECHNOLOGIES CO.,LTD
 18-C8-E7:		Shenzhen Hualistone Technology Co.,Ltd
 18-CC-23:		Philio Technology Corporation
 18-CF-5E:		Liteon Technology Corporation
@@ -13540,9 +13564,11 @@
 18-E7-F4:		Apple
 18-E8-0F:		Viking Electronics Inc.
 18-E8-DD:		MODULETEK
+18-EE-69:		Apple
 18-EF-63:		CISCO SYSTEMS, INC.
 18-F1-45:		NetComm Wireless Limited
 18-F4-6A:		Hon Hai Precision Ind. Co.,Ltd.
+18-F6-43:		Apple
 18-F6-50:		Multimedia Pacific Limited
 18-F8-7A:		i3 International Inc.
 18-FA-6F:		ISC applied systems corp
@@ -13558,6 +13584,7 @@
 1C-11-E1:		Wartsila Finland Oy
 1C-12-9D:		IEEE PES PSRC/SUB
 1C-14-48:		ARRIS Group, Inc.
+1C-14-B3:		Pinyon Technologies
 1C-17-D3:		CISCO SYSTEMS, INC.
 1C-18-4A:		ShenZhen RicherLink Technologies Co.,LTD
 1C-19-DE:		eyevis GmbH
@@ -13625,6 +13652,7 @@
 1C-9C-26:		Zoovel Technologies
 1C-9E-CB:		Beijing Nari Smartchip Microelectronics Company Limited
 1C-A2-B1:		ruwido austria gmbh
+1C-A5-32:		Shenzhen Gongjin Electronics Co.,Ltd
 1C-A7-70:		SHENZHEN CHUANGWEI-RGB ELECTRONICS CO.,LT
 1C-AA-07:		CISCO SYSTEMS, INC.
 1C-AB-01:		Innovolt
@@ -13642,6 +13670,7 @@
 1C-C1-DE:		Hewlett-Packard Company
 1C-C3-16:		MileSight Technology Co., Ltd.
 1C-C6-3C:		Arcadyan Technology Corporation
+1C-C7-2D:		Shenzhen Huapu Digital CO.,Ltd
 1C-D4-0C:		Kriwan Industrie-Elektronik GmbH
 1C-DE-A7:		Cisco
 1C-DF-0F:		CISCO SYSTEMS, INC.
@@ -13650,6 +13679,7 @@
 1C-E2-CC:		Texas Instruments
 1C-E6-2B:		Apple
 1C-E6-C7:		Cisco
+1C-E8-5D:		Cisco
 1C-EE-E8:		Ilshin Elecom
 1C-F0-61:		SCAPS GmbH
 1C-F4-CA:		PRIVATE
@@ -13677,6 +13707,7 @@
 20-21-A5:		LG Electronics Inc
 20-25-64:		PEGATRON CORPORATION
 20-25-98:		Teleview
+20-28-BC:		Visionscape Co,. Ltd.
 20-2B-C1:		Shenzhen Huawei Communication Technologies Co., Ltd
 20-2C-B7:		Kong Yue Electronics & Information Industry (Xinhui) Ltd.
 20-31-EB:		HDSN
@@ -13782,8 +13813,11 @@
 24-11-D0:		Chongqing Ehs Science and Technology Development Co.,Ltd.
 24-1A-8C:		Squarehead Technology AS
 24-1B-13:		Shanghai Nutshell Electronic Co., Ltd.
+24-1B-44:		Hangzhou Tuners Electronics Co., Ltd
+24-1C-04:		SHENZHEN JEHE TECHNOLOGY DEVELOPMENT CO., LTD.
 24-1F-2C:		Calsys, Inc.
 24-21-AB:		Sony Ericsson Mobile Communications
+24-24-0E:		Apple
 24-26-42:		SHARP Corporation.
 24-2F-FA:		Toshiba Global Commerce Solutions
 24-33-6C:		PRIVATE
@@ -13794,6 +13828,8 @@
 24-45-97:		GEMUE Gebr. Mueller Apparatebau
 24-47-0E:		PentronicAB
 24-49-7B:		Innovative Converged Devices Inc
+24-4B-03:		Samsung Electronics Co.,Ltd
+24-4B-81:		Samsung Electronics Co.,Ltd
 24-4F-1D:		iRule LLC
 24-5F-DF:		KYOCERA Corporation
 24-62-78:		sysmocom - systems for mobile communications GmbH
@@ -13802,6 +13838,7 @@
 24-69-4A:		Jasmine Systems Inc.
 24-69-A5:		Huawei Technologies Co., Ltd
 24-6A-AB:		IT-IS International
+24-76-56:		Shanghai Net Miles Fiber Optics Technology Co., LTD.
 24-76-7D:		Cisco SPVTG
 24-77-03:		Intel Corporate
 24-7F-3C:		Huawei Technologies Co., Ltd
@@ -13900,6 +13937,7 @@
 28-4E-D7:		OutSmart Power Systems, Inc.
 28-4F-CE:		Liaoning Wontel Science and Technology Development Co.,Ltd.
 28-51-32:		Shenzhen Prayfly Technology Co.,Ltd
+28-52-E0:		Layon international Electronic & Telecom Co.,Ltd
 28-57-67:		Echostar Technologies Corp
 28-5F-DB:		Shenzhen Huawei Communication Technologies Co., Ltd
 28-60-46:		Lantech Communications Global, Inc.
@@ -13943,6 +13981,7 @@
 28-BB-59:		RNET Technologies, Inc.
 28-BE-9B:		Technicolor USA Inc.
 28-C0-DA:		Juniper Networks
+28-C2-DD:		AzureWave Technologies, Inc.
 28-C6-71:		Yota Devices OY
 28-C6-8E:		NETGEAR INC.,
 28-C7-18:		Altierre
@@ -13984,6 +14023,7 @@
 28-FB-D3:		Ragentek Technology Group
 28-FC-51:		The Electric Controller and Manufacturing Co., LLC
 28-FC-F6:		Shenzhen Xin KingBrand enterprises Co.,Ltd
+28-FD-80:		IEEE REGISTRATION AUTHORITY  - Please see MAM public listing for more information.
 2C-00-2C:		UNOWHY
 2C-00-33:		EControls, LLC
 2C-00-F7:		XOS
@@ -13995,8 +14035,10 @@
 2C-19-84:		IDN Telecom, Inc.
 2C-1A-31:		Electronics Company Limited
 2C-1E-EA:		AERODEV
+2C-1F-23:		Apple
 2C-21-72:		Juniper Networks
 2C-24-5F:		Babolat VS
+2C-26-5F:		IEEE REGISTRATION AUTHORITY  - Please see MAM public listing for more information.
 2C-26-C5:		zte corporation
 2C-27-D7:		Hewlett-Packard Company
 2C-28-2D:		BBK COMMUNICATIAO TECHNOLOGY CO.,LTD.
@@ -14058,6 +14100,7 @@
 2C-9E-5F:		ARRIS Group, Inc.
 2C-9E-FC:		CANON INC.
 2C-A1-57:		acromate, Inc.
+2C-A2-B4:		Fortify Technologies, LLC
 2C-A3-0E:		POWER DRAGON DEVELOPMENT LIMITED
 2C-A7-80:		True Technologies Inc.
 2C-A8-35:		RIM
@@ -14096,6 +14139,7 @@
 30-0B-9C:		Delta Mobile Systems, Inc.
 30-0D-2A:		Zhejiang Wellcom Technology Co.,Ltd.
 30-0E-D5:		Hon Hai Precision Ind.Co.Ltd
+30-0E-E3:		Aquantia Corporation
 30-10-B3:		Liteon Technology Corporation
 30-10-E4:		Apple, Inc.
 30-14-2D:		Piciorgros GmbH
@@ -14210,6 +14254,7 @@
 34-2F-6E:		Anywire corporation
 34-31-11:		Samsung Electronics Co.,Ltd
 34-31-C4:		AVM GmbH
+34-36-3B:		Apple
 34-38-AF:		Inlab Software GmbH
 34-40-B5:		IBM
 34-46-6F:		HiTEM Engineering
@@ -14232,6 +14277,7 @@
 34-68-4A:		Teraworks Co., Ltd.
 34-68-95:		Hon Hai Precision Ind. Co.,Ltd.
 34-6B-D3:		Huawei Technologies Co., Ltd
+34-6C-0F:		Pramod Telecom Pvt. Ltd
 34-6E-8A:		Ecosense
 34-6F-90:		Cisco
 34-6F-92:		White Rodgers Division
@@ -14315,6 +14361,7 @@
 34-F9-68:		ATEK Products, LLC
 34-FA-40:		Guangzhou Robustel Technologies Co., Limited
 34-FC-6F:		ALCEA
+34-FC-EF:		LG Electronics
 38-01-97:		Toshiba Samsung Storage Technolgoy Korea Corporation
 38-06-B4:		A.D.C. GmbH
 38-08-FD:		Silca Spa
@@ -14389,11 +14436,13 @@
 38-BF-2F:		Espec Corp.
 38-BF-33:		NEC CASIO Mobile Communications
 38-C0-96:		ALPS ELECTRIC CO.,LTD.
+38-C7-0A:		WiFiSong
 38-C7-BA:		CS Services Co.,Ltd.
 38-C8-5C:		Cisco SPVTG
 38-C9-A9:		SMART High Reliability Solutions, Inc.
 38-CA-97:		Contour Design LLC
 38-D1-35:		EasyIO Corporation Sdn. Bhd.
+38-D8-2F:		zte corporation
 38-DB-BB:		Sunbow Telecom Co., Ltd.
 38-DE-60:		Mohlenhoff GmbH
 38-E0-8E:		Mitsubishi Electric Corporation
@@ -14440,6 +14489,7 @@
 3C-25-D7:		Nokia Corporation
 3C-26-D5:		Sotera Wireless
 3C-27-63:		SLE quality engineering GmbH & Co. KG
+3C-2C-94:		æ­å·å¾·æ¾ç§ææéå¬å¸ï¼HangZhou Delan Technology Co.,Ltdï¼
 3C-2D-B7:		Texas Instruments
 3C-2F-3A:		SFORZATO Corp.
 3C-30-0C:		Dewar Electronics Pty Ltd
@@ -14460,6 +14510,7 @@
 3C-57-D5:		FiveCo
 3C-5A-37:		Samsung Electronics
 3C-5A-B4:		Google
+3C-5E-C3:		Cisco
 3C-5F-01:		Synerchip Co., Ltd.
 3C-61-04:		Juniper Networks
 3C-62-00:		Samsung electronics CO., LTD
@@ -14482,6 +14533,8 @@
 3C-8A-B0:		Juniper Networks
 3C-8A-E5:		Tensun Information Technology(Hangzhou) Co.,LTD
 3C-8B-FE:		Samsung Electronics
+3C-8C-40:		Hangzhou H3C Technologies Co., Limited
+3C-91-2B:		Vexata Inc
 3C-91-57:		Hangzhou Yulong Conmunication Co.,Ltd
 3C-91-74:		ALONG COMMUNICATION TECHNOLOGY
 3C-94-D5:		Juniper Networks
@@ -14510,6 +14563,7 @@
 3C-C2-E1:		XINHUA CONTROL ENGINEERING CO.,LTD
 3C-C9-9E:		Huiyang Technology Co., Ltd
 3C-CA-87:		Iders Incorporated
+3C-CB-7C:		TCT mobile ltd
 3C-CD-5A:		Technische Alternative GmbH
 3C-CD-93:		LG ELECTRONICS INC
 3C-CE-73:		CISCO SYSTEMS, INC.
@@ -14533,6 +14587,7 @@
 3C-F7-48:		Shenzhen Linsn Technology Development Co.,Ltd
 3C-F8-08:		HUAWEI TECHNOLOGIES CO.,LTD
 3C-FB-96:		Emcraft Systems LLC
+3C-FD-FE:		Intel Corporate
 40-01-07:		Arista Corp
 40-01-C6:		3COM EUROPE LTD
 40-04-0C:		A&T
@@ -14576,6 +14631,7 @@
 40-60-5A:		Hawkeye Tech Co. Ltd
 40-61-86:		MICRO-STAR INT'L CO.,LTD
 40-61-8E:		Stella-Green Co
+40-62-B6:		Tele system communication
 40-66-7A:		mediola - connected living AG
 40-68-26:		Thales UK Limited
 40-6A-AB:		RIM
@@ -14590,7 +14646,7 @@
 40-7A-80:		Nokia Corporation
 40-7B-1B:		Mettle Networks Inc.
 40-82-56:		Continental Automotive GmbH
-40-83-DE:		Motorola
+40-83-DE:		Zebra Technologies Inc
 40-84-93:		Clavister AB
 40-88-E0:		Beijing Ereneben Information Technology Limited Shenzhen Branch
 40-8A-9A:		TITENG CO., Ltd.
@@ -14603,6 +14659,8 @@
 40-98-7B:		Aisino Corporation
 40-9B-0D:		Shenzhen Yourf Kwan Industrial Co., Ltd
 40-9F-C7:		BAEKCHUN I&C Co., Ltd.
+40-A5-EF:		Shenzhen Four Seas Global Link Network Technology Co., Ltd.
+40-A6-77:		Juniper Networks
 40-A6-A4:		PassivSystems Ltd
 40-A6-D9:		Apple
 40-A8-F0:		Hewlett Packard
@@ -14630,7 +14688,7 @@
 40-D3-2D:		Apple
 40-D4-0E:		Biodata Ltd
 40-D5-59:		MICRO S.E.R.I.
-40-D8-55:		IEEE REGISTRATION AUTHORITY
+40-D8-55:		IEEE REGISTRATION AUTHORITY - Please see IAB public listing for more information.
 40-E2-30:		AzureWave Technologies, Inc.
 40-E7-30:		DEY Storage Systems, Inc.
 40-E7-93:		Shenzhen Siviton Technology Co.,Ltd
@@ -14704,6 +14762,7 @@
 44-7D-A5:		VTION INFORMATION TECHNOLOGY (FUJIAN) CO.,LTD
 44-7E-76:		Trek Technology (S) Pte Ltd
 44-7E-95:		Alpha and Omega, Inc
+44-80-EB:		Motorola Mobility LLC, a Lenovo Company
 44-83-12:		Star-Net
 44-85-00:		Intel Corporate
 44-86-C1:		Siemens Low Voltage & Products
@@ -14722,6 +14781,7 @@
 44-A6-89:		PROMAX ELECTRONICA SA
 44-A6-E5:		THINKING TECHNOLOGY CO.,LTD
 44-A7-CF:		Murata Manufacturing Co., Ltd.
+44-A8-42:		Dell Inc.
 44-A8-C2:		SEWOO TECH CO., LTD
 44-AA-27:		udworks Co., Ltd.
 44-AA-E8:		Nanotec Electronic GmbH & Co. KG
@@ -14736,12 +14796,14 @@
 44-C9-A2:		Greenwald Industries
 44-CE-7D:		SFR
 44-D1-5E:		Shanghai Kingto Information Technology Ltd
+44-D2-44:		Seiko Epson Corporation
 44-D2-CA:		Anvia TV Oy
 44-D3-CA:		CISCO SYSTEMS, INC.
 44-D4-E0:		Sony Mobile Communications AB
 44-D6-3D:		Talari Networks
 44-D8-32:		Azurewave Technologies, Inc.
 44-D8-84:		Apple
+44-D9-E7:		Ubiquiti Networks, Inc.
 44-DC-91:		PLANEX COMMUNICATIONS INC.
 44-DC-CB:		SEMINDIA SYSTEMS PVT LTD
 44-E0-8E:		Cisco SPVTG
@@ -14749,6 +14811,7 @@
 44-E4-9A:		OMNITRONICS PTY LTD
 44-E4-D9:		CISCO SYSTEMS, INC.
 44-E8-A5:		Myreka Technologies Sdn. Bhd.
+44-E9-DD:		SAGEMCOM SAS
 44-ED-57:		Longicorn, inc.
 44-EE-30:		Budelmann Elektronik GmbH
 44-F4-59:		Samsung Electronics
@@ -14777,6 +14840,8 @@
 48-46-FB:		HUAWEI TECHNOLOGIES CO.,LTD
 48-51-B7:		Intel Corporate
 48-52-61:		SOREEL
+48-54-15:		NET RULES TECNOLOGIA EIRELI
+48-55-5F:		Fiberhome Telecommunication Tech.Co.,Ltd.
 48-57-DD:		Facebook
 48-59-29:		LG Electronics
 48-5A-3F:		WISOL
@@ -14804,6 +14869,7 @@
 48-A2-2D:		Shenzhen Huaxuchang Telecom Technology Co.,Ltd
 48-A2-B7:		Kodofon JSC
 48-A6-D2:		GJsun Optical Science and Tech Co.,Ltd.
+48-A9-D2:		Wistron Neweb Corp.
 48-AA-5D:		Store Electronic Systems
 48-B2-53:		Marketaxess Corporation
 48-B5-A7:		Glory Horse Industries Ltd.
@@ -14827,10 +14893,12 @@
 48-DC-FB:		Nokia Corporation
 48-DF-1C:		Wuhan NEC Fibre Optic Communications industry Co. Ltd
 48-E1-AF:		Vity
+48-E9-F1:		Apple
 48-EA-63:		Zhejiang Uniview Technologies Co., Ltd.
 48-EB-30:		ETERNA TECHNOLOGY, INC.
 48-ED-80:		daesung eltec
 48-EE-07:		Silver Palm Technologies LLC
+48-EE-0C:		D-Link International
 48-EE-86:		UTStarcom (China) Co.,Ltd
 48-F2-30:		Ubizcore Co.,LTD
 48-F3-17:		PRIVATE
@@ -14900,6 +14968,7 @@
 4C-77-4F:		Embedded Wireless Labs
 4C-78-97:		Arrowhead Alarm Products Ltd
 4C-79-BA:		Intel Corporate
+4C-7C-5F:		Apple
 4C-7F-62:		Nokia Corporation
 4C-80-4F:		Armstrong Monitoring Corp
 4C-80-93:		Intel Corporate
@@ -14937,6 +15006,7 @@
 4C-CA-53:		Skyera, Inc.
 4C-CB-F5:		zte corporation
 4C-CC-34:		Motorola Solutions Inc.
+4C-D0-8A:		HUMAX.CO.,LTD
 4C-D6-37:		Qsono Electronics Co., Ltd
 4C-D7-B6:		Helmer Scientific
 4C-D9-C4:		Magneti Marelli Automotive Electronics (Guangzhou) Co. Ltd
@@ -14986,6 +15056,7 @@
 50-4A-5E:		Masimo Corporation
 50-4A-6E:		NETGEAR INC.,
 50-4F-94:		Loxone Electronics GmbH
+50-50-2A:		Egardia
 50-50-65:		TAKT Corporation
 50-55-27:		LG Electronics
 50-56-63:		Texas Instruments
@@ -14999,11 +15070,13 @@
 50-61-D6:		Indu-Sol GmbH
 50-63-13:		Hon Hai Precision Ind. Co.,Ltd.
 50-64-41:		Greenlee
+50-65-F3:		Hewlett Packard
 50-67-87:		iTellus
 50-67-AE:		Cisco
 50-67-F0:		ZyXEL Communications Corporation
 50-6F-9A:		Wi-Fi Alliance
 50-70-E5:		He Shan World Fair Electronics Technology Limited
+50-72-24:		Texas Instruments
 50-72-4D:		BEG Brueck Electronic GmbH
 50-76-91:		Tekpea, Inc.
 50-76-A6:		Ecil Informatica Ind. Com. Ltda
@@ -15084,6 +15157,7 @@
 54-31-31:		Raster Vision Ltd
 54-35-30:		Hon Hai Precision Ind. Co.,Ltd.
 54-35-DF:		Symeo GmbH
+54-36-9B:		In one network technology (Beijing) Co., Ltd.
 54-39-68:		Edgewater Networks Inc
 54-39-DF:		HUAWEI TECHNOLOGIES CO.,LTD
 54-3D-37:		Ruckus Wireless
@@ -15105,6 +15179,7 @@
 54-75-D0:		CISCO SYSTEMS, INC.
 54-78-1A:		Cisco
 54-79-75:		Nokia Corporation
+54-7C-69:		Cisco
 54-7F-54:		INGENICO
 54-7F-A8:		TELCO systems, s.r.o.
 54-7F-EE:		CISCO SYSTEMS, INC.
@@ -15119,6 +15194,7 @@
 54-9A-16:		Uzushio Electric Co.,Ltd.
 54-9B-12:		Samsung Electronics
 54-9D-85:		EnerAccess inc
+54-9F-13:		Apple
 54-9F-35:		Dell Inc.
 54-A0-4F:		t-mac Technologies Ltd
 54-A0-50:		ASUSTek COMPUTER INC.
@@ -15183,6 +15259,7 @@
 58-42-E4:		Sigma International General Medical Apparatus, LLC.
 58-46-8F:		Koncar Electronics and Informatics
 58-46-E1:		Baxter Healthcare
+58-47-04:		 Shenzhen Webridge Technology Co.,Ltd
 58-48-C0:		COFLEC
 58-49-3B:		Palo Alto Networks
 58-49-BA:		Chitai Electronic Corp.
@@ -15225,9 +15302,11 @@
 58-97-1E:		Cisco
 58-98-35:		Technicolor
 58-98-6F:		Revolution Display
+58-9B-0B:		Shineway Technologies, Inc.
 58-9C-FC:		FreeBSD Foundation
 58-A2-B5:		LG Electronics
 58-A7-6F:		iD corporation
+58-A8-39:		Intel Corporate
 58-B0-35:		Apple
 58-B0-D4:		ZuniData Systems Inc.
 58-B9-61:		SOLEM Electronique
@@ -15263,7 +15342,7 @@
 5C-07-6F:		Thought Creator
 5C-0A-5B:		SAMSUNG ELECTRO-MECHANICS CO., LTD.
 5C-0C-BB:		CELIZION Inc.
-5C-0E-8B:		Motorola
+5C-0E-8B:		Zebra Technologies Inc
 5C-11-93:		Seal One AG
 5C-14-37:		Thyssenkrupp Aufzugswerke GmbH
 5C-15-15:		ADVAN
@@ -15289,6 +15368,7 @@
 5C-35-DA:		There Corporation Oy
 5C-36-B8:		TCL King Electrical Appliances (Huizhou) Ltd.
 5C-38-E0:		Shanghai Super Electronics Technology Co.,LTD
+5C-3B-35:		Gehirn Inc.
 5C-3C-27:		Samsung Electronics Co.,Ltd
 5C-40-58:		Jefferson Audio Video Systems, Inc.
 5C-41-E7:		Wiatec International Ltd.
@@ -15301,6 +15381,7 @@
 5C-57-1A:		ARRIS Group, Inc.
 5C-57-C8:		Nokia Corporation
 5C-59-48:		Apple
+5C-5B-35:		Mist Systems, Inc.
 5C-5B-C2:		YIK Corporation
 5C-5E-AB:		Juniper Networks
 5C-63-BF:		TP-LINK TECHNOLOGIES CO., LTD.
@@ -15317,6 +15398,7 @@
 5C-87-78:		Cybertelbridge co.,ltd
 5C-89-9A:		TP-LINK TECHNOLOGIES CO.,LTD
 5C-89-D4:		Beijing Banner Electric Co.,Ltd
+5C-8A-38:		Hewlett Packard
 5C-8D-4E:		Apple
 5C-8F-E0:		ARRIS Group, Inc.
 5C-93-A2:		Liteon Technology Corporation
@@ -15364,7 +15446,9 @@
 5C-F3-FC:		IBM Corp
 5C-F4-AB:		ZyXEL Communications Corp
 5C-F5-0D:		Institute of microelectronic applications
+5C-F5-DA:		Apple
 5C-F6-DC:		Samsung Electronics Co.,LTD
+5C-F7-C3:		SYNTECH (HK) TECHNOLOGY LIMITED
 5C-F8-A1:		Murata Manufactuaring Co.,Ltd.
 5C-F9-38:		Apple, Inc
 5C-F9-6A:		Huawei Technologies Co., Ltd
@@ -15381,6 +15465,7 @@
 60-0F-77:		SilverPlus, Inc
 60-11-99:		Siama Systems Inc
 60-12-83:		Soluciones Tecnologicas para la Salud y el Bienestar SA
+60-12-8B:		CANON INC.
 60-15-C7:		IdaTech
 60-19-0C:		RRAMAC
 60-19-29:		VOLTRONIC POWER TECHNOLOGY(SHENZHEN) CORP.
@@ -15411,6 +15496,7 @@
 60-52-D0:		FACTS Engineering
 60-54-64:		Eyedro Green Solutions Inc.
 60-57-18:		Intel Corporate
+60-5B-B4:		AzureWave Technologies, Inc.
 60-60-1F:		SZ DJI TECHNOLOGY CO.,LTD
 60-63-FD:		Transcend Communication Beijing Co.,Ltd.
 60-64-A1:		RADiflow Ltd.
@@ -15445,6 +15531,7 @@
 60-A4-4C:		ASUSTek COMPUTER INC.
 60-A8-FE:		Nokia Solutions and Networks
 60-A9-B0:		Merchandising Technologies, Inc
+60-AF-6D:		Samsung Electronics Co.,Ltd
 60-B1-85:		ATH system
 60-B3-C4:		Elber Srl
 60-B6-06:		Phorus
@@ -15469,12 +15556,14 @@
 60-D2-B9:		REALAND BIO CO., LTD.
 60-D3-0A:		Quatius Limited
 60-D8-19:		Hon Hai Precision Ind. Co.,Ltd.
+60-D9-A0:		Lenovo Mobile Communication Technology Ltd.
 60-D9-C7:		Apple
 60-DA-23:		Estech Co.,Ltd
 60-DB-2A:		HNS
 60-DE-44:		HUAWEI TECHNOLOGIES CO.,LTD
 60-E0-0E:		SHINSEI ELECTRONICS CO LTD
 60-E3-27:		TP-LINK TECHNOLOGIES CO.,LTD.
+60-E6-BC:		Sino-Telecom Technology Co.,Ltd.
 60-E7-01:		Huawei Technologies Co., Ltd
 60-E9-56:		Ayla Networks, Inc
 60-EB-69:		Quanta computer Inc.
@@ -15519,6 +15608,7 @@
 64-31-50:		Hewlett-Packard Company
 64-31-7E:		Dexin Corporation
 64-34-09:		BITwave Pte Ltd
+64-3A-B1:		SICHUAN TIANYI COMHEART TELECOMCO.,LTD
 64-3E-8C:		HUAWEI TECHNOLOGIES CO.,LTD
 64-3F-5F:		Exablaze
 64-42-14:		Swisscom Energy Solutions AG
@@ -15572,6 +15662,7 @@
 64-99-5D:		LGE
 64-99-68:		Elentec
 64-99-A0:		AG Elektronik AB
+64-9A-BE:		Apple
 64-9B-24:		V Technology Co., Ltd.
 64-9C-81:		Qualcomm iSkoot, Inc.
 64-9C-8E:		Texas Instruments
@@ -15625,6 +15716,7 @@
 64-ED-62:		WOORI SYSTEMS Co., Ltd
 64-F2-42:		Gerdes Aktiengesellschaft
 64-F5-0E:		Kinion Technology Company Limited
+64-F6-9D:		Cisco
 64-F9-70:		Kenade Electronics Technology Co.,LTD.
 64-F9-87:		Avvasi Inc.
 64-FC-8C:		Zonar Systems
@@ -15649,6 +15741,7 @@
 68-2D-DC:		Wuhan Changjiang Electro-Communication Equipment CO.,LTD
 68-36-B5:		DriveScale, Inc.
 68-3B-1E:		Countwise LTD
+68-3C-7D:		Magic Intelligence Technology Limited
 68-3E-EC:		ERECA
 68-43-52:		Bhuu Limited
 68-48-98:		Samsung Electronics Co.,Ltd
@@ -15663,6 +15756,7 @@
 68-5D-43:		Intel Corporate
 68-5E-6B:		PowerRay Co., Ltd.
 68-63-59:		Advanced Digital Broadcast SA
+68-64-4B:		Apple
 68-69-2E:		Zycoo Co.,Ltd
 68-69-F2:		ComAp s.r.o.
 68-6E-23:		Wi3 Inc.
@@ -15685,6 +15779,7 @@
 68-86-E7:		Orbotix, Inc.
 68-87-6B:		INQ Mobile Limited
 68-8A-B5:		EDP Servicos
+68-8F-84:		HUAWEI TECHNOLOGIES CO.,LTD
 68-92-34:		Ruckus Wireless
 68-94-23:		Hon Hai Precision Ind. Co.,Ltd.
 68-96-7B:		Apple
@@ -15693,6 +15788,7 @@
 68-99-CD:		Cisco
 68-9C-5E:		AcSiP Technology Corp.
 68-9C-70:		Apple
+68-9C-E2:		Cisco
 68-A0-F6:		Huawei Technologies Co., Ltd
 68-A1-B7:		Honghao Mingchuan Technology (Beijing) CO.,Ltd.
 68-A3-C4:		Liteon Technology Corporation
@@ -15807,6 +15903,7 @@
 6C-A6-82:		EDAM information & communications
 6C-A7-80:		Nokia Corporation
 6C-A7-FA:		YOUNGBO ENGINEERING INC.
+6C-A8-49:		Avaya, Inc
 6C-A9-06:		Telefield Ltd
 6C-A9-6F:		TransPacket AS
 6C-AA-B3:		Ruckus Wireless
@@ -15842,12 +15939,14 @@
 6C-F0-49:		GIGA-BYTE TECHNOLOGY CO.,LTD.
 6C-F3-73:		Samsung Electronics Co.,Ltd
 6C-F3-7F:		Aruba Networks
+6C-F5-E8:		Mooredoll Inc.
 6C-F9-7C:		Nanoptix Inc.
 6C-FA-58:		Avaya, Inc
 6C-FA-89:		Cisco
 6C-FA-A7:		AMPAK Technology Inc.
 6C-FD-B9:		Proware Technologies Co Ltd.
 6C-FF-BE:		MPB Communications Inc.
+70-01-36:		FATEK Automation Corporation
 70-02-58:		01DB-METRAVIB
 70-05-14:		LG Electronics
 70-0B-C0:		Dewav Technology Company
@@ -15856,6 +15955,7 @@
 70-10-5C:		Cisco
 70-11-24:		Apple
 70-14-04:		Limited Liability Company
+70-14-A6:		Apple, Inc.
 70-18-8B:		Hon Hai Precision Ind. Co.,Ltd.
 70-1A-04:		Liteon Tech Corp.
 70-1A-ED:		ADVAS CO., LTD.
@@ -15885,6 +15985,7 @@
 70-4A-E4:		Rinstrum Pty Ltd
 70-4C-ED:		TMRG, Inc.
 70-4E-01:		KWANGWON TECH CO., LTD.
+70-4E-66:		SHENZHEN FAST TECHNOLOGIES CO.,LTD
 70-52-C5:		Avaya, Inc.
 70-53-3F:		Alfa Instrumentos Eletronicos Ltda.
 70-54-D2:		PEGATRON CORPORATION
@@ -15930,6 +16031,7 @@
 70-9A-0B:		Italian Institute of Technology
 70-9B-A5:		Shenzhen Y&D Electronics Co.,LTD.
 70-9B-FC:		Bryton Inc.
+70-9C-8F:		Nero AG
 70-9E-29:		Sony Computer Entertainment Inc.
 70-9E-86:		X6D Limited
 70-9F-2D:		zte corporation
@@ -15938,6 +16040,7 @@
 70-A6-6A:		Prox Dynamics AS
 70-A8-E3:		HUAWEI TECHNOLOGIES CO.,LTD
 70-AA-B2:		Research In Motion
+70-AD-54:		Malvern Instruments Ltd
 70-AF-25:		Nishiyama Industry Co.,LTD.
 70-B0-35:		Shenzhen Zowee Technology Co., Ltd
 70-B0-8C:		Shenou Communication Equipment Co.,Ltd
@@ -15948,6 +16051,7 @@
 70-B9-21:		FiberHome Telecommunication Technologies CO.,LTD
 70-BA-EF:		Hangzhou H3C Technologies Co., Limited
 70-C6-AC:		Bosch Automotive Aftermarket
+70-C7-6F:		INNO S
 70-CA-9B:		CISCO SYSTEMS, INC.
 70-CD-60:		Apple
 70-D4-F2:		RIM
@@ -15955,6 +16059,7 @@
 70-D5-E7:		Wellcore Corporation
 70-D6-B6:		Metrum Technologies
 70-D8-80:		Upos System sp. z o.o.
+70-DA-9C:		TECSEN
 70-DD-A1:		Tellabs
 70-DE-E2:		Apple
 70-E0-27:		HONGYU COMMUNICATION TECHNOLOGY LIMITED
@@ -15973,6 +16078,7 @@
 70-FC-8C:		OneAccess SA
 70-FF-5C:		Cheerzing Communication(Xiamen)Technology Co.,Ltd
 70-FF-76:		Texas Instruments
+74-03-BD:		Buffalo Inc.
 74-0A-BC:		JSJS Designs (Europe) Limited
 74-0E-DB:		Optowiz Co., Ltd
 74-14-89:		SRT Wireless
@@ -15999,6 +16105,7 @@
 74-46-A0:		Hewlett Packard
 74-4B-E9:		EXPLORER HYPERTECH CO.,LTD
 74-4D-79:		Arrive Systems Inc.
+74-51-BA:		XIAOMI INC
 74-53-27:		COMMSEN CO., LIMITED
 74-54-7D:		Cisco SPVTG
 74-56-12:		ARRIS Group, Inc.
@@ -16021,6 +16128,7 @@
 74-7D-B6:		Aliwei Communications, Inc
 74-7E-1A:		Red Embedded Design Limited
 74-7E-2D:		Beijing Thomson CITIC Digital Technology Co. LTD.
+74-81-14:		Apple
 74-86-7A:		Dell Inc
 74-88-2A:		HUAWEI TECHNOLOGIES CO.,LTD
 74-88-8B:		ADB Broadband Italia
@@ -16036,7 +16144,10 @@
 74-96-37:		Todaair Electronic Co., Ltd
 74-99-75:		IBM Corporation
 74-9C-52:		Huizhou Desay SV Automotive Co., Ltd.
+74-9C-E3:		Art2Wave Canada Inc.
 74-9D-DC:		2Wire
+74-A0-2F:		Cisco
+74-A0-63:		HUAWEI TECHNOLOGIES CO.,LTD
 74-A3-4A:		ZIMI CORPORATION
 74-A4-A7:		QRS Music Technologies, Inc.
 74-A4-B5:		Powerleader Science and Technology Co. Ltd.
@@ -16048,6 +16159,7 @@
 74-BA-DB:		Longconn Electornics(shenzhen)Co.,Ltd
 74-BE-08:		ATEK Products, LLC
 74-BF-A1:		HYUNTECK
+74-C2-46:		Amazon Technologies Inc.
 74-C6-21:		Zhejiang Hite Renewable Energy Co.,LTD
 74-C9-9A:		Ericsson AB
 74-CA-25:		Calxeda, Inc.
@@ -16057,6 +16169,7 @@
 74-D0-DC:		ERICSSON AB
 74-D4-35:		GIGA-BYTE TECHNOLOGY CO.,LTD.
 74-D6-75:		WYMA Tecnologia
+74-D6-EA:		Texas Instruments
 74-D8-50:		Evrisko Systems
 74-DA-38:		Edimax Technology Co. Ltd.
 74-DB-D1:		Ebay Inc
@@ -16065,6 +16178,7 @@
 74-E1-4A:		IEEE REGISTRATION AUTHORITY  - Please see MAM public listing for more information.
 74-E1-B6:		Apple
 74-E2-77:		Vizmonet Pte Ltd
+74-E2-8C:		Microsoft Corporation
 74-E2-F5:		Apple
 74-E4-24:		APISTE CORPORATION
 74-E5-0B:		Intel Corporate
@@ -16111,6 +16225,7 @@
 78-3D-5B:		TELNET Redes Inteligentes S.A.
 78-3E-53:		BSkyB Ltd
 78-3F-15:		EasySYNC Ltd.
+78-40-E4:		Samsung Electronics Co.,Ltd
 78-44-05:		FUJITU(HONG KONG) ELECTRONIC Co.,LTD.
 78-44-76:		Zioncom technology co.,ltd
 78-45-61:		CyberTAN Technology Inc.
@@ -16127,6 +16242,7 @@
 78-54-2E:		D-Link International
 78-55-17:		SankyuElectronics
 78-57-12:		Mobile Integration Workgroup
+78-58-F3:		Vachen Co.,Ltd
 78-59-3E:		RAFI GmbH & Co.KG
 78-59-5E:		Samsung Electronics Co.,Ltd
 78-59-68:		Hon Hai Precision Ind.Co.,Ltd.
@@ -16159,6 +16275,7 @@
 78-A1-06:		TP-LINK TECHNOLOGIES CO.,LTD.
 78-A1-83:		Advidia
 78-A2-A0:		Nintendo Co., Ltd.
+78-A3-51:		SHENZHEN ZHIBOTONG ELECTRONICS CO.,LTD
 78-A3-E4:		Apple
 78-A5-04:		Texas Instruments
 78-A5-DD:		Shenzhen Smarteye Digital Electronics Co., Ltd
@@ -16233,6 +16350,7 @@
 7C-0A-50:		J-MEX Inc.
 7C-0E-CE:		Cisco
 7C-11-BE:		Apple
+7C-11-CD:		QianTang Technology
 7C-14-76:		Damall Technologies SAS
 7C-16-0D:		Saia-Burgess Controls AG
 7C-1A-03:		8Locations Co., Ltd.
@@ -16263,6 +16381,7 @@
 7C-4F-B5:		Arcadyan Technology Corporation
 7C-53-4A:		Metamako
 7C-55-E7:		YSI, Inc.
+7C-5C-F8:		Intel Corporate
 7C-60-97:		HUAWEI TECHNOLOGIES CO.,LTD
 7C-61-93:		HTC Corporation
 7C-66-9D:		Texas Instruments
@@ -16281,10 +16400,12 @@
 7C-70-BC:		IEEE REGISTRATION AUTHORITY  - Please see MAM public listing for more information.
 7C-72-E4:		Unikey Technologies
 7C-76-73:		ENMAS GmbH
+7C-7A-53:		Phytrex Technology Corp.
 7C-7A-91:		Intel Corporate
 7C-7B-E4:		Z'SEDAI KENKYUSHO CORPORATION
 7C-7D-41:		Jinmuyu Electronics Co., Ltd.
 7C-82-2D:		Nortec
+7C-82-74:		Shenzhen Hikeen Technology CO.,LTD
 7C-83-06:		Glen Dimplex Nordic as
 7C-8D-91:		Shanghai Hongzhuo Information Technology co.,LTD
 7C-8E-E4:		Texas Instruments
@@ -16311,6 +16432,7 @@
 7C-C3-A1:		Apple
 7C-C4-EF:		Devialet
 7C-C5-37:		Apple
+7C-C7-09:		Shenzhen RF-LINK Elec&Technology.,Ltd
 7C-C8-AB:		Acro Associates, Inc.
 7C-C8-D0:		TIANJIN YAAN TECHNOLOGY CO., LTD.
 7C-C8-D7:		Damalisk
@@ -16365,6 +16487,7 @@
 80-1F-02:		Edimax Technology Co. Ltd.
 80-20-AF:		Trade FIDES, a.s.
 80-22-75:		Beijing Beny Wave Technology Co Ltd
+80-2A-A8:		Ubiquiti Networks, Inc.
 80-2A-FA:		Germaneers GmbH
 80-2D-E1:		Solarbridge Technologies
 80-2E-14:		azeti Networks AG
@@ -16393,11 +16516,13 @@
 80-64-59:		Nimbus Inc.
 80-65-E9:		BenQ Corporation
 80-66-29:		Prescope Technologies CO.,LTD.
+80-6A-B0:		Tinno Mobile Technology Corp
 80-6C-1B:		Motorola Mobility LLC
 80-6C-8B:		KAESER KOMPRESSOREN AG
 80-6C-BC:		NET New Electronic Technology GmbH
 80-71-1F:		Juniper Networks
 80-71-7A:		Huawei Technologies Co., Ltd
+80-74-59:		K's Co.,Ltd.
 80-76-93:		Newag SA
 80-79-AE:		ShanDong Tecsunrise  Co.,Ltd
 80-7A-7F:		ABB Genway Xiamen Electrical Equipment CO., LTD
@@ -16420,6 +16545,7 @@
 80-97-1B:		Altenergy Power System,Inc.
 80-9B-20:		Intel Corporate
 80-A1-D7:		Shanghai DareGlobal Technologies Co.,Ltd
+80-A8-5D:		Osterhout Design Group
 80-AA-A4:		USAG
 80-AD-67:		Kasda Networks Inc
 80-B2-19:		ELEKTRON TECHNOLOGY UK LIMITED
@@ -16470,7 +16596,7 @@
 84-1B-5E:		NETGEAR
 84-1E-26:		KERNEL-I Co.,LTD
 84-21-41:		Shenzhen Ginwave Technologies Ltd.
-84-24-8D:		Motorola Solutions Inc
+84-24-8D:		Zebra Technologies Inc
 84-25-3F:		Silex Technology, Inc
 84-25-A4:		Tariox Limited
 84-25-DB:		Samsung Electronics Co.,Ltd
@@ -16571,6 +16697,7 @@
 84-EA-99:		Vieworks
 84-EB-18:		Texas Instruments
 84-ED-33:		BBMC Co.,Ltd
+84-F1-29:		Metrascale Inc.
 84-F4-93:		OMS spol. s.r.o.
 84-F6-4C:		Cross Point BV
 84-FC-FE:		Apple
@@ -16591,6 +16718,7 @@
 88-23-64:		Watchnet DVR Inc
 88-23-FE:		TTTech Computertechnik AG
 88-25-2C:		Arcadyan Technology Corporation
+88-25-93:		TP-LINK TECHNOLOGIES CO.,LTD
 88-29-50:		Dalian Netmoon Tech Develop Co.,Ltd
 88-2E-5A:		storONE
 88-30-8A:		Murata Manufactuaring Co.,Ltd.
@@ -16598,6 +16726,7 @@
 88-33-14:		Texas Instruments
 88-35-4C:		Transics
 88-36-12:		SRC Computers, LLC
+88-3B-8B:		Cheering Connection Co. Ltd.
 88-41-C1:		ORBISAT DA AMAZONIA IND E AEROL SA
 88-41-FC:		AirTies Wireless Netowrks
 88-43-E1:		CISCO SYSTEMS, INC.
@@ -16757,6 +16886,7 @@
 8C-B8-64:		AcSiP Technology Corp.
 8C-BE-BE:		Xiaomi Technology Co.,Ltd
 8C-BF-9D:		Shanghai Xinyou Information Technology Ltd. Co.
+8C-BF-A6:		Samsung Electronics Co.,Ltd
 8C-C1-21:		Panasonic Corporation AVC Networks Company
 8C-C5-E1:		ShenZhen Konka Telecommunication Technology Co.,Ltd
 8C-C7-AA:		Radinet Communications Inc.
@@ -16785,6 +16915,7 @@
 8C-FA-BA:		Apple
 8C-FD-F0:		QUALCOMM Incorporated
 90-00-4E:		Hon Hai Precision Ind. Co.,Ltd.
+90-00-DB:		Samsung Electronics Co.,Ltd
 90-01-3B:		SAGEMCOM
 90-02-8A:		Shenzhen Shidean Legrand Electronic Products Co.,Ltd
 90-02-A9:		ZHEJIANG DAHUA TECHNOLOGY CO.,LTD
@@ -16818,10 +16949,12 @@
 90-35-6E:		Vodafone Omnitel N.V.
 90-38-DF:		Changzhou Tiannengbo System Co. Ltd.
 90-3A-A0:		Alcatel-Lucent
+90-3C-92:		Apple
 90-3C-AE:		Yunnan KSEC Digital Technology Co.,Ltd.
 90-3D-5A:		Shenzhen Wision Technology Holding Limited
 90-3D-6B:		Zicon Technology Corp.
 90-3E-AB:		ARRIS Group, Inc.
+90-45-06:		Tokyo Boeki Medisys Inc.
 90-46-B7:		Vadaro Pte Ltd
 90-47-16:		RORZE CORPORATION
 90-48-9A:		Hon Hai Precision Ind. Co.,Ltd.
@@ -16829,7 +16962,7 @@
 90-4C-E5:		Hon Hai Precision Ind. Co.,Ltd.
 90-4E-2B:		Huawei Technologies Co., Ltd
 90-50-7B:		Advanced PANMOBIL Systems GmbH & Co. KG
-90-51-3F:		Elettronica Santerno
+90-51-3F:		Elettronica Santerno SpA
 90-54-46:		TES ELECTRONIC SOLUTIONS
 90-55-AE:		Ericsson, EAB/RWI/K
 90-56-82:		Lenbrook Industries Limited
@@ -16860,6 +16993,7 @@
 90-8C-44:		H.K ZONGMU TECHNOLOGY CO., LTD.
 90-8C-63:		GZ Weedong Networks Technology Co. , Ltd
 90-8D-1D:		GH Technologies
+90-8D-6C:		Apple
 90-8F-CF:		UNO System Co., Ltd
 90-90-3C:		TRISON TECHNOLOGY CORPORATION
 90-90-60:		RSI VIDEO TECHNOLOGIES
@@ -16884,6 +17018,7 @@
 90-B9-31:		Apple, Inc
 90-B9-7D:		Johnson Outdoors Marine Electronics d/b/a Minnkota
 90-C1-15:		Sony Ericsson Mobile Communications AB
+90-C3-5F:		Nanjing Jiahao Technology Co., Ltd.
 90-C7-92:		ARRIS Group, Inc.
 90-CC-24:		Synaptics, Inc
 90-CF-15:		Nokia Corporation
@@ -16901,6 +17036,7 @@
 90-E0-F0:		IEEE 1722a Working Group
 90-E2-BA:		Intel Corporate
 90-E6-BA:		ASUSTek COMPUTER INC.
+90-E7-C4:		HTC Corporation
 90-EA-60:		SPI Lasers Ltd
 90-EF-68:		ZyXEL Communications Corporation
 90-F1-AA:		Samsung Electronics Co.,LTD
@@ -16917,6 +17053,7 @@
 94-00-70:		Nokia Corporation
 94-01-49:		AutoHotBox
 94-01-C2:		Samsung Electronics Co.,Ltd
+94-04-9C:		HUAWEI TECHNOLOGIES CO.,LTD
 94-05-B6:		Liling FullRiver Electronics & Technology Ltd
 94-0B-2D:		NetView Technologies(Shenzhen) Co., Ltd
 94-0B-D5:		Himax Technologies, Inc
@@ -16997,6 +17134,7 @@
 94-CE-2C:		Sony Mobile Communications AB
 94-CE-31:		CTS Limited
 94-D0-19:		Cydle Corp.
+94-D4-17:		GPI KOREA INC.
 94-D6-0E:		shenzhen yunmao information technologies co., ltd
 94-D7-23:		Shanghai DareGlobal Technologies Co., Ltd
 94-D7-71:		Samsung Electronics Co.,Ltd
@@ -17010,11 +17148,13 @@
 94-DF-58:		IJ Electron CO.,Ltd.
 94-E0-D0:		HealthStream Taiwan Inc.
 94-E2-26:		D. ORtiz Consulting, LLC
+94-E2-FD:		Boge Kompressoren Otto Boge GmbH & Co. KG
 94-E7-11:		Xirka Dama Persada PT
 94-E8-48:		FYLDE MICRO LTD
 94-E9-8C:		Alcatel-Lucent
 94-EB-2C:		Google Inc.
 94-EB-CD:		Research In Motion Limited
+94-F1-9E:		HUIZHOU MAORONG INTELLIGENT TECHNOLOGY CO.,LTD
 94-F6-92:		Geminico co.,Ltd.
 94-F7-20:		Tianjin Deviser Electronics Instrument Co., Ltd
 94-FA-E8:		Shenzhen Eycom Technology Co., Ltd
@@ -17023,6 +17163,7 @@
 94-FD-2E:		Shanghai Uniscope Technologies Co.,Ltd
 94-FE-F4:		SAGEMCOM
 98-02-84:		Theobroma Systems GmbH
+98-02-D8:		IEEE REGISTRATION AUTHORITY  - Please see MAM public listing for more information.
 98-03-A0:		ABB n.v. Power Quality Products
 98-03-D8:		Apple
 98-0C-82:		Samsung Electro Mechanics
@@ -17060,6 +17201,7 @@
 98-57-D3:		HON HAI-CCPBG  PRECISION IND.CO.,LTD.
 98-58-8A:		SYSGRATION Ltd.
 98-59-45:		Texas Instruments
+98-5A-EB:		Apple, Inc.
 98-5C-93:		SBG Systems SAS
 98-5D-46:		PeopleNet Communication
 98-5E-1B:		ConversDigital Co., Ltd.
@@ -17136,9 +17278,11 @@
 9C-28-BF:		Continental Automotive Czech Republic s.r.o.
 9C-28-EF:		HUAWEI TECHNOLOGIES CO.,LTD
 9C-2A-70:		Hon Hai Precision Ind. Co.,Ltd.
+9C-30-66:		RWE Effizienz GmbH
 9C-31-78:		Foshan Huadian Intelligent Communications Teachnologies Co.,Ltd
 9C-31-B6:		Kulite Semiconductor Products Inc
 9C-35-83:		Nipro Diagnostics, Inc
+9C-35-EB:		Apple, Inc.
 9C-3A-AF:		Samsung Electronics Co.,Ltd
 9C-3E-AA:		EnvyLogic Co.,Ltd.
 9C-41-7C:		Hame  Technology Co.,  Limited
@@ -17168,6 +17312,7 @@
 9C-66-50:		Glodio Technolies Co.,Ltd Tianjin Branch
 9C-68-5B:		Octonion SA
 9C-6A-BE:		QEES ApS.
+9C-6C-15:		Microsoft Corporation
 9C-75-14:		Wildix srl
 9C-77-AA:		NADASNV
 9C-79-AC:		Suntec Software(Shanghai) Co., Ltd.
@@ -17202,7 +17347,7 @@
 9C-BB-98:		Shen Zhen RND Electronic Co.,LTD
 9C-BD-9D:		SkyDisk, Inc.
 9C-C0-77:		PrintCounts, LLC
-9C-C0-D2:		Conductix-Wampfler AG
+9C-C0-D2:		Conductix-Wampfler GmbH
 9C-C1-72:		Huawei Technologies Co., Ltd
 9C-C7-A6:		AVM GmbH
 9C-C7-D1:		SHARP Corporation
@@ -17210,6 +17355,7 @@
 9C-CD-82:		CHENG UEI PRECISION INDUSTRY CO.,LTD
 9C-D2-1E:		Hon Hai Precision Ind. Co.,Ltd.
 9C-D2-4B:		zte corporation
+9C-D3-5B:		Samsung Electronics Co.,Ltd
 9C-D3-6D:		NETGEAR INC.,
 9C-D6-43:		D-Link International
 9C-D9-17:		Motorola Mobility LLC
@@ -17271,6 +17417,7 @@ A0-5B-21:		ENVINET GmbH
 A0-5D-C1:		TMCT Co., LTD.
 A0-5D-E7:		DIRECTV, Inc.
 A0-5E-6B:		MELPER Co., Ltd.
+A0-63-91:		Netgear Inc.
 A0-65-18:		VNPT TECHNOLOGY
 A0-67-BE:		Sicon s.r.l.
 A0-69-86:		Wellav Technologies Ltd
@@ -17298,6 +17445,7 @@ A0-90-DE:		VEEDIMS,LLC
 A0-93-47:		GUANGDONG OPPO MOBILE TELECOMMUNICATIONS CORP.,LTD.
 A0-98-05:		OpenVox Communication Co Ltd
 A0-98-ED:		Shandong Intelligent Optical Communication Development Co., Ltd.
+A0-99-9B:		Apple
 A0-9A-5A:		Time Domain
 A0-9B-BD:		Total Aviation Solutions Pty Ltd
 A0-A1-30:		DLI Taiwan Branch office
@@ -17306,6 +17454,7 @@ A0-A3-E2:		Actiontec Electronics, Inc
 A0-A7-63:		Polytron Vertrieb GmbH
 A0-A8-CD:		Intel Corporate
 A0-AA-FD:		EraThink Technologies Corp.
+A0-AD-A1:		JMR Electronics, Inc
 A0-B1-00:		ShenZhen Cando Electronics Co.,Ltd
 A0-B3-CC:		Hewlett Packard
 A0-B4-A5:		Samsung Elec Co.,Ltd
@@ -17313,10 +17462,12 @@ A0-B5-DA:		HongKong THTF Co., Ltd
 A0-B6-62:		Acutvista Innovation Co., Ltd.
 A0-B9-ED:		Skytap
 A0-BA-B8:		Pixon Imaging
+A0-BB-3E:		IEEE REGISTRATION AUTHORITY  - Please see MAM public listing for more information.
 A0-BF-50:		S.C. ADD-PRODUCTION S.R.L.
 A0-BF-A5:		CORESYS
 A0-C2-DE:		Costar Video Systems
 A0-C3-DE:		Triton Electronic Systems Ltd.
+A0-C5-62:		Pace plc
 A0-C6-EC:		ShenZhen ANYK Technology Co.,LTD
 A0-CE-C8:		CE LINK LIMITED
 A0-CF-5B:		CISCO SYSTEMS, INC.
@@ -17331,6 +17482,7 @@ A0-E2-01:		AVTrace Ltd.(China)
 A0-E2-5A:		Amicus SK, s.r.o.
 A0-E2-95:		DAT System Co.,Ltd
 A0-E4-53:		Sony Mobile Communications AB
+A0-E4-CB:		ZyXEL Communications Corporation
 A0-E5-34:		Stratec Biomedical AG
 A0-E5-E9:		enimai Inc
 A0-E6-F8:		Texas Instruments Inc
@@ -17389,6 +17541,7 @@ A4-5A-1C:		smart-electronic GmbH
 A4-5C-27:		Nintendo Co., Ltd.
 A4-5D-36:		Hewlett Packard
 A4-5D-A1:		ADB Broadband Italia
+A4-5E-60:		Apple
 A4-60-32:		MRV Communications (Networks) LTD
 A4-67-06:		Apple
 A4-6C-C1:		LTi REEnergy GmbH
@@ -17399,12 +17552,14 @@ A4-77-60:		Nokia Corporation
 A4-79-E4:		KLINFO Corp
 A4-7A-A4:		ARRIS Group, Inc.
 A4-7A-CF:		VIBICOM COMMUNICATIONS INC.
+A4-7B-85:		ULTIMEDIA Co Ltd,
 A4-7C-14:		ChargeStorm AB
 A4-7C-1F:		Cobham plc
 A4-7E-39:		zte corporation
 A4-81-EE:		Nokia Corporation
 A4-85-6B:		Q Electronics Ltd
 A4-89-5B:		ARK INFOSOLUTIONS PVT LTD
+A4-8C-DB:		Lenovo
 A4-90-05:		CHINA GREATWALL COMPUTER SHENZHEN CO.,LTD
 A4-93-4C:		CISCO SYSTEMS, INC.
 A4-97-BB:		Hitachi Industrial Equipment Systems Co.,Ltd
@@ -17438,6 +17593,7 @@ A4-C0-C7:		ShenZhen Hitom Communication Technology Co..LTD
 A4-C0-E1:		Nintendo Co., Ltd.
 A4-C2-AB:		Hangzhou LEAD-IT Information & Technology Co.,Ltd
 A4-C3-61:		Apple
+A4-C4-94:		Intel Corporate
 A4-C7-DE:		Cambridge Industries(Group) Co.,Ltd.
 A4-D0-94:		Erwin Peters Systemtechnik GmbH
 A4-D1-8F:		Shenzhen Skyee Optical Fiber Communication Technology Ltd.
@@ -17501,6 +17657,7 @@ A8-63-DF:		DISPLAIRE CORPORATION
 A8-63-F2:		Texas Instruments
 A8-64-05:		nimbus 9, Inc
 A8-65-B2:		DONGGUAN YISHANG ELECTRONIC TECHNOLOGY CO., LIMITED
+A8-66-7F:		Apple, Inc.
 A8-6A-6F:		RIM
 A8-70-A5:		UniComm Inc.
 A8-75-D6:		FreeTek International Co., Ltd.
@@ -17517,6 +17674,7 @@ A8-88-08:		Apple
 A8-8C-EE:		MicroMade Galka i Drozdz sp.j.
 A8-8D-7B:		SunDroid Global limited.
 A8-8E-24:		Apple
+A8-90-08:		Beijing Yuecheng Technology Co. Ltd.
 A8-92-2C:		LG Electronics
 A8-93-E6:		JIANGXI JINGGANGSHAN CKING COMMUNICATION TECHNOLOGY CO.,LTD
 A8-95-B0:		Aker Subsea Ltd
@@ -17525,7 +17683,9 @@ A8-97-DC:		IBM
 A8-98-C6:		Shinbo Co., Ltd.
 A8-99-5C:		aizo ag
 A8-9B-10:		inMotion Ltd.
+A8-9D-21:		Cisco
 A8-9D-D2:		Shanghai DareGlobal Technologies Co., Ltd
+A8-9F-BA:		Samsung Electronics Co.,Ltd
 A8-A6-68:		zte corporation
 A8-AD-3D:		Alcatel-Lucent Shanghai Bell Co., Ltd
 A8-B0-AE:		LEONI
@@ -17655,6 +17815,7 @@ AC-C7-3F:		VITSMO CO., LTD.
 AC-C9-35:		Ness Corporation
 AC-CA-54:		Telldus Technologies AB
 AC-CA-8E:		ODA Technologies
+AC-CA-AB:		Virtual Electric Inc
 AC-CA-BA:		Midokura Co., Ltd.
 AC-CB-09:		Hefcom Metering (Pty) Ltd
 AC-CC-8E:		Axis Communications AB
@@ -17764,8 +17925,10 @@ B0-B8-D5:		Nanjing Nengrui Auto Equipment CO.,Ltd
 B0-BD-6D:		Echostreams Innovative Solutions
 B0-BD-A1:		ZAKLAD ELEKTRONICZNY SIMS
 B0-BF-99:		WIZITDONGDO
+B0-C2-87:		Technicolor CH USA Inc
 B0-C4-E7:		Samsung Electronics
 B0-C5-54:		D-Link International
+B0-C5-59:		Samsung Electronics Co.,Ltd
 B0-C6-9A:		Juniper Networks
 B0-C7-45:		Buffalo Inc.
 B0-C8-3F:		Jiangsu Cynray IOT Co., Ltd.
@@ -17779,6 +17942,8 @@ B0-D5-9D:		Shenzhen Zowee Technology Co., Ltd
 B0-D7-C5:		STP KFT
 B0-DA-00:		CERA ELECTRONIQUE
 B0-DF-3A:		Samsung Electronics Co.,Ltd
+B0-E0-3C:		TCT mobile ltd
+B0-E2-E5:		Fiberhome Telecommunication Tech.Co.,Ltd.
 B0-E3-9D:		CAT SYSTEM CO.,LTD.
 B0-E5-0E:		NRG SYSTEMS INC
 B0-E7-54:		2Wire
@@ -17793,6 +17958,7 @@ B0-FE-BD:		PRIVATE
 B4-00-9C:		CableWorld Ltd.
 B4-01-42:		GCI Science & Technology Co.,LTD
 B4-04-18:		Smartchip Integrated Inc.
+B4-05-66:		SP Best Corporation Co., LTD.
 B4-07-F9:		SAMSUNG ELECTRO-MECHANICS
 B4-08-32:		TC Communications
 B4-0A-C6:		DEXON Systems Ltd.
@@ -17879,7 +18045,7 @@ B4-B6-76:		Intel Corporate
 B4-B8-59:		Texa Spa
 B4-B8-8D:		Thuh Company
 B4-C4-4E:		VXL eTech Pvt Ltd
-B4-C7-99:		Motorola Solutions Inc.
+B4-C7-99:		Zebra Technologies Inc
 B4-C8-10:		UMPI Elettronica
 B4-CC-E9:		PROSYST
 B4-CE-F6:		HTC Corporation
@@ -17896,6 +18062,7 @@ B4-ED-19:		Pie Digital, Inc.
 B4-ED-54:		Wohler Technologies
 B4-EE-B4:		ASKEY COMPUTER CORP
 B4-EE-D4:		Texas Instruments
+B4-EF-39:		Samsung Electronics Co.,Ltd
 B4-F0-AB:		Apple
 B4-F2-E8:		Pace plc
 B4-F3-23:		PETATEL INC.
@@ -17904,6 +18071,7 @@ B4-FE-8C:		Centro Sicurezza Italia SpA
 B8-03-05:		Intel Corporate
 B8-04-15:		Bayan Audio
 B8-08-CF:		Intel Corporate
+B8-09-8A:		Apple
 B8-0B-9D:		ROPEX Industrie-Elektronik GmbH
 B8-14-13:		Keen High Holding(HK) Ltd.
 B8-16-19:		ARRIS Group, Inc.
@@ -17933,7 +18101,9 @@ B8-43-E4:		Vlatacom
 B8-47-C6:		SanJet Technology Corp.
 B8-4F-D5:		Microsoft Corporation
 B8-55-10:		Zioncom Electronics (Shenzhen) Ltd.
+B8-56-BD:		ITT LLC
 B8-58-10:		NUMERA, INC.
+B8-5A-73:		Samsung Electronics Co.,Ltd
 B8-5A-F7:		Ouya, Inc
 B8-5A-FE:		Handaer Communication Technology (Beijing) Co., Ltd
 B8-5E-7B:		Samsung Electronics Co.,Ltd
@@ -17952,6 +18122,7 @@ B8-75-C0:		PayPal, Inc.
 B8-76-3F:		Hon Hai Precision Ind. Co.,Ltd.
 B8-77-C3:		Decagon Devices, Inc.
 B8-78-2E:		Apple
+B8-78-79:		Roche Diagnostics GmbH
 B8-79-7E:		Secure Meters (UK) Limited
 B8-7A-C9:		Siemens Ltd.
 B8-7C-F2:		Aerohive Networks Inc.
@@ -17971,6 +18142,7 @@ B8-97-5A:		BIOSTAR Microtech Int'l Corp.
 B8-98-B0:		Atlona Inc.
 B8-98-F7:		Gionee Communication Equipment Co,Ltd.ShenZhen
 B8-99-19:		7signal Solutions, Inc
+B8-9A-CD:		ELITE OPTOELECTRONIC(ASIA)CO.,LTD
 B8-9A-ED:		OceanServer Technology, Inc
 B8-9B-C9:		SMC Networks Inc
 B8-9B-E4:		ABB Power Systems Power Generation
@@ -18016,6 +18188,7 @@ B8-E8-56:		Apple
 B8-E9-37:		Sonos, Inc.
 B8-EE-65:		Liteon Technology Corporation
 B8-EE-79:		YWire Technologies, Inc.
+B8-F0-80:		SPS, INC.
 B8-F3-17:		iSun Smasher Communications Private Limited
 B8-F4-D0:		Herrmann Ultraschalltechnik GmbH & Co. Kg
 B8-F5-E7:		WayTools, LLC
@@ -18033,6 +18206,7 @@ BC-0D-A5:		Texas Instruments
 BC-0F-2B:		FORTUNE TECHGROUP CO.,LTD
 BC-12-5E:		Beijing  WisVideo  INC.
 BC-14-01:		Hitron Technologies. Inc
+BC-14-85:		Samsung Electronics Co.,Ltd
 BC-14-EF:		ITON Technology Limited
 BC-15-A6:		Taiwan Jantek Electronics,Ltd.
 BC-16-65:		Cisco
@@ -18061,6 +18235,7 @@ BC-43-77:		Hang Zhou Huite Technology Co.,ltd.
 BC-44-86:		Samsung Electronics Co.,Ltd
 BC-47-60:		Samsung Electronics Co.,Ltd
 BC-4B-79:		SensingTek
+BC-4C-C4:		Apple
 BC-4D-FB:		Hitron Technologies. Inc
 BC-4E-3C:		CORE STAFF CO., LTD.
 BC-4E-5D:		ZhongMiao Technology Co., Ltd.
@@ -18069,6 +18244,7 @@ BC-52-B4:		Alcatel-Lucent
 BC-52-B7:		Apple
 BC-54-F9:		Drogoo Technology Co., Ltd.
 BC-5F-F4:		ASRock Incorporation
+BC-60-10:		Qingdao Hisense Communications Co.,Ltd
 BC-62-9F:		Telenet Systems P. Ltd.
 BC-66-41:		IEEE REGISTRATION AUTHORITY  - Please see MAM public listing for more information.
 BC-67-1C:		Cisco
@@ -18145,6 +18321,7 @@ C0-11-A6:		Fort-Telecom ltd.
 C0-12-42:		Alpha Security Products
 C0-14-3D:		Hon Hai Precision Ind. Co.,Ltd.
 C0-18-85:		Hon Hai Precision Ind. Co.,Ltd.
+C0-1A-DA:		Apple
 C0-1E-9B:		Pixavi AS
 C0-22-50:		PRIVATE
 C0-25-06:		AVM GmbH
@@ -18154,6 +18331,7 @@ C0-29-73:		Audyssey Laboratories Inc.
 C0-29-F3:		XySystem
 C0-2B-FC:		iNES. applied informatics GmbH
 C0-2C-7A:		Shen Zhen Horn audio Co., Ltd.
+C0-33-5E:		Microsoft
 C0-34-B4:		Gigastone Corporation
 C0-35-80:		A&R TECH
 C0-35-BD:		Velocytech Aps
@@ -18239,6 +18417,7 @@ C0-F2-FB:		Apple
 C0-F7-9D:		Powercode
 C0-F8-DA:		Hon Hai Precision Ind. Co.,Ltd.
 C0-F9-91:		GME Standard Communications P/L
+C0-FF-D4:		Netgear Inc
 C4-00-06:		Lipi Data Systems Ltd.
 C4-01-42:		MaxMedia Technology Limited
 C4-01-7C:		Ruckus Wireless
@@ -18267,10 +18446,12 @@ C4-27-95:		Technicolor USA Inc.
 C4-29-1D:		KLEMSAN ELEKTRIK ELEKTRONIK SAN.VE TIC.AS.
 C4-2C-03:		Apple
 C4-34-6B:		Hewlett Packard
+C4-36-6C:		LG Innotek
 C4-36-DA:		Rusteletech Ltd.
 C4-38-D3:		TAGATEC CO.,LTD
 C4-39-3A:		SMC Networks Inc
 C4-3A-9F:		Siconix Inc.
+C4-3A-BE:		Sony Mobile Communications AB
 C4-3C-3C:		CYBELEC SA
 C4-3D-C7:		NETGEAR
 C4-42-02:		Samsung Electronics Co.,Ltd
@@ -18306,18 +18487,21 @@ C4-6D-F1:		DataGravity
 C4-6E-1F:		TP-LINK TECHNOLOGIES CO.,LTD
 C4-71-30:		Fon Technology S.L.
 C4-71-FE:		CISCO SYSTEMS, INC.
+C4-72-95:		Cisco
 C4-73-1E:		Samsung Eletronics Co., Ltd
 C4-7B-2F:		Beijing JoinHope Image Technology Ltd.
 C4-7B-A3:		NAVIS Inc.
 C4-7D-4F:		CISCO SYSTEMS, INC.
-C4-7D-CC:		Motorola Solutions Inc.
+C4-7D-CC:		Zebra Technologies Inc
 C4-7D-FE:		A.N. Solutions GmbH
 C4-7F-51:		Inventek Systems
 C4-82-3F:		Fujian Newland Auto-ID Tech. Co,.Ltd.
 C4-82-4E:		Changzhou Uchip Electronics Co., LTD.
 C4-85-08:		Intel Corporate
 C4-88-E5:		Samsung Electronics Co.,Ltd
+C4-8E-8F:		Hon Hai Precision Ind. Co.,Ltd.
 C4-91-3A:		Shenzhen Sanland Electronic Co., ltd.
+C4-92-4C:		KEISOKUKI CENTER CO.,LTD.
 C4-93-00:		8Devices
 C4-93-13:		100fio networks technology llc
 C4-93-80:		Speedytel technology
@@ -18357,6 +18541,7 @@ C8-02-10:		LG Innotek
 C8-02-58:		ITW GSE ApS
 C8-02-A6:		Beijing Newmine Technology
 C8-07-18:		TDSi
+C8-08-E9:		LG Electronics
 C8-0A-A9:		Quanta Computer Inc.
 C8-0E-77:		Le Shi Zhi Xin Electronic Technology (Tianjin)  Co.,Ltd
 C8-0E-95:		OmniLync Inc.
@@ -18419,6 +18604,7 @@ C8-A1-BA:		Neul Ltd
 C8-A6-20:		Nebula, Inc
 C8-A7-0A:		Verizon Business
 C8-A7-29:		SYStronics Co., Ltd.
+C8-A8-23:		Samsung Electronics Co.,Ltd
 C8-AA-21:		ARRIS Group, Inc.
 C8-AA-CC:		PRIVATE
 C8-AE-9C:		Shanghai TYD Elecronic Technology Co. Ltd
@@ -18444,6 +18630,7 @@ C8-D4-29:		Muehlbauer AG
 C8-D5-90:		FLIGHT DATA SYSTEMS
 C8-D5-FE:		Shenzhen Zowee Technology Co., Ltd
 C8-D7-19:		Cisco Consumer Products, LLC
+C8-D7-79:		Qingdao Haier Telecom Co.ï¼Ltd
 C8-DD-C9:		Lenovo Mobile Communication Technology Ltd.
 C8-DE-51:		Integra Networks, Inc.
 C8-DF-7C:		Nokia Corporation
@@ -18535,6 +18722,7 @@ CC-90-93:		Hansong Tehnologies
 CC-91-2B:		TE Connectivity Touch Solutions
 CC-94-4A:		Pfeiffer Vacuum GmbH
 CC-95-D7:		VIZIO, Inc
+CC-96-35:		LVS Co.,Ltd.
 CC-96-A0:		Shenzhen Huawei Communication Technologies Co., Ltd
 CC-9E-00:		Nintendo Co., Ltd.
 CC-9F-35:		Transbit Sp. z o.o.
@@ -18542,6 +18730,7 @@ CC-A0-E5:		DZG Metering GmbH
 CC-A2-23:		Huawei Technologies Co., Ltd
 CC-A3-74:		Guangdong Guanglian Electronic Technology Co.Ltd
 CC-A4-62:		ARRIS Group, Inc.
+CC-A4-AF:		Shenzhen Sowell Technology Co., LTD
 CC-A6-14:		AIFA TECHNOLOGY CORP.
 CC-AF-78:		Hon Hai Precision Ind. Co.,Ltd.
 CC-B2-55:		D-Link International
@@ -18613,6 +18802,7 @@ D0-4F-7E:		Apple
 D0-50-99:		ASRock Incorporation
 D0-51-62:		Sony Mobile Communications AB
 D0-52-A8:		Physical Graph Corporation
+D0-53-49:		Liteon Technology Co., Ltd.
 D0-54-2D:		Cambridge Industries(Group) Co.,Ltd.
 D0-57-4C:		CISCO SYSTEMS, INC.
 D0-57-85:		Pantech Co., Ltd.
@@ -18632,6 +18822,7 @@ D0-66-7B:		Samsung Electronics Co., LTD
 D0-67-E5:		Dell Inc
 D0-69-9E:		LUMINEX Lighting Control Equipment
 D0-69-D0:		Verto Medical Solutions, LLC
+D0-6F-4A:		TOPWELL INTERNATIONAL HOLDINGS LIMITED
 D0-72-DC:		Cisco
 D0-73-7F:		Mini-Circuits
 D0-73-8E:		DONG OH PRECISION CO., LTD.
@@ -18656,6 +18847,8 @@ D0-9C-30:		Foster Electric Company, Limited
 D0-9D-0A:		LINKCOM
 D0-A0-D6:		Chengdu TD Tech Ltd.
 D0-A3-11:		Neuberger GebÃ¤udeautomation GmbH
+D0-A5-A6:		Cisco
+D0-A6-37:		Apple
 D0-AE-EC:		Alpha Networks Inc.
 D0-AF-B6:		Linktop Technology Co., LTD
 D0-B3-3F:		SHENZHEN TINNO MOBILE TECHNOLOGY CO.,LTD.
@@ -18740,6 +18933,7 @@ D4-50-7A:		CEIVA Logic, Inc
 D4-52-51:		IBT Ingenieurbureau Broennimann Thun
 D4-52-97:		nSTREAMS Technologies, Inc.
 D4-53-AF:		VIGO System S.A.
+D4-55-56:		Fiber Mountain Inc.
 D4-5A-B2:		Galleon Systems
 D4-5C-70:		Wi-Fi Alliance
 D4-5D-42:		Nokia Corporation
@@ -18748,11 +18942,14 @@ D4-64-F7:		CHENGDU USEE DIGITAL TECHNOLOGY CO., LTD
 D4-66-A8:		Riedo Networks GmbH
 D4-67-61:		SAHAB TECHNOLOGY
 D4-67-E7:		Fiberhome Telecommunication Tech.Co.,Ltd.
+D4-68-4D:		Ruckus Wireless
 D4-68-67:		Neoventus Design Group
+D4-68-BA:		Shenzhen Sundray Technologies Company Limited
 D4-6A-91:		Snap AV
 D4-6A-A8:		HUAWEI TECHNOLOGIES CO.,LTD
 D4-6C-BF:		Goodrich ISR
 D4-6C-DA:		CSM GmbH
+D4-6D-50:		Cisco
 D4-6E-5C:		Huawei Technologies Co., Ltd
 D4-6F-42:		WAXESS USA Inc
 D4-79-C3:		Cameronet GmbH & Co. KG
@@ -18858,10 +19055,12 @@ D8-4A-87:		OI ELECTRIC CO.,LTD
 D8-4B-2A:		Cognitas Technologies, Inc.
 D8-50-E6:		ASUSTek COMPUTER INC.
 D8-54-3A:		Texas Instruments
+D8-55-A3:		zte corporation
 D8-57-EF:		Samsung Electronics
 D8-58-D7:		CZ.NIC, z.s.p.o.
 D8-5D-4C:		TP-LINK Technologies Co.,Ltd.
 D8-5D-84:		CAx soft GmbH
+D8-5D-E2:		Hon Hai Precision Ind. Co.,Ltd.
 D8-5D-FB:		PRIVATE
 D8-61-94:		Objetivos y Sevicios de Valor AnÌadido
 D8-62-DB:		Eno Inc.
@@ -18970,6 +19169,7 @@ DC-2E-6A:		HCT. Co., Ltd.
 DC-2F-03:		Step forward Group Co., Ltd.
 DC-30-9C:		Heyrex Limited
 DC-33-50:		TechSAT GmbH
+DC-37-14:		Apple, Inc.
 DC-37-D2:		Hunan HKT Electronic Technology Co., Ltd
 DC-38-E1:		Juniper networks
 DC-39-79:		Skyport Systems
@@ -19027,6 +19227,7 @@ DC-D5-2A:		Sunny Heart Limited
 DC-D8-7F:		Shenzhen JoinCyber Telecom Equipment Ltd
 DC-DA-4F:		GETCK TECHNOLOGY,  INC
 DC-DE-CA:		Akyllor
+DC-E0-26:		Patrol Tag, Inc
 DC-E1-AD:		Shenzhen Wintop Photoelectric Technology Co., Ltd
 DC-E2-AC:		Lumens Digital Optics Inc.
 DC-E5-78:		Experimental Factory of Scientific Engineering and Special Design Department
@@ -19062,6 +19263,7 @@ E0-2A-82:		Universal Global Scientific Industrial Co., Ltd.
 E0-2F-6D:		Cisco
 E0-30-05:		Alcatel-Lucent Shanghai Bell Co., Ltd
 E0-31-D0:		SZ Telstar CO., LTD
+E0-35-60:		Challenger Supply Holdings, LLC
 E0-36-E3:		Stage One International Co., Ltd.
 E0-39-D7:		Plexxi, Inc.
 E0-3C-5B:		SHENZHEN JIAXINJIE ELECTRON CO.,LTD
@@ -19093,6 +19295,7 @@ E0-87-B1:		Nata-Info Ltd.
 E0-88-5D:		Technicolor CH USA Inc
 E0-89-9D:		Cisco
 E0-8A-7E:		Exponent
+E0-8E-3C:		Aztech Electronics Pte Ltd
 E0-8F-EC:		REPOTEC CO., LTD.
 E0-91-53:		XAVi Technologies Corp.
 E0-91-F5:		NETGEAR
@@ -19100,6 +19303,7 @@ E0-94-67:		Intel Corporate
 E0-95-79:		ORTHOsoft inc, d/b/a Zimmer CAS
 E0-97-96:		HUAWEI TECHNOLOGIES CO.,LTD
 E0-97-F2:		Atomax Inc.
+E0-99-71:		Samsung Electronics Co.,Ltd
 E0-9D-31:		Intel Corporate
 E0-9D-B8:		PLANEX COMMUNICATIONS INC.
 E0-A1-98:		NOJA Power Switchgear Pty Ltd
@@ -19193,10 +19397,12 @@ E4-4F-5F:		EDS Elektronik Destek San.Tic.Ltd.Sti
 E4-55-EA:		Dedicated Computing
 E4-56-14:		Suttle Apparatus
 E4-57-A8:		Stuart Manufacturing, Inc.
+E4-58-E7:		Samsung Electronics Co.,Ltd
 E4-5D-52:		Avaya, Inc
 E4-64-49:		ARRIS Group, Inc.
 E4-67-BA:		Danish Interpretation Systems A/S
 E4-68-A3:		HUAWEI TECHNOLOGIES CO.,LTD
+E4-69-5A:		Dictum Health, Inc.
 E4-6C-21:		messMa GmbH
 E4-71-85:		Securifi Ltd
 E4-75-1E:		Getinge Sterilization AB
@@ -19233,6 +19439,7 @@ E4-C6-3D:		Apple, Inc.
 E4-C6-E6:		Mophie, LLC
 E4-C7-22:		Cisco
 E4-C8-06:		Ceiec Electric Technology Inc.
+E4-CE-70:		Health & Life co., Ltd.
 E4-CE-8F:		Apple
 E4-D3-32:		TP-LINK TECHNOLOGIES CO.,LTD.
 E4-D3-F1:		Cisco
@@ -19248,7 +19455,9 @@ E4-F3-E3:		Shanghai iComhome Co.,Ltd.
 E4-F4-C6:		NETGEAR
 E4-F7-A1:		Datafox GmbH
 E4-F8-EF:		Samsung Elec Co.,Ltd
+E4-F9-39:		Minxon Hotel Technology INC.
 E4-FA-1D:		PAD Peripheral Advanced Design Inc.
+E4-FE-D9:		EDMI Europe Ltd
 E4-FF-DD:		ELECTRON INDIA
 E8-03-9A:		Samsung Electronics CO., LTD
 E8-04-0B:		Apple
@@ -19257,6 +19466,7 @@ E8-04-62:		CISCO SYSTEMS, INC.
 E8-04-F3:		Throughtek Co., Ltd.
 E8-05-6D:		Nortel Networks
 E8-06-88:		Apple
+E8-07-BF:		SHENZHEN BOOMTECH INDUSTRY CO.,LTD
 E8-08-8B:		Huawei Technologies Co., Ltd
 E8-0B-13:		Akib Systems Taiwan, INC
 E8-0C-38:		DAEYOUNG INFORMATION SYSTEM CO., LTD
@@ -19383,6 +19593,7 @@ EC-22-80:		 D-Link International
 EC-23-3D:		Huawei Technologies Co., Ltd
 EC-23-68:		IntelliVoice Co.,Ltd.
 EC-24-B8:		Texas Instruments
+EC-26-CA:		TP-LINK TECHNOLOGIES CO.,LTD
 EC-2A-F0:		Ypsomed AG
 EC-2C-49:		University of Tokyo
 EC-2E-4E:		HITACHI-LG DATA STORAGE INC
@@ -19390,6 +19601,7 @@ EC-30-91:		CISCO SYSTEMS, INC.
 EC-35-86:		Apple
 EC-3B-F0:		NovelSat
 EC-3C-5A:		SHEN ZHEN HENG SHENG HUI DIGITAL TECHNOLOGY CO.,LTD
+EC-3C-88:		MCNEX Co.,Ltd.
 EC-3E-09:		PERFORMANCE DESIGNED PRODUCTS, LLC
 EC-3F-05:		Institute 706, The Second Academy China Aerospace Science & Industry Corp
 EC-42-F0:		ADL Embedded Solutions, Inc.
@@ -19404,12 +19616,14 @@ EC-4C-4D:		ZAO NPK RoTeK
 EC-54-2E:		Shanghai XiMei Electronic Technology Co. Ltd
 EC-55-F9:		Hon Hai Precision Ind. Co.,Ltd.
 EC-59-E7:		Microsoft Corporation
+EC-5A-86:		Yulong Computer Telecommunication Scientific (Shenzhen) Co.,Ltd
 EC-5C-69:		MITSUBISHI HEAVY INDUSTRIES MECHATRONICS SYSTEMS,LTD.
 EC-62-64:		Global411 Internet Services, LLC
 EC-63-E5:		ePBoard Design LLC
 EC-66-D1:		B&W Group LTD
 EC-6C-9F:		Chengdu Volans Technology CO.,LTD
 EC-71-DB:		Shenzhen Baichuan Digital Technology Co., Ltd.
+EC-74-BA:		Hirschmann Automation and Control GmbH
 EC-7C-74:		Justone Technologies Co., Ltd.
 EC-7D-9D:		MEI
 EC-80-09:		NovaSparks
@@ -19434,6 +19648,7 @@ EC-B1-06:		Acuro Networks, Inc
 EC-B1-D7:		Hewlett Packard
 EC-B5-41:		SHINANO E and E Co.Ltd.
 EC-B9-07:		CloudGenix Inc
+EC-BA-FE:		GIROPTIC
 EC-BB-AE:		Digivoice Tecnologia em Eletronica Ltda
 EC-BD-09:		FUSION Electronics Ltd
 EC-C3-8A:		Accuenergy (CANADA) Inc
@@ -19474,6 +19689,7 @@ F0-13-C3:		SHENZHEN FENDA TECHNOLOGY CO., LTD
 F0-15-A0:		KyungDong One Co., Ltd.
 F0-1C-13:		LG Electronics
 F0-1C-2D:		Juniper Networks
+F0-1E-34:		ORICO Technologies Co., Ltd
 F0-1F-AF:		Dell Inc
 F0-21-9D:		Cal-Comp Electronics & Communications Company Ltd.
 F0-23-29:		SHOWA DENKI CO.,LTD.
@@ -19485,6 +19701,7 @@ F0-25-B7:		Samsung Electro Mechanics co., LTD.
 F0-26-4C:		Dr. Sigrist AG
 F0-27-65:		Murata Manufactuaring Co.,Ltd.
 F0-29-29:		Cisco
+F0-2A-23:		Creative Next Design
 F0-2A-61:		Waldo Networks, Inc.
 F0-2F-D8:		Bi2-Vision
 F0-32-1A:		Mita-Teknik A/S
@@ -19515,6 +19732,7 @@ F0-73-AE:		PEAK-System Technik
 F0-76-1C:		COMPAL INFORMATION (KUNSHAN) CO., LTD.
 F0-77-65:		Sourcefire, Inc
 F0-77-D0:		Xcellen
+F0-79-59:		ASUSTek COMPUTER INC.
 F0-7B-CB:		Hon Hai Precision Ind. Co.,Ltd.
 F0-7D-68:		D-Link Corporation
 F0-7F-06:		Cisco
@@ -19530,9 +19748,11 @@ F0-8E-DB:		VeloCloud Networks
 F0-92-1C:		Hewlett Packard
 F0-93-3A:		NxtConect
 F0-93-C5:		Garland Technology
+F0-99-BF:		Apple
 F0-9C-BB:		RaonThink Inc.
 F0-9C-E9:		Aerohive Networks Inc
 F0-9E-63:		Cisco
+F0-9F-C2:		Ubiquiti Networks, Inc.
 F0-A2-25:		PRIVATE
 F0-A7-64:		GST Co., Ltd.
 F0-AC-A4:		HBC-radiomatic
@@ -19556,6 +19776,7 @@ F0-D3-E7:		Sensometrix SA
 F0-D7-67:		Axema Passagekontroll AB
 F0-DA-7C:		RLH INDUSTRIES,INC.
 F0-DB-30:		Yottabyte
+F0-DB-E2:		Apple
 F0-DB-F8:		Apple
 F0-DC-E2:		Apple
 F0-DE-71:		Shanghai EDO Technologies Co.,Ltd.
@@ -19600,6 +19821,8 @@ F4-20-12:		Cuciniale GmbH
 F4-28-33:		MMPC Inc.
 F4-28-53:		Zioncom Electronics (Shenzhen) Ltd.
 F4-28-96:		SPECTO PAINEIS ELETRONICOS LTDA
+F4-29-81:		vivo Mobile Communication Co., Ltd.
+F4-2C-56:		SENOR TECH CO LTD
 F4-36-E1:		Abilis Systems SARL
 F4-37-B7:		Apple
 F4-38-14:		Shanghai Howell Electronic Co.,Ltd
@@ -19687,7 +19910,9 @@ F4-F9-51:		Apple
 F4-FC-32:		Texas Instruments
 F4-FD-2B:		ZOYI Company
 F8-01-13:		Huawei Technologies Co., Ltd
+F8-02-78:		IEEE REGISTRATION AUTHORITY  - Please see MAM public listing for more information.
 F8-03-32:		Khomp
+F8-04-2E:		Samsung Electro Mechanics co., LTD.
 F8-05-1C:		DRS Imaging and Targeting Solutions
 F8-0B-BE:		ARRIS Group, Inc.
 F8-0B-D0:		Datang Telecom communication terminal (Tianjin) Co., Ltd.
@@ -19699,6 +19924,7 @@ F8-0F-84:		Natural Security SAS
 F8-10-37:		Atopia Systems, LP
 F8-15-47:		Avaya, Inc
 F8-16-54:		Intel Corporate
+F8-18-97:		2Wire
 F8-1A-67:		TP-LINK TECHNOLOGIES CO., LTD.
 F8-1C-E5:		Telefonbau Behnke GmbH
 F8-1D-93:		Longdhua(Beijing) Controls Technology Co.,Ltd
@@ -19745,6 +19971,7 @@ F8-71-FE:		The Goldman Sachs Group, Inc.
 F8-72-EA:		Cisco
 F8-73-94:		NETGEAR INC.,
 F8-76-9B:		Neopis Co., Ltd.
+F8-7A-EF:		Rosonix Technology, Inc.
 F8-7B-62:		FASTWEL INTERNATIONAL CO., LTD. Taiwan Branch
 F8-7B-7A:		ARRIS Group, Inc.
 F8-7B-8C:		Amped Wireless
@@ -19780,6 +20007,8 @@ F8-C0-91:		Highgates Technology
 F8-C2-88:		Cisco
 F8-C3-97:		NZXT Corp. Ltd.
 F8-C6-78:		Carefusion
+F8-C9-6C:		Fiberhome Telecommunication Tech.Co.,Ltd.
+F8-CF-C5:		Motorola Mobility LLC, a Lenovo Company
 F8-D0-AC:		Sony Computer Entertainment Inc.
 F8-D0-BD:		Samsung Electronics Co.,Ltd
 F8-D1-11:		TP-LINK TECHNOLOGIES CO., LTD.
@@ -19822,7 +20051,7 @@ FC-07-A0:		LRE Medical GmbH
 FC-08-77:		Prentke Romich Company
 FC-09-D8:		ACTEON Group
 FC-09-F6:		GUANGDONG TONZE ELECTRIC CO.,LTD
-FC-0A-81:		Motorola Solutions Inc.
+FC-0A-81:		Zebra Technologies Inc
 FC-0F-E6:		Sony Computer Entertainment Inc.
 FC-10-BD:		Control Sistematizado S.A.
 FC-11-86:		Logic3 plc
@@ -19887,6 +20116,7 @@ FC-99-47:		Cisco
 FC-9F-AE:		Fidus Systems Inc
 FC-9F-E1:		CONWIN.Tech. Ltd
 FC-A1-3E:		Samsung Electronics
+FC-A2-2A:		PT. Callysta Multi Engineering
 FC-A8-41:		Avaya, Inc
 FC-A9-B0:		MIARTECH (SHANGHAI),INC.
 FC-AA-14:		GIGA-BYTE TECHNOLOGY CO.,LTD.
@@ -19910,6 +20140,7 @@ FC-D6-BD:		Robert Bosch GmbH
 FC-D8-17:		Beijing Hesun Technologies Co.Ltd.
 FC-DB-96:		ENERVALLEY CO., LTD
 FC-DB-B3:		Murata Manufacturing Co., Ltd.
+FC-DC-4A:		G-Wearables Corp.
 FC-DD-55:		Shenzhen WeWins wireless Co.,Ltd
 FC-E1-86:		A3M Co., LTD
 FC-E1-92:		Sichuan Jinwangtong Electronic Science&Technology Co,.Ltd
@@ -19917,6 +20148,7 @@ FC-E1-D9:		Stable Imaging Solutions LLC
 FC-E2-3F:		CLAY PAKY SPA
 FC-E5-57:		Nokia Corporation
 FC-E8-92:		Hangzhou Lancable Technology Co.,Ltd
+FC-E9-98:		Apple
 FC-ED-B9:		Arrayent
 FC-F1-52:		Sony Corporation
 FC-F1-CD:		OPTEX-FA CO.,LTD.

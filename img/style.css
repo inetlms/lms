@@ -4,7 +4,7 @@ BODY {
     overflow			: scroll;
     overflow-x			: auto;
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
     background-color		: #FdFdFd; 
     margin			: 0; 
     padding			: 0; 
@@ -85,7 +85,7 @@ td.info-hover:hover {
 
 TD,p { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
     vertical-align		: middle; 
     border-color		: #CCCCCC; 
     border-width		: 1px;
@@ -251,46 +251,46 @@ TR.suspended A {
 
 P { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
 }
 
 P.nor { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
 }
 
 P.txt { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
     text-align			: justify; 
 }
 
 P.separated { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
     margin-top			: 5px; 
     margin-bottom		: 5px;
 }
 
 h1,H1 { 
     font-size			: 14pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
     color 			: #006500;
 }
 
 h2,H2 { 
     font-size			: 12pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
 }
 
 h3,H3 { 
     font-size			: 10pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
 }
 
 h4,H4 { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
 }
 
 hr,HR { 
@@ -303,7 +303,7 @@ hr,HR {
 ht,HT {
     font-size			: 12pt;
     font-weight			: bold;
-    font-family 		: Tahoma, Verdana, Arial, Helvetica;
+    font-family 		:  Tahoma, Verdana, Arial, Helvetica;
     margin-bottom		: 7px;
     margin-top			: 5px;
     display			: block;
@@ -348,7 +348,7 @@ INPUT[type="submit"] {
     border		: solid 0px transparent;
     color		: #800000;
     font-size		: 8pt; 
-    font-family		: Tahoma, Verdana, Arial, Helvetica; 
+    font-family		:  Tahoma, Verdana, Arial, Helvetica; 
     background		: transparent;
 }
 
@@ -375,7 +375,7 @@ INPUT[type="calendar"] {
 
 INPUT { /* IE */
     font-size			:  8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     vertical-align		: middle;
     border-style		: expression(this.type=='checkbox' || this.type=='radio' ? 'none' : 'solid');
     border-width		: expression(this.type=='checkbox' || this.type=='radio' ? '0' : '1px');
@@ -427,7 +427,7 @@ INPUT.scroller {
 
 TEXTAREA {
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border			: solid 1px #CCCCCC;
     background-color		: #ffffff;
     vertical-align		: middle; 
@@ -440,7 +440,7 @@ TEXTAREA:hover {
 
 TEXTAREA.alert {
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border-style		: solid;
     border-width		: 1px;
     background-color		: #FF9B9B;
@@ -449,7 +449,7 @@ TEXTAREA.alert {
 
 TEXTAREA.alerts {
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border-style		: solid;
     border-width		: 1px;
     border-color		: #FF0000;
@@ -459,7 +459,7 @@ TEXTAREA.alerts {
 
 SELECT {
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border			: solid 1px #CCCCCC; 
     background-color		: #FFFFFF;
     vertical-align		: middle; 
@@ -473,7 +473,7 @@ SELECT:hover {
 
 SELECT.alert {
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border-style		: solid;
     border-width		: 1px;
     background-color		: #FF9B9B;
@@ -482,7 +482,7 @@ SELECT.alert {
 
 SELECT.alerts {
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border-style		: solid;
     border-width		: 1px;
     border-color		: #FF0000;
@@ -528,7 +528,7 @@ input[type="submit"].hiddenbtn {
 
 div.multiselect { 
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border			: solid 1px #888888;
     vertical-align		: middle;
     padding			: 0px 20px 0px 4px;
@@ -847,7 +847,7 @@ INPUT[type='text'].active {
 
 .overlib {
     width			: 150px;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     background			: #f6feff;
     padding			: 2px 4px;
     border			: 1px solid #333333;
@@ -860,7 +860,7 @@ INPUT[type='text'].active {
 }
 
 .overlib_popup {
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     background			: #f6feff;
     padding			: 2px 4px;
     border			: 1px solid #333333;
@@ -878,7 +878,7 @@ INPUT[type='text'].active {
     font-weight			: normal;
     margin-bottom 		: 10px;
     font-size			: 14pt;
-    font-family			: Tahoma, Verdana, Arial;
+    font-family			:  Tahoma, Verdana, Arial;
     padding 			: 2px 0px 2px 8px;
     color			: #006500;
 }
@@ -886,7 +886,7 @@ INPUT[type='text'].active {
 .title_sm {
     font-weight 		: normal;
     font-size 			: 14pt;
-    font-family 		: Tahoma, Verdana, Arial;
+    font-family 		:  Tahoma, Verdana, Arial;
     color			: #006500;
 }
 
@@ -917,7 +917,7 @@ div.nodata {
     width			: 100%;
     padding-top			: 20px;
     padding-bottom		: 20px;
-    font			: bold 18px Tahoma,Arial,Verdana;
+    font			: bold 18px  Tahoma,Arial,Verdana;
     text-align			: center;
     color			: #000000;
     background-color		: #DFD5BD;
@@ -942,7 +942,7 @@ div.nodata {
 }
 
 .ddsmoothmenu {
-    font			: normal 11px Arial, Tahoma, Helvetica, Verdana;
+    font			: normal 11px  Arial, Tahoma, Helvetica, Verdana;
     display			: block;
     background			: #333333;
     margin-left			: 10px;
@@ -975,7 +975,7 @@ div.nodata {
     border-right		: 1px solid #999999;
     color			: #ffffff;
     text-decoration		: none;
-    font			: bold 11px Tahoma, Arial;
+    font			: bold 11px  Tahoma, Arial;
 }
 
 * html .ddsmoothmenu ul li a {
@@ -1137,7 +1137,7 @@ div.nodata {
 
 .boxtitletd {
 	padding-left		: 5px;
-	font			: normal 80% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
 	height			: 24px;
 	border-left		: solid 1px #D7D7D7;
 	border-right		: solid 1px #D7D7D7;
@@ -1153,7 +1153,7 @@ div.nodata {
 .boxcontenttd {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #D7D7D7;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana, Helvetica, Arial;
 }
 
 .boxtitlealert, .boxtitlealerts {
@@ -1162,7 +1162,7 @@ div.nodata {
 
 .boxtitlealerttd, .boxtitlealerts td {
 	padding-left		: 5px;
-	font			: normal 80% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
 	height			: 24px;
 	border-left		: solid 1px #d54937;
 	border-right		: solid 1px #d54937;
@@ -1179,7 +1179,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #d54937;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana, Helvetica, Arial;
 }
 
 .boxcontentalerts {
@@ -1190,7 +1190,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #FF0000;
 	color			: #ff0000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 	
@@ -1207,7 +1207,7 @@ div.nodata {
 	border-right		: solid 1px #4889f1;
 	border-top		: solid 1px #4889f1;
 	height			: 24px;
-	font			: normal 80% 'SignikaL',Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 80% Tahoma, Verdana, Helvetica, Arial;
 }
 
 .boxcontentinfo {
@@ -1219,7 +1219,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #4889f1;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 .boxtitlemess {
@@ -1233,7 +1233,7 @@ div.nodata {
 	border-right		: solid 1px #079e5b;
 	border-top		: solid 1px #079e5b;
 	height			: 24px;
-	font			: normal 80% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
 }
 
 .boxcontentmess {
@@ -1245,7 +1245,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #079e5b;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 .boxtitlewarn {
@@ -1259,7 +1259,7 @@ div.nodata {
 	border-right		: solid 1px #f9c73d;
 	border-top		: solid 1px #f9c73d;
 	height			: 24px;
-	font			: normal 80% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
 }
 
 .boxcontentwarn {
@@ -1271,7 +1271,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #f9c73d;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 .boxtitleteal {
@@ -1285,7 +1285,7 @@ div.nodata {
 	border-right		: solid 1px #008080;
 	border-top		: solid 1px #008080;
 	height			: 24px;
-	font			: normal 80% 'SignikaL', Verdana, Helvetica, Arial;
+	font			: normal 80%  Verdana, Helvetica, Arial;
 }
 
 .boxcontentteal {
@@ -1296,7 +1296,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #008080;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 .boxtitlemediumblue {
@@ -1310,7 +1310,7 @@ div.nodata {
 	border-right		: solid 1px #0000CD;
 	border-top		: solid 1px #0000CD;
 	height			: 24px;
-	font			: normal 80% 'SignikaL', Verdana, Helvetica, Arial;
+	font			: normal 80%  Verdana, Helvetica, Arial;
 }
 
 .boxcontentmediumblue {
@@ -1321,7 +1321,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #0000CD;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 .nav-header {
@@ -1345,7 +1345,7 @@ div.nodata {
 
 
 .listradiuscorners {
-        font-family             : Tahoma, Verdana, Arial, Helvetica;`
+        font-family             :  Tahoma, Verdana, Arial, Helvetica;`
         background              : #f6feff;
         padding                 : 2px 4px;
         border-radius           : 6px;

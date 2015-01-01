@@ -289,6 +289,7 @@ switch($action)
 	case 'save':
 		if (empty($contents) || empty($customer))
 		    break;
+		    
 
         unset($error);
 

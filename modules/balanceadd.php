@@ -96,7 +96,7 @@ else
 if(isset($addbalance['mcustomerid']))
 {
 	foreach($addbalance['mcustomerid'] as $value)
-		if($LMS->CustomerExists($value))
+		if( (!isset($_GET['contractor']) && $LMS->CustomerExists($value)) || (isset($_GET['contractor']) && $LMS->ContractorExists($value)))
 		{
 			$addbalance['customerid'] = $value;
 			
@@ -106,7 +106,8 @@ if(isset($addbalance['mcustomerid']))
 }
 elseif(isset($addbalance['customerid']))
 {
-	if($LMS->CustomerExists($addbalance['customerid']))
+	if( (!isset($_GET['contractor']) && $LMS->CustomerExists($addbalance['customerid'])) || (isset($_GET['contractor']) && $LMS->ContractorExists($addbalance['customerid'])))
+	
 	{
 		if($addbalance['value'] != 0) 
 			$LMS->AddBalance($addbalance);

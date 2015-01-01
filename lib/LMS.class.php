@@ -1816,7 +1816,7 @@ class LMS {
 //					$result['invoice_cstate'] = $cstate['name'];
 //				}
 			}
-//			$result['balance'] = $this->GetCustomerBalance($result['id']);
+			$result['balance'] = $this->GetCustomerBalance($result['id']);
 //			$result['bankaccount'] = bankaccount($result['id'], $result['account']);
 
 			$result['messengers'] = $this->DB->GetAllByKey('SELECT uid, type 
@@ -3226,7 +3226,7 @@ class LMS {
 	}
 
 	function AddInvoice($invoice) {
-		
+//		echo "<pre>"; print_r($invoice); echo "</pre>"; die;
 		$currtime = time();
 		$cdate = $invoice['invoice']['cdate'] ? $invoice['invoice']['cdate'] : $currtime;
 		$sdate = $invoice['invoice']['sdate'] ? $invoice['invoice']['sdate'] : $currtime;
@@ -3258,23 +3258,24 @@ class LMS {
 			div_name, div_shortname, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
 			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, fullnumber)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-				array($number,
-				$invoice['invoice']['numberplanid'] ? $invoice['invoice']['numberplanid'] : 0,
-				$type,
-				$cdate,
-				$sdate,
-				$invoice['invoice']['paytime'],
-				$invoice['invoice']['paytype'],
-				$this->AUTH->id,
-				$invoice['customer']['id'],
-				$invoice['customer']['customername'],
-				$invoice['customer']['address'],
-				$invoice['customer']['ten'],
-				$invoice['customer']['ssn'],
-				$invoice['customer']['zip'],
-				$invoice['customer']['city'],
-				$invoice['customer']['countryid'],
-				$invoice['customer']['divisionid'],
+				array(
+				($number ? $number : 0),
+				($invoice['invoice']['numberplanid'] ? $invoice['invoice']['numberplanid'] : 0),
+				($type ? $type : 0),
+				($cdate ? $cdate : 0),
+				($sdate ? $sdate : 0),
+				($invoice['invoice']['paytime'] ? $invoice['invoice']['paytime'] : 0),
+				($invoice['invoice']['paytype'] ? $invoice['invoice']['paytype'] : NULL),
+				($this->AUTH->id ? $this->AUTH->id : 0),
+				($invoice['customer']['id'] ? $invoice['customer']['id'] : 0),
+				($invoice['customer']['customername'] ? $invoice['customer']['customername'] : ''),
+				($invoice['customer']['address'] ? $invoice['customer']['address'] : ''),
+				($invoice['customer']['ten'] ? $invoice['customer']['ten'] : ''),
+				($invoice['customer']['ssn'] ? $invoice['customer']['ssn'] : ''),
+				($invoice['customer']['zip'] ? $invoice['customer']['zip'] : ''),
+				($invoice['customer']['city'] ? $invoice['customer']['city'] : ''),
+				($invoice['customer']['countryid'] ? $invoice['customer']['countryid'] : 0),
+				($invoice['customer']['divisionid'] ? $invoice['customer']['divisionid'] : 0),
 				($division['name'] ? $division['name'] : ''),
 				($division['shortname'] ? $division['shortname'] : ''),
 				($division['address'] ? $division['address'] : ''), 
@@ -3290,6 +3291,8 @@ class LMS {
 				($division['inv_cplace'] ? $division['inv_cplace'] : ''),
 				($fullnumber ? $fullnumber : NULL),
 		));
+		
+		
 
 		$iid = $this->DB->GetLastInsertID('documents');
 
@@ -3329,6 +3332,7 @@ class LMS {
 					'itemid' => $itemid
 			),false);
 		}
+		
 		
 		if (SYSLOG) {
 		    global $DOCTYPES;
