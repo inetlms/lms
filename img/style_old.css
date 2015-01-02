@@ -288,7 +288,7 @@ div.multiselectlayer ul li input { border: none; }
     font-family : Tahoma, Verdana, Arial;
 }
 
-.newstyle { display:'';}
+.newstyle { display:none;}
 /*
 .ui-state-error {
     border: 1px solid #cd0a0a; 
@@ -319,4 +319,610 @@ div.nodata {
     color		: #000000;
     background-color	: #DFD5BD;
     border		: solid 1px #333333;
+}
+
+
+/* ------------------------------------------------------------------------------------------------ */
+
+.toolbar {
+    height			: 26px;
+    margin-top			: 0px;
+    z-index : 90;
+}
+
+.toolbarbg {
+    margin-top			: 0px;
+    margin-bottom		: 2px;
+    background			: #FFFFDD; 
+    height			: 26px;
+    border 			: solid 1px #CCCCCC;
+    padding-top 		: 3px;
+    padding-left		: 4px;
+/*    position			: absolute; */
+    z-index : 90;
+}
+
+.ddsmoothmenu {
+    font			: normal 11px  Arial, Tahoma, Helvetica, Verdana;
+    display			: block;
+    background			: #333333;
+    margin-left			: 10px;
+    height			: 30px;
+    margin-top			: 1px;
+/*    border			: solid 1px #CCCCCC; */
+}
+
+.ddsmoothmenu ul {
+    z-index			: 101;
+    margin			: 0;
+    padding			: 0;
+    list-style-type		: none;
+    display			: inline;
+}
+
+.ddsmoothmenu ul li {
+    position			: relative;
+    display			: inline;
+    float			: left;
+    min-width			: 20px;
+    white-space			: nowrap;
+}
+
+.ddsmoothmenu ul li a {
+    display			: block;
+    white-space			: nowrap;
+    background			: #333333;
+    padding			: 8px 6px;
+    border-right		: 1px solid #999999;
+    color			: #ffffff;
+    text-decoration		: none;
+    font			: bold 11px  Tahoma, Arial;
+}
+
+* html .ddsmoothmenu ul li a {
+    display			: inline;
+}
+
+.ddsmoothmenu ul li a:link, 
+.ddsmoothmenu ul li a:visited {
+    color			: #ffffff;
+}
+
+.ddsmoothmenu ul li a.selected {
+    background			: #777777 !important; 
+    color			: #ffffff;
+}
+
+.ddsmoothmenu ul li a:hover{
+    background			: #777777;
+    color			: #FFFFFF;
+}
+
+.ddsmoothmenu ul li ul li a:hover{
+    background			: #777777;
+    color			: #FFFFFF;
+}
+
+.ddsmoothmenu ul li ul {
+    position			: absolute;
+    left			: -3000px;
+    display			: none;
+    visibility			: hidden;
+}
+
+.ddsmoothmenu ul li ul li {
+    display			: list-item;
+    float			: none;
+}
+
+.ddsmoothmenu ul li ul li ul {
+    top				: 0; 
+    display			: inline;
+}
+
+.ddsmoothmenu ul li ul li a {
+    font			: normal 11px Verdana;
+    width			: 160px;
+    padding			: 5px;
+    margin			: 0;
+    border-top-width		: 0;
+    border-bottom		: 1px solid gray;
+    text-align			: left;
+}
+
+* html .ddsmoothmenu {
+    height			: 1%;
+}
+
+.downarrowclass {
+    position			: absolute;
+    top				: 12px;
+    right			: 7px;
+}
+
+.rightarrowclass {
+    position			: absolute;
+    top				: 6px;
+    right			: 5px;
+}
+
+.ddshadow { 
+    position			: absolute;
+    left			: 0;
+    top				: 0;
+    width			: 0;
+    height			: 0;
+    background-color		: #CCCCCC;
+}
+
+.toplevelshadow {
+    margin			: 5px 0 0 5px;
+    opacity			: 0.8;
+}
+
+.ddcss3support .ddshadow.toplevelshadow {
+    margin			: 0; 
+}
+
+.ddcss3support .ddshadow {
+    background-color		: transparent;
+    box-shadow			: 5px 5px 5px #AAAAAA;
+    -moz-box-shadow		: 5px 5px 5px #AAAAAA;
+    -webkit-box-shadow		: 5px 5px 5px #AAAAAA;
+}
+
+.hmenu {
+    background			: #333333;
+    width			: 100%;
+    overflow			: visible;
+    position			: fixed;
+    right			: 0;
+    left			: 0;
+    z-index			: 1030;
+    margin-top			: 0;
+    height			: 31px;
+}
+
+.radius {
+	border-radius		: 4px 4px 4px 4px;
+	-moz-border-radius	: 4px 4px 4px 4px;
+	-webkit-border-radius	: 4px 4px 4px 4px;
+}
+
+.radiuslt {
+	border-radius		: 4px 0 0 0;
+	-moz-border-radius	: 4px 0 0 0;
+	-webkit-border-radius	: 4px 0 0 0;
+}
+
+.radiusrt {
+	border-radius		: 0 4px 0 0;
+	-moz-border-radius	: 0 4px 0 0;
+	-webkit-border-radius	: 0 4px 0 0;
+}
+
+.radiuslb {
+	border-radius		: 0 0 0 4px;
+	-moz-border-radius	: 0 0 0 4px;
+	-webkit-border-radius	: 0 0 0 4px;
+}
+
+.radiusrb {
+	border-radius		: 0 0 4px 0;
+	-moz-border-radius	: 0 0 4px 0;
+	-webkit-border-radius	: 0 0 4px 0;
+}
+
+.radiustop {
+	border-radius		: 4px 4px 0 0;
+	-moz-border-radius	: 4px 4px 0 0;
+	-webkit-border-radius	: 4px 4px 0 0;
+}
+
+.radiusbottom {
+	border-radius		: 0 0 4px 4px;
+	-moz-border-radius	: 0 0 4px 4px;
+	-webkit-border-radius	: 0 0 4px 4px;
+}
+
+.shadow {
+	box-shadow		: #333333 1px 1px 12px;
+	-moz-box-shadow		: 1px 1px 12px #333333;
+	-webkit-box-shadow	: #333333 1px 1px 12px;
+}
+
+
+.boxtitle {
+	background		: #F5F5F5;/* url(headerbg.gif) repeat-x bottom left;*/
+}
+
+.boxtitletd {
+	padding-left		: 5px;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
+	height			: 24px;
+	border-left		: solid 1px #D7D7D7;
+	border-right		: solid 1px #D7D7D7;
+	border-top		: solid 1px #D7D7D7;
+	color			: #333333;
+}
+
+.boxcontent {
+	background		: #FEFEFE;
+	background		: #FFFFFF;
+}
+
+.boxcontenttd {
+	padding			: 5px 5px 5px 5px;
+	border			: solid 1px #D7D7D7;
+	font			: normal 76%  Tahoma, Verdana, Helvetica, Arial;
+}
+
+.boxtitlealert, .boxtitlealerts {
+	background		: #CEBD9B;
+}
+
+.boxtitlealerttd, .boxtitlealerts td {
+	padding-left		: 5px;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
+	height			: 24px;
+	border-left		: solid 1px #000000;
+	border-right		: solid 1px #000000;
+	border-top		: solid 1px #000000;
+	border-bottom		: solid 1px #000000;
+	color			: #000000;
+}
+
+.boxcontentalert {
+	background		: #FFeded;
+	background		: #FFFFFF;
+}
+
+.boxcontentalerttd {
+	padding			: 5px 5px 5px 5px;
+	border			: solid 1px #d54937;
+	color			: #000000;
+	font			: normal 76%  Tahoma, Verdana, Helvetica, Arial;
+}
+
+.boxcontentalerts {
+	background-color	: #FFE2E6; 
+}
+
+.boxcontentalertstd {
+	padding			: 5px 5px 5px 5px;
+	border			: solid 1px #FF0000;
+	color			: #ff0000;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
+}
+
+	
+	
+
+.boxtitleinfo {
+	background		: #CEBD9B;
+}
+
+.boxtitleinfotd {
+	color			: #000000;
+	padding-left		: 5px;
+	border-left		: solid 1px #000000;
+	border-right		: solid 1px #000000;
+	border-top		: solid 1px #000000;
+	border-bottom		: solid 1px #000000;
+	height			: 24px;
+	font			: normal 80% Tahoma, Verdana, Helvetica, Arial;
+}
+
+.boxcontentinfo {
+	background-color	: #EDEEFF;
+	background		: #FFFFFF;
+}
+
+.boxcontentinfotd {
+	padding			: 5px 5px 5px 5px;
+	border			: solid 1px #4889f1;
+	color			: #000000;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
+}
+
+.boxtitlemess {
+	background		: #CEBD9B;
+}
+
+.boxtitlemesstd {
+	color			: #000000;
+	padding-left		: 5px;
+	border-left		: solid 1px #000000;
+	border-right		: solid 1px #000000;
+	border-top		: solid 1px #000000;
+	border-bottom		: solid 1px #000000;
+	height			: 24px;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
+}
+
+.boxcontentmess {
+	background-color		: #f7fff9;
+	background		: #FFFFFF;
+}
+
+.boxcontentmesstd {
+	padding			: 5px 5px 5px 5px;
+	border			: solid 1px #079e5b;
+	color			: #000000;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
+}
+
+.boxtitlewarn {
+	background			: #CEBD9B;
+}
+
+.boxtitlewarntd {
+	color			: #000000;
+	padding-left		: 5px;
+	border-left		: solid 1px #000000;
+	border-right		: solid 1px #000000;
+	border-top		: solid 1px #000000;
+	border-bottom		: solid 1px #000000;
+	height			: 24px;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
+}
+
+.boxcontentwarn {
+	background-color	: #fcf8e3;
+	background		: #FFFFFF;
+}
+
+.boxcontentwarntd {
+	padding			: 5px 5px 5px 5px;
+	border			: solid 1px #f9c73d;
+	color			: #000000;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
+}
+
+.boxtitleteal {
+	background			: #CEBD9B;
+}
+
+.boxtitletealtd {
+	color			: #000000;
+	padding-left		: 5px;
+	border-left		: solid 1px #000000;
+	border-right		: solid 1px #000000;
+	border-top		: solid 1px #000000;
+	border-bottom		: solid 1px #000000;
+	height			: 24px;
+	font			: normal 80%  Verdana, Helvetica, Arial;
+}
+
+.boxcontentteal {
+	background		: #FFFFFF;
+}
+
+.boxcontenttealtd {
+	padding			: 5px 5px 5px 5px;
+	border			: solid 1px #008080;
+	color			: #000000;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
+}
+
+.boxtitlemediumblue {
+	background			: #0000CD;
+}
+
+.boxtitlemediumbluetd {
+	color			: #FFFFFF;
+	padding-left		: 5px;
+	border-left		: solid 1px #0000CD;
+	border-right		: solid 1px #0000CD;
+	border-top		: solid 1px #0000CD;
+	height			: 24px;
+	font			: normal 80%  Verdana, Helvetica, Arial;
+}
+
+.boxcontentmediumblue {
+	background		: #FFFFFF;
+}
+
+.boxcontentmediumbluetd {
+	padding			: 5px 5px 5px 5px;
+	border			: solid 1px #0000CD;
+	color			: #000000;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
+}
+
+.nav-header {
+    height:24px;
+}
+
+.nav-tuck {
+    height			: 24px;
+    color			: #000000;
+    background			: #EBF8A4;
+}
+
+.nav-tuck td {
+    border-color		: #A2D246;
+}
+
+.nav-tuck .active {
+    background			: #A2D246;
+}
+
+
+
+.listradiuscorners {
+        font-family             :  Tahoma, Verdana, Arial, Helvetica;`
+        background              : #f6feff;
+        padding                 : 2px 4px;
+        border-radius           : 6px;
+        border                  : 1px solid #CCCCCC;
+        -moz-border-radius      : 6px;
+        -webkit-border-radius   : 6px;
+        -khtml-border-radius    : 6px;
+        box-shadow              : #333333 1px 1px 12px;
+        -moz-box-shadow         : 1px 1px 12px #333333;
+        -webkit-box-shadow      : #333333 1px 1px 12px;
+
+}
+
+
+table.lmsbox,
+table.lmsbox-inner {
+    width: 100%;
+}
+
+table.lmsbox td {
+    padding: 2px;
+}
+
+table.lmsbox-inner * td {
+    padding: 2px;
+    border-spacing: 0px;
+}
+
+table.lmsbox > thead,
+table.lmsbox > tfoot,
+table.lmsbox > tbody,
+table.lmsbox-inner > thead,
+table.lmsbox-inner > tfoot {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+table.lmsbox > thead,
+table.lmsbox-inner > thead {
+    background-color: #EFEFEF;
+}
+
+table.lmsbox > tbody,
+table.lmsbox > tfoot,
+table.lmsbox-inner > tbody,
+table.lmsbox-inner > tfoot {
+    background-color: #F4F4F4;
+}
+
+table.lmsbox > thead > tr,
+table.lmsbox > tfoot > tr {
+    border-top: 1px solid black;
+}
+
+.summary {
+	text-align: right;
+	font-weight: bold;
+}
+
+.navigation {
+	text-align: center;
+	white-space: nowrap;
+	background-color: #EFEFEF;
+}
+
+.pagination {
+    background-color: #EFEFEF;
+}
+
+table.lmsbox > thead { text-align: left; }
+
+td.empty-table { text-align: center; font-weight: bold; padding: 2em; background-color: #F4F4F4; }
+
+.nobr { white-space: nowrap; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.lighter { font-weight: lighter; }
+.valign-top { vertical-align: top; }
+.valign-bottom { vertical-align: bottom; }
+
+p.fleft, 
+TD.fleft { 
+    border-left-style 		: solid; 
+}
+
+p.fright, 
+TD.fright { 
+    border-right-style		: solid; 
+}
+
+p.ftop, 
+TD.ftop { 
+    border-top-style		: solid; 
+}
+
+p.fbottom, 
+TD.fbottom { 
+    border-bottom-style		: solid; 
+}
+
+p.fleftu, 
+TD.fleftu { 
+    border-top-style		: solid; 
+    border-bottom-style		: solid; 
+    border-left-style		: solid; 
+}
+
+p.frightu, 
+TD.frightu { 
+    border-top-style		: solid; 
+    border-bottom-style		: solid; 
+    border-right-style		: solid; 
+}
+
+p.ftopu, 
+TD.ftopu { 
+    border-top-style		: solid; 
+    border-left-style		: solid; 
+    border-right-style		: solid; 
+}
+
+p.fbottomu, 
+TD.fbottomu { 
+    border-bottom-style		: solid; 
+    border-left-style		: solid; 
+    border-right-style		: solid; 
+}
+
+p.fall, 
+TD.fall { 
+    border-style		: solid; 
+}
+
+div.fall {
+    border			: solid 1px #000000;
+}
+
+
+p.fbt, 
+TD.fbt { 
+    border-bottom-style		: solid; 
+    border-top-style		: solid;
+}
+
+p.fbl, 
+TD.fbl { 
+    border-bottom-style		: solid; 
+    border-left-style		: solid;
+}
+
+p.fbr, 
+TD.fbr { 
+    border-bottom-style		: solid; 
+    border-right-style		: solid; 
+}
+
+p.ftl, 
+TD.ftl { 
+    border-top-style		: solid;  
+    border-left-style		: solid; 
+}
+
+p.ftr, TD.ftr { 
+    border-top-style		: solid;  
+    border-right-style		: solid; 
+}
+
+p.flr, 
+TD.flr { 
+    border-left-style		: solid; 
+    border-right-style		: solid; 
 }
