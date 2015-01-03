@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <div align="center">
 <form method="POST" action="{if $target}{$target}{else}?m=userpasswd&id={$passwd.id}{/if}" name="password">
 <input type="submit" class="hiddenbtn">

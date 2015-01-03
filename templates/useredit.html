@@ -1,7 +1,7 @@
 {include file="header.html"}
 {include file="calendar_js.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <form name="useredit" method="POST" action="?m=useredit&id={$userinfo.id}">
 <input type="submit" class="hiddenbtn">
 <table width="100%" cellpadding="3">

@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {if $emptydb}
     <table width="100%"><tr><td width="100%" align="Center">
 	<br><br><font class="alert">{trans("No such devices in database.")}</font>

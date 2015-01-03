@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {if $receipt.receipt}
 <script type="text/javascript">window.open('?m=receipt&id={$receipt.receipt}&which={$receipt.which}');</script>
 {/if}

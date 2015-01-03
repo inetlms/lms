@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {if $bars}
 {if ($download || $upload) && function_exists('imagecreate')}
 <p align="center">
