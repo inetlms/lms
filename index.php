@@ -34,6 +34,7 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
+define('LMSV','15.01.04');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 
 // find alternative config files:
@@ -103,9 +104,6 @@ if(!$DB)
 	die();
 }
 
-// Call any of upgrade process before anything else
-
-require_once(LIB_DIR.'/upgradedb.php');
 
 // Initialize templates engine (must be before locale settings)
 
@@ -139,6 +137,12 @@ if (empty($CONFIG['phpui']['syslog_level']))
     define('SYSLOG',FALSE);
 else
     define('SYSLOG',TRUE);
+
+// Call any of upgrade process before anything else
+require_once(LIB_DIR.'/functions.php');
+
+require_once(LIB_DIR.'/upgradedb.php');
+
 
 // Redirect to SSL
 $_FORCE_SSL = (isset($CONFIG['phpui']['force_ssl']) ? chkconfig($CONFIG['phpui']['force_ssl']) : FALSE);
@@ -178,6 +182,8 @@ $LMS->lang = $_language;
 $GG = new rfGG(GG_VER_77);
 $RAD = new radius($DB,$LMS);
 $MT = new routeros_api();
+
+require_once(LIB_DIR.'/smarty_addons.php');
 
 if (get_conf('registryequipment.enabled')) {
 	require_once(LIB_DIR.'/Registry.Equipment.class.php');
@@ -222,17 +228,19 @@ $layout['smarty_version'] = SMARTY_VERSION;
 $layout['hostname'] = hostname();
 $layout['lmsv'] = 'iNET LMS';
 $layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
-$layout['lmsvr'] = '15.01.01';
+$layout['lmsvr'] = LMSV;
 $layout['dberrors'] =& $DB->errors;
 $layout['dbdebug'] = $_DBDEBUG;
 $layout['popup'] = isset($_GET['popup']) ? true : false;
+
+
 
 $SMARTY->assignByRef('layout', $layout);
 $SMARTY->assignByRef('LANGDEFS', $LANGDEFS);
 $SMARTY->assignByRef('_ui_language', $LMS->ui_lang);
 $SMARTY->assignByRef('_language', $LMS->lang);
 
-require_once(LIB_DIR.'/smarty_addons.php');
+
 
 $error = NULL; // initialize error variable needed for (almost) all modules
 

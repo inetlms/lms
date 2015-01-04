@@ -34,6 +34,18 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015/01/04',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano templatkę dla faktur pdf zgodną z nowymi przepisami zachowując możliwość drukowania i wystawiania faktur w starej wersji. Dodana jest osbługa różnych wersji templatek.<br>
+			    Po aktualizacji należy skonfigurować nowe zmienne w UI sekcja invoices<br>
+			    <b>urllogofile</b> -> ścieżka do loga firmy które możemy umieścić na fakturach<br>
+			    <b>template_version</b> -> wersja templatki, dla nowej należy ustawić wartość 2, DEF.: 1<br>
+			    <b>template_file_proforma</b> -> szablon dla faktur PROFORMA<br>
+			    <b>set_protection</b> -> czy wygenerowany dokument pdf ma być zabezpiecony przed modyfikacją<br>
+			    <b>sdateview</b> -> czy na fakturze ma być widoczna data dostawy / wykonania usługi, jeżeli wystawiamy faktury z automatu a w pozycjach zawarty jest okres za jaki to dotyczy to wartość ustawiamy na 0, w innym przypadku na 1. Przy ręcznym wystawianiu faktury możemy zdefiniować czy ów data ma być widoczna.<br><br>
+			    Przebudowano również skrypty lms-payments i lms-payments-proforma, i tylko tych dwóch skryptów należy używać do wystawiania faktur !!!',
+	),
+	array(
 	    'data'	=> '2015/01/01',
 	    'status'	=> '',
 	    'opis'	=> 'poprawka wystawiania faktur oraz rozliczeń konta kontrahenta',

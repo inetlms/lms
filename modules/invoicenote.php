@@ -258,11 +258,21 @@ switch($action)
 		else
 		    $fullnumber = NULL;
 		
+		$invoice['version'] = get_conf('invoices.template_version');
+		$invoice['templatetype'] = get_conf('invoices.type');
+		$invoice['templatefile'] = get_conf('invoices.cnote_template_file');
+		$invoice['sdateview'] = get_conf('invoices.sdateview');
+		$invoice['urllogofile'] = get_conf('invoices.urllogofile');
+		
+		if (empty($division['inv_author']))
+		    $division['inv_author'] = $this->DB->GetOne('SELECT name FROM users WHERE id = ? LIMIT 1;',array($tis->AUTH->id));
+		
 		$DB->Execute('INSERT INTO documents (number, numberplanid, type, cdate, sdate, paytime, paytype,
 				userid, customerid, name, address, ten, ssn, zip, city, countryid, reference, reason, divisionid,
 				div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
-				div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname, fullnumber)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname, fullnumber,
+				version, templatetype, templatefile, sdateview, urllogofile)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 				array($cnote['number'],
 					$cnote['numberplanid'] ? $cnote['numberplanid'] : 0,
 					DOC_CNOTE,
@@ -296,6 +306,11 @@ switch($action)
 					($division['inv_cplace'] ? $division['inv_cplace'] : ''),
 					($division['shortname'] ? $division['shortname'] : ''),
 					($fullnumber ? $fullnumber : NULL),
+					($invoice['version'] ? $invoice['version'] : NULL),
+					($invoice['templatetype'] ? $invoice['templatetype'] : NULL),
+					($invoice['templatefile'] ? $invoice['templatefile'] : NULL),
+					($invoice['sdateview'] ? 1 : 0),
+					($invoice['urllogofile'] ? $invoice['urllogofile'] : NULL),
 		));
 
 		$id = $DB->GetOne('SELECT id FROM documents WHERE number = ? AND cdate = ? AND type = ?',

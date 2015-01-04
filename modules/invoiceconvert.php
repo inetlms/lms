@@ -116,20 +116,64 @@ if (isset($_POST['invoiceconvert']))
 	else
 	    $fullnumber = NULL;
 	
-	
+	$invoice['version'] = get_conf('invoices.template_version');
+	$invoice['templatetype'] = get_conf('invoices.type');
+	$invoice['templatefile'] = get_conf('invoices.template_file');
+	$invoice['sdateview'] = get_conf('invoices.sdateview');
+	$invoice['urllogofile'] = get_conf('invoices.urllogofile');
+		
+	if (empty($division['inv_author']))
+	    $division['inv_author'] = $DB->GetOne('SELECT name FROM users WHERE id = ? LIMIT 1;',array($tis->AUTH->id));
 	
 	$DB->Execute('INSERT INTO documents (type, number, numberplanid, extnumber, cdate, sdate, customerid, userid, divisionid, name, 
 			address, zip, city, countryid, ten, ssn, paytime, paytype, closed, reference, reason,
 			sale, div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
-			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname, fullnumber) 
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;',
-			array(DOC_INVOICE, $invoice['number'], $invoice['numberplanid'], $old['extnumber'], $invoice['cdate'], $invoice['sdate'], $old['customerid'],
-			    $AUTH->id, $old['divisionid'], $old['name'], $old['address'], $old['zip'], $old['city'], $old['countryid'], $old['ten'], $old['ssn'], 
-			    $invoice['paytime'], $invoice['paytype'], 0, $old['reference'], $old['reason'],
-			    $old['sale'], $old['div_name'], $old['div_address'], $old['div_city'], $old['div_zip'], $old['div_countryid'],
-			    $old['div_ten'], $old['div_regon'], $old['div_account'], $old['div_inv_header'], $old['div_inv_footer'], 
-			    $old['div_inv_author'], $old['div_inv_cplace'], $old['div_shortname'], $fullnumber)
-		);
+			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname, fullnumber,
+			version, templatetype, templatefile, sdateview, urllogofile) 
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;',
+			array(
+			    DOC_INVOICE, 
+			    $invoice['number'], 
+			    $invoice['numberplanid'], 
+			    $old['extnumber'], 
+			    $invoice['cdate'], 
+			    $invoice['sdate'], 
+			    $old['customerid'],
+			    $AUTH->id, 
+			    $old['divisionid'], 
+			    $old['name'], 
+			    $old['address'], 
+			    $old['zip'], $old['city'], 
+			    $old['countryid'], 
+			    $old['ten'], 
+			    $old['ssn'], 
+			    $invoice['paytime'], 
+			    $invoice['paytype'], 
+			    0, 
+			    $old['reference'], 
+			    $old['reason'],
+			    $old['sale'], 
+			    $old['div_name'], 
+			    $old['div_address'], 
+			    $old['div_city'], 
+			    $old['div_zip'], 
+			    $old['div_countryid'],
+			    $old['div_ten'], 
+			    $old['div_regon'], 
+			    $old['div_account'], 
+			    $old['div_inv_header'], 
+			    $old['div_inv_footer'], 
+			    $old['div_inv_author'], 
+			    $old['div_inv_cplace'], 
+			    $old['div_shortname'], 
+			    $fullnumber,
+			    ($invoice['version'] ? $invoice['version'] : NULL),
+			    ($invoice['templatetype'] ? $invoice['templatetype'] : NULL),
+			    ($invoice['templatefile'] ? $invoice['templatefile'] : NULL),
+			    ($invoice['sdateview'] ? 1 : 0),
+			    ($invoice['urllogofile'] ? $invoice['urllogofile'] : NULL),
+			    )
+	);
 
 	$newid = $DB->GetLastInsertId('documents');
 	

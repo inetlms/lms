@@ -50,6 +50,8 @@ function check_conf($name)
     global $CONFIG;
 
     list($section, $name) = explode('.', $name, 2);
+    $section = strtolower($section);
+    $name = strtolower($name);
 
     if (empty($name)) {
         return false;
@@ -75,6 +77,8 @@ function get_conf($name, $default = null)
     global $CONFIG;
 
     list($section, $name) = explode('.', $name, 2);
+    $section = strtolower($section);
+    $name = strtolower($name);
 
     if (empty($name)) {
         return $default;
@@ -236,7 +240,7 @@ $DEFAULTS = array(
 	'invoices' => array(
 		'template_file' 		=> 'FT-0100',
 		'content_type' 			=> 'text/html',
-		'cnote_template_file' 		=> 'invoice.html',
+		'cnote_template_file' 		=> 'standard',
 		'print_balance_history' 	=> false,
 		'print_balance_history_limit' 	=> '10',
 		'default_printpage' 		=> 'original,copy',
@@ -244,7 +248,12 @@ $DEFAULTS = array(
 		'attachment_name' 		=> '',
 		'paytime' 			=> '14',
 		'paytype' 			=> '1', // cash
-		'default_type_of_documents' 	=> '',
+		'default_type_of_documents' 	=> 'invoice',
+		'template_version'		=> '1',
+		'sdateview'			=> '1',
+		'urllogofile'			=> '',
+		'set_protection'		=> '1',
+		'template_file_proforma'	=> 'FT-0100',
 	),
 	
 	'finances' => array(

@@ -316,6 +316,25 @@ sub get_period($)
 my $dbq;
 my $row;
 
+use constant DEFAULT_NUMBER_TEMPLATE => '%N/LMS/%Y';
+
+sub docnumber($$$) {
+	my $number = shift;
+	my $template = shift;
+	my $time = shift;
+
+	$number = $number ? $number : 1;
+	$template = length($template) ? $template : DEFAULT_NUMBER_TEMPLATE;
+	$time = $time ? $time : strftime("%s", localtime2());
+
+	# main document number
+	$template =~ s/%(\d*)N/sprintf("%0$1d", $number)/eg;
+
+	# time conversion specifiers
+	return strftime($template, localtime($time));
+}
+
+
 if(! $suspension_percentage)
 {
 	$dbq = $dbase->prepare("SELECT value FROM uiconfig WHERE var = 'suspension_percentage' AND section = 'finances'");
@@ -329,6 +348,7 @@ if(! $suspension_percentage)
 my %periods;
 my %plans;
 my %numbers;
+my %numbertemplates;
 my %invoices;
 my %paytypes;
 my %numberplans;
@@ -553,6 +573,13 @@ while(my $assign = $dbq->fetchrow_hashref())
 					$row = $dbqn->fetchrow_hashref();
 					$numbers{$plan} = $row->{'number'} || 0;
 					$dbqn->finish();
+					
+					$dbqn = $dbase->prepare("SELECT template FROM numberplans WHERE id = ?");
+					$dbqn->execute($plan);
+
+					$row = $dbqn->fetchrow_hashref();
+					$numbertemplates{$plan} = $row->{'template'};
+					$dbqn->finish();
 				}
 
 				$itemid = 0;
@@ -564,7 +591,7 @@ while(my $assign = $dbq->fetchrow_hashref())
 				my $urow = $udbq->fetchrow_hashref();
 				
 				
-				my $ddbq = $dbase->prepare("SELECT name, address, city, zip, countryid, ten, regon, account, inv_header, inv_footer, inv_author, inv_cplace
+				my $ddbq = $dbase->prepare("SELECT shortname, name, address, city, zip, countryid, ten, regon, account, inv_header, inv_footer, inv_author, inv_cplace
 						FROM divisions WHERE id = ?");
 				$ddbq -> execute($urow->{'divisionid'});
 				my $drow = $ddbq->fetchrow_hashref();
@@ -572,18 +599,58 @@ while(my $assign = $dbq->fetchrow_hashref())
 				
 				my $paytime = $urow->{'paytime'};
 				if($paytime eq -1) { $paytime = $deadline; }
-
+				
+				my $fullnumber = docnumber($numbers{$plan}, $numbertemplates{$plan}, $currtime);
+				
+				#template version
+				my $dttiv = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
+				$dttiv->execute('invoices','template_version');
+				my $ttiv = $dttiv->fetchrow_hashref();
+				
+				#template type
+				my $dttyp = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
+				$dttyp->execute('invoices','type');
+				my $ttyp = $dttyp->fetchrow_hashref();
+				
+				#template file
+				my $dtfile = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=? AND disabled=?;");
+				$dtfile->execute('invoices','template_file_proforma','0');
+				my $tfile = $dtfile->fetchrow_hashref();
+				
+				if (!$tfile->{'value'}) {
+				    $dtfile = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
+				    $dtfile->execute('invoices','template_file');
+				    $tfile = $dtfile->fetchrow_hashref();
+				}
+				
+				#template sdateview
+				my $dtsdv = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
+				$dtsdv->execute('invoices','sdateview');
+				my $tsdv = $dtsdv->fetchrow_hashref();
+				
+				#template logo file
+				my $dtlogo = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
+				$dtlogo->execute('invoices','urllogofile');
+				my $tlogo = $dtlogo->fetchrow_hashref();
+				
+				
 				my $idbq = $dbase->prepare("INSERT INTO documents (number, numberplanid, type, countryid, divisionid,
 						customerid, name, address, zip, city, ten, ssn, cdate, sdate, paytime, paytype, 
 						div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon, div_account, 
-						div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace)
-						VALUES (?, ?, 6, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+						div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace,div_shortname, fullnumber,
+						version, templatetype, templatefile, sdateview, urllogofile)
+						VALUES (?, ?, 6, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+						?, ?, ?, ?, ?, ?, ?)");
 				$idbq->execute($numbers{$plan}, $plan, $urow->{'countryid'}, $urow->{'divisionid'}, $uid,
 						$urow->{'lastname'}.' '.$urow->{'name'}, $urow->{'address'}, $urow->{'zip'},
 						$urow->{'city'}, $urow->{'ten'}, $urow->{'ssn'}, $currtime, $saledate, $paytime, $inv_paytype,
 						$drow->{'name'}, $drow->{'address'}, $drow->{'city'}, $drow->{'zip'}, $drow->{'countryid'},
 						$drow->{'ten'}, $drow->{'regon'}, $drow->{'account'}, $drow->{'inv_header'}, $drow->{'inv_footer'},
-						$drow->{'inv_author'}, $drow->{'inv_cplace'});
+						$drow->{'inv_author'}, $drow->{'inv_cplace'}, $drow->{'shortname'}, $fullnumber,
+						$ttiv->{'value'}, $ttyp->{'value'}, $tfile->{'value'}, $tsdv->{'value'}, $tlogo->{'value'}
+				);
+				
+				
 
 				$idbq = $dbase->prepare("SELECT id FROM documents
 						WHERE cdate = ? AND number = ? AND type = 6 AND customerid = ?");

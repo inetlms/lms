@@ -258,9 +258,15 @@
 		</td>
 		<td style="width: 98%;">
 			<nobr><select name="assignment[invoice]" id="invoice">
-			    <option value="0"{if $layout.module && get_conf('invoices.default_type_of_documents')==''}selected{/if}>tylko naliczanie</option>
-			    <option value="{$smarty.const.DOC_INVOICE}" {if $assignment.invoice == $smarty.const.DOC_INVOICE} selected{/if} {if $layout.module && get_conf('invoices.default_type_of_documents')=='invoice'}selected{/if}>{trans("with invoice")}</option>
-			    <option value="{$smarty.const.DOC_INVOICE_PRO}" {if $assignment.invoice == $smarty.const.DOC_INVOICE_PRO} selected{/if} {if $layout.module && get_conf('invoices.default_type_of_documents')=='proforma'}selected{/if}>{trans("with pro forma invoice")}</option>
+			    {if $assignment.id}
+			    <option value="0"{if !$assignment.invoice} selected {/if}>tylko naliczanie</option>
+			    <option value="{$smarty.const.DOC_INVOICE}" {if $assignment.invoice == $smarty.const.DOC_INVOICE} selected {/if}>{trans("with invoice")}</option>
+			    <option value="{$smarty.const.DOC_INVOICE_PRO}" {if $assignment.invoice == $smarty.const.DOC_INVOICE_PRO} selected{/if}>{trans("with pro forma invoice")}</option>
+			    {else}
+			    <option value="0"{if !get_conf('invoices.default_type_of_documents')} selected {/if}>tylko naliczanie</option>
+			    <option value="{$smarty.const.DOC_INVOICE}" {if get_conf('invoices.default_type_of_documents')=='invoice'} selected {/if}>{trans("with invoice")}</option>
+			    <option value="{$smarty.const.DOC_INVOICE_PRO}" {if get_conf('invoices.default_type_of_documents')=='proforma'} selected{/if}>{trans("with pro forma invoice")}</option>
+			    {/if}
 			    </select>
 			</nobr>
 			

@@ -34,6 +34,6 @@ $engine = array(
 	'output' => 'default.html', 		// output file name
 	'plugin' => 'plugin',			// form plugin (in 'name' dir)
 	'post-action' => 'post-action',		// action file executed after document addition (in transaction)
-)
+);
 
 ?>

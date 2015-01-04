@@ -133,10 +133,19 @@ window.open('?m=invoice&id={$newinvoice.invoice}&original={$newinvoice.original}
 	</tr>
 	<tr class="light">
 		<td class="fleft" width="1%" nowrap>
-			<b>{trans("Sale date:")}</b>
+			{if get_conf('invoices.template_version') == '1'}
+			    <b>Data sprzedaży</b>
+			{else}
+			    <b>Data dost./wyk. usługi</b>
+			{/if}
 		</td>
 		<td class="fright" width="99%" nowrap>
 			<input type="text" name="invoice[sdate]" value="{$invoice.sdate|date_format:"%Y/%m/%d"}" size="10" {tip text="Enter date of sale in YYYY/MM/DD format (empty field means current date) or click to select it from calendar" trigger="sdate"} onclick="cal2.popup();">
+			{if get_conf('invoices.template_version') == '1'}
+			    <input type="hidden" name="invoice[sdateview]" value="1">
+			{else}
+			    <input type="checkbox" name="invoice[sdateview]" value="1" id="id_sdateview"{if get_conf('invoices.sdateview') || $invoice.sdateview} checked{/if}><label for="id_sdateview" {tip text="Jeżeli na fakturze w pozycjach jest podany okres zobowiązania to ta data nie powinna widnieć na dokumencie, w innym przypadku jest wymagana"}>&nbsp;Pokaż datę dostawy / wykonania usługi na fakturze</label>
+			{/if}
 		</td>
 	</tr>
 	<tr class="light">

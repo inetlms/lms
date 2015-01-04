@@ -178,6 +178,8 @@ $LMS->lang = $_language;
 $GG = new rfGG(GG_VER_77);
 $RAD = new radius($DB,$LMS);
 
+include(LIB_DIR.'/smarty_addons.php');
+
 if (get_conf('registryequipment.enabled')) {
 	require_once(LIB_DIR.'/Registry.Equipment.class.php');
 }

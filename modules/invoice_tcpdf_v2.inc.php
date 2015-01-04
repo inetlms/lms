@@ -24,7 +24,7 @@
  *  $Id$
  */
 
-function invoice_simple_form_draw() {
+function invoice_simple_form_draw_v2() {
 	global $pdf;
 
 	/* set line styles */
@@ -97,7 +97,7 @@ function invoice_simple_form_draw() {
 	$pdf->Line(60, 272, 60, 297, $line_thin);
 }
 
-function invoice_main_form_draw() {
+function invoice_main_form_draw_v2() {
 	global $pdf;
 
 	/* set line styles */
@@ -202,7 +202,7 @@ function invoice_main_form_draw() {
 	$pdf->StopTransform();
 }
 
-function invoice_simple_form_fill() {
+function invoice_simple_form_fill_v2() {
 	global $pdf, $invoice;
 
 	/* set font style & color */
@@ -210,7 +210,7 @@ function invoice_simple_form_fill() {
 	$pdf->setColor('text', 0, 0, 0);
 
 	/* division name */
-	$pdf->Text(7, 197, $invoice['division_shortname']);
+	$pdf->Text(7, 197, $invoice['division_shortnames']);
 	$pdf->Text(7, 203, $invoice['division_address']);
 	$pdf->Text(7, 209, $invoice['division_zip'] . ' ' . $invoice['division_city']);
 
@@ -242,7 +242,7 @@ function invoice_simple_form_fill() {
 	$pdf->Text(7, 263, moneyf($invoice['value']));
 }
 
-function invoice_main_form_fill() {
+function invoice_main_form_fill_v2() {
 	global $pdf, $invoice;
 
 	/* set font style & color */
@@ -322,15 +322,30 @@ function invoice_main_form_fill() {
 	}
 }
 
-function invoice_date() {
+// data wystawienia, miejsce oraz data wykonania usługi
+// prawy górny róg
+function invoice_date_v2() {
 	global $pdf, $invoice;
 
-	$pdf->SetFont('arial', '', 10);
-	$pdf->writeHTMLCell(0, 0, '', 20, trans('Settlement date:') . ' <b>' . date("d.m.Y", $invoice['cdate']) . '</b>', 0, 1, 0, true, 'R');
-	$pdf->writeHTMLCell(0, 0, '', '', trans('Sale date:') . ' <b>' . date("d.m.Y", $invoice['sdate']) . '</b>', 0, 1, 0, true, 'R');
+	$pdf->SetFont('arial', '', 8);
+	
+	$pdf->writeHTMLCell(0, 0, '',8, 'Data Wystawienia : ' . ' <b>' . date("d.m.Y", $invoice['cdate']) . '</b>', 0, 1, 0, true, 'R');
+	if ($invoice['division_cplace'])
+	    $pdf->writeHTMLCell(0, 0, '', '', 'Miejsce wystawienia : ' . '<b>'.$invoice['division_cplace'].'</b>',0,1,0,true,'R');
+	if ($invoice['sdateview'] == '1')
+	    $pdf->writeHTMLCell(0, 0, '', '', 'Data dost./wyk.usł. : ' .' <b>' . date("d.m.Y", $invoice['sdate']) . '</b>', 0, 1, 0, true, 'R');
+	else
+	    $pdf->writeHTMLCell(0, 0, '', '', ' ', 0, 1, 0, true, 'R');
 }
 
-function invoice_title() {
+function invoice_logo_v2() {
+	global $pdf,$invoice;
+	
+	if($invoice['urllogofile'])
+	$pdf->Image($invoice['urllogofile'],12,8,'',10,'','','L',true,150,'',false,false,0,true,false,true);
+}
+
+function invoice_title_v2() {
 	global $pdf, $invoice, $type;
 
 	$pdf->SetY(30);
@@ -348,7 +363,7 @@ function invoice_title() {
 		else
 		    $title = trans('Invoice No. $a', $docnumber);
 	}
-	$pdf->Write(0, $title, '', 0, 'C', true, 0, false, false, 0);
+	$pdf->Write(0, $title, '', 0, 'L', true, 0, false, false, 0);
 
 	if (isset($invoice['invoice'])) {
 		$pdf->SetFont('arial', 'B', 12);
@@ -362,11 +377,11 @@ function invoice_title() {
 		    $title = trans('for Pro Forma Invoice No. $a', $docnumber);
 		else
 		    $title = trans('for Invoice No. $a', $docnumber);
-		$pdf->Write(0, $title, '', 0, 'C', true, 0, false, false, 0);
+		$pdf->Write(0, $title, '', 0, 'L', true, 0, false, false, 0);
 	}
 
-	$pdf->SetFont('arial', '', 16);
-	$pdf->Write(0, $type, '', 0, 'C', true, 0, false, false, 0);
+//	$pdf->SetFont('arial', '', 16);
+//	$pdf->Write(0, $type, '', 0, 'C', true, 0, false, false, 0);
 
 	if ($type == trans('DUPLICATE')) {
 		$pdf->SetFont('arial', '', 10);
@@ -375,7 +390,9 @@ function invoice_title() {
 	}
 }
 
-function invoice_seller() {
+
+// sprzedawca 
+function invoice_seller_v2() {
 	global $pdf, $invoice;
 
 	$pdf->SetFont('arial', '', 10);
@@ -392,7 +409,7 @@ function invoice_seller() {
 	$pdf->writeHTMLCell(80, '', '', 45, $seller, 0, 1, 0, true, 'L');
 }
 
-function invoice_buyer() {
+function invoice_buyer_v2() {
 	global $pdf, $invoice;
 
 	$oldy = $pdf->GetY();
@@ -431,7 +448,7 @@ function invoice_buyer() {
 	$pdf->writeHTMLCell(80, '', 125, 50, $postbox, 0, 1, 0, true, 'L');
 
 	$pin = '<b>' . trans('Customer ID: $a', sprintf('%04d', $invoice['customerid'])) . '</b><br>';
-	$pin .= '<b>PIN: ' . sprintf('%04d', $invoice['customerpin']) . '</b><br>';
+//	$pin .= '<b>PIN: ' . sprintf('%04d', $invoice['customerpin']) . '</b><br>';
 
 	$pdf->SetFont('arial', 'B', 8);
 	$pdf->writeHTMLCell('', '', 125, $oldy + round(($y - $oldy) / 2), $pin, 0, 1, 0, true, 'L');
@@ -439,15 +456,15 @@ function invoice_buyer() {
 	$pdf->SetY($y);
 }
 
-function invoice_data() {
+function invoice_data_v2() {
 	global $pdf, $invoice;
 
 	/* print table */
 	$pdf->writeHTMLCell('', '', '', '', '', 0, 1, 0, true, 'L');
-	$pdf->Table($header, $invoice);
+	$pdf->Table2($header, $invoice);
 }
 
-function invoice_to_pay() {
+function invoice_to_pay_v2() {
 	global $pdf, $invoice;
 
 	$pdf->Ln(-9);
@@ -461,14 +478,19 @@ function invoice_to_pay() {
 	$pdf->writeHTMLCell(0, 6, '', '', trans('In words:') . ' ' . trans('$a dollars $b cents', to_words(floor($invoice['value'])), to_words(round(($invoice['value'] - floor($invoice['value'])) * 100))), 0, 1, 0, true, 'L');
 }
 
-function invoice_balance() {
+function invoice_balance_v2() {
 	global $pdf, $invoice, $LMS;
 
 	$pdf->SetFont('arial', '', 7);
-	$pdf->writeHTMLCell(0, 0, '', '', trans('Your balance on date of invoice issue:') . ' ' . moneyf($LMS->GetCustomerBalance($invoice['customerid'], $invoice['cdate'])), 0, 1, 0, true, 'L');
+	$kasa = $LMS->GetCustomerBalance($invoice['customerid'], $invoice['cdate']);
+	$tekst = '';
+	$pdf->writeHTMLCell(0, 0, '', '', 'Saldo przed wystawieniem dokumentu:' . ' ' . moneyf($kasa), 0, 1, 0, true, 'L');
+	$pdf->setFont('arial','',6);
+	$tekst = 'Informujemy, że saldo zostało wyliczone przed wystawieniem bieżącego dokumentu i może nie uwzględniać ostatnich wpłat ze względu na możliwe opóźnienia w realizacji przelewów bankowych. Dodatni stan salda oznacza nadpłatę. Jeżeli w wyniku wnoszenia opłat za pobrane towary lub wykonane usługi powstała nadpłata, podlega ona zaliczeniu na poczet płatności ustalonych na najbliższy okres rozliczenowy, o ile Odbiorca nie zarząda jej zwrotu. Dyspozycję zwrotu nadpłaty należy złożyć w Biurze Obsługi Klienta';
+	$pdf->writeHTMLCell(0, 0, '', '', $tekst, 0, 1, 0, true, 'J');
 }
 
-function invoice_dates() {
+function invoice_dates_v2() {
 	global $pdf, $invoice;
 
 	$paytype = $invoice['paytype'];
@@ -482,15 +504,16 @@ function invoice_dates() {
 	$pdf->writeHTMLCell(0, 0, '', '', $payment, 0, 1, 0, true, 'L');
 }
 
-function invoice_expositor() {
+function invoice_expositor_v2() {
 	global $pdf, $invoice;
 
-	$expositor = isset($invoice['user']) ? $invoice['user'] : $invoice['division_author'];
+//	$expositor = isset($invoice['user']) ? $invoice['user'] : $invoice['division_author'];
+	$expositor = isset($invoice['division_author']) ? $invoice['division_author'] : $invoice['user'];
 	$pdf->SetFont('arial', '', 8);
 	$pdf->writeHTMLCell(0, 0, '', '', trans('Expositor:') . ' <b>' . $expositor . '</b>', 0, 1, 0, true, 'R');
 }
 
-function invoice_footnote() {
+function invoice_footnote_v2() {
 	global $pdf, $invoice;
 
 	if (!empty($invoice['division_footer'])) {
@@ -509,19 +532,20 @@ function invoice_footnote() {
 	}
 }
 
-function invoice_body_standard() {
+function invoice_body_standard_v2() {
 	global $pdf, $invoice;
-
-	invoice_date();
-	invoice_title();
-	invoice_seller();
-	invoice_buyer();
-	invoice_data();
-	invoice_to_pay();
-	invoice_balance();
-	invoice_dates();
-	invoice_expositor();
-	invoice_footnote();
+	
+	invoice_logo_v2();
+	invoice_date_v2();
+	invoice_title_v2();
+	invoice_seller_v2();
+	invoice_buyer_v2();
+	invoice_data_v2();
+	invoice_to_pay_v2();
+	invoice_balance_v2();
+	invoice_dates_v2();
+	invoice_expositor_v2();
+	invoice_footnote_v2();
 	if (!$invoice['fullnumber'])
 	    $docnumber = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
 	else
@@ -562,25 +586,26 @@ function invoice_body_standard() {
 	$pdf->SetProtection(array('modify', 'copy', 'annot-forms', 'fill-forms', 'extract', 'assemble'), '', 'PASSWORD_CHANGEME', '1');
 }
 
-function invoice_body_ft0100() {
+function invoice_body_ft0100_v2() {
 	global $pdf, $invoice;
-
-	invoice_date();
-	invoice_title();
-	invoice_seller();
-	invoice_buyer();
-	invoice_data();
-	invoice_to_pay();
-	invoice_balance();
-	invoice_dates();
-	invoice_expositor();
-	invoice_footnote();
+	
+	invoice_logo_v2();
+	invoice_date_v2();
+	invoice_title_v2();
+	invoice_seller_v2();
+	invoice_buyer_v2();
+	invoice_data_v2();
+	invoice_to_pay_v2();
+	invoice_balance_v2();
+	invoice_dates_v2();
+	invoice_expositor_v2();
+	invoice_footnote_v2();
 	/* draw FT-0100 form */
-	invoice_simple_form_draw();
-	invoice_main_form_draw();
+	invoice_simple_form_draw_v2();
+	invoice_main_form_draw_v2();
 	/* fill FT-0100 form */
-	invoice_simple_form_fill();
-	invoice_main_form_fill();
+	invoice_simple_form_fill_v2();
+	invoice_main_form_fill_v2();
 	if (!$invoice['fullnumber'])
 	    $docnumber = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
 	else
@@ -612,8 +637,7 @@ function invoice_body_ft0100() {
 			'ContactInfo' => $invoice['division_author']
 	);
 	
-	if (get_conf('invoices.set_protection','1')){
-	
+	if (get_conf('invoices.set_protection','1')) {
 	    /* set document digital signature & protection */
 	    if (file_exists($cert) && file_exists($key)) {
 		$pdf->setSignature($cert, $key, 'inetlms-invoices', '', 1, $info);

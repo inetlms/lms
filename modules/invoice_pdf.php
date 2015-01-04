@@ -150,6 +150,7 @@ elseif(isset($_GET['fetchallinvoices']))
 elseif($invoice = $LMS->GetInvoiceContent($_GET['id']))
 {
 	$which = array();
+	
 
 	if(!empty($_GET['original'])) $which[] = trans('ORIGINAL');
         if(!empty($_GET['copy'])) $which[] = trans('COPY');

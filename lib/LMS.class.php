@@ -2898,7 +2898,7 @@ class LMS {
 		if ($assignments = $this->DB->GetAll('SELECT a.id AS id, a.tariffid,
 			a.customerid, a.period, a.at, a.suspended, a.invoice, a.settlement,
 			a.datefrom, a.dateto, a.pdiscount, a.vdiscount, a.liabilityid,
-			t.uprate, t.upceil, t.downceil, t.downrate, t.type, 
+			t.uprate, t.upceil, t.downceil, t.downrate, t.type, t.relief, 
 			(CASE WHEN t.value IS NULL THEN l.value ELSE t.value END) AS value,
 			(CASE WHEN t.name IS NULL THEN l.name ELSE t.name END) AS name
 			FROM assignments a
@@ -3252,12 +3252,38 @@ class LMS {
 		else
 		    $fullnumber = null;
 		
+		$invoice['version'] = get_conf('invoices.template_version');
+		$invoice['templatetype'] = get_conf('invoices.type');
+		
+		if (!isset($invoice['invoice']['sdateview']))
+		    $invoice['sdateview'] = get_conf('invoices.sdateview');
+		else
+		    $invoice['sdateview'] = $invoice['invoice']['sdateview'];
+		
+		$invoice['urllogofile'] = get_conf('invoices.urllogofile');
+		
+		if ($type == '6') {
+		    
+		    $invoice['templatefile'] = get_conf('invoices.template_file_proforma');
+		    
+		    if (empty($invoice['templatefile']))
+			$invoice['templatefile'] = get_conf('invoices.template_file');
+		
+		} else {
+		    $invoice['templatefile'] = get_conf('invoices.template_file');
+		}
+		
+		
+		if (empty($division['inv_author']))
+		    $division['inv_author'] = $this->DB->GetOne('SELECT name FROM users WHERE id = ? LIMIT 1;',array($tis->AUTH->id));
+		
 		$this->DB->Execute('INSERT INTO documents (number, numberplanid, type,
 			cdate, sdate, paytime, paytype, userid, customerid, name, address, 
 			ten, ssn, zip, city, countryid, divisionid,
 			div_name, div_shortname, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
-			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, fullnumber)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, fullnumber,
+			version, templatetype, templatefile, sdateview, urllogofile)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?)', 
 				array(
 				($number ? $number : 0),
 				($invoice['invoice']['numberplanid'] ? $invoice['invoice']['numberplanid'] : 0),
@@ -3290,8 +3316,12 @@ class LMS {
 				($division['inv_author'] ? $division['inv_author'] : ''), 
 				($division['inv_cplace'] ? $division['inv_cplace'] : ''),
 				($fullnumber ? $fullnumber : NULL),
+				($invoice['version'] ? $invoice['version'] : NULL),
+				($invoice['templatetype'] ? $invoice['templatetype'] : NULL),
+				($invoice['templatefile'] ? $invoice['templatefile'] : NULL),
+				($invoice['sdateview'] ? 1 : 0),
+				($invoice['urllogofile'] ? $invoice['urllogofile'] : NULL),
 		));
-		
 		
 
 		$iid = $this->DB->GetLastInsertID('documents');
@@ -3419,13 +3449,13 @@ class LMS {
 				d.ten, d.ssn, d.cdate, d.sdate, d.paytime, d.paytype, d.numberplanid,
 				d.closed, d.reference, d.reason, d.divisionid, 
 				(SELECT name FROM users WHERE id = d.userid) AS user, n.template,
-				d.div_name AS division_name, d.div_name AS division_shortname,
+				d.div_name AS division_name, d.div_name AS division_shortname, d.div_shortname AS division_shortnames,
 				d.div_address AS division_address, d.div_zip AS division_zip,
 				d.div_city AS division_city, d.div_countryid AS division_countryid, 
 				d.div_ten AS division_ten, d.div_regon AS division_regon, d.div_account AS account,
 				d.div_inv_header AS division_header, d.div_inv_footer AS division_footer,
 				d.div_inv_author AS division_author, d.div_inv_cplace AS division_cplace,
-				d.fullnumber AS fullnumber,
+				d.fullnumber AS fullnumber,d.version, d.templatetype, d.templatefile, d.sdateview, d.urllogofile,
 				c.pin AS customerpin, c.divisionid AS current_divisionid,
 				c.post_name, c.post_address, c.post_zip, c.post_city, c.post_countryid,
 				c.invoice_name, c.invoice_address, c.invoice_zip, c.invoice_city, c.invoice_countryid, c.invoice_ten 

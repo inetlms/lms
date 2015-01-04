@@ -599,6 +599,10 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'template_file':
 						$config[$idx]['description'] = trans('Invoice template file. Default: "invoice.html". Should be placed in templates directory.');
 					break;
+					
+					case 'template_file_proforma':
+						$config[$idx]['description'] = 'Szablon dla faktury PROFORMA';
+					break;
 
 					case 'cnote_template_file':
 						$config[$idx]['description'] = trans('Credit note template file. Default: "invoice.html". Should be placed in templates directory.');
@@ -615,6 +619,10 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'type':
 						$config[$idx]['description'] = trans('Documents type. You can use "html" or "pdf". Default: html.');
 					break;
+					
+					case 'set_protection':
+						$config[$idx]['description'] = 'Zabezpieczenie dokumentów PDF przed modyfikacją. <b>DEFAULT :1</b>';;
+					break;
 
 					case 'print_balance_history':
 						$config[$idx]['description'] = trans('If true on invoice (html) will be printed history of financial operations on customer account. Default: not set.');
@@ -628,14 +636,6 @@ function GetConfigList($order='var,asc', $section='', $search='')
 						$config[$idx]['description'] = trans('Coma-separated list of default invoice printout pages. You can use "original", "copy", "duplicate". Default: "original,copy".');
 					break;
 
-					case 'radius':
-						$config[$idx]['description'] = trans('Enable RADIUS support. Default: 1');
-					break;
-
-					case 'public_ip':
-						$config[$idx]['description'] = trans('Enable public IP address fields. Default: 1');
-					break;
-
 					case 'paytime':
 						$config[$idx]['description'] = trans('Default documents paytime in days. Default: 14');
 					break;
@@ -647,6 +647,24 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'default_type_of_documents':
 						$config[$idx]['description'] = 'zmienna określa nam domyślny typ dokumentu przy dodawaniu nowego zobowiązania/taryfy dla klienta, DEFAULT: <br>dozwolone wartości: <Br>invoice - faktura<br>proforma - faktura proforma<br>pusta wartość - tylko naliczenie opłat';
 					break;
+					
+					case 'template_version':
+						$config[$idx]['description'] = 'wersja szablonu dokumentu tylko dla pdf, jeżeli mamy własny szablon należy pozostawić wartość 1 !!!<br>
+						1 - stary szablon pdf (tcpdf)<br>
+						2 - dla szablonu faktur które są obowiązujące od Stycznia 2015 roku (tcpdf)<br>
+						<b>DEFAULT : 1</b>';
+					break;
+					
+					case 'sdateview':
+					    $config[$idx]['description'] = 'czy wyświetlać datę dostawy / wykonania usługi. zmienna dla faktur w wersji 2.<br>
+							Jeżeli w pozycjach faktur mamy zawarty okres usługi wtedy zmienna powinna być na 0 !!! w innym przypadku wartość = 1<br>
+							<b>DEFAULT : 0</b>';
+					break;
+					
+					case 'urllogofile':
+						$config[$idx]['description'] = 'adres pliku z logo naszej firmy, np. img/banner.jpg,dozwolone pliki jpg i gif.<br>Zmienna dla faktur w wersji 2';
+					break;
+					
 					
 
 					default:
