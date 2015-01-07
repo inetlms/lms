@@ -81,7 +81,7 @@
 	</tr>
 	<tr class="light">
 		<td class="fleft" width="1%" nowrap>
-			{if $cnote.version == '1'}
+			{if get_conf('invoices.template_version') == '1'}
 			<b>{trans("Sale date:")}</b>
 			{else}
 			<b>Data dost./wyk. usł.</b>
@@ -89,7 +89,7 @@
 		</td>
 		<td class="fright" width="99%" nowrap>
 			<input type="text" name="cnote[sdate]" value="{$cnote.sdate|date_format:"%Y/%m/%d"}" size="10" {tip text="Enter date of sale in YYYY/MM/DD format (empty field means current date) or click to select it from calendar" trigger="sdate"} onclick="javascript:cal2.popup();" >
-			{if $cnote.version == '1'}
+			{if get_conf('invoices.template_version')  == '1'}
 			    <input type="hidden" name="cnote[sdateview]" value="1">
 			{else}
 			    <input type="checkbox" name="cnote[sdateview]" value="1" id="id_sdateview"{if $cnote.sdateview} checked{/if}><label for="id_sdateview" {tip text="Jeżeli na fakturze w pozycjach jest podany okres zobowiązania to ta data nie powinna widnieć na dokumencie, w innym przypadku jest wymagana"}>&nbsp;Pokaż datę dostawy / wykonania usługi na fakturze</label>
