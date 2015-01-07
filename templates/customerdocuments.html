@@ -21,7 +21,7 @@
 					<td width="1%" nowrap class="fbt">{trans("Period:")}</td>
 					<td width="1%" nowrap class="frightu"></td>
 				</tr>
-				{cycle values="light,lucid" print=false name=doc}
+				{cycle values="lucid,light" print=false name=doc}
 				{foreach from=$documents item=doc}
 				<tr class="{cycle name=doc}{if $doc.closed} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td nowrap onclick="window.open('?m=documentview&id={$doc.docid}');"{if $doc.description} {tip text=$doc.description}{/if}>

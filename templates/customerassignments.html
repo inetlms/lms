@@ -35,7 +35,7 @@
 					<td style="width: 1%; white-space: nowrap;" class="fbt">{trans("Period:")}</td>
 					<td style="width: 1%;" class="frightu">&nbsp;</td>
 				</tr>
-				{cycle name=assign values="light,lucid" print=false}
+				{cycle name=assign values="lucid,light" print=false}
 				{foreach from=$assignments item=a}
 				<tr class="{cycle name=assign}
 					{if ($a.dateto < $today && $a.dateto) || ($a.liabilityid && $a.at < $today && $a.at > 365)} blend{elseif ($a.datefrom > $today && $a.datefrom && $a.period) && !($a.suspended)} alertblend{elseif ($a.suspended)}suspended{/if}"

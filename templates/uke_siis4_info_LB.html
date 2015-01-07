@@ -20,7 +20,7 @@
 	    </tr>
 	    
 	    
-	    {cycle values="light,lucid" print=false}
+	    {cycle values="lucid,light" print=false}
 	    {section name='lblist' loop=$lblist}
 	    <tr class="{cycle} lista{if !$lblist[lblist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		<td width="1%" class="fleft pad" align="left">{$lblist[lblist].identyfikator}</td>

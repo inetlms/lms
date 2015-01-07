@@ -56,7 +56,7 @@ co.elements[i].checked='';
 	<tr id="customerbalance" style="display:none;">
 		<td width="100%" colspan="2" class="fall">
 			<table cellpadding="5" cellspacing="0" width="100%">
-			{cycle name=bal values="light,lucid" print=false}
+			{cycle name=bal values="lucid,light" print=false}
 	<tr class="{cycle name=bal}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	<td colspan="3" align="center"><a href="#" onclick="all_uncheck(document.forms['allowedrates']);return false">Odznacz wszystkie</a></td></tr>
 			{section name=alr loop=$alr}

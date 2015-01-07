@@ -24,7 +24,7 @@
 			{/if}
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=customernodes loop=$customernodes}
 	<tr class="{cycle} lista {if ! $customernodes[customernodes].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="1%" nowrap>

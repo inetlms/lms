@@ -122,7 +122,7 @@
 					<td width="92%" class="fbt">{trans("Description:")}</td>
 					<td width="1%" class="frightu">&nbsp;</td>
 				</tr>
-				{cycle name=bal values="light,lucid" print=false}
+				{cycle name=bal values="lucid,light" print=false}
 				{section name=balancelist loop=$balancelist.id start=$limit}
 				<tr class="{cycle name=bal}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td width="1%"><nobr>{$balancelist.date[balancelist]}</nobr></td>

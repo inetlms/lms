@@ -36,6 +36,11 @@
 
 include('/etc/lms/init_lms.php');
 
+if (get_conf('jambox.enabled')) {
+    require_once(LIB_DIR.'/LMS.tv.class.php');
+    $LMSTV = new LMSTV($DB,$AUTH,$CONFIG);
+}
+
 $to_insert = array();
 
 $res = $DB->GetAll('select * from tv_billingevent where docid = 0 or docid is null order by account_id asc');

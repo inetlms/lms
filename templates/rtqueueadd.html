@@ -46,7 +46,7 @@
 			    <td width="1%" class="fbt" align="center" nowrap><b>{trans("Delete (+R)")}</b></td>
 			    <td width="1%" class="frightu" align="center" nowrap><b>{trans("Notice (+R)")}</b></td>
 			</tr>
-			{cycle values="light,lucid" print=false}
+			{cycle values="lucid,light" print=false}
 			{foreach from=$queue.rights item=right}
 			<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 			    <td width="96%" class="fleft">

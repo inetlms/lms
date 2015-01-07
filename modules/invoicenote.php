@@ -31,7 +31,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : NULL;
 if (isset($_GET['id']) && $action == 'init')
 {
 	$invoice = $LMS->GetInvoiceContent($_GET['id']);
-
+	
 	$taxeslist = $LMS->GetTaxes($invoice['cdate'],$invoice['cdate']);
 
 	foreach ($invoice['content'] as $item)
@@ -57,9 +57,18 @@ if (isset($_GET['id']) && $action == 'init')
 	$cnote['numberplanid'] = $DB->GetOne('SELECT id FROM numberplans WHERE doctype = ? AND isdefault = 1', array(DOC_CNOTE));
 	$currtime = time();
 	$cnote['cdate'] = $currtime;
-	$cnote['sdate'] = $currtime;
+	if ($invoice['version'] == '1') {
+	    $cnote['sdate'] = $currtime;
+	} else {
+	    $cnote['sdate'] = $invoice['sdate'];
+	}
 	$cnote['reason'] = '';
 	$cnote['paytype'] = $invoice['paytype'];
+	$cnote['version'] = $invoice['version'];
+	$cnote['templatefile'] = $invoice['templatefile'];
+	$cnote['templatetype'] = $invoice['templatetype'];
+	$cnote['sdateview'] = $invoice['sdateview'];
+	$cnote['urllogofile'] = $invoice['urllogofile'];
 
 	$t = $invoice['cdate'] + $invoice['paytime'] * 86400;
 	$deadline = mktime(23, 59, 59, date('m',$t), date('d',$t), date('Y',$t));
@@ -261,12 +270,12 @@ switch($action)
 		$invoice['version'] = get_conf('invoices.template_version');
 		$invoice['templatetype'] = get_conf('invoices.type');
 		$invoice['templatefile'] = get_conf('invoices.cnote_template_file');
-		$invoice['sdateview'] = get_conf('invoices.sdateview');
+//		$invoice['sdateview'] = get_conf('invoices.sdateview');
 		$invoice['urllogofile'] = get_conf('invoices.urllogofile');
 		
 		if (empty($division['inv_author']))
 		    $division['inv_author'] = $this->DB->GetOne('SELECT name FROM users WHERE id = ? LIMIT 1;',array($tis->AUTH->id));
-		
+
 		$DB->Execute('INSERT INTO documents (number, numberplanid, type, cdate, sdate, paytime, paytype,
 				userid, customerid, name, address, ten, ssn, zip, city, countryid, reference, reason, divisionid,
 				div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
@@ -306,10 +315,10 @@ switch($action)
 					($division['inv_cplace'] ? $division['inv_cplace'] : ''),
 					($division['shortname'] ? $division['shortname'] : ''),
 					($fullnumber ? $fullnumber : NULL),
-					($invoice['version'] ? $invoice['version'] : NULL),
+					($invoice['version'] ? $invoice['version'] : '1'),
 					($invoice['templatetype'] ? $invoice['templatetype'] : NULL),
 					($invoice['templatefile'] ? $invoice['templatefile'] : NULL),
-					($invoice['sdateview'] ? 1 : 0),
+					($cnote['sdateview'] ? 1 : 0),
 					($invoice['urllogofile'] ? $invoice['urllogofile'] : NULL),
 		));
 
@@ -355,6 +364,11 @@ switch($action)
 		}
 
 		$DB->CommitTrans();
+		
+		if (get_conf('invoices.create_pdf_file') || get_conf('invoices.create_pdf_file_proforma')) {
+		    $iid = $id;
+		    include(MODULES_DIR.'/invoicecreatepdffile.php');
+		}
 
 		$SESSION->remove('invoice');
 		$SESSION->remove('invoiceid');
@@ -388,6 +402,7 @@ $SMARTY->assign('cnote', $cnote);
 $SMARTY->assign('invoice', $invoice);
 $SMARTY->assign('taxeslist', $taxeslist);
 $SMARTY->assign('numberplanlist', $numberplanlist);
+$SMARTY->assign('cnotelist',$LMS->getListDictionaryCnote());
 $SMARTY->display('invoicenote.html');
 
 ?>

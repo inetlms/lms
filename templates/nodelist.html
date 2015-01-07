@@ -81,7 +81,7 @@
 			<nobr><b>{t a=$listdata.total}Total: $a{/t}</b><nobr>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=nodelist loop=$nodelist start=$start max=$pagelimit}
 	{assign var='idek' value=$nodelist[nodelist].id}
 	<tr id="idtr{$idek}" class="{cycle} lista{if ! $nodelist[nodelist].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">

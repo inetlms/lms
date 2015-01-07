@@ -47,7 +47,7 @@
 	    </td>
 	</tr>
 	{if $carlist}
-	    {cycle values="light,lucid" print=false}
+	    {cycle values="lucid,light" print=false}
 	    {section name=carlist loop=$carlist}
 	    <tr class="{cycle} lista{if !$carlist[carlist].active} blend{/if}" id="id_carlist_tr_{$carlist[carlist].id}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="1%" class="fleft pad10" nowrap align="center">{$carlist[carlist].id|string_format:"%04d"}</td>

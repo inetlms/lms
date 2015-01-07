@@ -27,26 +27,13 @@
 
 if(strtolower($CONFIG['invoices']['type']) == 'pdf')
 {
-    
-//    if (get_conf('invoices.template_version','1') == '1') {
+	
 	include('invoice_tcpdf.php');
-//    } else {
-//	include('invoice_tcpdf_v'.get_conf('invoices.template_version').'.php');
-//    }
+	$SESSION->close();
+	die;
 }
-/*
-if ($templatetype = $DB->GetOne('SELECT UPPER(templatetype) FROM documents WHERE id = ? LIMIT 1;',array($_GET['id'])) == strtoupper('pdf'))
-{
-    $version = $DB->GetOne('SELECT version FROM documents WHERE id = ? LIMIT 1;',array($_GET['id']));
-    if ($version == '1' || !$version) {
-	include('invoice_tcpdf.php');
-    } else {
-	include('invoice_tcpdf_v'.$version.'.php');
-    }
-    $SESSION->close();
-    die;
-}
-*/
+
+
 header('Content-Type: '.$CONFIG['invoices']['content_type']);
 if(!empty($CONFIG['invoices']['attachment_name']))
 	header('Content-Disposition: attachment; filename='.$CONFIG['invoices']['attachment_name']);

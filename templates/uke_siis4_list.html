@@ -6,7 +6,7 @@
 	<td width="1%"  align="center" class="fbt pad10"><b>Zamknięte</b></td>
 	<td width="1%"  align="right"  class="frightu pad10">&nbsp;</td>
     </tr>
-    {cycle values="light,lucid" print=false}
+    {cycle values="lucid,light" print=false}
     {section name='reportlist' loop=$reportlist}
     <tr class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 	<td width="1%"  align="center" class="fleft pad10" nowrap style="vertical-align:top;cursor:pointer;"  onclick="self.location.href='?m=uke_siis4_info&idr={$reportlist[reportlist].id}';">

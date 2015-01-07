@@ -24,7 +24,7 @@
 		<td width="97%" class="frightu pad" align="left"><b>Nazwa</b></td>
 	    </tr>
 	    {/if}
-	    {cycle values="light,lucid" print=false}
+	    {cycle values="lucid,light" print=false}
 	    {section name=list loop=$filelist start=$start max=$pagelimit}
 		<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		    <td width="1%" class="fleft pad" align="center" nowrap>{$filelist[list].id|string_format:"%05d"}</td>
@@ -102,7 +102,7 @@
 		
 	    </tr>
 	    {/if}
-	    {cycle values="light,lucid" print=false}
+	    {cycle values="lucid,light" print=false}
 	    {section name=list loop=$lista start=$start max=$pagelimit}
 	    {assign var='indeks' value=$smarty.section.list.index+1}
 		{if $tuck == 'notsettled'}
@@ -245,7 +245,7 @@
 		
 	    </tr>
 	    {/if}
-	    {cycle values="light,lucid" print=false}
+	    {cycle values="lucid,light" print=false}
 	    {section name=list loop=$lista start=$start max=$pagelimit}
 	    {assign var='indeks' value=$smarty.section.list.index+1}
 		{if $tuck == 'notsettled'}
@@ -391,7 +391,7 @@
 		
 	    </tr>
 	    {/if}
-	    {cycle values="light,lucid" print=false}
+	    {cycle values="lucid,light" print=false}
 	    {section name=list loop=$lista start=$start max=$pagelimit}
 	    {assign var='indeks' value=$smarty.section.list.index+1}
 		    <input type="hidden" name="cusid{$indeks}" id="cusid{$indeks}" value="">
@@ -534,7 +534,7 @@
 		
 	    </tr>
 	    {/if}
-	    {cycle values="light,lucid" print=false}
+	    {cycle values="lucid,light" print=false}
 	    {section name=list loop=$lista start=$start max=$pagelimit}
 	    {assign var='indeks' value=$smarty.section.list.index+1}
 		    <input type="hidden" name="cusid{$indeks}" id="cusid{$indeks}" value="{$lista[list].customerid}">

@@ -38,7 +38,7 @@
 			</form>
 		</td>
 	</tr>		
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$instancelist item=instance}
 	<tr class="{cycle} lista {if $instance.disabled} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" onclick="return self.location.href='?m=daemoninstanceview&id={$instance.id}';" nowrap>

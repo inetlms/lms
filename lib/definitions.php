@@ -80,6 +80,7 @@ define('MODULES_CONFIG',340);
 define('MODULES_PASSWORD',320);
 define('MODULES_REGISTRYEQUIPMENT',350); // środki trwałe
 define('MODULES_JAMBOX',360);
+define('MODULES_USERPANEL',400);
 
 define('MONIT_NONE',0);
 define('MONIT_NODES',1);
@@ -253,24 +254,24 @@ define('DOC_OTHER', -128);
 define('DOC_BILLING',-10);
 
 $DOCTYPES = array(
-    DOC_BILLING		=> 'billing',
-    DOC_INVOICE 	=>	trans('Invoice'),
-    DOC_INVOICE_PRO	=>	trans('Pro Forma Invoice'),
-    DOC_INVOICE_PURCHASE =>	trans('purchase invoice'),
-    DOC_RECEIPT 	=>	trans('cash receipt'),
-    DOC_CNOTE	    =>	trans('credit note'), // faktura korygujaca
-//    DOC_CMEMO	    =>	trans('credit memo'), // nota korygujaca
-    DOC_DNOTE	    =>	trans('debit note'), // nota obciazeniowa/debetowa/odsetkowa
-    DOC_CONTRACT	=>	trans('contract'),
-    DOC_ANNEX	    =>	trans('annex'),
-    DOC_PROTOCOL	=>	trans('protocol'),
-    DOC_ORDER       =>	trans('order'),
-    DOC_SHEET       =>	trans('customer sheet'), // karta klienta 
-    -6  =>	trans('contract termination'),
-    -7  =>	trans('payments book'), // ksiazeczka oplat
-    -8  =>	trans('payment summons'), // wezwanie do zapłaty
-    -9	=>	trans('payment pre-summons'), // przedsądowe wezw. do zapłaty
-    DOC_OTHER       =>	trans('other'),
+    DOC_BILLING			=> 'billing',
+    DOC_INVOICE 		=> 'Faktura',
+    DOC_INVOICE_PRO		=> 'Faktura Proforma',
+    DOC_INVOICE_PURCHASE 	=> trans('purchase invoice'),
+    DOC_RECEIPT 		=> trans('cash receipt'),
+    DOC_CNOTE			=> 'Faktura Korygująca', // faktura korygujaca
+//    DOC_CMEMO	    		=> trans('credit memo'), // nota korygujaca
+    DOC_DNOTE			=> trans('debit note'), // nota obciazeniowa/debetowa/odsetkowa
+    DOC_CONTRACT		=> trans('contract'),
+    DOC_ANNEX			=> trans('annex'),
+    DOC_PROTOCOL		=> trans('protocol'),
+    DOC_ORDER			=> trans('order'),
+    DOC_SHEET			=> trans('customer sheet'), // karta klienta 
+    -6  			=> trans('contract termination'),
+    -7  			=> trans('payments book'), // ksiazeczka oplat
+    -8  			=> trans('payment summons'), // wezwanie do zapłaty
+    -9				=> trans('payment pre-summons'), // przedsądowe wezw. do zapłaty
+    DOC_OTHER			=> trans('other'),
 );
 
 // Guarantee periods

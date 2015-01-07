@@ -103,9 +103,7 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 				<input type="checkbox" name="groupexclude" id="groupexclude"{if $listdata.groupexclude} checked{/if}><label for="groupexclude" {if $listdata.groupexclude}style="font-weight:bold;"{/if}>{trans("exclude group")}</label>
 				<nobr>
 				<nobr>
-				{if $listdata.intype != $smarty.const.DOC_INVOICE_PRO}
 				<input type="checkbox" name="hideclosed" id="hideclosed"{if $listdata.hideclosed} checked{/if}><label for="hideclosed" {if $listdata.hideclosed}style="font-weight:bold;"{/if}>{trans("hide accounted<!plural>")}</label>
-				{/if}
 				&nbsp;<a href="javascript: filter();">&raquo;&raquo;&raquo;</a>
 				<nobr>
 		</td>
@@ -140,7 +138,7 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 			&nbsp;
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=invoicelist loop=$invoicelist start=$start max=$pagelimit}
 	{assign var=invoice value=$invoicelist[invoicelist]}
 	{assign var=invoiceid value=$invoice.id}
@@ -149,7 +147,7 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 			{$invoice.id|string_format:"%06d"}
 		</td>
 		<td width="1%" nowrap>
-			{$invoice.cdate|date_format:"%Y/%m/%d %H:%M"}
+			{$invoice.cdate|date_format:"%Y/%m/%d"}
 		</td>
 		<td width="1%" nowrap align="right">
 			{number number=$invoice.number template=$invoice.template time=$invoice.cdate assign=number}{$number}
@@ -165,28 +163,41 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 		</td>
 		<td width="1%" align="right" class="fright">
 			<nobr>
-			{if $invoice.type == $smarty.const.DOC_INVOICE_PRO}
-			    <a href="?m=invoiceconvert&docid={$invoice.id}&parent=invoicelist" {tip text="Convert a proforma invoice to invoice"}><img src="img/convert.png"></a>
+			
+			{if $invoice.type == $smarty.const.DOC_INVOICE_PRO && $invoice.closed}
+			    <img src="img/info2.gif" alt="[ info ]" {tip a=$invoice.reference dynpopup='?m=invoiceinfo&id=$a' sticky=1}>
+			{/if}
+			
+			{if $invoice.type == $smarty.const.DOC_INVOICE_PRO && !$invoice.reference}
+			    <a href="?m=invoiceconvert&docid={$invoice.id}&parent=invoicelist" title="[ Konwertuj fakture proforma na fakturę VAT ]"><img src="img/convert.png"></a>
 			{/if}
 			
 			{if $invoice.type == $smarty.const.DOC_INVOICE || $invoice.type == $smarty.const.DOC_INVOICE_PRO}
 			    {if $invoice.type != $smarty.const.DOC_INVOICE_PRO}
 				<a href="?m=invoicenote&id={$invoice.id}&action=init"><img src="img/eraser.gif" alt="[ {trans("Revise")} ]" title="[ {trans("Revise")} ]"></a>
 			    {/if}
-			    {if ! $invoice.closed}
+			    {if ! $invoice.closed || get_conf('invoices.deleted_closed')}
 			    <a onclick="return confirmLink(this, '{t a=$number}Are you sure, you want to remove invoice \'$a\' from database?{/t}')" href="?m=invoicedel&id={$invoice.id}"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
 			    {/if}
-		        <a href="?m=invoiceedit&id={$invoice.id}&action=edit"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
+			    {if ! $invoice.closed || get_conf('invoices.edit_closed')}
+			    <a href="?m=invoiceedit&id={$invoice.id}&action=edit"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
+			    {/if}
+			    
+			    
 			{/if}
 			
-			{if $invoice.type == $smarty.const.DOC_CNOTE && !$invoice.closed}
+			{if $invoice.type == $smarty.const.DOC_CNOTE && (!$invoice.closed || get_conf('invoices.deleted_closed'))}
 			    <a onclick="return confirmLink(this, '{t a=$number}Are you sure, you want to remove credit note \'$a\' from database?{/t}')" href="?m=invoicedel&id={$invoice.id}"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
 			{/if}
-			{if $invoice.type == $smarty.const.DOC_INVOICE || $invoice.type == $smarty.const.DOC_INVOICE_PRO}
-			    <a href="?m=invoice&id={$invoice.id}" target="_blank"><img src="img/print.gif" alt="[ {trans("Print")} ]" title="[ {trans("Print")} ]"></a>
+			
+			{if $invoice.type == $smarty.const.DOC_INVOICE}
+			    <a href="?m=invoice&id={$invoice.id}" target="_blank"><img src="img/print.gif" alt="[ {trans("Print")} ]" title="[ Drukuj Fakturę ]"></a>
+			{/if}
+			{if $invoice.type == $smarty.const.DOC_INVOICE_PRO}
+			    <a href="?m=invoice&id={$invoice.id}" target="_blank"><img src="img/print.gif" alt="[ {trans("Print")} ]" title="[ Drukuj Proformę ]"></a>
 			{/if}
 			{if $invoice.type == $smarty.const.DOC_CNOTE}
-			    <a href="?m=invoice&id={$invoice.id}" target="_blank"><img src="img/printn.gif" alt="[ {trans("Print")} ]" title="[ {trans("Print")} ]"></a>
+			    <a href="?m=invoice&id={$invoice.id}" target="_blank"><img src="img/printn.gif" alt="[ {trans("Print")} ]" title="[ Drukuj Korektę ]"></a>
 			{/if}
 			<input type="checkbox" name="marks[{$invoice.id}]" value="{$invoice.id}"{if $marks.$invoiceid}checked{/if}>
 			<nobr>

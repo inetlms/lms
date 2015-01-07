@@ -1,0 +1,24 @@
+{include file="header.html"}
+<h1>{$layout.pagetitle}</h1>
+<table width="100%" cellpadding="3">
+    
+    <tr class="dark">
+	<td class="fall"><b>{trans("Module Configuration:")}</b></td>
+    </tr>
+    
+    <tr class="light">
+	<td class="fall">
+	    <form name="moduleconfig" method="POST" action="?m=userpanel&module=voiphiperus&f=submit_setup">
+	    <input class="box light" type="checkbox" name="hide_c5_passwd" id="hide_c5_passwd" value="1" {if $hide_c5_passwd eq 1} checked {/if}>
+		<label for="hide_c5_passwd">Ukryj hasło terminala</label><br>
+	<p align="right">
+	    <a href="?m=userpanel">{trans("Cancel")} <img src="img/cancel.gif" ></a>
+	    <a href="javascript:document.moduleconfig.submit();">{trans("Submit")} <img src="img/save.gif" ALT=""></a>
+	</p>
+	</form>
+    </td>
+    
+    </tr>
+
+</table>
+{include file="footer.html"}

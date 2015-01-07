@@ -88,7 +88,7 @@
 					<td width="67%" class="fbt">{trans("Location:")}</td>
 					<td width="1%" class="frightu">&nbsp;</td>
 				</tr>
-				{cycle values="light,lucid" print=false}
+				{cycle values="lucid,light" print=false}
 				{foreach from=$channel.devices item=item}
 				<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td onclick="return self.location.href='?m=netdevinfo&id={$item.id}';">

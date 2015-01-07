@@ -16,7 +16,7 @@
 	</tr>
 </thead>
 </tbody>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=cenn loop=$t}
 	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="93%" class="fleft" class="fleft">
@@ -42,7 +42,7 @@
 	<tr>
 		<td width="100%" class="fall" colspan="3">
 			<table width="100%" cellpadding="2">
-				{cycle values="light,lucid" print=false}
+				{cycle values="lucid,light" print=false}
 	{section name=l1 loop=$tariff.customers max=$tariff.rows}
 				<tr>
 					{section name=l2 loop=$tariff.customers start=$smarty.section.l1.index step=$tariff.rows}

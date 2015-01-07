@@ -32,7 +32,7 @@
 		<td>Funkcje</td>
 	</tr>
 	{foreach from=$tvmessagelist item=item}
-	<tr class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<tr class="{cycle values="lucid,light"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td></td>
 		<td valign="top"><div id="msg3{$item.id}" style="display: block">{$item.msg_body|substr:0:20}...</div> <div id="msg4{$item.id}" style="display: none">{$item.msg_body}</div></td>
 		<td valign="top">{$item.msg_teaser_impressions}</td>

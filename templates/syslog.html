@@ -89,7 +89,7 @@
     {/if}
     
     
-    {cycle values="light,lucid" print=false}
+    {cycle values="lucid,light" print=false}
     {section name="l1" loop=$syslog start=$start max=$pagelimit}
     {assign var="syslogid" value=$syslog[l1].id}
     {assign var="_modules" value=$syslog[l1].module}

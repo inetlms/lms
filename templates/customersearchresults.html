@@ -64,7 +64,7 @@
 	{section name=customerlist loop=$customerlist}
 	<input type="hidden" class="hiddenbtn" name="setwarnings[mcustomerid][]" value="{$customerlist[customerlist].id}">
 	{/section}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=customerlist loop=$customerlist start=$start max=$pagelimit}
 	<tr class="{cycle} lista{if $customerlist[customerlist].account && !$customerlist[customerlist].nodeac} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td onclick="return self.location.href='?m=customerinfo&id={$customerlist[customerlist].id}';" class="fleft" valign="top">

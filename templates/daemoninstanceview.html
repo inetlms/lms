@@ -16,7 +16,7 @@
 			<a href="?m=daemonconfigadd&id={$instance.id}">{trans("Add option")} <img src="img/save.gif" alt=""></a>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$optionlist item=option}
 	<tr class="{cycle} lista {if $option.disabled} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" valign="top" onclick="return self.location.href='?m=daemonconfigedit&id={$option.id}';" nowrap>

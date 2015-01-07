@@ -28,7 +28,7 @@
 			<b>{t a=$listdata.total|default:"0"}Total: $a{/t}</b>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=contractorgroups loop=$contractorgrouplist}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="1%" class="fleft" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';" nowrap style="padding-right:10px;">

@@ -48,6 +48,13 @@ foreach($short_to_longs as $short => $long)
 		unset($options[$short]);
 	}
 
+
+if (array_key_exists('config-file', $options) && is_readable($options['config-file']))
+    $CONFIG_FILE = $options['config-file'];
+
+include('/etc/lms/init_lms.php');
+
+
 if (array_key_exists('version', $options))
 {
 	print <<<EOF
@@ -84,70 +91,7 @@ lms-gps.php
 EOF;
 }
 
-if (array_key_exists('config-file', $options))
-	$CONFIG_FILE = $options['config-file'];
-else
-	$CONFIG_FILE = '/etc/lms/lms.ini';
-
-if (!$quiet) {
-	echo "Using file ".$CONFIG_FILE." as config.\n";
-}
-
 $update = array_key_exists('update', $options);
-
-if (!is_readable($CONFIG_FILE))
-	die("Unable to read configuration file [".$CONFIG_FILE."]!\n");
-
-$CONFIG = (array) parse_ini_file($CONFIG_FILE, true);
-
-// Check for configuration vars and set default values
-$CONFIG['directories']['sys_dir'] = (!isset($CONFIG['directories']['sys_dir']) ? getcwd() : $CONFIG['directories']['sys_dir']);
-$CONFIG['directories']['lib_dir'] = (!isset($CONFIG['directories']['lib_dir']) ? $CONFIG['directories']['sys_dir'].'/lib' : $CONFIG['directories']['lib_dir']);
-
-define('SYS_DIR', $CONFIG['directories']['sys_dir']);
-define('LIB_DIR', $CONFIG['directories']['lib_dir']);
-// Do some checks and load config defaults
-
-require_once(LIB_DIR.'/config.php');
-
-// Init database
-
-$_DBTYPE = $CONFIG['database']['type'];
-$_DBHOST = $CONFIG['database']['host'];
-$_DBUSER = $CONFIG['database']['user'];
-$_DBPASS = $CONFIG['database']['password'];
-$_DBNAME = $CONFIG['database']['database'];
-
-require(LIB_DIR.'/LMSDB.php');
-
-$DB = DBInit($_DBTYPE, $_DBHOST, $_DBUSER, $_DBPASS, $_DBNAME);
-
-if(!$DB)
-{
-	// can't working without database
-	die("Fatal error: cannot connect to database!\n");
-}
-
-// Read configuration from database
-
-if($cfg = $DB->GetAll('SELECT section, var, value FROM uiconfig WHERE disabled=0'))
-	foreach($cfg as $row)
-		$CONFIG[$row['section']][$row['var']] = $row['value'];
-
-// Include required files (including sequence is important)
-
-require_once(LIB_DIR.'/language.php');
-include_once(LIB_DIR.'/definitions.php');
-require_once(LIB_DIR.'/unstrip.php');
-require_once(LIB_DIR.'/common.php');
-require_once(LIB_DIR.'/LMS.class.php');
-
-// Initialize Session, Auth and LMS classes
-
-$AUTH = NULL;
-$LMS = new LMS($DB, $AUTH, $CONFIG);
-$LMS->ui_lang = $_ui_language;
-$LMS->lang = $_language;
 
 $_APIKEY = $CONFIG['google']['apikey'];
 if (!$_APIKEY) {

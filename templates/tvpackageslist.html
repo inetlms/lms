@@ -18,7 +18,7 @@
 		<td colpan="10"><b>{$type.pkgt_name}</b></td>
 	</tr>
 	{foreach from=$type.packages item=item}
-	<tr class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">			
+	<tr class="{cycle values="lucid,light"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">			
 		<td></td>
 		<td valign="top"><b>{$item.package_id}</b></td>
 		<td valign="top">{$item.pkg_name}</td>

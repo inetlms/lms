@@ -78,7 +78,7 @@ if(!$configfile)
 if(!$quiet)
 {
 	print STDOUT "lms-payments, version $_version\n";
-	print STDOUT "(C) 2001-2012 LMS Developers\n";
+	print STDOUT "(C) 2012-2015 iNET LMS Developers\n";
 	print STDOUT "Using file $configfile as config.\n";
 }
 
@@ -623,7 +623,6 @@ while(my $assign = $dbq->fetchrow_hashref())
 				$dtlogo->execute('invoices','urllogofile');
 				my $tlogo = $dtlogo->fetchrow_hashref();
 				
-				
 				my $idbq = $dbase->prepare("INSERT INTO documents (number, numberplanid, type, countryid, divisionid,
 						customerid, name, address, zip, city, ten, ssn, cdate, sdate, paytime, paytype,
 						div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon, div_account, 
@@ -652,6 +651,7 @@ while(my $assign = $dbq->fetchrow_hashref())
 
 				$udbq->finish();
 				$idbq->finish();
+				
 			}
 
 			$icdbq = $dbase->prepare("SELECT itemid FROM invoicecontents

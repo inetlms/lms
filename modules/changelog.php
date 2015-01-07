@@ -34,6 +34,56 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-01-07',
+	    'status'	=> '',
+	    'opis'	=> 'dostosowano wygląd faktur korygujących do obecnych przepisów',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'doszedł słownik powodów korekty faktury',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dla faktur pdf w formacie FT-0100 na małym blankiecie w nazwie odbiorcy została zastosowana nazwa skrócona firmy / oddziału',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano skrypt bin/lms-invoice2pdf.php.<br>
+			    Za pomocą tego skryptu możemy wygenerować pliki pdf dla faktur, korekt i faktur proforma. Jeżeli będziemy chcieli trzymać faktury w formie pdf to skrypt należy odpalić po skrypcie lms-payments.<br>
+			    zalecane pierwsze uruchomienie z przełącznikiem --help',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'UI -> sekcja invoices , doszły nowe przełączniki<br>
+			    <b>create_pdf_file</b> - tworzenie w locie plików pdf na serwerze dla faktur i korekt <b>Def.: 0</b><br>
+			    <b>create_pdf_file_proforma</b> - tworzenie w locie plików pdf na serwerze dla faktur proforma <b>Def.: 0</b><br>
+			    <b>deleted_closed</b> - umożliwia kasowanie zamkniętych faktur <b>Def.: 0</b><br>
+			    <b>edit_closed</b> - umożliwia edycję zamkniętych faktur <b>Def.: 0</b><br><br>
+			    Domyślnym katalogiem zapisu plików jest documents/invoice_pdf , ściężkę można zmienic dodając w lms.ini w sekcji [directories] wpis np.:<br>
+			    invoice_dir = /mojasciezka/faktury',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'USERPANEL -> Konfiguracja -> VoIP Hiperus C5 -> dodano możliwość ukrycia hasła dla terminala w UP, ',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'USERPANEL - naniesiono kilka poprawek',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka kilku plików php z katalogu bin, poprawka dotyczy includowania nagłówka.<br>
+			    <B>WAŻNE</b><br>
+			    należy skopiować lub zrobić dowiązanie symboliczne pliku z contrib/init_lms.php do /etc/lms/',
+	),
+	array(
 	    'data'	=> '2015/01/04',
 	    'status'	=> '',
 	    'opis'	=> 'Dodano templatkę dla faktur pdf zgodną z nowymi przepisami zachowując możliwość drukowania i wystawiania faktur w starej wersji. Dodana jest osbługa różnych wersji templatek.<br>

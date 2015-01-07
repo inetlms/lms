@@ -43,7 +43,7 @@
 	    <td width="1%" nowrap class="fbt pad10" align="left"><span class="tiphelp" {tip text="Nazwa dostawcy lub podmiotu z którym jest współdzielony węzeł"}><b>Współdzielony</b></span></td>
 	    <td width="1%" nowrap class="frightu pad10" align="right">&nbsp;</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name='nnodelist' loop=$nnodelist}
 	    <tr class="{cycle} lista{if !$nnodelist[nnodelist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		<td width="1%" nowrap class="fleft pad10" align="left">{$nnodelist[nnodelist].markid}</td>

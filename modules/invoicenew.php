@@ -340,6 +340,9 @@ switch($action)
 
 //		$invoice['type'] = DOC_INVOICE;
 		$iid = $LMS->AddInvoice(array('customer' => $customer, 'contents' => $contents, 'invoice' => $invoice));
+		
+		if (get_conf('invoices.create_pdf_file') || get_conf('invoices.create_pdf_file_proforma'))
+		    include(MODULES_DIR.'/invoicecreatepdffile.php');
 
 		// usuwamy wczesniejsze zobowiazania bez faktury
 		foreach ($contents as $item)

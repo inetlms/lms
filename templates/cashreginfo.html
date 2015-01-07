@@ -71,7 +71,7 @@
 			    <td width="1%" class="fbottom" align="center">{trans("mod.")}</td>
 			    <td width="1%" class="fbr" align="center" nowrap></td>
 			</tr>
-			{cycle values="light,lucid" print=false}
+			{cycle values="lucid,light" print=false}
 			{foreach from=$registry.rights item=right}
 			{if $right.rights}
 			<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">

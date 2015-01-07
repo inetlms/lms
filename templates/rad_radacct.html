@@ -170,7 +170,7 @@
     </form>
     {if $radlist}
 	
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=radlist loop=$radlist start=$start max=$pagelimit}
 	{if $radlist[radlist].radacctid == $radlist[radlist].maxid && (!$radlist[radlist].acctstoptime || $radlist[radlist].acctstoptime=='0000-00-00 00:00:00')}
 	    {assign var='current' value='1'}

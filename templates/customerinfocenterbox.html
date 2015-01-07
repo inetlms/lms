@@ -24,7 +24,7 @@
 			    <td width="1%" class="frightu" nowrap style="padding-left:10px;">&nbsp;</td>
 			</tr>
 			
-			{cycle values="light,lucid" print=false}
+			{cycle values="lucid,light" print=false}
 			{section name='calllist' loop=$customercallcenter}
 			
 			<tr class="{cycle} lista {if $customercallcenter[calllist].closed}blend{/if}"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">

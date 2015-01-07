@@ -160,7 +160,7 @@
 							<td>Opis produktu</td>
 						</tr>						
 						{foreach from=$type.packages item=item}
-						<tr class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">			
+						<tr class="{cycle values="lucid,light"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">			
 							<td><span id="pkg_list[{$item.package_id}]"></span><input type="checkbox" id="pkglist[]" name="pkglist[{$item.package_id}]" {if in_array($item.package_id, $tocheck)}checked="checked"{/if} /></td>
 							<td valign="top">{$item.pkg_name}</td>
 							<td valign="top">{$item.pkg_desc}</td>
@@ -191,7 +191,7 @@
 						<td class="fbt" align="right">Funkcje:</td>
 					</tr>
 					{foreach from=$acc.subscriptions item=item}
-					{cycle values="light,lucid" print=false}
+					{cycle values="lucid,light" print=false}
 					<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')" {if $item.sub_valid_to != null && $item.sub_valid_to < '2011-01-30'}style="color: gray"{/if}>
 						<td>{$item.cust_order_id}</td>
 						<td><b>{$item.pkg_name}</b></td>

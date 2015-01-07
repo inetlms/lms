@@ -34,7 +34,7 @@
 			    </td>
 			    <td width="1%" class="frightu" align="center" nowrap><b>{trans("Owner")}</b></td>
 			</tr>
-			{cycle values="light,lucid" print=false}
+			{cycle values="lucid,light" print=false}
 			{foreach from=$category.owners item=user}
 			<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 			    <td width="99%" class="fleft">

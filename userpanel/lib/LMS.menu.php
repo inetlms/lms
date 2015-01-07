@@ -81,7 +81,8 @@ $menu[] = array(
 	'img' => 'cms.gif',
 	'link' => '?m=userpanel',
 	'tip' => trans('Userpanel'),
-	'prio' => '80',
+	'prio' => 400,
+	'index' => MODULES_USERPANEL,
 	'submenu' => $submenu,
 );
 

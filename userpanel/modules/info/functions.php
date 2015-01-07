@@ -40,8 +40,8 @@ function module_main()
 	FROM documentcontents c
 	JOIN documents d ON (c.docid = d.id)
 	LEFT JOIN numberplans n ON (d.numberplanid = n.id)
-	WHERE d.customerid = ?
-	ORDER BY cdate', array($SESSION->id));
+	WHERE d.customerid = ? AND d.type NOT IN (?,?,?) 
+	ORDER BY cdate', array($SESSION->id,DOC_CNOTE,DOC_INVOICE,DOC_INVOICE_PRO));
 
     $fields_changed = $LMS->DB->GetRow('SELECT id FROM up_info_changes WHERE customerid = ?', 
     	array($SESSION->id));

@@ -22,7 +22,7 @@
 			<nobr><b>{trans("Total:")} {$userslist.total}</b><nobr>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=userslist loop=$userslist}{if $userslist[userslist].id}
 	<tr class="{cycle} lista {if !$userslist[userslist].access}blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" width="1%" onclick="return self.location.href='?m=userinfo&id={$userslist[userslist].id}';">

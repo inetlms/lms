@@ -42,7 +42,7 @@ document.search.searchcustomer.focus();
 {if $part eq "main"}
 <body>
 <table cellpadding="3" width="100%">
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=customerlist loop=$customerlist}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td {$customerlist[customerlist].id} style="vertical-align: top;" onclick="sendvalue2(targetfield1,'{$customerlist[customerlist].id}',targetfield2,'1');">

@@ -74,7 +74,7 @@
 	<tr>
 		<td width="100%" class="fall" colspan="4">
 			<table width="100%" cellpadding="3">
-				{cycle values="light,lucid" print=false}
+				{cycle values="lucid,light" print=false}
 				{section name=network loop=$network.nodes.id max=$network.rows}
 				<tr class="{cycle}">
 					{section name=subnetwork loop=$network.nodes.address start=$smarty.section.network.index step=$network.rows}

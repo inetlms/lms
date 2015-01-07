@@ -33,7 +33,7 @@
     <tr>
 	<td width="100%" class="flr" nowrap>
 	    <table cellpadding="4" width="100%">
-		{cycle values="light,lucid" print=false}
+		{cycle values="lucid,light" print=false}
 		{section name=lista loop=$lista.pstn step=8}
 		    <tr class="{cycle} lista">
 			{section name=l2 loop=$lista.pstn start=$smarty.section.lista.index max=8}

@@ -56,7 +56,7 @@
 		</td>
 	</tr>
 	{/if}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=configlist loop=$configlist start=$start max=$pagelimit}
 	<tr class="{cycle} lista{if $configlist[configlist].disabled} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" style="vertical-align: top; white-space: nowrap;" onclick="return self.location.href='?m=configedit&id={$configlist[configlist].id}';">

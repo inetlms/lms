@@ -239,7 +239,7 @@
 	    <td width="1%" nowrap class="frightu pad10" align="left">&nbsp;</td>
 	</tr>
 	
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name='polist' loop=$polist}
 	    <tr class="{cycle} lista{if !$polist[polist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		<td width="1%" nowrap class="fleft pad10" align="left">{$polist[polist].shortname}</td>

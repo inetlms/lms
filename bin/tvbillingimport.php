@@ -32,6 +32,10 @@
  
  */
 include('/etc/lms/init_lms.php');
+if (get_conf('jambox.enabled')) {
+    require_once(LIB_DIR.'/LMS.tv.class.php');
+    $LMSTV = new LMSTV($DB,$AUTH,$CONFIG);
+}
 
 $end = cal_days_in_month(CAL_GREGORIAN, Date("m"), Date("Y"));
 

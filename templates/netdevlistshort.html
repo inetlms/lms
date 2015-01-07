@@ -23,7 +23,7 @@
 			{/if}
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=devices loop=$devices}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	    <td onclick="parent.location.href='?m=netdevinfo&id={$devices[devices].id}';">

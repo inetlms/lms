@@ -33,8 +33,8 @@ function invoice_body() {
 	else
 		$template = $CONFIG['invoices']['template_file'];
 
-	switch ($template) {
-		case "standard":
+	switch (strtoupper($template)) {
+		case "STANDARD":
 			invoice_body_standard();
 			break;
 		case "FT-0100":
@@ -51,8 +51,8 @@ function invoice_body_v2() {
 
 	global $invoice, $pdf, $CONFIG;
 	
-	switch ($invoice['templatefile']) {
-		case "standard":
+	switch (strtoupper($invoice['templatefile'])) {
+		case "STANDARD":
 			invoice_body_standard_v2();
 			break;
 		case "FT-0100":
@@ -65,6 +65,7 @@ function invoice_body_v2() {
 	if (!isset($invoice['last'])) $pdf->AddPage();
 }
 
+global $pdf;
 require_once(LIB_DIR.'/tcpdf.php');
 require_once(MODULES_DIR.'/invoice_tcpdf.inc.php');
 require_once(MODULES_DIR.'/invoice_tcpdf_v2.inc.php');
@@ -100,14 +101,15 @@ if (isset($_GET['print']) && $_GET['print'] == 'cached') {
 	if (!empty($_GET['original'])) $which[] = trans('ORIGINAL');
 	if (!empty($_GET['copy'])) $which[] = trans('COPY');
 	if (!empty($_GET['duplicate'])) $which[] = trans('DUPLICATE');
-
 	if (!sizeof($which)) $which[] = trans('ORIGINAL');
+
 
 	$count = sizeof($ids) * sizeof($which);
 	$i=0;
 
 	foreach ($ids as $idx => $invoiceid) {
 		$invoice = $LMS->GetInvoiceContent($invoiceid);
+		$pdf->invoice_type = $invoice['templatefile'];
 		
 		foreach ($which as $type) {
 			$i++;
@@ -144,7 +146,6 @@ if (isset($_GET['print']) && $_GET['print'] == 'cached') {
 	if (!empty($_GET['original'])) $which[] = trans('ORIGINAL');
 	if (!empty($_GET['copy'])) $which[] = trans('COPY');
 	if (!empty($_GET['duplicate'])) $which[] = trans('DUPLICATE');
-
 	if (!sizeof($which)) $which[] = trans('ORIGINAL');
 	
 	$count = sizeof($ids) * sizeof($which);

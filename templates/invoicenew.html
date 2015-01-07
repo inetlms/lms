@@ -240,7 +240,7 @@ window.open('?m=invoice&id={$newinvoice.invoice}&original={$newinvoice.original}
 								<td width="1%" class="fbt" align="right" nowrap>{trans("Gross Value:")}</td>
 								<td width="1%" class="frightu">&nbsp;</td>
 							</tr>
-							{cycle values="light,lucid" print=false}
+							{cycle values="lucid,light" print=false}
 							{section name=covenantlist loop=$covenantlist}
 							<tr class="{cycle} lista " onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 							        <td><nobr>{$covenantlist[covenantlist].time|date_format:"%Y/%m/%d"}</nobr></td>
@@ -304,7 +304,7 @@ window.open('?m=invoice&id={$newinvoice.invoice}&original={$newinvoice.original}
 			&nbsp;
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$contents item=item}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" width="1%">

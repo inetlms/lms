@@ -16,7 +16,7 @@
 			<a href="?m=cashsourceadd">{trans("Add source")} <img src="img/save.gif" alt=""></a>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$sourcelist item=source}
 	<tr class="{cycle} lista " onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" onclick="return self.location.href='?m=cashsourceedit&id={$source.id}'" nowrap>

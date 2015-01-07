@@ -15,11 +15,12 @@ $type = get_conf('invoices.type');
 $template = get_conf('invoices.template_file');
 $cnote_template = get_conf('invoices.cnote_template_file');
 
-add_conf('invoices.template_version','1');
-add_conf('invoices.set_protection','1');
-add_conf('invoices.sdateview','0');
-add_conf('invoices.template_file_proforma',$template);
-add_conf('invoices.urllogofile','');
+$DB->addconfig('invoices','template_version','1');
+$DB->addconfig('invoices','set_protection','1');
+$DB->addconfig('invoices','sdateview','0');
+$DB->addconfig('invoices','template_file_proforma',$template);
+$DB->addconfig('invoices','urllogofile','');
+
 
 $DB->Execute('UPDATE documents SET version = ?, sdateview=? WHERE type IN (?,?,?);',array('1','1','1','3','6'));
 $DB->Execute('UPDATE documents SET templatetype=?, templatefile=? WHERE type IN (1,6);',array($type,$template,'1','6'));

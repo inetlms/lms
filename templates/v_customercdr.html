@@ -29,7 +29,7 @@
 			<b>Opłata:</b>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=cdr loop=$cdr}
 	<tr class="{cycle} lista {if $queue[ticket].state == 2} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft">

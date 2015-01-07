@@ -34,7 +34,7 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
-define('LMSV','15.01.04');
+define('LMSV','15.01.07');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 
 // find alternative config files:
@@ -68,6 +68,8 @@ $CONFIG['directories']['backup_dir'] = (!isset($CONFIG['directories']['backup_di
 $CONFIG['directories']['config_templates_dir'] = (!isset($CONFIG['directories']['config_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/config_templates' : $CONFIG['directories']['config_templates_dir']);
 $CONFIG['directories']['smarty_compile_dir'] = (!isset($CONFIG['directories']['smarty_compile_dir']) ? $CONFIG['directories']['sys_dir'].'/templates_c' : $CONFIG['directories']['smarty_compile_dir']);
 $CONFIG['directories']['smarty_templates_dir'] = (!isset($CONFIG['directories']['smarty_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/templates' : $CONFIG['directories']['smarty_templates_dir']);
+$CONFIG['directories']['plug_dir'] = (!isset($CONFIG['directories']['plug_dir']) ? $CONFIG['directories']['sys_dir'].'/plug' : $CONFIG['directories']['plug_dir']);
+$CONFIG['directories']['invoice_dir'] = (!isset($CONFIG['directories']['invoice_dir']) ? $CONFIG['directories']['doc_dir'].'/invoice_pdf' : $CONFIG['directories']['invoice_dir']);
 
 define('SYS_DIR', $CONFIG['directories']['sys_dir']);
 define('TMP_DIR', $CONFIG['directories']['tmp_dir']);
@@ -79,6 +81,8 @@ define('UPLOADFILES_DIR', $CONFIG['directories']['uploadfiles_dir']);
 define('MODULES_DIR', $CONFIG['directories']['modules_dir']);
 define('SMARTY_COMPILE_DIR', $CONFIG['directories']['smarty_compile_dir']);
 define('SMARTY_TEMPLATES_DIR', $CONFIG['directories']['smarty_templates_dir']);
+define('PLUG_DIR',$CONFIG['directories']['plug_dir']);
+define('INVOICE_DIR',$CONFIG['directories']['invoice_dir']);
 
 // Do some checks and load config defaults
 
@@ -185,6 +189,20 @@ $MT = new routeros_api();
 
 require_once(LIB_DIR.'/smarty_addons.php');
 
+$layout['plugin'] = NULL;
+$layout['logname'] = $AUTH->logname;
+$layout['logid'] = $AUTH->id;
+$layout['lmsdbv'] = $DB->_version;
+$layout['smarty_version'] = SMARTY_VERSION;
+$layout['hostname'] = hostname();
+$layout['lmsv'] = 'iNET LMS';
+$layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
+$layout['lmsvr'] = LMSV;
+$layout['dberrors'] =& $DB->errors;
+$layout['dbdebug'] = $_DBDEBUG;
+$layout['popup'] = isset($_GET['popup']) ? true : false;
+
+
 if (get_conf('registryequipment.enabled')) {
 	require_once(LIB_DIR.'/Registry.Equipment.class.php');
 }
@@ -216,22 +234,17 @@ if (get_conf('jambox.enabled',0)) {
 }
 // Set some template and layout variables
 
-$SMARTY->template_dir = SMARTY_TEMPLATES_DIR;
+$SMARTY->setTemplateDir(NULL);
+$SMARTY->addTemplateDir(
+	array(
+	    SMARTY_TEMPLATES_DIR.'/custom',
+	    SMARTY_TEMPLATES_DIR,
+	)
+);
 $SMARTY->compile_dir = SMARTY_COMPILE_DIR;
 $SMARTY->debugging = (isset($CONFIG['phpui']['smarty_debug']) ? chkconfig($CONFIG['phpui']['smarty_debug']) : FALSE);
 $SMARTY->use_sub_dirs = TRUE;
 
-$layout['logname'] = $AUTH->logname;
-$layout['logid'] = $AUTH->id;
-$layout['lmsdbv'] = $DB->_version;
-$layout['smarty_version'] = SMARTY_VERSION;
-$layout['hostname'] = hostname();
-$layout['lmsv'] = 'iNET LMS';
-$layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
-$layout['lmsvr'] = LMSV;
-$layout['dberrors'] =& $DB->errors;
-$layout['dbdebug'] = $_DBDEBUG;
-$layout['popup'] = isset($_GET['popup']) ? true : false;
 
 
 
@@ -255,6 +268,7 @@ if(!$layout['popup'])
 header('X-Powered-By: LMS/'.$layout['lmsv']);
 
 // Check privileges and execute modules
+
 if ($AUTH->islogged) {
 	
 	// Load plugin files and register hook callbacks
@@ -262,14 +276,16 @@ if ($AUTH->islogged) {
 	if (!empty($plugins))
 		foreach ($plugins as $plugin_name)
 			require LIB_DIR . '/plugins/' . $plugin_name . '.php';
-
+	
 	$res = $LMS->ExecHook('access_table_init', array('accesstable' => $access['table']));
 	if (isset($res['accesstable']))
 		$access['table'] = $res['accesstable'];
-
+	
 	$module = isset($_GET['m']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_GET['m']) : '';
+	$plug = isset($_GET['p']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_GET['p']) : '';
+	
 	$deny = $allow = FALSE;
-
+	
 	$res = $LMS->ExecHook('module_load_before', array('module' => $module));
 	if ($res['abort']) {
 		$SESSION->close();
@@ -277,17 +293,17 @@ if ($AUTH->islogged) {
 		die;
 	}
 	$module = $res['module'];
-
+	
 	if ($AUTH->passwdrequiredchange)
 		$module = 'chpasswd';
-
+	
 	if ($module == '')
 	{
 		$module = $CONFIG['phpui']['default_module'];
 		if (!file_exists(MODULES_DIR.'/'.$module.'.php'))
 		    $module = 'welcome';
 	}
-
+	
 	if (file_exists(MODULES_DIR.'/'.$module.'.php'))
 	{
 		$global_allow = !$AUTH->id || (!empty($access['allow']) && preg_match('/'.$access['allow'].'/i', $module));

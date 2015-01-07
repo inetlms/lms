@@ -20,7 +20,7 @@
 		    <td width="1%" class="frightu" align="center" nowrap >LINK</td>
 		</tr>
 
-		{cycle values="light,lucid" print=false}
+		{cycle values="lucid,light" print=false}
 		{section name=hiperusaccountcustomerlist loop=$hiperusaccountcustomerlist}
 		<tr class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		    <td class="fleft" style="padding-right:10px;cursor:pointer;" nowrap onclick="return self.location.href='?m=hv_accountinfo&id={$hiperusaccountcustomerlist[hiperusaccountcustomerlist].id}'"><b>{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].name}</b><br>{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].address} {$hiperusaccountcustomerlist[hiperusaccountcustomerlist].street_number}{if $hiperusaccountcustomerlist[hiperusaccountcustomerlist].apartment_number}/{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].apartment_number}{/if}&nbsp;&nbsp;{$hiperusaccountcustomerlist[hiperusaccountcustomerlist].postcode} {$hiperusaccountcustomerlist[hiperusaccountcustomerlist].city}</td>

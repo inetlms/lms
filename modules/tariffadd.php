@@ -38,13 +38,14 @@ if(isset($_POST['tariff']))
 	}
 
 	$tariff['value'] = str_replace(',','.',$tariff['value']);
-
+	
+	
 	if (!preg_match('/^[-]?[0-9.,]+$/', $tariff['value']))
 		$error['value'] = trans('Incorrect subscription value!');
 		
 	$tariff['relief'] = str_replace(',','.',$tariff['relief']);
 
-	if (!preg_match('/^[-]?[0-9.,]+$/', $tariff['relief']))
+	if (!empty($tariff['relief']) && !preg_match('/^[-]?[0-9.,]+$/', $tariff['relief']))
 		$error['relief'] = trans('Incorrect value!');
 
 	if ($tariff['name'] == '')

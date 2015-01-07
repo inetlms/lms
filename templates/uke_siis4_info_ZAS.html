@@ -27,7 +27,7 @@
 	    </tr>
 	    
 	    
-	    {cycle values="light,lucid" print=false}
+	    {cycle values="lucid,light" print=false}
 	    {section name='zaslist' loop=$zaslist}
 	    <tr class="{cycle} lista {if !$zaslist[zaslist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		<td width="1%" class="fleft pad2" align="left">{$zaslist[zaslist].markid|string_format:"%04d"}</td>

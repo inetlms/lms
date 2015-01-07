@@ -106,7 +106,7 @@
 			<a href="?m=documentadd&cid={$listdata.customer}&type={$listdata.type}">{trans("New Document")}</a> <img src="img/save.gif" alt="">
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section loop=$documentlist name=documentlist start=$start max=$pagelimit}
 	{assign var=doc value=$documentlist[documentlist]}
 	{assign var=docid value=$doc.docid}

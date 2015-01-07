@@ -15,7 +15,7 @@
 					<td width="97%" nowrap class="fbt">{trans("ID:")}</td>
 					<td width="1%" class="frightu">&nbsp;</td>
 				</tr>
-				{cycle name=groups values="light,lucid" print=false}
+				{cycle name=groups values="lucid,light" print=false}
 				{foreach from=$customergroups item=customergroup}
 				<tr class="{cycle name=groups}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td width="1%" nowrap><b><a href="?m=customergroupinfo&id={$customergroup.id}">{$customergroup.name}</a></b></td>

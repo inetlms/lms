@@ -5,7 +5,7 @@ $USERPANEL->AddModule(
     'voiphiperus',
     'Informacje o połączaniach telefonicznych',
     6,
-    'Informacje o połączaniach telefonicznych'
+    'Hiperuc C5 - Informacje o połączaniach telefonicznych'
 );
 
 ?>

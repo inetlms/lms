@@ -29,7 +29,7 @@
 		</td>
 	</tr>
 	{/if}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=cashreglog loop=$cashreglog start=$start max=$pagelimit}
 	<tr class="{cycle} lista{if ($cashreglog[cashreglog].validfrom !=0 && $cashreglog[cashreglog].validfrom > $smarty.now) || ($cashreglog[cashreglog].validto !=0 && $cashreglog[cashreglog].validto < $smarty.now)} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" nowrap onclick="location.href='?m=cashregloginfo&id={$cashreglog[cashreglog].id}'">

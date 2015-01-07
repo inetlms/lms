@@ -1113,6 +1113,13 @@ function check_natural($val) {
 	return FALSE;
 }
 
+function check_fileexists($filename)
+{
+    if (file_exists($filename) && is_readable($filename))
+	return true;
+    else
+	return false;
+}
 
 
 ?>

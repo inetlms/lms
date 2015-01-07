@@ -13,7 +13,7 @@
 		</td>
 	</tr>
 	{/if}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$typelist key=key item=item}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" nowrap onclick="return self.location.href='?m=documenttypeedit&id={$key}';">

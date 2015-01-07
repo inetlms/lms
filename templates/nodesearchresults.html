@@ -29,7 +29,7 @@
 		</td>
 	</tr>
 	{/if}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=nodelist loop=$nodelist start=$start max=$pagelimit}
 	<tr class="{cycle} lista {if ! $nodelist[nodelist].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" style="width: 95%;" onclick="return self.location.href='?m=nodeinfo&id={$nodelist[nodelist].id}';">

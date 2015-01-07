@@ -120,7 +120,7 @@
 	<tr>
 		<td width="100%" class="fall" colspan="2">
 			<table width="100%" cellpadding="2">
-				{cycle values="light,lucid" print=false}
+				{cycle values="lucid,light" print=false}
 	{section name=l1 loop=$tariff.customers max=$tariff.rows}
 				<tr>
 					{section name=l2 loop=$tariff.customers start=$smarty.section.l1.index step=$tariff.rows}

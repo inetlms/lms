@@ -19,7 +19,7 @@
 			<b>{t a=$total|default:0}Node's Groups ($a):{/t}</b>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$nodegroups item=nodegroup}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="1%">

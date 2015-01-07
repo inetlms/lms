@@ -27,7 +27,7 @@
 					</td>
 					<td width="1%" class="frightu" nowrap></td>
 				</tr>
-				{cycle values="light,lucid" print=false name=events}
+				{cycle values="lucid,light" print=false name=events}
 				{section name=eventlist loop=$eventlist max=$limit }
 				<tr class="{cycle name=events}{if $eventlist[eventlist].closed} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td width="1%" nowrap onclick="return self.location.href='?m=eventinfo&id={$eventlist[eventlist].id}'">

@@ -36,7 +36,7 @@
 		<td><a href="?m={$layout.module}&docid={$docid}&start_date={$start_date}&end_date={$end_date}&group_id={$group_id}&order=docid&direction={if $direction eq "asc" && $order eq "docid"}desc{/if}">Faktura:</a></b> {if $order eq "docid"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
 	</tr>
 	{foreach from=$eventslist item=item}
-	<tr class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<tr class="{cycle values="lucid,light"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td><b>{$item.beid}</b></td>
 		<td>{$item.account_id}</td>
 		<td>{$item.be_selling_date}</td>

@@ -225,7 +225,7 @@ switch($action)
 		$DB->BeginTrans();
 
 		$DB->Execute('UPDATE documents SET cdate = ?, sdate = ?, paytime = ?, paytype = ?, customerid = ?,
-				name = ?, address = ?, ten = ?, ssn = ?, zip = ?, city = ?, divisionid = ?
+				name = ?, address = ?, ten = ?, ssn = ?, zip = ?, city = ?, divisionid = ?, sdateview = ?
 				WHERE id = ?',
 				array($cdate,
 					$sdate,
@@ -239,8 +239,12 @@ switch($action)
 					$customer['zip'],
 					$customer['city'],
 					$customer['divisionid'],
+					($invoice['sdateview'] ? 1 : 0),
 					$iid
 				));
+		
+		
+		
 
 		if (!$invoice['closed']) {
 			$DB->Execute('DELETE FROM invoicecontents WHERE docid = ?', array($iid));
@@ -280,6 +284,9 @@ switch($action)
 		}
 
 		$DB->CommitTrans();
+		
+		if (get_conf('invoices.create_pdf_file'))
+		    include(MODULES_DIR.'/invoicecreatepdffile.php');
 
 		if (isset($_GET['print']))
 			$SESSION->save('invoiceprint', array('invoice' => $invoice['id'],

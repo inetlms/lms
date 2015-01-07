@@ -254,6 +254,10 @@ $DEFAULTS = array(
 		'urllogofile'			=> '',
 		'set_protection'		=> '1',
 		'template_file_proforma'	=> 'FT-0100',
+		'create_pdf_file'		=> '0',
+		'create_pdf_file_proforma'	=> '0',
+		'edit_closed'			=> '0',
+		'deleted_closed'		=> '0',
 	),
 	
 	'finances' => array(

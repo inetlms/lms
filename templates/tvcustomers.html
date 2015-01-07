@@ -35,7 +35,7 @@
 		<td><a href="?m={$layout.module}&page={$page}&order=cust_m_city&direction={if $direction eq "asc" && $order eq "cust_m_city"}desc{/if}">Miasto:</a></b> {if $order eq "cust_m_city"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
 	</tr>
 	{foreach from=$list item=item}
-	<tr class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<tr class="{cycle values="lucid,light"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td></td>
 		<td onclick="return self.location.href='?m=customerinfo&amp;id={$item.cust_external_id}';" valign="top"><b><a href="?m=customerinfo&id={$item.cust_external_id}" onmouseover="return overlib('<iframe id=&quot;autoiframe&quot; width=100 height=10 frameborder=0 scrolling=no src=&quot;?m=customerinfoshort&amp;id={$item.cust_external_id}&amp;popup=1&quot;></iframe>',HAUTO,VAUTO,OFFSETX,30,OFFSETY,15);" onmouseout="nd();">{$item.cust_external_id} <img src="img/customer.gif" alt="[ Klient w LMS ]"></a></b></td>
 		<td valign="top"><a href="{$smsurl}customer/show/id/{$item.cust_number|substr:3:6}">{$item.cust_number} <img src="img/customer.gif" alt="[ Klient w SMS ]"></a></td>

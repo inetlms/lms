@@ -3,7 +3,7 @@
 {title value=$layout.pagetitle}
 <form action="?m=v_vpbx&id={$smarty.get.id}" method="post">
 <table width="100%" cellpadding="5">
-{cycle values="light,lucid" print=false}
+{cycle values="lucid,light" print=false}
 {section name=pbx loop=$pbx.numbers}
 {assign var=pbxlocal value=$pbx.numbers[pbx]}
 <tr class="{cycle}">

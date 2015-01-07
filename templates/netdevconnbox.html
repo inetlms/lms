@@ -30,7 +30,7 @@
 			&nbsp;
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=netdevlist loop=$netdevlist start=$start}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td style="width: 96%; vertical-align: top; white-space: nowrap;" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';">

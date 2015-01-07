@@ -29,7 +29,7 @@
 		<td align="right">Funkcje:</td>
 	</tr>
 	{foreach from=$list item=item}
-	<tr class="{cycle values="light,lucid"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">			
+	<tr class="{cycle values="lucid,light"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">			
 		<td>{$item.subnet_id}</td>
 		<td valign="top"><b>{$item.subnet_name}</b></td>
 		<td valign="top">{$item.subnet_net}</td>

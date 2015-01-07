@@ -592,6 +592,15 @@ function GetConfigList($order='var,asc', $section='', $search='')
 						$config[$idx]['description'] = trans('Default invoice issuer');
 					break;
 
+					case 'edit_closed':
+						$config[$idx]['description'] = 'Pozwala na edycję zamkniętych faktur, DEFAULT : 0';
+					break;
+					
+					case 'deleted_closed':
+						$config[$idx]['description'] = 'Pozwala na usunięcie zamkniętych faktur, DEFAULT : 0';
+					break;
+
+
 					case 'cplace':
 						$config[$idx]['description'] = trans('Invoice draw-up place.');
 					break;
@@ -622,6 +631,14 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					
 					case 'set_protection':
 						$config[$idx]['description'] = 'Zabezpieczenie dokumentów PDF przed modyfikacją. <b>DEFAULT :1</b>';;
+					break;
+					
+					case 'create_pdf_file':
+						$config[$idx]['description'] = 'Automatyczne tworzenie plików pdf na serwerze dla faktur VAR i faktur korygujących. <b>DEFAULT :0</b>';;
+					break;
+					
+					case 'create_pdf_file_proforma':
+						$config[$idx]['description'] = 'Automatyczne tworzenie plików pdf na serwerze dla faktur proforma. <b>DEFAULT :0</b>';;
 					break;
 
 					case 'print_balance_history':
@@ -662,7 +679,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					break;
 					
 					case 'urllogofile':
-						$config[$idx]['description'] = 'adres pliku z logo naszej firmy, np. img/banner.jpg,dozwolone pliki jpg i gif.<br>Zmienna dla faktur w wersji 2';
+						$config[$idx]['description'] = 'adres url pliku z logo naszej firmy, Zmienna dla faktur w wersji 2<br><b>UWAGA</b> - musi być podany pełny adres url np. http://localhost/lms/img/moje_logo.jpg';
 					break;
 					
 					
@@ -765,7 +782,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 				    break;
 				    
 				    case 'haslo':
-					$config[$idx]['description'] = 'Hasło do sms';
+					$config[$idx]['description'] = 'Hasło do sms OTWARTYM TEKSTEM !!!';
 				    break;
 				    
 				    case 'serwer':

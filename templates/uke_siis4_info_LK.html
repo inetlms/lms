@@ -19,7 +19,7 @@
 	    </tr>
 	    
 	    
-	    {cycle values="light,lucid" print=false}
+	    {cycle values="lucid,light" print=false}
 	    {section name='lklist' loop=$lklist}
 	    <tr class="{cycle} lista {if !$lklist[lklist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
 		<td width="1%" class="fleft pad" align="left">{$lklist[lklist].identyfikator}</td>

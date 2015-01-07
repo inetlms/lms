@@ -46,7 +46,7 @@
 		</td>
 	</tr>
 	{/if}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=voipaccountlist loop=$voipaccountlist start=$start max=$pagelimit}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="96%" class="fleft" onclick="return self.location.href='?m=voipaccountinfo&id={$voipaccountlist[voipaccountlist].id}';" nowrap>

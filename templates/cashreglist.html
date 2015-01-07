@@ -23,7 +23,7 @@
 			<a href="?m=cashregadd">{trans("Add registry")} <img src="img/save.gif" alt=""> </a>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$reglist item=reg}
 	<tr class="{cycle} lista {if $reg.disabled} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" nowrap onclick="return self.location.href='?m=receiptlist&regid={$reg.id}';">

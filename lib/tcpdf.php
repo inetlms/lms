@@ -440,12 +440,14 @@ class TCPDFpl extends TCPDF {
 		$this->Ln();
 		$this->SetFont('arial', '', 7);
 		$this->SetFillColor(255, 255, 255);
+		
+		$roznica_przed = $roznica_po = array();
 
 		/* invoice correction data */
 		if (isset($invoice['invoice'])) {
-			$this->Ln(3);
+			$this->Ln(2);
 			$this->writeHTMLCell(0, 0, '', '', '<b>' . trans('Was:') . '</b>', 0, 1, 0, true, 'L');
-			$this->Ln(3);
+			$this->Ln(1);
 			$i = 1;
 			if ($invoice['invoice']['content'])
 				foreach ($invoice['invoice']['content'] as $item) {
@@ -483,7 +485,9 @@ class TCPDFpl extends TCPDF {
 			$this->Cell($h_width['totaltax'], 5, moneyf($invoice['invoice']['totaltax']), 1, 0, 'R', 0, '', 1);
 			$this->Cell($h_width['total'], 5, moneyf($invoice['invoice']['total']), 1, 0, 'R', 0, '', 1);
 			$this->Ln();
-
+			
+			
+			
 			/* invoice correction summary table - data */
 			if ($invoice['invoice']['taxest']) {
 				$i = 1;
@@ -495,17 +499,23 @@ class TCPDFpl extends TCPDF {
 					$this->Cell($h_width['taxlabel'], 5, $item['taxlabel'], 1, 0, 'C', 0, '', 1);
 					$this->Cell($h_width['totaltax'], 5, moneyf($item['tax']), 1, 0, 'R', 0, '', 1);
 					$this->Cell($h_width['total'], 5, moneyf($item['total']), 1, 0, 'R', 0, '', 1);
-					$this->Ln(12);
+					$this->Ln();
+					$roznica_przed[] = array(
+					    'totalbase'	=> $item['base'],
+					    'taxlabel'	=> $item['taxlabel'],
+					    'totaltax'	=> $item['tax'],
+					    'total'	=> $item['total']
+					);
 					$i++;
 				}
 			}
 
 			/* reason of issue of invoice correction */
 			if ($invoice['reason'] != '') {
-				$this->writeHTMLCell(0, 0, '', '', '<b>' . trans('Reason:') . ' ' . $invoice['reason'] . '</b>', 0, 1, 0, true, 'L');
-				$this->writeHTMLCell(0, 0, '', '', '<b>' . trans('Corrected to:') . '</b>', 0, 1, 0, true, 'L');
-				$this->Ln(3);
+				$this->writeHTMLCell(0, 0, '', '', '<b>' . 'Przyczyna korekty: </b>' . ' ' . $invoice['reason'], 0, 1, 0, true, 'L');
 			}
+			$this->writeHTMLCell(0, 0, '', '', '<b>' . trans('Corrected to:') . '</b>', 0, 1, 0, true, 'L');
+			$this->Ln(1);
 		}
 
 		/* invoice data */
@@ -558,6 +568,12 @@ class TCPDFpl extends TCPDF {
 				$this->Cell($h_width['taxlabel'], 5, $item['taxlabel'], 1, 0, 'C', 0, '', 1);
 				$this->Cell($h_width['totaltax'], 5, moneyf($item['tax']), 1, 0, 'R', 0, '', 1);
 				$this->Cell($h_width['total'], 5, moneyf($item['total']), 1, 0, 'R', 0, '', 1);
+				$roznica_po[] = array(
+				    'totalbase'	=> $item['base'],
+				    'taxlabel'	=> $item['taxlabel'],
+				    'totaltax'	=> $item['tax'],
+				    'total'	=> $item['total']
+				);
 				$this->Ln();
 				$i++;
 			}
@@ -580,6 +596,22 @@ class TCPDFpl extends TCPDF {
 			$this->Cell($h_width['totaltax'], 5, moneyf($totaltax), 1, 0, 'R', 0, '', 1);
 			$this->Cell($h_width['total'], 5, moneyf($total), 1, 0, 'R', 0, '', 1);
 			$this->Ln();
+			
+			for ($j=0; $j<sizeof($roznica_przed); $j++) {
+			    
+			    $total = $roznica_po[$j]['total'] - $roznica_przed[$j]['total'];
+			    $totalbase = $roznica_po[$j]['totalbase'] - $roznica_przed[$j]['totalbase'];
+			    $totaltax = $roznica_po[$j]['totaltax'] - $roznica_przed[$j]['totaltax'];
+			    
+			    $this->SetFont('arial', 'B', 8);
+			    $this->Cell($sum, 5, trans('in it:'), 0, 0, 'R', 0, '', 1);
+			    $this->SetFont('arial', '', 8);
+			    $this->Cell($h_width['totalbase'], 5, moneyf($totalbase), 1, 0, 'R', 0, '', 1);
+			    $this->Cell($h_width['taxlabel'], 5, $roznica_po[$j]['taxlabel'], 1, 0, 'C', 0, '', 1);
+			    $this->Cell($h_width['totaltax'], 5, moneyf($totaltax), 1, 0, 'R', 0, '', 1);
+			    $this->Cell($h_width['total'], 5, moneyf($total), 1, 0, 'R', 0, '', 1);
+			    $this->Ln();
+			}
 		}
 	}
 
@@ -601,6 +633,7 @@ function init_pdf($pagesize, $orientation, $title) {
 	$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 	$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 	$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+	$pdf->SetCompression(true);
 
 	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 	$pdf->setLanguageArray($l);

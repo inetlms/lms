@@ -3377,33 +3377,41 @@ class LMS {
 	}
 
 	function InvoiceDelete($invoiceid) {
-		$this->DB->BeginTrans();
 
 		if (SYSLOG) {
 		    $invoice = $this->GetInvoiceContent($invoiceid);
 		    $diff['old'] = $invoice;
 		    $diff['type'] = 'del';
 		    $diff['card'] = 'invoice';
-		    $number = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+		    if (!$invoice['fullnumber'])
+			$number = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+		    else
+			$number = $invoice['fullnumber'];
+			
 		    if(!isset($invoice['invoice'])) 
 		    {
 			if ($invoice['type'] == DOC_INVOICE)
-			    $tekst = trans('Invoice No. $a', $number);
+			    $tekst = 'Faktura nr '.$number;
 			else
-			    $tekst = trans('Invoice Pro Forma No. $a', $number);
+			    $tekst = 'Faktura Proforma nr '.$number;
 		    }
 		    else
-			$tekst = trans('Credit Note No. $a', $number);
+			$tekst = 'Faktura Korygująca nr '.$number;
+		    
 		    addlogs('Skasowano dokument: '.$tekst.', Klient: '.$this->getcustomername($invoice['customerid']),'e=del;m=fin;c='.$invoice['customerid']);
 		    unset($tekst);
 		    unset($invoice);
 		    unset($number);
 		}
 		
+		$filename = $this->getInvoiceFilename($invoiceid,true);
+		if (check_fileexists($filename))
+		    @unlink($filename);
+		
 		$this->DB->Execute('DELETE FROM documents WHERE id = ?', array($invoiceid));
+		$this->DB->Execute('DELETE FROM documentcontents WHERE docid = ?', array($invoiceid));
 		$this->DB->Execute('DELETE FROM invoicecontents WHERE docid = ?', array($invoiceid));
 		$this->DB->Execute('DELETE FROM cash WHERE docid = ?', array($invoiceid));
-		$this->DB->CommitTrans();
 	}
 
 	function InvoiceContentDelete($invoiceid, $itemid = 0) {
@@ -3488,7 +3496,7 @@ class LMS {
 			    if (empty($result['division_cplace'])) $result['division_cplace'] = $firma['inv_cplace'];
 			}
 			
-			if ($result['reference'])
+			if ($result['reference'] && $result['type'] != DOC_INVOICE_PRO)
 				$result['invoice'] = $this->GetInvoiceContent($result['reference']);
 
 			if (!$result['division_header'])
@@ -3652,6 +3660,66 @@ class LMS {
 		else
 			return FALSE;
 	}
+
+	function getInvoiceFilename($docid,$full = false)
+	{
+	    //zwraca nazwę pliku pdf zapisanego na dysku
+	    // full = true -> zwraca pełną ścieżkę
+	    
+	    $filename = $this->DB->GetOne('SELECT filename FROM documentcontents WHERE docid = ? LIMIT 1;',array($docid));
+	    
+	    if (!$filename)
+		return NULL;
+	    
+	    if ($full) {
+		$data = $this->DB->GetOne('SELECT cdate FROM documents WHERE id = ? LIMIT 1;',array($docid));
+		$year = date('Y',$data);
+		$month = date('m',$data);
+		$dom = date('d',$data);
+		$filename = INVOICE_DIR.'/'.$year.'/'.$month.'/'.$dom.'/'.$filename;
+	    }
+	    
+	    return $filename;
+	}
+	
+	function genInvoiceFilename($docid,$full=false)
+	{
+		// generuje nazę pliku dokumentu
+		$doc = $this->DB->GetRow('SELECT number, numberplanid, cdate, fullnumber, templatetype FROM documents WHERE id = ? LIMIT 1;',array($docid));
+		
+		if (!$doc)
+			return NULL;
+		
+		if (!$doc['fullnumber'])
+			$number = docnumber($doc['number'],$doc['numberplanid'],$doc['cdate']);
+		else
+			$number = $doc['fullnumber'];
+		
+		$filename = str_replace('/','_',$number);
+		$filename = str_replace("\\","-",$filename);
+		$cid = 'CID'.sprintf('%06.d',$doc[$i]['customerid']);
+		$did = 'DID'.sprintf('%08.d',$doc[$i]['id']);
+		$ext = '';
+		
+		switch (strtoupper($doc['templatetype']))
+		{
+		    case 'PDF'		: $ext = '.pdf';	break;
+		    case 'TXT'		: $ext = '.txt';	break;
+		    case 'HTML'		: 
+		    case 'HTML/TXT'	: $ext = '.html';	break;
+		    case 'HTM'		: $ext = '.htm';	break;
+		}
+		
+		$filename = $cid.'_'.$did.'_'.$filename.$ext;
+		
+		if ($full) {
+			$PREFIX = date('Y/m/d',$doc['cdate']);
+			$filename = INVOICE_DIR.'/'.$PREFIX.'/'.$filename;
+		}
+		
+		return $filename;
+	}
+
 
 	function TariffAdd($tariff) {
 		$result = $this->DB->Execute('INSERT INTO tariffs (name, description, value,
@@ -8317,6 +8385,21 @@ class LMS {
 				    ORDER BY name ASC;');
 	return $result;
     }
+    
+    
+    function getListDictionaryCnote()
+    {
+	
+	$result = $this->DB->GetAll('SELECT * FROM dictionary_cnote ORDER BY name ASC;');
+	return $result;
+    }
+    
+//    function GetDictionaryCnoteClientOfType()
+//    {
+//	$result = $this->DB->GetAll('SELECT id,name FROM dictionary_cnote GROUP BY name ORDER BY name;');
+//	return $result;
+//    }
+
 
 
 }

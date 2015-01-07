@@ -106,6 +106,8 @@
 <input type="submit" class="hiddenbtn">
 <input type="hidden" name="invoice[number]" value="{$invoice.number}">
 <input type="hidden" name="invoice[template]" value="{$invoice.template}">
+<input type="hidden" name="invoice[version]" value="{$invoice.version}">
+
 <table width="100%" cellpadding="3">
 	<tr class="dark">
 		<td class="fall" width="100%" colspan="2">
@@ -125,10 +127,19 @@
 	</tr>
 	<tr class="light">
 		<td class="fleft" width="1%" nowrap>
-			<b>{trans("Sale date:")}</b>
+			{if $invoice.version == '1'}
+			    <b>{trans("Sale date:")}</b>
+			{else}
+			    <b>Data dost./wyk. usługi</b>
+			{/if}
 		</td>
 		<td class="fright" width="99%" nowrap>
 			<input type="text" name="invoice[sdate]" value="{$invoice.sdate|date_format:"%Y/%m/%d"}" size="10" {tip text="Enter date of sale in YYYY/MM/DD format (empty field means current date) or click to select it from calendar" trigger="sdate"} onclick="javascript:cal2.popup();" >
+			{if get_conf('invoices.template_version') == '1'}
+			    <input type="hidden" name="invoice[sdateview]" value="1">
+			{else}
+			    <input type="checkbox" name="invoice[sdateview]" value="1" id="id_sdateview"{if get_conf('invoices.sdateview') || $invoice.sdateview} checked{/if}><label for="id_sdateview" {tip text="Jeżeli na fakturze w pozycjach jest podany okres zobowiązania to ta data nie powinna widnieć na dokumencie, w innym przypadku jest wymagana"}>&nbsp;Pokaż datę dostawy / wykonania usługi na fakturze</label>
+			{/if}
 		</td>
 	</tr>
 	<tr class="light">
@@ -225,7 +236,7 @@
 			&nbsp;
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$contents item=item}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')"{if !$invoice.closed} onclick="setProduct('{$item.name}', '{$item.prodid}', '{$item.count|string_format:"%.2f"}', '{$item.jm}', {if $item.pdiscount != 0}'{$item.pdiscount|string_format:"%.2f"}', {$smarty.const.DISCOUNT_PERCENTAGE - 1}{else}{if $item.vdiscount != 0}'{$item.vdiscount|string_format:"%.2f"}', {$smarty.const.DISCOUNT_AMOUNT - 1}{else}'', {$smarty.const.DISCOUNT_PERCENTAGE - 1}{/if}{/if}, '{$item.valuenetto|string_format:"%.2f"}', {foreach item=tax from=$taxeslist}{if $tax.label eq $item.tax}{$tax.id}{/if}{/foreach}, '{$item.valuebrutto|string_format:"%.2f"}');"{/if}>
 		<td class="fleft" width="1%">

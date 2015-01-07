@@ -25,7 +25,7 @@
 			&nbsp;
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$queues item=queue}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" onclick="return self.location.href='?m=rtqueueview&id={$queue.id}';">

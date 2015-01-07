@@ -27,7 +27,7 @@
 			    <td width="1%" class="ftop" align="center" nowrap><b>{trans("Editing")}</b></td>
 			    <td width="1%" class="ftr" align="center" nowrap><b>{trans("Deleting")}</b></td>
 			</tr>
-			{cycle values="light,lucid" print=false}
+			{cycle values="lucid,light" print=false}
 			{foreach from=$documenttype.rights item=right key=key}
 			<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 			    <td width="95%" class="fleft">

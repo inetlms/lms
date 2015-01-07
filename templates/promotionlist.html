@@ -22,7 +22,7 @@
 			<a href="?m=promotionadd">{trans("Add promotion")} <img src="img/save.gif" alt=""> </a>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$promotionlist item=promo}
 	<tr class="{cycle} lista{if $promo.disabled} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" nowrap onclick="return self.location.href='?m=promotioninfo&id={$promo.id}';">

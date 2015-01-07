@@ -5,7 +5,7 @@
 			<img src="img/node.gif" alt=""> <b>{trans("Computers found:")}</b>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=n loop=$nodes}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="99%" class="fleft" onclick="return self.location.href='?m=nodeadd&preip={$nodes[n].ipaddr}&premac={$nodes[n].mac}&prename={$nodes[n].name}{if $customerinfo}&ownerid={$customerinfo.id}{/if}';">

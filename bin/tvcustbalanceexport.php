@@ -30,6 +30,11 @@
 
 include('/etc/lms/init_lms.php');
 
+if (get_conf('jambox.enabled')) {
+    require_once(LIB_DIR.'/LMS.tv.class.php');
+    $LMSTV = new LMSTV($DB,$AUTH,$CONFIG);
+}
+
 /******  cli start *********/
 $res = $LMSTV->setCustomerPaymentInfo();
 /****** cli end *********/

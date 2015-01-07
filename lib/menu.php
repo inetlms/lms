@@ -31,7 +31,7 @@ $menu = array(
 			'link' =>'?m=welcome',
 			'tip' => trans('System information and management'),
 			'accesskey' =>'i',
-			'prio' => 0,
+			'prio' => 10,
 			'index' => MODULES_ADMIN,
 			'submenu' => array(
 				array(
@@ -97,7 +97,7 @@ $menu = array(
 			'link' =>'?m=customerlist',
 			'tip' => trans('Customers Management'),
 			'accesskey' =>'u',
-			'prio' => 5,
+			'prio' => 20,
 			'index' => MODULES_CUSTOMERS,
 			'submenu' => array(
 				array(
@@ -146,7 +146,7 @@ $menu = array(
 			'link' =>'?m=nodelist',
 			'tip' => trans('Nodes Management'),
 			'accesskey' =>'k',
-			'prio' => 10,
+			'prio' => 30,
 			'index' => MODULES_NODES,
 			'submenu' => array(
 				array(
@@ -194,7 +194,7 @@ $menu = array(
 			'img' =>'voip.gif',
 			'tip' => trans('VoIP Management'),
 			'accesskey' =>'v',
-			'prio' => 11,
+			'prio' => 40,
 			'index' => MODULES_VOIP,
 			'submenu' => array(
 				array(
@@ -224,7 +224,7 @@ $menu = array(
 			'link' =>'',
 			'tip' => 'Telefonia Internetowa Hiperus',
 			'accesskey' => '',
-			'prio' => 12,
+			'prio' => 50,
 			'index'	=> MODULES_VOIPC5,
 			'submenu' => array(
 				array(
@@ -266,7 +266,7 @@ $menu = array(
 			'link' =>'?m=netdevlist',
 			'tip' => trans('Network Devices Management'),
 			'accesskey' =>'o',
-			'prio' => 15,
+			'prio' => 80,
 			'index' => MODULES_NETDEVICES,
 			'submenu' => array(
 				array(
@@ -336,7 +336,7 @@ $menu = array(
 			'link' =>'',
 			'tip' => '',
 			'accesskey' =>'',
-			'prio' =>18,
+			'prio' =>100,
 			'index' => MODULES_MONITORING,
 			'submenu' => array(
 				array(
@@ -373,7 +373,7 @@ $menu = array(
 			'link' =>'?m=netlist',
 			'tip' => trans('IP Address Pools Management'),
 			'accesskey' =>'t',
-			'prio' => 20,
+			'prio' => 110,
 			'index' => MODULES_NETWORKS,
 			'submenu' => array(
 				array(
@@ -396,7 +396,7 @@ $menu = array(
 			'link' =>'?m=customerlist',
 			'tip' => trans('Contractors Management'),
 			'accesskey' =>'u',
-			'prio' => 23,
+			'prio' => 120,
 			'index' => MODULES_CONTRACTORS,
 			'submenu' => array(
 				array(
@@ -436,7 +436,7 @@ $menu = array(
 			'link' =>'?m=tarifflist',
 			'tip' => 'Zarządzanie taryfami',
 			'accesskey' =>'f',
-			'prio' => 24,
+			'prio' => 130,
 			'index' => MODULES_TARIFFS,
 			'submenu' => array(
 				array(
@@ -466,7 +466,7 @@ $menu = array(
 			'link' =>'?m=tarifflist',
 			'tip' => 'Zarządzanie finansami sieci',
 			'accesskey' =>'f',
-			'prio' => 25,
+			'prio' => 140,
 			'index' => MODULES_FINANCES,
 			'submenu' => array(
 				array(
@@ -568,7 +568,7 @@ $menu = array(
 			'link' =>'?m=documentlist',
 			'tip' => trans('Documents Management'),
 			'accesskey' => '',
-			'prio' => 26,
+			'prio' => 150,
 			'index' => MODULES_DOCUMENTS,
 			'submenu' => array(
 				array(
@@ -610,7 +610,7 @@ $menu = array(
 			'link' =>'?m=accountlist',
 			'tip' => trans('Hosting Services Management'),
 			'accesskey' =>'a',
-			'prio' => 30,
+			'prio' => 160,
 			'index' => MODULES_HOSTING,
 			'submenu' => array(
 				array(
@@ -664,7 +664,7 @@ $menu = array(
 			'link' =>'?m=messageadd',
 			'tip' => trans('Customers Messaging'),
 			'accesskey' =>'m',
-			'prio' => 35,
+			'prio' => 180,
 			'index' => MODULES_MESSAGES,
 			'submenu' => array(
 				array(
@@ -696,7 +696,7 @@ $menu = array(
 			'link' =>'?m=reload',
 			'tip' => trans(''),
 			'accesskey' =>'r',
-			'prio' => 40,
+			'prio' => 190,
 			'index' => MODULES_RELOAD,
 		),
 
@@ -706,7 +706,7 @@ $menu = array(
 			'link' =>'?m=traffic',
 			'tip' => trans('Statistics of Internet Link Usage'),
 			'accesskey' =>'x',
-			'prio' => 45,
+			'prio' => 200,
 			'index' => MODULES_STATS,
 			'submenu' => array(
 				array(
@@ -760,7 +760,7 @@ $menu = array(
 			'link' =>'?m=rtqueuelist',
 			'tip' => trans('Requests Tracking'),
 			'accesskey' =>'h',
-			'prio' => 50,
+			'prio' => 210,
 			'index' => MODULES_HELPDESK,
 			'submenu' => array(
 				array(
@@ -814,7 +814,7 @@ $menu = array(
 			'link' =>'?m=eventlist',
 			'tip' => trans('Events Tracking'),
 			'accesskey' =>'v',
-			'prio' => 55,
+			'prio' => 220,
 			'index' => MODULES_TIMETABLE,
 			'submenu' => array(
 				array(
@@ -843,7 +843,7 @@ $menu = array(
 			'img' => 'reports.png',
 			'link' => '',
 			'tip' => '',
-			'prio' => 57,
+			'prio' => 230,
 			'index' => MODULES_RAPORTY,
 			'submenu' => array(
 				array(
@@ -859,7 +859,7 @@ $menu = array(
 			'name'		=> 'Słowniki',
 			'img'		=> 'dictionary.png',
 			'link'		=> '',
-			'prio'		=> 58,
+			'prio'		=> 240,
 			'index'		=> MODULES_SLOWNIK,
 			'submenu'	=> array(
 				array(
@@ -894,6 +894,13 @@ $menu = array(
 					'prio' => 40,
 				),
 				
+				array(
+					'name' => 'Powody korekt faktur',
+					'link'	=> '?m=dictionarycnote',
+					'tip'	=> 'Rodzaje powodów dla których jest dokonan korekta faktury',
+					'prio'	=> 50,
+				),
+				
 			),
 			
 		),
@@ -904,7 +911,7 @@ $menu = array(
 			'link' =>'?m=configlist',
 			'tip' => trans('System Configuration'),
 			'accesskey' =>'o',
-			'prio' => 60,
+			'prio' => 250,
 			'index' => MODULES_CONFIG,
 			'submenu' => array(
 				array(
@@ -961,7 +968,7 @@ $menu = array(
 			'link' => '?m=chpasswd',
 			'tip' => trans('Allows you to change your password'),
 			'accesskey' => 'p',
-			'prio' => 65,
+			'prio' => 260,
 			'index' => MODULES_PASSWORD,
 		),
 /*
@@ -986,7 +993,7 @@ if (get_conf('phpui.radius')) {
 		'link'		=> '',
 		'tip'		=> '',
 		'accesskey'	=> '',
-		'prio'		=> 18,
+		'prio'		=> 90,
 		'index'		=> MODULES_RADIUS,
 		'submenu'	=> array(
 			array(
@@ -1020,7 +1027,7 @@ if (get_conf('voip.enabled','0')) {
 			'link' =>'?m=configlist',
 			'tip' => 'Telefonia internetowa',
 			'accesskey' =>'v',
-			'prio' => 13,
+			'prio' => 60,
 			'index' => MODULES_VOIPNT,
 			'submenu' => array(
 				array(
@@ -1105,7 +1112,7 @@ if (get_conf('registryequipment.enabled')) {
 		'img'		=> 'car.png',
 		'link'		=> '',
 		'tip'		=> '',
-		'prio'		=> 31,
+		'prio'		=> 170,
 		'index'		=> MODULES_REGISTRYEQUIPMENT,
 		'submenu'	=> array(
 			array(
@@ -1143,7 +1150,7 @@ if (get_conf('jambox.enabled',0)) {
 			'img' =>'tv_icon.png',
 			'tip' => 'TV Management',
 			'accesskey' =>'t',
-			'prio' => 14,
+			'prio' => 70,
 			'index' => MODULES_JAMBOX,
 			'submenu' => array(
 				array(

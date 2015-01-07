@@ -98,7 +98,7 @@
 		    </td>
 		    <td width="50%" valign="50%"><br>
 			    <table width="1%" cellpadding="4" style="border:solid 1px #CCCCCC;">
-				{cycle values="light,lucid" print=false}
+				{cycle values="lucid,light" print=false}
 				<tr class="dark lista">
 				    <td width="1%" nowrap class="pad10"></td>
 				    <td width="1%" nowrap class="pad10" align="center"><b>Upload</b></td>
@@ -302,7 +302,7 @@
 	<tr>
 		<td width="100%" class="fall" colspan="2">
 			<table width="100%" cellpadding="2">
-				{cycle values="light,lucid" print=false}
+				{cycle values="lucid,light" print=false}
 				{section name=l1 loop=$tariff.customers max=$tariff.rows}
 				<tr>
 					{section name=l2 loop=$tariff.customers start=$smarty.section.l1.index step=$tariff.rows}

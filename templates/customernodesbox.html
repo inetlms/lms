@@ -67,7 +67,7 @@ function setgroup(act)
 		    	    <td width="1%" class="fbt" align="right">{trans("Network:")}</td>
 		    	    <td width="1%" class="frightu">&nbsp;</td>
 			</tr>
-			{cycle values="light,lucid" print=false name=nodes}
+			{cycle values="lucid,light" print=false name=nodes}
 			{section name=customernodes loop=$customernodes}
     			<tr class="{cycle name=nodes}{if ! $customernodes[customernodes].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 			    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';">

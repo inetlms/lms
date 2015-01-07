@@ -19,7 +19,7 @@
 					<td width="1%" nowrap class="fbt">{trans("Phone number:")}</td>
 					<td width="1%" class="frightu">&nbsp;</td>
 				</tr>
-				{cycle name=voips values="light,lucid" print=false}
+				{cycle name=voips values="lucid,light" print=false}
 				{foreach from=$customervoipaccounts.accounts item=voipaccount}
 				<tr class="{cycle name=voips}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td width="96%" nowrap onclick="return self.location.href='?m=voipaccountinfo&id={$voipaccount.id}'">
