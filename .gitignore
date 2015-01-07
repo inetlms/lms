@@ -4,6 +4,8 @@ userpanel/templates_c/*
 backups/*
 tmp/*
 rrd/*
+plug/*
+documents/invoice_pdf/*
 lms.ini
 *~
 *.swp
