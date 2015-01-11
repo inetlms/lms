@@ -8,6 +8,7 @@ plug/*
 documents/*
 documents/invoice_pdf/*
 templates/custom/*
+userpanel_old/*
 stats/*
 lms.ini
 *~
