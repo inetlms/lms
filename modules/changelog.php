@@ -34,6 +34,46 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-01-10',
+	    'status'	=> '',
+	    'opis'	=> 'dodano wyszukiwanie klienta po : nr telefonu, nr. gadugau, skype i yahoo , (dane z karty klienta)',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano katalog templates/custom w którym możemy trzymać własne pliki html zastępując oryginalne szablony',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowa tabeli documents o pola post_*, celem jest zapamiętanie adresu wysyłki faktury',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'w konfiguracji firmy/oddziały dodano pole URL Logo File, logo będzie na fakturach, fakturach korygujących i proforma, dotyczy tylko faktur w wersji 2 i ma wyższy priorytet od zmiennej w UI invoices.urllogofile',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowa pliku bin/lms-payments który jest jedynym słusznym skryptem do naliczania faktur / opłat abonamentów w LMS',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> 'del',
+	    'opis'	=> 'usunięto plik bin/lms-payments.php',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> 'del',
+	    'opis'	=> 'usunięto plik bin/lms-payments-proforma',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> 'del',
+	    'opis'	=> 'usunięto starą wersję USERPANEL',
+	),
+	array(
 	    'data'	=> '2015-01-07',
 	    'status'	=> '',
 	    'opis'	=> 'dostosowano wygląd faktur korygujących do obecnych przepisów',

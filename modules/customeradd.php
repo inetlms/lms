@@ -112,6 +112,12 @@ if (isset($_POST['customeradd']))
 		$error['ssn'] = trans('Incorrect Social Security Number! If you are sure you want to accept it, then click "Submit" again.');
 		$customeradd['ssnwarning'] = 1;
 	}
+	
+	if($customeradd['invoice_ssn'] != '' && !check_ssn($customeradd['invoice_ssn']) && !isset($customeradd['invoice_ssnwarning']))
+	{
+		$error['invoice_ssn'] = trans('Incorrect Social Security Number! If you are sure you want to accept it, then click "Submit" again.');
+		$customeradd['invoice_ssnwarning'] = 1;
+	}
 
 	if($customeradd['icn'] != '' && !check_icn($customeradd['icn']))
 		$error['icn'] = trans('Incorrect Identity Card Number!');

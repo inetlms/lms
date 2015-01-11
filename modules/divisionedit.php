@@ -89,7 +89,7 @@ if(!empty($_POST['division']))
 		$DB->Execute('UPDATE divisions SET name=?, shortname=?, address=?, 
 			city=?, zip=?, countryid=?, ten=?, regon=?, account=?, inv_header=?, 
 			inv_footer=?, inv_author=?, inv_cplace=?, inv_paytime=?,
-			inv_paytype=?, description=?, status=?, url=?, email=?, rpt=?, rjpt=?, rbe=? 
+			inv_paytype=?, description=?, status=?, url=?, email=?, rpt=?, rjpt=?, rbe=?, urllogofile=? 
 			WHERE id=?',
 			array(
 				    $division['name'],
@@ -114,6 +114,7 @@ if(!empty($_POST['division']))
 				    ($division['rpt'] ? $division['rpt'] : NULL),
 				    ($division['rjpt'] ? $division['rjpt'] : NULL),
 				    ($division['rbe'] ? $division['rbe'] : NULL),
+				    ($division['urllogofile'] ? $division['urllogofile'] : ''),
 				    $division['id']
 			));
 		

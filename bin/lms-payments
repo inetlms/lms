@@ -403,7 +403,7 @@ $dbq = $dbase->prepare("SELECT a.tariffid, a.liabilityid, a.customerid,
 	LEFT JOIN liabilities l ON (a.liabilityid = l.id)
 	LEFT JOIN divisions d ON (d.id = c.divisionid)
 	WHERE c.status = 3
-		AND a.invoice != 6 
+		AND (a.invoice = 6 OR a.invoice = 1) 
 		AND ((a.period = ".DISPOSABLE." AND at = $today)
 			OR ((a.period = ".DAY."
 			OR (a.period = ".WEEK." AND at = $weekday)
@@ -583,12 +583,53 @@ while(my $assign = $dbq->fetchrow_hashref())
 				$itemid = 0;
 				$numbers{$plan}++;
 
-				my $udbq = $dbase->prepare("SELECT lastname, name, address, city, zip, ssn, ten, countryid, divisionid, paytime
+				my $udbq = $dbase->prepare("SELECT lastname, name, type, address, city, zip, ssn, ten, countryid, divisionid, paytime, post_name, post_address, post_zip, post_city,
+						invoice_name, invoice_lastname, invoice_address, invoice_zip, invoice_city, invoice_countryid, invoice_ten, invoice_ssn 
 						FROM customers WHERE id = ?");
 				$udbq->execute($uid);
 				my $urow = $udbq->fetchrow_hashref();
+#
+				my $name = $urow->{'lastname'}.' '.$urow->{'name'};
+				my $address = $urow->{'address'};
+				my $zip = $urow->{'zip'};
+				my $city = $urow->{'city'};
+				my $countryid = $urow->{'countryid'};
+				my $type = $urow->{'type'};
+				my $ten = '';
+				my $ssn = '';
+
+				if ($type == 0) 
+				{
+				    $ssn = $urow->{'ssn'};
+				} else {
+				    $ten = $urow->{'ten'};
+				}
+
+
+				if (($urow->{'invoice_name'} ne '') && ($urow->{'invoice_address'} ne '') && ($urow->{'invoice_zip'} ne '') && ($urow->{'invoice_city'} ne '')) 
+				{
+
+				    $name = $urow->{'invoice_lastname'}.' '.$urow->{'invoice_name'};
+				    $address = $urow->{'invoice_address'};
+				    $zip = $urow->{'invoice_zip'};
+				    $city = $urow->{'invoice_city'};
+				    $countryid = $urow->{'invoice_countryid'};
+				    $type = $urow->{'type'};
+				    $ten = '';
+				    $ssn = '';								
+
+				    if ($type == 0)
+				    {
+				        $ssn = $urow->{'invoice_ssn'};
+				    } else {
+				        $ten = $urow->{'invoice_ten'};
+				    }
+
+				}
+
 				
-				my $ddbq = $dbase->prepare("SELECT shortname, name, address, city, zip, countryid, ten, regon, account, inv_header, inv_footer, inv_author, inv_cplace
+				
+				my $ddbq = $dbase->prepare("SELECT shortname, name, address, city, zip, countryid, ten, regon, account, inv_header, inv_footer, inv_author, inv_cplace, urllogofile 
 						FROM divisions WHERE id = ?");
 				$ddbq -> execute($urow->{'divisionid'});
 				my $drow = $ddbq->fetchrow_hashref();
@@ -617,31 +658,37 @@ while(my $assign = $dbq->fetchrow_hashref())
 				my $dtsdv = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
 				$dtsdv->execute('invoices','sdateview');
 				my $tsdv = $dtsdv->fetchrow_hashref();
-				
+
 				#template logo file
-				my $dtlogo = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
-				$dtlogo->execute('invoices','urllogofile');
-				my $tlogo = $dtlogo->fetchrow_hashref();
+				my $urllogofile;
+				if ($drow->{'urllogofile'} ne '') {
+				    $urllogofile = $drow->{'urllogofile'};
+				} else {
+				    my $dtlogo = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
+				    $dtlogo->execute('invoices','urllogofile');
+				    my $tlogo = $dtlogo->fetchrow_hashref();
+				    $urllogofile = $tlogo->{'value'};
+				}
 				
 				my $idbq = $dbase->prepare("INSERT INTO documents (number, numberplanid, type, countryid, divisionid,
 						customerid, name, address, zip, city, ten, ssn, cdate, sdate, paytime, paytype,
 						div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon, div_account, 
 						div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname, fullnumber,
-						version, templatetype, templatefile, sdateview, urllogofile)
-						VALUES (?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-						?, ?, ?, ?, ?, ?)");
+						version, templatetype, templatefile, sdateview, urllogofile, post_name, post_address, post_zip, post_city)
+						VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+						?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				
-				$idbq->execute($numbers{$plan}, $plan, $urow->{'countryid'}, $urow->{'divisionid'}, $uid,
-						$urow->{'lastname'}.' '.$urow->{'name'}, $urow->{'address'}, $urow->{'zip'},
-						$urow->{'city'}, $urow->{'ten'}, $urow->{'ssn'}, $currtime, $saledate, $paytime, $inv_paytype,
+				$idbq->execute($numbers{$plan}, $plan, $assign->{'invoice'}, $countryid, $urow->{'divisionid'}, $uid,
+						$name, $address, $zip, $city, $ten, $ssn, $currtime, $saledate, $paytime, $inv_paytype,
 						$drow->{'name'}, $drow->{'address'}, $drow->{'city'}, $drow->{'zip'}, $drow->{'countryid'},
 						$drow->{'ten'}, $drow->{'regon'}, $drow->{'account'}, $drow->{'inv_header'}, $drow->{'inv_footer'},
 						$drow->{'inv_author'}, $drow->{'inv_cplace'}, $drow->{'shortname'}, $fullnumber,$ttiv->{'value'},
-						$ttyp->{'value'}, $tfile->{'value'},$tsdv->{'value'}, $tlogo->{'value'}
+						$ttyp->{'value'}, $tfile->{'value'},$tsdv->{'value'}, $urllogofile,
+						$urow->{'post_name'}, $urow->{'post_address'}, $urow->{'post_zip'}, $urow->{'post_city'}
 						);
 
 				$idbq = $dbase->prepare("SELECT id FROM documents
-						WHERE cdate = ? AND number = ? AND type = 1 AND customerid = ?");
+						WHERE cdate = ? AND number = ? AND (type = 1 OR type = 6) AND customerid = ?");
 				$idbq->execute($currtime, $numbers{$plan}, $uid);
 				my $irow = $idbq->fetchrow_hashref();
 

@@ -127,7 +127,7 @@
 					</td>
 					<td width="99%" nowrap>
 					    <fieldset style="width:240px;">
-					    <legend><b> Adres siedziby, zameldowania</b></legend>
+					    <legend><b> Adres siedziby / zameldowania</b></legend>
 						<table width="100%" cellpadding="1">
 						    <tr>
 							<td width="1%" nowrap>{trans("Address:")}</td>
@@ -186,11 +186,15 @@
 					</td>
 					<td width="99%" nowrap>
 					    <fieldset style="width:240px;">
-					    <legend><img src="img/help.png" width="16" {tip text="Odbiorca faktury VAT lub proformy, jeżeli jest inny niż główny adresat"}><b> Odbiorca faktury VAT / Proforma </b></legend>
+					    <legend><img src="img/help.png" width="16" {tip text="Odbiorca faktury , jeżeli jest inny niż główny adresat"}><b> Odbiorca faktury </b></legend>
 						<table width="100%" cellpadding="1">
 						    <tr>
 							<td width="1%" nowrap>{trans("Name:")}</td>
 							<td width="99%"><input type="text" size="30" value="{$customeradd.invoice_name}" name="customeradd[invoice_name]" id="invoice_name" {tip text="Enter service name" trigger="invoice_name"}></td>
+						    </tr>
+						    <tr>
+							<td width="1%" nowrap>Nazwa cd.</td>
+							<td width="99%"><input type="text" size="30" value="{$customeradd.invoice_lastname}" name="customeradd[invoice_lastname]" id="invoice_lastname"></td>
 						    </tr>
 						    <tr>
 							<td width="1%" nowrap>{trans("Address:")}</td>
@@ -203,7 +207,7 @@
 						    <tr>
 							<td width="1%" nowrap>{trans("Zip:")}</td>
 							<td width="99%"><input type="text" size="10" value="{$customeradd.invoice_zip}" name="customeradd[invoice_zip]" id="invoice_zip" {tip text="Enter zip code" trigger="invoice_zip"}></td>
-							{if $customeradd.zipwarning}
+							{if $customeradd.invoice_zipwarning}
 							<input type="hidden" name="customeradd[invoice_zipwarning]" value="1">
 							{/if}
 						    </tr>
@@ -214,6 +218,16 @@
 							<input type="text" size="30" value="{$customeradd.invoice_ten}" name="customeradd[invoice_ten]" {tip text="Enter customer Tax Exempt Number (optional)" trigger="invoice_ten"}>
 							{if $customeradd.invoice_tenwarning}
 							    <input type="hidden" name="customeradd[invoice_tenwarning]" value="1">
+							{/if}
+					            </td>
+				        	    </tr>
+				        	    
+				        	    <tr>
+					        	<td width="1%" nowrap>{trans("SSN")}:</td>
+					        	<td width="99%">
+							<input type="text" size="30" value="{$customeradd.invoice_ssn}" name="customeradd[invoice_ssn]" {tip text="Proszę podać numer PESEL (opcja)" trigger="invoice_ssn"}>
+							{if $customeradd.invoice_ssnwarning}
+							    <input type="hidden" name="customeradd[invoice_ssnwarning]" value="1">
 							{/if}
 					            </td>
 				        	    </tr>
@@ -259,7 +273,7 @@
 					</td>
 					<td width="99%" nowrap>
 						<fieldset style="width:240px">
-						<legend><img src="img/help.png" width="16" {tip text="Adresy wysyłki jeżeli jest inny niż adres odbiorcy faktury lub adres siedziby"}><b> Adres do wysyłki </b></legend>
+						<legend><img src="img/help.png" width="16" {tip text="Adresy wysyłki.<br>Jeżeli wypełniliśmy pola z sekcji Odbiorca faktury to adresem wysyłki będą dane odbiorcy w innym przypadku adresem wysyłki będą dane podstawowe. Wpisz adres jeżeli ma być inny"}><b> Adres do wysyłki </b></legend>
 						<table width="100%" cellpadding="1">
 						    <tr>
 							<td width="1%" nowrap>{trans("Name:")}</td>

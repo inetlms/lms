@@ -358,8 +358,10 @@ function invoice_date_v2() {
 function invoice_logo_v2() {
 	global $pdf,$invoice;
 	
-	if($invoice['urllogofile'])
-	$pdf->Image($invoice['urllogofile'],12,8,'',10,'','','L',true,150,'',false,false,0,true,false,true);
+	if($invoice['urllogofile']) {
+//	    if (is_readable($invoice['urllogofile']))
+	    $pdf->Image($invoice['urllogofile'],12,8,'',10,'','','L',true,150,'',false,false,0,true,false,true);
+	}
 }
 
 function invoice_title_v2() {
@@ -448,7 +450,7 @@ function invoice_buyer_v2() {
 		else
 			$postbox .= $invoice['name'] . '<br>';
 		$postbox .= $invoice['post_address'] . '<br>';
-		$postbox .= $invoice['post_zip'] . ' ' . $invoice['post_city'] . '<br>';
+	$postbox .= $invoice['post_zip'] . ' ' . $invoice['post_city'] . '<br>';
 	} else {
 		$postbox .= $invoice['name'] . '<br>';
 		$postbox .= $invoice['address'] . '<br>';

@@ -81,6 +81,7 @@ define('MODULES_PASSWORD',320);
 define('MODULES_REGISTRYEQUIPMENT',350); // środki trwałe
 define('MODULES_JAMBOX',360);
 define('MODULES_USERPANEL',400);
+define('MODULES_MAGAZYN',410);
 
 define('MONIT_NONE',0);
 define('MONIT_NODES',1);

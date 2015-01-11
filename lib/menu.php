@@ -956,6 +956,12 @@ $menu = array(
 					'tip' => trans('List of Cash Import Sources'),
 					'prio' => 80,
 				),
+//				array(
+//					'name'	=> 'Wtyczki',
+//					'link'	=> '?m=plugin',
+//					'tip'	=> 'Konfiguracja wtyczek',
+//					'prio'	=> 90,
+//				),
 				
 			),
 		),
@@ -1258,11 +1264,11 @@ if(!function_exists('menu_cmp'))
 	    return ($a['prio'] < $b['prio']) ? -1 : 1;
 	}
 }
-
+/*
 foreach($menu as $idx => $item)
 	if(isset($item['submenu']))
 		uasort($menu[$idx]['submenu'],'menu_cmp');
 
 uasort($menu,'menu_cmp');
-
+*/
 ?>

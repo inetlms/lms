@@ -637,9 +637,9 @@ class LMS {
 				    creatorid, info, notes, message, pin, regon, rbe,
 				    icn, cutoffstop, consentdate, einvoice, divisionid, paytime, paytype,
 				    invoicenotice, mailingnotice,
-				    invoice_name, invoice_address, invoice_zip, invoice_city, invoice_countryid, invoice_ten,origin)
+				    invoice_name, invoice_address, invoice_zip, invoice_city, invoice_countryid, invoice_ten,origin, invoice_lastname, invoice_ssn)
 				    VALUES (?, UPPER(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?NOW?,
-				    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(lms_ucwords($customeradd['name']),
+				    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(lms_ucwords($customeradd['name']),
 						$customeradd['lastname'],
 						empty($customeradd['type']) ? 0 : 1,
 						$customeradd['address'],
@@ -671,13 +671,15 @@ class LMS {
 						!empty($customeradd['paytype']) ? $customeradd['paytype'] : NULL,
 						$customeradd['invoicenotice'],
 						$customeradd['mailingnotice'],
-						$customeradd['invoice_name'],
-						$customeradd['invoice_address'],
-						$customeradd['invoice_zip'],
-						$customeradd['invoice_city'],
-						$customeradd['invoice_countryid'],
-						$customeradd['invoice_ten'],
+						($customeradd['invoice_name'] ? $customeradd['invoice_name'] : ''),
+						($customeradd['invoice_address']? $customeradd['invoice_address'] : ''),
+						($customeradd['invoice_zip']? $customeradd['invoice_zip'] : ''),
+						($customeradd['invoice_city']? $customeradd['invoice_city'] : ''),
+						($customeradd['invoice_countryid']? $customeradd['invoice_countryid'] : 0),
+						($customeradd['invoice_ten']? $customeradd['invoice_ten'] : ''),
 						($customeradd['origin'] ? $customeradd['origin'] : 0),
+						($customeradd['invoice_lastname'] ? $customeradd['invoice_lastname'] : ''),
+						($customeradd['invoice_ssn'] ? $customeradd['invoice_ssn'] : ''),
 				))
 		) {
 			$this->UpdateCountryState($customeradd['zip'], $customeradd['stateid']);
@@ -755,16 +757,16 @@ class LMS {
 				cutoffstop=?, consentdate=?, einvoice=?, invoicenotice=?, mailingnotice=?,
 				divisionid=?, paytime=?, paytype=?,
 				invoice_name=?, invoice_address=?, invoice_zip=?, invoice_city=?, invoice_countryid=?, invoice_ten=?,
-				origin = ?
+				origin = ?, invoice_lastname = ?, invoice_ssn = ? 
 				WHERE id=?', array($customerdata['status'],
 				empty($customerdata['type']) ? 0 : 1,
-				$customerdata['address'],
-				$customerdata['zip'],
-				$customerdata['city'],
-				$customerdata['countryid'],
-				$customerdata['email'],
-				$customerdata['ten'],
-				$customerdata['ssn'],
+				($customerdata['address'] ? $customerdata['address'] : ''),
+				($customerdata['zip'] ? $customerdata['zip'] : ''),
+				($customerdata['city'] ? $customerdata['city'] : ''),
+				($customerdata['countryid'] ? $customerdata['countryid'] : NULL),
+				($customerdata['email'] ? $customerdata['email'] : ''),
+				($customerdata['ten'] ? $customerdata['ten'] : ''),
+				($customerdata['ssn'] ? $customerdata['ssn'] : ''),
 				isset($this->AUTH->id) ? $this->AUTH->id : 0,
 				$customerdata['post_name'],
 				$customerdata['post_address'],
@@ -787,14 +789,16 @@ class LMS {
 				$customerdata['mailingnotice'],
 				$customerdata['divisionid'],
 				$customerdata['paytime'],
-				$customerdata['paytype'] ? $customerdata['paytype'] : null,
-				$customerdata['invoice_name'],
-				$customerdata['invoice_address'],
-				$customerdata['invoice_zip'],
-				$customerdata['invoice_city'],
-				$customerdata['invoice_countryid'],
-				$customerdata['invoice_ten'],
+				($customerdata['paytype'] ? $customerdata['paytype'] : null),
+				($customerdata['invoice_name'] ? $customerdata['invoice_name'] : ''),
+				($customerdata['invoice_address'] ? $customerdata['invoice_address'] : ''),
+				($customerdata['invoice_zip'] ? $customerdata['invoice_zip'] : ''),
+				($customerdata['invoice_city'] ? $customerdata['invoice_city'] : ''),
+				($customerdata['invoice_countryid'] ? $customerdata['invoice_countryid'] : 0),
+				($customerdata['invoice_ten'] ? $customerdata['invoice_ten'] : ''),
 				($customerdata['origin'] ? $customerdata['origin'] : 0),
+				($customerdata['invoice_lastname'] ? $customerdata['invoice_lastname'] : ''),
+				($customerdata['invoice_ssn'] ? $customerdata['invoice_ssn'] : ''),
 				$customerdata['id'],
 				));
 
@@ -2891,6 +2895,28 @@ class LMS {
 			WHERE tariffid = tariffs.id AND customerid = ? AND suspended = 0
 			    AND (datefrom <= ?NOW? OR datefrom = 0) AND (dateto > ?NOW? OR dateto = 0)', array($id));
 	}
+
+
+	function GetCustomerTariffsValueRabat($id)
+	{
+		// Add function Krzysztof Puchała - Pro-Admin
+		$value = $this->DB->GetOne('SELECT SUM(tariffs.value)
+		FROM assignments, tariffs
+		WHERE tariffid = tariffs.id AND customerid = ? AND suspended = 0
+		AND (datefrom <= ?NOW? OR datefrom = 0) AND (dateto > ?NOW? OR dateto = 0)',
+		array($id));
+		$rabat = $this->DB->GetOne('SELECT SUM(assignments.vdiscount)
+		FROM assignments, tariffs
+		WHERE tariffid = tariffs.id AND customerid = ? AND suspended = 0
+		AND (datefrom <= ?NOW? OR datefrom = 0) AND (dateto > ?NOW? OR dateto = 0)',
+		array($id));
+		
+		$val = $value - $rabat;
+		return $val;
+		
+	}
+	
+	
 //AND (a.liabilityid = 0 OR (a.liabilityid != 0 AND (a.at >= ' . $now . ' OR a.at < 531)))' : '')
 	function GetCustomerAssignments($id, $show_expired = false) {
 		$now = mktime(0, 0, 0, date('n'), date('d'), date('Y'));
@@ -3239,12 +3265,18 @@ class LMS {
 		    $invoice['customer']['address'] = $invoice['customer']['invoice_address'];
 		    $invoice['customer']['zip'] = $invoice['customer']['invoice_zip'];
 		    $invoice['customer']['city'] = $invoice['customer']['invoice_city'];
-		    $invoice['customer']['countryid'] = ($invoice['customer']['invoice_countryid'] ? $invoice['customer']['invoice_countryid'] : $invoice['customer']['countryid']);
-		    $invoice['customer']['ten'] = ($invoice['customer']['invoice_ten'] ? $invoice['customer']['invoice_ten'] : $invoice['customer']['ten']);
+		    $invoice['customer']['countryid'] = ($invoice['customer']['invoice_countryid'] ? $invoice['customer']['invoice_countryid'] : 0);
+		    $invoice['customer']['ten'] = ($invoice['customer']['invoice_ten'] ? $invoice['customer']['invoice_ten'] : '');
+		    $invoice['customer']['ssn'] = ($invoice['customer']['invoice_ssn'] ? $invoice['customer']['invoice_ssn'] : '');
 		}
 		
+		if ($invoice['customer']['type'] == '1')
+		    $invoice['customer']['ssn'] = '';
+		elseif ($invoice['customer']['type'] == '0')
+		    $invoice['customer']['ten'] = '';
+		
 		$division = $this->DB->GetRow('SELECT name, shortname, address, city, zip, countryid, ten, regon,
-				account, inv_header, inv_footer, inv_author, inv_cplace 
+				account, inv_header, inv_footer, inv_author, inv_cplace, urllogofile 
 				FROM divisions WHERE id = ? ;',array($invoice['customer']['divisionid']));
 		
 		if ($invoice['invoice']['numberplanid'])
@@ -3260,7 +3292,11 @@ class LMS {
 		else
 		    $invoice['sdateview'] = $invoice['invoice']['sdateview'];
 		
-		$invoice['urllogofile'] = get_conf('invoices.urllogofile');
+		if ($division['urllogofile'])
+		    $invoice['urllogofile'] = $division['urllogofile'];
+		else
+		    $invoice['urllogofile'] = get_conf('invoices.urllogofile','');
+		
 		
 		if ($type == '6') {
 		    
@@ -3282,8 +3318,9 @@ class LMS {
 			ten, ssn, zip, city, countryid, divisionid,
 			div_name, div_shortname, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
 			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, fullnumber,
-			version, templatetype, templatefile, sdateview, urllogofile)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?)', 
+			version, templatetype, templatefile, sdateview, urllogofile,
+			post_name, post_address, post_zip, post_city)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?)', 
 				array(
 				($number ? $number : 0),
 				($invoice['invoice']['numberplanid'] ? $invoice['invoice']['numberplanid'] : 0),
@@ -3315,12 +3352,16 @@ class LMS {
 				($division['inv_footer'] ? $division['inv_footer'] : ''), 
 				($division['inv_author'] ? $division['inv_author'] : ''), 
 				($division['inv_cplace'] ? $division['inv_cplace'] : ''),
-				($fullnumber ? $fullnumber : NULL),
-				($invoice['version'] ? $invoice['version'] : NULL),
-				($invoice['templatetype'] ? $invoice['templatetype'] : NULL),
-				($invoice['templatefile'] ? $invoice['templatefile'] : NULL),
+				($fullnumber ? $fullnumber : ''),
+				($invoice['version'] ? $invoice['version'] : ''),
+				($invoice['templatetype'] ? $invoice['templatetype'] : ''),
+				($invoice['templatefile'] ? $invoice['templatefile'] : ''),
 				($invoice['sdateview'] ? 1 : 0),
-				($invoice['urllogofile'] ? $invoice['urllogofile'] : NULL),
+				($invoice['urllogofile'] ? $invoice['urllogofile'] : ''),
+				($invoice['customer']['post_name'] ? $invoice['customer']['post_name'] : ''),
+				($invoice['customer']['post_address'] ? $invoice['customer']['post_address'] : ''),
+				($invoice['customer']['post_zip'] ? $invoice['customer']['post_zip'] : ''),
+				($invoice['customer']['post_city'] ? $invoice['customer']['post_city'] : ''),
 		));
 		
 
@@ -3465,7 +3506,7 @@ class LMS {
 				d.div_inv_author AS division_author, d.div_inv_cplace AS division_cplace,
 				d.fullnumber AS fullnumber,d.version, d.templatetype, d.templatefile, d.sdateview, d.urllogofile,
 				c.pin AS customerpin, c.divisionid AS current_divisionid,
-				c.post_name, c.post_address, c.post_zip, c.post_city, c.post_countryid,
+				d.post_name, d.post_address, d.post_zip, d.post_city,
 				c.invoice_name, c.invoice_address, c.invoice_zip, c.invoice_city, c.invoice_countryid, c.invoice_ten 
 				FROM documents d
 				JOIN customers c ON (c.id = d.customerid)
@@ -3577,13 +3618,19 @@ class LMS {
 			$result['month'] = date('m', $result['cdate']);
 			$result['pesel'] = $result['ssn'];
 			$result['nip'] = $result['ten'];
+			
+				
 			if ($result['post_name'] || $result['post_address']) {
+				
 				$reulst['serviceaddr'] = $result['post_name'];
+				
 				if ($result['post_address'])
 					$result['serviceaddr'] .= "\n" . $result['post_address'];
+				
 				if ($result['post_zip'] && $result['post_city'])
 					$result['serviceaddr'] .= "\n" . $result['post_zip'] . ' ' . $result['post_city'];
 			}
+			
 			
 			return $result;
 		}
@@ -3606,7 +3653,7 @@ class LMS {
 				d.div_inv_author AS division_author, d.div_inv_cplace AS division_cplace,
 				d.fullnumber,
 				c.pin AS customerpin, c.divisionid AS current_divisionid,
-				c.post_name, c.post_address, c.post_zip, c.post_city, c.post_countryid
+				d.post_name, d.post_address, d.post_zip, d.post_city
 				FROM documents d
 				JOIN customers c ON (c.id = d.customerid)
 				LEFT JOIN countries cn ON (cn.id = d.countryid)

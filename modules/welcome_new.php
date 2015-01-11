@@ -30,29 +30,40 @@ $layout['pagetitle'] = 'iNET LAN Management System v. '.$layout['lmsvr'];
 
 $pageview = array();
 
-if (check_conf('privileges.superuser')) {
-    $registers = $LMS->CheckRegister();
-    $tmp = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype=? LIMIT 1;',array('inetlms_regdata_infocustomer'));
-    if ($tmp == '1')
-    {
+if (check_conf('privileges.superuser') && $registers = $LMS->CheckRegister()) {
+	
 	$czas = $DB->getone('select keyvalue FROM dbinfo WHERE keytype=? LIMIT 1;',array('inetlms_last_update'));
+	
 	if (!$czas) {
-	    $DB->Execute('INSERT INTO dbinfo (keytype,keyvalue) VALUES (?,?);',array('inetlms_last_update',time()));
-	} else {
-	    $czas = $czas + 1209600;
-	    if (time() > $czas) {
-		$customercount = $DB->GetOne('SELECT COUNT(id) FROM customers WHERE status=3 AND (type=0 OR type=1) AND deleted=0;');
-		$uiid = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? LIMIT 1;',array('inetlms_uiid'));
-		fetch_url(INETLMS_REGISTER_URL.'?uiid='.$uiid.'&updatecustomer='.$customercount);
-		$DB->Execute('UPDATE dbinfo SET keyvalue=? WHERE keytype = ?;',array(time(),'inetlms_last_update'));
-		if ($layout['lmsvr'] != $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? LIMIT 1;',array('inetlms_version'))) {
-		    fetch_url(INETLMS_REGISTER_URL.'?uiid='.$uiid.'&updateversion='.$layout['lmsvr']);
-		    $DB->Execute('UPDATE dbinfo SET keyvalue=? WHERE keytype = ?;',array($layout['lmsvr'],'inetlms_version'));
-		}
-	    }
+		$czas = time();
+		$DB->Execute('INSERT INTO dbinfo (keytype,keyvalue) VALUES (?,?);',array('inetlms_last_update',$czas));
 	}
-    }
-} else $registers = NULL;
+	
+	$uiid = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? LIMIT 1;',array('inetlms_uiid'));
+	$tmp = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype=? LIMIT 1;',array('inetlms_regdata_infocustomer'));
+	$czas = $czas + 1209600;
+	
+	if (time() > $czas) {
+		if ($tmp == '1')
+		{
+			$customercount = $DB->GetOne('SELECT COUNT(id) FROM customers WHERE status=3 AND (type=0 OR type=1) AND deleted=0;');
+			fetch_url(INETLMS_REGISTER_URL.'?uiid='.$uiid.'&updatecustomer='.$customercount);
+		}
+		
+		if (LMSV != $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ? LIMIT 1;',array('inetlms_version'))) {
+		    fetch_url(INETLMS_REGISTER_URL.'?uiid='.$uiid.'&updateversion='.LMSV);
+		    $DB->Execute('UPDATE dbinfo SET keyvalue=? WHERE keytype = ?;',array(LMSV,'inetlms_version'));
+		}
+		
+		$DB->Execute('UPDATE dbinfo SET keyvalue=? WHERE keytype = ?;',array(time(),'inetlms_last_update'));
+		
+	}
+	
+} else {
+	
+	$registers = NULL;
+	
+}
 
 function homepage_start()
 {

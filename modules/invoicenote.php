@@ -257,7 +257,7 @@ switch($action)
 		}
 		
 		$division = $DB->GetRow('SELECT name, shortname, address, city, zip, countryid, ten, regon,
-				account, inv_header, inv_footer, inv_author, inv_cplace 
+				account, inv_header, inv_footer, inv_author, inv_cplace , urllogofile 
 				FROM divisions WHERE id = ? ;',array((!empty($cnote['use_current_division']) ? $invoice['current_divisionid'] : $invoice['divisionid'])));
 		
 		if ($cnote['numberplanid'])
@@ -271,17 +271,24 @@ switch($action)
 		$invoice['templatetype'] = get_conf('invoices.type');
 		$invoice['templatefile'] = get_conf('invoices.cnote_template_file');
 //		$invoice['sdateview'] = get_conf('invoices.sdateview');
-		$invoice['urllogofile'] = get_conf('invoices.urllogofile');
+		
+		if ($division['urllogofile'])
+		    $invoice['urllogofile'] = $division['urllogofile'];
+		else
+		    $invoice['urllogofile'] = get_conf('invoices.urllogofile','');
+		
+		if (!is_readable($invoice['urllogofile']))
+		    $invoice['urllogofile'] = '';
 		
 		if (empty($division['inv_author']))
 		    $division['inv_author'] = $this->DB->GetOne('SELECT name FROM users WHERE id = ? LIMIT 1;',array($tis->AUTH->id));
-
+		
 		$DB->Execute('INSERT INTO documents (number, numberplanid, type, cdate, sdate, paytime, paytype,
 				userid, customerid, name, address, ten, ssn, zip, city, countryid, reference, reason, divisionid,
 				div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
 				div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname, fullnumber,
-				version, templatetype, templatefile, sdateview, urllogofile)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				version, templatetype, templatefile, sdateview, urllogofile, post_name, post_address, post_zip, post_city)
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 				array($cnote['number'],
 					$cnote['numberplanid'] ? $cnote['numberplanid'] : 0,
 					DOC_CNOTE,
@@ -314,12 +321,16 @@ switch($action)
 					($division['inv_author'] ? $division['inv_author'] : ''), 
 					($division['inv_cplace'] ? $division['inv_cplace'] : ''),
 					($division['shortname'] ? $division['shortname'] : ''),
-					($fullnumber ? $fullnumber : NULL),
+					($fullnumber ? $fullnumber : ''),
 					($invoice['version'] ? $invoice['version'] : '1'),
-					($invoice['templatetype'] ? $invoice['templatetype'] : NULL),
-					($invoice['templatefile'] ? $invoice['templatefile'] : NULL),
+					($invoice['templatetype'] ? $invoice['templatetype'] : ''),
+					($invoice['templatefile'] ? $invoice['templatefile'] : ''),
 					($cnote['sdateview'] ? 1 : 0),
-					($invoice['urllogofile'] ? $invoice['urllogofile'] : NULL),
+					($invoice['urllogofile'] ? $invoice['urllogofile'] : ''),
+					($invoice['post_name'] ? $invoice['post_name'] : ''),
+					($invoice['post_address'] ? $invoice['post_address'] : ''),
+					($invoice['post_zip'] ? $invoice['post_zip'] : ''),
+					($invoice['post_city'] ? $invoice['post_city'] : ''),
 		));
 
 		$id = $DB->GetOne('SELECT id FROM documents WHERE number = ? AND cdate = ? AND type = ?',

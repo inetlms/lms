@@ -358,8 +358,10 @@ function invoice_date_v2() {
 function invoice_logo_v2() {
 	global $pdf,$invoice;
 	
-	if($invoice['urllogofile'])
-	$pdf->Image($invoice['urllogofile'],12,8,'',10,'','','L',true,150,'',false,false,0,true,false,true);
+	if($invoice['urllogofile']) {
+//	    if (is_readable($invoice['urllogofile']))
+	    $pdf->Image($invoice['urllogofile'],12,8,'',10,'','','L',true,150,'',false,false,0,true,false,true);
+	}
 }
 
 function invoice_title_v2() {
@@ -397,6 +399,11 @@ function invoice_title_v2() {
 		
 		$pdf->Write(0, $title, '', 0, 'L', true, 0, false, false, 0);
 	}
+	
+	if ($type == trans('DUPLICATE')) {
+		$pdf->SetFont('arial', 'B', 10);
+		$pdf->Write(0, 'DUPLIKAT', '', 0, 'L', true, 0, false, false, 0);
+	}
 }
 
 
@@ -415,7 +422,7 @@ function invoice_seller_v2() {
 	foreach ($tmp as $line)
 		$seller .= $line . '<br>';
 	$pdf->Ln(0);
-	$pdf->writeHTMLCell(80, '', '', 45, $seller, 0, 1, 0, true, 'L');
+	$pdf->writeHTMLCell(80, '', '', 50, $seller, 0, 1, 0, true, 'L');
 }
 
 function invoice_buyer_v2() {
@@ -443,7 +450,7 @@ function invoice_buyer_v2() {
 		else
 			$postbox .= $invoice['name'] . '<br>';
 		$postbox .= $invoice['post_address'] . '<br>';
-		$postbox .= $invoice['post_zip'] . ' ' . $invoice['post_city'] . '<br>';
+	$postbox .= $invoice['post_zip'] . ' ' . $invoice['post_city'] . '<br>';
 	} else {
 		$postbox .= $invoice['name'] . '<br>';
 		$postbox .= $invoice['address'] . '<br>';

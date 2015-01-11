@@ -1,7 +1,7 @@
 <?php
 
 /*
- * LMS version 1.11-git ( iNET )
+ *  iNET LMS
  *
  *  (C) Copyright 2012 LMS-EX Developers
  *
@@ -26,6 +26,7 @@
 
 // REPLACE THIS WITH PATH TO YOUR CONFIG FILE
 
+
 $CONFIG_FILE = '/etc/lms/lms.ini';
 
 // PLEASE DO NOT MODIFY ANYTHING BELOW THIS LINE UNLESS YOU KNOW
@@ -34,7 +35,7 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
-define('LMSV','15.01.07');
+define('LMSV','15.01.11');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 
 // find alternative config files:
@@ -173,6 +174,7 @@ require_once(LIB_DIR.'/GaduGadu.class.php');
 require_once(LIB_DIR.'/LMS.Hiperus.class.php');
 require_once(LIB_DIR.'/RADIUS.class.php');
 require_once(LIB_DIR.'/Routeros_api.class.php');
+require_once(LIB_DIR.'/LMS.PLUG.class.php');
 
 
 // Initialize Session, Auth and LMS classes
@@ -201,7 +203,7 @@ $layout['lmsvr'] = LMSV;
 $layout['dberrors'] =& $DB->errors;
 $layout['dbdebug'] = $_DBDEBUG;
 $layout['popup'] = isset($_GET['popup']) ? true : false;
-
+$menu = NULL;
 
 if (get_conf('registryequipment.enabled')) {
 	require_once(LIB_DIR.'/Registry.Equipment.class.php');
@@ -257,13 +259,6 @@ $SMARTY->assignByRef('_language', $LMS->lang);
 
 $error = NULL; // initialize error variable needed for (almost) all modules
 
-// Load menu
-
-if(!$layout['popup'])
-{
-	require_once(LIB_DIR.'/menu.php');
-	$SMARTY->assign('newmenu', $menu);
-}
 
 header('X-Powered-By: LMS/'.$layout['lmsv']);
 
@@ -284,6 +279,10 @@ if ($AUTH->islogged) {
 	$module = isset($_GET['m']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_GET['m']) : '';
 	$plug = isset($_GET['p']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_GET['p']) : '';
 	
+	if (!$layout['popup'])
+	    require_once(LIB_DIR.'/menu.php');
+	
+	
 	$deny = $allow = FALSE;
 	
 	$res = $LMS->ExecHook('module_load_before', array('module' => $module));
@@ -301,7 +300,13 @@ if ($AUTH->islogged) {
 	{
 		$module = $CONFIG['phpui']['default_module'];
 		if (!file_exists(MODULES_DIR.'/'.$module.'.php'))
-		    $module = 'welcome';
+		    $module = 'welcome_new';
+	}
+	
+	if (!$layout['popup']) {
+	    foreach($menu as $idx => $item) if(isset($item['submenu'])) uasort($menu[$idx]['submenu'],'menu_cmp');
+	    uasort($menu,'menu_cmp');
+	    $SMARTY->assign('newmenu',$menu);
 	}
 	
 	if (file_exists(MODULES_DIR.'/'.$module.'.php'))
@@ -363,9 +368,21 @@ else
 	    return $obj;
 	}
 	
+	$ver = @file_get_contents('https://raw.githubusercontent.com/inetlms/lms/master/README.md');
+	$_newversion = NULL;
+	
+	if ($ver) {
+		$ver = str_replace("\n","",$ver);
+		$ver = str_replace("iNET LMS ","",$ver);
+		
+		if ($ver != LMSV && version_compare($ver,LMSV) == '1') 
+			$_newversion = $ver;
+	}
+	
 	$LMS->InitXajax();
 	$LMS->RegisterXajaxFunction('login_adbox');
 	$SMARTY->assign('xajax',$LMS->RunXajax());
+	$SMARTY->assign('_newversion',$_newversion);
 	$SMARTY->display('login.html');
 }
 

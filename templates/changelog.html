@@ -11,7 +11,7 @@
     {cycle values='lucid,light' print=false}
     {section name='changelist' loop=$changelog}
     {math assign='lp' equation="x-y" x=$max y=$smarty.section.changelist.index}
-    <tr class="{cycle} lista"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+    <tr class="{cycle} lista"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')"{if $changelog[changelist].status=='del'} style='color:red;'{/if}>
 	<td style="width:30px;" align="center" class="fleft" nowrap>{$lp|string_format:"%03d"}</td>
 	<td width="1%" class="pad" nowrap>{$changelog[changelist].data}</td>
 	<td width="auto" align="left" class="fright">{$changelog[changelist].opis}</td>

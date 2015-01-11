@@ -6,6 +6,7 @@ tmp/*
 rrd/*
 plug/*
 documents/invoice_pdf/*
+templates/custom/*
 lms.ini
 *~
 *.swp

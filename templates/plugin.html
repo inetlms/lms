@@ -1,0 +1,31 @@
+{include file="header.html"}
+{title value=$layout.pagetitle}
+
+{if $pluglist}
+
+<table width="100%" cellpadding="3" class="table">
+
+    <tr class="dark">
+	<td width="1%" class="pad h24"><b>Nazwa</b></td>
+	<td width="1%" class="pad h24"><b>Wersja</b></td>
+	<td width="1%" class="pad h24" nowrap><b>Wersja DB</b></td>
+	<td width="94%" class="pad h24"><b>Autor</b></td>
+	<td width="1%" class="pad h24"><b>Zainstalowana</b></td>
+	<td width="1%" class="pad h24"><b>Włączona</b></td>
+	<td width="1%" class="pad h24">&nbsp;</td>
+	
+    </tr>
+</table>
+
+{else}
+    <table width="100%">
+    <tr class='light'>
+	<td width="100%" class="fall" align="center">
+	<p><h3>Brak dostępnych wtyczek</h3></p>
+	</td>
+    </tr>
+    </td>
+    </table>
+{/if}
+
+{include file="footer.html"}

@@ -68,7 +68,7 @@
 		    </lieldset>
 		</td>
 	</tr>
-{if $customerinfo.invoice_name neq "" || $customerinfo.invoice_address neq ""}
+
 	<tr class="light">
 		<td width="1%" style="vertical-align:top;">
 			<img src="img/home.gif" alt="">
@@ -76,18 +76,34 @@
 		<td width="99%" nowrap>
 		    <fieldset style="width:50%">
 		    <legend><b> Odbiorca faktury </b></legend>
-			{if $customerinfo.invoice_name neq ""}{$customerinfo.invoice_name}{/if}
-			{if $customerinfo.invoice_address neq ""}<br>{$customerinfo.invoice_address}{/if}
-			<br>{$customerinfo.invoice_zip} {$customerinfo.invoice_city}
-			{if $customerinfo.invoice_cstate}<br>{$customerinfo.invoice_cstate}{/if}
-			{if $customerinfo.invoice_country}<br>{t}{$customerinfo.invoice_country}{/t}{/if}
-			{if $customerinfo.invoice_ten}<br>{$customerinfo.invoice_ten}{/if}
+			{if $customerinfo.invoice_name neq "" || $customerinfo.invoice_address neq ""}
+				{if $customerinfo.invoice_name neq ""}{$customerinfo.invoice_name} {$customerinfo.invoice_lastname}{/if}
+				{if $customerinfo.invoice_address neq ""}<br>{$customerinfo.invoice_address}{/if}
+				<br>{$customerinfo.invoice_zip} {$customerinfo.invoice_city}
+				{if $customerinfo.invoice_cstate}<br>{$customerinfo.invoice_cstate}{/if}
+				{if $customerinfo.invoice_country}<br>{t}{$customerinfo.invoice_country}{/t}{/if}
+				{if $customerinfo.type == 1}
+				    {if $customerinfo.invoice_ten}<br>{trans('TEN:')} {$customerinfo.invoice_ten}{/if}
+				{else}
+				    {if $customerinfo.invoice_ssn}<br>{trans('SSN:')} {$customerinfo.invoice_ssn}{/if}
+				{/if}
+			{else}
+				{$customerinfo.lastname} {$customerinfo.name}<br>
+				{$customerinfo.address}<br>
+				{$customerinfo.zip} {$customerinfo.city}
+				{if $customerinfo.cstate}<br>{$customerinfo.cstate}{/if}
+				{if $customerinfo.country}<br>{t}{$customerinfo.country}{/t}{/if}
+				{if $customerinfo.type == 1}
+				     {if $customerinfo.ten}<br>{trans('TEN:')} {$customerinfo.ten}{/if}
+				{else}
+				    {if $customerinfo.ssn}<br>{trans('SSN:')} {$customerinfo.ssn}{/if}
+				{/if}
+			{/if}
 		    </fieldset>
 		</td>
 	</tr>
-{/if}
 
-{if $customerinfo.post_name neq "" || $customerinfo.post_address neq ""}
+
 	<tr class="light">
 		<td width="1%" style="vertical-align:top;">
 			<img src="img/post.gif" alt="">
@@ -95,15 +111,29 @@
 		<td width="99%" nowrap>
 		    <fieldset style="width:50%">
 		    <legend><b> Adres do wysyłki</b></legend>
-			{if $customerinfo.post_name neq ""}{$customerinfo.post_name}{/if}
-			{if $customerinfo.post_address neq ""}<br>{$customerinfo.post_address}{/if}
-			<br>{$customerinfo.post_zip} {$customerinfo.post_city}
-			{if $customerinfo.post_cstate}<br>{$customerinfo.post_cstate}{/if}
-			{if $customerinfo.post_country}<br>{t}{$customerinfo.post_country}{/t}{/if}
+			{if $customerinfo.post_name neq "" || $customerinfo.post_address neq ""}
+				{if $customerinfo.post_name neq ""}{$customerinfo.post_name}{/if}
+				{if $customerinfo.post_address neq ""}<br>{$customerinfo.post_address}{/if}
+				<br>{$customerinfo.post_zip} {$customerinfo.post_city}
+				{if $customerinfo.post_cstate}<br>{$customerinfo.post_cstate}{/if}
+				{if $customerinfo.post_country}<br>{t}{$customerinfo.post_country}{/t}{/if}
+			{elseif $customerinfo.invoice_name neq ""}
+				{if $customerinfo.invoice_name neq ""}{$customerinfo.invoice_name} {$customerinfo.invoice_lastname}{/if}
+				{if $customerinfo.invoice_address neq ""}<br>{$customerinfo.invoice_address}{/if}
+				<br>{$customerinfo.invoice_zip} {$customerinfo.invoice_city}
+				{if $customerinfo.invoice_cstate}<br>{$customerinfo.invoice_cstate}{/if}
+				{if $customerinfo.invoice_country}<br>{t}{$customerinfo.invoice_country}{/t}{/if}
+				{if $customerinfo.invoice_ten}<br>{$customerinfo.invoice_ten}{/if}
+			{else}
+				{$customerinfo.lastname} {$customerinfo.name}<br>
+				{$customerinfo.address}<br>
+				{$customerinfo.zip} {$customerinfo.city}
+				{if $customerinfo.cstate}<br>{$customerinfo.cstate}{/if}
+				{if $customerinfo.country}<br>{t}{$customerinfo.country}{/t}{/if}
+			{/if}
 		    </fieldset>
 		</td>
 	</tr>
-{/if}
 {foreach from=$customerinfo.contacts item=item}
 	<tr class="light">
 		<td width="1%" style="vertical-align: top">

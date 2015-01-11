@@ -91,6 +91,7 @@ switch($mode)
 	case 'customer':
 		if(isset($_GET['ajax'])) // support for AutoSuggest
 		{
+/*
 			$candidates = $DB->GetAll("SELECT id, email, address, post_name, post_address, deleted,
 			    ".$DB->Concat('UPPER(lastname)',"' '",'name')." AS username
 				FROM customersview
@@ -100,6 +101,22 @@ switch($mode)
 					OR LOWER(post_name) ?LIKE? LOWER($sql_search)
 					OR LOWER(post_address) ?LIKE? LOWER($sql_search)
 					OR LOWER(email) ?LIKE? LOWER($sql_search)
+				ORDER by deleted, username, email, address
+				LIMIT 15");
+*/
+			$candidates = $DB->GetAll("SELECT c.id, c.email, c.address, c.post_name, c.post_address, c.deleted, p.phone, i.uid, 
+			    ".$DB->Concat('UPPER(c.lastname)',"' '",'c.name')." AS username 
+				FROM customersview c 
+				LEFT JOIN customercontacts p ON (p.customerid = c.id) 
+				LEFT JOIN imessengers i ON (i.customerid = c.id) 
+				WHERE ".(preg_match('/^[0-9]+$/', $search) ? 'c.id = '.intval($search).' OR ' : '')."
+					LOWER(".$DB->Concat('c.lastname',"' '",'c.name').") ?LIKE? LOWER($sql_search)
+					OR LOWER(c.address) ?LIKE? LOWER($sql_search) 
+					OR LOWER(c.post_name) ?LIKE? LOWER($sql_search) 
+					OR LOWER(c.post_address) ?LIKE? LOWER($sql_search) 
+					OR LOWER(c.email) ?LIKE? LOWER($sql_search) 
+					OR LOWER(p.phone) ?LIKE? LOWER($sql_search) 
+					OR LOWER(i.uid) ?LIKE? LOWER($sql_search) 
 				ORDER by deleted, username, email, address
 				LIMIT 15");
 
