@@ -2,7 +2,8 @@
 
 $customer = $LMS->GetCustomer($_GET['cid']);
 $division = $DB->GetRow('SELECT * FROM divisions WHERE id = ?', array($customer['divisionid']));
-if (!isset($_GET['v']) || empty($_GET['v'])) $_GET['v'] = $LMS->Getcustomertariffsvalue($_GET['cid']);
+if (!isset($_GET['v']) || empty($_GET['v'])) $_GET['v'] = $LMS->GetcustomertariffsvalueRabat($_GET['cid']);
+//if (!isset($_GET['v']) || empty($_GET['v'])) $_GET['v'] = $LMS->Getcustomertariffsvalue($_GET['cid']);
 $img = imagecreatetruecolor(1200,630);
 $font = LIB_DIR.'/ezpdf/arial.ttf';
 $fontb = LIB_DIR.'/ezpdf/arialbd.ttf';
