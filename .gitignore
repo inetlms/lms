@@ -5,8 +5,10 @@ backups/*
 tmp/*
 rrd/*
 plug/*
+documents/*
 documents/invoice_pdf/*
 templates/custom/*
+stats/*
 lms.ini
 *~
 *.swp
