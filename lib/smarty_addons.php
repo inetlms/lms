@@ -28,7 +28,7 @@
  
 function _smarty_function_title($params, &$template)
 {
-		if (isset($params['value']) && !empty($params['value'])) $value = $params['value']; else $value = NULL;
+		if (isset($params['value']) && !empty($params['value'])) $value = trans($params['value']); else $value = NULL;
 		if (isset($params['link']) && !empty($params['link'])) $link = $params['link']; else $link = NULL;
 		if (isset($params['help']) && !empty($params['help'])) $help = $params['help']; else $help = NULL;
 		$width = 100;

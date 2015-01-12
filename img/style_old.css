@@ -926,3 +926,9 @@ TD.flr {
     border-left-style		: solid; 
     border-right-style		: solid; 
 }
+
+.h24 { height : 24px;}
+A.green { color			: #006500; }
+TR.green A { color			: #006500; }
+.greenbg,.greenBG { background-color		: #006500; }
+.green { color			: #006500; }

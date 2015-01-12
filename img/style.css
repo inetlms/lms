@@ -1427,3 +1427,9 @@ td.empty-table { text-align: center; font-weight: bold; padding: 2em; background
 .lighter { font-weight: lighter; }
 .valign-top { vertical-align: top; }
 .valign-bottom { vertical-align: bottom; }
+.h24 { height : 24px;}
+
+A.green { color			: #006500; }
+TR.green A { color			: #006500; }
+.greenbg,.greenBG { background-color		: #006500; }
+.green { color			: #006500; }

@@ -23,7 +23,16 @@
  *
  *  $Id$
  */
-
+$_LANG['Version'] = 'Wersja';
+$_LANG['Version DB'] = 'Wersja DB';
+$_LANG['Author'] = 'Autor';
+$_LANG['Installed'] = 'Zainstalowany';
+$_LANG['NO'] = 'NIE';
+$_LANG['YES'] = 'TAK';
+$_LANG['enable'] = 'włącz';
+$_LANG['disable'] = 'wyłącz';
+$_LANG['install the plug'] = 'zainstaluj wtyczkę';
+$_LANG['Configure Plugins'] = 'Konfiguracja wtyczek';
 $_LANG['select a template'] = 'wybierz szablon';
 $_LANG['Messages managing templates'] = 'Zarządzanie szablonami wiadomości';
 $_LANG['Templates'] = 'Szablony';
