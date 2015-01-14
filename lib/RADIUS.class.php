@@ -95,7 +95,7 @@ class RADIUS {
 		$this->DB->GetAll('SELECT r.radacctid, r.acctsessionid, r.username, r.nasipaddress, r.nasporttype, r.acctstarttime, r.servicetype '
 		.', r.acctstoptime, r.acctterminatecause '
 		.', r.acctsessiontime, r.acctinputoctets, r.acctoutputoctets, r.framedipaddress, UPPER(r.callingstationid) AS callingstationid '
-		.', nass.name AS nasname, nass.netdevid AS nasid '
+		.', nas.name AS nasname, nass.netdevid AS nasid '
 		.', n.id AS nodeid, n.name AS nodename , c.id AS cid'
 		.', '.$this->DB->Concat('c.lastname',"' '",'c.name').' AS customername '
 		.($status=='open' ? ', nd.maxid AS maxid ' : ', 0 AS maxid ')
