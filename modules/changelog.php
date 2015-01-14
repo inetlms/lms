@@ -34,6 +34,26 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-01-15',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka invoicelist dla postgresa',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowano filtr STATUS na liście klientów o pola : bilans zerowy , z nadpłątą',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowano filtr ZOBOWIĄZANIA na liście klientów o pola : tylko naliczanie, naliczanie z fakturą, naliczanie z proformą',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka update bazy',
+	),
+	array(
 	    'data'	=> '2015-01-10',
 	    'status'	=> '',
 	    'opis'	=> 'dodano wyszukiwanie klienta po : nr telefonu, nr. gadugau, skype i yahoo , (dane z karty klienta)',

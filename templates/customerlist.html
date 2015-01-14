@@ -157,6 +157,8 @@
 					    <select size="1" name="st" onchange="document.choosefilter.submit();" {if $listdata.status} class="active"{/if} style="min-width:150px;">
 					    <option value="0"{if $listdata.status eq 0} selected{/if}>{trans("- all customers -")}</option>
 					    {if !check_conf('privileges.hide_finances')}
+					    <option value="16"{if $listdata.status eq 16} selected{/if}>bilans zerowy</option>
+					    <option value="17"{if $listdata.status eq 17} selected{/if}>z nadpłatą</option>
 					    <option value="6"{if $listdata.status eq 6} selected{/if}>{trans("in debt")}</option>
 					    <option value="11"{if $listdata.status eq 11} selected{/if}>{trans("in debt above 100%")}</option>
 					    <option value="12"{if $listdata.status eq 12} selected{/if}>{trans("in debt above 200%")}</option>
@@ -230,7 +232,7 @@
 						<option value="1" {if $listdata.block=='1'} selected{/if}>włączone</option>
 						<option value="2" {if $listdata.block=='2'} selected{/if}>wyłączone</option>
 						<option value="3" {if $listdata.block=='3'} selected{/if}>częściowo</option>
-                                                <option value="4" {if $listdata.block=='4'} selected{/if}>zawieszenie blokowania</option>
+					    <option value="4" {if $listdata.block=='4'} selected{/if}>zawieszenie blokowania</option>
 					    </select>
 					</td>
 					
@@ -245,14 +247,17 @@
 					    <option value="-1" {if $listdata.contractend=='-1'} selected {/if}>przeterminowane</option>
 					    <option value="-2" {if $listdata.contractend=='-2'} selected {/if}>bezterminowe</option>
 					    <option value="-3" {if $listdata.contractend=='-3'} selected {/if}>bez zobowiązań</option>
-                                            <option value="-4" {if $listdata.contractend=='-4'} selected {/if}>zawieszone naliczanie</option>
-                                            <option value="-15" {if $listdata.contractend=='-15'} selected {/if}>naliczanie roczne</option>
-                                            <option value="-17" {if $listdata.contractend=='-17'} selected {/if}>naliczanie półroczne</option> 
-                                            <option value="-14" {if $listdata.contractend=='-14'} selected {/if}>naliczanie kwartalne</option>                                         
-                                            <option value="-13" {if $listdata.contractend=='-13'} selected {/if}>naliczanie miesięczne</option>
-                                            <option value="-12" {if $listdata.contractend=='-12'} selected {/if}>naliczanie tygodniowe</option>
-                                            <option value="-11" {if $listdata.contractend=='-11'} selected {/if}>naliczanie codzienne</option>
-                                            <option value="-10" {if $listdata.contractend=='-10'} selected {/if}>naliczenie jednorazowe</option>
+					    <option value="-4" {if $listdata.contractend=='-4'} selected {/if}>zawieszone naliczanie</option>
+					    <option value="-15" {if $listdata.contractend=='-15'} selected {/if}>naliczanie roczne</option>
+					    <option value="-17" {if $listdata.contractend=='-17'} selected {/if}>naliczanie półroczne</option> 
+					    <option value="-14" {if $listdata.contractend=='-14'} selected {/if}>naliczanie kwartalne</option>                                         
+					    <option value="-13" {if $listdata.contractend=='-13'} selected {/if}>naliczanie miesięczne</option>
+					    <option value="-12" {if $listdata.contractend=='-12'} selected {/if}>naliczanie tygodniowe</option>
+					    <option value="-11" {if $listdata.contractend=='-11'} selected {/if}>naliczanie codzienne</option>
+					    <option value="-10" {if $listdata.contractend=='-10'} selected {/if}>naliczenie jednorazowe</option>
+					    <option value="-18" {if $listdata.contractend=='-18'} selected {/if}>tylko naliczanie</option>
+					    <option value="-19" {if $listdata.contractend=='-19'} selected {/if}>naliczanie z fakturą</option>
+					    <option value="-20" {if $listdata.contractend=='-20'} selected {/if}>naliczanie z proformą</option>
 					    </select>
 					</td>
 					

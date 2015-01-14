@@ -102,16 +102,21 @@ class LMS {
 	    -2		: którzy są na czas nieokreślony
 	    -3		: bez jakich kolwiek zobowiązań
 	    FALSE	: domyślnie 30 dni, w ciągu 30 dni
-	    $>0	: w ciągu ilu dni kończy się zobowiązanie
-         *  -4          : zawieszona taryfa
-         * -10 do -17   : okres naliczania
+	    $>0		: w ciągu ilu dni kończy się zobowiązanie
+	    -4		: zawieszona taryfa
+	    -10 do -17	: okres naliczania
+	    -18		: tylko naliczanie
+	    -19 	: naliczanie - faktury
+	    -20		: naliczanie - proformy
+	    
+         
 	*/
 	if ( (is_null($dni))||($dni>'0'))
 	{
 	    if (is_null($dni)) $dateto = time() + 2592000;
 		else $dateto = time() + ($dni*86400);
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE '
+	    JOIN customersview c ON (a.customerid = c.id) WHERE '
 	    .' a.suspended=0 AND a.at!=0 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    .' AND a.dateto!=0'
 	    .' AND a.dateto<='.$dateto
@@ -127,7 +132,7 @@ class LMS {
 	{
 	    $dateto = time() + 2592000;
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.suspended=0 AND a.at!=0 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    .' AND a.dateto=0'
 	    ;
@@ -136,7 +141,7 @@ class LMS {
 	{
 	    $dateto = time();
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.suspended=0 AND a.at!=0 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    .' AND a.dateto!=0'
 	    .' AND a.dateto<'.time()
@@ -146,14 +151,14 @@ class LMS {
         elseif ($dni=='-4')
 	{	  
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.suspended=1 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    ;
 	}
         elseif ($dni=='-15')
 	{	  
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.period=5 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    ;
 	}
@@ -161,47 +166,76 @@ class LMS {
 	{
 	  
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.period=7 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    ;
 	}
         elseif ($dni=='-14')
 	{	  
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.period=4 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    ;
 	}
         elseif ($dni=='-13')
 	{	  
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.period=3 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    ;
 	}
         elseif ($dni=='-12')
 	{	  
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.period=2 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    ;
 	}
         elseif ($dni=='-11')
 	{	  
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.period=1 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    ;
 	}
         elseif ($dni=='-10')
 	{	  
-	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a '
+	    .'JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.period=0 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    ;
 	}
-        
-	return $this->DB->GetCol($zap);
+	elseif ($dni=='-18')
+	{
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) 
+	    WHERE (a.dateto=0 OR a.dateto > '.time().') 
+	    AND a.suspended=0 
+	    AND a.period!=0 
+	    AND a.invoice=0 AND (a.tariffid!=0 OR a.liabilityid!=0)';
+	}
+	elseif ($dni=='-19')
+	{
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) 
+	    WHERE (a.dateto=0 OR a.dateto > '.time().') 
+	    AND a.suspended=0 
+	    AND a.period!=0 
+	    AND a.invoice='.DOC_INVOICE.' AND (a.tariffid!=0 OR a.liabilityid!=0)';
+	}
+	elseif ($dni=='-20')
+	{
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) 
+	    WHERE (a.dateto=0 OR a.dateto > '.time().') 
+	    AND a.suspended=0 
+	    AND a.period!=0 
+	    AND a.invoice='.DOC_INVOICE_PRO.' AND (a.tariffid!=0 OR a.liabilityid!=0)';
+	}
+	
+	$result = $this->DB->GetCol($zap);
+	
+	return $result;
     }
 
 	/*
@@ -1030,6 +1064,8 @@ class LMS {
 				break;
 			case 15: $tying = 1;
 				break;
+			case 16: $balanceok = 1; break;
+			case 17: $balanceok2 = 1; break;
 		}
 		
 		switch ($odlaczeni) {
@@ -1229,6 +1265,8 @@ class LMS {
 				. ($indebted ? ' AND b.value < 0' : '')
 				. ($indebted2 ? ' AND b.value < -t.value' : '')
 				. ($indebted3 ? ' AND b.value < -t.value * 2' : '')
+				. ($balanceok ? ' AND (b.value = 0 OR b.value IS NULL) ' : '')
+				. ($balanceok2 ? ' AND b.value > 0' : '')
 				. ($origin ? ' AND c.origin = '.$origin : '')
 				. (!$odlaczeni && $disabled ? ' AND s.ownerid IS NOT NULL AND s.account > s.acsum' : '')
 				. ($odlaczeni && $disabled == 1 ? ' AND s.ownerid IS NOT NULL AND s.acsum = 0 ' : '')

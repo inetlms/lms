@@ -112,7 +112,11 @@ function GetInvoicesList($search=NULL, $cat=NULL, $group=NULL, $hideclosed=NULL,
 			CASE reference WHEN 0 THEN
 			    SUM(a.value*a.count) 
 			ELSE
-			    IF (type='.DOC_INVOICE_PRO.',SUM(a.value*a.count),SUM((a.value+b.value)*(a.count+b.count)) - SUM(b.value*b.count))
+			    CASE type WHEN '.DOC_INVOICE_PRO.' THEN
+				SUM(a.value * a.count)
+			    ELSE
+				SUM((a.value + b.value) * (a.count + b.count)) - SUM(b.value*b.count)
+			    END
 			END AS value, 
 			COUNT(a.docid) AS count
 			FROM documents d

@@ -6,7 +6,7 @@ $DB->BeginTrans();
 $DB->Execute("ALTER TABLE documents ADD version VARCHAR( 10 ) DEFAULT NULL;");
 $DB->Execute("ALTER TABLE documents ADD templatetype VARCHAR( 10 ) DEFAULT NULL;");
 $DB->Execute("ALTER TABLE documents ADD templatefile VARCHAR( 255 ) DEFAULT NULL");
-$DB->Execute("ALTER TABLE documents ADD sdateview SMALLINT DEFAULT '0' COMMENT;");
+$DB->Execute("ALTER TABLE documents ADD sdateview SMALLINT DEFAULT '0'");
 $DB->Execute("ALTER TABLE documents ADD urllogofile VARCHAR( 255 ) DEFAULT NULL;");
 
 
