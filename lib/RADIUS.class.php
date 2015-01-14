@@ -48,12 +48,13 @@ class RADIUS {
     {
         return $this->DB->GetOne('SELECT radacctid FROM radacct WHERE (acctstoptime IS NULL OR acctstoptime=\'0000-00-00 00:00:00\') AND  username = ? LIMIT 1;',array($name));
     } //pobiera radacctid po nazwie użytkownika (login pppoe) z aktualnej sesji zapisanej w tabeli radacct
-    
+
     function GetacctidByName($name)
     {
- 	return $this->DB->GetOne('SELECT acctsessionid FROM radacct WHERE (acctstoptime IS NULL OR acctstoptime=\'0000-00-00 00:00:00\') AND  username = ? LIMIT 1;',array($name));
-     } //pobiera acctsessionid po nazwie użytkownika (login pppoe) z aktualnej sesji zapisanej w tabeli radacct
+     return $this->DB->GetOne('SELECT acctsessionid FROM radacct WHERE (acctstoptime IS NULL OR acctstoptime=\'0000-00-00 00:00:00\') AND  username = ? LIMIT 1;',array($name));
+    } //pobiera acctsessionid po nazwie użytkownika (login pppoe) z aktualnej sesji zapisanej w tabeli radacct
     
+
     function disconnect_user($radacctid)
     {
 	
@@ -95,7 +96,7 @@ class RADIUS {
 		$this->DB->GetAll('SELECT r.radacctid, r.acctsessionid, r.username, r.nasipaddress, r.nasporttype, r.acctstarttime, r.servicetype '
 		.', r.acctstoptime, r.acctterminatecause '
 		.', r.acctsessiontime, r.acctinputoctets, r.acctoutputoctets, r.framedipaddress, UPPER(r.callingstationid) AS callingstationid '
-		.', nas.name AS nasname, nass.netdevid AS nasid '
+		.', nass.name AS nasname, nass.netdevid AS nasid '
 		.', n.id AS nodeid, n.name AS nodename , c.id AS cid'
 		.', '.$this->DB->Concat('c.lastname',"' '",'c.name').' AS customername '
 		.($status=='open' ? ', nd.maxid AS maxid ' : ', 0 AS maxid ')
