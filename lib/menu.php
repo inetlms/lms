@@ -956,12 +956,12 @@ $menu = array(
 					'tip' => trans('List of Cash Import Sources'),
 					'prio' => 80,
 				),
-//				array(
-//					'name'	=> 'Wtyczki',
-//					'link'	=> '?m=plugin',
-//					'tip'	=> 'Konfiguracja wtyczek',
-//					'prio'	=> 90,
-//				),
+				array(
+					'name'	=> 'Wtyczki',
+					'link'	=> '?m=plugin',
+					'tip'	=> 'Konfiguracja wtyczek',
+					'prio'	=> 90,
+				),
 				
 			),
 		),

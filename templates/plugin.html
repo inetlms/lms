@@ -6,15 +6,45 @@
 <table width="100%" cellpadding="3" class="table">
 
     <tr class="dark">
-	<td width="1%" class="pad h24"><b>Nazwa</b></td>
-	<td width="1%" class="pad h24"><b>Wersja</b></td>
-	<td width="1%" class="pad h24" nowrap><b>Wersja DB</b></td>
-	<td width="94%" class="pad h24"><b>Autor</b></td>
-	<td width="1%" class="pad h24"><b>Zainstalowana</b></td>
-	<td width="1%" class="pad h24"><b>Włączona</b></td>
-	<td width="1%" class="pad h24">&nbsp;</td>
-	
+	<td width="1%" class="pad10 h24 fleftu" align="left"><b>{trans('Name')}</b></td>
+	<td width="1%" class="pad10 h24 fbt" nowrap align="right"><b>{trans('Version')}</b></td>
+	<td width="1%" class="pad10 h24 fbt" nowrap align="right"><b>{trans('Version DB')}</b></td>
+	<td width="94%" class="pad10 h24 fbt" align="left"><b>{trans('Author')}</b></td>
+	<td width="1%" class="pad h24 fbt" align="center"><b>{trans('Installed')}</b></td>
+	<td width="1%" class="pad h24 fbt" align="center"><b>{trans('Enabled')}</b></td>
+	<td width="1%" class="pad h24 frightu" align="right">&nbsp;</td>
     </tr>
+    
+    {cycle values="lucid,light" print=false}
+    {foreach from=$pluglist item=item}
+    
+    <tr class="{cycle}{if !$item.enabled} blend{/if}{if !$item.install} green{/if} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td width="1%" class="pad10 h24 fleft" nowrap align="left">{$item.display}</td>
+	<td width="1%" class="pad10 h24" nowrap align="right">{$item.version}</td>
+	<td width="1%" class="pad10 h24" nowrap align="right">{$item.dbver}</td>
+	<td width="94%" class="pad10 h24" align="left">{$item.author}{if $item.email} ( {$item.email} ){/if}</td>
+	<td width="1%" class="pad h24" align="center">{if $item.install}{trans('YES')}{else}{trans('NO')}{/if}</td>
+	<td width="1%" class="pad h24" align="center">{if $item.enabled}{trans('YES')}{else}{trans('NO')}{/if}</td>
+	<td width="1%" class="pad h24 fright" nowrap align="right">
+	{if !$item.install}
+	    <img src="img/add.gif" {tip text="install the plug"} onclick="self.location.href='?m=plugin&action=install&ind={$item.indexes}&name={$item.name}';">
+	{else}
+	    {if $item.enabled}
+		<img src="img/access.gif" {tip text="disable"} onclick="self.location.href='?m=plugin&action=enabled&set=0&id={$item.id}';">
+	    {else}
+		<img src="img/noaccess.gif" {tip text="enable"} onclick="self.location.href='?m=plugin&action=enabled&set=1&id={$item.id}';">
+	    {/if}
+	{/if}
+	</td>
+    </tr>
+    
+    
+    {/foreach}
+    
+    <tr class="dark">
+	<td width="100%" colspan="7" class="pad10 fall" align="right"></td>
+    </tr>
+    
 </table>
 
 {else}

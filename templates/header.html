@@ -15,6 +15,11 @@
     <link href="img/map.css" rel="stylesheet" type="text/css">
     <link href="img/tcal.css" rel="stylesheet" type="text/css">
     <link href="img/jquery.cleditor.css" rel="stylesheet" type="text/css">
+{if $layout.includescss|@count ne 0}{assign var='includescss' value=$layout.includescss}
+{section name=includescss loop=$includescss}
+    <link href="{$includescss[includescss]}" rel="stylesheet" type="text/css">
+{/section}
+{/if}
     <link href="img/lms-net.gif" rel="shortcut icon">
     <script type="text/javascript" src="img/common.js"> </script>
     <script type="text/javascript" src="img/ClickShowHideMenu.js"> </script>
@@ -26,6 +31,11 @@
     <script type="text/javascript" src="img/jquery.cleditor.js"> </script>
     <script type="text/javascript" src="img/jquery.form.js"> </script>
     <script type="text/javascript" src="img/tcal.js"> </script>
+{if $layout.includesjs|@count ne 0}{assign var='includesjs' value=$layout.includesjs}
+{section name=includesjs loop=$includesjs}
+    <script type="text/javascript" src="{$includesjs[includesjs]}"></script>
+{/section}
+{/if}
 </head>
 <body onload="start_login_timeout({get_conf('phpui.timeout')})">
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:100;"></div>

@@ -26,7 +26,6 @@
 
 // REPLACE THIS WITH PATH TO YOUR CONFIG FILE
 
-
 $CONFIG_FILE = '/etc/lms/lms.ini';
 
 // PLEASE DO NOT MODIFY ANYTHING BELOW THIS LINE UNLESS YOU KNOW
@@ -256,7 +255,6 @@ $SMARTY->assignByRef('_ui_language', $LMS->ui_lang);
 $SMARTY->assignByRef('_language', $LMS->lang);
 
 
-
 $error = NULL; // initialize error variable needed for (almost) all modules
 
 
@@ -296,20 +294,80 @@ if ($AUTH->islogged) {
 	if ($AUTH->passwdrequiredchange)
 		$module = 'chpasswd';
 	
+	$PLUG->initPlugins();
+	$_plugcount = sizeof($_pluglist);
+	
 	if ($module == '')
 	{
 		$module = $CONFIG['phpui']['default_module'];
 		if (!file_exists(MODULES_DIR.'/'.$module.'.php'))
 		    $module = 'welcome_new';
+		    $plug = '';
 	}
 	
 	if (!$layout['popup']) {
+	    
+	    if ($_pluglist) {
+		for ($i=0; $i<($_plugcount); $i++) {
+		    if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php') && is_readable(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php'))
+			include(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php');
+		}
+	    }
+	    
 	    foreach($menu as $idx => $item) if(isset($item['submenu'])) uasort($menu[$idx]['submenu'],'menu_cmp');
 	    uasort($menu,'menu_cmp');
 	    $SMARTY->assign('newmenu',$menu);
 	}
 	
-	if (file_exists(MODULES_DIR.'/'.$module.'.php'))
+	if ($_plugcount > 0) {
+	    
+	    for ($i=0; $i<$_plugcount; $i++) {
+		
+		if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/lang/'.$LMS->lang.'.php'))
+			require_once(PLUG_DIR.'/'.$_pluglist[$i].'/lang/'.$LMS->lang.'.php');
+		
+		if (is_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes')) {
+		    $phpfile = $PLUG->list_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes','php');
+		    $jsfile = $PLUG->list_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes','js');
+		    $cssfile = $PLUG->list_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes','css');
+		    for ($j=0; $j<sizeof($phpfile); $j++) require_once(PLUG_DIR.'/'.$_pluglist[$i].'/includes/'.$phpfile[$j]);
+		    for ($j=0; $j<sizeof($jsfile); $j++) $layout['includesjs'][] = 'plug/'.$_pluglist[$i].'/includes/'.$jsfile[$j];
+		    for ($j=0; $j<sizeof($cssfile); $j++) $layout['includescss'][] = 'plug/'.$_pluglist[$i].'/includes/'.$cssfile[$j];
+		}
+		
+	    }
+	
+	}
+	
+	if ($plug) {
+	    
+	    if (file_exists(PLUG_DIR.'/'.$plug.'/lang/'.$LMS->lang.'.php'))
+		require_once(PLUG_DIR.'/'.$plug.'/lang/'.$LMS->lang.'.php');
+	    
+	    if (is_dir(PLUG_DIR.'/'.$plug.'/includes_call')) {
+		$phpfile = $PLUG->list_dir(PLUG_DIR.'/'.$plug.'/includes_call','php');
+		$jsfile = $PLUG->list_dir(PLUG_DIR.'/'.$plug.'/includes_call','js');
+		$cssfile = $PLUG->list_dir(PLUG_DIR.'/'.$plug.'/includes_call','css');
+		for ($j=0; $j<sizeof($phpfile); $j++) require_once(PLUG_DIR.'/'.$plug.'/includes_call/'.$phpfile[$j]);
+		for ($j=0; $j<sizeof($jsfile); $j++) $layout['includesjs'][] = 'plug/'.$plug.'/includes_call/'.$jsfile[$j];
+		for ($j=0; $j<sizeof($cssfile); $j++) $layout['includescss'][] = 'plug/'.$plug.'/includes_call/'.$cssfile[$j];
+	    }
+
+	    if (file_exists(PLUG_DIR.'/'.$plug.'/modules/'.$module.'.php')) {
+		$layout['plug'] = $plug;
+		$layout['module'] = $module;
+		include(PLUG_DIR.'/'.$plug.'/modules/'.$module.'.php');
+	    } else {
+		$layout['module'] = 'notfound';
+		$layout['pagetitle'] = trans('Error!');
+		$SMARTY->assign('layout', $layout);
+		$SMARTY->assign('server', $_SERVER);
+		$SMARTY->display('notfound.html');
+	    }
+	    
+	    $SMARTY->assign('plug',$plug);
+	}
+	elseif (file_exists(MODULES_DIR.'/'.$module.'.php'))
 	{
 		$global_allow = !$AUTH->id || (!empty($access['allow']) && preg_match('/'.$access['allow'].'/i', $module));
 
