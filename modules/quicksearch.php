@@ -104,7 +104,7 @@ switch($mode)
 				ORDER by deleted, username, email, address
 				LIMIT 15");
 */
-			$candidates = $DB->GetAll("SELECT c.id, c.email, c.address, c.post_name, c.post_address, c.deleted, p.phone, i.uid, 
+			$candidates = $DB->GetAll("SELECT c.id, c.email, c.address, c.post_name, c.post_address, c.deleted, c.ten, c.ssn, c.regon, c.rbe, c.icn, p.phone, i.uid, 
 			    ".$DB->Concat('UPPER(c.lastname)',"' '",'c.name')." AS username 
 				FROM customersview c 
 				LEFT JOIN customercontacts p ON (p.customerid = c.id) 
@@ -115,6 +115,11 @@ switch($mode)
 					OR LOWER(c.post_name) ?LIKE? LOWER($sql_search) 
 					OR LOWER(c.post_address) ?LIKE? LOWER($sql_search) 
 					OR LOWER(c.email) ?LIKE? LOWER($sql_search) 
+					OR LOWER(c.ten) ?LIKE? LOWER($sql_search) 
+					OR LOWER(c.ssn) ?LIKE? LOWER($sql_search) 
+					OR LOWER(c.regon) ?LIKE? LOWER($sql_search) 
+					OR LOWER(c.rbe) ?LIKE? LOWER($sql_search) 
+					OR LOWER(c.icn) ?LIKE? LOWER($sql_search) 
 					OR LOWER(p.phone) ?LIKE? LOWER($sql_search) 
 					OR LOWER(i.uid) ?LIKE? LOWER($sql_search) 
 				ORDER by deleted, username, email, address

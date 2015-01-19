@@ -34,7 +34,7 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
-define('LMSV','15.01.15');
+define('LMSV','15.01.19');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 
 // find alternative config files:
@@ -275,7 +275,7 @@ if ($AUTH->islogged) {
 		$access['table'] = $res['accesstable'];
 	
 	$module = isset($_GET['m']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_GET['m']) : '';
-	$plug = isset($_GET['p']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_GET['p']) : '';
+	$plug = isset($_GET['plug']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_GET['plug']) : '';
 	
 	if (!$layout['popup'])
 	    require_once(LIB_DIR.'/menu.php');

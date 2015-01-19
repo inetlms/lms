@@ -105,7 +105,7 @@ function _smarty_block_box($params, $content, &$template, &$repeat)
 
 function plug_get_template($tpl_name, &$tpl_source, $template)
 {
-	$plug = $_GET['p'];
+	$plug = $_GET['plug'];
 	$template_path = PLUG_DIR.'/'.$plug.'/templates/'.$tpl_name;
 	
 	if (file_exists($template_path)) {
@@ -119,7 +119,7 @@ function plug_get_template($tpl_name, &$tpl_source, $template)
 
 function plug_get_timestamp($tpl_name, &$tpl_timestamp, $template)
 {
-	$plug = $_GET['p'];
+	$plug = $_GET['plug'];
 	$template_path = PLUG_DIR.'/'.$plug.'/templates/'.$tpl_name;
 	
 	if (file_exists($template_path)) {

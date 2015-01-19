@@ -34,6 +34,11 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-01-19',
+	    'status'	=> '',
+	    'opis'	=> 'Szybkie wyszukiwanie klientów - rozbudowano o pola : NIP, PESEL, REGON, EDG/KRS i Dow. os.',
+	),
+	array(
 	    'data'	=> '2015-01-15',
 	    'status'	=> '',
 	    'opis'	=> 'poprawka invoicelist dla postgresa',
