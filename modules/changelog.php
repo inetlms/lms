@@ -34,6 +34,21 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-01-22',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka edycji faktury, błędnie podstawiał pola dla odbiorcy faktury i adresu wysyłki ',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka choosecustomersearch.php , nie można było wybrać klienta jak w nazwie był użyty znak "',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka skryptu lms-payments, nie naliczał abonamentu jak w zobowiązaniu klienta było tylko naliczanie',
+	),
+	array(
 	    'data'	=> '2015-01-19',
 	    'status'	=> '',
 	    'opis'	=> 'Szybkie wyszukiwanie klientów - rozbudowano o pola : NIP, PESEL, REGON, EDG/KRS i Dow. os.',
