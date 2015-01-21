@@ -403,7 +403,7 @@ $dbq = $dbase->prepare("SELECT a.tariffid, a.liabilityid, a.customerid,
 	LEFT JOIN liabilities l ON (a.liabilityid = l.id)
 	LEFT JOIN divisions d ON (d.id = c.divisionid)
 	WHERE c.status = 3
-		AND (a.invoice = 6 OR a.invoice = 1) 
+		AND (a.invoice = 6 OR a.invoice = 1 OR a.invoice = 0) 
 		AND ((a.period = ".DISPOSABLE." AND at = $today)
 			OR ((a.period = ".DAY."
 			OR (a.period = ".WEEK." AND at = $weekday)
