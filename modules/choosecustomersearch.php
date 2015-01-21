@@ -61,6 +61,10 @@ if(isset($where_cust))
 					    .(isset($where_cust) ? $where_cust : '')
 					    .'ORDER BY customername LIMIT 20
 					) c');
+	
+	for ($i=0; $i<sizeof($customerlist); $i++)
+	    $customerlist[$i]['customername'] = str_replace('"','',str_replace("'","",$customerlist[$i]['customername']));
+	
 	$SMARTY->assign('customerlist', $customerlist);
 }
 
