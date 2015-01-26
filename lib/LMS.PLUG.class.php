@@ -1,6 +1,7 @@
 <?php
 
 $_pluglist = array();
+$_pluginc = array();
 
 class PLUG {
 
@@ -20,6 +21,30 @@ class PLUG {
 		$_pluglist[] = $tmp[$i]['name'];
 	}
 	
+    }
+
+
+    function addIncludeCustomer($plugname,$modfile=NULL,$htmlfile=NULL)
+    {
+	global $_pluginc;
+	
+	if (!is_null($modfile) && !empty($modfile) && file_exists(PLUG_DIR.'/'.$plugname.'/modules/'.$modfile))
+	    $modfile = PLUG_DIR.'/'.$plugname.'/modules/'.$modfile;
+	else
+	    $modfile = NULL;
+	
+	if (!is_null($htmlfile) && !empty($htmlfile) && file_exists(PLUG_DIR.'/'.$plugname.'/templates/'.$htmlfile))
+	    $htmlfile = 'plug/'.$plugname.'/templates/'.$htmlfile;
+	else
+	    $htmlfile = NULL;
+	
+	if (!is_null($modfile) || !is_null($htmlfile)) {
+	    
+	    $_pluginc['customer'][] = array(
+		'modfile'	=> $modfile,
+		'htmlfile'	=> $htmlfile
+	    );
+	}
     }
 
 

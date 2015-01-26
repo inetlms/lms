@@ -51,7 +51,7 @@
 					</td>
 					<td>&nbsp;</td>
 					<td>
-						<input type="text" name="customeradd[lastname]" value="{$customeradd.lastname}" size="50" {tip text="Enter customer last name or company name" trigger="lastname" bold=1}>
+						<input type="text" name="customeradd[lastname]" value="{$customeradd.lastname|escape}" size="50" {tip text="Enter customer last name or company name" trigger="lastname" bold=1}>
 					</td>
 				</tr>
 				<tr>
@@ -60,7 +60,7 @@
 					</td>
 					<td>&nbsp;</td>
 					<td>
-						<input type="text" name="customeradd[name]" value="{$customeradd.name}" size="50" {tip text="Enter customer name" trigger="name" bold=1}>
+						<input type="text" name="customeradd[name]" value="{$customeradd.name|escape}" size="50" {tip text="Enter customer name" trigger="name" bold=1}>
 					</td>
 				</tr>
 			</table>
@@ -190,11 +190,11 @@
 						<table width="100%" cellpadding="1">
 						    <tr>
 							<td width="1%" nowrap>{trans("Name:")}</td>
-							<td width="99%"><input type="text" size="30" value="{$customeradd.invoice_name}" name="customeradd[invoice_name]" id="invoice_name" {tip text="Enter service name" trigger="invoice_name"}></td>
+							<td width="99%"><input type="text" size="30" value="{$customeradd.invoice_name|escape}" name="customeradd[invoice_name]" id="invoice_name" {tip text="Enter service name" trigger="invoice_name"}></td>
 						    </tr>
 						    <tr>
 							<td width="1%" nowrap>Nazwa cd.</td>
-							<td width="99%"><input type="text" size="30" value="{$customeradd.invoice_lastname}" name="customeradd[invoice_lastname]" id="invoice_lastname"></td>
+							<td width="99%"><input type="text" size="30" value="{$customeradd.invoice_lastname|escape}" name="customeradd[invoice_lastname]" id="invoice_lastname"></td>
 						    </tr>
 						    <tr>
 							<td width="1%" nowrap>{trans("Address:")}</td>
@@ -277,7 +277,7 @@
 						<table width="100%" cellpadding="1">
 						    <tr>
 							<td width="1%" nowrap>{trans("Name:")}</td>
-							<td width="99%"><input type="text" size="30" value="{$customeradd.post_name}" name="customeradd[post_name]" id="post_name" {tip text="Enter service name (optional)" trigger="post_name"}></td>
+							<td width="99%"><input type="text" size="30" value="{$customeradd.post_name|escape}" name="customeradd[post_name]" id="post_name" {tip text="Enter service name (optional)" trigger="post_name"}></td>
 						    </tr>
 						    <tr>
 							<td width="1%" nowrap>{trans("Address:")}</td>

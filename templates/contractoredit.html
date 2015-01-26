@@ -149,7 +149,7 @@
 			<table width="100%" cellpadding="1">
 			    <tr>
 				<td width="1%" nowrap>{trans("Name:")}</td>
-				<td width="99%"><input type="text" name="contractordata[post_name]" id="post_name" value="{$contractorinfo.post_name}" size="30" {tip text="Enter service name (optional)" trigger="post_name"}></td>
+				<td width="99%"><input type="text" name="contractordata[post_name]" id="post_name" value="{$contractorinfo.post_name|escape}" size="30" {tip text="Enter service name (optional)" trigger="post_name"}></td>
 			    </tr>
 			    <tr>
     				<td width="1%" nowrap>{trans("Address:")}</td>

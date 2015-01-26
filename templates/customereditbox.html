@@ -184,11 +184,11 @@
 						<table width="100%" cellpadding="1">
 						    <tr>
 							<td width="1%" nowrap>{trans("Name:")}</td>
-							<td width="99%"><input type="text" size="30" value="{$customerinfo.invoice_name}" name="customerdata[invoice_name]" id="invoice_name" {tip text="Enter service name" trigger="invoice_name"}></td>
+							<td width="99%"><input type="text" size="30" value="{$customerinfo.invoice_name|escape}" name="customerdata[invoice_name]" id="invoice_name" {tip text="Enter service name" trigger="invoice_name"}></td>
 						    </tr>
 						    <tr>
 							<td width="1%" nowrap>Nazwa cd.</td>
-							<td width="99%"><input type="text" size="30" value="{$customerinfo.invoice_lastname}" name="customerdata[invoice_lastname]" id="invoice_lastname"></td>
+							<td width="99%"><input type="text" size="30" value="{$customerinfo.invoice_lastname|escape}" name="customerdata[invoice_lastname]" id="invoice_lastname"></td>
 						    </tr>
 						    <tr>
 							<td width="1%" nowrap>{trans("Address:")}</td>
@@ -271,7 +271,7 @@
 			<table width="100%" cellpadding="1">
 			    <tr>
 				<td width="1%" nowrap>{trans("Name:")}</td>
-				<td width="99%"><input type="text" name="customerdata[post_name]" id="post_name" value="{$customerinfo.post_name}" size="30" {tip text="Enter service name (optional)" trigger="post_name"}></td>
+				<td width="99%"><input type="text" name="customerdata[post_name]" id="post_name" value="{$customerinfo.post_name|escape}" size="30" {tip text="Enter service name (optional)" trigger="post_name"}></td>
 			    </tr>
 			    <tr>
     				<td width="1%" nowrap>{trans("Address:")}</td>

@@ -133,6 +133,18 @@
 	</tr>
 	{/if}
 	{/if}
+	
+	{if $_pluginc.customer}
+	    {assign var='inclist' value=$_pluginc.customer}
+	    {section name='inclist' loop=$inclist}
+		{assign var='plik' value=$inclist[inclist].htmlfile}
+		<tr>
+		    <td width="100%">
+			{include file=$plik}
+		    </td>
+		</tr>
+	    {/section}
+	{/if}
 </table>
 {else}
 {include file="nodescanbox.html"}

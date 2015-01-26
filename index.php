@@ -34,7 +34,7 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
-define('LMSV','15.01.22');
+define('LMSV','15.01.26');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 
 // find alternative config files:
@@ -326,6 +326,9 @@ if ($AUTH->islogged) {
 		if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/lang/'.$LMS->lang.'.php'))
 			require_once(PLUG_DIR.'/'.$_pluglist[$i].'/lang/'.$LMS->lang.'.php');
 		
+		if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/inc.php'))
+			require_once(PLUG_DIR.'/'.$_pluglist[$i].'/inc.php');
+		
 		if (is_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes')) {
 		    $phpfile = $PLUG->list_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes','php');
 		    $jsfile = $PLUG->list_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes','js');
@@ -336,7 +339,8 @@ if ($AUTH->islogged) {
 		}
 		
 	    }
-	
+	    
+	    $SMARTY->assignByRef('_pluginc',$_pluginc);
 	}
 	
 	if ($plug) {
@@ -365,7 +369,7 @@ if ($AUTH->islogged) {
 		$SMARTY->display('notfound.html');
 	    }
 	    
-	    $SMARTY->assign('plug',$plug);
+//	    $SMARTY->assign('plug',$plug);
 	}
 	elseif (file_exists(MODULES_DIR.'/'.$module.'.php'))
 	{

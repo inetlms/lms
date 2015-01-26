@@ -68,6 +68,14 @@ if(!empty($documents))
 	        FROM docrights WHERE userid = ? AND rights > 1', 'doctype', array($AUTH->id)));
 }
 
+if ($_pluginc['customer']) {
+    
+    $inclist = $_pluginc['customer'];
+    for ($i=0; $i<sizeof($inclist); $i++)
+	@include($inclist[$i]['modfile']);
+}
+
+
 $SMARTY->assign(array(
 	'expired' => $expired, 
 	'time' => $SESSION->get('addbt'),

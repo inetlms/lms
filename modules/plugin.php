@@ -48,15 +48,14 @@ if (isset($_GET['action']) && !empty($_GET['action']))
 $pluglist = array();
 
 $plugindir = opendir(PLUG_DIR);
-
 while ( false != ($dirname = readdir($plugindir))) {
     
     if ((preg_match('/^[a-zA-Z0-9]/',$dirname)) && (is_dir(PLUG_DIR.'/'.$dirname)) && file_exists(PLUG_DIR.'/'.$dirname.'/configuration.php')) {
 	
 	require_once(PLUG_DIR.'/'.$dirname.'/configuration.php');
-	
-	if (isset($__info['disabled']) && $__info['disabled'] == true)
-	    break;
+//	
+//	if (isset($__info['disabled']) && $__info['disabled'] == true)
+//	    break;
 	
 	$pluglist[$__info['indexes']] = $__info;
     }
