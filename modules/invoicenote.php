@@ -165,6 +165,10 @@ switch($action)
 		}
 		else
 			$cnote['cdate'] = $currtime;
+		
+		if (empty($cnote['reason'])) {
+		    $error['reason'] = 'Powód korekty jest wymagany';
+		}
 
 		if($cnote['number'])
 		{
@@ -182,12 +186,17 @@ switch($action)
 		{
 		        $error['number'] = trans('Selected numbering plan doesn\'t match customer\'s division!');
 		}
+		
+		if (!$error)
+		    $cnote['init_header'] = 1;
+		else
+		    $cnote['init_header'] = NULL;
 
 	break;
 
 	case 'save':
 
-		if (empty($contents) || empty($cnote))
+		if (empty($contents) || empty($cnote) || $error)
 			break;
 
 		$SESSION->restore('invoiceid', $invoice['id']);
@@ -277,8 +286,8 @@ switch($action)
 		else
 		    $invoice['urllogofile'] = get_conf('invoices.urllogofile','');
 		
-		if (!is_readable($invoice['urllogofile']))
-		    $invoice['urllogofile'] = '';
+//		if (!is_readable($invoice['urllogofile']))
+//		    $invoice['urllogofile'] = '';
 		
 		if (empty($division['inv_author']))
 		    $division['inv_author'] = $this->DB->GetOne('SELECT name FROM users WHERE id = ? LIMIT 1;',array($tis->AUTH->id));

@@ -7,6 +7,7 @@
 	function printinvoice()
 	{
 		var add = "";
+		
 		if (document.save.original.checked)
 			add += "&original=1";
 		if (document.save.copy.checked)
@@ -14,6 +15,7 @@
 		document.save.action = "?m=invoicenote&action=save&print=1" + add;
 		document.save.submit();
 	}
+	
 
 	function deadline_calendar(elem)
 	{
@@ -131,7 +133,7 @@
 			<b>{trans("Reason:")}</b>
 		</td>
 		<td class="fright" width="99%" nowrap>
-			<textarea name="cnote[reason]" id="id_reason" rows="4" style="width:300px;" {tip text="Enter reason (optional)"}>{$cnote.reason}</textarea>
+			<textarea name="cnote[reason]" id="id_reason" rows="4" style="width:300px;" {tip text="Podaj powód korekty, obowiązkowe" trigger="reason"}>{$cnote.reason}</textarea>
 			{if $cnotelist}<br><br>
 			    <select name="cnotelist" style="width:300px;" {tip text="Wybierz przyczynę korekty ze słownika"} onchange="select_reason(this.value);">
 				<option value=""></option>
@@ -144,11 +146,12 @@
 	</tr>
 	<tr class="light">
 		<td class="fbottomu" width="100%" align="right" colspan="2">
-			<a href="javascript:document.setheader.submit();">{trans("Submit")} <img src="img/save.gif" alt=""></a>
+			<a href="javascript:document.setheader.submit();">{if $cnote.init_header}{trans("Submit")}{else}Dalej{/if} <img src="img/save.gif" alt=""></a>
 		</td>
 	</tr>
 </table>
 </form>
+{if $cnote.init_header}
 <br>
 <form name="save" method="POST" action="?m=invoicenote&action=save">
 <input type="submit" class="hiddenbtn">
@@ -311,6 +314,7 @@
 	</tr>
 </table>
 </form>
+{/if}
 <script type="text/javascript">
 <!--
 deadline_callback = function(val)
