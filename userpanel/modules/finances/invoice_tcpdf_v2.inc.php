@@ -436,7 +436,8 @@ function invoice_buyer_v2() {
 	$buyer .= $invoice['address'] . '<br>';
 	$buyer .= $invoice['zip'] . ' ' . $invoice['city'] . '<br>';
 	if ($invoice['ten']) $buyer .= trans('TEN') . ': ' . $invoice['ten'] . '<br>';
-	else $buyer .= trans('SSN') . ': ' . $invoice['ssn'] . '<br>';
+	elseif ($invoice['ssn']) $buyer .= trans('SSN') . ': ' . $invoice['ssn'] . '<br>';
+	else $buyer .= '<br>';
 
 	$pdf->SetFont('arial', '', 10);
 	$pdf->writeHTMLCell(80, '', '', '', $buyer, 0, 1, 0, true, 'L');
