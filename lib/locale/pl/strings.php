@@ -23,10 +23,14 @@
  *
  *  $Id$
  */
+
+$_LANG['Minimum version'] = 'Minimalna wersja';
+$_LANG['Required version'] = 'Wymagana wersja';
+$_LANG['Supported<br>Databases'] = 'Obsługiwane<br>Bazy danych';
 $_LANG['Version'] = 'Wersja';
 $_LANG['Version DB'] = 'Wersja DB';
 $_LANG['Author'] = 'Autor';
-$_LANG['Installed'] = 'Zainstalowany';
+$_LANG['Installed'] = 'Zainstalowane';
 $_LANG['NO'] = 'NIE';
 $_LANG['YES'] = 'TAK';
 $_LANG['enable'] = 'włącz';
@@ -2626,7 +2630,7 @@ $_LANG['Total: $a% ($b/$c)'] = 'Razem: $a% ($b/$c)';
 $_LANG['Auto Scroll'] = 'Automatyczne przewijanie';
 $_LANG['Enter IP address:'] = 'Podaj adres IP:';
 $_LANG['Ping to $a'] = 'Ping do $a';
-$_LANG['Enabled'] = 'Włączony';
+$_LANG['Enabled'] = 'Włączone';
 $_LANG['any sms'] = 'dowolny sms';
 $_LANG['Enter phone numbers separated by commas'] = 'Podaj numery telefonów oddzielone przecinkami';
 $_LANG['Specified phone number is not correct!'] = 'Podany numer telefonu nie jest poprawny!';

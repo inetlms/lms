@@ -6,10 +6,13 @@
 <table width="100%" cellpadding="3" class="table">
 
     <tr class="dark">
-	<td width="1%" class="pad10 h24 fleftu" align="left"><b>{trans('Name')}</b></td>
+	<td width="1%" class="pad10 h24 fleftu" align="left"><b>{trans('Name')}<br>{trans('Description')}</b></td>
 	<td width="1%" class="pad10 h24 fbt" nowrap align="right"><b>{trans('Version')}</b></td>
 	<td width="1%" class="pad10 h24 fbt" nowrap align="right"><b>{trans('Version DB')}</b></td>
-	<td width="94%" class="pad10 h24 fbt" align="left"><b>{trans('Author')}</b></td>
+	<td width="92%" class="pad10 h24 fbt" align="left"><b>{trans('Author')}<br>{trans('E-mail')}</b></td>
+	<td width="1%" class="pad10 h24 fbt" align="center" nowrap><b>{trans('Minimum version')}<br>iNET LMS</b></td>
+	<td width="1%" class="pad10 h24 fbt" align="center"><b>{trans('Supported<br>Databases')}</b></td>
+	
 	<td width="1%" class="pad h24 fbt" align="center"><b>{trans('Installed')}</b></td>
 	<td width="1%" class="pad h24 fbt" align="center"><b>{trans('Enabled')}</b></td>
 	<td width="1%" class="pad h24 frightu" align="right">&nbsp;</td>
@@ -19,15 +22,23 @@
     {foreach from=$pluglist item=item}
     
     <tr class="{cycle}{if !$item.enabled} blend{/if}{if !$item.install} green{/if} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-	<td width="1%" class="pad10 h24 fleft" nowrap align="left">{$item.display}</td>
+	<td width="1%" class="pad10 h24 fleft" nowrap align="left"><b>{$item.display}</b>{if $item.description}<br>{$item.description}{/if}</td>
 	<td width="1%" class="pad10 h24" nowrap align="right">{$item.version}</td>
-	<td width="1%" class="pad10 h24" nowrap align="right">{$item.dbver}</td>
-	<td width="94%" class="pad10 h24" align="left">{$item.author}{if $item.email} ( {$item.email} ){/if}</td>
+	<td width="1%" class="pad10 h24" nowrap align="right">{if $item.install}{$item.dbver}{else}{$item.dbversion}{/if}</td>
+	<td width="92%" class="pad10 h24" align="left">{$item.author}{if $item.email}{if $item.email}<br><i>{$item.email}</i>{/if}{/if}</td>
+	<td width="1%" class="pad h24" align="center">{if !$item.minversion}---{else}{$item.minversion}{/if}</td>
+	<td width="1%" class="pad h24" align="center">{if $item.installdb}{if $item.mysql}MySQL{/if}{if $item.mysql && $item.postgres}<br>{/if}{if $item.postgres}Postgres{/if}{else}---{/if}</td>
 	<td width="1%" class="pad h24" align="center">{if $item.install}{trans('YES')}{else}{trans('NO')}{/if}</td>
 	<td width="1%" class="pad h24" align="center">{if $item.enabled}{trans('YES')}{else}{trans('NO')}{/if}</td>
 	<td width="1%" class="pad h24 fright" nowrap align="right">
 	{if !$item.install}
-	    <img src="img/add.gif" {tip text="install the plug"} onclick="self.location.href='?m=plugin&action=install&ind={$item.indexes}&name={$item.name}';">
+	    {if (($item.mysql && get_conf('database.type') == 'mysql') || ($item.postgres && get_conf('database.type') == 'postgres') || (!$item.installdb)) && (version_compare($item.minversion,$smarty.const.LMSV) != '1')}
+		{if !$item.installdb}
+		    <img src="img/add.gif" {tip text="install the plug"} onclick="self.location.href='?m=plugin&action=install&ind={$item.indexes}&name={$item.name}';">
+		{else}
+		    <img src="img/add.gif" {tip text="install the plug"}>
+		{/if}
+	    {/if}
 	{else}
 	    {if $item.enabled}
 		<img src="img/access.gif" {tip text="disable"} onclick="self.location.href='?m=plugin&action=enabled&set=0&id={$item.id}';">
@@ -42,7 +53,7 @@
     {/foreach}
     
     <tr class="dark">
-	<td width="100%" colspan="7" class="pad10 fall" align="right"></td>
+	<td width="100%" colspan="9" class="pad10 fall" align="right"></td>
     </tr>
     
 </table>

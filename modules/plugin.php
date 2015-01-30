@@ -54,8 +54,7 @@ while ( false != ($dirname = readdir($plugindir))) {
 	
 	require_once(PLUG_DIR.'/'.$dirname.'/configuration.php');
 //	
-//	if (isset($__info['disabled']) && $__info['disabled'] == true)
-//	    break;
+	if (isset($__info['disabled']) && $__info['disabled'] == true) continue;
 	
 	$pluglist[$__info['indexes']] = $__info;
     }
