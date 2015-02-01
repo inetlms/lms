@@ -30,9 +30,12 @@ if (isset($_GET['action']) && !empty($_GET['action']))
 				
 				if ($__info['name'] == $name && $__info['indexes'] == $ind) {
 				
-				    if (!$DB->GetOne('SELECT 1 FROM plug WHERE name=? AND indexes=? LIMIT 1;',array($name,$ind)))
+				    if (!$DB->GetOne('SELECT 1 FROM plug WHERE UPPER(name)=? AND UPPER(indexes)=? LIMIT 1;',array(strtoupper($name),strtoupper($ind))))
 					$DB->Execute('INSERT INTO plug (name,indexes,enabled,dbver) VALUES (?, ?, ?, ?);',
-					    array($__info['name'],$__info['indexes'],0,($__info['dbversion'] ? $__info['dbversion'] : '')));
+					    array($__info['name'],$__info['indexes'],1,($__info['dbversion'] ? $__info['dbversion'] : '')));
+
+
+
 				
 				}
 			

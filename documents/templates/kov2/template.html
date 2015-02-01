@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+	<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</HEAD>
+{literal}
+	<STYLE type="text/css">
+	html,body{width:682px;min-height: 100px;font-family: Times,Arial, sans-serif;font-size: 9px;}
+	* {margin: 0;padding: 0;}
+	.foot{page-break-after:always;}
+	</STYLE>
+{/literal}
+<BODY>
+
+{assign var='fyear' value=$date.fromyear}
+{assign var='fmonth' value=$date.frommonth}
+{assign var="tyear" value=$date.toyear}
+{assign var="tmonth" value=$date.tomonth}
+{assign 'indeks' value=0}
+{assign var='year' value=$date.fromyear}
+{assign var='month' value=$date.frommonth}
+
+{section name='l' loop=$ks}
+<div style="width:100%;"><img src="?m=kov2gen&cid={$cid}&year={$ks[l].y}&month={$ks[l].m}" alt=""></div>
+{math assign="month" equation="x+y" x=$month y="1"}
+{if $month == "13"}
+{assign var='month' value='1'}
+{math assign='year' equation="x+y" x=$year y='1'}
+{/if}
+{math assign='indeks' equation="x+y" x=$indeks y="1"}
+{if $indeks==3}<div class="foot"></div>{assign var='indeks' value=0}{/if}
+{/section}
+
+</body>
+</html>

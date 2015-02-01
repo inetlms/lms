@@ -140,6 +140,7 @@ if (isset($_POST['document'])) {
 		include(DOC_DIR . '/templates/' . $document['templ'] . '/info.php');
 
 		foreach ($customerlist as $gencust) {
+		    print_r($engine); continue;
 			if (!is_array($gencust))
 				continue;
 
@@ -236,7 +237,7 @@ if (isset($_POST['document'])) {
 					$document['fromdate'],
 					$document['todate'],
 					$document['filename'],
-					$document['contenttype'],
+					$engine['contenttype'],
 					$document['md5sum'],
 					$document['description']
 			));

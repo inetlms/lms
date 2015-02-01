@@ -30,7 +30,7 @@ if(!empty($_POST['marks']))
         foreach($_POST['marks'] as $id => $mark)
     		$marks[] = intval($mark);
 
-        if ($list = $DB->GetAll('SELECT c.filename, c.md5sum, c.contenttype
+        if ($list = $DB->GetAll('SELECT c.filename, c.md5sum, c.contenttype 
 		FROM documentcontents c
 		JOIN documents d ON (d.id = c.docid)
 		JOIN docrights r ON (r.doctype = d.type)
@@ -96,7 +96,8 @@ if(!empty($_POST['marks']))
 	$filename = DOC_DIR.'/'.substr($doc['md5sum'],0,2).'/'.$doc['md5sum'];
 	if(file_exists($filename))
 	{
-		if (strtolower($CONFIG['phpui']['document_type']) == 'pdf') {
+//		if (strtolower($CONFIG['phpui']['document_type']) == 'pdf') {
+		if ($doc['contenttype'] == 'pdf') {
 			if($doc['type'] == DOC_CONTRACT) {
 				$subject = trans('Contract');
 				$title = trans('Contract No. $a', $docnumber);

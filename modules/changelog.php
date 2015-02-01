@@ -34,6 +34,21 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-02-01',
+	    'status'	=> '',
+	    'opis'	=> 'dodano nową książeczkę płat',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> '<b>!!!</b> - poprawka dla generowanych dok. dot. contenttype, to czy dokument ma być wygenerowany w html czy w pdf decyduje od tej pory wpis w pliku info.php dla danej templatki a nie zmienna w UI',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano skrypt do importu płatności z Alior Bank w formacie xml, skrypt w contrib/bin/cashimport-alior-xml.php<br>W pliku należy wpisać namiary na skrzynkę pocztową itp',
+	),
+	array(
 	    'data'	=> '2015-01-22',
 	    'status'	=> '',
 	    'opis'	=> 'poprawka edycji faktury, błędnie podstawiał pola dla odbiorcy faktury i adresu wysyłki ',

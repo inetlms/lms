@@ -48,10 +48,11 @@
 				{assign var=period value=$plan.period}
 				<option value="{$plan.id}"{if $plan.id==$document.numberplanid} selected{/if}>{number number=$plan.next template=$plan.template time=$document.cdate} ({$_NUM_PERIODS.$period})</option>
 			{/foreach}
+			</select>
 			{else}
 				<input type="hidden" name="document[numberplanid]" value="0">
 			{/if}
-			</select>
+			
 		</td>
 	</tr>
 	<tr class="light">
