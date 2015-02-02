@@ -133,7 +133,7 @@ if (isset($_GET['cid']) && isset($_GET['year']) && isset($_GET['month']) &&
 	imagettftext($img,12,0,((710-$width)+($i*17)),101,$black,$fontb,$value[$i]);
     imageline($img,502,95,710-$width-12,95,$black);
     
-    $value = to_words(floor($value)).' '.to_words(round(($value - floor($value)) * 100));
+    $value = trans('$a dollars $b cents', to_words(floor($value)), to_words(round(($value - floor($value)) * 100)));
     imagettftext($img,11,0,243,126,$black,$fontb,$value.' gr');
     
     imagettftext($img,9,0,243,152,$black,$fontb,$name1.' '.$name2);
