@@ -1,10 +1,5 @@
 <?php
 
-/*
-$_start = strtotime('2015/01/01 00:00:00');
-$_end = strtotime('2017/12/31 23:59:59');
-*/
-
 function calcMonth($fyear, $fmonth, $tyear, $tmonth)
 {
     $_start = mktime(0,0,0,$fmonth,1,$fyear);
@@ -61,8 +56,11 @@ if ($document['gilotyna'] && $pages > 1) {
     $tmp = array();
 
     for ($j=0; $j<$pages; $j++)
-	for ($i=0; $i<sizeof($tab); $i++)
+	for ($i=0; $i<sizeof($tab); $i++) {
 	    if (isset($tab[$i][$j])) $gil[] = $tab[$i][$j];
+	    else
+		$gil[] = array('y'=>NULL,'m'=>NULL);
+	}
     
     $ks = $gil;
 }
