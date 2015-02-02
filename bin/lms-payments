@@ -597,6 +597,12 @@ while(my $assign = $dbq->fetchrow_hashref())
 				my $type = $urow->{'type'};
 				my $ten = '';
 				my $ssn = '';
+				
+				if ($urow->{'countryid'}) {
+				    $countryid = $urow->{'countryid'};
+				} else {
+				    $countryid = 0;
+				}
 
 				if ($type == 0) 
 				{
@@ -613,7 +619,11 @@ while(my $assign = $dbq->fetchrow_hashref())
 				    $address = $urow->{'invoice_address'};
 				    $zip = $urow->{'invoice_zip'};
 				    $city = $urow->{'invoice_city'};
-				    $countryid = $urow->{'invoice_countryid'};
+				    if ($urow->{'countryid'}) {
+					$countryid = $urow->{'invoice_countryid'};
+				    } else {
+					$countryid = 0;
+				    }
 				    $type = $urow->{'type'};
 				    $ten = '';
 				    $ssn = '';								
