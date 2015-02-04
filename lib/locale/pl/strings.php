@@ -1422,7 +1422,6 @@ $_LANG['Total Tax'] = 'Suma PTU';
 $_LANG['Type:'] = 'Typ:';
 $_LANG['Type/Quota:'] = 'Typ/Quota:';
 $_LANG['Type (sh/mail/www/ftp/sql):'] = 'Typ (sh/mail/www/ftp/sql):';
-$_LANG['configuration'] = 'konfiguracja interfejsu użytkownika';
 $_LANG['uncompressed'] = 'nieskompresowaną';
 $_LANG['Unit:'] = 'JM:';
 $_LANG['Unitary Net Value:'] = 'Cena jedn. netto:';

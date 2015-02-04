@@ -34,6 +34,21 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-02-04',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka książeczki opłat w wersji 2',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka lms-payments dot. barku zmienych w UI. sekcja invoices, zmienne : template_file, template_version, type, sdateview',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka generatora dokumentów',
+	),
+	array(
 	    'data'	=> '2015-02-01',
 	    'status'	=> '',
 	    'opis'	=> 'dodano nową książeczkę płat',

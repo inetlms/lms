@@ -1,28 +1,30 @@
 <?php
 
-function calcMonth($fyear, $fmonth, $tyear, $tmonth)
+if(!function_exists('calcMonth'))
 {
-    $_start = mktime(0,0,0,$fmonth,1,$fyear);
-    $_end = mktime(23,59,59,$tmonth,date("t",mktime(0,0,0,$tmonth,1,$tyear)),$tyear);
-    
-    if ($_start <= $_end)
+    function calcMonth($fyear, $fmonth, $tyear, $tmonth)
     {
-	$yearF = date('Y',$_start);
-	$monthF = date('m',$_start);
-	$yearT = date('Y',$_end);
-	$monthT = date('m',$_end);
-	
-	if ($yearF == $yearT)
-	    $months = ($monthT - $monthF);
-	else {
-	    $months = ((12*($yearT-$yearF)-$monthF)+$monthT);
+	$_start = mktime(0,0,0,$fmonth,1,$fyear);
+	$_end = mktime(23,59,59,$tmonth,date("t",mktime(0,0,0,$tmonth,1,$tyear)),$tyear);
+    
+	if ($_start <= $_end)
+	{
+	    $yearF = date('Y',$_start);
+	    $monthF = date('m',$_start);
+	    $yearT = date('Y',$_end);
+	    $monthT = date('m',$_end);
+	    
+	    if ($yearF == $yearT)
+		$months = ($monthT - $monthF);
+	    else {
+		$months = ((12*($yearT-$yearF)-$monthF)+$monthT);
+	    }
+	    return $months;
 	}
-	return $months;
+	else
+	    return false;
     }
-    else
-	return false;
 }
-
 
 
 

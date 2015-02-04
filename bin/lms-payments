@@ -653,21 +653,25 @@ while(my $assign = $dbq->fetchrow_hashref())
 				my $dttiv = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
 				$dttiv->execute('invoices','template_version');
 				my $ttiv = $dttiv->fetchrow_hashref();
+				if ( !$ttiv->{'value'} ) { $ttiv->{'value'} = '2'; }
 				
 				#template type
 				my $dttyp = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
 				$dttyp->execute('invoices','type');
 				my $ttyp = $dttyp->fetchrow_hashref();
+				if ( !$ttyp->{'value'} ) { $ttyp->{'value'} = 'pdf'; }
 				
 				#template file
 				my $dtfile = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
 				$dtfile->execute('invoices','template_file');
 				my $tfile = $dtfile->fetchrow_hashref();
+				if ( !$tfile->{'value'} ) { $tfile->{'value'} = "FT-0100"; }
 				
 				#template sdateview
 				my $dtsdv = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
 				$dtsdv->execute('invoices','sdateview');
 				my $tsdv = $dtsdv->fetchrow_hashref();
+				if ( !$tsdv->{'value'} ) { $tsdv->{'value'} = '0'; }
 
 				#template logo file
 				my $urllogofile;
@@ -677,7 +681,7 @@ while(my $assign = $dbq->fetchrow_hashref())
 				    my $dtlogo = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
 				    $dtlogo->execute('invoices','urllogofile');
 				    my $tlogo = $dtlogo->fetchrow_hashref();
-				    $urllogofile = $tlogo->{'value'};
+				    $urllogofile = $tlogo->{'value'} || '';
 				}
 				
 				my $idbq = $dbase->prepare("INSERT INTO documents (number, numberplanid, type, countryid, divisionid,
