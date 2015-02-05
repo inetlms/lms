@@ -34,7 +34,7 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
-define('LMSV','15.02.04');
+define('LMSV','15.02.05');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 
 // find alternative config files:

@@ -365,7 +365,7 @@ $dbq = $dbase->prepare("SELECT n.id, n.period,
 	COALESCE(a.divisionid, 0) AS divid, isdefault
 	FROM numberplans n
 	LEFT JOIN numberplanassignments a ON (a.planid = n.id)
-	WHERE doctype = 1");
+	WHERE doctype = 6");
 $dbq->execute();
 while(my $row = $dbq->fetchrow_hashref())
 {
@@ -403,7 +403,7 @@ $dbq = $dbase->prepare("SELECT a.tariffid, a.liabilityid, a.customerid,
 	LEFT JOIN liabilities l ON (a.liabilityid = l.id)
 	LEFT JOIN divisions d ON (d.id = c.divisionid)
 	WHERE c.status = 3
-		AND (a.invoice = 1 OR a.invoice = 0) 
+		AND (a.invoice = 6) 
 		AND ((a.period = ".DISPOSABLE." AND at = $today)
 			OR ((a.period = ".DAY."
 			OR (a.period = ".WEEK." AND at = $weekday)
@@ -565,9 +565,10 @@ while(my $assign = $dbq->fetchrow_hashref())
 					my %period = get_period($periods{$plan});
 
 					my $dbqn = $dbase->prepare("SELECT MAX(number) AS number FROM documents
-						WHERE cdate >= ? AND cdate < ? AND type = 1 AND numberplanid = ?");
+						WHERE cdate >= ? AND cdate < ? AND type = 6 AND numberplanid = ?");
 					$dbqn->execute($period{'start'}, $period{'end'}, $plan);
 					$row = $dbqn->fetchrow_hashref();
+					
 					
 					$numbers{$plan} = $row->{'number'} || 0;
 					$dbqn->finish();
@@ -672,10 +673,21 @@ while(my $assign = $dbq->fetchrow_hashref())
 				if ( !$ttyp->{'value'} ) { $ttyp->{'value'} = 'pdf'; }
 				
 				#template file
-				my $dtfile = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
-				$dtfile->execute('invoices','template_file');
-				my $tfile = $dtfile->fetchrow_hashref();
-				if ( !$tfile->{'value'} ) { $tfile->{'value'} = "FT-0100"; }
+				my $templatefile = "FT-0100";
+				
+				my $dtpfile = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
+				$dtpfile->execute('invoices','template_file_proforma');
+				my $tpfile = $dtpfile->fetchrow_hashref();
+				if ( !$tpfile->{'value'} ) 
+				{
+				    my $dtfile = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
+				    $dtfile->execute('invoices','template_file');
+				    my $tfile = $dtfile->fetchrow_hashref();
+				    if ($tfile->{'value'}) {
+					$templatefile = $tfile->{'value'};
+					}
+				}
+				else { $templatefile = $tpfile->{'value'}; }
 				
 				#template sdateview
 				my $dtsdv = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
@@ -707,12 +719,12 @@ while(my $assign = $dbq->fetchrow_hashref())
 						$drow->{'name'}, $drow->{'address'}, $drow->{'city'}, $drow->{'zip'}, $drow->{'countryid'},
 						$drow->{'ten'}, $drow->{'regon'}, $drow->{'account'}, $drow->{'inv_header'}, $drow->{'inv_footer'},
 						$drow->{'inv_author'}, $drow->{'inv_cplace'}, $drow->{'shortname'}, $fullnumber,$ttiv->{'value'},
-						$ttyp->{'value'}, $tfile->{'value'},$tsdv->{'value'}, $urllogofile,
+						$ttyp->{'value'}, $templatefile,$tsdv->{'value'}, $urllogofile,
 						$urow->{'post_name'}, $urow->{'post_address'}, $urow->{'post_zip'}, $urow->{'post_city'}
 						);
 
 				$idbq = $dbase->prepare("SELECT id FROM documents
-						WHERE cdate = ? AND number = ? AND type = 1 AND customerid = ?");
+						WHERE cdate = ? AND number = ? AND type = 6 AND customerid = ?");
 				$idbq->execute($currtime, $numbers{$plan}, $uid);
 				my $irow = $idbq->fetchrow_hashref();
 
@@ -842,14 +854,7 @@ while(my $assign = $dbq->fetchrow_hashref())
 				}
 				$icdbq->finish();
 			}
-			else
-			{
-				$cdbq = $dbase->prepare("INSERT INTO cash (time, value, taxid, customerid, comment)
-						VALUES ($currtime, $value * -1, $assign->{'taxid'}, $uid, ?)");
-				$cdbq->execute($sdesc);
-				$cdbq->finish();
-			}
-
+			
 			print STDERR "CID:$uid\tVAL:$value\tDESC:$sdesc\n" if not $quiet;
 
 			#remove settlement flag
@@ -860,48 +865,5 @@ while(my $assign = $dbq->fetchrow_hashref())
 }
 $dbq->finish();
 
-# check invoices (autoclose invoices)
-if ($check_invoices)
-{
-	my $dbq = $dbase->prepare("UPDATE documents SET closed = 1
-		WHERE customerid IN (
-			SELECT customerid
-			FROM cash WHERE time <= $currtime
-			GROUP BY customerid
-			HAVING SUM(value) >= 0
-		)
-		AND type IN (1, 3, 5)
-		AND cdate <= $currtime
-		AND closed = 0");
-	$dbq->execute();
-	$dbq->finish();
-}
-
-# solid payments
-$dbq = $dbase->prepare("SELECT * FROM payments WHERE value <> 0
-			AND (period = ".DAY."
-			OR (period = ".WEEK." AND at=$weekday)
-			OR (period = ".MONTH." AND at=$dom)
-			OR (period = ".QUARTER." AND at = $quarter)
-			OR (period = ".HALFYEAR." AND at = $halfyear) 
-			OR (period = ".YEAR." AND at = $yearday))");
-$dbq->execute();
-
-while(my $assign = $dbq->fetchrow_hashref())
-{
-	my $sdbq = $dbase->prepare("INSERT INTO cash (time, type, value, customerid, comment)
-			VALUES ($currtime, 1, $assign->{'value'} * -1, 0, ?)");
-	$sdbq->execute($assign->{'name'}.'/'.$assign->{'creditor'});
-	print STDERR "CID:\tVAL:$assign->{'value'}\tDESC:$assign->{'name'}/$assign->{'creditor'}\n" if not $quiet;
-}
-$dbq->finish();
-
-# delete old assignments
-$dbase->do("DELETE FROM liabilities WHERE id IN (
-	SELECT liabilityid FROM assignments
-	WHERE dateto < $utsfmt - 86400 * 30 AND dateto != 0 AND at < $today - 86400 * 30
-		AND liabilityid != 0)");
-$dbase->do("DELETE FROM assignments
-	WHERE dateto < $utsfmt - 86400 * 30 AND dateto != 0 AND at < $today - 86400 * 30");
 
 $dbase->disconnect();

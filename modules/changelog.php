@@ -34,6 +34,31 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-02-05',
+	    'status'	=> '',
+	    'opis'	=> 'aktualizacja userpanel',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'lekka modyfikacja książeczki opłat v2',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka konwersji faktury proforma na fakturę VAT',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodanie lms-payments-proforma, skrypt wystawia tylko faktury proforma',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka skryptu lms-payments, skrypt wystawia faktury VAT i tylko naliczanie',
+	),
+	array(
 	    'data'	=> '2015-02-04',
 	    'status'	=> '',
 	    'opis'	=> 'poprawka książeczki opłat w wersji 2',

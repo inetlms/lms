@@ -119,8 +119,8 @@ if (isset($_POST['invoiceconvert']))
 	$invoice['version'] = get_conf('invoices.template_version');
 	$invoice['templatetype'] = get_conf('invoices.type');
 	$invoice['templatefile'] = get_conf('invoices.template_file');
-	$invoice['sdateview'] = get_conf('invoices.sdateview');
-	$invoice['urllogofile'] = get_conf('invoices.urllogofile');
+	$invoice['sdateview'] = $old['sdateview']; //get_conf('invoices.sdateview');
+	$invoice['urllogofile'] = $old['urllogofile']; //get_conf('invoices.urllogofile');
 		
 	if (empty($division['inv_author']))
 	    $division['inv_author'] = $DB->GetOne('SELECT name FROM users WHERE id = ? LIMIT 1;',array($tis->AUTH->id));
@@ -167,11 +167,11 @@ if (isset($_POST['invoiceconvert']))
 			    $old['div_inv_cplace'], 
 			    $old['div_shortname'], 
 			    $fullnumber,
-			    ($invoice['version'] ? $invoice['version'] : NULL),
-			    ($invoice['templatetype'] ? $invoice['templatetype'] : NULL),
-			    ($invoice['templatefile'] ? $invoice['templatefile'] : NULL),
+			    ($invoice['version'] ? $invoice['version'] : ''),
+			    ($invoice['templatetype'] ? $invoice['templatetype'] : ''),
+			    ($invoice['templatefile'] ? $invoice['templatefile'] : ''),
 			    ($invoice['sdateview'] ? 1 : 0),
-			    ($invoice['urllogofile'] ? $invoice['urllogofile'] : NULL),
+			    ($invoice['urllogofile'] ? $invoice['urllogofile'] : ''),
 			    )
 	);
 
