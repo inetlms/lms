@@ -34,7 +34,7 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
-define('LMSV','15.02.05');
+define('LMSV','15.02.08');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 
 // find alternative config files:
@@ -260,8 +260,9 @@ $error = NULL; // initialize error variable needed for (almost) all modules
 
 header('X-Powered-By: LMS/'.$layout['lmsv']);
 
-// Check privileges and execute modules
+$PLUG->updateDBPlugins();
 
+// Check privileges and execute modules
 if ($AUTH->islogged) {
 	
 	// Load plugin files and register hook callbacks
@@ -370,6 +371,35 @@ if ($AUTH->islogged) {
 	    }
 	    
 //	    $SMARTY->assign('plug',$plug);
+	}
+	elseif (file_exists(MODULES_DIR.'/custom/'.$module.'.php'))
+	{
+		$global_allow = !$AUTH->id || (!empty($access['allow']) && preg_match('/'.$access['allow'].'/i', $module));
+
+		if ($AUTH->id && ($rights = $LMS->GetUserRights($AUTH->id)))
+			foreach ($rights as $level)
+			{
+				if ($level === 0) {
+					$CONFIG['privileges']['superuser'] = true;
+				}
+
+				if (!$global_allow && !$deny && isset($access['table'][$level]['deny_reg']))
+					$deny = (bool) preg_match('/'.$access['table'][$level]['deny_reg'].'/i', $module);
+				elseif (!$allow && isset($access['table'][$level]['allow_reg']))
+					$allow = (bool) preg_match('/'.$access['table'][$level]['allow_reg'].'/i', $module);
+
+				if (isset($access['table'][$level]['privilege']))
+					$CONFIG['privileges'][$access['table'][$level]['privilege']] = TRUE;
+			}
+
+		if ($global_allow || ($allow && !$deny))
+		{
+			$layout['module'] = $module;
+			$LMS->InitUI();
+			include(MODULES_DIR.'/custom/'.$module.'.php');
+		}
+		else
+			$SMARTY->display('noaccess.html');
 	}
 	elseif (file_exists(MODULES_DIR.'/'.$module.'.php'))
 	{

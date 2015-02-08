@@ -238,6 +238,7 @@ define('ACCOUNT_FTP', 8);
 define('ACCOUNT_SQL', 16);
 
 // Document types
+define('DOC_COUNTING',0);		// tylko naliczanie
 define('DOC_INVOICE', 1);
 define('DOC_RECEIPT', 2);
 define('DOC_CNOTE', 3);
@@ -245,34 +246,41 @@ define('DOC_CNOTE', 3);
 define('DOC_DNOTE', 5);
 define('DOC_INVOICE_PRO',6);		// faktura proforma
 define('DOC_INVOICE_PURCHASE',7);	// faktura zakupu
+define('DOC_WARRANTY',8);		// gwarancja
 
 define('DOC_CONTRACT', -1);
 define('DOC_ANNEX', -2);
 define('DOC_PROTOCOL', -3);
 define('DOC_ORDER', -4);
 define('DOC_SHEET', -5);
-define('DOC_OTHER', -128);
-define('DOC_BILLING',-10);
+define('DOC_CONTRACT_END',-6);		// rozwiązanie umowy
+define('DOC_PAYMENT_BOOK',-7);		// książeczka opłat
+define('DOC_SUMMONS',-8);		// wezwanie do zapłaty
+define('DOC_PRE_SUMMONS',-9);		// przedsądowe wezwanie do zapłaty
+define('DOC_OTHER', -128);		// inne
+define('DOC_BILLING',-10);		// billing
 
 $DOCTYPES = array(
-    DOC_BILLING			=> 'billing',
-    DOC_INVOICE 		=> 'Faktura',
-    DOC_INVOICE_PRO		=> 'Faktura Proforma',
-    DOC_INVOICE_PURCHASE 	=> trans('purchase invoice'),
+    DOC_COUNTING		=> trans('Only counting'),		// tylko naliczanie
+    DOC_BILLING			=> 'billing',				// billing
+    DOC_INVOICE 		=> trans('Invoice VAT'),				// faktura vat
+    DOC_INVOICE_PRO		=> trans('Invoice Proforma'),			// faktura proforma
+    DOC_INVOICE_PURCHASE 	=> trans('purchase invoice'),		// faktura zakupu
+    DOC_WARRANTY		=> trans('warranty card'),		// karta gwarancyjna
     DOC_RECEIPT 		=> trans('cash receipt'),
-    DOC_CNOTE			=> 'Faktura Korygująca', // faktura korygujaca
+    DOC_CNOTE			=> 'Faktura Korygująca', 		// faktura korygujaca
 //    DOC_CMEMO	    		=> trans('credit memo'), // nota korygujaca
-    DOC_DNOTE			=> trans('debit note'), // nota obciazeniowa/debetowa/odsetkowa
-    DOC_CONTRACT		=> trans('contract'),
-    DOC_ANNEX			=> trans('annex'),
-    DOC_PROTOCOL		=> trans('protocol'),
-    DOC_ORDER			=> trans('order'),
-    DOC_SHEET			=> trans('customer sheet'), // karta klienta 
-    -6  			=> trans('contract termination'),
-    -7  			=> trans('payments book'), // ksiazeczka oplat
-    -8  			=> trans('payment summons'), // wezwanie do zapłaty
-    -9				=> trans('payment pre-summons'), // przedsądowe wezw. do zapłaty
-    DOC_OTHER			=> trans('other'),
+    DOC_DNOTE			=> trans('debit note'), 		// nota obciazeniowa/debetowa/odsetkowa
+    DOC_CONTRACT		=> trans('contract'),			// umowa
+    DOC_ANNEX			=> trans('annex'),			// aneks
+    DOC_PROTOCOL		=> trans('protocol'),			// protokół
+    DOC_ORDER			=> trans('order'),			// zamówienie
+    DOC_SHEET			=> trans('customer sheet'), 		// karta klienta 
+    DOC_CONTRACT_END		=> trans('contract termination'),	// rozwiązanie umowy
+    DOC_PAYMENT_BOOK		=> trans('payments book'), 		// ksiazeczka oplat
+    DOC_SUMMONS			=> trans('payment summons'), 		// wezwanie do zapłaty
+    DOC_PRE_SUMMONS		=> trans('payment pre-summons'), 	// przedsądowe wezw. do zapłaty
+    DOC_OTHER			=> trans('other'),			// ine
 );
 
 // Guarantee periods

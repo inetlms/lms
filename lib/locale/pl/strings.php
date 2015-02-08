@@ -24,6 +24,9 @@
  *  $Id$
  */
 
+$_LANG['only counting'] = 'tylko naliczanie';
+$_LANG['Only counting'] = 'Tylko naliczanie';
+$_LANG['warranty card'] = 'karta gwarancyjna';
 $_LANG['Minimum version'] = 'Minimalna wersja';
 $_LANG['Required version'] = 'Wymagana wersja';
 $_LANG['Supported<br>Databases'] = 'Obsługiwane<br>Bazy danych';
@@ -795,6 +798,7 @@ $_LANG['Invoice'] = 'Faktura';
 $_LANG['Invoice VAT'] = 'Faktura VAT';
 $_LANG['Invoice:'] = 'Faktura:';
 $_LANG['Invoice VAT:'] = 'Faktura VAT:';
+$_LANG['Invoice Proforma'] = 'Faktura Proforma';
 $_LANG['Invoice draw-up place.'] = 'Miejsce wystawienia.';
 $_LANG['Invoice Edit: $a'] = 'Edycja Faktury: $a';
 $_LANG['Pro Forma Invoice Convertion No. $a'] = 'Konwersja Faktury Pro Forma Nr. $a';
@@ -1576,6 +1580,7 @@ $_LANG['Display this form again, when this numbering plan is saved'] = 'Wyświet
 $_LANG['Enter number template'] = 'Wprowadź szablon numeru';
 $_LANG['invoice'] = 'faktura';
 $_LANG['invoice VAT'] = 'faktura VAT';
+$_LANG['invoice proforma'] = 'faktura proforma';
 $_LANG['Main Information:'] = 'Informacje Podstawowe:';
 $_LANG['New Numbering Plan'] = 'Nowy plan numeracyjny';
 $_LANG['No such numbering plans in database.'] = 'Brak planów numeracyjnych w bazie danych.';

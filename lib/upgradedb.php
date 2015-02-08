@@ -32,9 +32,6 @@ define('DBVEX','2015013101'); // wersja bazy LMS iNET
  * This file contains procedures for upgradeing automagicly database.
  */
 
-if (!defined('NO_CHECK_UPGRADEDB'))
-{
-
 function getdir($pwd = './', $pattern = '^.*$')
 {
 	if ($handle = @opendir($pwd))
@@ -46,6 +43,11 @@ function getdir($pwd = './', $pattern = '^.*$')
 	}
 	return $files;
 }
+
+
+if (!defined('NO_CHECK_UPGRADEDB'))
+{
+
 
 
 if($dbversion = $DB->GetOne('SELECT keyvalue FROM dbinfo WHERE keytype = ?',array('dbversion'))) {
