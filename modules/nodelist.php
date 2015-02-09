@@ -26,17 +26,19 @@
  
 function setnodeaccess($idek)
 {
-    global $DB;
+    global $DB, $LMS;
     $obj = new xajaxResponse();
     
     $tmp = $DB->GetOne('SELECT access FROM nodes WHERE id = ? LIMIT 1 ;',array($idek));
     $tmp = intval($tmp);
     if ($tmp === 1) $tmp = 0; else $tmp = 1;
     
-    $DB->Execute('UPDATE nodes SET access = ? WHERE id = ? ;',array($tmp,$idek));
-
+    if ($DB->Execute('UPDATE nodes SET access = ? WHERE id = ? ;',array($tmp,$idek)));
+    $nodename = $LMS->GetNodeName($idek); 
+    $customerid = $LMS->GetNodeOwner($idek); //pobiera ID właścieiela komputera
+    $customername = $LMS->GetCustomerName($customerid); // pobiera Imię i Nazwisko właściiela komputera na podstawie ID
     if (SYSLOG) {
-	addlogs(($tmp ? 'włączono' : 'wyłączono').' dostęp dla komputera','e=acl;m=node;n='.$idek);
+	addlogs(($tmp ? 'włączono' : 'wyłączono').' dostęp dla komputera '.$nodename.', Użytkownik: '.$customername.'','e=acl;m=node;n='.$idek.';c='.$customerid);
     }
     
     if ($tmp === 0) {
@@ -53,14 +55,18 @@ function setnodeaccess($idek)
 
 function setnodewarning($idek)
 {
-    global $DB;
+    global $DB, $LMS;
     $obj = new xajaxResponse();
     $tmp = $DB->GetOne('SELECT warning FROM nodes WHERE id = ? LIMIT 1 ;',array($idek));
     $tmp = intval($tmp);
     if ($tmp === 1) $tmp = 0 ; else $tmp = 1;
-    $DB->Execute('UPDATE nodes SET warning = ? WHERE id = ? ;',array($tmp,$idek));
-    if (SYSLOG) {
-	addlogs(($tmp ? 'włączono' : 'wyłączono').' wiadomość dla komputera','e=warn;m=node;n='.$idek);
+      
+    if ($DB->Execute('UPDATE nodes SET warning = ? WHERE id = ? ;',array($tmp,$idek)));
+    $nodename = $LMS->GetNodeName($idek); 
+    $customerid = $LMS->GetNodeOwner($idek); //pobiera ID właścieiela komputera
+    $customername = $LMS->GetCustomerName($customerid); // pobiera Imię i Nazwisko właściiela komputera na podstawie ID
+    if (SYSLOG) {        
+	addlogs(($tmp ? 'włączono' : 'wyłączono').' wiadomość dla komputera '.$nodename.', Użytkownik: '.$customername.'','e=warn;m=node;n='.$idek.';c='.$customerid);
     }
     
     if ($tmp === 0) {
@@ -74,14 +80,18 @@ function setnodewarning($idek)
 
 function setnodeblockade($idek)
 {
-    global $DB;
+    global $DB, $LMS;
     $obj = new xajaxResponse();
     $tmp = $DB->GetOne('SELECT blockade FROM nodes WHERE id = ? LIMIT 1 ;',array($idek));
     $tmp = intval($tmp);
     if ($tmp == 1) $tmp = 0 ; else $tmp = 1;
-    $DB->Execute('UPDATE nodes SET blockade = ? WHERE id = ? ;',array($tmp,$idek));
+    
+    if ($DB->Execute('UPDATE nodes SET blockade = ? WHERE id = ? ;',array($tmp,$idek)));
+    $nodename = $LMS->GetNodeName($idek); 
+    $customerid = $LMS->GetNodeOwner($idek); //pobiera ID właścieiela komputera
+    $customername = $LMS->GetCustomerName($customerid); // pobiera Imię i Nazwisko właściiela komputera na podstawie ID
     if (SYSLOG) {
-	addlogs(($tmp ? 'włączono' : 'wyłączono').' blokadę dla komputera','e=warn;m=node;n='.$idek);
+	addlogs(($tmp ? 'włączono' : 'wyłączono').' blokadę dla komputera'.$nodename.', Użytkownik: '.$customername.'','e=warn;m=node;n='.$idek.';c='.$customerid);
     }
     
     if ($tmp == 0) {
