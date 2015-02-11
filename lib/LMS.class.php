@@ -55,7 +55,7 @@ class LMS {
 
 	function InitUI() {
 		// set current user
-		$sus = f_round($this->CONFIG['finances']['suspension_percentage']);
+//		$sus = f_round($this->CONFIG['finances']['suspension_percentage']);
 		
 		switch ($this->CONFIG['database']['type']) {
 			case 'postgres':
@@ -64,7 +64,7 @@ class LMS {
 			case 'mysql':
 			case 'mysqli':
 				$this->DB->Execute('SET @lms_current_user=?', array($this->AUTH->id));
-				$this->DB->Execute('SET @lms_suspension_percentage=?;',array($sus));
+//				$this->DB->Execute('SET @lms_suspension_percentage=?;',array($sus));
 				break;
 		}
 	}
