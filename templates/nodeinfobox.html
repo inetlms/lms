@@ -74,7 +74,7 @@
 						<table style="width: 100%" cellpadding="3">
 	<tr class="light">
 		<td style="width: 1%;">
-			<img src="img/host.gif" alt="Siec">
+			<img src="img/host.gif" alt="Host" title="[ HOST ]">
 		</td>
 		<td style="width: 99%;" colspan="2">
 			{if $nodeinfo.hostname}{$nodeinfo.hostname}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}
@@ -82,15 +82,15 @@
 	</tr>
 	<tr class="light">
 		<td style="width: 1%;">
-			<img src="img/network.gif" alt="Siec">
+			<img src="img/network.gif" alt="{trans("Network:")}" title="[ SIEĆ ]">
 		</td>
 		<td style="width: 99%;" colspan="2">
-			{$nodeinfo.networkname}
+			<span class="bold"><a href="?m=netinfo&id={$nodeinfo.netid}">{$nodeinfo.netname}</a></span>
 		</td>
 	</tr>
 	<tr class="light">
 		<td style="width: 1%;">
-			<img src="img/ip.gif" alt="{trans("IP address:")}">
+			<img src="img/ip.gif" alt="{trans("IP address:")}" title="[ Adres IP ]">
 		</td>
 		<td style="width: 99%;" colspan="2">
 			<a href="javascript:ping_popup('{$nodeinfo.ip}')">{$nodeinfo.ip}</a>
@@ -99,7 +99,7 @@
 	{if $nodeinfo.ip_pub != "0.0.0.0"}
 	<tr class="light">
 		<td style="width: 1%;">
-			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}">
+			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}" title="[ Publiczny Adres IP ]">
 		</td>
 		<td style="width: 99%;" colspan="2">
 			<a href="javascript:ping_popup('{$nodeinfo.ip_pub}')">{$nodeinfo.ip_pub}</a>
@@ -110,7 +110,7 @@
 	{foreach from=$nodeinfo.macs item=item}
 	<tr class="light">
 		<td style="width: 1%;">
-			<a href="javascript:changeMacFormat('mac{$counter}')"><img src="img/mac.gif" alt="{trans("MAC address:")}"></a>
+			<a href="javascript:changeMacFormat('mac{$counter}')"><img src="img/mac.gif" alt="{trans("MAC address:")}" title="[ Adres MAC ]"></a>
 		</td>
 		<td style="width: 99%;" colspan="2">
 			<span id="mac{$counter}">{$item.mac}</span> {if $item.producer}({$item.producer}){/if}<br>
@@ -118,28 +118,31 @@
 	</tr>
 	{math equation="x+1" x=$counter assign="counter"}
 	{/foreach}
+{if $nodeinfo.pppoelogin && get_conf('netdevices.pppoe_login')}
+	<tr class="light">
+		<td style="width: 1%;">
+			<img src="img/name.gif" alt="PPPoE Login" title="[ PPPoE Login ]">
+		</td>
+		<td style="width: 99%;" colspan="2">
+			{$nodeinfo.pppoelogin}
+		</td>
+	</tr>
+{/if}
 {if $nodeinfo.passwd}
 	<tr class="light">
 		<td style="width: 1%;">
-			<img src="img/passwd.gif" alt="{trans("Password:")}">
+			<img src="img/passwd.gif" alt="{trans("Password:")}" title="[ PPPoE Hasło ]">
 		</td>
 		<td style="width: 99%;" colspan="2">
 			{$nodeinfo.passwd}
 		</td>
 	</tr>
 {/if}
-	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/network.gif" alt="{trans("Network:")}">
-		</td>
-		<td style="width: 99%;" colspan="2">
-			<span class="bold"><a href="?m=netinfo&id={$nodeinfo.netid}">{$nodeinfo.netname}</a></span>
-		</td>
-	</tr>
+
 {if $nodeinfo.location}
 	<tr class="light">
 		<td style="width: 1%;">
-			<img src="img/home.gif" alt="{trans("Location:")}">
+			<img src="img/home.gif" alt="{trans("Location:")}" title="[ {trans('Location:')} ]">
 		</td>
 		<td style="width: 99%;" colspan="2">
 			{$nodeinfo.location}
@@ -156,7 +159,7 @@
 {/if}
 	<tr>
 		<td style="width: 1%;">
-			<img src="img/netdev.gif" alt="{trans("Net device:")}">
+			<img src="img/netdev.gif" alt="{trans("Net device:")}" title="[ {trans('Net device:')} ]">
 		</td>
 		<td style="width: 99%; white-space: nowrap;" colspan="2">
 			{if $nodeinfo.netdev}

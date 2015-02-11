@@ -36,7 +36,7 @@
 		{if !$item.installdb}
 		    <img src="img/add.gif" {tip text="install the plug"} onclick="self.location.href='?m=plugin&action=install&ind={$item.indexes}&name={$item.name}';">
 		{else}
-		    <img src="img/add.gif" {tip text="install the plug"}>
+		    <a href="?m=plugin&action=installdb&ind={$item.indexes}&name={$item.name}" onclick="return confirmLink(this,'Instalacja wymaga ingerencji\nw strukturze bazy danych\nKontynuować ?');"><img src="img/add.gif" {tip text="install the plug"} alt="[ install ]"></a>
 		{/if}
 	    {/if}
 	{else}

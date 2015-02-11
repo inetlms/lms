@@ -124,7 +124,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 				break;
 				
 				case 'auth_login':
-					$config[$idx]['description'] = 'pole z karty urządzenia klienta (komputer) które jest loginem dla autoryzacji w radius\'ie.<br>Dopuszczalne wartości : <br><b>id</b> - id komputera<br><b>name</b> - nazwa komputera<br><b>ip</b> - IP komputera<br><b>passwd</b> - hasło logowania urządzenia<br>DEFAULT : id';
+					$config[$idx]['description'] = 'pole z karty urządzenia klienta (komputer) które jest loginem dla autoryzacji w radius\'ie.<br>Dopuszczalne wartości : <br><b>id</b> - id komputera<br><b>name</b> - nazwa komputera<br><b>ip</b> - IP komputera<br><b>passwd</b> - hasło logowania urządzenia<br><b>pppoe_login</b> - dodatkowe pole na login z karty komputera<br>DEFAULT : id';
 				break;
 				
 				case 'page_view':
@@ -145,18 +145,23 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'shift_port':
 						$config[$idx]['description'] = 'Pozwala na przestawianie kolejności portów w interfejsie sieciowym. DEF: 0';
 					break;
+					
 					case 'def_nameport':
 						$config[$idx]['description'] = 'Domyślna nazwa portu dla aktywnych interfejsów sieciowych. DEF: eth';
 					break;
+					
 					case 'def_pnameport':
 						$config[$idx]['description'] = 'Domyślna nazwa portu dla pasywnych interfejsów sieciowyh. DEF: port';
 					break;
+					
 					case 'link_networknode':
 						$config[$idx]['description'] = 'Interfejs sieciowy musi być przypisany do węzła. DEF.: 1';
 					break;
+					
 					case 'link_tosame':
 						$config[$idx]['description'] = 'Pozwól na połączenie sieciowe w obrębie tego samego pasywnego interfejsu sieciowego do innego portu. DEF.: 1';
 					break;
+					
 					case 'link_tosame_active':
 						$config[$idx]['description'] = 'Pozwól na połączenie sieciowe w obrębie tego samego aktywnego interfejsu sieciowego do innego portu. DEF.: 0';
 					break;
@@ -164,19 +169,26 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'delinfoservice':
 						$config[$idx]['description'] = 'Zezwalaj na kasowanie informacji o czynnościach serwisowych w interfejsach sieciowych DEF.: 0';
 					break;
+					
 					case 'force_connection':
 						$config[$idx]['description'] = 'wymusza skonfigurowania połączenia sieciowego podczas edycji/dodawania komputera klienta DEF.: 1';
 					break;
+					
 					case 'force_network_to_host':
 						$config[$idx]['description'] = 'wymusza powiązanie klasy adresowej IP z hostem  DEF.: 0';
 					break;
 					
-					
 					case 'force_network_gateway':
 						$config[$idx]['description'] = 'wymusza wpisanie bramy w konfiguracji sieci DEF.: 1';
 					break;
+					
 					case 'force_network_dns':
 						$config[$idx]['description'] = 'wymusza wpisanie chociaż jednego adresu serwera DNS w konfiguracji sieci  DEF.: 1';
+					break;
+					
+					case 'pppoe_login':
+						$config[$idx]['description'] = 'włącza dodatkowe pole w karcie komputera do podania loginu dla PPPoE, przydatne jeżeli mamy inne niż nazwa, id, ip czy pass, lub jeżeli mamy w loginie "niedozwolone" znaki<br>
+						w db doszło pole pppoelogin w tabeli nodes';
 					break;
 					
 					

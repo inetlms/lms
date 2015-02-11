@@ -141,6 +141,7 @@ $DEFAULTS = array(
 		'force_network_to_host' 	=> '0',
 		'force_network_gateway' 	=> '1',
 		'force_network_dns'		=> '1',
+		'pppoe_login'			=> '0',
 	),
 	'database' => array(
 		'type' 				=> 'mysql',

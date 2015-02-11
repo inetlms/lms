@@ -34,6 +34,11 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano zmienną konfiguracyjną (UI) w osprzęcie sieciowym <b>pppoe_login</b>, która włącza nam dodtakowe pole na login dla sesji PPPoE, do wykorzystania jeżeli obecne pola nie zdają nam egzaminu',
+	),
+	array(
 	    'data'	=> '2015-02-05',
 	    'status'	=> '',
 	    'opis'	=> 'aktualizacja userpanel',

@@ -107,6 +107,7 @@ class RADIUS {
 		.($auth_login == 'name' ? 'JOIN nodes n ON (n.name = r.username) ' : '')
 		.($auth_login == 'ip' ? 'JOIN nodes n ON (inet_ntoa(n.ipaddr) = r.username) ' : '')
 		.($auth_login == 'passwd' ? 'JOIN nodes n ON (n.passwd = r.username) ' : '')
+		.($auth_login == 'pppoe_login' ? 'JOIN nodes n ON (n.pppoelogin = r.username) ' : '')
 		.'JOIN customersview c ON (c.id = n.ownerid) '
 		.($status=='open' ? ' WHERE (r.acctstoptime IS NULL OR r.acctstoptime=\'0000-00-00 00:00:00\') ' : '')
 		.($status=='completed' ? ' WHERE r.acctstoptime IS NOT NULL AND r.acctstoptime!=\'0000-00-00 00:00:00\' ' : '')

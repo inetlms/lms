@@ -75,6 +75,16 @@
 			<a href="javascript: newmac()">{trans("Add MAC address")} &raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
+	{if get_conf('netdevices.pppoe_login')}
+	    <tr class="light">
+		<td width="1%"><img src="img/name.gif" alt="PPPoE Login"></td>
+		<td width="99%">
+		    <input type="text" name="nodeedit[pppoelogin]" value="{$nodeinfo.pppoelogin}" {tip text="PPPoE Login" trigger="pppoelogin"}>
+		</td>
+	    </tr>
+	{else}
+	    <input type="hidden" name="nodeedit[pppoelogin]" value="{$nodeinfo.pppoelogin}">
+	{/if}
 	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/passwd.gif" alt="{trans("Password:")}">

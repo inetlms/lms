@@ -174,6 +174,13 @@ if (isset($_POST['nodeedit'])) {
 
 	if (strlen($nodeedit['passwd']) > 32)
 		$error['passwd'] = trans('Password is too long (max.32 characters)!');
+	
+	if (!empty($nodeedit['pppoelogin'])) {
+	    if (mb_strlen($nodeedit['pppoelogin']) > 128)
+		$error['pppoelogin'] = 'Długość loginu to max 128 znaków';
+	    elseif ($DB->getOne('SELECT 1 FROM nodes WHERE pppoelogin = ? AND id != ? LIMIT 1;',array($nodeedit['pppoelogin'],$nodeedit['id'])))
+		$error['pppoelogin'] = 'podany login PPPoE jest już w u życiu';
+	}
 
 	if (!isset($nodeedit['access']))
 		$nodeedit['access'] = 0;
@@ -306,6 +313,7 @@ if (isset($_POST['nodeedit'])) {
 	$nodeinfo['linktechnology'] = $nodeedit['linktechnology'];
 	$nodeinfo['linkspeed'] = $nodeedit['linkspeed'];
 	$nodeinfo['blockade'] = $nodeedit['blockade'];
+	$nodeinfo['pppoelogin'] = $nodeedit['pppoelogin'];
 	
 
 	if ($nodeedit['ipaddr_pub'] == '0.0.0.0')

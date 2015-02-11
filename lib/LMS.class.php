@@ -55,6 +55,8 @@ class LMS {
 
 	function InitUI() {
 		// set current user
+		$sus = f_round($this->CONFIG['finances']['suspension_percentage']);
+		
 		switch ($this->CONFIG['database']['type']) {
 			case 'postgres':
 				$this->DB->Execute('SELECT set_config(\'lms.current_user\', ?, false)', array($this->AUTH->id));
@@ -62,6 +64,7 @@ class LMS {
 			case 'mysql':
 			case 'mysqli':
 				$this->DB->Execute('SET @lms_current_user=?', array($this->AUTH->id));
+				$this->DB->Execute('SET @lms_suspension_percentage=?;',array($sus));
 				break;
 		}
 	}
@@ -2198,7 +2201,7 @@ class LMS {
 				modid=?, access=?, warning=?, ownerid=?, info=?, location=?,
 				location_city=?, location_street=?, location_house=?, location_flat=?,
 				chkmac=?, halfduplex=?, linktype=?, linkspeed=?, port=?, nas=?,
-				longitude=?, latitude=?, netid=?, linktechnology=?, access_from=?, access_to=?, typeofdevice=?, producer=?, model=?, sn=?, blockade=? 
+				longitude=?, latitude=?, netid=?, linktechnology=?, access_from=?, access_to=?, typeofdevice=?, producer=?, model=?, sn=?, blockade=?, pppoelogin = ? 
 				WHERE id=?', array($nodedata['name'],
 				$nodedata['ipaddr_pub'],
 				$nodedata['ipaddr'],
@@ -2231,6 +2234,7 @@ class LMS {
 				($nodedata['model'] ? $nodedata['model'] : NULL),
 				($nodedata['sn'] ? $nodedata['sn'] : NULL),
 				($nodedata['blockade'] ? 1 : 0),
+				($nodedata['pppoelogin'] ? $nodedata['pppoelogin'] : ''),
 				$nodedata['id']
 		)	);
 		
@@ -2715,9 +2719,9 @@ class LMS {
 			passwd, creatorid, creationdate, access, warning, info, netdev,
 			location, location_city, location_street, location_house, location_flat,
 			linktype, linkspeed, port, chkmac, halfduplex, nas, longitude, latitude, netid, linktechnology, 
-			access_from, access_to, typeofdevice, producer, model, sn, blockade)
+			access_from, access_to, typeofdevice, producer, model, sn, blockade,pppoelogin)
 			VALUES (?, inet_aton(?), inet_aton(?), ?, ?, ?,
-			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($nodedata['name']),
+			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($nodedata['name']),
 						$nodedata['ipaddr'],
 						$nodedata['ipaddr_pub'],
 						$nodedata['ownerid'],
@@ -2749,6 +2753,7 @@ class LMS {
 						($nodedata['model'] ? $nodedata['model'] : NULL),
 						($nodedata['sn'] ? $nodedata['sn'] : NULL),
 						($nodedata['blockade'] ? 1 : 0),
+						($nodedata['pppoelogin'] ? $nodedata['pppoelogin'] : ''),
 				))) 
 			{
 			    

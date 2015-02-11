@@ -130,6 +130,13 @@ if (isset($_POST['nodedata']))
 
 	if(strlen($nodedata['passwd']) > 32)
 		$error['passwd'] = trans('Password is too long (max.32 characters)!');
+	
+	if (!empty($nodedata['pppoelogin'])) {
+	    if (mb_strlen($nodedata['pppoelogin']) > 128)
+		$error['pppoelogin'] = 'Długość loginu to max 128 znaków';
+	    elseif ($DB->GetOne('SELECT 1 FROM nodes WHERE pppoelogin = ? LIMIT 1;',array($nodedata['pppoelogin'])))
+		$error['pppoelogin'] = 'podany login jest już w użyciu';
+	}
 
     if (!$nodedata['ownerid'])
         $error['ownerid'] = trans('Customer not selected!');
