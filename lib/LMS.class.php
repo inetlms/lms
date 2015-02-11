@@ -2291,9 +2291,11 @@ class LMS {
 		$this->DB->BeginTrans();
 		
 		$old = $this->getnode($id);
+                $macadress = $old['macs'][0]['mac'];
 		
 		if (SYSLOG) 
-		    addlogs('skasowano komputer: '.$old['name'].', klient: '.$this->getcustomername($old['ownerid']),'e=rm;m=node;c='.$old['ownerid']);
+		    addlogs('skasowano komputer: <b>'.$old['name'].'</b>, adres IP:'.$old['ip'].', publiczny adres IP:'.$old['ip_pub'].', MAC:'.$macadress.', utworzony dnia: '.$old['creationdateh'].', przez: '.$old['createdby'].', klient: '.$this->getcustomername($old['ownerid']),'e=rm;m=node;c='.$old['ownerid']);
+
 		
 		if (get_conf('phpui.iphistory'))
 		{
