@@ -201,6 +201,14 @@ TD.container {
     padding			: 0; 
 }
 
+td.tleft {
+    border-left : solid 1px #CCCCCC;
+}
+
+td.tright {
+    border-right : solid 1px #CCCCCC;
+}
+
 FORM { 
     display			: inline; 
 }
@@ -352,6 +360,7 @@ INPUT[type="submit"] {
     background		: transparent;
 }
 
+
 button:hover, 
 BUTTON:hover,
 .button:hover,
@@ -382,6 +391,7 @@ INPUT { /* IE */
     border-color		: expression(this.type=='checkbox' || this.type=='radio' ? '' : 'black');
     background-color		: expression(this.type=='checkbox' || this.type=='radio' ? 'transparent' : '#f6feff');
 }
+
 
 INPUT[type="radio"] {
     vertical-align		: text-bottom;
@@ -511,9 +521,10 @@ input[type="submit"].hiddenbtn {
     display 			: none;
 }
 
-.pad { 
-    padding-left		: 4px; 
-    padding-right		: 4px; 
+.pad,
+.pad5 { 
+    padding-left		: 5px; 
+    padding-right		: 5px; 
 }
 
 .pad2 { 
@@ -692,7 +703,7 @@ div.multiselectlayer ul li input {
 
 .dark,
 .DARK { 
-    background-color		: #E3E3E3; 
+    background-color		: #E0E0E0; 
 }
 
 .light,
@@ -796,8 +807,8 @@ INPUT[type='text'].active {
 }
 
 .scroller TD { 
-    padding-top			: 5px; 
-    padding-bottom		: 5px;
+/*    padding-top			: 5px; */
+/*    padding-bottom		: 5px; */
 }
 
 .pre { 
@@ -1433,3 +1444,27 @@ A.green { color			: #006500; }
 TR.green A { color			: #006500; }
 .greenbg,.greenBG { background-color		: #006500; }
 .green { color			: #006500; }
+
+.boxtop {
+/*    background		: #E0E0E0 url(topnav_bg.gif) repeat-x center; */
+    background-color	: #E0E0E0;
+    height		: 24px;
+    color		: #00126D;
+    font-weight		: bold;
+    text-transform	: uppercase;
+    
+}
+
+::-webkit-input-placeholder { color : #333; }
+::-moz-placeholder { color : #333; }
+:-ms-input-placeholder { color : #333; }
+input:-moz-placeholder { color : #333; }
+
+.required_select { color : red; }
+
+.required::-webkit-input-placeholder { color : red; font-weight:bold; }
+.required::-moz-placeholder { color : red; font-weight:bold; }
+.required:-ms-input-placeholder { color : red; font-weight:bold;}
+input.other:-moz-placeholder { color : red; font-weight:bold; }
+
+

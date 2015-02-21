@@ -25,7 +25,6 @@
  */
 
 // REPLACE THIS WITH PATH TO YOUR CONFIG FILE
-
 $CONFIG_FILE = '/etc/lms/lms.ini';
 
 // PLEASE DO NOT MODIFY ANYTHING BELOW THIS LINE UNLESS YOU KNOW
@@ -34,7 +33,7 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
-define('LMSV','15.02.08');
+define('LMSV','15.02.21');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 
 // find alternative config files:
@@ -239,9 +238,12 @@ $SMARTY->setTemplateDir(NULL);
 $SMARTY->addTemplateDir(
 	array(
 	    SMARTY_TEMPLATES_DIR.'/custom',
-	    SMARTY_TEMPLATES_DIR,
+	    SMARTY_TEMPLATES_DIR
 	)
 );
+//if (get_conf('phpui.custom_module'))
+//    $SMARTY->addTemplateDir(array(SMARTY_TEMPLATES_DIR.'/custom'));
+
 $SMARTY->compile_dir = SMARTY_COMPILE_DIR;
 $SMARTY->debugging = (isset($CONFIG['phpui']['smarty_debug']) ? chkconfig($CONFIG['phpui']['smarty_debug']) : FALSE);
 $SMARTY->use_sub_dirs = TRUE;
@@ -258,13 +260,12 @@ $SMARTY->assignByRef('_language', $LMS->lang);
 $error = NULL; // initialize error variable needed for (almost) all modules
 
 
-header('X-Powered-By: LMS/'.$layout['lmsv']);
+header('X-Powered-By: iNET LMS/'.$layout['lmsv']);
 
 $PLUG->updateDBPlugins();
 
 // Check privileges and execute modules
 if ($AUTH->islogged) {
-	
 	// Load plugin files and register hook callbacks
 	$plugins = preg_split('/[;,\s\t\n]+/', $CONFIG['phpui']['plugins'], -1, PREG_SPLIT_NO_EMPTY);
 	if (!empty($plugins))

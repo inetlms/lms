@@ -51,7 +51,6 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 		document.page.submit();
 	}
 
-{if check_conf('phpui.short_pagescroller')}
 	function pagechange1()
 	{
 		document.page.action="?m=invoicelist&page=" + document.forms['page'].elements['page1'].value;
@@ -64,7 +63,6 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 		document.page.target="";
 		document.page.submit();
 	}
-{/if}
 //-->
 </script>
 {$default_printpage = get_conf('invoices.default_printpage')}
@@ -116,25 +114,25 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 	</tr>
 	{/if}
 	<tr class="dark">
-		<td class="fleftu" width="1%" nowrap>
+		<td class="fleftu pad5" width="1%" nowrap align="left">
 			<a href="?m=invoicelist&o=id{if $listdata.direction eq "asc" && $listdata.order eq "id"},desc{/if}">{trans("ID:")}</a> {if $listdata.order eq "id"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="1%" class="fbt" nowrap>
+		<td width="1%" class="fbt pad5 tleft" nowrap align="left">
 			<a href="?m=invoicelist&o=cdate{if $listdata.direction eq "asc" && $listdata.order eq "cdate"},desc{/if}">{trans("Date:")}</a> {if $listdata.order eq "cdate"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="1%" class="fbt" nowrap>
+		<td width="1%" class="fbt pad5 tleft" nowrap align="right">
 			<a href="?m=invoicelist&o=number{if $listdata.direction eq "asc" && $listdata.order eq "number"},desc{/if}">{trans("Number:")}</a> {if $listdata.order eq "number"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="1%" class="fbt" nowrap>
+		<td width="1%" class="fbt pad5 tleft" nowrap align="right">
 			<a href="?m=invoicelist&o=value{if $listdata.direction eq "asc" && $listdata.order eq "value"},desc{/if}">{trans("Value:")}</a> {if $listdata.order eq "value"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="1%" class="fbt" nowrap>
+		<td width="1%" class="fbt pad5 tleft" nowrap align="right">
 			<a href="?m=invoicelist&o=count{if $listdata.direction eq "asc" && $listdata.order eq "count"},desc{/if}">{trans("Items:")}</a> {if $listdata.order eq "count"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="94%" class="fbt" nowrap>
+		<td width="94%" class="fbt pad5 tleft" nowrap align="left">
 			<a href="?m=invoicelist&o=name{if $listdata.direction eq "asc" && $listdata.order eq "name"},desc{/if}">{trans("For:")}</a> {if $listdata.order eq "name"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="1%" class="frightu">
+		<td width="1%" class="frightu tleft" align="right">
 			&nbsp;
 		</td>
 	</tr>
@@ -143,25 +141,25 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 	{assign var=invoice value=$invoicelist[invoicelist]}
 	{assign var=invoiceid value=$invoice.id}
 	<tr class="{cycle} lista{if $invoice.closed} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td width="1%" class="fleft">
+		<td width="1%" class="fleft pad5" align="left">
 			{$invoice.id|string_format:"%06d"}
 		</td>
-		<td width="1%" nowrap>
+		<td width="1%" nowrap class="pad5 tleft" align="left">
 			{$invoice.cdate|date_format:"%Y/%m/%d"}
 		</td>
-		<td width="1%" nowrap align="right">
+		<td width="1%" nowrap align="right" class="pad5 tleft">
 			{number number=$invoice.number template=$invoice.template time=$invoice.cdate assign=number}{$number}
 		</td>
-		<td width="1%" nowrap align="right">
+		<td width="1%" nowrap align="right" class="pad5 tleft">
 			{$invoice.value|money_format} 
 		</td>
-		<td width="1%" nowrap align="right">
+		<td width="1%" nowrap align="right" class="tleft pad5">
 			{$invoice.count}
 		</td>
-		<td width="94%">
+		<td width="94%" class="pad5 tleft" align="left">
 			<a href="?m={if $invoice.customertype == $smarty.const.CTYPES_CONTRACTOR}contractor{else}customer{/if}info&id={$invoice.customerid}"{if $invoice.closed} class="blend"{/if}>{$invoice.name}, {$invoice.address}, {$invoice.zip} {$invoice.city}{if $invoice.country neq ""}, {t}{$invoice.country}{/t}{/if}</a>
 		</td>
-		<td width="1%" align="right" class="fright">
+		<td width="1%" align="right" class="fright tleft">
 			<nobr>
 			
 			{if $invoice.type == $smarty.const.DOC_INVOICE_PRO && $invoice.closed}

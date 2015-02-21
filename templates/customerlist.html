@@ -98,7 +98,7 @@
 					
 					<td width="1%" class="pad5" nowrap align="right">{trans("Customers:")}</td>
 					<td width="1%" class="pad5" nowrap>
-					    <select size="1" name="s" onchange="document.choosefilter.submit();" {if $listdata.state != 3} class="active"{/if} style="min-width:150px;">
+					    <select size="1" name="s" onchange="document.choosefilter.submit();" {if $listdata.state != 3} class="active"{/if} style="min-width:160px;">
 					    <!--//
 					    <option value="0"{if $listdata.state eq 0} selected{/if}>{trans("- all customers -")}</option>
 					    //-->
@@ -117,7 +117,7 @@
 					
 					<td width="1%" nowrap class="pad5" align="right">{trans("Division")}:</td>
 					<td width="1%" nowrap class="pad5">
-					    <select size="1" name="d" onchange="document.choosefilter.submit();" {if $listdata.division} class="active"{/if} style="min-width:150px;">
+					    <select size="1" name="d" onchange="document.choosefilter.submit();" {if $listdata.division} class="active"{/if} style="min-width:160px;">
 				    	    <option value="" {if !$listdata.division} selected {/if}>- {trans("all")} -</option>
 				    	    {foreach from=$divisions item=division}
 				    	    <option value="{$division.id}"{if $listdata.division eq $division.id} selected {/if}>{$division.shortname|truncate:30:"...":true}</option>
@@ -128,7 +128,7 @@
 					
 					<td width="1%" class="pad5" nowrap align="right">Komputery:</td>
 					<td width="1%" class="pad5" nowrap>
-					    <select size="1" name="odl" onchange="document.choosefilter.submit();" {if $listdata.odlaczeni} class="active"{/if} style="min-width:150px;">
+					    <select size="1" name="odl" onchange="document.choosefilter.submit();" {if $listdata.odlaczeni} class="active"{/if} style="min-width:160px;">
 					    <option value="" {if !$listdata.odlaczeni} selected{/if}>- wszystkie -</option>
 					    <option value="2" {if $listdata.odlaczeni == '2'} selected{/if}>podłączone</option>
 					    <option value="1" {if $listdata.odlaczeni == '1'} selected{/if}>odłączone</option>
@@ -139,7 +139,7 @@
 					
 					<td width="1%" nowrap class="pad5" align="right">{trans("Network:")}</td>
 					<td width="1%" nowrap class="pad5">
-					    <select size="1" name="n" onchange="document.choosefilter.submit();" {if $listdata.network} class="active"{/if} style="min-width:150px;">
+					    <select size="1" name="n" onchange="document.choosefilter.submit();" {if $listdata.network} class="active"{/if} style="min-width:160px;">
 					    <option value="0" {if !$listdata.network} selected {/if}>{trans("- all networks -")}</option>
 					    {section name=networks loop=$networks}
 					    <option value="{$networks[networks].id}" {if $listdata.network eq $networks[networks].id} selected {/if}>{$networks[networks].name|truncate:30:"...":true}</option>
@@ -154,7 +154,7 @@
 					
 					<td width="1%" class="pad5" nowrap align="right">{trans("Status:")}</td>
 					<td width="1%" class="pad5" nowrap>
-					    <select size="1" name="st" onchange="document.choosefilter.submit();" {if $listdata.status} class="active"{/if} style="min-width:150px;">
+					    <select size="1" name="st" onchange="document.choosefilter.submit();" {if $listdata.status} class="active"{/if} style="min-width:160px;">
 					    <option value="0"{if $listdata.status eq 0} selected{/if}>{trans("- all customers -")}</option>
 					    {if !check_conf('privileges.hide_finances')}
 					    <option value="16"{if $listdata.status eq 16} selected{/if}>bilans zerowy</option>
@@ -172,7 +172,7 @@
 					
 					<td width="1%" class="pad5" nowrap align="right">{trans("Group:")}</td>
 					<td width="1%" class="pad5" nowrap>
-					    <select size="1" name="g" onchange="document.choosefilter.submit();" {if $listdata.customergroup} class="active"{/if} style="min-width:150px;">
+					    <select size="1" name="g" onchange="document.choosefilter.submit();" {if $listdata.customergroup} class="active"{/if} style="min-width:160px;">
 					    <option value="" {if !$listdata.customergroup} selected {/if}>{trans("- all groups -")}</option>
 					    {section name=customergroups loop=$customergroups}
 					    <option value="{$customergroups[customergroups].id}" {if $listdata.customergroup eq $customergroups[customergroups].id} selected {/if}>{$customergroups[customergroups].name|truncate:30:"...":true}</option>
@@ -182,7 +182,7 @@
 					
 					<td width="1%" class="pad5" nowrap align="right">Powiadomienia:</td>
 					<td width="1%" class="pad5" nowrap>
-					    <select size="1" name="warn" onchange="document.choosefilter.submit();" {if $listdata.warning} class="active"{/if} style="min-width:150px;">
+					    <select size="1" name="warn" onchange="document.choosefilter.submit();" {if $listdata.warning} class="active"{/if} style="min-width:160px;">
 					    <option value=""{if !$listdata.warning} selected {/if}>- wszystkie -</option>
 					    <option value="2"{if $listdata.warning == '2'} selected {/if}>włączone</option>
 					    <option value="1"{if $listdata.warning == '1'} selected {/if}>wyłączone</option>
@@ -192,7 +192,7 @@
 					
 					<td width="1%" class="pad5" nowrap align="right">Pochodzenie:</td>
 					<td width="1%" class="pad5" nowrap>
-					    <select size="1" name="or" onchange="document.choosefilter.submit();" {if $listdata.customerorigin} class="active"{/if} style="min-width:150px;">
+					    <select size="1" name="or" onchange="document.choosefilter.submit();" {if $listdata.customerorigin} class="active"{/if} style="min-width:160px;">
 					    <option value=""{if !$listdata.customerorigin} selected{/if}>{trans("- all groups -")}</option>
 					    {section name=originlist loop=$originlist}
 					    <option value="{$originlist[originlist].id}"{if $listdata.customerorigin eq $originlist[originlist].id} selected{/if}>{$originlist[originlist].name|truncate:30:"...":true}</option>
@@ -207,7 +207,7 @@
 					
 					<td width="1%" class="pad5" nowrap align="right">Os.prawna:</td>
 					<td width="1%" class="pad5" nowrap>
-					    <select size="1" name="osp" onchange="document.choosefilter.submit();" {if $listdata.osp} class="active"{/if} style="min-width:150px;">
+					    <select size="1" name="osp" onchange="document.choosefilter.submit();" {if $listdata.osp} class="active"{/if} style="min-width:160px;">
 					    <option value=""{if !$listdata.osp} selected {/if}>- wszyscy -</option>
 					    <option value="1"{if $listdata.osp eq 1} selected {/if}>osoba fizyczna</option>
 					    <option value="2"{if $listdata.osp eq 2} selected {/if}>osoba prawna / firma</option>
@@ -216,7 +216,7 @@
 					
 					<td width="1%" class="pad5" nowrap align="right">{trans("Nodes Group:<!short>")}</td>
 					<td width="1%" class="pad5" nowrap>
-					    <select size="1" name="ng" onchange="document.choosefilter.submit();" {if $listdata.nodegroup} class="active"{/if} style="min-width:150px;">
+					    <select size="1" name="ng" onchange="document.choosefilter.submit();" {if $listdata.nodegroup} class="active"{/if} style="min-width:160px;">
 					    <option value="" {if !$listdata.nodegroup} selected {/if}>{trans("- all groups -")}</option>
 					    {foreach from=$nodegroups item=nodegroup}
 					    <option value="{$nodegroup.id}" {if $listdata.nodegroup eq $nodegroup.id} selected {/if}>{$nodegroup.name|truncate:30:"...":true}</option>
@@ -227,7 +227,7 @@
 					
 					<td width="1%" nowrap class="pad5" align="right">Blokady:</td>
 					<td width="1%" nowrap class="pad5">
-					    <select name="block" onchange="document.choosefilter.submit();" {if $listdata.block}class="active"{/if} style="min-width:150px;">
+					    <select name="block" onchange="document.choosefilter.submit();" {if $listdata.block}class="active"{/if} style="min-width:160px;">
 						<option value=""{if !$listdata.block} selected{/if}>- wszystkie -</option>
 						<option value="1" {if $listdata.block=='1'} selected{/if}>włączone</option>
 						<option value="2" {if $listdata.block=='2'} selected{/if}>wyłączone</option>
@@ -238,7 +238,7 @@
 					
 					<td width="1%" nowrap class="pad5" align="right">Zobowiązania:</td>
 					<td width="1%" nowrap class="pad5">
-					    <select size="1" name="ce" onchange="document.choosefilter.submit();" {if $listdata.contractend}class="active"{/if} style="min-width:150px;">
+					    <select size="1" name="ce" onchange="document.choosefilter.submit();" {if $listdata.contractend}class="active"{/if} style="min-width:160px;">
 					    <option value="" {if !$listdata.contractend} selected {/if}>- wszystkie -</option>
 					    <option value="3" {if $listdata.contractend=='3'} selected {/if}>wygasną w ciągu 3 dni</option>
 					    <option value="7" {if $listdata.contractend=='7'} selected {/if}>wygasną w ciągu 7 dni</option>
@@ -249,8 +249,8 @@
 					    <option value="-3" {if $listdata.contractend=='-3'} selected {/if}>bez zobowiązań</option>
 					    <option value="-4" {if $listdata.contractend=='-4'} selected {/if}>zawieszone naliczanie</option>
 					    <option value="-15" {if $listdata.contractend=='-15'} selected {/if}>naliczanie roczne</option>
-					    <option value="-17" {if $listdata.contractend=='-17'} selected {/if}>naliczanie półroczne</option> 
-					    <option value="-14" {if $listdata.contractend=='-14'} selected {/if}>naliczanie kwartalne</option>                                         
+					    <option value="-17" {if $listdata.contractend=='-17'} selected {/if}>naliczanie półroczne</option>
+					    <option value="-14" {if $listdata.contractend=='-14'} selected {/if}>naliczanie kwartalne</option>
 					    <option value="-13" {if $listdata.contractend=='-13'} selected {/if}>naliczanie miesięczne</option>
 					    <option value="-12" {if $listdata.contractend=='-12'} selected {/if}>naliczanie tygodniowe</option>
 					    <option value="-11" {if $listdata.contractend=='-11'} selected {/if}>naliczanie codzienne</option>
@@ -265,8 +265,6 @@
 					<td width="auto"></td>
 				    </tr>
 				</table>
-
-
 				<table width="100%" cellpadding="4">
 				    <tr class="light">
 					<td width="1%" class="dark">
@@ -287,60 +285,58 @@
 	{if $listdata.total != 0}
 	<tr class="scroller">
 		<td colspan="5" class="fall">
-			{include file="scroller.html" loop=$customerlist}
+			{include file="scrollerpage.html" loop=$listdata.total}
 		</td>
 	</tr>
 	{/if}
 	<tr class="dark" {tip text="Click on column name to change sorting order"}>
 		<td width="auto" class="fleftu pad">
 			<img src="img/customer.gif" alt="">&nbsp;<a href="?m={$layout.module}&s={$listdata.state}&o=customername{if $listdata.direction eq "asc" && $listdata.order eq "customername"},desc{/if}">{trans("First/last or Company name")}</a></b> {if $listdata.order eq "customername"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
-			<img src="img/home.gif" alt="">&nbsp;<a href="?m={$layout.module}&s={$listdata.state}&o=address{if $listdata.direction eq "asc" && $listdata.order eq "address"},desc{/if}">{trans("Address:")}</a> {if $listdata.order eq "address"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+			<img src="img/empty.gif" width="16" alt="">&nbsp;<a href="?m={$layout.module}&s={$listdata.state}&o=address{if $listdata.direction eq "asc" && $listdata.order eq "address"},desc{/if}">{trans("Address:")}</a> {if $listdata.order eq "address"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="1%" class="fbt pad" nowrap align="right" style="vertical-align:top;">
+		<td width="1%" class="fbt pad tleft" nowrap align="right" style="vertical-align:top;">
 		Ost.wpłata<br>Zawieszenie blok.
 		</td>
-		<td align="right" width="1%" class="fbt pad" valign="top" nowrap>
+		<td align="right" width="1%" class="fbt pad tleft" valign="top" nowrap>
 			<a href="?m={$layout.module}&s={$listdata.state}&o=id{if $listdata.direction eq "asc" && $listdata.order eq "id"},desc{/if}">{trans("ID:")}</a></b> {if $listdata.order eq "id"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
 			{trans("Services:")}
 		</td>
-		<td width="1%" class="fbt pad" align="right" valign="top" nowrap>
+		<td width="1%" class="fbt pad tleft" align="right" valign="top" nowrap>
 		{if !check_conf('privileges.hide_finances')}
 			<a href="?m={$layout.module}&s={$listdata.state}&o=balance{if $listdata.direction eq "asc" && $listdata.order eq "balance"},desc{/if}">{trans("Balance:")}</a>&nbsp;{if $listdata.order eq "balance"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
 			<a href="?m={$layout.module}&s={$listdata.state}&o=tariff{if $listdata.direction eq "asc" && $listdata.order eq "tariff"},desc{/if}">{trans("Subscription:")}</a>&nbsp;{if $listdata.order eq "tariff"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		{/if}
 		</td>
-		<td width="1%" align="right" class="frightu pad">
+		<td width="1%" align="right" class="frightu pad tleft">
 			<nobr><b>{t a=$listdata.total}Total: $a{/t}</b><nobr>
 		</td>
 	</tr>
 	{cycle values="lucid,light" print=false}
-	{section name=customerlist loop=$customerlist start=$start max=$pagelimit}
+	{section name=customerlist loop=$customerlist}
 	{assign var="idek" value=$customerlist[customerlist].id}
 	<tr id="idtr{$idek}" class="{cycle} lista{if $customerlist[customerlist].account && !$customerlist[customerlist].nodeac} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td onclick="return self.location.href='?m=customerinfo&id={$customerlist[customerlist].id}';" class="fleft" valign="top">
 			<img src="img/{if $customerlist[customerlist].customertype eq 1}Company.png{else}{if $customerlist[customerlist].status eq 1}unk.gif{/if}{if $customerlist[customerlist].status eq 2}wait.gif{/if}{if $customerlist[customerlist].status eq 3}customer.gif{/if}{if $customerlist[customerlist].status eq 4}Alien.png{/if}{/if}" alt="">{if $customerlist[customerlist].info}&nbsp;<img src="img/info1.gif" alt="" {tip text=$customerlist[customerlist].info}>{/if}<a name="{$customerlist[customerlist].id}" {tip a=$customerlist[customerlist].id dynpopup='?m=customerinfoshort&id=$a'} id="idtra{$idek}">&nbsp;<b>{if $customerlist[customerlist].customertype eq 1}<font class="surplus">{$customerlist[customerlist].customername|escape}</font>{else}{$customerlist[customerlist].customername|escape}{/if}</b></a><br>
-			<img src="img/home.gif" alt="">&nbsp;{$customerlist[customerlist].address}{if $customerlist[customerlist].city neq ""},{/if} {$customerlist[customerlist].zip} {$customerlist[customerlist].city}{if $customerlist[customerlist].country neq ""}, {t}{$customerlist[customerlist].country}{/t}{/if}
+			<img src="img/empty.gif" width="16" alt="">&nbsp;{$customerlist[customerlist].address}{if $customerlist[customerlist].city neq ""},{/if} {$customerlist[customerlist].zip} {$customerlist[customerlist].city}{if $customerlist[customerlist].country neq ""}, {t}{$customerlist[customerlist].country}{/t}{/if}
 		</td>
-		<td class="pad" nowrap style="vertical-align:top;" align="center">
+		<td class="pad tleft" nowrap style="vertical-align:top;" align="center">
 		    <img src="img/empty.gif" height="16">{if $customerlist[customerlist].lastcash}{$customerlist[customerlist].lastcash|date_format:"Y/m/d"}{else}-----{/if}<br>
 		    {if $customerlist[customerlist].cutoffstop > $smarty.now}<img src="img/empty.gif" height="16"><font class="alert">{$customerlist[customerlist].cutoffstop|date_format:"Y/m/d"}</font>{/if}
 		</td>
-		<td valign="top" align="right">
-                        
-                        
+		<td valign="top" align="right" class="tleft">
 			({$customerlist[customerlist].id|string_format:"%04d"})<br>
 			{if $customerlist[customerlist].account}
 				<img src="img/node{if !$customerlist[customerlist].online}_off{/if}.gif" alt="" {tip a=$customerlist[customerlist].id dynpopup='?m=nodelistshort&id=$a' sticky=1}></a>
 			{/if}
 		</td>
-		<td align="right" valign="top" nowrap>
+		<td align="right" valign="top" nowrap class="tleft">
 			{if !check_conf('pri11vileges.hide_finances')}
 			<nobr>
 			    <div id="str_balance{$idek}"><img src="img/empty.gif" width="1" height="16" alt="">{if $customerlist[customerlist].balance < 0}<font class="alert" style="font-weight:bold;">{/if}{if $customerlist[customerlist].balance > 0}<font class="surplus" style="font-weight:bold;">+{/if}{$customerlist[customerlist].balance|money_format}{if $customerlist[customerlist].balance != 0}</font>{/if}</div>
 			    <font class="blend">{$customerlist[customerlist].tariffvalue|money_format}</font><nobr>
 			{/if}
 		</td>
-		<td align="right" class="fright">
+		<td align="right" class="fright tleft">
 			<nobr>
 			{if !check_conf('privileges.hide_finances')}
 				{if $customerlist[customerlist].balance < 0}<img  src="img/pay.gif" id="src_balance{$idek}" border="0" style="cursor:pointer;" onclick="rozliczklienta({$idek},'{$customerlist[customerlist].customername}','{$customerlist[customerlist].balance}');">{/if}
@@ -402,7 +398,6 @@
 			<a href="?m=customerdel&id={$customerlist[customerlist].id}" OnCLick="return confirmLink(this, '{t a=$customerlist[customerlist].customername|escape:"javascript"|escape:"html"}Are you sure, you want to remove customer \'$a\' from database?\n\nIf that customer have some nodes, they will be also removed and data definitely lost!{/t}');"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a> 
 			<a href="?m=customeredit&id={$customerlist[customerlist].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a> 
 			{/if}
-			<a href="?m=customerinfo&id={$customerlist[customerlist].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></a>
 			<nobr>
 		</td>
 	</tr>
@@ -418,7 +413,7 @@
 	{if $listdata.total != 0}
 	<tr class="scroller">
 		<td colspan="5" class="fall">
-			{include file="scroller.html" loop=$customerlist}
+			{include file="scrollerpage.html" loop=$listdata.total}
 		</td>
 	</tr>
 	{/if}

@@ -53,7 +53,7 @@
 	{if $listdata.total != 0}
 	<tr class="scroller">
 		<td class="fall" colspan="6">
-			{include file="scroller.html" loop=$nodelist}
+			{include file="scrollerpage.html" loop=$listdata.total}
 		</td>
 	</tr>
 	{/if}
@@ -62,27 +62,27 @@
 			<img src="img/node.gif" alt=""> <a href="?m=nodelist&o=name{if $listdata.direction eq "asc" && $listdata.order eq "name"},desc{/if}"><b>{trans("Name:")}</b></a>{if $listdata.order eq "name"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
 			<img src="img/customer.gif" alt=""> <a href="?m=nodelist&o=owner{if $listdata.direction eq "asc" && $listdata.order eq "owner"},desc{/if}">{trans("Customer:")}</a>{if $listdata.order eq "owner"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td class="fbt pad10" align="left"  width="1%" nowrap>
+		<td class="fbt pad10 tleft" align="left"  width="1%" nowrap>
 		    <b>Podłączony do:</b>
 		</td>
-		<td class="fbt pad10" width="1%" nowrap align="left">
+		<td class="fbt pad10 tleft" width="1%" nowrap align="left">
 		    <b>Medium</b><br>
 		    <b>Technologia (prędkość)</b>
 		</td>
-		<td Class="fbt" align="right" valign="top" width="1%" nowrap>
+		<td class="fbt tleft pad5" align="right" valign="top" width="1%" nowrap>
 			<img src="img/empty.gif" alt="" width="1" height="16"><a href="?m=nodelist&o=id{if $listdata.direction eq "asc" && $listdata.order eq "id"},desc{/if}">{trans("Node ID:")}</a>{if $listdata.order eq "id"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
 			<img src="img/empty.gif" alt="" width="1" height="16"><a href="?m=nodelist&o=ownerid{if $listdata.direction eq "asc" && $listdata.order eq "ownerid"},desc{/if}">{trans("Customer ID:")}</a>{if $listdata.order eq "ownerid"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td class="fbt" width="1%" nowrap>
+		<td class="fbt tleft pad5" width="1%" nowrap>
 			<img src="img/ip.gif" alt="">&nbsp;<a href="?m=nodelist&o=ip{if $listdata.direction eq "asc" && $listdata.order eq "ip"},desc{/if}">{trans("IP address:")}</a>{if $listdata.order eq "ip"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<a href="?m=nodelist&o=ip_pub{if $listdata.direction eq "asc" && $listdata.order eq "ip_pub"},desc{/if}">({trans("Pub. IP address:")})</a> {if $listdata.order eq "ip_pub"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
 			<img src="img/mac.gif" alt="">&nbsp;<a href="?m=nodelist&o=mac{if $listdata.direction eq "asc" && $listdata.order eq "mac"},desc{/if}">{trans("MAC address:")}</a>{if $listdata.order eq "mac"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td class="frightu" width="1%" align="right">
+		<td class="frightu tleft" width="1%" align="right">
 			<nobr><b>{t a=$listdata.total}Total: $a{/t}</b><nobr>
 		</td>
 	</tr>
 	{cycle values="lucid,light" print=false}
-	{section name=nodelist loop=$nodelist start=$start max=$pagelimit}
+	{section name=nodelist loop=$nodelist}
 	{assign var='idek' value=$nodelist[nodelist].id}
 	<tr id="idtr{$idek}" class="{cycle} lista{if ! $nodelist[nodelist].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="95%" class="fleft" onclick="return self.location.href='?m=nodeinfo&id={$nodelist[nodelist].id}';">
@@ -107,26 +107,26 @@
 			{if ! $nodelist[nodelist].access}<font class="blend">{/if}{$nodelist[nodelist].owner|truncate:40:"...":true|replace:" ":"&nbsp;"}{if ! $nodelist[nodelist].access}</font>{/if}
 			{/if}
 		</td>
-		<td align="left" width="1%" nowrap class="pad10">
+		<td align="left" width="1%" nowrap class="pad10 tleft">
 		    {if $nodelist[nodelist].netdev}
 			<a href="?m=netdevinfo&id={$nodelist[nodelist].netdev}" {tip a={$nodelist[nodelist].netdev} dynpopup='?m=netdevinfoshort&id=$a' sticky=0}>{$nodelist[nodelist].devname}</a>{if $nodelist[nodelist].devlocation}<br>{$nodelist[nodelist].devlocation}{/if}
 		    {/if}
 		</td>
-		<td align="left" width="1%" nowrap class="pad10">
+		<td align="left" width="1%" nowrap class="pad10 tleft">
 		    {if $nodelist[nodelist].netdev}
 			    {$_LINKTYPES[$nodelist[nodelist].linktype]}<br>
 			    {if $nodelist[nodelist].linktechnology}{$_LINKTECHNOLOGIES[$nodelist[nodelist].linktype][$nodelist[nodelist].linktechnology]}{else}<span style="color:red;">nie wybrano technologii</span>{/if}  ({$_LINKSPEEDS[$nodelist[nodelist].linkspeed]})
 		    {/if}
 		</td>
-		<td align="right" width="1%" onclick="return self.location.href='?m=nodeinfo&id={$nodelist[nodelist].id}';" valign="top">
+		<td align="right" width="1%" onclick="return self.location.href='?m=nodeinfo&id={$nodelist[nodelist].id}';" valign="top" class="pad5 tleft">
 			<img src="img/empty.gif" alt="" width="1" height="16">({$nodelist[nodelist].id|string_format:"%04d"})<br>
 			<img src="img/empty.gif" alt="" width="1" height="16"><font class="blend">({$nodelist[nodelist].ownerid|string_format:"%04d"})</font>
 		</td>
-		<td width="1%" valign="top" nowrap>
+		<td width="1%" valign="top" nowrap class="pad5 tleft">
 			<img src="img/ip.gif" alt="">&nbsp;<a href="javascript:ping_popup('{$nodelist[nodelist].ip}')">{$nodelist[nodelist].ip}</a> {if $nodelist[nodelist].ip_pub != "0.0.0.0"}<a href="javascript:ping_popup('{$nodelist[nodelist].ip_pub}')">({$nodelist[nodelist].ip_pub})</a> {/if}<br>
 			<nobr><img src="img/mac.gif" alt="">&nbsp;{$nodelist[nodelist].mac|replace:",":"</nobr><br><nobr><img src=\"img/mac.gif\" alt=\"\">&nbsp;"}</nobr>
 		</td>
-		<td class="fright" width="1%" align="right">
+		<td class="fright tleft" width="1%" align="right">
 			<nobr>
 			{if $nodelist[nodelist].monitoring}
 			<img src="img/radar.png" style="cursor:pointer;" {tip text="Kliknij aby otworzyć szczegółowe statystyki"} onclick="monitchart_popup('{$nodelist[nodelist].id}','node');">
@@ -154,7 +154,7 @@
 	{if $listdata.total != 0}
 	<tr class="scroller">
 		<td class="fall" colspan="6">
-			{include file="scroller.html" loop=$nodelist}
+			{include file="scrollerpage.html" loop=$listdata.total}
 		</td>
 	</tr>
 	{/if}

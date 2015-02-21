@@ -49,11 +49,11 @@
 		        <table width="100%" cellpadding="1">
 				<tr>
 					<td width="1%"><b>{trans("Name/Surname:")}</b></td>
-					<td width="99%"><input type="text" size="50" name="customerdata[lastname]" value="{$customerinfo.lastname|escape}" {tip text="Enter first/lastname of customer" trigger="lastname" bold=1}></td>
+					<td width="99%"><input type="text" size="50" name="customerdata[lastname]" class="required" placeholder="-- WYMAGANE --" value="{$customerinfo.lastname|escape}" {tip text="Enter first/lastname of customer" trigger="lastname" bold=1}></td>
 				</tr>
 				<tr>
 					<td width="1%"><b>{trans("First name:")}</b></td>
-					<td width="99%"><input type="text" size="50" name="customerdata[name]" value="{$customerinfo.name|escape}" {tip text="Enter first name of customer (optional)" trigger="name" bold=1}></td>
+					<td width="99%"><input type="text" size="50" name="customerdata[name]" class="required" placeholder="-- WYMAGANE DLA OSOBY FIZYCZNEJ --" value="{$customerinfo.name|escape}" {tip text="Enter first name of customer (optional)" trigger="name" bold=1}></td>
 				</tr>
 			</table>
 		</td>
@@ -126,7 +126,7 @@
 			<table width="100%" cellpadding="1">
 			    <tr>
     				<td width="1%" nowrap>{trans("Address:")}</td>
-	    			<td width="99%"><input type="text" name="customerdata[address]" id="address" value="{$customerinfo.address}" size="30" {tip text="Enter address" trigger="address"}></td>
+	    			<td width="99%"><input type="text" name="customerdata[address]" id="address" class="required" placeholder="-- WYMAGANE --" value="{$customerinfo.address}" size="30" {tip text="Enter address" trigger="address"}></td>
 			    </tr>
 			    <tr>
 		    		<td width="1%" nowrap>{trans("City:")}</td>

@@ -191,6 +191,10 @@ function GetConfigList($order='var,asc', $section='', $search='')
 						w db doszło pole pppoelogin w tabeli nodes';
 					break;
 					
+					case 'node_autoname':
+						$config[$idx]['description'] = 'włącza tworzenie automatycznej nazwy komputera przy jego dodawaniu / edycji w formacie C_{id klienta}_N_{id komputera} o ile nie podamy jej ręcznie';
+					break;
+					
 					
 					
 				default:
@@ -511,10 +515,6 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					$config[$idx]['description'] = trans('Support for big ISPs e.g. hidding long customers selection dropdowns. Default: false');
 				break;
 
-				case 'short_pagescroller':
-					$config[$idx]['description'] = trans('Enables page scroller designed for lists with very big number of pages. Default: false');
-				break;
-
 				case 'ewx_support':
 					$config[$idx]['description'] = trans('Support for EtherWerX devices. Default: false');
 				break;
@@ -561,6 +561,18 @@ function GetConfigList($order='var,asc', $section='', $search='')
 				
 				case 'syslog_pagelimit':
 					$config[$idx]['description'] = trans('Limit the events displayed on a single page in the system logs. Default: 100');
+				break;
+				
+				case 'syslog_maxrecord':
+					$config[$idx]['description'] = 'Maksymalna ilość rekordów jakie mogą być odczytane, zabezpieczenie przed przepełnieniem pamięci przez DB.<br><b>DEF.: 150000</b> ( dla 128MB )';
+				break;
+				
+				case 'gethostbyaddr':
+					$config[$idx]['description'] = 'włączenie rozwiązywania adresu IP na nazwę hosta w liście użytkowników.<br><b>DEF.: 1</b>';
+				break;
+				
+				case 'netlist_pagelimit':
+					$config[$idx]['description'] = 'Ilość wyświetlanych sieci IP na jednej stronie.<br><b>DEF.: 50</b>';
 				break;
 
 				default:

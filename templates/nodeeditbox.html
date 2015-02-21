@@ -9,7 +9,7 @@
 			<img src="img/node.gif" alt="">
 		</td>
 		<td style="width: 99%;" class="frightu" colspan="2">
-			<input type="text" name="nodeedit[name]" value="{$nodeinfo.name}" maxlength="32" size="30" {tip text="Enter node name" trigger="name" bold=1}>
+			<input type="text" class="required" name="nodeedit[name]" value="{$nodeinfo.name}" maxlength="32" size="30" {tip text="Enter node name" trigger="name" bold=1} {if get_conf('netdevices.node_autoname')}placeholder="-- AUTONAZWA --"{else}placeholder="-- WYMAGANE --"{/if}>
 			<span class="bold">({$nodeinfo.id|string_format:"%04d"})</span>
 		</td>
 	</tr>
@@ -45,7 +45,7 @@
 			<img src="img/ip.gif" alt="{trans("IP address:")}">
 		</td>
 		<td style="width: 99%;" colspan="2">
-			<input type="text" name="nodeeditipaddr" readonly value="{$nodeinfo.ip}" {tip text="Enter IP address" trigger="ipaddr"}> 
+			<input type="text" name="nodeeditipaddr" readonly class="required" value="{$nodeinfo.ip}" {tip text="Enter IP address" trigger="ipaddr"} placeholder="-- WYMAGANE --"> 
 			<a href="javascript: void(0);" onclick="return ipchoosewin(document.editnode.nodeeditipaddr, document.editnode.nodeeditnetid, document.getElementById('nodeeditnetid').value);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
@@ -67,7 +67,7 @@
 			<table style="width: 100%;" cellpadding="1" cellspacing="0">
 				{foreach from=$nodeinfo.macs item=item key=key}
 				<tr id="mac{$key}">
-					<td style="width: 100%;"><input type="text" name="nodeedit[macs][{$key}]" value="{$item}" {tip text="Enter MAC address" trigger="mac`$key`"}> <a href="javascript: void(0);" onclick="return macchoosewin(document.editnode.elements['nodeedit[macs][{$key}]']);" {tip text="Click to select MAC from the list"}>&raquo;&raquo;&raquo;</a></td>
+					<td style="width: 100%;"><input type="text" name="nodeedit[macs][{$key}]" class="required" value="{$item}" {tip text="Enter MAC address" trigger="mac`$key`"} placeholder="-- WYMAGANE --"> <a href="javascript: void(0);" onclick="return macchoosewin(document.editnode.elements['nodeedit[macs][{$key}]']);" {tip text="Click to select MAC from the list"}>&raquo;&raquo;&raquo;</a></td>
 				</tr>
 				{/foreach}
 			</table>
@@ -227,6 +227,9 @@
 	    <td style="width:1%; white-space:norap;"><b>Model</b></td>
 	    <td style="width:98%;">
 		<input type="text" name="nodeedit[model]" value="{$nodeinfo.model}" {tip text="Podaj model sprzętu"}  style="width:150px;">
+		<a href="javascript: void(0);" onclick="return netdevmodelchoosewin('nodeedit', 'editnode', document.forms['editnode'].elements['nodeedit[netdevicemodelid]'].value, document.forms['editnode'].elements['nodeedit[producer]'].value, document.forms['editnode'].elements['nodeedit[model]'].value)" {tip text="Click to select model"}>&raquo;&raquo;&raquo;</a>
+		<input type="hidden" name="nodeedit[netdevicemodelid]" value="{$nodeinfo.netdevicemodelid}">
+		
 	    </td>
 	</tr>
 	

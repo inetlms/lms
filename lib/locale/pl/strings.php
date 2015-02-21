@@ -24,6 +24,22 @@
  *  $Id$
  */
 
+$_LANG['Network device models database is empty.'] = 'Baza danych urządzeń sieciowych jest pusta.';
+$_LANG['Select producer'] = 'Wybierz producenta';
+$_LANG['Select model'] = 'Wybierz model';
+$_LANG['Enter producer name'] = 'Wpisz nazwę producenta';
+$_LANG['Click to select model'] = 'Kliknij w celu wybrania modelu';
+$_LANG['Producer name'] = 'Nazwa producenta';
+$_LANG['Alternative name'] = 'Nazwa alternatywna';
+$_LANG['Alternative name (option)'] = 'Nazwa alternatywna (opcja)';
+$_LANG['name is required'] = 'nazwa jest wymagana';
+$_LANG['Network<br>Interface'] = 'Interfejsów<br>Sieciowych';
+$_LANG['Client<br>Devices'] = 'Urządzeń<br>Klienckich';
+$_LANG['New producer'] = 'Nowy producent';
+$_LANG['Producer edition'] = 'Edycja producenta';
+$_LANG['Add a manufacturer'] = 'Dodaj producenta';
+$_LANG['list the manufacturer already exists'] = 'podany producent już istnieje';
+$_LANG['Producers'] = 'Producenci';
 $_LANG['only counting'] = 'tylko naliczanie';
 $_LANG['Only counting'] = 'Tylko naliczanie';
 $_LANG['warranty card'] = 'karta gwarancyjna';
@@ -1221,6 +1237,7 @@ $_LANG['Searching of Events in Timetable'] = 'Szukanie wpisów w kalendarzu';
 $_LANG['Section:'] = 'Sekcja:';
 $_LANG['Section name contains forbidden characters!'] = 'Nazwa sekcji zawiera zabronione znaki!';
 $_LANG['Select'] = 'Wybierz';
+$_LANG['select'] = 'wybierz';
 $_LANG['- select account -'] = '- wybierz konto -';
 $_LANG['Select account'] = 'Wybierz konto';
 $_LANG['Select accounting frequency'] = 'Wybierz częstotliwość naliczania';

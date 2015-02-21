@@ -142,6 +142,7 @@ $DEFAULTS = array(
 		'force_network_gateway' 	=> '1',
 		'force_network_dns'		=> '1',
 		'pppoe_login'			=> '0',
+		'node_autoname'			=> '0',
 	),
 	'database' => array(
 		'type' 				=> 'mysql',
@@ -169,6 +170,7 @@ $DEFAULTS = array(
 		'car_eventdic' 			=> '1',// zdarzenia tylko ze słownika dla pojazdów
 	),
 	'phpui' => array(
+		'gethostbyaddr'			=> '1',
 		'default_division' 		=> '0',
 		'lang' 				=> '',
 		'iphistory' 			=> '1',
@@ -213,7 +215,6 @@ $DEFAULTS = array(
 		'force_ssl' 			=> false,
 		'allow_mac_sharing' 		=> false,
 		'big_networks' 			=> false,
-		'short_pagescroller' 		=> false,
 		'helpdesk_stats' 		=> true,
 		'helpdesk_customerinfo' 	=> true,
 		'helpdesk_backend_mode' 	=> false,
@@ -234,8 +235,10 @@ $DEFAULTS = array(
 		'default_assignment_period' 	=> '3',
 		'default_assignment_invoice' 	=> '0',
 		'syslog_level' 			=> '1',
-		'syslog_pagelimit' 		=> '100',
+		'syslog_pagelimit' 		=> '50',
+		'syslog_maxrecord'		=> '150000',
 		'callcenter_pagelimit' 		=> '50',
+		'netlist_pagelimit'		=> '50',
 	),
 	
 	'invoices' => array(

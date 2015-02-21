@@ -32,7 +32,6 @@
 		document.page.submit();
 	}
 
-{if check_conf('phpui.short_pagescroller')}
 	function pagechange1()
 	{
 		document.page.action="?m=receiptlist&page=" + document.forms['page'].elements['page1'].value;
@@ -46,7 +45,6 @@
 		document.page.target="";
 		document.page.submit();
 	}
-{/if}
 //-->
 </script>
 <form method="POST" name="page">

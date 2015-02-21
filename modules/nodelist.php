@@ -103,6 +103,155 @@ function setnodeblockade($idek)
   return $obj;
 }
 
+
+function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $network = NULL, $status = NULL, $customergroup = NULL, $nodegroup = NULL, $pagestart) 
+{
+    global $DB,$LMS;
+    
+    $_order = $order;
+    if ($order == '') $order = 'name,asc';
+    list($order, $direction) = sscanf($order, '%[^,],%s');
+    ($direction == 'desc') ? $direction = 'desc' : $direction = 'asc';
+    $_node = array();
+    
+    if ($status)
+    $_node = $DB->GetRow('SELECT 
+			COUNT(CASE WHEN access=1 THEN 1 END) AS connected,
+			COUNT(CASE WHEN warning=1 THEN 1 END) AS warning,
+			COUNT(CASE WHEN blockade=1 THEN 1 END) AS blockade 
+			FROM nodes WHERE ownerid > 0;');
+    $_nodecount = $DB->getone('SELECT COUNT(id) FROM nodes WHERE ownerid > 0;');
+
+    switch ($order) {
+	case 'name': $sqlord = ' ORDER BY n.name'; break;
+	case 'id': $sqlord = ' ORDER BY n.id'; 	break;
+	case 'mac': $sqlord = ' ORDER BY n.mac'; break;
+	case 'ip': $sqlord = ' ORDER BY n.ipaddr'; break;
+	case 'ip_pub': $sqlord = ' ORDER BY n.ipaddr_pub'; break;
+	case 'ownerid': $sqlord = ' ORDER BY n.ownerid'; break;
+	case 'owner': $sqlord = ' ORDER BY owner'; break;
+    }
+
+    if (sizeof($search))
+	foreach ($search as $idx => $value) {
+	    if ($value != '') {
+		switch ($idx) {
+		    case 'ipaddr': $searchargs[] = '(inet_ntoa(n.ipaddr) ?LIKE? ' . $DB->Escape('%' . trim($value) . '%') . ' OR inet_ntoa(n.ipaddr_pub) ?LIKE? ' . $DB->Escape('%' . trim($value) . '%') . ')'; break;
+		    case 'state': if ($value != '0') $searchargs[] = 'n.location_city IN (SELECT lc.id FROM location_cities lc JOIN location_boroughs lb ON lb.id = lc.boroughid JOIN location_districts ld ON ld.id = lb.districtid JOIN location_states ls ON ls.id = ld.stateid WHERE ls.id = ' . $DB->Escape($value) . ')'; break;
+		    case 'district':if ($value != '0') $searchargs[] = 'n.location_city IN (SELECT lc.id FROM location_cities lc JOIN location_boroughs lb ON lb.id = lc.boroughid JOIN location_districts ld ON ld.id = lb.districtid WHERE ld.id = ' . $DB->Escape($value) . ')';break;
+		    case 'borough':if ($value != '0') $searchargs[] = 'n.location_city IN (SELECT lc.id FROM location_cities lc WHERE lc.boroughid = '. $DB->Escape($value) . ')';break;
+		    default: $searchargs[] = 'n.' . $idx . ' ?LIKE? ' . $DB->Escape("%$value%");
+		}
+	    }
+	}
+
+    if (isset($searchargs))
+	$searchargs = ' AND (' . implode(' ' . $sqlskey . ' ', $searchargs) . ')';
+
+    $totalon = 0;
+    $totaloff = 0;
+
+    if ($network)
+	$net = $LMS->GetNetworkParams($network);
+
+    $md5 = md5(
+	($_order ? $_order : '')
+	.($search ? $search : '')
+	.($sqlskey ? $sqlskey : '')
+	.($network ? $network : '')
+	.($status ? $status : '')
+	.($customergroup ? $customergroup : '')
+	.($nodegroup ? $nodegroup : '') 
+	.($_node['connected'] ? $_node['connected'] : '0')
+	.($_node['warning'] ? $_node['warning'] : '0')
+	.($_node['blockade'] ? $_node['blockade'] : '0')
+	.($_nodecount ? $_nodecount : '0')
+    );
+    
+    $_cache = $LMS->loadcache('nodelist',$md5);
+
+    if (!$_cache)
+    {
+	$preload = $DB->GetAll('SELECT n.id AS id, n.access '
+	.(!$search ? ', nd.name AS devname, nd.location AS devlocation ' : '')
+	.' FROM vnodes n 
+	JOIN customersview c ON (n.ownerid = c.id) '
+	.(!$search ? ' LEFT JOIN netdevices nd ON (nd.id = n.netdev) ' : '')
+	. ($customergroup ? 'JOIN customerassignments ON (customerid = c.id) ' : '')
+	. ($nodegroup ? 'JOIN nodegroupassignments ON (nodeid = n.id) ' : '')
+	. ' WHERE 1=1 '
+	. ($network ? ' AND ((n.ipaddr > ' . $net['address'] . ' AND n.ipaddr < ' . $net['broadcast'] . ')
+	    OR (n.ipaddr_pub > ' . $net['address'] . ' AND n.ipaddr_pub < ' . $net['broadcast'] . '))' : '')
+	. ($status == 1 ? ' AND n.access = 1' : '') //connected
+	. ($status == 2 ? ' AND n.access = 0' : '') //disconnected
+	. ($status == 3 ? ' AND n.lastonline > ?NOW? - ' . intval(get_conf('phpui.lastonline_limit',600)) : '') //online
+	. ($status == 4 ? ' AND NOT EXISTS (SELECT * FROM nodeassignments na  WHERE n.id = na.nodeid)' : '') //without nodeassignments
+	. ($status == 5 ? ' AND n.blockade = 1' : '') // z blokadą
+	. ($status == 6 ? ' AND n.warning = 1' : '') // z powiadomieniem
+	. ($customergroup ? ' AND customergroupid = ' . intval($customergroup) : '')
+	. ($nodegroup ? ' AND nodegroupid = ' . intval($nodegroup) : '')
+	. (isset($searchargs) ? $searchargs : '')
+	. ($sqlord != '' ? $sqlord . ' ' . $direction : ''));
+	
+//	$LMS->saveCache('nodelist',$md5,$preload);
+	$tmp = array();
+	for ($i=0; $i<sizeof($preload); $i++) {
+	    $tmp[$i]['id'] = $preload[$i]['id'];
+	    $tmp[$i]['access'] = $preload[$i]['access'];
+	}
+	$LMS->saveCache('nodelist',$md5,$tmp);
+	
+    } else {
+	$preload = $_cache;
+    }
+    
+    $idlist = array();
+    
+    if ($preload) {
+	$pageend = $pagestart + get_conf('phpui.nodelist_pagelimit','50');
+	for ($p1=$pagestart; $p1<$pageend; $p1++)
+	{
+	    if ($preload[$p1]['id'])
+		$idlist[] = $preload[$p1]['id'];
+	}
+    } else {
+	$idlist[0] = 0;
+    }
+    
+    $_idlist = implode(',',$idlist);
+    
+    $nodelist = $DB->GetAll('SELECT n.id AS id, n.ipaddr, inet_ntoa(n.ipaddr) AS ip, n.ipaddr_pub,
+	inet_ntoa(n.ipaddr_pub) AS ip_pub, n.mac, n.name, n.ownerid, n.access, n.warning, n.blockade, 
+	n.linktype, n.linkspeed, n.linktechnology,
+	n.netdev, n.lastonline, n.info, (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id LIMIT 1) AS monitoring, '
+	. $DB->Concat('c.lastname', "' '", 'c.name') . ' AS owner '
+	.(!$search ? ', nd.name AS devname, nd.location AS devlocation ' : '')
+	.' FROM vnodes n 
+	JOIN customersview c ON (n.ownerid = c.id) '
+	.(!$search ? ' LEFT JOIN netdevices nd ON (nd.id = n.netdev) ' : '')
+	. ($customergroup ? 'JOIN customerassignments ON (customerid = c.id) ' : '')
+	. ($nodegroup ? 'JOIN nodegroupassignments ON (nodeid = n.id) ' : '')
+	. ' WHERE 1=1 '
+	.' AND n.id IN ('.$_idlist.') '
+	. ($sqlord != '' ? $sqlord . ' ' . $direction : ''));
+	
+    if ($preload) {
+	foreach ($preload as $idx => $row) {
+	    ($row['access']) ? $totalon++ : $totaloff++;
+	}
+    }
+
+	$nodelist['total'] = sizeof($preload);
+	$nodelist['order'] = $order;
+	$nodelist['direction'] = $direction;
+	$nodelist['totalon'] = $totalon;
+	$nodelist['totaloff'] = $totaloff;
+
+		return $nodelist;
+}
+
+
+
 $layout['pagetitle'] = trans('Nodes List');
 
 $SESSION->save('backto', $_SERVER['QUERY_STRING']);
@@ -137,7 +286,17 @@ else
 	$ng = $_GET['ng'];
 $SESSION->save('nlng', $ng);
 
-$nodelist = $LMS->GetNodeList($o, NULL, NULL, $n, $s, $g, $ng);
+if ($SESSION->is_set('nlp') && !isset($_GET['page']))
+	$SESSION->restore('nlp', $_GET['page']);
+	
+$page = (!isset($_GET['page']) ? 1 : $_GET['page']);
+$pagelimit = get_conf('phpui.nodelist_pagelimit','50');
+$start = ($page - 1) * $pagelimit;
+
+
+$nodelist = GetNodeList($o, NULL, NULL, $n, $s, $g, $ng, $start);
+//$nodelist = $LMS->GetNodeList($o, NULL, NULL, $n, $s, $g, $ng);
+
 $listdata['total'] = $nodelist['total'];
 $listdata['order'] = $nodelist['order'];
 $listdata['direction'] = $nodelist['direction'];
@@ -154,12 +313,6 @@ unset($nodelist['direction']);
 unset($nodelist['totalon']);
 unset($nodelist['totaloff']);
 
-if ($SESSION->is_set('nlp') && !isset($_GET['page']))
-	$SESSION->restore('nlp', $_GET['page']);
-	
-$page = (!isset($_GET['page']) ? 1 : $_GET['page']);
-$pagelimit = (!isset($CONFIG['phpui']['nodelist_pagelimit']) ? $listdata['total'] : $CONFIG['phpui']['nodelist_pagelimit']);
-$start = ($page - 1) * $pagelimit;
 
 $SESSION->save('nlp', $page);
 

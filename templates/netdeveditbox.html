@@ -69,6 +69,9 @@
 		</td>
 		<td width="98%">
 			<input type="text" name="netdev[model]" value="{$netdevinfo.model}" {tip text="Enter model name (optional)" }>
+			<a href="javascript: void(0);" onclick="return netdevmodelchoosewin('netdev', 'netdevedit', document.forms['netdevedit'].elements['netdev[netdevicemodelid]'].value, document.forms['netdevedit'].elements['netdev[producer]'].value, document.forms['netdevedit'].elements['netdev[model]'].value)" {tip text="Click to select model"}>&raquo;&raquo;&raquo;</a>
+			<input type="hidden" name="netdev[netdevicemodelid]" value="{$netdev.netdevicemodelid}">
+			
 		</td>
 	</tr>
 	<tr class="pglight">

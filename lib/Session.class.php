@@ -212,6 +212,7 @@ class Session {
 		header('Location: '.$location);
 		die;
 	}
+	
 }
 
 ?>

@@ -70,15 +70,18 @@ if (isset($_POST['nodedata']))
 		}else{
 			$SESSION->redirect('?m=nodelist');
 		}
-
-	if($nodedata['name']=='')
+	
+	if (!get_conf('netdevices.node_autoname') || !empty($nodedata['name'])) {
+	    
+	    if($nodedata['name']=='') 
 		$error['name'] = trans('Node name is required!');
-	elseif(strlen($nodedata['name']) > 32)
+	    elseif(strlen($nodedata['name']) > 32)
 		$error['name'] = trans('Node name is too long (max.32 characters)!');
-	elseif(!preg_match('/^[_a-z0-9-.]+$/i', $nodedata['name']))
+	    elseif(!preg_match('/^[_a-z0-9-.]+$/i', $nodedata['name']))
 		$error['name'] = trans('Specified name contains forbidden characters!');
-	elseif($LMS->GetNodeIDByName($nodedata['name']))
+	    elseif($LMS->GetNodeIDByName($nodedata['name']))
 		$error['name'] = trans('Specified name is in use!');
+	}
 
 	if(!$nodedata['ipaddr'])
 		$error['ipaddr'] = trans('Node IP address is required!');
@@ -263,6 +266,7 @@ if (isset($_POST['nodedata']))
 	}
 }
 
+$SMARTY->assign('error', $error);
 if(empty($nodedata['macs']))
     $nodedata['macs'][] = '';
 
@@ -298,7 +302,7 @@ $nodedata = $LMS->ExecHook('node_add_init', $nodedata);
 $SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
 $SMARTY->assign('netdevices', $LMS->GetNetDevNames());
 $SMARTY->assign('networks', $LMS->GetNetworks(false));
-$SMARTY->assign('error', $error);
+
 $SMARTY->assign('nodedata', $nodedata);
 $SMARTY->display('nodeadd.html');
 

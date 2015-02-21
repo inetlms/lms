@@ -34,6 +34,47 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-02-21',
+	    'status'	=> '',
+	    'opis'	=> 'poprawa czytelności niektórych tabel / list',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'UI -> dodano zmienną node_autoname w sekcji osprzęt sieciowy, włączenie tej zmienne spowoduje automatyczne nadawanie nazwy komputera w formacie C_{id klienta}_N_{id komputera} w przypadku gdy pole nazwa w formularzu pozostawimy puste.<br><b>Domyślnie wyłączone</b>',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano słownik producentów i modeli sprzętu, do wykorzystania w interfejsach sieciowych oraz w karcie urządzenia klienta (komputer)',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowa listy sieci IP, dodano zmienną w netlist_pagelimit w sekcji phpui',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano zmienną gethostbyaddr w UI, sekcja phpui, wartość 0 wyłącza rozwiązywanie adresów IP na nazwę hosta w liście użytkowników. <br><b>DEF.: 1</b>',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'optymalizacja wydajności przy przeglądaniu listy klientów',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'optymalizacja wydajności przy przeglądaniu listy komputerów',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'modyfikacja paska do przewijania stron',
+	),
+
+	array(
 	    'data'	=> '',
 	    'status'	=> '',
 	    'opis'	=> 'dodano zmienną konfiguracyjną (UI) w osprzęcie sieciowym <b>pppoe_login</b>, która włącza nam dodtakowe pole na login dla sesji PPPoE, do wykorzystania jeżeli obecne pola nie zdają nam egzaminu',

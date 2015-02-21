@@ -100,6 +100,7 @@ class Auth {
 			if (isset($loginform))
 			{
 				$this->DB->Execute('UPDATE users SET lastlogindate=?, lastloginip=? WHERE id=?', array(time(), $this->ip ,$this->id));
+				$this->DB->Execute('DELETE FROM cache WHERE id = ? ;',array($this->id));
 				writesyslog('User '.$this->login.' logged in.', LOG_INFO);
 				if (SYSLOG) addlogs('logowanie do systemu: '.$this->login.' IP: '.$this->ip.' ( '.gethostbyaddr($this->ip).' ) ','e=add;m=admin;uid='.$this->id);
 			}

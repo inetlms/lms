@@ -8,8 +8,8 @@
 		<td style="width: 1%;" class="fleftu">
 			<img src="img/node.gif" alt="{trans("Name:")}">
 		</td>
-		<td style="width: 99%;" class="frightu">
-			<input type="text" name="nodedata[name]" value="{$nodedata.name}" maxlength="32" size="30" {tip text="Enter node name" trigger="name" bold=1}>
+		<td style="width: 99%;" class="frightu" align="left">
+			<input type="text" name="nodedata[name]" value="{$nodedata.name}" maxlength="32" size="30"  class="required" {tip text="Enter node name" trigger="name"} {if !get_conf('netdevices.node_autoname')}placeholder="-- WYMAGANE --"{else}placeholder="-- AUTONAZWA --"{/if}>
 		</td>
 	</tr>
 	<tr class="light">
@@ -36,7 +36,7 @@
 			<img src="img/ip.gif" alt="{trans("IP address:")}">
 		</td>
 		<td style="width: 99%;">
-			<input type="text" readonly name="nodedataipaddr" value="{$nodedata.ipaddr}" {tip text="Enter IP address" trigger="ipaddr"}>
+			<input type="text" readonly name="nodedataipaddr" value="{$nodedata.ipaddr}" class="required" {tip text="Enter IP address" trigger="ipaddr"} placeholder="-- WYMAGANE --">
 			<a href="javascript: void(0);" onclick="return ipchoosewin(document.nodeadd.nodedataipaddr, document.nodeadd.nodedatanetid);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
@@ -58,7 +58,7 @@
 			<table style="width: 100%;" cellpadding="1" cellspacing="0">
 				{foreach from=$nodedata.macs item=item key=key}
 				<tr id="mac{$key}">
-					<td style="width: 100%"><input type="text" name="nodedata[macs][{$key}]" value="{$item}" {tip text="Enter MAC address" trigger="mac`$key`"}> <a href="javascript: void(0);" onclick="return macchoosewin(document.nodeadd.elements['nodedata[macs][{$key}]']);" {tip text="Click to select MAC from the list"}>&raquo;&raquo;&raquo;</a></td>
+					<td style="width: 100%"><input placeholder="-- WYMAGANE --" class="required" type="text" name="nodedata[macs][{$key}]" value="{$item}" {tip text="Enter MAC address" trigger="mac`$key`"}> <a href="javascript: void(0);" onclick="return macchoosewin(document.nodeadd.elements['nodedata[macs][{$key}]']);" {tip text="Click to select MAC from the list"}>&raquo;&raquo;&raquo;</a></td>
 				</tr>
 				{/foreach}
 			</table>
@@ -159,8 +159,8 @@
 		</td>
 		<td style="width: 99%; white-space: nowrap;">
 		{if $customers}
-			<select size="1" name="nodedata[customerid]" {tip text="Assign node to customer" trigger="ownerid"} style="max-width:160px;" onchange="document.nodeadd.elements['nodedata[ownerid]'].value=this.value">
-				<option value="0">{trans("... select customer ...")}</option>
+			<select size="1" name="nodedata[customerid]" {tip text="Assign node to customer" trigger="ownerid"} style="max-width:160px;" onchange="document.nodeadd.elements['nodedata[ownerid]'].value=this.value" id="choice">
+				<option value="0" style="color:red;">{trans("... select customer ...")}</option>
 				{foreach from=$customers item=c}
 				<option value="{$c.id}"{if $nodedata.ownerid == $c.id} selected{/if}>{$c.customername|truncate:40:"...":true} ({$c.id|string_format:"%04d"})</option>
 				{/foreach}
@@ -171,6 +171,18 @@
 		<a href="javascript: void(0);" onclick="return customerchoosewin(document.nodeadd.elements['nodedata[ownerid]']);" {tip text="Click to search customer"}>{trans("Search")}&nbsp;&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
+	{literal}
+	    <script type="text/javascript" language="JavaScript">
+	    <!--
+		$("#choice").change(function() {
+		    if($(this).val() == "0") $(this).addClass("required_select");
+		    else $(this).removeClass("required_select");
+		});
+		
+		$("#choice").change();
+	    //-->
+	    </script>
+	{/literal}
 	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/options.gif" alt="">
@@ -221,6 +233,8 @@
 	    <td style="width:1%; white-space:norap;"><b>Model</b></td>
 	    <td style="width:98%;">
 		<input type="text" name="nodedata[model]" value="{$nodedata.model}" {tip text="Podaj model sprzętu"}  style="width:150px;">
+		<a href="javascript: void(0);" onclick="return netdevmodelchoosewin('nodedata', 'nodeadd', document.forms['nodeadd'].elements['nodedata[netdevicemodelid]'].value, document.forms['nodeadd'].elements['nodedata[producer]'].value, document.forms['nodeadd'].elements['nodedata[model]'].value)" {tip text="Click to select model"}>&raquo;&raquo;&raquo;</a>
+		<input type="hidden" name="nodedata[netdevicemodelid]" value="{$netdev.netdevicemodelid}">
 	    </td>
 	</tr>
 	

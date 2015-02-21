@@ -390,7 +390,7 @@ function invoice_data($x, $y, $width, $font_size, $margin)
 					$t_data[$v++] = sprintf('%.2f %%', $item['pdiscount']);
 				elseif (!empty($item['vdiscount']))
 					$t_data[$v++] = iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['vdiscount']));
-				elseif (!empty($invoice['pdiscount']) || !empty($invoice['vdiscount'])
+				elseif (!empty($invoice['pdiscount']) || !empty($invoice['vdiscount']))
 				    $t_data[$v++] = '';
 				$t_data[$v++] = iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['basevalue']));
 				$t_data[$v++] = iconv("UTF-8", "ISO-8859-2//TRANSLIT", moneyf($item['totalbase']));

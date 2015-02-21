@@ -4,28 +4,30 @@
 <table cellpadding="3" width="100%">
     {if $listdata.total != 0}
 	<tr class="scroller">
-		<td class="fall" colspan="5" width="100%">
+		<td class="fall" colspan="6" width="100%">
 			{include file="scroller.html" loop=$netdevlist}
 		</td>
 	</tr>
 	{/if}
 	<tr class="dark" {tip text="Click on column name to change sorting order"}>
-		<td class="fleftu" width="96%">
-			<img src="img/netdev.gif" alt="">&nbsp;<a href="?m=netdevlist&o=name{if $listdata.direction eq "asc" && $listdata.order eq "name"},desc{/if}"><b>{trans("Name:")}</b></a> {if $listdata.order eq "name"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
-			<img src="img/producer.gif" alt="">&nbsp;<a href="?m=netdevlist&o=producer{if $listdata.direction eq "asc" && $listdata.order eq "producer"},desc{/if}">{trans("Manufacturer:")}</a> {if $listdata.order eq "producer"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if} / 
-			<a href="?m=netdevlist&o=model{if $listdata.direction eq "asc" && $listdata.order eq "model"},desc{/if}">{trans("Model:")}</a> {if $listdata.order eq "model"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if} /
-			<a href="?m=netdevlist&o=location{if $listdata.direction eq "asc" && $listdata.order eq "location"},desc{/if}">{trans("Location:")}</a> {if $listdata.order eq "location"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
-		</td>
-		<td class="fbt" width="1%" align="left" class="pad10"><b>Węzeł</b></td>
-		<td class="fbt" width="1%" align="right" valign="top">
+		<td class="fleftu pad5" width="1%" align="left" style="vertical-align:bottom;">
 			<a href="?m=netdevlist&o=id{if $listdata.direction eq "asc" && $listdata.order eq "id"},desc{/if}">ID:</a> {if $listdata.order eq "id"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td class="fbt" width="1%" nowrap>
-			<img src="img/port.gif" alt="">&nbsp;<a href="?m=netdevlist&o=ports{if $listdata.direction eq "asc" && $listdata.order eq "ports"},desc{/if}">{trans("Number of ports:")}</a> {if $listdata.order eq "ports"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
-			(<a href="?m=netdevlist&o=takenports{if $listdata.direction eq "asc" && $listdata.order eq "takenports"},desc{/if}">{trans("Ports used:")}</a>{if $listdata.order eq "takenports"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if})<br>
-			<img src="img/serialnumber.gif" alt="">&nbsp;<a href="?m=netdevlist&o=serialnumber{if $listdata.direction eq "asc" && $listdata.order eq "serialnumber"},desc{/if}">{trans("Serial number:")}</a> {if $listdata.order eq "serialnumber"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		<td class="fbt tleft pad5" width="95%">
+			<a href="?m=netdevlist&o=name{if $listdata.direction eq "asc" && $listdata.order eq "name"},desc{/if}"><b>{trans("Name:")}</b></a> {if $listdata.order eq "name"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
+			<a href="?m=netdevlist&o=location{if $listdata.direction eq "asc" && $listdata.order eq "location"},desc{/if}">{trans("Location:")}</a> {if $listdata.order eq "location"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td class="frightu" width="1%" align="right" nowrap>
+		<td class="fbt tleft pad5" width="1%" nowrap>
+			<a href="?m=netdevlist&o=producer{if $listdata.direction eq "asc" && $listdata.order eq "producer"},desc{/if}">{trans("Manufacturer:")}</a> {if $listdata.order eq "producer"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
+			<a href="?m=netdevlist&o=model{if $listdata.direction eq "asc" && $listdata.order eq "model"},desc{/if}">{trans("Model:")}</a> {if $listdata.order eq "model"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="fbt pad5 tleft" width="1%" align="left"><b>Węzeł</b></td>
+		
+		<td class="fbt pad5 tleft" width="1%" nowrap>
+			<a href="?m=netdevlist&o=ports{if $listdata.direction eq "asc" && $listdata.order eq "ports"},desc{/if}">{trans("Number of ports:")}</a> {if $listdata.order eq "ports"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
+			<a href="?m=netdevlist&o=takenports{if $listdata.direction eq "asc" && $listdata.order eq "takenports"},desc{/if}">{trans("Ports used:")}</a>{if $listdata.order eq "takenports"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td class="frightu tleft pad5" width="1%" align="right" nowrap>
 			<b>{trans("Total:")} {$listdata.total|default:"0"}</b>
 		</td>
 	</tr>
@@ -33,24 +35,29 @@
 	{cycle values="lucid,light" print=false}
 	{section name=netdevlist loop=$netdevlist start=$start max=$pagelimit}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td width="96%" class="fleft" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';" valign="top">
-			<img src="img/netdev.gif" alt=""> <a name="{$netdevlist[netdevlist].id}"><b>{$netdevlist[netdevlist].name}</b></a><br>
-			<img src="img/producer.gif" alt=""> {$netdevlist[netdevlist].producer} {if $netdevlist[netdevlist].model}/ {$netdevlist[netdevlist].model}{/if}{if $netdevlist[netdevlist].location} / {$netdevlist[netdevlist].location}{/if}
+		<td width="1%" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';" align="center" class="fleft pad5">
+			{$netdevlist[netdevlist].id|string_format:"%04d"}
 		</td>
-		<td width="1%" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';" align="left" valign="top" class="pad10">
+		<td width="95%" class="pad5 tleft" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';" style="vertical-align:top;">
+			<a name="{$netdevlist[netdevlist].id}"><b>{$netdevlist[netdevlist].name}</b></a>
+			{if $netdevlist[netdevlist].location}<br>{$netdevlist[netdevlist].location}{/if}
+		</td>
+		<td width="1%" class="pad5 tleft" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';" style="vertical-align:top;" nowrap>
+			{$netdevlist[netdevlist].producer}{if $netdevlist[netdevlist].model}<br>{$netdevlist[netdevlist].model}{/if}
+		</td>
+		<td width="1%" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';" align="left" valign="top" class="pad5 tleft">
 		    {if $netdevlist[netdevlist].networknodeid}<a href="?m=networknodeinfo&idn={$netdevlist[netdevlist].networknodeid}">{$netdevlist[netdevlist].networknodename}</a>{/if}
 		</td>
-		<td width="1%" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';" align="right" valign="top">
-			({$netdevlist[netdevlist].id|string_format:"%04d"})
+		
+		<td width="1%" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';" nowrap class="pad5 tleft" align="right">
+			{$netdevlist[netdevlist].ports}<br>{$netdevlist[netdevlist].takenports}
 		</td>
-		<td width="1%" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';" nowrap>
-			<img src="img/port.gif" alt=""> {$netdevlist[netdevlist].ports} ({$netdevlist[netdevlist].takenports})<br>
-			<img src="img/serialnumber.gif" alt=""> {$netdevlist[netdevlist].serialnumber}
-		</td>
-		<td width="1%" class="fright" align="right">
+		<td width="1%" class="fright tleft pad5" align="right">
 			<nobr>
 			{if !$netdevlist[netdevlist].networknodeid}
 			    <a href="?m=networknodeadd&create&int={$netdevlist[netdevlist].id}"><img src="img/netdev.png" title="[ Utwórz węzeł ]" style="cursor:pointer;"></a>
+			{else}
+			    <img src="img/empty.gif" width="16">
 			{/if}
 			<a href="?m=netdevinfo&id={$netdevlist[netdevlist].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></a>
 			<a href="?m=netdevedit&id={$netdevlist[netdevlist].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
@@ -62,7 +69,7 @@
 	{if $netdevlist[netdevlist.index_next].ownerid eq $netdevlist[netdevlist].ownerid && $listdata.order eq "owner"}{cycle print=false}{/if}
 	{sectionelse}
 	<tr>
-		<td colspan="5" class="fall" align="center">
+		<td colspan="6" class="fall" align="center">
 			<p>&nbsp;</p>
 			<p><b>{trans("There are no devices in your database.")}</b></p>
 			<p>&nbsp;</p>
@@ -71,18 +78,18 @@
 	{/section}
 	{if $listdata.total != 0}
 	<tr class="scroller">
-		<td class="fall" colspan="5" width="100%">
+		<td class="fall" colspan="6" width="100%">
 			{include file="scroller.html" loop=$netdevlist}
 		</td>
 	</tr>
 	{/if}
 	<tr class="light">
-		<td width="99%" colspan="4" class="fleftu" align="right">
+		<td width="99%" colspan="5" class="fleftu" align="right">
 			<b>
 				{trans("Total:")} {$listdata.total|default:"0"}
 			</b>
 		</td>
-		<td width="1%" colspan="1" class="frightu"></td>				
-	</tr>			
+		<td width="1%" colspan="1" class="frightu"></td>
+	</tr>
 </table>
 {include file="footer.html"}

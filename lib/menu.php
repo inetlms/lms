@@ -895,10 +895,17 @@ $menu = array(
 				),
 				
 				array(
+					'name' => 'Producenci, modele',
+					'link' => '?m=netdevicemodels',
+					'tip'	=> 'Producenci i modele urządzeń sieciowych',
+					'prio' => 50,
+				),
+				
+				array(
 					'name' => 'Powody korekt faktur',
 					'link'	=> '?m=dictionarycnote',
 					'tip'	=> 'Rodzaje powodów dla których jest dokonan korekta faktury',
-					'prio'	=> 50,
+					'prio'	=> 60,
 				),
 				
 			),

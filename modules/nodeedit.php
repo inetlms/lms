@@ -163,14 +163,17 @@ if (isset($_POST['nodeedit'])) {
 		$error['mac0'] = trans('MAC address is required!');
 	$nodeedit['macs'] = $macs;
 
-	if ($nodeedit['name'] == '')
+	if (!empty($nodeedit['name']) || !get_conf('netdevices.node_autoname')) 
+	{
+	    if ($nodeedit['name'] == '')
 		$error['name'] = trans('Node name is required!');
-	elseif (!preg_match('/^[_a-z0-9-.]+$/i', $nodeedit['name']))
+	    elseif (!preg_match('/^[_a-z0-9-.]+$/i', $nodeedit['name']))
 		$error['name'] = trans('Specified name contains forbidden characters!');
-	elseif (strlen($nodeedit['name']) > 32)
+	    elseif (strlen($nodeedit['name']) > 32)
 		$error['name'] = trans('Node name is too long (max.32 characters)!');
-	elseif (($tmp_nodeid = $LMS->GetNodeIDByName($nodeedit['name'])) && $tmp_nodeid != $nodeedit['id'])
+	    elseif (($tmp_nodeid = $LMS->GetNodeIDByName($nodeedit['name'])) && $tmp_nodeid != $nodeedit['id'])
 		$error['name'] = trans('Specified name is in use!');
+	}
 
 	if (strlen($nodeedit['passwd']) > 32)
 		$error['passwd'] = trans('Password is too long (max.32 characters)!');
@@ -314,6 +317,7 @@ if (isset($_POST['nodeedit'])) {
 	$nodeinfo['linkspeed'] = $nodeedit['linkspeed'];
 	$nodeinfo['blockade'] = $nodeedit['blockade'];
 	$nodeinfo['pppoelogin'] = $nodeedit['pppoelogin'];
+	$nodeinfo['netdevicemodelid'] = $nodeedit['netdevicemodelid'];
 	
 
 	if ($nodeedit['ipaddr_pub'] == '0.0.0.0')

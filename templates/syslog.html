@@ -15,6 +15,7 @@
 	dok.sl_ev.value = "";
 	dok.sl_us.value = "";
 	dok.cid.value="";
+	dok.page.value="1";
 	dok.submit();
     }
 //-->
@@ -67,47 +68,53 @@
 	</td>
 	</td>
     </tr>
-
-{if $listdata.total !=0 }
+    {if $listdata.total != $listdata.countid}
+    <tr class="scroller">
+	<td colspan="7" class="fall" align="center" style="color:blue;">
+	    <b>Włączono ograniczenie ilości rekordów, dostępnych {$listdata.total} z {$listdata.countid}</b>
+	</td>
+    </tr>
+    {/if}
+    {if $listdata.total !=0 }
     <tr class="scroller">
 	<td colspan="7" class="fall">
-	    {include file="scroller.html" loop=$syslog}
+	    {include file="scrollerpage.html" loop=$listdata.total}
 	</td>
     </tr>
     {/if}
 
     {if $syslog}
     <tr class="dark">
-	<td class="fbl" align="center"><b>Data</b></td>
-	<td class="fbottom" align="center"><b>Moduł</b></td>
-	<td class="fbottom" align="center"><b>Operacja</b></td>
-	<td class="fbottom" align="left"><b>Opis</b></td>
-	<td class="fbottom" align="center"><b>Użytkownik</b></td>
-	<td class="fbottom" width="1%">&nbsp;</td>
-	<td class="fbr" width="1%">&nbsp;</td>
+	<td width="1%" nowrap class="fbl pad5" align="center"><b>Data</b></td>
+	<td width="1%" nowrap class="fbottom pad5 tleft" align="center"><b>Moduł</b></td>
+	<td width="1%" nowrap class="fbottom pad5 tleft" align="center"><b>Operacja</b></td>
+	<td width="94%" class="fbottom pad5 tleft" align="left"><b>Opis</b></td>
+	<td width="1%" nowrap class="fbottom pad5 tleft" align="center"><b>Użytkownik</b></td>
+	<td width="1%" nowrap class="fbottom pad5 tleft" width="1%">&nbsp;</td>
+	<td width="1%" nowrap class="fbr pad5" width="1%">&nbsp;</td>
     </tr>
     {/if}
     
     
     {cycle values="lucid,light" print=false}
-    {section name="l1" loop=$syslog start=$start max=$pagelimit}
+    {section name="l1" loop=$syslog}
     {assign var="syslogid" value=$syslog[l1].id}
     {assign var="_modules" value=$syslog[l1].module}
     {assign var="_event" value=$syslog[l1].event}
 	<tr  class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
-	    <td width="1%" class="fleft" ><nobr>{$syslog[l1].cdate|date_format:"%Y-%m-%d %H:%M:%S"}</nobr></td>
-	    <td width="1%" align="center"><nobr>{$_MOD.$_modules}</nobr></td>
-	    <td width="1%" align="center" style="color:{if $_event == $smarty.const._ADD_}green{elseif $_event == $smarty.const._RM_}red{elseif $_event == $smarty.const._UP_}blue{elseif $_event == $smarty.const._MOV_}blue{elseif $_event == $smarty.const._ERR_}red{elseif $_event == $smarty.const._WARN_}brown{elseif $_event == $smarty.const._ACL_}purple{else}black{/if};"><nobr><b>{$_MSG_LOG.$_event}</b></nobr></td>
-	    <td width="auto" >{$syslog[l1].msg}</td>
-	    <td width="1%" align="center" ><nobr>{if $syslog[l1].uid}{$syslog[l1].login}{else}automat{/if}</nobr></td>
-	    <td width="1%" align="right">
+	    <td width="1%" nowrap class="fleft pad5" ><nobr>{$syslog[l1].cdate|date_format:"%Y-%m-%d %H:%M:%S"}</nobr></td>
+	    <td width="1%" nowrap align="center" class="pad5 tleft"><nobr>{$_MOD.$_modules}</nobr></td>
+	    <td width="1%" nowrap align="center" class="pad5 tleft" style="color:{if $_event == $smarty.const._ADD_}green{elseif $_event == $smarty.const._RM_}red{elseif $_event == $smarty.const._UP_}blue{elseif $_event == $smarty.const._MOV_}blue{elseif $_event == $smarty.const._ERR_}red{elseif $_event == $smarty.const._WARN_}brown{elseif $_event == $smarty.const._ACL_}purple{else}black{/if};"><nobr><b>{$_MSG_LOG.$_event}</b></nobr></td>
+	    <td width="94%" class="pad5 tleft" align="left">{$syslog[l1].msg}</td>
+	    <td width="1%" nowrap class="pad5 tleft" align="center" ><nobr>{if $syslog[l1].uid}{$syslog[l1].login}{else}automat{/if}</nobr></td>
+	    <td width="1%" nowrap class="pad5 tleft" align="right">
 		<nobr>
 		{if $syslog[l1].cid}<img src="img/customer.gif" onclick="location.href='?m=customerinfo&id={$syslog[l1].cid}';" style="cursor:pointer;" {tip text="przejdź do karty klienta"}>
 		{else}<img src="img/empty.gif" width="16">
 		{/if}
 		</nobr>
 	    </td>
-	    <td width="1%" align="right" class="fright">
+	    <td width="1%" align="right" class="fright pad5">
 		<nobr>
 		{if $syslog[l1].nid}<img src="img/node.gif" onclick="location.href='?m={if $syslog[l1].module == $smarty.const.MOD_NODE}nodeinfo{else if $syslog[l1].module == $smarty.const.MOD_NETDEV}netdevinfo{/if}&id={$syslog[l1].nid}';" style="cursor:pointer;" {tip text="przejdź do karty komputera/urządzenia"}>{else}<img src="img/empty.gif" width="16">{/if}
 		</nobr>
@@ -128,7 +135,7 @@
     {if $listdata.total != 0 }
     <tr class="scroller">
 	<td colspan="7" class="fall">
-	    {include file="scroller.html" loop=$syslog}
+	    {include file="scrollerpage.html" loop=$listdata.total}
 	</td>
     </tr>
     {else}

@@ -1,7 +1,5 @@
 {$xajax}
 
-
-
 {include file="header.html"}
 {title value=$layout.title link="<a href='javascript:void(0);' onclick='xajax_dictionary_cnote_add();'><b>Dodaj nową pozycję</b> <img src='img/add.gif' alt=''></a>"}
 
@@ -11,8 +9,8 @@
     <tr class="dark">
     
 	<td width="1%" nowrap style="height:22px;min-width:100px;vertical-align:bottom;" class="pad10 fleftu" align="left"><b>Powody korekt</b></td>
-	<td width="96%" style="height:22px;vertical-align:bottom;" class="pad10 fbt" align="left"><b>Opis</b></td>
-	<td width="1%" nowrap style="height:22px;" class="pad10 frightu" align="right"></td>
+	<td width="96%" style="height:22px;vertical-align:bottom;" class="pad10 fbt fleft" align="left"><b>Opis</b></td>
+	<td width="1%" nowrap style="height:22px;" class="pad10 frightu fleft" align="right"></td>
     </tr>
     
     {cycle values="lucid,light" print=false}
@@ -20,9 +18,9 @@
 	
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	    <td width="1%" nowrap style="min-width:100px;" align="left" class="fleft pad10">{$cnotelist[cnotelist].name} </td>
-	    <td width="96%" align="left" class="pad10">{if $cnotelist[cnotelist].description}{$cnotelist[cnotelist].description|nl2br}{/if}</td>
+	    <td width="96%" align="left" class="pad10 fleft">{if $cnotelist[cnotelist].description}{$cnotelist[cnotelist].description|nl2br}{/if}</td>
 	    
-	    <td width="1%" align="right" class="pl10 fright" nowrap>
+	    <td width="1%" align="right" class="pl10 fright fleft" nowrap>
 		<img src="img/delete.gif" onclick="confirm_delete({$cnotelist[cnotelist].id});">
 		<img src="img/edit.gif" alt="[ Edycja ]" onclick="xajax_dictionary_cnote_edit({$cnotelist[cnotelist].id});">
 	    </td>
