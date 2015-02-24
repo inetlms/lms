@@ -778,7 +778,13 @@ class LMS {
 		$this->DB->Execute('UPDATE customers SET deleted=1, moddate=?NOW?, modid=?
 				WHERE id=?', array($this->AUTH->id, $id));
 		$this->DB->Execute('DELETE FROM customerassignments WHERE customerid=?', array($id));
-		$this->DB->Execute('DELETE FROM assignments WHERE customerid=?', array($id));
+                
+                //kasowanie zobowiązań taryfowych
+                $assignments = $this->DB->GetCol('SELECT id FROM assignments WHERE customerid=?', array($id));
+                if ($assignments) {
+
+		    for ($i=0; $i< sizeof($assignments); $i++) $this->DeleteAssignment($assignments[$i]);
+		}
 		// nodes
 		$nodes = $this->DB->GetCol('SELECT id FROM nodes WHERE ownerid=?', array($id));
 		if ($nodes) {
@@ -3273,7 +3279,48 @@ class LMS {
 					));
 
 					$result[] = $this->DB->GetLastInsertID('assignments');
+                                        
+                                   	if (SYSLOG && !empty($result) && !empty($data['customerid'])) {
+                                            if (!empty($data['liabilityid']))
+                                                $nazwa = $this->DB->GetOne('SELECT name FROM liabilites WHERE id=? LIMIT 1;',array($data['liabilityid']));
+                                            else
+                                                $nazwa = $this->DB->GetOne('SELECT name FROM tariffs WHERE id=? LIMIT 1;',array($data['tariffid']));
+                                        addlogs('dodano zobowiązanie: '.$nazwa.', klient: '.$this->getcustomername($data['customerid']),'e=add;m=fin;c='.$data['customerid']);
+                                        }
 					
+				}
+			}
+		}
+		// Create one assignment record
+		else {
+			if (!empty($data['value'])) {
+				$this->DB->Execute('INSERT INTO liabilities (name, value, taxid, prodid)
+					    VALUES (?, ?, ?, ?)', array($data['name'],
+						str_replace(',', '.', $data['value']),
+						intval($data['taxid']),
+						$data['prodid']
+				));
+				$lid = $this->DB->GetLastInsertID('liabilities');
+			}
+
+			$this->DB->Execute('INSERT INTO assignments (tariffid, customerid, period, at, invoice,
+					    settlement, numberplanid, paytype, datefrom, dateto, pdiscount, vdiscount, liabilityid)
+					    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(intval($data['tariffid']),
+					$data['customerid'],
+					$data['period'],
+					$data['at'],
+					!empty($data['invoice']) ? $data['invoice'] : 0,
+					!empty($data['settlement']) ? 1 : 0,
+					!empty($data['numberplanid']) ? $data['numberplanid'] : NULL,
+					!empty($data['paytype']) ? $data['paytype'] : NULL,
+					$data['datefrom'],
+					$data['dateto'],
+					str_replace(',', '.', $data['pdiscount']),
+					str_replace(',', '.', $data['vdiscount']),
+					isset($lid) ? $lid : 0,
+			));
+
+			$result[] = $this->DB->GetLastInsertID('assignments');
 					if (SYSLOG && !empty($result) && !empty($data['customerid'])) {
 					
 					    if ($data['datefrom'] != 0) $data_od = ( ' okres od: '.date('Y/m/d', $data['datefrom']));
@@ -3308,49 +3355,8 @@ class LMS {
 					    }
 					    
 					    addlogs('dodano zobowiązanie: '.$nazwa.' '.$rabat.' '.$nalicz.' '.$data_od.' '.$data_do.' '.$opcje.' '.$opcje_.', klient: '.$this->getcustomername($data['customerid']),'e=add;m=fin;c='.$data['customerid']);
-					}
-				}
-			}
-		}
-		// Create one assignment record
-		else {
-			if (!empty($data['value'])) {
-				$this->DB->Execute('INSERT INTO liabilities (name, value, taxid, prodid)
-					    VALUES (?, ?, ?, ?)', array($data['name'],
-						str_replace(',', '.', $data['value']),
-						intval($data['taxid']),
-						$data['prodid']
-				));
-				$lid = $this->DB->GetLastInsertID('liabilities');
-			}
-
-			$this->DB->Execute('INSERT INTO assignments (tariffid, customerid, period, at, invoice,
-					    settlement, numberplanid, paytype, datefrom, dateto, pdiscount, vdiscount, liabilityid)
-					    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(intval($data['tariffid']),
-					$data['customerid'],
-					$data['period'],
-					$data['at'],
-					!empty($data['invoice']) ? $data['invoice'] : 0,
-					!empty($data['settlement']) ? 1 : 0,
-					!empty($data['numberplanid']) ? $data['numberplanid'] : NULL,
-					!empty($data['paytype']) ? $data['paytype'] : NULL,
-					$data['datefrom'],
-					$data['dateto'],
-					str_replace(',', '.', $data['pdiscount']),
-					str_replace(',', '.', $data['vdiscount']),
-					isset($lid) ? $lid : 0,
-			));
-
-			$result[] = $this->DB->GetLastInsertID('assignments');
-			
-			if (SYSLOG && !empty($result) && !empty($data['customerid'])) {
-				if (!empty($data['liabilityid']))
-				    $nazwa = $this->DB->GetOne('SELECT name FROM liabilites WHERE id=? LIMIT 1;',array($data['liabilityid']));
-				else
-				    $nazwa = $this->DB->GetOne('SELECT name FROM tariffs WHERE id=? LIMIT 1;',array($data['tariffid']));
-			    addlogs('dodano zobowiązanie: '.$nazwa.', klient: '.$this->getcustomername($data['customerid']),'e=add;m=fin;c='.$data['customerid']);
-			}
-			
+					}			
+	
 		}
 
 		if (!empty($result) && count($result = array_filter($result))) {
