@@ -2,102 +2,146 @@
 
 {title value=$layout.pagetitle}
 <table width="100%" cellpadding="3" cellspacing="0" class="table">
+    
+    <form method="GET" action="?m=networknodelist" name="filter">
+    <input type="submit" class="hiddenbtn">
+    <input type="hidden" name="m" value="networknodelist">
+    <input type="hidden" name="page" value="1">
+    
+    <tr class="dark nav-header">
+	<td colspan="10" class="fall" width="100%" style="vertical-align:top;text-align:left;">
+	    <table width="100%" cellpadding="2">
+		<tr>
+		    <td width="1%" align="left" class="pad5"><img src="img/Filter.png" alt="" width="16" onclick="document.filter.submit();"></td>
+		    <td width="1%" align="right" class="pad">Status</td>
+		    <td width="1%" align="left" class="pad">
+			<select name="status" size="1" onchange="document.filter.submit();" {if $listdata.status != '-1'}class="active"{/if}>
+			<option value="-1">{trans('-- all --')}</option>
+			{foreach $_NSTATUS as $item => $key}
+			<option value="{$item}" {if $item == $listdata.status} selected{/if}>{$key}</option>
+			{/foreach}
+			</select>
+		    </td>
+		    
+		    <td width="1%" align="right" class="pad">Projekt</td>
+		    <td width="1%" align="left" class="pad">
+			<select name="project" size="1" onchange="document.filter.submit();" {if $listdata.project != '-1'}class="active"{/if}>
+			<option value="-1">{trans('-- all --')}</option>
+			{section name='projectlist' loop=$projectlist}
+			    <option value="{$projectlist[projectlist].id}"{if $projectlist[projectlist].id == $listdata.project} selected{/if}>{$projectlist[projectlist].name}</option>
+			{/section}
+			</select>
+		    </td>
+		    
+		    <td width="1%" align="right" class="pad">Własność</td>
+		    <td width="1%" align="left" class="pad">
+			<select name="owner" size="1" onchange="document.filter.submit();" {if $listdata.owner != '-1'}class="active"{/if}>
+			<option value="-1">{trans('-- all --')}</option>
+			{foreach $_TNODE as $item => $key}
+			<option value="{$item}" {if $item == $listdata.owner} selected{/if}>{$key|truncate:"19":"":true}</option>
+			{/foreach}
+			</select>
+		    </td>
+		    
+		    <td width="auto">&nbsp;</td>
+		</tr>
+	    </table>
+	</td>
+    </tr>
+    </form>
+    {if $listdata.total != 0}
+	<tr class="scroller">
+	    <td colspan="10" class="fall">
+		{include file="scroller.html" loop=$netlist}
+	    </td>
+	</tr>
+    {/if}
     <tr class="dark nav-header">
 	
 	<td class="fleftu pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
 	    <strong>ID</strong>
 	</td>
 	
-	<td class="fbt pad" width="1%" nowrap style="text-align:left;vertical-align:bottom;">
+	<td class="fbt pad tleft" width="1%" nowrap style="text-align:left;vertical-align:bottom;">
 	    <strong>Nazwa</strong>
 	</td>
 	
-	<td class="fbt pad" width="auto"  style="text-align:left;vertical-align:bottom;">
+	<td class="fbt pad tleft" width="auto"  style="text-align:left;vertical-align:bottom;">
 	    <strong>Adres</strong>
 	</td>
 	
-	<td class="fbt pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
-	    <strong>Rodzaj<br>Węzła</strong>
+	<td class="fbt pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
+	    <strong>Własność<br>Węzła</strong>
 	</td>
 	
-	<td class="fbt pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
+	<td class="fbt pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
 	    <strong>Warstwa<br>szkieletowa</strong>
 	</td>
 	
-	<td class="fbt pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
+	<td class="fbt pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
 	    <strong>Warstwa<br>dystrybucyjna</strong>
 	</td>
 	
-	<td class="fbt pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
+	<td class="fbt pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
 	    <strong>Warstwa<br>dostępowa</strong>
 	</td>
 	
-	<td class="fbt pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
-	    <strong>Urządzeń<br>sieciowych</strong>
+	<td class="fbt pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
+	    <strong>Interfejsów<br>sieciowych</strong>
 	</td>
 	
-	<td class="fbt pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
-	    <strong>---</strong>
+	<td class="fbt pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
+	    <strong>EU</strong>
 	</td>
 	
-	<td class="fbt pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
-	    <strong>---</strong>
-	</td>
-	
-	<td class="frightu pad" width="1%" nowrap>
+	<td class="frightu pad tleft" width="1%" nowrap>
 	    &nbsp;
 	</td>
     </tr>
     
     
-    
     {cycle values="lucid,light" print=false}
-    {section name=list loop=$netlist}
+    {section name=list loop=$netlist start=$start max=$pagelimit}
     <tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	
 	<td class="fleft pad" width="1%" nowrap style="text-align:left;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
 	    {$netlist[list].id|string_format:"%03d"}
 	</td>
 	
-	<td class="pad" width="1%" nowrap style="text-align:left;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
+	<td class="pad tleft" width="1%" nowrap style="text-align:left;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
 	    {$netlist[list].name}
 	</td>
 	
-	<td class="pad" width="auto"  style="text-align:left;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
+	<td class="pad tleft" width="auto"  style="text-align:left;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
 	    {$netlist[list].zip} {$netlist[list].city} {if $netlist[list].street}, {$netlist[list].street} {/if}{$netlist[list].location_house}{if $netlist[list].location_flat}/{$netlist[list].location_flat}{/if}
 	</td>
 	
-	<td class="pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
+	<td class="pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
 	    {assign var='tmp' value=$netlist[list].type}
-	    {$_TNODE.$tmp}
+	    {$_TNODE.$tmp|truncate:"19":"":true}
 	</td>
 	
-	<td class="pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
-	    {assign var='tmp' value=$netlist[list].backbone_layer}
-	    {if $tmp}{$_TNC.$tmp}{else}---{/if}
+	<td class="pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
+	    {if $netlist[list].backbone_layer}<img src="img/Apply.png" alt="TAK">{/if}
 	</td>
 	
-	<td class="pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
-	    {assign var='tmp' value=$netlist[list].distribution_layer}
-	    {if $tmp}{$_TNC.$tmp}{else}---{/if}
+	<td class="pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
+	    {if $netlist[list].distribution_layer}<img src="img/Apply.png" alt="Tak">{/if}
 	</td>
 	
-	<td class="pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
-	    {assign var='tmp' value=$netlist[list].access_layer}
-	    {if $tmp}{$_TNC.$tmp}{else}---{/if}
+	<td class="pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
+	    {if $netlist[list].access_layer}<img src="img/Apply.png" alt="Tak">{/if}
 	</td>
 	
-	<td class="pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
+	<td class="pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
 	    {$netlist[list].count_netdev}
 	</td>
 	
-	<td class="pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
+	<td class="pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
+	    {if $netlist[list].eu}<img src="img/Apply.png" alt="Tak">{/if}
 	</td>
 	
-	<td class="pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
-	</td>
-	
-	<td class="fright pad" width="1%" nowrap>
+	<td class="fright pad tleft" width="1%" nowrap>
 	    <a href="?m=networknodeinfo&idn={$netlist[list].id}"><img src="img/info.gif"></a>
 	    <a href="?m=networknodeedit&id={$netlist[list].id}"><img src="img/edit.gif"></a>
 	    {if !$netlist[list].count_netdev}
@@ -109,15 +153,22 @@
     </tr>
     {sectionelse}
 	<tr class="error">
-		<td colspan="11" align="center" class="fall">
+		<td colspan="10" align="center" class="fall">
 			<p>&nbsp;</p>
 			<p><strong>Brak węzłów</strong></p>
 			<p>&nbsp;</p>
 		</td>
 	</tr>
     {/section}
+    {if $listdata.total != 0}
+	<tr class="scroller">
+	    <td colspan="10" class="fall">
+		{include file="scroller.html" loop=$netlist}
+	    </td>
+	</tr>
+    {/if}
     <tr class="dark nav-footer">
-		<td colspan="11" align="right" class="fall">
+		<td colspan="10" align="right" class="fall">
 		    <a href="?m=networknodeadd" class="button">Nowy węzeł <img src="img/add.gif"></a>
 		</td>
     </tr>

@@ -13,7 +13,7 @@
 	<input type="hidden" id="old_teryt" value="{$netdevinfo.teryt}">
 	
 	<input type="submit" class="hiddenbtn">
-	<tr class="pgdark">
+	<tr class="dark boxtop">
 		<td width="1%" class="fleftu">
 			<img src="img/netdev.gif" alt="">
 		</td>
@@ -24,13 +24,13 @@
 			<input type="text" name="netdev[name]" value="{$netdevinfo.name}" maxlenght="32" {tip trigger="name" text="Enter device name" bold=1}>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
         <td width="100%" colspan="3" class="flr container">
 		    <table width="100%" cellpadding="0">
-		                <tr class="pglight">
+		                <tr class="light">
 		                        <td width="50%" style="vertical-align:top;">
 		                                <table width="100%" cellpadding="3">
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 		    <img src="img/network-node.png" alt="">
 		</td>
@@ -49,7 +49,7 @@
 		    {/if}
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/producer.gif" alt="">
 		</td>
@@ -60,7 +60,7 @@
 			<input type="text" name="netdev[producer]" value="{$netdevinfo.producer}" {tip text="Enter device producer (optional)"}>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/netdev_model.gif" alt="">
 		</td>
@@ -74,7 +74,7 @@
 			
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/serialnumber.gif" alt="">
 		</td>
@@ -85,7 +85,7 @@
 			<input type="text" name="netdev[serialnumber]" value="{$netdevinfo.serialnumber}" {tip text="Enter serial number (optional)"}>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/port.gif" alt="">
 		</td>
@@ -96,7 +96,7 @@
 			<input type="text" name="netdev[ports]" value="{if $netdevinfo.ports}{$netdevinfo.ports}{/if}" {tip trigger="ports" text="Enter number of ports (optional)"}>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/home.gif" alt="">
 		</td>
@@ -139,7 +139,7 @@
 		</td>
 	</tr>
 {if check_conf('phpui.radius')}
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radius.gif" alt="">
 		</td>
@@ -150,7 +150,7 @@
 			<input type="text" name="netdev[shortname]" value="{$netdevinfo.shortname}">
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radius.gif" alt="">
 		</td>
@@ -166,7 +166,7 @@
 			</select>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radius.gif" alt="">
 		</td>
@@ -177,7 +177,7 @@
 			<input type="text" name="netdev[clients]" value="{if $netdevinfo.clients}{$netdevinfo.clients}{/if}" {tip text="Enter max clients (optional)"}>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radius.gif" alt="">
 		</td>
@@ -188,7 +188,7 @@
 			<input type="text" name="netdev[secret]" value="{$netdevinfo.secret}" {tip text="Enter secret (optional)"}>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radius.gif" alt="">
 		</td>
@@ -199,7 +199,7 @@
 			<input type="text" name="netdev[community]" value="{$netdevinfo.community}" {tip text="Enter community (optional)"}>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radius.gif" alt="">
 		</td>
@@ -212,7 +212,7 @@
 	</tr>
 {/if}
 {if isset($channels)}
-        <tr class="pglight">
+        <tr class="light">
 	        <td width="1%">
 		        <img src="img/channel.gif" alt="">
 		</td>
@@ -229,7 +229,7 @@
 		</td>
 	</tr>
 {/if}
-	<tr class="pglight">
+	<tr class="light">
 	    <td width="1%">
 		<img src="img/radar.png" alt="">
 	    </td>
@@ -249,7 +249,7 @@
 	    </td>
 	</tr>
 	
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radar.png" alt="">
 		</td>
@@ -260,7 +260,7 @@
 			<input type="text" name="netdev[monit_login]" value="{$netdevinfo.monit_login}" {tip text="Podaj nazwę użytkownika"}>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radar.png" alt="">
 		</td>
@@ -271,7 +271,7 @@
 			<input type="text" name="netdev[monit_passwd]" value="{$netdevinfo.monit_passwd}" {tip text="podaj hasło (opcja)"}>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/radar.png" alt="">
 		</td>
@@ -290,7 +290,7 @@
 			        <td width="50%" style="vertical-align:top;">
 			                <table width="100%" cellpadding="3">
 	
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%" nowrap><img src="img/netdev.gif"></td>
 		<td width="1%" nowrap><b>Rodzaj urządzenia</b></td>
 		<td width="98%">
@@ -307,7 +307,7 @@
 		    {/if}
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%" nowrap><img src="img/options.gif"></td>
 		<td width="1%" nowrap><b>Typ urządzenia</b></td>
 		<td width="98%" align="left" nowrap>
@@ -316,7 +316,7 @@
 		    <label for="id_devtype_{$item}">&nbsp;{$key}</label>{/foreach}
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%" nowrap></td>
 		<td width="1%" nowrap><b>Urz. zarządzalne</b></td>
 		<td width="98%">
@@ -327,7 +327,7 @@
 	</tr>
 	
 	
-	<tr class="pglight">
+	<tr class="light">
 	    <td width="1%"></td>
 	    <td width="1%" nowrap><span class="tiphelp" {tip text="Udostępnianie portów obcym podmiotom"}><b>Udostępnianie portów</b></span></td>
 	    <td width="98%" align="left">
@@ -336,7 +336,7 @@
 		<label for="id_sharing_{$item}">&nbsp;{$key}</label>{/foreach}
 	    </td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 	    <td width="1%" nowrap></td>
 	    <td width="1%" nowrap><b>Budowa modułowa</b></td>
 	    <td width="98%" align="left">
@@ -347,7 +347,7 @@
 	    </td>
 	</tr>
 	
-	<tr class="pglight">
+	<tr class="light">
 	    <td width="1%" nowrap></td>
 	    <td width="1%" nowrap><span class="tiphelp" {tip text="Czy urządzenie pracuje w warstwie szkieletowej"}><b>Warstwa szkieletowa</b></span></td>
 	    <td width="98%" align="left">
@@ -358,7 +358,7 @@
 	    </td>
 	</tr>
 	
-	<tr class="pglight">
+	<tr class="light">
 	    <td width="1%" nowrap></td>
 	    <td width="1%" nowrap><span class="tiphelp" {tip text="Czy urządzenie pracuje w warstwie dystrybucyjnej"}><b>Warstwa dystrybucyjna</b></span></td>
 	    <td width="98%" align="left">
@@ -369,7 +369,7 @@
 	    </td>
 	</tr>
 	
-	<tr class="pglight">
+	<tr class="light">
 	    <td width="1%" nowrap></td>
 	    <td width="1%" nowrap><span class="tiphelp" {tip text="Czy urządzenie pracuje w warstwie dostępowej"}><b>Warstwa dostępowa</b></span></td>
 	    <td width="98%" align="left">
@@ -379,7 +379,7 @@
 	    </td>
 	</tr>
 	
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/calendar.gif" alt="">
 		</td>
@@ -390,7 +390,7 @@
 			<input type="text" name="netdev[purchasedate]" value="{if $netdevinfo.purchasedate}{$netdevinfo.purchasedate}{/if}" size="10" maxsize="10" onclick="javascript:cal1.popup();" {tip trigger="purchasedate" text="Enter device purchase date in 'yyyy/mm/dd' format or click to choose date from calendar (optional)"}>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/guarantee.png" alt="">
 		</td>
@@ -405,7 +405,7 @@
 			</select>
 		</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="1%">
 			<img src="img/desc.gif" alt="">
 		</td>
@@ -416,6 +416,40 @@
 			<textarea name="netdev[description]" cols="40" rows="5" {tip text="Enter additional information (optional)"}>{$netdevinfo.description}</textarea>
 		</td>
 	</tr>
+	
+	<tr class="light">
+	    <td width="1%">
+		<img src="img/money.gif" alt="">
+	    </td>
+	    <td width="1%" nowrap>
+		<b>{trans("Investment project:")}</b>
+	    </td>
+	    <td width="98%" align="left">
+		<select name="netdev[invprojectid]" id="invprojectid">
+		    <option value="" {if !$netdevinfo.invprojectid} selected {/if}>{trans('none')}</option>
+		    <option value="1" {if $netdevinfo.invprojectid ==1} selected {/if}>{trans('From root device')}</option>
+		    {section name=projectlist loop=$projectlist}
+		    <option value="{$projectlist[projectlist].id}" {if $netdevinfo.invprojectid == $projectlist[projectlist].id} selected {/if}>{$projectlist[projectlist].name}</option>
+		    {/section}
+		</select>
+	    </td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%">
+		<img src="img/producer.gif" alt="">
+	    </td>
+	    <td width="1%" nowrap>
+		<b>Status urządzenia</b>
+	    </td>
+	    <td width="98%" align="left">
+		<select name="netdev[status]" id="id_status" style="min-width:120px;">
+		{foreach $_NSTATUS as $item => $key}
+		<option value="{$item}" {if $netdevinfo.status == $item} selected {/if}>{$key}</option>
+		{/foreach}
+		</select>
+	    </td>
+	</tr>
                                     		</table>
                             		</td>
                     		</tr>
@@ -423,7 +457,7 @@
         	</td>
 	</tr>
 	</form>
-	<tr class="pglight">
+	<tr class="light">
 		<td width="100%" class="fbottomu" colspan="3" align="right">
 			{if $replacelisttotal>1}
 			<form method="GET" action="?m=netdevedit" name="replace">

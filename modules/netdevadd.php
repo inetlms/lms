@@ -64,6 +64,7 @@ $SMARTY->assign('action','add');
 $SMARTY->assign('netdevinfo',$netdev);
 $SMARTY->assign('nastype', $LMS->GetNAStypes());
 $SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
+$SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
 $SMARTY->display('netdevedit.html');
 
 ?>

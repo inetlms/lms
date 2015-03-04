@@ -10,19 +10,22 @@
 		<td class="fall" style="width: 100%;">
 			<table style="width: 100%;" cellpadding="5" cellspacing="0">
 	<tr class="dark">
-		<td class="fleftu" style="width: 96%;">
+		<td class="fleftu" style="width: 95%;">
 			<img src="img/netdev.gif" alt=""> <span class="bold">{trans("Name")} / {trans("Producer")}:</span><br>
 			<img src="img/home.gif" alt=""> {trans("Location:")}
 		</td>
-		<td class="fbt pad10" width="1%" nowrap align="left">
+		<td class="fbt pad tleft" width="1%" nowrap align="left" style="min-width:220px;">
+		    Warstwa<br>Trakt
+		</td>
+		<td class="fbt pad tleft" width="1%" nowrap align="left" style="min-width:170px;">
 		    Medium</br>
 		    Technologia (Prędkość)
 		</td>
-		<td class="fbt" style="width: 1%; text-align: right; white-space: nowrap;">
+		<td class="fbt tleft" style="width: 1%; text-align: right; white-space: nowrap;min-width:57px;">
 			{trans("Port")}:<br>
 			{trans("ID:")}
 		</td>
-		<td class="fbt" style="width: 1%; white-space: nowrap;">
+		<td class="fbt tleft" style="width: 1%; white-space: nowrap;">
 			<img src="img/netdev_takenports.gif" alt=""> {trans("Dest. port")}:<br>
 			<img src="img/port.gif" alt=""> {trans("Ports (used):")}
 		</td>
@@ -33,19 +36,25 @@
 	{cycle values="lucid,light" print=false}
 	{section name=netdevlist loop=$netdevlist start=$start}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td style="width: 96%; vertical-align: top; white-space: nowrap;" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';">
+		<td style="width: 95%; vertical-align: top; white-space: nowrap;" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';">
 			<img src="img/netdev.gif" alt=""> <a name="{$netdevlist[netdevlist].id}"><span class="bold">{$netdevlist[netdevlist].name} {if $netdevlist[netdevlist].producer}/ {$netdevlist[netdevlist].producer}{/if}</span></a><br>
 			<img src="img/home.gif" alt=""> {$netdevlist[netdevlist].location}
 		</td>
-		<td width="1%" nowrap class="pad10" align="left">
+		<td width="1%" nowrap align="left" class="pad tleft" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';">
+		    {assign 'tract' $netdevlist[netdevlist].tracttype}
+		    {assign 'layer' $netdevlist[netdevlist].layer}
+		    {$_LAYERTYPE.$layer}<br>
+		    {$_TRACTTYPE.$tract}&nbsp;
+		</td>
+		<td width="1%" nowrap class="pad tleft" align="left" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';">
 		    {$_LINKTYPES[$netdevlist[netdevlist].linktype]}<br>
 		    {$_LINKTECHNOLOGIES[$netdevlist[netdevlist].linktype][$netdevlist[netdevlist].linktechnology]}  ({$_LINKSPEEDS[$netdevlist[netdevlist].linkspeed]})
 		</td>
-		<td style="width: 1%; text-align: right; white-space: nowrap;" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';">
+		<td class="tleft" style="width: 1%; text-align: right; white-space: nowrap;" onclick="return self.location.href='?m=netdevinfo&id={$netdevlist[netdevlist].id}';">
 			<img src="img/empty.gif" height="16">[{if $netdevlist[netdevlist].srcport}{$netdevlist[netdevlist].srcport}{/if}]<br>
 			({$netdevlist[netdevlist].id|string_format:"%04d"})
 		</td>
-		<td style="width: 1%; white-space: nowrap;">
+		<td class="tleft" style="width: 1%; white-space: nowrap;">
 			<span id="devlinkproperties_{$netdevlist[netdevlist].id}" onclick="javascript:netlinkpropertieschoosewin('{$netdevinfo.id}', '{$netdevlist[netdevlist].id}', true);">
 				<img src="img/{if $netdevlist[netdevlist].linktype == 1}wireless.gif{elseif $netdevlist[netdevlist].linktype == 2}netdev_takenports.gif{else}netdev_takenports.gif{/if}" alt="[ {trans("Change connection properties")} ]" title="[ {trans("Change connection properties")} ]" {tip trigger="devlinkproperties_$netdevlist[netdevlist].id" text="<span style=\"white-space: nowrap;\">{trans("Link type:")} {$_LINKTYPES[$netdevlist[netdevlist].linktype]}<br>{trans("Link speed:")} {$_LINKSPEEDS[$netdevlist[netdevlist].linkspeed]}</span>"}>
 			</span>
@@ -54,21 +63,21 @@
 			<br><img src="img/port.gif" alt=""> {$netdevlist[netdevlist].ports} ({$netdevlist[netdevlist].takenports})
 			</span>
 		</td>
-		<td style="width: 1%; text-align: right;">
+		<td class="tleft" style="width: 1%; text-align: right;">
 			<a href="?m=netdevedit&action=disconnect&id={$netdevinfo.id}&devid={$netdevlist[netdevlist].id}" onclick="return confirmLink(this, '{trans("Are you sure, you want to delete that connection?")}');"><img src="img/delete.gif" {tip text="Delete connection"}></a>
 		</td>
 	</tr>
 	{sectionelse}
 	<tr>
-		<td colspan="5" style="text-align: center;">
+		<td colspan="6" style="text-align: center;">
 			<p>&nbsp;</p>
 			<p><span class="bold">{trans("No such connected devices.")}</span></p>
 			<p>&nbsp;</p>
 		</td>
 	</tr>
 	{/section}
-	<tr class="light">
-		<td style="width: 100%; text-align: center; white-space: nowrap;" class="ftop" colspan="5">
+	<tr class="pgdark">
+		<td style="width: 100%; text-align: center; white-space: nowrap;" class="ftop" colspan="6">
 			{if $netdevinfo.ports eq $netdevinfo.takenports}
 			<span class="bold">{trans("All ports in that device are in use.")}</span>
 			{elseif !$restnetdevlist}
@@ -81,9 +90,10 @@
 			<input type="hidden" name="action" value="connect">
 			<table style="width: 100%;">
 				<tr>
-					<td style="width: 99%; white-space: nowrap;">
-						<span class="bold">{trans("Connect")}:</span>
-						{trans("Device:")}<select name="netdev" style="width: 300px" {tip trigger="link" text="Select from list device for connection"}>
+					<td width="1%" align="right" nowrap><b>Urządzenie</b></td>
+					<td width="1%" align="center" nowrap><b>:</b></td>
+					<td width="1%" align="left" nowrap>
+						<select name="netdev" style="width: 300px" {tip trigger="link" text="Select from list device for connection"}>
 						{section name=restnetdevlist loop=$restnetdevlist}
 							{assign var=netdevname value=$restnetdevlist[restnetdevlist].name}
 							{if $restnetdevlist[restnetdevlist].producer}{assign var=netdevname value=$netdevname|cat:" / "|cat:$restnetdevlist[restnetdevlist].producer}{/if}
@@ -91,30 +101,103 @@
 							<option value="{$restnetdevlist[restnetdevlist].id}"{if $connect.id == $restnetdevlist[restnetdevlist].id} selected{/if}>{$netdevname|truncate:120:"...":true}</option>
 						{/section}
 						</select>
-						<label for="srcport">{trans("Port")}:</label><input name="srcport" id="srcport" value="{if $connect.srcport}{$connect.srcport}{/if}" size="2" {tip text="Enter port number in device for connection (optional)" trigger="srcport"}>
-						<label for="dstport">{trans("Dest. port")}:</label><input name="dstport" id="dstport" value="{if $connect.dstport}{$connect.dstport}{/if}" size="2" {tip text="Enter port number in device to which device will be connected (optional)" trigger="dstport"}>
-						<select name="linktype" id="connboxlinktype" {tip trigger="linktype" text="Select link type"} onchange="change_devlinktype(this.options[this.selectedIndex].value)">
+					</td>
+					
+					<td width="1%" align="right" nowrap class="pad5"><label for="srcport"><b>{trans("Port")}</b></label></td>
+					<td width="1%" align="center" nowrap><b>:</b></td>
+					<td width="1%" align="left" nowrap>
+						<input name="srcport" id="srcport" value="{if $connect.srcport}{$connect.srcport}{/if}" size="2" {tip text="Enter port number in device for connection (optional)" trigger="srcport"}>
+					</td>
+					
+					<td width="1%" align="right" nowrap class="pad5"><label for="dstport"><b>{trans("Dest. port")}</b></label></td>
+					<td width="1%" align="center" nowrap><b>:</b></td>
+					<td width="1%" align="left" nowrap>
+						<input name="dstport" id="dstport" value="{if $connect.dstport}{$connect.dstport}{/if}" size="2" {tip text="Enter port number in device to which device will be connected (optional)" trigger="dstport"}>
+					</td>
+					
+					<td width="1%" align="right" nowrap class="pad5"><b>Warstwa</b></td>
+					<td width="1%" align="center" nowrap><b>:</b></td>
+					<td width="1%" align="left" nowrap>
+						{assign 'dystrybucja' $smarty.const.LAYER_DISTRIBUTION}
+						{assign 'szkielet' $smarty.const.LAYER_BACKBONE} 
+						<select name="layer" {tip text="Wybierz warstwę sieci"} style="width:110px;">
+						<option value="{$dystrybucja}">{$_LAYERTYPE.$dystrybucja}</option>
+						<option value="{$szkielet}">{$_LAYERTYPE.$szkielet}</option>
+						</select>
+					</td>
+					
+					<td width="auto">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="1%" align="right" nowrap><b>Typ</b></td>
+					<td width="1%" align="center" nowrap><b>:</b></td>
+					<td width="1%" align="left" nowrap>
+						<select name="linktype" id="connboxlinktype" {tip trigger="linktype" text="Select link type"} onchange="change_devlinktype(this.options[this.selectedIndex].value)" style="width:300px;">
 							{foreach from=$_LINKTYPES item=item key=key}
 							<option value="{$key}"{if $key==$devlinktype} selected{/if}>{$item}</option>
 							{/foreach}
 						</select>
-						<select name="linktechnology" id="connboxlinktechnology" {tip trigger="connboxlinktechnology" text="Wybierz technologię łącza"}>
+					</td>
+					
+					<td width="1%" align="right" nowrap class="pad5"><b>Technologia</b></td>
+					<td width="1%" align="center" nowrap><b>:</b></td>
+					<td width="1%" align="left" nowrap colspan="4">
+						<select name="linktechnology" id="connboxlinktechnology" {tip trigger="connboxlinktechnology" text="Wybierz technologię łącza"} style="width:190px;">
 							<option value="0">- nieznana -</option>
 							{if !$devlinktype}{$devlinktype = 0}{/if}
 							{foreach $_LINKTECHNOLOGIES[$devlinktype] as $linktechnologyidx => $linktechnology}
 							<option value="{$linktechnologyidx}"{if $linktechnologyidx == $devlinktechnology} selected{/if}>{$linktechnology}</option>
 							{/foreach}
 						</select>
-						<select name="linkspeed" id="connboxlinkspeed" {tip trigger="linkspeed" text="Select link speed"}>
+					</td>
+					
+					<td width="1%" align="right" nowrap class="pad5"><b>Prędkość</b></td>
+					<td width="1%" align="center" nowrap><b>:</b></td>
+					<td width="1%" align="left" nowrap >
+						<select name="linkspeed" id="connboxlinkspeed" {tip trigger="linkspeed" text="Select link speed"} style="width:110px;">
 							{foreach from=$_LINKSPEEDS item=item key=key}
 								<option value="{$key}"{if $key==$devlinkspeed || (!$devlinkspeed && $key==100000)} selected{/if}>{$item}</option>
 							{/foreach}
 						</select>
 					</td>
-					<td style="width: 1%; white-space: nowrap;">
-						<a href="javascript:document.connect.submit(); ">{trans("Connect")}</a> <img src="img/save.gif" alt="">
+					<td width="auto" nowrap>
+						
 					</td>
 				</tr>
+				<tr>
+				    <td width="1%" align="right" nowrap><b>Trakt</b></td>
+				    <td width="1%" align="center" nowrap><b>:</b></td>
+				    <td width="1%" align="left" nowrap>
+						<select name="tracttype" style="width:300px;">
+						<option value=""></option>
+						{foreach $_TRACTTYPE as $item => $key}
+						    <option value="{$item}">{$key}</option>
+						{/foreach}
+						</select>
+				    </td>
+				    
+				    <td width="1%" align="right" nowrap class="pad5"><b>Linia</b></td>
+				    <td width="1%" align="center" nowrap><b>:</b></td>
+				    <td width="1%" align="left" nowrap colspan="7">
+					{if $telelinelist}
+					    <select name="teleline" style="width:385px;" {tip text="Wybierz linię telekomunikacyjną"}>
+						<option value=""></option>
+						{section name='tllist' loop=$telelinelist}
+						<option value="{$telelinelist[tllist].id}">{$telelinelist[tllist].name}</option>
+						{/section}
+					    </select>
+					{else}
+					    <input type="hidden" name="teleline" value="">
+					    <i>Brak dostępnych linii telekomunikacyjnych</i>
+					{/if}
+				    </td>
+				    <td width="auto" align="right" nowrap>
+					<a href="javascript:document.connect.submit(); ">{trans("Connect")}</a> <img src="img/save.gif" alt="">
+				    </td>
+				</tr>
+				
+				
+				
 			</table>
 			</form>
 			{/if}

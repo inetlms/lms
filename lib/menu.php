@@ -261,7 +261,7 @@ $menu = array(
 		),
 
 		'netdevices' => array(
-			'name' => 'Sieć',
+			'name' => 'Osprzęt sieciowy',
 			'img' =>'netdev.gif',
 			'link' =>'?m=netdevlist',
 			'tip' => trans('Network Devices Management'),
@@ -293,16 +293,16 @@ $menu = array(
 					'tip' => 'Dodaj nowy węzeł sieciowy',
 					'prio' => 40,
 				),
-//				array(
-//					'name' => 'Linie telekomunikacyjne',
-//					'link' => '?m=teleline',
-//					'tip' => 'Lista linii telekomunikacyjnych',
-//					'prio' => 50,
-//				),
 				array(
 					'name' => trans('Hosts'),
 					'link' => '?m=hostlist',
 					'tip' => trans('List of Hosts'),
+					'prio' => 50,
+				),
+				array(
+					'name' => 'Linie telekomunikacyjne',
+					'link' => '?m=teleline',
+					'tip' => 'Lista linii telekomunikacyjnych',
 					'prio' => 60,
 				),
 				
@@ -310,13 +310,13 @@ $menu = array(
 					'name' => trans('Map'),
 					'link' => '?m=netdevmap',
 					'tip' => trans('Network map display'),
-					'prio' => 70,
+					'prio' => 80,
 				),
 				array(
 					'name' => trans('Search'),
 					'link' => '?m=netdevsearch',
 					'tip' => trans('Allows you to search device'),
-					'prio' => 80,
+					'prio' => 90,
 				),
 				
 			
@@ -849,7 +849,7 @@ $menu = array(
 				array(
 				    'name' => 'UKE SIIS v4',
 				    'link' => '?m=uke_siis4',
-				    'tip' => '',
+				    'tip' => 'Raporty tylko do odczytu',
 				    'prio' => 10,
 				),
 			),
@@ -880,6 +880,18 @@ $menu = array(
 					'tip' => trans('List of Nodes Groups'),
 					'prio' => 20,
 				),
+//				array(
+//					'name' => 'Grupy węzłów',
+//					'link' =>'?m=networknodegrouplist',
+//					'tip' => 'Lista grup węzłów',
+//					'prio' => 21,
+//				),
+//				array(
+//					'name' => 'Grupy Interfejsów',
+//					'link' =>'?m=netdevgrouplist',
+//					'tip' => 'Lista grup interfejsów sieciowych',
+//					'prio' => 22,
+//				),
 				array(
 					'name' => 'Pochodzenie klientów',
 					'link' => '?m=customeroriginlist',
@@ -906,6 +918,12 @@ $menu = array(
 					'link'	=> '?m=dictionarycnote',
 					'tip'	=> 'Rodzaje powodów dla których jest dokonan korekta faktury',
 					'prio'	=> 60,
+				),
+				array(
+					'name' => trans('Projekty'),
+					'link' => '?m=projectlist',
+					'tip' => trans('Lista projektów inwestycyjnych'),
+					'prio' => 70,
 				),
 				
 			),

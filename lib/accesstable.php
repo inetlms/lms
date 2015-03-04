@@ -148,6 +148,9 @@ $access['table'][49]['allow_reg']	= '^(iphistory)$';
 $access['table'][50]['name']		= 'Ewidencja pojazdów';
 $access['table'][50]['allow_reg']	= '^(re_)$';
 
+$access['table'][51]['name']		= trans('Zarządzanie projektami');
+$access['table'][51]['allow_reg']	= '^(project(add|edit|info|del|list))$';
+
 $access['table'][102]['name']		= 'Obsługa VoIP HIPERUS C5 - Pełny dostęp';
 $access['table'][102]['allow_reg'] 	= '^hv_*';
 

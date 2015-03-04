@@ -1,16 +1,72 @@
 {if $npnetdev}
 	<table width="100%" cellpadding="5" cellspacing="0" class="table">
-	    <tr class="dark">
+	    <tr class="pgdark">
 		<td class="fall" nowrap>
-		    <b>Dodaj interfejs sieciowy : </b>
-		    <select style="min-width:200px;cursor:pointer;" id="id_addinterface" {tip text="UWAGA !!!<br>Przypisany interfejs sieciowy będzie miał zmieniony adres lokalizacji oraz współrzędne GPS. Dane będą zgodne z danymi węzła."}>
-			<option value=""></option>
-			{section name="npnetdev" loop=$npnetdev}
-			    <option value="{$npnetdev[npnetdev].id}">{$npnetdev[npnetdev].name}</option>
-			{/section}
-		    </select>&nbsp;&nbsp;
-		    <a href="javascript:void(0);" onclick="add_interface();"><b>Dodaj interfejs do węzła</b> <img src="img/add.gif"></a><br>
+		    {if !$updateint}
 		    <span style="color:green;"><b>UWAGA !!! Przypisany interfejs sieciowy będzie miał zmieniony adres lokalizacji oraz współrzędne GPS. Dane będą zgodne z danymi węzła.</b></span>
+		    {/if}
+		    <table width="100%" cellpadding="2">
+			<tr>
+			    <td width="1%" nowrap align="left"><b>Interfejs sieciowy</b></td>
+			    <td width="1%" class="pad5" nowrap><b>:</b></td>
+			    <td width="1%" class="pad" align="left" nowrap>
+				{if !$updateint}
+				<select style="width:300px;cursor:pointer;" id="id_addinterface" {tip text="UWAGA !!!<br>Przypisany interfejs sieciowy będzie miał zmieniony adres lokalizacji oraz współrzędne GPS. Dane będą zgodne z danymi węzła."}>
+				<option value=""></option>
+				{section name="npnetdev" loop=$npnetdev}
+				    <option value="{$npnetdev[npnetdev].id}">{$npnetdev[npnetdev].name}</option>
+				{/section}
+				</select>
+				{else}
+				    <b>{$intinfo.name}</b>
+				    <input type="hidden" id="id_addinterface" value="{$intinfo.id}">
+				{/if}
+			    </td>
+			    <td width="97%" align="right">&nbsp;</td>
+			</tr>
+			
+			<tr>
+			    <td width="1%" nowrap align="left"><b>Projekt dla interfejsu</b></td>
+			    <td width="1%" class="pad5" nowrap><b>:</b></td>
+			    <td width="1%" class="pad" align="left" nowrap>
+				<select style="width:300px;cursor:pointer;" id="id_netdevproject" {tip text="Wybierz projekt inwestycyjny jaki ma być ustawiony w interfejsie sieciowym."}>
+				<option value="-1">- pozostaw bez zmian -</option>
+				<option value="">- żaden -</option>
+				<option value="1" selected>{trans('From root device')}</option>
+				{section name="projectlist" loop=$projectlist}
+				    <option value="{$projectlist[projectlist].id}">{$projectlist[projectlist].name}</option>
+				{/section}
+				</select>
+			    </td>
+			    <td width="97%" align="right">&nbsp;</td>
+			</tr>
+			
+			<tr>
+			    <td width="1%" nowrap align="left"><b>Projekt dla komputerów</b></td>
+			    <td width="1%" class="pad5" nowrap><b>:</b></td>
+			    <td width="1%" class="pad" align="left" nowrap>
+				<select style="width:300px;cursor:pointer;" id="id_nodeproject" {tip text="Wybierz projekt inwestycyjny jaki ma być ustawiony dla komputerów podłączonych do interfejsu sieciowego."}>
+				<option value="-1">- pozostaw bez zmian -</option>
+				<option value="">- żaden -</option>
+				<option value="1" selected>{trans('From root device')}</option>
+				{section name="projectlist" loop=$projectlist}
+				    <option value="{$projectlist[projectlist].id}">{$projectlist[projectlist].name}</option>
+				{/section}
+				</select>
+			    </td>
+			    <td width="97%" align="right">
+				{if !$updateint}
+				<a href="javascript:void(0);" onclick="add_interface();"><b>Dodaj interfejs do węzła</b> <img src="img/add.gif"></a><br>
+				{else}
+				    <a href="javascript:void(0);" onclick="save_interface();"><b>Zapisz <img src="img/save.gif" alt=""></a>&nbsp;&nbsp;
+				    <a href="javascript:void(0);" onclick="loadAjax('id_data','?m=networknodeinfo&tuck=interface&idn={$idn}');"><b>Anuluj <img src="img/cancel.gif" alt=""></a>
+				    
+				{/if}
+			    </td>
+			    
+			</tr>
+		    </table>
+
 		</td>
 	    </tr>
 	<table>
@@ -20,8 +76,19 @@
 		function add_interface()
 		{
 		    var idi = document.getElementById('id_addinterface').value;
+		    var pri = document.getElementById('id_netdevproject').value;
+		    var prn = document.getElementById('id_nodeproject').value;
 		    if (idi)
-			loadAjax('id_data','?m=networknodeinfo&tuck=interface&idn={/literal}{$idn}{literal}&addinterface='+idi+'');
+			loadAjax('id_data','?m=networknodeinfo&tuck=interface&idn={/literal}{$idn}{literal}&addinterface='+idi+'&pri='+pri+'&prn='+prn+'');
+		}
+		
+		function save_interface()
+		{
+		    var idi = document.getElementById('id_addinterface').value;
+		    var pri = document.getElementById('id_netdevproject').value;
+		    var prn = document.getElementById('id_nodeproject').value;
+		    if (idi)
+			loadAjax('id_data','?m=networknodeinfo&tuck=interface&idn={/literal}{$idn}{literal}&save&updateinterface='+idi+'&pri='+pri+'&prn='+prn+'');
 		}
 		
 	    //-->
@@ -59,6 +126,11 @@
 	    {
 		loadAjax('id_data','?m=networknodeinfo&tuck=interface&idn={/literal}{$idn}{literal}&delinterface='+idi+'');
 	    }
+	}
+	
+	function update_interface(idi)
+	{
+	    loadAjax('id_data','?m=networknodeinfo&tuck=interface&idn={/literal}{$idn}{literal}&updateinterface='+idi+'');
 	}
     //-->
     </script>
