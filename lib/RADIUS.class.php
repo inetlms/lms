@@ -37,9 +37,9 @@ class RADIUS {
 	}
     
 
-    function send_disconnect_user ($theUser, $nasaddr, $coaport, $sharedsecret) 
+    function send_disconnect_user ($theUser, $theAcctid, $nasaddr, $coaport, $sharedsecret) 
     {
-	    $command = "echo \"User-Name=$theUser\"|radclient -x $nasaddr:$coaport disconnect $sharedsecret";
+	    $command = "echo \"User-Name=$theUser, Acct-Session-Id=$theAcctid\" |radclient -x $nasaddr:$coaport disconnect $sharedsecret";
 	    $result=`$command`;
 	    return $result;
     }
@@ -58,11 +58,12 @@ class RADIUS {
     function disconnect_user($radacctid)
     {
 	
-	$radacct = $this->DB->GetRow('SELECT username, nasipaddress FROM radacct WHERE radacctid = ? LIMIT 1;',array($radacctid));
+	$radacct = $this->DB->GetRow('SELECT username, acctsessionid, nasipaddress FROM radacct WHERE radacctid = ? LIMIT 1;',array($radacctid));
 	$nas = $this->DB->GetRow('SELECT secret, coaport FROM nas WHERE nasname = ? LIMIT 1;',array($radacct['nasipaddress']));
+    
 	
 	if ($radacct && $nas) {
-	    return $this->send_disconnect_user($radacct['username'], $radacct['nasipaddress'], (!empty($nas['coaport']) ? $nas['coaport'] : get_conf('radius.coa_port','3799')), $nas['secret']);
+	    return $this->send_disconnect_user($radacct['username'], $radacct['acctsessionid'], $radacct['nasipaddress'], (!empty($nas['coaport']) ? $nas['coaport'] : get_conf('radius.coa_port','3799')), $nas['secret']);
 	} else
 	    return FALSE;
 	
