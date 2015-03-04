@@ -418,6 +418,7 @@ $DAYS = array(
 	DAY_SUNDAY	=> trans('Sun'),
 );
 
+
 // medium transmisyjne
 define('LINKTYPES_CABLE',0);
 define('LINKTYPES_RADIO',1);
@@ -425,36 +426,36 @@ define('LINKTYPES_FIBER',2);
 define('LINKTYPES_CABLE_COAXIAL',3);
 
 $LINKTYPES = array(
-	LINKTYPES_CABLE		=> 'kablowe parowe miedziane',
-	LINKTYPES_RADIO		=> 'radiowe',
 	LINKTYPES_FIBER		=> 'światłowodowe',
+	LINKTYPES_RADIO		=> 'radiowe',
+	LINKTYPES_CABLE		=> 'kablowe parowe miedziane',
 	LINKTYPES_CABLE_COAXIAL => 'kablowe współosiowe miedziane',
 );
-asort($LINKTYPES);
 
 // technologie
 
 $LINKTECHNOLOGIES = array(
-	0 => array(
+	0 => array( // medium miedziane parowe
+		6 => '10 Mb/s Ethernet',
+		7 => '100 Mb/s Fast Ethernet',
+		8 => '1 Gigabit Ethernet',
+		9 => '10 Gigabit Ethernet',
 		1 => 'ADSL',
 		2 => 'ADSL2',
 		3 => 'ADSL2+',
 		4 => 'VDSL',
 		5 => 'VDSL2',
-		6 => '10 Mb/s Ethernet',
-		7 => '100 Mb/s Fast Ethernet',
-		8 => '1 Gigabit Ethernet',
-		9 => '10 Gigabit Ethernet',
-//		50 => '(EURO)DOCSIS 1.x',
-//		51 => '(EURO)DOCSIS 2.x',
-//		52 => '(EURO)DOCSIS 3.x',
+		10 => 'HDSL',
+		11 => 'PDH',
+		12 => 'POTS/ISDN',
 	),
-	1 => array(
+	1 => array( // medium radiowe
 		100 => 'WiFi - 2,4 GHz',
 		101 => 'WiFi - 5 GHz',
+		113 => 'WiFi 2,4 i 5 GHz',
+		104 => 'radiolinia',
 		102 => 'WiMAX',
 		103 => 'LMDS',
-		104 => 'radiolinia',
 		105 => 'CDMA',
 		106 => 'GPRS',
 		107 => 'EDGE',
@@ -463,40 +464,63 @@ $LINKTECHNOLOGIES = array(
 		110 => 'DC-HSPA+',
 		111 => 'MC-HSPA+',
 		112 => 'LTE',
+		114 => 'UMTS',
+		115 => 'DMS',
 	),
-	2 => array(
-		200 => 'CWDM',
-		201 => 'DWDM',
-		202 => 'SDH',
+	2 => array( // medium światłowodowe
+		208 => 'EPON',
+		209 => 'GPON',
 		203 => '10 Mb/s Ethernet',
 		204 => '100 Mb/s Fast Ethernet',
 		205 => '1 Gigabit Ethernet',
 		206 => '10 Gigabit Ethernet',
+		210 => '40 Gigabit Ethernet',
 		207 => '100 Gigabit Ethernet',
-		208 => 'EPON',
-		209 => 'GPON',
+		200 => 'CWDM',
+		201 => 'DWDM',
+		202 => 'SDH',
+		211 => 'ATM',
+		212 => 'PDH',
+		213 => '(EURO)DOCSIS 1.x',
+		214 => '(EURO)DOCSIS 2.x',
+		215 => '(EURO)DOCSIS 3.x',
 	),
-	3 => array(
+	3 => array( // kablowe współosiowe miedziane
 		50 => '(EURO)DOCSIS 1.x',
 		51 => '(EURO)DOCSIS 2.x',
 		52 => '(EURO)DOCSIS 3.x',
+		53 => '10 Mb/s Ethernet',
 	),
 );
+//asort($LINKTECHNOLOGIES[0]);
+//asort($LINKTECHNOLOGIES[1]);
+//asort($LINKTECHNOLOGIES[2]);
+//asort($LINKTECHNOLOGIES[3]);
 
-
+// dostosowanie prędkości do wymagań SIIS v5 2015r
 $LINKSPEEDS = array(
-	10000		=> '10Mbit/s',
-	25000		=> '25Mbit/s',
-	54000		=> '54Mbit/s',
-	100000		=> '100Mbit/s',
-	150000		=> '150Mbit/s',
-	200000		=> '200Mbit/s',
-	300000		=> '300Mbit/s',
-	1000000		=> '1Gbit/s',
-	1250000		=> '1.2Gbit/s',
+	0		=> '0 Mb/s',	// + v5
+	1000		=> '1 Mb/s',	// + v5
+	2000		=> '2 Mb/s',	// + v5
+	4000		=> '4 Mb/s',	// + v5
+	8000		=> '8 Mb/s',	// + v5
+	10000		=> '10 Mb/s',
+	20000		=> '20 Mb/s',	// + v5
+	30000		=> '30 Mb/s',	// + v5
+//	25000		=> '25Mbit/s', 	// - v5 -> 20000
+//	54000		=> '54Mbit/s', 	// - v5 -> 30000
+	100000		=> '100 Mb/s',
+	150000		=> '150 Mb/s',
+//	200000		=> '200Mbit/s', // - v5 -> 150000
+	250000		=> '250 Mb/s',	// + v5
+//	300000		=> '300Mbit/s', // - v5 -> 250000
+	500000		=> '500 Mb/s',	// + v5
+	1000000		=> '1 Gb/s',
+//	1250000		=> '1.2 Gb/s', // - v5 -> 1 Gb/s
 	2500000		=> '2.5Gbit/s',
-	10000000	=> '10Gbit/s',
-	100000000	=> '100Gbit/s',
+	10000000	=> '10 Gb/s',
+	40000000	=> '40 Gb/s',	// + v5
+	100000000	=> '100 Gb/s',
 );
 
 $BOROUGHTYPES = array(
@@ -538,32 +562,39 @@ $TNC = array(
 );
 
 // zgodnie ze słownikiem UKE
-define('TYP_BUDYNEK_BIUROWY',1);
-define('TYP_BUDYNEK_PRZEMYSLOWY',2);
-define('TYP_BUDYNEK_MIESZKALNY',3);
-define('TYP_OBIEKT_SAKRALNY',4);
-define('TYP_MASZT',5);
-define('TYP_WIEZA',6);
-define('TYP_KONTENER',7);
-define('TYP_SZAFA_ULICZNA',8);
-define('TYP_SKRZYNKA',9);
-define('TYP_STUDNIA_KABLOWA',10);
-define('TYP_KOMIN',11);
-// na własne potrzeby
-define('TYP_SLUP',12); // słup
-define('TYP_SZAFKA_NASCIENNA',13);
-define('TYP_SZAFKA_NASCIENNA_RACK',14);
-define('TYP_SZAFKA_STOJACA',15);
-define('TYP_SZAFKA_STOJACA_RACK',16);
-define('TYP_SLUPEK_TK',17); // słupek telekomunikacyjny
-define('TYP_MUFA',18); 
-define('TYP_ELEWATOR',19);
+define('TYP_BUDYNEK_BIUROWY',1);	// SIIS v5 [WW] [WO] [PL]
+define('TYP_BUDYNEK_PRZEMYSLOWY',2);	// SIIS v5 [WW] [WO] [PL]
+define('TYP_BUDYNEK_MIESZKALNY',3);	// SIIS v5 [WW] [WO] [PL]
+define('TYP_OBIEKT_SAKRALNY',4);	// SIIS v5 [WW] [WO] [PL]
+define('TYP_MASZT',5);			// SIIS v5 [WW] [WO] [PL]
+define('TYP_WIEZA',6);			// SIIS v5 [WW] [WO] [PL]
+define('TYP_KONTENER',7);		// SIIS v5 [WW] [WO] [PL]
+define('TYP_SZAFA_ULICZNA',8);		// SIIS v5 [WW] [WO] [PL]
+define('TYP_SKRZYNKA',9);		// SIIS v5 [WW] [WO] [PL]
+define('TYP_STUDNIA_KABLOWA',10);	// SIIS v5 [WW] [WO] [PL]
+define('TYP_KOMIN',11);			// SIIS v5 [WW] [WO] [PL]
+define('TYP_SLUP',12);			// SIIS v5 [WW] [WO] [PL]
+//define('TYP_SZAFKA_NASCIENNA',13); -> 9
+//define('TYP_SZAFKA_NASCIENNA_RACK',14); -> 9
+//define('TYP_SZAFKA_STOJACA',15); -> 9
+//define('TYP_SZAFKA_STOJACA_RACK',16); -> 9
+define('TYP_SLUPEK_TK',17);		// SIIS v5           [PL] (łączenie kabli)
+//define('TYP_MUFA',18);  -> 23
+//define('TYP_ELEWATOR',19); -> 2
+define('TYP_BUDYNEK_USLUGOWY',20);	// SIIS v5 [WW] [WO] [PL]
+define('TYP_BUDYNEK_PUBLICZNY',21);	// SIIS v5 [WW] [WO] [PL]
+define('TYP_OBIEKT_SIECI_ELEKTRO',22);	// SIIS v5 [WW] [WO] [PL]
+define('TYP_ZASOBNIK',23);		// SIIS v5           [PL] ( łączenie kabli )
+
 
 $BUILDINGS = array(
     TYP_BUDYNEK_BIUROWY		=> 'budynek biurowy',
     TYP_BUDYNEK_PRZEMYSLOWY	=> 'budynek przemysłowy',
     TYP_BUDYNEK_MIESZKALNY	=> 'budynek mieszkalny',
+    TYP_BUDYNEK_USLUGOWY	=> 'budynek usługowy',
+    TYP_BUDYNEK_PUBLICZNY	=> 'budynek użyteczności publicznej',
     TYP_OBIEKT_SAKRALNY		=> 'obiekt sakralny',
+    TYP_OBIEKT_SIECI_ELEKTRO	=> 'obiekt sieci elektroenergetycznej',
     TYP_MASZT			=> 'maszt',
     TYP_WIEZA			=> 'wieża',
     TYP_KONTENER		=> 'kontener',
@@ -572,21 +603,36 @@ $BUILDINGS = array(
     TYP_STUDNIA_KABLOWA		=> 'studnia kablowa',
     TYP_KOMIN			=> 'komin',
     TYP_SLUP			=> 'słup',
-    TYP_SZAFKA_NASCIENNA	=> 'szafka naścienna',
-    TYP_SZAFKA_NASCIENNA_RACK	=> 'szafka naścienna RACK',
-    TYP_SZAFKA_STOJACA		=> 'szafka stojąca',
-    TYP_SZAFKA_STOJACA_RACK	=> 'szafka stojąca RACK',
-    TYP_SLUPEK_TK		=> 'słupek telekomunikacyjny',
-    TYP_MUFA			=> 'mufa',
-    TYP_ELEWATOR		=> 'elewator',
+//    TYP_SZAFKA_NASCIENNA	=> 'szafka naścienna',
+//    TYP_SZAFKA_NASCIENNA_RACK	=> 'szafka naścienna RACK',
+//    TYP_SZAFKA_STOJACA		=> 'szafka stojąca',
+//    TYP_SZAFKA_STOJACA_RACK	=> 'szafka stojąca RACK',
+//    TYP_SLUPEK_TK		=> 'słupek telekomunikacyjny',
+//    TYP_MUFA			=> 'mufa',
+//    TYP_ELEWATOR		=> 'elewator',
+//    TYP_ZASOBNIK		=> 'zasobnik kablowy',
 );
 asort($BUILDINGS);
 
+// status węzła
+define('NSTATUS_CLOSED',0); // zakończony
+define('NSTATUS_IMPLEMENTATION',1); // w realizacji
+define('NSTATUS_PLANNED',2); // planowany
+
+$NSTATUS = array(
+    NSTATUS_CLOSED		=> 'zakończony',
+    NSTATUS_IMPLEMENTATION	=> 'w realizacji',
+    NSTATUS_PLANNED		=> 'planowany',
+);
+asort($NSTATUS);
+
 define('NODE_OWN',1);
 define('NODE_FOREIGN',2);
+define('NODE_ALIEN',3);
 $TNODE = array(
     NODE_OWN		=> 'Węzeł własny',
     NODE_FOREIGN	=> 'Węzeł współdzielony z innym podmiotem',
+    NODE_ALIEN		=> 'Węzeł obcy',
 );
 
 define('DEV_PASSIVE',0);
@@ -612,17 +658,55 @@ define('TRACT_UNDERGROUND_SEWER',3);
 define('TRACT_UNDERGROUND_PIPELINE',4);
 define('TRACT_RIGGING',5);
 define('TRACT_CANALROAD',6);
+define('TRACT_ABOVEGROUND_DEDICATE',7);
 
-$TYPETRACT = array(
-    TRACT_ABOVEGROUND		=> 'nadziemny',
+
+$TRACTTYPE = array(
     TRACT_UNDERGROUND		=> 'podziemny',
     TRACT_UNDERGROUND_SEWER	=> 'podziemny w kanalizacji',
     TRACT_UNDERGROUND_PIPELINE	=> 'podziemny w rurciągu',
-    TRACT_RIGGING		=> 'podwieszany na lini energetycznej',
-    TRACT_CANALROAD		=> 'w kanale technicznym drogi',
-    
+    TRACT_CANALROAD		=> 'podziemny w kanale technicznym drogi',
+    TRACT_ABOVEGROUND		=> 'napowietrzny',
+    TRACT_RIGGING		=> 'napowietrzny na lini energetycznej',
+    TRACT_ABOVEGROUND_DEDICATE	=> 'napowietrzny na dedykowanej podbudowie słupowej',
 );
-asort($TYPETRACT);
+
+$TRACTNODE = array(
+    1	=> 'bezprzewodowe',
+    2	=> 'infrastruktura budynku',
+    3	=> 'przyłącze napowietrzne',
+    4	=> 'przyłącze podziemne w kanalizacji',
+    5	=> 'przyłącze ziemne',
+);
+
+/* ************* START Światłowody i ich świat ********************** */
+/*
+    FIBRE -> włókno
+    FIBER -> światłowód
+    TUBE -> tuba
+*/
+// rodzaje włókien
+define('FIBRE_G651',1);		// SIIS v5
+define('FIBRE_G652',2);		// SIIS v5
+define('FIBRE_G653',3);		// SIIS v5
+define('FIBRE_G654',4);		// SIIS v5
+define('FIBRE_G655',5);		// SIIS v5
+define('FIBRE_G656',6);		// SIIS v5
+define('FIBRE_G657',7);		// SIIS v5
+
+$TYPEFIBRE = array(
+    FIBRE_G651	=> 'G.651',	// SIIS v5
+    FIBRE_G652	=> 'G.652',	// SIIS v5
+    FIBRE_G653	=> 'G.653',	// SIIS v5
+    FIBRE_G654	=> 'G.654',	// SIIS v5
+    FIBRE_G655	=> 'G.655',	// SIIS v5
+    FIBRE_G656	=> 'G.656',	// SIIS v5
+    FIBRE_G657	=> 'G.657',	// SIIS v5
+);
+
+
+/* ************* END Światłowody i ich świat ********************** */
+
 
 // podstawy prawne współdzielenia węzłów
 define('POD_UMNET',1);
@@ -630,15 +714,77 @@ define('POD_UMBSA',2);
 define('POD_UMLLU',3);
 define('POD_ODSP',4);
 define('POD_USLUGA',5);
+define('POD_USLUGA2',6);
+define('POD_IP',7);
+define('POD_TRANSMISJA',8);
+define('POD_PSTN',9);
+define('POD_KOLOKACJA',10);
+define('POD_DZIERZAWA',11);
 define('POD_OTHER',100);
 
 $PODSTAWA = array(
-    POD_UMNET	=> 'Umowa o dostęp do sieci telekomunikacyjnej',
-    POD_UMBSA	=> 'Umowa BSA na sieci innego podmiotu',
-    POD_UMLLU	=> 'Umowa LLU na sieci innego podmiotu',
-    POD_ODSP	=> 'Prosta odsprzedaż usług na sieci innego podmiotu',
-    POD_USLUGA	=> 'Usługa dostępu szerokopasmowego w modelu VNO',
-    POD_OTHER	=> 'Inna',
+    POD_UMNET		=> 'Umowa o dostęp do sieci telekomunikacyjnej',
+    POD_UMBSA		=> 'Umowa BSA na sieci innego podmiotu',
+    POD_UMLLU		=> 'Umowa LLU na sieci innego podmiotu',
+    POD_ODSP		=> 'Prosta odsprzedaż usług na sieci innego podmiotu',
+    POD_USLUGA		=> 'Usługa dostępu szerokopasmowego w modelu VNO',
+    POD_USLUGA2		=> 'Inne usługi w modelu VNO',
+    POD_IP		=> 'Świadczenie lub zakup usług IP Tranzyt i IP Peering',
+    POD_TRANSMISJA	=> 'Świadczenie lub zakup usługi transmisji danych',
+    POD_PSTN		=> 'Umowa o połączeniu sieci PSTN',
+    POD_KOLOKACJA	=> 'Kolokacja i najem',
+    POD_DZIERZAWA	=> 'Dzierżawa',
+    POD_OTHER		=> 'Inna',
+);
+
+// Investment project types
+define('INV_PROJECT_REGULAR', 0);
+define('INV_PROJECT_SYSTEM', 1);
+
+define('PROJECT_PROGRAM_PO_IG',1);	// SIIS v5
+define('PROJECT_PROGRAM_PO_RPW',2);	// SIIS v5
+
+$PROJECTPROGRAM = array(
+    PROJECT_PROGRAM_PO_IG	=> 'PO-IG',
+    PROJECT_PROGRAM_PO_RPW	=> 'PO-RPW',
+);
+
+
+$PROJECTACTION = array(
+    PROJECT_PROGRAM_PO_IG 	=> array(
+				1 => '8.3',
+				2 => '8.4'
+				),
+    PROJECT_PROGRAM_PO_RPW	=> array(
+				1 => 'II.1'
+				),
+);
+
+// Forma korzystania z infrastruktury obcej 
+define('WAYOFUSING_01',1);
+define('WAYOFUSING_02',2);
+define('WAYOFUSING_03',3);
+define('WAYOFUSING_04',4);
+define('WAYOFUSING_05',5);
+define('WAYOFUSING_06',6);
+define('WAYOFUSING_07',7);
+define('WAYOFUSING_08',8);
+define('WAYOFUSING_09',9);
+define('WAYOFUSING_10',10);
+define('WAYOFUSING_11',11);
+
+$WAYOFUSING = array(
+    WAYOFUSING_01	=> 'Współwłasność z innym podmiotem',
+    WAYOFUSING_02	=> 'Usługa LLU na sieci innego podmiotu',
+    WAYOFUSING_03	=> 'Usługa BSA na sieci innego podmiotu',
+    WAYOFUSING_04	=> 'Usługa WLR na sieci innego podmiotu',
+    WAYOFUSING_05	=> 'Prosta odsprzedaż usług na sieci innego podmiotu',
+    WAYOFUSING_06	=> 'Usługa dostępu szerokopasmowego w modelu MVNO',
+    WAYOFUSING_07	=> 'Inne usługi w modelu MVNO',
+    WAYOFUSING_08	=> 'Dzierżawa włókna światłowodowego',
+    WAYOFUSING_09	=> 'Usługi transmisji danych na sieci innego podmiotu',
+    WAYOFUSING_10	=> 'Usługi IP Transit na sieci innego podmiotu',
+    WAYOFUSING_11	=> 'Numer dostępu do sieci',
 );
 
 $RAD_TERMINATE_CAUSE = array(
@@ -722,7 +868,13 @@ if(isset($SMARTY))
 	$SMARTY->assign('_PODSTAWA',$PODSTAWA);
 	$SMARTY->assign('_RAD_TERMINATE_CAUSE',$RAD_TERMINATE_CAUSE);
 	$SMARTY->assign('_RAD_SERVICE_TYPE',$RAD_SERVICE_TYPE);
-	$SMARTY->assign('_TYPETRACT',$TYPETRACT);
+	$SMARTY->assign('_TRACTTYPE',$TRACTTYPE);
+	$SMARTY->assign('_TRACTNODE',$TRACTNODE);
+	$SMARTY->assign('_NSTATUS',$NSTATUS);
+	$SMARTY->assign('_TYPEFIBRE',$TYPEFIBRE);
+	$SMARTY->assign('_WAYOFUSING',$WAYOFUSING);
+	$SMARTY->assign('_PROJECTPROGRAM',$PROJECTPROGRAM);
+	$SMARTY->assign('_PROJECTACTION',$PROJECTACTION);
 }
 
 define('DEFAULT_NUMBER_TEMPLATE', '%N/LMS/%Y');

@@ -24,6 +24,17 @@
  *  $Id$
  */
 
+$_LANG['-- all --'] = '-- wszystko --';
+$_LANG['Investment project:'] = 'Projekt inwestycyjny:';
+$_LANG['Project'] = 'Projekt';
+$_LANG['From root device'] = 'z jednostki nadrzędnej';
+$_LANG['Contract number'] = 'Numer umowy';
+$_LANG['Project number'] = 'Numer projektu';
+$_LANG['Action'] = 'Działanie';
+$_LANG['Project name'] = 'Nazwa projektu';
+$_LANG['Financed'] = 'Współfinansowany';
+$_LANG['-- REQUIRED --'] = '-- WYMAGANE --';
+$_LANG['-- CONDITIONAL --'] = '-- WARUNKOWE --';
 $_LANG['Network device models database is empty.'] = 'Baza danych urządzeń sieciowych jest pusta.';
 $_LANG['Select producer'] = 'Wybierz producenta';
 $_LANG['Select model'] = 'Wybierz model';
@@ -1779,7 +1790,7 @@ $_LANG['First number:'] = 'Numer początkowy:';
 $_LANG['Select document template'] = 'Wybierz szablon dokumentu';
 $_LANG['Enter Business Registration Number (optional)'] = 'Wprowadź numer REGON (opcjonalnie)';
 $_LANG['Enter Identity Card Number (optional)'] = 'Wprowadź numer Dowodu Osobistego (opcjonalnie)';
-$_LANG['Enter National Court Register / Register of Business Entities Number (optional)'] = 'Wprowadź numer EDG/KRS (opcjonalnie)';
+$_LANG['Enter National Court Register / Register of Business Entities Number (optional)'] = 'Wprowadź numer KRS (opcjonalnie)';
 $_LANG['Incorrect Business Registration Number!'] = 'Niepoprawny numer REGON!';
 $_LANG['Incorrect Identity Card Number!'] = 'Niepoprawny numer Dowodu Osobistego!';
 $_LANG['OK'] = 'OK';
@@ -1788,7 +1799,7 @@ $_LANG['REGON:'] = 'REGON:';
 $_LANG['unknown'] = 'nieznany';
 $_LANG['Enter node location'] = 'Wprowadź położenie komputera';
 $_LANG['ICN:'] = 'Dowód osobisty:';
-$_LANG['RBE:'] = 'EDG/KRS:';
+$_LANG['RBE:'] = 'KRS:';
 $_LANG['Allows you to add new document'] = 'Dodanie nowego dokumentu';
 $_LANG['Allows you to search documents'] = 'Wyszukiwanie dokumentów';
 $_LANG['Documents'] = 'Dokumenty';
@@ -2585,7 +2596,7 @@ $_LANG['SMS message is empty!'] = 'Wiadomość SMS jest pusta!';
 $_LANG['First name cannot be empty!'] = 'Pole Imię nie może być puste!';
 $_LANG['Last/Company name cannot be empty!'] = 'Pole Nazwisko/Nazwa firmy nie może być puste!';
 $_LANG['Warning! Debug mode (using phone $a).'] = 'UWAGA! Tryb debugowania (używam numeru $a).';
-$_LANG['RBE'] = 'EDG/KRS';
+$_LANG['RBE'] = 'KRS';
 $_LANG['ICN'] = 'Dow. os.';
 $_LANG['Option'] = 'Opcja';
 $_LANG['by date'] = 'wg daty';

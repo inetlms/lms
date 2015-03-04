@@ -34,6 +34,51 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-03-04',
+	    'status'	=> '',
+	    'opis'	=> 'wprowadzono informację o liniach telekomunikacyjncyh',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'modyfikacja słownika rodzaje budynków do wymogów SIIS v5',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'modyfikacja zestawiania połączenia sieciowego : interfejs <-> interfejs, dodano dodatkowe pola : Warstwa sieci, Trakt, Linia telekomunikacyjna',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'modyfikacja zestawiania połączenia sieciowego : interfejs <-> komputer, dodano dodatkowe pola : Warstwa sieci, Rodzaj przyłącza',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowa listy interfejsów sieciowych, dodano filtry',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowa listy węzłów, dodano filtry',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'wprowadzono informację o projektach dla węzłów, interfesjów sieciowych oraz w karcie komputera',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano projekty inwestycyjne, konfiguracja : Słownik -> projekty',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość załączenia dokumentów / plikow w karcie kontrahenta',
+	),
+	array(
 	    'data'	=> '2015-02-21',
 	    'status'	=> '',
 	    'opis'	=> 'poprawa czytelności niektórych tabel / list',

@@ -118,7 +118,8 @@
 			<img src="img/netdev.gif" alt="{trans("Net device:")}">
 		</td>
 		<td style="width: 99%; white-space: nowrap;">
-			<select size="1" name="nodedata[netdev]" {tip text="Select network device (optional)" trigger="netdev"} style="max-width:250px;">
+		<fieldset style="width:400px;"><legend>| <b>Informacja o płączeniu sieciowym</b> |</legend>
+			<select size="1" name="nodedata[netdev]" {tip text="Select network device (optional)" trigger="netdev"} style="width:300px;">
 				<option value="0"{if !$nodedata.netdev} selected{/if}>{trans("- select device -")}</option>
 				{section name=netdevices loop=$netdevices}
 				<option value="{$netdevices[netdevices].id}"{if $netdevices[netdevices].id==$nodedata.netdev} selected{/if}>{$netdevices[netdevices].name} {$netdevices[netdevices].producer}{if $netdevices[netdevices].location} / {$netdevices[netdevices].location}{/if}</option>
@@ -126,12 +127,12 @@
 			</select>
 			<input type="text" name="nodedata[port]" value="{if $nodedata.port}{$nodedata.port}{/if}" size="2" {tip text="Enter port number in device (optional)" trigger="port"}>
 			<br>
-			<select name="nodedata[linktype]" id="linktype" {tip trigger="linktype" text="Select link type"} style="min-width:200px;" onchange="change_linktype(this.options[this.selectedIndex].value)">
+			<select name="nodedata[linktype]" id="linktype" {tip trigger="linktype" text="Select link type"} style="width:300px;" onchange="change_linktype(this.options[this.selectedIndex].value)">
 				{foreach from=$_LINKTYPES item=item key=key}
 				<option value="{$key}">{$item}</option>
 				{/foreach}
 			</select><br>
-			<select name="nodedata[linktechnology]" id="linktechnology" {tip trigger="linktechnology" text="Wybierz technologię łącza"} style="min-width:200px;">>
+			<select name="nodedata[linktechnology]" id="linktechnology" {tip trigger="linktechnology" text="Wybierz technologię łącza"} style="width:300px;">
 				<option value="0">- nieznana -</option>
 				{foreach $_LINKTECHNOLOGIES[0] as $linktechnologyidx => $linktechnology}
 				<option value="{$linktechnologyidx}">{$linktechnology}</option>
@@ -142,6 +143,21 @@
 				<option value="{$key}"{if $key==100000} selected{/if}>{$item}</option>
 				{/foreach}
 			</select>
+			<br>
+			{assign 'dystrybucja' $smarty.const.LAYER_DISTRIBUTION}
+			{assign 'dostep' $smarty.const.LAYER_ACCESS} 
+			<select name="nodedata[layer]" id="layer" {tip text="Wybierz warstwę sieci" trigger="layer"} style="width:300px;">
+				<option value="{$dostep}">{$_LAYERTYPE.$dostep}</option>
+				<option value="{$dystrybucja}">{$_LAYERTYPE.$dystrybucja}</option>
+			</select>
+			<br>
+			<select name="nodedata[tracttype]" id="tracttype" {tip text="Wybierz rodzaj przyłącza" trigger="tracttype"} style="width:300px;">
+				<option value="">-- żadne --</option>
+				{foreach $_TRACTNODE as $item => $key}
+				<option value="{$item}">{$key}</option>
+				{/foreach}
+			</select>
+			</fieldset>
 		</td>
 	</tr>
 	    <input type="hidden" name="nodedata[netdevices]" value="1">
@@ -152,7 +168,27 @@
 	    <input type="hidden" name="nodedata[linktechnology]" value="">
 	    <input type="hidden" name="nodedata[linkspeed]" value="">
 	    <input type="hidden" name="nodedata[netdevices]" value="0">
+	    <input type="hidden" name="nodedata[layer]" value="">
+	    <input type="hidden" name="nodedata[tracttype]" value="">
 	{/if}
+	
+	
+	<tr class="light">
+	    <td width="1%">
+		<img src="img/money.gif" alt="" {tip text="Investment project:"}>
+	    </td>
+	    <td width="99%" align="left">
+		<select name="nodedata[invprojectid]" id="invprojectid"  {tip text="Investment project:"} style="width:300px;">
+		    <option value="" {if !$nodeinfo.invprojectid} selected {/if}>{trans('none')}</option>
+		    <option value="1" {if $nodeinfo.invprojectid ==1} selected {/if}>{trans('From root device')}</option>
+		    {section name=projectlist loop=$projectlist}
+		    <option value="{$projectlist[projectlist].id}" {if $nodeinfo.invprojectid == $projectlist[projectlist].id} selected {/if}>{$projectlist[projectlist].name}</option>
+		    {/section}
+		</select>
+	    </td>
+	</tr>
+
+	
 	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/customer.gif" alt="{trans("Customer:")}">
@@ -160,7 +196,7 @@
 		<td style="width: 99%; white-space: nowrap;">
 		{if $customers}
 			<select size="1" name="nodedata[customerid]" {tip text="Assign node to customer" trigger="ownerid"} style="max-width:160px;" onchange="document.nodeadd.elements['nodedata[ownerid]'].value=this.value" id="choice">
-				<option value="0" style="color:red;">{trans("... select customer ...")}</option>
+				<option value="0">{trans("... select customer ...")}</option>
 				{foreach from=$customers item=c}
 				<option value="{$c.id}"{if $nodedata.ownerid == $c.id} selected{/if}>{$c.customername|truncate:40:"...":true} ({$c.id|string_format:"%04d"})</option>
 				{/foreach}

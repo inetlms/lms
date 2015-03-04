@@ -378,6 +378,36 @@
                 </td>
         </tr>
         {/if}
+        <tr class="light">
+	    <td width="1%">
+		<img src="img/money.gif" alt="">
+	    </td>
+	    <td width="1%">
+		<b>{trans("Investment project:")}</b>
+	    </td>
+	    <td width="98%" align="left">
+		{if !$netdevinfo.invprojectid}
+		    {trans('none')}
+		{else if $netdevinfo.invprojectid == 1}
+		    {trans('From root device')}
+		{else}
+		    {$netdevinfo.projectname}
+		{/if}
+	    </td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%">
+		<img src="img/producer.gif" alt="">
+	    </td>
+	    <td width="1%">
+		<b>Status urządzenia</b>
+	    </td>
+	    <td width="98%" align="left">
+		{assign var='tmp' value=$netdevinfo.status}{$_NSTATUS.$tmp}
+	    </td>
+	</tr>
+	
 	                                        </table>
 					</td>
 				</tr>
@@ -388,6 +418,27 @@
 	<tr class="light">
 	        <td width="100%" colspan="2" class="FBOTTOMU" align="right">
 {/if}
+			{if $netcomplist}
+			<p>
+			<form method="GET" action="?m=netdevedit" name="setproject">
+			<input type="submit" class="hiddenbtn">
+			<input type="hidden" name="m" value="netdevedit">
+			<input type="hidden" name="id" value="{$netdevinfo.id}">
+			<input type="hidden" name="action" value="setproject">
+			<a href="javascript:document.setproject.submit(); ">Ustaw projekt dla komputerów</a>
+			
+			    <select name="project" {tip text="Wybierz projekt inwestycyjny jaki ma być ustawiony dla komputerów podłączonych do tego interfejsu sieciowego"} style="width:410px;">
+				<option value="-1"></option>
+				<option value="">{trans('none')}</option>
+				<option value="1">{trans('From root device')}</option>
+				{section name='projectlist' loop=$projectlist}
+				<option value="{$projectlist[projectlist].id}">{$projectlist[projectlist].name}</option>
+				{/section}
+				
+			    </select>
+			</form>
+			</p>
+			{/if}
 			{if $replacelisttotal>1}
 			<form method="GET" action="?m=netdevedit" name="replace">
 			<input type="submit" class="hiddenbtn">
@@ -395,7 +446,8 @@
 			<input type="hidden" name="id" value="{$netdevinfo.id}">
 			<input type="hidden" name="action" value="replace">
 			<a href="javascript:document.replace.submit(); ">{trans("Replace with:")}</a>
-			<select name="netdev" {tip trigger="replace" text="Select device from list for replacement"}>
+			<select name="netdev" {tip trigger="replace" text="Select device from list for replacement"} style="width:500px;">
+			<option value=""></option>
 				{section name=replacelist loop=$replacelist}
 					{if $replacelist[replacelist].id != $netdevinfo.id}
 					{assign var=netdevname value=$replacelist[replacelist].name}
@@ -405,10 +457,12 @@
 					{/if}
 				{/section}
 			</select>
-			</form>
+			</form><br>
 			{/if}
+			<p>
 			<a href="?m=netdevedit&id={$netdevinfo.id}" accesskey="E">{trans("Edit")} <img src="img/edit.gif" alt="[ {trans("Edit")} ]"></a>
 			<a href="?m=netdevdel&id={$netdevinfo.id}" onclick="return confirmLink(this, '{t a=$netdevinfo.name}Are you sure, you want to remove device \'$a\' from database?{/t}');">{trans("Delete")} <img src="img/delete.gif" alt=""></a>
+			</p>
 		</td>
 	</tr>
 </table>

@@ -5,21 +5,21 @@
 <input type="hidden" name="lineedit[action]" value="{$action}">
 <p class="light fall">
     <table width="100%" cellpadding="5">
-	<tr class="pgdark">
+	<tr class="dark boxtop">
 	    <td width="100%" colspan="3" align="left"><b>{if $action=='add'}Dodaj nową linię{else}Edycja linii : {$lineinfo.name}{/if}</td>
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 	    <td width="1%" class="pad10" nowrap><b>Nazwa</b></td>
 	    <td width="1%" class="pad" nowrap><b>:</b></td>
 	    <td width="98%" align="left"><input type="text" name="lineedit[name]" id="lineedit_name" value="{$lineinfo.name}" style="width:330px;">
 	</tr>
-	<tr class="pglight">
+	<tr class="light">
 	    <td width="1%" class="pad10" nowrap><b>Opis</b></td>
 	    <td width="1%" class="pad" nowrap><b>:</b></td>
 	    <td width="98%" align="left"><textarea name="lineedit[description]" id="lineedit_description" cols="43">{$lineinfo.description}</textarea>
 	</tr>
-	<tr class="pgdark">
-	    <td colspan="3" class="fall pad" align="right" width="100%">
+	<tr class="dark">
+	    <td colspan="3" class="ftop pad" align="right" width="100%">
 	    <a href="javascript:void(0);" onclick="xajax_update_teleline(xajax.getFormValues('lineedit'));">Zapisz <img src="img/save.gif" alt=""></a>&nbsp;
 	    <a href="javascript:void(0);" onclick="document.getElementById('teleline_edit').innerHTML='';">Anuluj <img src="img/cancel.gif" alt=""></a>
 	</tr>
@@ -35,33 +35,21 @@
 <table width="100%" cellpadding="3" cellspacing="0">
     <tr class="dark">
 	<td width="1%" class="pad2" align="center" nowrap><b>#</b></td>
-	<td width="1%" class="pad10" align="left" nowrap><b>Nazwa</b></td>
-	<td width="auto" class="pad" align="left"><b>Opis</b></td>
-	<td width="1%" class="pad10" align="center" nowrap><b>Połączeń<b></td>
-	<td width="1%" class="pad" align="right" nowrap>&nbsp;</td>
+	<td width="1%" class="pad10 tleft" align="left" nowrap><b>Nazwa</b></td>
+	<td width="auto" class="pad tleft" align="left"><b>Opis</b></td>
+	<td width="1%" class="pad10 tleft" align="center" nowrap><b>Połączeń<b></td>
+	<td width="1%" class="pad tleft" align="right" nowrap>&nbsp;</td>
     </tr>
     {cycle values="lucid,light" print=false}
     {section name='teleline' loop=$teleline}
     {assign var='idek' value=$teleline[teleline].id}
     <tr class="{cycle} lista{if !$teleline[teleline].active} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	
-	<td width="1%" class="pad2" align="center" nowrap>
-	    {$teleline[teleline].id|string_format:"%04d"}
-	</td>
-	
-	<td width="1%" class="pad10" align="left" nowrap>
-	    {$teleline[teleline].name}
-	</td>
-	
-	<td width="auto" class="pad" align="left">
-	    {$teleline[teleline].description}
-	</td>
-	
-	<td width="1%" class="pad10" align="center" nowrap>
-	    {$teleline[teleline].countlink}
-	</td>
-	
-	<td width="1%" class="pad" align="right" nowrap>
+	<td width="1%" class="pad2" align="center" nowrap>{$teleline[teleline].id|string_format:"%04d"}</td>
+	<td width="1%" class="pad10 tleft" align="left" nowrap>{$teleline[teleline].name}</td>
+	<td width="auto" class="pad tleft" align="left">{$teleline[teleline].description}</td>
+	<td width="1%" class="pad10 tleft" align="center" nowrap>{$teleline[teleline].countlink}</td>
+	<td width="1%" class="pad tleft" align="right" nowrap>
 	    {if $teleline[teleline].active}
 		<img src="img/access.gif" alt="[ access ]" title="[ wyłącz linię ]" id="idaccess_{$idek}" onclick="self.location.href='?m=teleline&setaccess=0&id={$idek}';">
 	    {else}
@@ -71,7 +59,6 @@
 	    <a href="?m=teleline&del&id={$teleline[teleline].id}" onclick="return confirmLink(this,'Potwierdź usunięcie linii');"><img src="img/delete.gif"></a>
 	    {else}<img src="img/deleteoff.gif">{/if}
 	    <img src="img/edit.gif" onclick="loadAjax('teleline_edit','?m=teleline&edit&id={$teleline[teleline].id}');">
-	    <img src="img/info.gif">
 	</td>
     </tr>
     {sectionelse}

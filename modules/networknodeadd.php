@@ -98,5 +98,6 @@ if (isset($_POST['name']))
 
 $SMARTY->assign('networknodeinfo',$networknodeinfo);
 $SMARTY->assign('actions','add');
+$SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
 $SMARTY->display('networknodeedit.html');
 ?>
