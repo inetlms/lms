@@ -1,7 +1,7 @@
 <?php
 
 /*
- * LMS version 1.11-git
+ *  iNET LMS (LMS version 1.11-git)
  *
  *  (C) Copyright 2001-2012 LMS Developers
  *
@@ -34,6 +34,9 @@ $subtitle = '';
 
 switch ($action) {
 	case 'replace':
+		
+		if (empty($_GET['id']) || empty($_GET['netdev']))
+		    $SESSION->redirect('?m=netdevinfo&id=' . $_GET['id']);
 
 		$dev1 = $LMS->GetNetDev($_GET['id']);
 		$dev2 = $LMS->GetNetDev($_GET['netdev']);
@@ -129,7 +132,16 @@ switch ($action) {
 			$SESSION->redirect('?m=netdevinfo&id=' . $_GET['id']);
 		}
 
-		break;
+	break;
+	
+	case 'setproject':
+		$project = $_GET['project'];
+		$id = $_GET['id'];
+		if ($project != '-1') {
+		    $DB->Execute('UPDATE nodes SET invprojectid = ? WHERE netdev = ? ;',array(($project ? $project : NULL),$id));
+		}
+		$SESSION->redirect('?m=netdevinfo&id=' . $_GET['id']);
+	break;
 
 	case 'disconnect':
 		$LMS->NetDevUnLink($_GET['id'], $_GET['devid']);
@@ -174,6 +186,9 @@ switch ($action) {
 		$dev['srcport'] = !empty($_GET['srcport']) ? intval($_GET['srcport']) : '0';
 		$dev['dstport'] = !empty($_GET['dstport']) ? intval($_GET['dstport']) : '0';
 		$dev['id'] = !empty($_GET['netdev']) ? intval($_GET['netdev']) : '0';
+		$layer = !empty($_GET['layer']) ? intval($_GET['layer']) : NULL;
+		$tracttype = !empty($_GET['tracttype']) ? intval($_GET['tracttype']) : NULL;
+		$teleline = !empty($_GET['teleline']) ? intval($_GET['teleline']) : '0';
 
 		$ports1 = $DB->GetOne('SELECT ports FROM netdevices WHERE id = ?', array($_GET['id']));
 		$takenports1 = $LMS->CountNetDevLinks($_GET['id']);
@@ -210,7 +225,7 @@ switch ($action) {
 		$SESSION->save('devlinkspeed', $linkspeed);
 
 		if (!$error) {
-			$LMS->NetDevLink($dev['id'], $_GET['id'], $linktype, $linkspeed, $dev['srcport'], $dev['dstport'],$linktechnology);
+			$LMS->NetDevLink($dev['id'], $_GET['id'], $linktype, $linkspeed, $dev['srcport'], $dev['dstport'],$linktechnology, $layer, $teleline, $tracttype);
 			$SESSION->redirect('?m=netdevinfo&id=' . $_GET['id']);
 		}
 
@@ -225,6 +240,8 @@ switch ($action) {
 		$linktechnology = !empty($_GET['linktechnology']) ? intval($_GET['linktechnology']) : '0';
 		$node['port'] = !empty($_GET['port']) ? intval($_GET['port']) : '0';
 		$node['id'] = !empty($_GET['nodeid']) ? intval($_GET['nodeid']) : '0';
+		$layer = !empty($_GET['layer']) ? intval($_GET['layer']) : NULL;
+		$tracttype = !empty($_GET['tracttype']) ? intval($_GET['tracttype']) : NULL;
 
 		$ports = $DB->GetOne('SELECT ports FROM netdevices WHERE id = ?', array($_GET['id']));
 		$takenports = $LMS->CountNetDevLinks($_GET['id']);
@@ -246,7 +263,7 @@ switch ($action) {
 		$SESSION->save('nodelinktechnology', $linktechnology);
 
 		if (!$error) {
-			$LMS->NetDevLinkNode($node['id'], $_GET['id'], $linktype, $linkspeed, $node['port'],$linktechnology);
+			$LMS->NetDevLinkNode($node['id'], $_GET['id'], $linktype, $linkspeed, $node['port'],$linktechnology, $layer, $tracttype);
 			$SESSION->redirect('?m=netdevinfo&id=' . $_GET['id']);
 		}
 
@@ -611,6 +628,7 @@ $layout['pagetitle'] = trans('Device Edit: $a ($b)', $netdevdata['name'], $netde
 if ($subtitle)
 	$layout['pagetitle'] .= ' - ' . $subtitle;
 
+$SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
 $SMARTY->assign('error', $error);
 $SMARTY->assign('netdevinfo', $netdevdata);
 $SMARTY->assign('netdevlist', $netdevconnected);

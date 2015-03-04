@@ -302,7 +302,7 @@ $nodedata = $LMS->ExecHook('node_add_init', $nodedata);
 $SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
 $SMARTY->assign('netdevices', $LMS->GetNetDevNames());
 $SMARTY->assign('networks', $LMS->GetNetworks(false));
-
+$SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
 $SMARTY->assign('nodedata', $nodedata);
 $SMARTY->display('nodeadd.html');
 

@@ -321,6 +321,10 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					$config[$idx]['description'] = trans('List of networks and IP addresses, with access to LMS. If empty, every IP address has access to LMS. When you write list of addresses or address pools here, LMS will dismiss every unwanted user with HTTP 403 error.');
 				break;
 				
+				case 'networknode_pagelimit':
+					$config[$idx]['description'] = 'Lista węzłów na jednej stronie';
+				break;
+				
 				case 'default_division':
 					$config[$idx]['description'] = 'Domyślne ID firmy dla dokumentów wystawianych dla klientów nie będącymi klientami sieci / brak ich na liście';
 				break;

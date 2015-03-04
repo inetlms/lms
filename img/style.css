@@ -1460,7 +1460,7 @@ TR.green A { color			: #006500; }
 :-ms-input-placeholder { color : #333; }
 input:-moz-placeholder { color : #333; }
 
-.required_select { color : red; }
+.required_select { color : #FF7575; font-weight:bold;}
 
 .required::-webkit-input-placeholder { color : red; font-weight:bold; }
 .required::-moz-placeholder { color : red; font-weight:bold; }

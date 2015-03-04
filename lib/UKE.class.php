@@ -40,7 +40,7 @@ class UKE {
 
     function getreportlist()
     {
-	$result = $this->DB->GetAll('SELECT * FROM uke ORDER BY divname ASC;');
+	$result = $this->DB->GetAll('SELECT * FROM uke WHERE version=? ORDER BY divname ASC;',array('4'));
 	return $result;
     }
 
@@ -61,8 +61,8 @@ class UKE {
 			    states, districts, boroughs, city, zip, street, 
 			    location_city, location_street, location_house, location_flat, kod_terc, kod_simc, kod_ulic,
 			    url, email, accept1, accept2, accept3, accept4, accept5, accept6,
-			    contact_name, contact_lastname, contact_phone, contact_fax, contact_email, closed, passwd, description)
-			    VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+			    contact_name, contact_lastname, contact_phone, contact_fax, contact_email, closed, passwd, description, version)
+			    VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
 			    array(
 				'SIISv4',
 				($dane['divisionid'] ? $dane['divisionid'] : 0),
@@ -100,7 +100,8 @@ class UKE {
 				($dane['contact_fax'] ? $dane['contact_fax'] : NULL),
 				($dane['contact_email'] ? $dane['contact_email'] : NULL),
 				0,NULL,
-				($dane['description'] ? $dane['description'] : NULL)
+				($dane['description'] ? $dane['description'] : NULL),
+				'4'
 			    )
 	);
 	

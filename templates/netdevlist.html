@@ -2,7 +2,55 @@
 <!--// $Id$ //-->
 {title value=$layout.pagetitle}
 <table cellpadding="3" width="100%">
-    {if $listdata.total != 0}
+    <form method="GET" action="?m=netdevlist" name="filter">
+    <input type="submit" class="hiddenbtn">
+    <input type="hidden" name="m" value="netdevlist">
+    <input type="hidden" name="page" value="1">
+    
+    <tr class="dark nav-header">
+	<td colspan="10" class="fall" width="100%" style="vertical-align:top;text-align:left;">
+	    <table width="100%" cellpadding="2">
+		<tr>
+		    <td width="1%" align="left" class="pad5"><img src="img/Filter.png" alt="" width="16" onclick="document.filter.submit();"></td>
+		    <td width="1%" align="right" class="pad" nowrap>Status</td>
+		    <td width="1%" align="left" class="pad">
+			<select name="status" size="1" onchange="document.filter.submit();" {if $listdata.status != '-1'}class="active"{/if}>
+			<option value="-1"{if $listdata.status == '-1'} selected{/if}>{trans('-- all --')}</option>
+			{foreach $_NSTATUS as $item => $key}
+			<option value="{$item}" {if $item == $listdata.status} selected{/if}>{$key}</option>
+			{/foreach}
+			</select>
+		    </td>
+		    
+		    <td width="1%" align="right" class="pad">Projekt</td>
+		    <td width="1%" align="left" class="pad">
+			<select name="project" size="1" onchange="document.filter.submit();" {if $listdata.project != '-1'}class="active"{/if}>
+			<option value="-1">{trans('-- all --')}</option>
+			<option value="1"{if $listdata.project == '1'} selected{/if}>{trans('From root device')}</option>
+			{section name='projectlist' loop=$projectlist}
+			    <option value="{$projectlist[projectlist].id}"{if $projectlist[projectlist].id == $listdata.project} selected{/if}>{$projectlist[projectlist].name}</option>
+			{/section}
+			</select>
+		    </td>
+		    
+		    <td width="1%" align="right" class="pad">Węzeł</td>
+		    <td width="1%" align="left" class="pad">
+			<select name="networknode" size="1" onchange="document.filter.submit();" {if $listdata.networknode != '-1'}class="active"{/if}>
+			<option value="-1">{trans('-- all --')}</option>
+			<option value="0"{if !$listdata.networknode} selected{/if}>-- BEZ WĘZŁA --</option>
+			{section name=networknodelist loop=$networknodelist}
+			<option value="{$networknodelist[networknodelist].id}"{if $listdata.networknode == $networknodelist[networknodelist].id} selected{/if}>{$networknodelist[networknodelist].name}</option>
+			{/section}
+			</select>
+		    </td>
+		    
+		    <td width="auto">&nbsp;</td>
+		</tr>
+	    </table>
+	</td>
+    </tr>
+    </form>
+	{if $listdata.total != 0}
 	<tr class="scroller">
 		<td class="fall" colspan="6" width="100%">
 			{include file="scroller.html" loop=$netdevlist}

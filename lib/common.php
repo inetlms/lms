@@ -1089,7 +1089,7 @@ function seconds_to_hours($seconds)
 }
 
 function check_date($data) {
-	
+	$data = str_replace('-','/',$data);
 	if(preg_match('/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/',$data))
 	{
 		list($y, $m, $d) = explode('/', $data);

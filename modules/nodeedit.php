@@ -43,10 +43,12 @@ switch ($action) {
 		} else if ($netdev['ports'] > $netdev['takenports']) {
 			
 			$LMS->NetDevLinkNode($nodeid, $_GET['devid'],
-				isset($_GET['linktype']) ? intval($_GET['linktype']) : 0,
-				isset($_GET['linkspeed']) ? intval($_GET['linkspeed']) : 100000,
+				(isset($_GET['linktype']) ? intval($_GET['linktype']) : 0),
+				(isset($_GET['linkspeed']) ? intval($_GET['linkspeed']) : 100000),
 				intval($_GET['port']),
-				isset($_GET['linktechnology']) ? intval($_GET['linktechnology']) : 0
+				(isset($_GET['linktechnology']) ? intval($_GET['linktechnology']) : 0),
+				(isset($_GET['layer']) ? intval($_GET['layer']) : NULL),
+				(isset($_GET['tracttype']) ? intval($_GET['tracttype']) : NULL)
 				);
 			
 			$SESSION->redirect('?m=nodeinfo&id=' . $nodeid);
@@ -359,6 +361,7 @@ $SMARTY->assign('netdevices', $LMS->GetNetDevNames());
 $SMARTY->assign('networks', $LMS->GetNetworks(false));
 $SMARTY->assign('nodegroups', $LMS->GetNodeGroupNamesByNode($nodeid));
 $SMARTY->assign('othernodegroups', $LMS->GetNodeGroupNamesWithoutNode($nodeid));
+$SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
 $SMARTY->assign('hostlist',$DB->GetAll('SELECT id,name FROM hosts ORDER BY name'));
 $SMARTY->assign('error', $error);
 $SMARTY->assign('nodeinfo', $nodeinfo);

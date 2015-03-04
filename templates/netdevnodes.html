@@ -10,19 +10,22 @@
 		<td style="width: 100%;" class="fall">
 			<table cellpadding="5" cellspacing="0" style="width: 100%;">
 				<tr class="dark">
-					<td class="fleftu" style="width: 96%; white-space: nowrap;">
+					<td class="fleftu" style="width: 95%; white-space: nowrap;">
 						<img src="img/node.gif" alt=""> <span class="bold">{trans("Name:")}</span><br>
 						<img src="img/customer.gif" alt=""> {trans("Owner:")}
 					</td>
-					<td class="fbt pad10" width="1%" nowrap align="left">
+					<td class="fbt pad tleft" width="1%" align="left" style="min-width:220px;">
+					    Warstwa<br>Rodzaj przyłącza
+					</td>
+					<td class="fbt pad tleft" width="1%" nowrap align="left" style="min-width:170px;">
 					    Medium</br>
 					    Technologia (Prędkość)
 					</td>
-					<td class="fbt" style="width: 1%; text-align: right; white-space: nowrap;">
-						{trans("Node ID:")}<br>
+					<td class="fbt pad tleft" style="width: 1%; text-align: right; white-space: nowrap;">
+						ID kompu.<br>
 						{trans("Customer ID:")}
 					</td>
-					<td class="fbt" style="width: 1%; white-space: nowrap;">
+					<td class="fbt pad tleft" style="width: 1%; white-space: nowrap;">
 						<img src="img/netdev_takenports.gif"> {trans("Port")}:<br>
 						<img src="img/ip.gif" alt=""> {trans("IP address:")}
 					</td>
@@ -31,19 +34,24 @@
 				{cycle values="lucid,light" print=false}
 				{section name=netcomplist loop=$netcomplist start=$start}
 				<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-					<td style="width: 96%;" onclick="return self.location.href='?m=nodeinfo&id={$netcomplist[netcomplist].id}';">
+					<td style="width: 95%;" onclick="return self.location.href='?m=nodeinfo&id={$netcomplist[netcomplist].id}';">
 						<img src="img/node.gif" alt=""> <span class="bold">{$netcomplist[netcomplist].name}</span><br>
 						<img src="img/customer.gif" alt=""> <a href="?m=customerinfo&id={$netcomplist[netcomplist].ownerid}" {tip a=$netcomplist[netcomplist].ownerid dynpopup='?m=customerinfoshort&id=$a'}>{$netcomplist[netcomplist].owner}</a>
 					</td>
-					<td width="1%" nowrap class="pad10" align="left">
+					<td width="1%" class="pad tleft" nowrap align="left"  onclick="return self.location.href='?m=nodeinfo&id={$netcomplist[netcomplist].id}';">
+					    {assign 'tract' $netcomplist[netcomplist].tracttype}
+					    {assign 'layer' $netcomplist[netcomplist].layer}
+					    {$_LAYERTYPE.$layer}<br><span title="{$_TRACTNODE.$tract}">{$_TRACTNODE.$tract|truncate:40:"...":true}</span>&nbsp;
+					</td>
+					<td width="1%" nowrap class="pad tleft" align="left"  onclick="return self.location.href='?m=nodeinfo&id={$netcomplist[netcomplist].id}';">
 					    {$_LINKTYPES[$netcomplist[netcomplist].linktype]}<br>
 					    {$_LINKTECHNOLOGIES[$netcomplist[netcomplist].linktype][$netcomplist[netcomplist].linktechnology]}  ({$_LINKSPEEDS[$netcomplist[netcomplist].linkspeed]})
 					</td>
-					<td style="width: 1%; text-align: right; white-space: nowrap;" onclick="return self.location.href='?m=nodeinfo&id={$netcomplist[netcomplist].id}';">
+					<td class="pad tleft" style="width: 1%; text-align: right; white-space: nowrap;" onclick="return self.location.href='?m=nodeinfo&id={$netcomplist[netcomplist].id}';">
 						({$netcomplist[netcomplist].id|string_format:"%04d"})<br>
 						<span class="blend">({$netcomplist[netcomplist].ownerid|string_format:"%04d"})</span>
 					</td>
-					<td style="width: 1%; white-space: nowrap;">
+					<td class="pad tleft" style="width: 1%; white-space: nowrap;">
 						<span id="nodelinkproperties_{$netcomplist[netcomplist].id}" onclick="javascript:netlinkpropertieschoosewin('{$netdevinfo.id}', '{$netcomplist[netcomplist].id}', false);" >
 							<img src="{if $netcomplist[netcomplist].linktype == 1}img/wireless.gif{elseif $netcomplist[netcomplist].linktype == 2}img/netdev_takenports.gif{else}img/netdev_takenports.gif{/if}" alt="[ {trans("Change connection properties ")} ]" title="[ {trans("Change connection properties")} ]" {tip trigger="nodelinkproperties_$netcomplist[netcomplist].id" text="<span style=\"white-space: nowrap;\">{trans("Link type:")} {$_LINKTYPES[$netcomplist[netcomplist].linktype]}<br>{trans("Link speed:")} {$_LINKSPEEDS[$netcomplist[netcomplist].linkspeed]}</span>"}>
 						</span>
@@ -52,21 +60,21 @@
 						<br><img src="img/ip.gif" alt=""> {$netcomplist[netcomplist].ip}{if $netcomplist[netcomplist].ip_pub != "0.0.0.0"} ({$netcomplist[netcomplist].ip_pub}){/if}
 						</span>
 					</td>
-					<td style="width: 1%; text-align: right;">
+					<td class="pad tleft" style="width: 1%; text-align: right;">
 						<a href="?m=netdevedit&action=disconnectnode&id={$netdevinfo.id}&nodeid={$netcomplist[netcomplist].id}" onclick="return confirmLink(this, '{trans("Are you sure, you want to delete that connection?")}');"><img src="img/delete.gif" alt="" {tip text="Delete connection"}></a>
 					</td>
 				</tr>
 				{sectionelse}
 				<tr>
-					<td colspan="5" style="text-align: center;">
+					<td colspan="6" style="text-align: center;">
 						<p>&nbsp;</p>
 						<p><span class="bold">{trans("No such connected nodes.")}</span></p>
 						<p>&nbsp;</p>
 					</td>
 				</tr>
 				{/section}
-				<tr class="light">
-					<td style="width: 100%; text-align: center; white-space: nowrap;" class="ftop" colspan="5">
+				<tr class="pgdark">
+					<td style="width: 100%; text-align: center; white-space: nowrap;" class="ftop" colspan="6">
 						{if $netdevinfo.ports eq $netdevinfo.takenports}
 						<span class="bold">{trans("All ports in that device are in use.")}</span>
 						{elseif $nodelist eq NULL}
@@ -79,35 +87,91 @@
 						<input type="hidden" name="action" value="connectnode">
 						<table style="width: 100%;">
 							<tr>
-								<td style="width: 99%; white-space: nowrap;">
-									<span class="bold">{trans("Connect")}:</span>
-									{trans("Node:")}<select name="nodeid" {tip trigger="linknode" text="Select node, which you want to connect to device"}>
+								<td width="1%" align="right" nowrap><b>Komputer</b></td>
+								<td width="1%" align="center" nowrap><b>:</b></td>
+								<td width="1%" align="left" nowrap>
+									<select name="nodeid" {tip trigger="linknode" text="Select node, which you want to connect to device"} style="width:300px;">
 									{section name=nodelist loop=$nodelist}
 										<option value="{$nodelist[nodelist].id}"{if $connectnode.id == $nodelist[nodelist].id} selected{/if}>{$nodelist[nodelist].name} ({$nodelist[nodelist].ip})</option>
 									{/section}
 									</select>
-									<label for="port">{trans("Dest. port")}:</label><input name="port" id="port" value="{if $connectnode.port}{$connectnode.port}{/if}" size="2" {tip text="Enter port number in device (optional)" trigger="port"}>
-									<select name="linktype" id="devnodeslinktype" {tip trigger="devnodeslinktype" text="Select link type"} onchange="change_nodelinktype(this.options[this.selectedIndex].value)">
+								</td>
+								
+								<td width="1%" align="right" class="pad5" nowrap></td>
+								<td width="1%" align="center" nowrap></td>
+								<td width="1%" align="left" nowrap></td>
+								
+								<td width="1%" align="right" class="pad5" nowrap style="padding-left:42px;"><label for="port"><b>{trans("Dest. port")}</b></label></td>
+								<td width="1%" align="center" nowrap><b>:</b></td>
+								<td width="1%" align="left" nowrap>
+								    <input name="port" id="port" value="{if $connectnode.port}{$connectnode.port}{/if}" size="2" {tip text="Enter port number in device (optional)" trigger="port"}>
+								</td>
+								
+								<td width="1%" align="right" nowrap class="pad5"><b>Warstwa</b></td>
+								<td width="1%" align="center" nowrap><b>:</b></td>
+								<td width="1%" align="left" nowrap>
+								    {assign 'dystrybucja' $smarty.const.LAYER_DISTRIBUTION}
+								    {assign 'dostep' $smarty.const.LAYER_ACCESS} 
+								    <select name="layer" {tip text="Wybierz warstwę sieci"} style="width:110px;">
+								    <option value="{$dostep}">{$_LAYERTYPE.$dostep}</option>
+								    <option value="{$dystrybucja}">{$_LAYERTYPE.$dystrybucja}</option>
+								    </select>
+								</td>
+								
+								<td width="auto">&nbsp;</td>
+							</tr>
+							
+							<tr>
+								<td width="1%" align="right" nowrap><b>Typ</b></td>
+								<td width="1%" align="center" nowrap><b>:</b></td>
+								<td width="1%" align="left" nowrap>
+									<select name="linktype" id="devnodeslinktype" {tip trigger="devnodeslinktype" text="Select link type"} onchange="change_nodelinktype(this.options[this.selectedIndex].value)" style="width:300px;">
 										{foreach from=$_LINKTYPES item=item key=key}
 										<option value="{$key}"{if $key==$nodelinktype} selected{/if}>{$item}</option>
 										{/foreach}
 									</select>
+								</td>
+								
+								<td width="1%" align="right" nowrap class="pad5"><b>Technologia</b></td>
+								<td width="1%" align="center" nowrap><b>:</b></td>
+								<td width="1%" align="left" nowrap colspan="4">
 									{if !$devnodeslinktype}{$devnodeslinktype = 0}{/if}
-									<select name="linktechnology" id="devnodeslinktechnology" {tip trigger="devnodeslinktechnology" text="Wybierz technologię łącza"}>
+									<select name="linktechnology" id="devnodeslinktechnology" {tip trigger="devnodeslinktechnology" text="Wybierz technologię łącza"} style="width:190px;">
 										<option value="0">- nieznana -</option>
 										{foreach $_LINKTECHNOLOGIES[$devnodeslinktype] as $linktechnologyidx => $linktechnology}
 										<option value="{$linktechnologyidx}"{if $linktechnologyidx == $nodelinktechnology} selected{/if}>{$linktechnology}</option>
 										{/foreach}
 									</select>
-									<select name="linkspeed" id="devnodeslinkspeed" {tip trigger="devnodeslinkspeed" test="Select link speed"}>
+								</td>
+								
+								<td width="1%" align="right" nowrap><b>Prędkość</b></td>
+								<td width="1%" align="center" nowrap><b>:</b></td>
+								<td width="1%" align="left" nowrap>
+									<select name="linkspeed" id="devnodeslinkspeed" {tip trigger="devnodeslinkspeed" test="Select link speed"} style="width:110px;">
 										{foreach from=$_LINKSPEEDS item=item key=key}
 											<option value="{$key}"{if $key==$nodelinkspeed || (!$nodelinkspeed && $key==100000)} selected{/if}>{$item}</option>
 										{/foreach}
+									</select>
 								</td>
-								<td style="width: 1%; text-align: right; white-space: nowrap;">
+								
+								<td width="auto">&nbsp;</td>
+							</tr>
+							<tr>
+								<td width="1%" align="right" nowrap><b>Przyłącze</b></td>
+								<td width="1%" align="center" nowrap><b>:</b></td>
+								<td width="1%" align="left" nowrap>
+									<select name="tracttype" style="width:300px;">>
+										<option value=""></option>
+										{foreach $_TRACTNODE as $item => $key}
+											<option value="{$item}">{$key}</option>
+										{/foreach}
+									</select>
+								</td>
+								<td width="auto" align="right" nowrap colspan="10">
 									<a href="javascript:document.connectnode.submit(); ">{trans("Connect")}</a> <img src="img/save.gif" alt="">
 								</td>
 							</tr>
+							
 						</table>
 						</form>
 						{/if}

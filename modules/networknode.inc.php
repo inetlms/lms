@@ -196,6 +196,8 @@ function validate_networknode($forms)
     $obj->assign("id_total_bandwidth_alerts","innerHTML","");
     $obj->script("removeClassId('id_bandwidth_broadband','alerts');");
     $obj->assign("id_bandwidth_broadband_alerts","innerHTML","");
+    $obj->script("removeClassId('id_invprojectid','alerts');");
+    $obj->assign("id_invprojectid_alerts","innerHTML","");
     
     if (empty($form['name'])) {
 	$blad = true;
@@ -357,6 +359,11 @@ function validate_networknode($forms)
 	$obj->assign("id_bandwidth_broadband_alerts","innerHTML","Przepustowość jest wyższa dla całkowitej przepustowości");
     }
     
+    if ($form['eu'] && !$form['invprojectid']) {
+	$blad = true;
+	$obj->script("addClassId('id_invprojectid','alerts');");
+	$obj->assign("id_invprojectid_alerts","innerHTML","Proszę wybrać projekt");
+    }
     
     if ($warn) {
 	$str = "<input type='checkbox' name='networknode[notwarn]' value='1' id='id_notwarn'";
