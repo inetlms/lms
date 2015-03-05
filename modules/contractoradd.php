@@ -88,9 +88,9 @@ if (isset($_POST['contractordata']))
     {
 	        $phone = trim($val['phone']);
 	        $name = trim($val['name']);
-            $type = !empty($val['type']) ? array_sum($val['type']) : NULL;
+                $type = !empty($val['type']) ? array_sum($val['type']) : NULL;
 
-            $contractordata['contacts'][$idx]['type'] = $type;
+                $contractordata['contacts'][$idx]['type'] = $type;
 
 	        if($name && !$phone)
 	                $error['contact'.$idx] = trans('Phone number is required!');
@@ -100,23 +100,25 @@ if (isset($_POST['contractordata']))
 
 	if(!$error)
 	{
+            
 	    if(!isset($contractordata['consentdate']))
 			$contractordata['consentdate'] = 0;
+            if(!isset($customeradd['divisionid']))
+			$customeradd['divisionid'] = 0;            
 
-		$cid = $LMS->ContractorAdd($contractordata);
+            $cid = $LMS->ContractorAdd($contractordata);
 		
-		$DB->Execute('DELETE FROM imessengers WHERE customerid = ?', array($contractordata['id']));
-		if(isset($im))
+		if(isset($im) && $cid)
 			foreach($im as $idx => $val)
 				$DB->Execute('INSERT INTO imessengers (customerid, uid, type)
-					VALUES(?, ?, ?)', array($contractordata['id'], $val, $idx));
+					VALUES(?, ?, ?)', array($cid, $val, $idx));
 
-		$DB->Execute('DELETE FROM customercontacts WHERE customerid = ?', array($contractordata['id']));
-		if(isset($contacts))
+		if(isset($contacts) && $cid)
 			foreach($contacts as $contact)
 				$DB->Execute('INSERT INTO customercontacts (customerid, phone, name, type)
-					VALUES(?, ?, ?, ?)', array($contractordata['id'], $contact['phone'], $contact['name'], $contact['type']));
+					VALUES(?, ?, ?, ?)', array($cid, $contact['phone'], $contact['name'], $contact['type']));
 
+		if(!isset($ContractorAdd['reuse']))
 		$SESSION->redirect('?m=contractorinfo&id='.$cid);
 	}
 	else
