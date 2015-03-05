@@ -1843,7 +1843,7 @@ class LMS {
 			
 			$return = $this->DB->GetLastInsertID('customers');
 			
-			if (SYSLOG) addlogs('Dodano kontrahenta: '.strtoupper($customeradd['lastname']).' '.$customeradd['name'],'e=add;m=con;c='.$return);
+			if (SYSLOG) addlogs('Dodano kontrahenta: '.strtoupper($dane['lastname']).' '.$dane['name'],'e=add;m=con;c='.$return);
 			
 			return $return;
 		} else
