@@ -165,7 +165,7 @@
 	    <td width="1%" class="pad tleft" align="center" nowrap>{if $modellist[modellist].nodecount}{$modellist[modellist].nodecount}{/if}</td>
 	    <td width="1%" class="fright pad5 tleft" align="right" nowrap>
 		<img src="img/{if !$modellist[modellist].active}no{/if}access.gif" onclick="xajax_set_active_models({$idek});" id="idimg{$idek}">
-		<img src="img/delete.gif">
+		<img src="img/delete.gif" onclick="xajax_delete_model({$idek});">
 		<img src="img/edit.gif" onclick="xajax_edit_model({$idek});">
 	    </td>
 	</tr>
