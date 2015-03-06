@@ -125,7 +125,7 @@ function save_producer($forms)
 	    if (SYSLOG)
 		addlogs('Słownik Producenci: dodano nowego producenta -> '.strtoupper($form['name']),'m=other;e=add');
 	    
-	    $DB->Execute('INSERT netdeviceproducers (name,alternative_name) VALUES (?,?);',
+	    $DB->Execute('INSERT INTO netdeviceproducers (name,alternative_name) VALUES (?,?);',
 		array(
 		    strtoupper($form['name']),
 		    ($form['alternative_name'] ? $form['alternative_name'] : NULL)
@@ -285,7 +285,7 @@ function save_model($forms)
 		addlogs('Słownik Producenci: Producent -> '.$pidname.', dodano nowy model -> '.$form['name'],'m=other;e=add');
 	    }
 	    
-	    $DB->Execute('INSERT netdevicemodels (netdeviceproducerid, name, alternative_name) VALUES (?, ?, ?);',
+	    $DB->Execute('INSERT INTO netdevicemodels (netdeviceproducerid, name, alternative_name) VALUES (?, ?, ?);',
 		array(
 		    $form['pid'],
 		    $form['name'],
