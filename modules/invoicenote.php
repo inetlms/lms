@@ -290,7 +290,7 @@ switch($action)
 //		    $invoice['urllogofile'] = '';
 		
 		if (empty($division['inv_author']))
-		    $division['inv_author'] = $this->DB->GetOne('SELECT name FROM users WHERE id = ? LIMIT 1;',array($tis->AUTH->id));
+		    $division['inv_author'] = $DB->GetOne('SELECT name FROM users WHERE id = ? LIMIT 1;',array($AUTH->id));
 		
 		$DB->Execute('INSERT INTO documents (number, numberplanid, type, cdate, sdate, paytime, paytype,
 				userid, customerid, name, address, ten, ssn, zip, city, countryid, reference, reason, divisionid,
