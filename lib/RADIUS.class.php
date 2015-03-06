@@ -103,15 +103,18 @@ class RADIUS {
 		.($status=='open' ? ', nd.maxid AS maxid ' : ', 0 AS maxid ')
 		.'FROM radacct r '
 		.($status=='open' ? 'JOIN ( SELECT MAX(radacctid) AS maxid, username FROM radacct GROUP BY username) nd ON (nd.username = r.username) ' : '')
-		.'JOIN nas nass ON (nass.nasname = r.nasipaddress) '
+		.($this->DB->_dbtype!='postgres' ? 'JOIN nas nass ON (nass.nasname = r.nasipaddress) ' : 'JOIN nas nass ON (nass.nasname::inet = r.nasipaddress) ')
 		.($auth_login == 'id' ? 'JOIN nodes n ON (n.id = r.username) ' : '')
-		.($auth_login == 'name' ? 'JOIN nodes n ON (n.name = r.username) ' : '')
+		.($auth_login == 'name' ? 'JOIN nodes n ON (upper(n.name) = upper(r.username)) ' : '')
 		.($auth_login == 'ip' ? 'JOIN nodes n ON (inet_ntoa(n.ipaddr) = r.username) ' : '')
 		.($auth_login == 'passwd' ? 'JOIN nodes n ON (n.passwd = r.username) ' : '')
 		.($auth_login == 'pppoe_login' ? 'JOIN nodes n ON (n.pppoelogin = r.username) ' : '')
 		.'JOIN customersview c ON (c.id = n.ownerid) '
-		.($status=='open' ? ' WHERE (r.acctstoptime IS NULL OR r.acctstoptime=\'0000-00-00 00:00:00\') ' : '')
-		.($status=='completed' ? ' WHERE r.acctstoptime IS NOT NULL AND r.acctstoptime!=\'0000-00-00 00:00:00\' ' : '')
+		.($this->DB->_dbtype!='postgres' ?
+                ($status=='open' ? ' WHERE (r.acctstoptime IS NULL OR r.acctstoptime=\'0000-00-00 00:00:00\') ' : '')
+                .($status=='completed' ? ' WHERE r.acctstoptime IS NOT NULL AND r.acctstoptime!=\'0000-00-00 00:00:00\' ' : '') :
+                ($status=='open' ? ' WHERE (r.acctstoptime IS NULL OR r.acctstoptime=\'0001-01-01 00:00:00\') ' : '')
+                .($status=='completed' ? ' WHERE r.acctstoptime IS NOT NULL AND r.acctstoptime!=\'0001-01-01 00:00:00\' ' : '') )
 		.($nullsession=='tak' ? ' AND r.acctsessiontime = 0 ' : '')
 		.($nullsession=='nie' ? ' AND r.acctsessiontime != 0 ' : '')
 		.($sessions=='cur' && $status=='open' ? ' AND r.radacctid = nd.maxid ' : '')
