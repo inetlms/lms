@@ -54,7 +54,7 @@ $preload = $DB->GetAll('SELECT s.id FROM syslog s WHERE 1=1 '
 	.($filter['df'] ? ' AND s.cdate>='.strtotime($filter['df'].' 00:00:00') : '')
 	.($filter['dt'] ? ' AND s.cdate<='.strtotime($filter['dt'].' 23:59:59') : '')
         .' ORDER BY s.cdate DESC '
-        .$DB->limit(0,get_conf('phpui.syslog_maxrecord','150000')).';'
+        .'LIMIT '.get_conf('phpui.syslog_maxrecord','150000').';'
         );
 	
 $_countid = $DB->GetOne('SELECT COUNT(s.id) FROM syslog s WHERE 1=1 '
