@@ -165,7 +165,7 @@ if (isset($_POST['nodeedit'])) {
 		$error['mac0'] = trans('MAC address is required!');
 	$nodeedit['macs'] = $macs;
 
-	if (!empty($nodeedit['name']) || !get_conf('netdevices.node_autoname')) 
+	if (!empty($nodeedit['name']) || !get_form('nodes.node_autoname')) 
 	{
 	    if ($nodeedit['name'] == '')
 		$error['name'] = trans('Node name is required!');

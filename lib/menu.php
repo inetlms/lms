@@ -946,6 +946,12 @@ $menu = array(
 					'prio' => 10,
 				),
 				array(
+					'name' 	=> 'Formularze',
+					'link'	=> '?m=configform',
+					'tip'	=> 'Konfigurowanie wyświetlanych i wymaganych pól w formularzach',
+					'prio'	=> 15,
+				),
+				array(
 					'name' => trans('Tax Rates'),
 					'link' => '?m=taxratelist',
 					'tip' => trans('Tax Rates Definitions'),

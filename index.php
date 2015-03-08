@@ -131,8 +131,8 @@ define('SMARTY_VERSION', $ver_chunks[1]);
 // Read configuration of LMS-UI from database
 
 if($cfg = $DB->GetAll('SELECT section, var, value FROM uiconfig WHERE disabled=0'))
-	foreach($cfg as $row)
-		$CONFIG[$row['section']][$row['var']] = $row['value'];
+	foreach($cfg as $row) $CONFIG[$row['section']][$row['var']] = $row['value'];
+
 
 
 // SYSLOG
@@ -266,6 +266,11 @@ $PLUG->updateDBPlugins();
 
 // Check privileges and execute modules
 if ($AUTH->islogged) {
+	
+	// info o polach w formularzach
+	if($cfg = $DB->GetAll('SELECT section, var, value FROM formconfig'))
+		foreach($cfg as $row) $CONFIGFORM[$row['section']][$row['var']] = ($row['value'] ? $row['value'] : 0);
+	
 	// Load plugin files and register hook callbacks
 	$plugins = preg_split('/[;,\s\t\n]+/', $CONFIG['phpui']['plugins'], -1, PREG_SPLIT_NO_EMPTY);
 	if (!empty($plugins))

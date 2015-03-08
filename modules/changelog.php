@@ -34,6 +34,26 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przeniesiono zmienną konfiguracyjna node_autoname z sekcji interfejsy sieciowe do konfiguracji formularze -> komputery',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przeniesiono zmienną konfiguracyjną pppoe_login z sekcji interfejsy sieciowe do konfiguracji formularze -> komputery',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przeniesiono zmienną phpui->public_ip do konfiguracji formularza "komputery"',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość definiowania które pola mają być widoczne w formularzu dla komputerów',
+	),
+	array(
 	    'data'	=> '2015-03-04',
 	    'status'	=> '',
 	    'opis'	=> 'wprowadzono informację o liniach telekomunikacyjncyh',

@@ -30,8 +30,8 @@ $authors = array(
 		
 		'sylwek' => array(
 			'realname' => 'Sylwester Kondracki',
-			'www' => 'www.it-concern.pl',
-			'info' => 'PHP, Perl, HTML, JavaScript, T-Script, images, doc'
+			'www' => 'www.pati.net.pl',
+			'info' => 'PHP, Perl, HTML, JavaScript, T-Script, images, doc, xajax'
 		     ),
 
 		);

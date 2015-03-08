@@ -71,7 +71,7 @@ if (isset($_POST['nodedata']))
 			$SESSION->redirect('?m=nodelist');
 		}
 	
-	if (!get_conf('netdevices.node_autoname') || !empty($nodedata['name'])) {
+	if (!get_form('nodes.node_autoname') || !empty($nodedata['name'])) {
 	    
 	    if($nodedata['name']=='') 
 		$error['name'] = trans('Node name is required!');
@@ -115,6 +115,13 @@ if (isset($_POST['nodedata']))
     		$nodedata['ipaddr_pub'] = '0.0.0.0';
 
 	$macs = array();
+	
+	if (!get_form('nodes.macaddress') && (!isset($nodedata['macs']) || empty($nodedata['macs'][0])))
+	    $nodedata['macs'][0] = '00:00:00:00:00:00';
+	elseif (get_form('nodes.automac') && (!isset($nodedata['macs']) || empty($nodedata['macs'][0])))
+	    $nodedata['macs'][0] = '00:00:00:00:00:00';
+	
+	
 	foreach($nodedata['macs'] as $key => $value)
 		if(check_mac($value))
 		{

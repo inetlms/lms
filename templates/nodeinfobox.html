@@ -96,7 +96,7 @@
 			<a href="javascript:ping_popup('{$nodeinfo.ip}')">{$nodeinfo.ip}</a>
 		</td>
 	</tr>
-	{if $nodeinfo.ip_pub != "0.0.0.0"}
+	{if get_form('nodes.public_ip') && $nodeinfo.ip_pub != "0.0.0.0"}
 	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}" title="[ Publiczny Adres IP ]">
@@ -106,6 +106,8 @@
 		</td>
 	</tr>
 	{/if}
+	
+	{if get_form('nodes.macaddress')}
 	{assign var="counter" value=0}
 	{foreach from=$nodeinfo.macs item=item}
 	<tr class="light">
@@ -118,7 +120,9 @@
 	</tr>
 	{math equation="x+1" x=$counter assign="counter"}
 	{/foreach}
-{if $nodeinfo.pppoelogin && get_conf('netdevices.pppoe_login')}
+	{/if}
+	
+	{if $nodeinfo.pppoelogin && get_form('nodes.pppoe_login')}
 	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/name.gif" alt="PPPoE Login" title="[ PPPoE Login ]">
@@ -127,8 +131,9 @@
 			{$nodeinfo.pppoelogin}
 		</td>
 	</tr>
-{/if}
-{if $nodeinfo.passwd}
+	{/if}
+	
+	{if get_form('nodes.password') && $nodeinfo.passwd}
 	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/passwd.gif" alt="{trans("Password:")}" title="[ PPPoE Hasło ]">
@@ -137,9 +142,9 @@
 			{$nodeinfo.passwd}
 		</td>
 	</tr>
-{/if}
+	{/if}
 
-{if $nodeinfo.location}
+	{if get_form('nodes.location') && $nodeinfo.location}
 	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/home.gif" alt="{trans("Location:")}" title="[ {trans('Location:')} ]">
@@ -148,16 +153,18 @@
 			{$nodeinfo.location}
 		</td>
 	</tr>
-{/if}
-{if $nodeinfo.netdev || $netdevices}
-{if !$nodeinfo.netdev && $netdevices}
-	<form method="GET" action="?m=nodeedit" name="nodelink">
-	<input type="hidden" name="m" value="nodeedit">
-	<input type="hidden" name="id" value="{$nodeinfo.id}">
-	<input type="hidden" name="action" value="link">
-	<input type="submit" class="hiddenbtn">
-{/if}
-	<tr>
+	{/if}
+	
+	{if get_form('nodes.netlinks')}
+	{if $nodeinfo.netdev || $netdevices}
+	{if !$nodeinfo.netdev && $netdevices}
+	    <form method="GET" action="?m=nodeedit" name="nodelink">
+	    <input type="hidden" name="m" value="nodeedit">
+	    <input type="hidden" name="id" value="{$nodeinfo.id}">
+	    <input type="hidden" name="action" value="link">
+	    <input type="submit" class="hiddenbtn">
+	{/if}
+	    <tr>
 		<td style="width: 1%;">
 			<img src="img/netdev.gif" alt="{trans("Net device:")}" title="[ {trans('Net device:')} ]">
 		</td>
@@ -261,11 +268,14 @@
 				{/if}
 			{/if}
 		</td>
-	</tr>
-{if !$nodeinfo.netdev && $netdevices}
-	</form>
-{/if}
-{/if}
+	    </tr>
+	{if !$nodeinfo.netdev && $netdevices}
+	    </form>
+	{/if}
+	{/if}
+	{/if}
+	
+	{if get_form('nodes.project')}
 	<tr class="light">
 	    <td width="1%">
 		<img src="img/money.gif" alt="[x]" {tip text="Projekt inwestycyjny"}>
@@ -280,16 +290,22 @@
 		{/if} 
 	    </td>
 	</tr>
+	{/if}
+	
+	{if get_form('nodes.checkmac') || get_form('nodes.halfduplex') || get_form('nodes.monitoring')}
 	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/options.gif" alt="">
 		</td>
 		<td style="width: 99%; white-space: nowrap;" colspan="2">
-			<label for="chkmac">{trans("MAC checking")}:</label><input type="checkbox" name="chkmac" id="chkmac" value="1" {if $nodeinfo.chkmac} checked{/if} onchange="chkmac_change();">&nbsp;
-			<label for="duplex">{trans("Half duplex")}:</label><input type="checkbox" name="duplex" id="duplex" value="1" {if $nodeinfo.halfduplex} checked{/if} onchange="duplex_change();">
-			{if check_modules(110)}<label for="monit">Monitoruj:</label><input type="checkbox" name="monit" id="monit" value="1" {if $nodeinfo.monitoring} checked{/if} onchange="monit_change();">{/if}
+			{if get_form('nodes.checkmac')}<label for="chkmac">{trans("MAC checking")}:</label><input type="checkbox" name="chkmac" id="chkmac" value="1" {if $nodeinfo.chkmac} checked{/if} onchange="chkmac_change();">&nbsp;{/if}
+			{if get_form('nodes.halfduplex')}<label for="duplex">{trans("Half duplex")}:</label><input type="checkbox" name="duplex" id="duplex" value="1" {if $nodeinfo.halfduplex} checked{/if} onchange="duplex_change();">{/if}
+			{if get_form('nodes.monitoring') && check_modules(110)}<label for="monit">Monitoruj:</label><input type="checkbox" name="monit" id="monit" value="1" {if $nodeinfo.monitoring} checked{/if} onchange="monit_change();">{/if}
 		</td>
 	</tr>
+	{/if}
+
+{if get_form('nodes.monitoring')}
 {if $node_monit.signal || $node_monit.ping}
 	<tr class="light">
 	    <td style="width:1%;vertical-align:top;" nowrap>
@@ -388,11 +404,12 @@
 	</tr>
 	
 {/if}
+{/if}
 					</table>
 				</td>
 				<td style="width: 50%; vertical-align: top;">
 					<table style="width: 100%;" cellpadding="3">
-{if $nodeinfo.typeofdevice}
+{if get_form('nodes.devicestype') && $nodeinfo.typeofdevice}
 	<tr class="light">
 	    <td style="width:1%;">
 		<img src="img/netdev.gif">
@@ -406,6 +423,7 @@
 	</tr>
 {/if}
 
+{if get_form('nodes.producer')}
 {if $nodeinfo.producer}
 	    <tr class="light">
 		<td style="width:1%">
@@ -433,8 +451,9 @@
 		</td>
 	    </tr>
 {/if}
+{/if}
 
-{if $nodeinfo.sn}
+{if get_form('nodes.sn') && $nodeinfo.sn}
 	    <tr class="light">
 		<td style="width:1%">
 		    <img src="img/serialnumber.gif">
@@ -449,7 +468,7 @@
 {/if}
 
 
-{if $nodeinfo.longitude || $nodeinfo.latitude}
+{if get_form('nodes.gps') && ($nodeinfo.longitude || $nodeinfo.latitude)}
 	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/home.gif" alt="{trans("GPS coordinates:")}">
@@ -488,7 +507,7 @@
 		</td>
 	</tr>
 
-{if $nodeinfo.access_from || $nodeinfo.access_to}
+{if get_form('nodes.auth') && ($nodeinfo.access_from || $nodeinfo.access_to)}
 	<tr class="light">
 	    <td style="width:1%;">
 		<img src="img/calendar.gif" alt="">
@@ -525,7 +544,7 @@
 		</td>
 	</tr>
 	
-{if $nodeinfo.info}
+{if get_form('nodes.info') && $nodeinfo.info}
 	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/info1.gif" alt="{trans("Description:")}">
