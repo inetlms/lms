@@ -1,0 +1,22 @@
+<table width="100%" cellpadding="4">
+    <tr class="dark">
+	<td width="100%" class="fall" align="left" colspan="2"><b>Wybierz pola które mają być widoczne w formularzu</b></td>
+    </tr>
+    
+    {cycle values="lucid,light" print=false}
+    
+    {section name='lista' loop=$lista}    
+    <tr class="{cycle} list" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	
+	<td class="fleft pad10" width="1%" nowrap>
+	    {assign var='getconf' value="{$section}.{$lista[lista].item}"}
+	    <input type="radio" name="{$getconf}" id="{$getconf}t" {if get_form({$getconf}) == 1}checked{/if} onclick="xajax_set_configform('{$section}','{$lista[lista].item}','1');"><label for="{$getconf}t" onclick="xajax_set_configform('{$section}','{$lista[lista].item}','1');">&nbsp;TAK&nbsp;</label>&nbsp;&nbsp;
+	    <input type="radio" name="{$getconf}" id="{$getconf}n" {if !get_form({$getconf})}checked{/if} onclick="xajax_set_configform('{$section}','{$lista[lista].item}','0');"><label for="{$getconf}n" onclick="xajax_set_configform('{$section}','{$lista[lista].item}','0');">&nbsp;NIE&nbsp;</label>
+	</td>
+	
+	<td class="fright tleft pad10" width="99%" align="left">{$lista[lista].desc}</td>
+    </tr>
+    {/section}
+    <tr class="light"><td colspan="2" width="100%" class="ftop"></td></tr>
+</table>
+

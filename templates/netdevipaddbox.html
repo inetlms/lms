@@ -52,7 +52,7 @@
 			<input type="text" name="ipadd[ipaddr]" value="{$nodeipdata.ipaddr}" {tip text="Enter IP address" trigger="ipaddr"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.editipaddr['ipadd[ipaddr]'],document.editipaddr.nodeeditnetid,{$netdevinfo.id});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
-	{if check_conf('phpui.public_ip')}
+	{if get_form('nodes.public_ip')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}">

@@ -141,8 +141,6 @@ $DEFAULTS = array(
 		'force_network_to_host' 	=> '0',
 		'force_network_gateway' 	=> '1',
 		'force_network_dns'		=> '1',
-		'pppoe_login'			=> '0',
-		'node_autoname'			=> '0',
 	),
 	'database' => array(
 		'type' 				=> 'mysql',
@@ -232,7 +230,6 @@ $DEFAULTS = array(
 		'invoice_check_payment' 	=> false,
 		'note_check_payment' 		=> false,
 		'radius' 			=> '1',
-		'public_ip' 			=> '1',
 		'default_assignment_period' 	=> '3',
 		'default_assignment_invoice' 	=> '0',
 		'syslog_level' 			=> '1',
@@ -433,10 +430,150 @@ $DEFAULTS = array(
 	),
 );
 
+
 foreach ($DEFAULTS as $section => $values)
     foreach ($values as $key => $val)
         if (!isset($CONFIG[$section][$key]))
             $CONFIG[$section][$key] = $val;
 unset($DEFAULTS);
+
+/*
+0 - nie wyświetlaj pola i nie wymagaj
+1 - wyświetlaj pole w formularzu
+2 - wyświetlaj i wymagaj
+*/
+$DEFAULTFORM = array(
+
+    'nodes'	=> array(
+		'node_autoname' => array(0,'Tworzenie automatycznej nazwy komputera jeżeli nie wpiszemy jej sami, TYKO PRZY NOWYM KOMPUTERZE, format: C_{idklienta}_N_{idkompa}'),
+		'public_ip'	=> array(0,'publiczny adres IP'),
+		'macaddress'	=> array(1,'adres MAC'),
+		'automac'	=> array(0,'automatyczne wstawienie adresu MAC 00:00:00:00:00:00 jeżeli włączone mamy pole Adres MAC a nie uzupełnimy danych'),
+		'pppoe_login'	=> array(0,'dodatkowe pole login dla pppoe'),
+		'password'	=> array(1,'hasło'),
+		'location'	=> array(1,'lokalizacja'),
+		'group'		=> array(1,'grupa komputera'),
+		'netlinks'	=> array(1,'połączenie sieciowe'),
+		'project'	=> array(1,'informacja o projekcie'),
+		'checkmac'	=> array(1,'sprawdzanie adresu MAC'),
+		'halfduplex'	=> array(1,'Half Duplex'),
+		'monitoring'	=> array(1,'Monitoring'),
+		'devicestype'	=> array(1,'Rodzaj urządzenia'),
+		'producer'	=> array(1,'Producent i model'), // dla producenta i modelu
+		'sn'		=> array(1,'Numer seryjny'), // numer seryjny
+		'gps'		=> array(1,'Współrzędne GPS'),
+		'auth'		=> array(1,'Autoryzacja czasowa komputera'),
+		'info'		=> array(1,'Okno na dodatkową informację'),
+    ),
+    /*
+    'customers'	=> array(
+		'origin'	=> array(1,'źródło pochodzenia klienta'),
+		'state'		=> array(1,'województwo'),
+		'country'	=> array(1,'kraj'),
+		'contacts'	=> array(1,'numery telefoniczne'),
+		'gadugadu'	=> array(1,'gadu-gadu'),
+		'yahoo'		=> array(1,'Yahoo'),
+		'skype'		=> array(1,'Skype'),
+		'email'		=> array(1,'E-mail'),
+		'icn'		=> array(1,'Seria i numer dowodu osobistego'),
+		'ssn'		=> array(1,'Pesel'),
+		'ten'		=> array(1,'NIP'),
+		'regon'		=> array(1,'Regon'),
+		'rbe'		=> array(1,'KRS'),
+		'info'		=> array(1,'Dodatkowa informacja'),
+		'notes'		=> array(1,'Notes'),
+    ),
+    */
+);
+
+foreach ($DEFAULTFORM as $section => $values)
+    foreach ($values as $key => $val)
+        if (!isset($CONFIGFORM[$section][$key]))
+            $CONFIGFORM[$section][$key] = $val[0];
+//unset($DEFAULTFORM);
+
+function get_form($name, $default = 1)
+{
+    global $CONFIGFORM;
+
+    list($section, $name) = explode('.', $name, 2);
+    $section = strtolower($section);
+    $name = strtolower($name);
+
+    if (empty($name)) {
+        return $default;
+    }
+
+    if (!array_key_exists($section, $CONFIGFORM)) {
+        return $default;
+    }
+
+    if (!array_key_exists($name, $CONFIGFORM[$section])) {
+        return $default;
+    }
+
+    $value = $CONFIGFORM[$section][$name];
+    
+    return ($value ? $value : 0);
+}
+
+function check_form($name, $default = 1)
+{
+    global $CONFIGFORM;
+
+    list($section, $name) = explode('.', $name, 2);
+    $section = strtolower($section);
+    $name = strtolower($name);
+
+    if (empty($name)) {
+        return $default;
+    }
+
+    if (!array_key_exists($section, $CONFIGFORM)) {
+        return $default;
+    }
+
+    if (!array_key_exists($name, $CONFIGFORM[$section])) {
+        return $default;
+    }
+
+    $value = $CONFIGFORM[$section][$name];
+    
+    if ($value == '1' || $value == '2')
+	return TRUE;
+    else
+	return FALSE;
+
+}
+
+function required_form($name, $default = 1)
+{
+    global $CONFIGFORM;
+
+    list($section, $name) = explode('.', $name, 2);
+    $section = strtolower($section);
+    $name = strtolower($name);
+
+    if (empty($name)) {
+        return $default;
+    }
+
+    if (!array_key_exists($section, $CONFIGFORM)) {
+        return $default;
+    }
+
+    if (!array_key_exists($name, $CONFIGFORM[$section])) {
+        return $default;
+    }
+
+    $value = $CONFIGFORM[$section][$name];
+    
+    if ($value == '2')
+	return TRUE;
+    else
+	return FALSE;
+
+}
+
 
 ?>

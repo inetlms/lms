@@ -837,6 +837,7 @@ $RAD_SERVICE_TYPE = array(
 
 // https://www.iana.org/assignments/radius-types/radius-types.xhtml#radius-types-4
 
+
 if(isset($SMARTY))
 {
 	$SMARTY->assign('_CTYPES',$CTYPES);

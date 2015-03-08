@@ -186,16 +186,6 @@ function GetConfigList($order='var,asc', $section='', $search='')
 						$config[$idx]['description'] = 'wymusza wpisanie chociaż jednego adresu serwera DNS w konfiguracji sieci  DEF.: 1';
 					break;
 					
-					case 'pppoe_login':
-						$config[$idx]['description'] = 'włącza dodatkowe pole w karcie komputera do podania loginu dla PPPoE, przydatne jeżeli mamy inne niż nazwa, id, ip czy pass, lub jeżeli mamy w loginie "niedozwolone" znaki<br>
-						w db doszło pole pppoelogin w tabeli nodes';
-					break;
-					
-					case 'node_autoname':
-						$config[$idx]['description'] = 'włącza tworzenie automatycznej nazwy komputera przy jego dodawaniu / edycji w formacie C_{id klienta}_N_{id komputera} o ile nie podamy jej ręcznie';
-					break;
-					
-					
 					
 				default:
 						$config[$idx]['description'] = trans('Unknown option. No description.');
