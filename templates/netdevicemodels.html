@@ -97,12 +97,13 @@
     <table width="100%" cellpadding="3">
 	
 	<tr class="pgdark">
-	    <td width="100%" class="fall pad" align="left" colspan="2"><span style="font-weight:bold;" id="id_model_action_name">Nowy model</span></td>
+	    <td width="100%" class="fall pad" align="left" colspan="3"><span style="font-weight:bold;" id="id_model_action_name">Nowy model</span></td>
 	</tr>
 	
 	<tr class="pdlight">
 	    <td width="1%" nowrap class="fleft pad" align="left" nowrap>Nazwa modelu</td>
-	    <td width="99%" align="left" class="fright pad">{trans('Alternative name (option)')}</td>
+	    <td width="50%" align="left" class="fright pad">{trans('Alternative name (option)')}</td>
+	    <td width="1%" align="left" class="fright pad">{trans('Kod EAN')}</td>
 	</tr>
 	
 	<tr class="pdlight">
@@ -110,13 +111,16 @@
 		<input type="text" name="modeledit[name]" style="width:250px" id="id_model_name" value="{$modeledit.name}" placeholder="Wpisz nazwę modelu">
 		<div style="color:red;" id="warn_model_name"></div>
 	    </td>
-	    <td width="99%" align="left" class="fright pad"  style="vertical-align:top;">
+	    <td width="50%" align="left" class="fright pad"  style="vertical-align:top;">
 		<input type="text" name="modeledit[alternative_name]" style="width:550px" id="id_model_alternative_name" value="{$modeledit.alternative_name}">
+	    </td>
+	    <td width="1%" align="left" class="fright pad"  style="vertical-align:top;">
+		<input type="text" name="modeledit[ean]" style="width:250px" id="id_model_ean" value="{$modeledit.ean}">
 	    </td>
 	</tr>
 	
 	<tr class="pgdark">
-	    <td width="100%" class="fall pad" align="right" colspan="2">
+	    <td width="100%" class="fall pad" align="right" colspan="3">
 		<a href="javascript:void(0);" onclick="xajax_save_model(xajax.getFormValues('modeledit'));">{trans('Save')} <img src="img/add.gif" alt=""></a>
 		<a href="javascript:void(0);" onclick="xajax_cancel_model();">{trans('Cancel')} <img src="img/cancel.gif" alt=""></a>
 	    </td>
@@ -132,7 +136,7 @@
 
     <table width="100%" cellpadding="3" class="table" cellspacing="3px">
 	<tr class="dark boxtop">
-	    <td width="99%" class="pad fleftu" colspan="4" align="left">
+	    <td width="99%" class="pad fleftu" colspan="5" align="left">
 		<b>Lista modeli</b>
 	    </td>
 	    <td width="1%" class="pad frightu" align="right" nowrap>
@@ -141,7 +145,7 @@
 	</tr>
 	{if $listdata.total != 0}
 	<tr class="scroller">
-		<td colspan="5" class="fall">
+		<td colspan="6" class="fall">
 			{include file="scroller.html" loop=$modellist}
 		</td>
 	</tr>
@@ -152,6 +156,7 @@
 	    <td width="96%" align="left" class="pad5 tleft"><b>{trans('Alternative name')}</b></td>
 	    <td width="1%" class="pad tleft" align="center" nowrap><b>{trans('Network<br>Interface')}</b></td>
 	    <td width="1%" class="pad tleft" align="center" nowrap><b>{trans('Client<br>Devices')}</b></td>
+	    <td width="1%" class="pad tleft" align="center" nowrap><b>{trans('Kod EAN')}</b></td>
 	    <td width="1%" class="fright pad tleft" align="right" nowrap><a href="javascript:void(0);" onclick="xajax_add_model();">Dodaj model <img src="img/add.gif"></a></td>
 	</tr>
 	
@@ -160,9 +165,10 @@
 	{assign var="idek" value=$modellist[modellist].id}
 	<tr id="idtr{$idek}" class="{cycle} lista{if !$modellist[modellist].active} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	    <td width="1%" class="fleft pad5" align="left" nowrap>{$modellist[modellist].name}</td>
-	    <td width="96%" align="left" class="pad5 tleft">{$modellist[modellist].alternative_name}</td>
+	    <td width="95%" align="left" class="pad5 tleft">{$modellist[modellist].alternative_name}</td>
 	    <td width="1%" class="pad tleft" align="center" nowrap>{if $modellist[modellist].netdevcount}{$modellist[modellist].netdevcount}{/if}</td>
 	    <td width="1%" class="pad tleft" align="center" nowrap>{if $modellist[modellist].nodecount}{$modellist[modellist].nodecount}{/if}</td>
+	    <td width="1%" class="pad tleft" align="center" nowrap>{$modellist[modellist].ean}</td>
 	    <td width="1%" class="fright pad5 tleft" align="right" nowrap>
 		<img src="img/{if !$modellist[modellist].active}no{/if}access.gif" onclick="xajax_set_active_models({$idek});" id="idimg{$idek}">
 		<img src="img/delete.gif" onclick="xajax_delete_model({$idek});">
@@ -173,7 +179,7 @@
 	
 	{if $listdata.total != 0}
 	<tr class="scroller">
-		<td colspan="5" class="fall">
+		<td colspan="6" class="fall">
 			{include file="scroller.html" loop=$modellist}
 		</td>
 	</tr>
