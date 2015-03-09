@@ -445,7 +445,7 @@ unset($DEFAULTS);
 $DEFAULTFORM = array(
 
     'nodes'	=> array(
-		'node_autoname' => array(0,'Tworzenie automatycznej nazwy komputera jeżeli nie wpiszemy jej sami, TYKO PRZY NOWYM KOMPUTERZE, format: C_{idklienta}_N_{idkompa}'),
+		'node_autoname' => array(0,'tworzenie automatycznej nazwy komputera jeżeli nie wpiszemy jej sami, TYKO PRZY NOWYM KOMPUTERZE, format: C_{idklienta}_N_{idkompa}'),
 		'public_ip'	=> array(0,'publiczny adres IP'),
 		'macaddress'	=> array(1,'adres MAC'),
 		'automac'	=> array(0,'automatyczne wstawienie adresu MAC 00:00:00:00:00:00 jeżeli włączone mamy pole Adres MAC a nie uzupełnimy danych'),
@@ -456,34 +456,55 @@ $DEFAULTFORM = array(
 		'netlinks'	=> array(1,'połączenie sieciowe'),
 		'project'	=> array(1,'informacja o projekcie'),
 		'checkmac'	=> array(1,'sprawdzanie adresu MAC'),
-		'halfduplex'	=> array(1,'Half Duplex'),
-		'monitoring'	=> array(1,'Monitoring'),
-		'devicestype'	=> array(1,'Rodzaj urządzenia'),
-		'producer'	=> array(1,'Producent i model'), // dla producenta i modelu
-		'sn'		=> array(1,'Numer seryjny'), // numer seryjny
-		'gps'		=> array(1,'Współrzędne GPS'),
-		'auth'		=> array(1,'Autoryzacja czasowa komputera'),
-		'info'		=> array(1,'Okno na dodatkową informację'),
+		'halfduplex'	=> array(1,'half Duplex'),
+		'monitoring'	=> array(1,'monitoring'),
+		'devicestype'	=> array(1,'rodzaj urządzenia'),
+		'producer'	=> array(1,'producent i model'), // dla producenta i modelu
+		'sn'		=> array(1,'numer seryjny'), // numer seryjny
+		'gps'		=> array(1,'współrzędne GPS'),
+		'auth'		=> array(1,'autoryzacja czasowa komputera'),
+		'info'		=> array(1,'okno na dodatkową informację'),
     ),
-    /*
     'customers'	=> array(
 		'origin'	=> array(1,'źródło pochodzenia klienta'),
+		'inv_address'	=> array(1,'box z odbiorcą faktury'),
+		'post_address'	=> array(1,'box z adresem do wysyłki'),
 		'state'		=> array(1,'województwo'),
 		'country'	=> array(1,'kraj'),
 		'contacts'	=> array(1,'numery telefoniczne'),
 		'gadugadu'	=> array(1,'gadu-gadu'),
-		'yahoo'		=> array(1,'Yahoo'),
-		'skype'		=> array(1,'Skype'),
-		'email'		=> array(1,'E-mail'),
-		'icn'		=> array(1,'Seria i numer dowodu osobistego'),
-		'ssn'		=> array(1,'Pesel'),
-		'ten'		=> array(1,'NIP'),
-		'regon'		=> array(1,'Regon'),
+		'yahoo'		=> array(1,'yahoo'),
+		'skype'		=> array(1,'skype'),
+		'email'		=> array(1,'e-mail'),
+		'pin'		=> array(1,'numer PIN'),
+		'regon'		=> array(1,'regon'),
 		'rbe'		=> array(1,'KRS'),
-		'info'		=> array(1,'Dodatkowa informacja'),
-		'notes'		=> array(1,'Notes'),
+		'payment'	=> array(1,'termin i typ płatności, jak ukryjemy pola to wartości będą równe : domyślny'),
+		'cutoff'	=> array(1,'zawieszenie blokowania'),
+		'info'		=> array(1,'dodatkowa informacja'),
+		'info'		=> array(1,'pole na dodatkową informację'),
+		'warning'	=> array(1,'pole z informacją na powiadomienie'),
+		'notes'		=> array(1,'notes'),
+		'agreement'	=> array(1,'zgody na przetwarzanie osobowych, faktury elektroniczne, wysyłkę faktur i powiadomień'),
+		'consentdate'	=> array(0,'zaznaczaj zgodę na przetwarzanie danych (nowy klient), nawet jak box jest ukryty'),
+		'einvoice'	=> array(0,'zaznaczaj zgodę na faktury elektroniczne (nowy klient), nawet jak box jest ukryty'),
+		'invoicenotice' => array(0,'zaznaczaj zgodę na dostarczanie faktur pocztą elektroniczną (nowy klient), nawet jak box jest ukryty'),
+		'mailingnotice' => array(0,'zaznaczaj zgodę na dostarczanie informacji pocztą elekt. lub smsem (nowy klient), nawet jak box jest ukryty'),
     ),
-    */
+    'netdev' => array(
+		'producer'	=> array(1,'producent i model urządzenia'),
+		'sn'		=> array(1,'numer serycjny'),
+		'gps'		=> array(1,'położenie GPS'),
+		'monitoring'	=> array(1,'monitoring'),
+		'typeofdevice'	=> array(1,'rodzaj urządzenia'),
+		'purchasedate'	=> array(1,'data zakupu'),
+		'guaranteeperiod'=>array(1,'okres gwarancji'),
+		'desc'		=> array(1,'opis'),
+		'project'	=> array(1,'projekt inwestycyjny'),
+		'status'	=> array(1,'status urządzenia'),
+		'login'		=> array(1,'login i hasło do urządzenia'),
+		'replace'	=> array(0,'wymiana urządzenia na inne, pole select "Wynień na:"'),
+    ),
 );
 
 foreach ($DEFAULTFORM as $section => $values)

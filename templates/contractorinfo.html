@@ -21,10 +21,12 @@
 		</td>
 	</tr>
 	{/if}
+	{if check_conf('privileges.contractorannex')}
 	<tr>
 		<td width="100%">
 			{include file="customerannexbox.html"}
 		</td>
 	</tr>
+	{/if}
 </table>
 {include file="footer.html"}

@@ -143,7 +143,11 @@
 					</td>
 					<td width="92%">{$balancelist.comment[balancelist]}</td>
 					<td width="1%" align="right" nowrap>
+					
 						{if $balancelist.docid[balancelist]}
+							{if $balancelist.doctype[balancelist] == $smarty.const.DOC_INVOICE}
+							<a href="?m=invoicenote&id={$balancelist.docid[balancelist]}&action=init"><img src="img/eraser.gif" alt="[ {trans("Revise")} ]" title="[ {trans("Revise")} ]"></a>
+							{/if}
 							{if $balancelist.doctype[balancelist] == $smarty.const.DOC_INVOICE_PRO}
 							    <a href="?m=invoiceconvert&docid={$balancelist.docid[balancelist]}&parent=customerinfo&cid={$customerinfo.id}" {tip text="Convert a proforma invoice to invoice"}><img src="img/convert.png"></a>
 							{/if}

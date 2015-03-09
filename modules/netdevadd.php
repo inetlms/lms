@@ -38,12 +38,20 @@ if(isset($_POST['netdev']))
 	    $netdevdata['distribution_layer'] = $netdevdata['access_layer'] = 1;
 	}
 	
-	$netdevdata['name'] = strtoupper(str_replace(" ","_",$netdevdata['name']));
+	$netdevdata['name'] = (str_replace(" ","_",$netdevdata['name']));
 	
 	if (!$netdevdata['devtype'])
 	    $netdevdata['managed'] = NIE;
 	
+	$DB->LockTables('netdevices');
+	if (!isset($netdevdata['name']) || empty($netdevdata['name'])) {
+	    $maxnr = $DB->getOne('SELECT MAX(id) FROM netdevices');
+	    $maxnr++;
+	    $netdevdata['name'] = 'INT_'.sprintf('%04.d',$maxnr);
+	}
+	
 	$netdevid = $LMS->NetDevAdd($netdevdata);
+	$DB->UnlockTables();
 	
 	if (SYSLOG) addlogs('Dodano nowy interfejs sieciowy '.$netdevdata['name'],'e=add;m=netdev;');
 	$SESSION->redirect('?m=netdevinfo&id='.$netdevid);

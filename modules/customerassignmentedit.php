@@ -390,7 +390,12 @@ else
 	$a['nodes'] = $DB->GetCol('SELECT nodeid FROM nodeassignments WHERE assignmentid=?', array($a['id']));
 }
 
-$expired = isset($_GET['expired']) ? $_GET['expired'] : false;
+if(!isset($_GET['expired']))
+	$SESSION->restore('cusinfo_expired', $expired);
+else
+	$expired = $_GET['expired'];
+$expired = !empty($expired) ? true : false;
+$SESSION->save('cusinfo_expired', $expired);
 
 $layout['pagetitle'] = trans('Liability Edit: $a', '<A href="?m=customerinfo&id='.$customer['id'].'">'.$customer['name'].'</A>');
 

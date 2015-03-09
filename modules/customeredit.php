@@ -44,8 +44,8 @@ elseif (isset($_POST['customerdata']))
 	if($customerdata['lastname'] == '')
 		$error['lastname'] = trans('Last/Company name cannot be empty!');
 
-    if($customerdata['name'] == '' && !$customerdata['type'])
-        $error['name'] = trans('First name cannot be empty!');
+	if($customerdata['name'] == '' && !$customerdata['type'])
+		$error['name'] = trans('First name cannot be empty!');
 
 	if($customerdata['address']=='')
 		$error['address'] = trans('Address required!');
@@ -209,7 +209,6 @@ elseif (isset($_POST['customerdata']))
 		$customerinfo['zipwarning'] = empty($zipwarning) ? 0 : 1;
 		$customerinfo['post_zipwarning'] = empty($post_zipwarning) ? 0 : 1;
 		$customerinfo['invoice_zipwarning'] = empty($invoice_zipwarning) ? 0 : 1;
-		
 		$SMARTY->assign('error',$error);
 	}
 }

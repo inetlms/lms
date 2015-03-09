@@ -2597,6 +2597,7 @@ $_LANG['First name cannot be empty!'] = 'Pole Imię nie może być puste!';
 $_LANG['Last/Company name cannot be empty!'] = 'Pole Nazwisko/Nazwa firmy nie może być puste!';
 $_LANG['Warning! Debug mode (using phone $a).'] = 'UWAGA! Tryb debugowania (używam numeru $a).';
 $_LANG['RBE'] = 'KRS';
+$_LANG['netdev'] = 'interfejsy sieciowe';
 $_LANG['ICN'] = 'Dow. os.';
 $_LANG['Option'] = 'Opcja';
 $_LANG['by date'] = 'wg daty';

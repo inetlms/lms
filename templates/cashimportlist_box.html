@@ -67,22 +67,76 @@
 	<table width="100%" cellpadding="5">
 	    <tr class="dark">
 		<td colspan="6" width="100%" align="left" class="fall pad" nowrap>
-		    <img src="img/Filter.png" style="cursor:pointer;" border="0" title="[ szukaj ]" onclick="szukaj('{$tuck}');">&nbsp;&nbsp;
-		    
 			<input type="hidden" name="cid" id="cid" value="{$listdata.cid}">
-			<b>Szukaj: </b> <input type="text" size="30" id="sf" name="sf" value="{$listdata.sf}" {if $listdata.sf} style="background-color:#FFFF99;"{/if} {tip text="Wpisz ID przelewu, kwotę lub szukaną frazę w nadawcy lub tytule przelewu"}>
-			<img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="document.getElementById('sf').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">&nbsp;
-			{if $tuck == 'settled'}
-			<b>Klient: </b> <input type="text" size="30" {tip text="Kliknij aby wyszukać klienta z bazy LMS"} id="sc" name="sc" value="{$listdata.sc}" style="cursor:pointer;{if $listdata.cid}background-color:#FFFF99;{/if}" readonly onclick="return customersearchchoosewin(document.filterek.cid,document.filterek.sc);">&nbsp;
-			<img src="img/cancel.gif" {tip text="wyczyść filtr na podstawie klienta"} onclick="document.getElementById('sc').value='';document.getElementById('cid').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">&nbsp;
-			{/if}
-			<b>od dnia:</b> <input type="text" style="cursor:pointer;width:70px;{if $listdata.dfrom}background-color:#FFFF99;{/if}" value="{$listdata.dfrom}" onclick="javascript:cal1.popup();" name="calfrom" id="calfrom" {tip text="Kliknij aby otworzyć kalendarz"} readonly>&nbsp;<img src="img/cancel.gif" width="14" onclick="document.getElementById('calfrom').value='';szukaj('{$tuck}');"title="[ wyczyść datę początkową ]" style="cursor:pointer;">&nbsp;&nbsp;
-			<b>do dnia:</b> <input type="text" style="cursor:pointer;width:70px;{if $listdata.dto}background-color:#FFFF99;{/if}" value="{$listdata.dto}" onclick="javascript:cal2.popup();" name="calto" id="calto" {tip text="Kliknij aby otworzyć kalendarz"} readonly >&nbsp;<img src="img/cancel.gif" width="14" onclick="document.getElementById('calto').value='';szukaj('{$tuck}');" title="[ wyczyść datę końcową ]" style="cursor:pointer;">&nbsp;&nbsp;
-			<!--//
-			<img src="img/search.gif" style="cursor:pointer;" border="0" title="[ szukaj ]" onclick="szukaj('{$tuck}');">
-			//-->
-			<input type="button" value="Szukaj" style="font-weight:bold;" onclick="szukaj('{$tuck}');">
-		    
+		    <table width="100%">
+			<tr>
+			    <td width="1%" align="left" class="pad" nowrap><img src="img/Filter.png" style="cursor:pointer;" border="0" title="[ szukaj ]" onclick="szukaj('{$tuck}');"></td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>Szukaj:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				    <input type="text" id="sf" name="sf" value="{$listdata.sf}"  style="width:180px;{if $listdata.sf}background-color:#FFFF99;{/if}" {tip text="Wpisz ID przelewu, kwotę lub szukaną frazę w nadawcy lub tytule przelewu"}>
+				    <img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="document.getElementById('sf').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>Klient:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				<input type="text" {tip text="Kliknij aby wyszukać klienta z bazy LMS"} id="sc" name="sc" value="{$listdata.sc}" style="width:180px;cursor:pointer;{if $listdata.cid}background-color:#FFFF99;{/if}" readonly onclick="return customersearchchoosewin(document.filterek.cid,document.filterek.sc);">&nbsp;
+				<img src="img/cancel.gif" {tip text="wyczyść filtr na podstawie klienta"} onclick="document.getElementById('sc').value='';document.getElementById('cid').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">&nbsp;
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>od dnia:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				<input type="text" style="cursor:pointer;width:70px;{if $listdata.dfrom}background-color:#FFFF99;{/if}" value="{$listdata.dfrom}" onclick="javascript:cal1.popup();" name="calfrom" id="calfrom" {tip text="Kliknij aby otworzyć kalendarz"} readonly>&nbsp;
+				<img src="img/cancel.gif" width="14" onclick="document.getElementById('calfrom').value='';szukaj('{$tuck}');"title="[ wyczyść datę początkową ]" style="cursor:pointer;">&nbsp;&nbsp;
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>do dnia:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				<input type="text" style="cursor:pointer;width:70px;{if $listdata.dto}background-color:#FFFF99;{/if}" value="{$listdata.dto}" onclick="javascript:cal2.popup();" name="calto" id="calto" {tip text="Kliknij aby otworzyć kalendarz"} readonly >&nbsp;
+				<img src="img/cancel.gif" width="14" onclick="document.getElementById('calto').value='';szukaj('{$tuck}');" title="[ wyczyść datę końcową ]" style="cursor:pointer;">&nbsp;&nbsp;
+			    </td>
+			    
+			    <td width="91%" align="right">&nbsp;</td>
+			</tr>
+			
+			<tr>
+			    <td width="1%" align="left" class="pad" nowrap>&nbsp;</td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>Firma:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				<select name="division" id="division" style="width:180px;" onchange="szukaj('{$tuck}')"{if $listdata.division} class="active"{/if}>
+				    <option value="">&nbsp;</option>
+				    {section name='division' loop=$divisions}
+				    <option value="{$divisions[division].id}"{if $divisions[division].id == $listdata.division} selected{/if}>{$divisions[division].shortname}</option>
+				    {/section}
+				</select>
+				<img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="document.getElementById('division').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>Plik importu:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				<select name="srcfile" id="srcfile" style="width:180px;" onchange="szukaj('{$tuck}')"{if $listdata.srcfile} class="active"{/if}>
+				    <option value="">&nbsp;</option>
+				    {section name='srcfile' loop=$srcfile}
+				    <option value="{$srcfile[srcfile].id}"{if $srcfile[srcfile].id == $listdata.srcfile} selected{/if}>{$srcfile[srcfile].name}</option>
+				    {/section}
+				</select>&nbsp;
+				<img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="document.getElementById('srcfile').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b></b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b></b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+			    </td>
+			    
+			    <td width="91%" align="right">
+				<input type="button" value="Szukaj" style="font-weight:bold;" onclick="szukaj('{$tuck}');">
+			    </td>
+			</tr>
+		    </table>
 		</td>
 	    </tr>
 	    {if $listdata.total != 0}
@@ -114,7 +168,7 @@
 		    <td width="1%" class="fleft pad" align="center" nowrap>{$lista[list].id|string_format:"%05d"}</td>
 		    <td width="1%" class="pad" align="center" nowrap>{$lista[list].date|date_format:"Y-m-d H:i"}</td>
 		    <td width="1%" class="pad" align="right" nowrap>{$lista[list].value}</td>
-		    <td width="auto" class="pad" align="left"><b><span {tip text=$lista[list].customer}>{$lista[list].customer|truncate:90}<span></b>{if $lista[list].description}<br><span {tip text=$lista[list].description}>{$lista[list].description|truncate:90}<span>{/if}</td>
+		    <td width="auto" class="pad" align="left"><b><span {tip text=$lista[list].customer}>{$lista[list].customer|truncate:70}<span></b>{if $lista[list].description}<br><span {tip text=$lista[list].description}>{$lista[list].description|truncate:160}<span>{/if}</td>
 		    <td width="1%" class="pad" align="{if $tuck == 'settled'}left{else}right{/if}" nowrap style="min-width:200px;">
 			    {if $lista[list].customers}
 				<a href="?m=customerinfo&id={$lista[list].customerid}" {if $lista[list].type=='2'}{tip a=$lista[list].customerid dynpopup='?m=customerinfoshort&contractor&id=$a'}{else}{tip a=$lista[list].customerid dynpopup='?m=customerinfoshort&id=$a'}{/if}></b>{$lista[list].customers}</b></a>{if $lista[list].deleted}<span style="color:red;font-weight:bold;">&nbsp;usunięty</span>{/if}
@@ -189,6 +243,8 @@
 		    + tuck 
 		    + '&dfrom=' + document.getElementById('calfrom').value 
 		    + '&dto=' + document.getElementById('calto').value 
+		    + '&division=' + document.getElementById('division').value
+		    + '&srcfile=' + document.getElementById('srcfile').value
 		    {/literal}{if $tuck == 'settled'}{literal}
 		    + '&cid=' + document.getElementById('cid').value 
 		    {/literal}{/if}{literal}
@@ -212,19 +268,76 @@
 	<table width="100%" cellpadding="5">
 	    <tr class="dark">
 		<td colspan="6" width="100%" align="left" class="fall pad" nowrap>
-		    <img src="img/Filter.png" style="cursor:pointer;" border="0" title="[ szukaj ]" onclick="szukaj('{$tuck}');">&nbsp;&nbsp;
-		    
-			<input type="hidden" name="cid" id="cid" value="{$listdata.cid}">
-			<b>Szukaj: </b> <input type="text" size="30" id="sf" name="sf" value="{$listdata.sf}" {if $listdata.sf} style="background-color:#FFFF99;"{/if} {tip text="Wpisz ID przelewu, kwotę lub szukaną frazę w nadawcy lub tytule przelewu"}>
-			<img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="document.getElementById('sf').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">&nbsp;
-			<b>Klient: </b> <input type="text" size="30" {tip text="Kliknij aby wyszukać klienta z bazy LMS"} id="sc" name="sc" value="{$listdata.sc}" style="cursor:pointer;{if $listdata.cid}background-color:#FFFF99;{/if}" readonly onclick="return customersearchchoosewin(document.filterek.cid,document.filterek.sc);">&nbsp;
-			<img src="img/cancel.gif" {tip text="wyczyść filtr na podstawie klienta"} onclick="document.getElementById('sc').value='';document.getElementById('cid').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">&nbsp;
-			<b>od dnia:</b> <input type="text" style="cursor:pointer;width:70px;{if $listdata.dfrom}background-color:#FFFF99;{/if}" value="{$listdata.dfrom}" onclick="javascript:cal1.popup();" name="calfrom" id="calfrom" {tip text="Kliknij aby otworzyć kalendarz"} readonly>&nbsp;<img src="img/cancel.gif" width="14" onclick="document.getElementById('calfrom').value='';szukaj('{$tuck}');"title="[ wyczyść datę początkową ]" style="cursor:pointer;">&nbsp;&nbsp;
-			<b>do dnia:</b> <input type="text" style="cursor:pointer;width:70px;{if $listdata.dto}background-color:#FFFF99;{/if}" value="{$listdata.dto}" onclick="javascript:cal2.popup();" name="calto" id="calto" {tip text="Kliknij aby otworzyć kalendarz"} readonly >&nbsp;<img src="img/cancel.gif" width="14" onclick="document.getElementById('calto').value='';szukaj('{$tuck}');" title="[ wyczyść datę końcową ]" style="cursor:pointer;">&nbsp;&nbsp;
-			<!--//
-			<img src="img/search.gif" style="cursor:pointer;" border="0" title="[ szukaj ]" onclick="szukaj('{$tuck}');">
-			//-->
-			<input type="button" value="Szukaj" style="font-weight:bold;" onclick="szukaj('{$tuck}');">
+					<input type="hidden" name="cid" id="cid" value="{$listdata.cid}">
+		    <table width="100%">
+		    <tr>
+			    <td width="1%" align="left" class="pad" nowrap><img src="img/Filter.png" style="cursor:pointer;" border="0" title="[ szukaj ]" onclick="szukaj('{$tuck}');"></td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>Szukaj:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				    <input type="text" id="sf" name="sf" value="{$listdata.sf}"  style="width:180px;{if $listdata.sf}background-color:#FFFF99;{/if}" {tip text="Wpisz ID przelewu, kwotę lub szukaną frazę w nadawcy lub tytule przelewu"}>
+				    <img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="document.getElementById('sf').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>Klient:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				<input type="text" {tip text="Kliknij aby wyszukać klienta z bazy LMS"} id="sc" name="sc" value="{$listdata.sc}" style="width:180px;cursor:pointer;{if $listdata.cid}background-color:#FFFF99;{/if}" readonly onclick="return customersearchchoosewin(document.filterek.cid,document.filterek.sc);">&nbsp;
+				<img src="img/cancel.gif" {tip text="wyczyść filtr na podstawie klienta"} onclick="document.getElementById('sc').value='';document.getElementById('cid').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">&nbsp;
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>od dnia:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				<input type="text" style="cursor:pointer;width:70px;{if $listdata.dfrom}background-color:#FFFF99;{/if}" value="{$listdata.dfrom}" onclick="javascript:cal1.popup();" name="calfrom" id="calfrom" {tip text="Kliknij aby otworzyć kalendarz"} readonly>&nbsp;
+				<img src="img/cancel.gif" width="14" onclick="document.getElementById('calfrom').value='';szukaj('{$tuck}');"title="[ wyczyść datę początkową ]" style="cursor:pointer;">&nbsp;&nbsp;
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>do dnia:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				<input type="text" style="cursor:pointer;width:70px;{if $listdata.dto}background-color:#FFFF99;{/if}" value="{$listdata.dto}" onclick="javascript:cal2.popup();" name="calto" id="calto" {tip text="Kliknij aby otworzyć kalendarz"} readonly >&nbsp;
+				<img src="img/cancel.gif" width="14" onclick="document.getElementById('calto').value='';szukaj('{$tuck}');" title="[ wyczyść datę końcową ]" style="cursor:pointer;">&nbsp;&nbsp;
+			    </td>
+			    
+			    <td width="91%" align="right">&nbsp;</td>
+			</tr>
+			
+			<tr>
+			    <td width="1%" align="left" class="pad" nowrap>&nbsp;</td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>Firma:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				<select name="division" id="division" style="width:180px;" onchange="szukaj('{$tuck}')"{if $listdata.division} class="active"{/if}>
+				    <option value="">&nbsp;</option>
+				    {section name='division' loop=$divisions}
+				    <option value="{$divisions[division].id}"{if $divisions[division].id == $listdata.division} selected{/if}>{$divisions[division].shortname}</option>
+				    {/section}
+				</select>
+				<img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="document.getElementById('division').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b>Plik importu:</b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+				<select name="srcfile" id="srcfile" style="width:180px;" onchange="szukaj('{$tuck}')"{if $listdata.srcfile} class="active"{/if}>
+				    <option value="">&nbsp;</option>
+				    {section name='srcfile' loop=$srcfile}
+				    <option value="{$srcfile[srcfile].id}"{if $srcfile[srcfile].id == $listdata.srcfile} selected{/if}>{$srcfile[srcfile].name}</option>
+				    {/section}
+				</select>&nbsp;
+				<img src="img/cancel.gif" {tip text="wyczyść filtr"} onclick="document.getElementById('srcfile').value='';szukaj('{$tuck}');" style="width:14px;cursor:pointer;">
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b></b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+			    </td>
+			    
+			    <td width="1%" align="right" class="pad" nowrap><b></b></td>
+			    <td width="1%" align="left" class="pad" nowrap>
+			    </td>
+			    
+			    <td width="91%" align="right">
+				<input type="button" value="Szukaj" style="font-weight:bold;" onclick="szukaj('{$tuck}');">
+			    </td>
+			</tr>
+		    </table>		    
 		    
 		</td>
 	    </tr>
@@ -248,12 +361,9 @@
 	    {cycle values="lucid,light" print=false}
 	    {section name=list loop=$lista start=$start max=$pagelimit}
 	    {assign var='indeks' value=$smarty.section.list.index+1}
-		{if $tuck == 'notsettled'}
 		    <input type="hidden" name="cusid{$indeks}" id="cusid{$indeks}" value="{$lista[list].customerid}">
-		    <input type="hidden" name="cus{$indeks}" id="cus{$indeks}" value="{$lista[list].customers}">
 		    <input type="hidden" name="id_value{$indeks}" id="id_value{$indeks}" value="{$lista[list].value}">
 		    <input type="hidden" name="id_wplaty{$indeks}" id="id_wplaty{$indeks}" value="{$lista[list].id}">
-		{/if}
 		<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		    <td width="1%" class="fleft pad" align="center" nowrap>{$lista[list].id|string_format:"%05d"}</td>
 		    <td width="1%" class="pad" align="center" nowrap>{$lista[list].date|date_format:"Y-m-d H:i"}</td>
@@ -261,7 +371,8 @@
 		    <td width="auto" class="pad" align="left"><b><span {tip text=$lista[list].customer}>{$lista[list].customer|truncate:90}<span></b>{if $lista[list].description}<br><span {tip text=$lista[list].description}>{$lista[list].description|truncate:90}<span>{/if}</td>
 		    <td width="1%" class="pad" align="left" nowrap style="min-width:200px;">
 			    {if $lista[list].customers}
-				<br><a href="?m=customerinfo&id={$lista[list].customerid}" {tip a=$lista[list].customerid dynpopup='?m=customerinfoshort&id=$a'}></b>{$lista[list].customers}</b></a>
+				<br><a href="?m=customerinfo&id={$lista[list].customerid}" {tip a=$lista[list].customerid dynpopup='?m=customerinfoshort&id=$a'}></b>{$lista[list].customers}</b></a><br>
+				<input type="text" size="36" {tip text="Kliknij aby wyszukać i zmienić klienta z bazy LMS"} id="cus{$indeks}" name="cus{$indeks}" value="{$lista[list].customers|escape}" style="cursor:pointer;" readonly onclick="return customersearchchoosewin(document.filterek.cusid{$indeks},document.filterek.cus{$indeks});">
 			    {else}
 				<span style="color:red;">
 				<b>KLIENT NIE ODNALEZIONY !!!</b><br>
@@ -271,15 +382,7 @@
 			
 		    </td>
 		    <td width="1%" class="fright pad" nowrap>
-			{if $tuck == 'settled'}
-			<!--//
-			<a href="javascript: void(0);" {tip text="wycofaj wpłatę dla klienta"}><img src="img/delete.gif" style="border:0;cursor:pointer;" ></a>
-			//-->
-			{else if $tuck == 'notsettled'}
 			    <a href="javascript: void(0);" onclick="relate_payment('{$indeks}');" {tip text="zaksięguj wpłatę dla klienta"}><img src="img/save.gif" style="border:0;cursor:pointer;" ></a>
-			{else}
-			    <img src="img/empty.gif" width="16">
-			{/if}
 		    </td>
 		</tr>
 	    {sectionelse}
@@ -344,6 +447,8 @@
 		    + '&dfrom=' + document.getElementById('calfrom').value 
 		    + '&dto=' + document.getElementById('calto').value 
 		    + '&cid=' + document.getElementById('cid').value 
+		    + '&division=' + document.getElementById('division').value
+		    + '&srcfile=' + document.getElementById('srcfile').value
 		    + '&sf=' + document.getElementById('sf').value.replace(' ','+');
 		    loadAjax('id_data',link);
 		}
@@ -393,7 +498,7 @@
 	    {/if}
 	    {cycle values="lucid,light" print=false}
 	    {section name=list loop=$lista start=$start max=$pagelimit}
-	    {assign var='indeks' value=$smarty.section.list.index+1}
+		    {assign var='indeks' value=$smarty.section.list.index+1}
 		    <input type="hidden" name="cusid{$indeks}" id="cusid{$indeks}" value="">
 		    <input type="hidden" name="id_value{$indeks}" id="id_value{$indeks}" value="{$lista[list].value}">
 		    <input type="hidden" name="id_wplaty{$indeks}" id="id_wplaty{$indeks}" value="{$lista[list].id}">

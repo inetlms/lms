@@ -34,6 +34,51 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-03-09',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość wystawienia korekt w karcie klienta',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano kody ean w modelach urządzeń',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowano filtry w Historii importów',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano uprawnienia dla załączników dla klientów i kontrahentów',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość zdefiniowania które pola mają być widoczne w formularzu edycja/nowy interfejs sieciowy',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano pola login i hasło w karcie interfejsu sieciowego + uprawnienia w karcie użytkownika iNET LMS',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowa filtru w interfejsach sieciowych',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano pokazywanie położenia klienta na mapie google na podstawie jego adresu, w karcie klienta trzeba kliknąć na adres siedziby / zameldowania.',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość zdefiniowania które pola mają być widoczne w formularzu edycja/nowy klient',
+	),
+	array(
 	    'data'	=> '',
 	    'status'	=> '',
 	    'opis'	=> 'przeniesiono zmienną konfiguracyjna node_autoname z sekcji interfejsy sieciowe do konfiguracji formularze -> komputery',
@@ -51,7 +96,12 @@ $changelog = array(
 	array(
 	    'data'	=> '',
 	    'status'	=> '',
-	    'opis'	=> 'dodano możliwość definiowania które pola mają być widoczne w formularzu dla komputerów',
+	    'opis'	=> 'dodano możliwość zdefiniowania które pola mają być widoczne w formularzu edycja/nowy komputer',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano nową strefę konfiguracyjną : Konfiguracja -> formularze',
 	),
 	array(
 	    'data'	=> '2015-03-04',
