@@ -273,7 +273,7 @@ function save_model($forms)
 		array(
 		    $form['name'],
 		    ($form['alternative_name'] ? $form['alternative_name'] : NULL),
-		    $form['ean']
+		    $form['ean'],
 		    $form['id']
 		)
 	    );

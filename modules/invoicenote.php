@@ -369,12 +369,12 @@ switch($action)
 						$item['tariffid']
 			));
 
-			if (isset($item['cash']) && $item['cash'] != 0)
+//			if (isset($item['cash']))
 				$DB->Execute('INSERT INTO cash (time, userid, value, taxid, customerid, comment, docid, itemid)
 					VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
 					array($cnote['cdate'],
 						$AUTH->id,
-						str_replace(',','.',$item['cash']),
+						($item['cash'] != 0 ? str_replace(',','.',$item['cash']) : '0.00'),
 						$item['taxid'],
 						$invoice['customerid'],
 						$item['name'],

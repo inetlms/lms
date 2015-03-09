@@ -395,7 +395,7 @@
 			{if $listdata.state eq 4}
 			<a href="?m=customeredit&id={$customerlist[customerlist].id}&action=recover"><img src="img/recover.gif" alt="[ {trans("Recover")} ]" title="[ {trans("Recover")} ]"></a> 
 			{else}
-			<a href="?m=customerdel&id={$customerlist[customerlist].id}" OnCLick="return confirmLink(this, '{t a=$customerlist[customerlist].customername|escape:"javascript"|escape:"html"}Are you sure, you want to remove customer \'$a\' from database?\n\nIf that customer have some nodes, they will be also removed and data definitely lost!{/t}');"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a> 
+			<a href="?m=customerdel&id={$customerlist[customerlist].id}" onclick="return confirmLink(this, '{t a=$customerlist[customerlist].customername|escape:"javascript"|escape:"html"}Are you sure, you want to remove customer \'$a\' from database?\n\nIf that customer have some nodes, they will be also removed and data definitely lost!{/t}');"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a> 
 			<a href="?m=customeredit&id={$customerlist[customerlist].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a> 
 			{/if}
 			<nobr>

@@ -22,7 +22,7 @@
 		</td>
 	</tr>
 	{/if}
-	{if check_modules(110)}
+	{if check_conf('priviledes.monitoring') && check_modules(110)}
 	<tr>
 		<td width="100%">
 			{include file="customermonit.html"}
@@ -81,11 +81,13 @@
 		</td>
 	</tr>
 	{/if}
+	{if check_conf('privileges.customerannex')}
 	<tr>
 		<td width="100%">
 			{include file="customerannexbox.html"}
 		</td>
 	</tr>
+	{/if}
 	{if check_modules(220)}
 	<tr>
 		<td width="100%">

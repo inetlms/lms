@@ -41,6 +41,7 @@ if (!$LMS->CustomerExists($_GET['id']))
 		header("Location: ?".$SESSION->get('backto'));
 		$body = '<P>'.trans('Customer $a has been removed.',$LMS->GetCustomerName($_GET['id'])).'</P>';
 		$LMS->DeleteCustomer($_GET['id']);
+		$LMS->DeleteCache('customerlist');
 	}
 }
 

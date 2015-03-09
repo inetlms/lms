@@ -140,17 +140,57 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled') {
 	}
     }
     
-    if (!isset($_GET['o'])) $SESSION->restore('cil_'.$tuck.'_o', $o); else $o = $_GET['o']; 		$SESSION->save('cil_'.$tuck.'_o', $o);
-    if (isset($_GET['cid'])) $cid = $_GET['cid']; else $SESSION->restore('cil_'.$tuck.'_cid',$cid); 	$SESSION->save('cil_'.$tuck.'_cid',$cid);
-    if (isset($_GET['sf'])) $sf = $_GET['sf']; else $SESSION->restore('cil_'.$tuck.'_sf',$sf); 		$SESSION->save('cil_'.$tuck.'_sf',$sf);
-    if (isset($_GET['dfrom'])) $dfrom = $_GET['dfrom']; else $SESSION->restore('cil_'.$tuck.'_dfrom',$dfrom); if (!isset($dfrom)) $dfrom = date("Y/m", time())."/01"; $SESSION->save('cil_'.$tuck.'_dfrom',$dfrom);
-    if (!isset($_GET['dto'])) $SESSION->restore('cil_'.$tuck.'_dto',$dto); else $dto = $_GET['dto']; $SESSION->save('cil_'.$tuck.'_dto',$dto);
+    if (!isset($_GET['o'])) 
+	$SESSION->restore('cil_'.$tuck.'_o', $o); 
+    else 
+	$o = $_GET['o'];
+    $SESSION->save('cil_'.$tuck.'_o', $o);
+    
+    if (isset($_GET['cid'])) 
+	$cid = $_GET['cid']; 
+    else 
+	$SESSION->restore('cil_'.$tuck.'_cid',$cid);
+    $SESSION->save('cil_'.$tuck.'_cid',$cid);
+    
+    if (isset($_GET['sf'])) 
+	$sf = $_GET['sf']; 
+    else 
+	$SESSION->restore('cil_'.$tuck.'_sf',$sf);
+    $SESSION->save('cil_'.$tuck.'_sf',$sf);
+    
+    if (isset($_GET['dfrom'])) 
+	$dfrom = $_GET['dfrom']; 
+    else 
+	$SESSION->restore('cil_'.$tuck.'_dfrom',$dfrom); 
+    if (!isset($dfrom)) $dfrom = date("Y/m", time())."/01"; 
+    $SESSION->save('cil_'.$tuck.'_dfrom',$dfrom);
+    
+    if (!isset($_GET['dto'])) 
+	$SESSION->restore('cil_'.$tuck.'_dto',$dto); 
+    else 
+	$dto = $_GET['dto']; 
+    $SESSION->save('cil_'.$tuck.'_dto',$dto);
+    
+    if (!isset($_GET['division']))
+	$SESSION->restore('cil_'.$tuck.'_division',$division);
+    else
+	$division = $_GET['division'];
+    $SESSION->save('cli_'.$tuck.'_division',$division);
+    
+    if (!isset($_GET['srcfile']))
+	$SESSION->restore('cil_'.$tuck.'_srcfile',$srcfile);
+    else
+	$srcfile = $_GET['srcfile'];
+    $SESSION->save('cli_'.$tuck.'_srcfile',$srcfile);
+    
 
     $listdata['dfrom'] = $dfrom;
     $listdata['dto'] = $dto;
     $listdata['cid'] = $cid;
     $listdata['sc'] = (!empty($cid) ? $LMS->GetCustomerName(intval($cid)) : '');
     $listdata['sf'] = $sf;
+    $listdata['division'] = $division;
+    $listdata['srcfile'] = $srcfile;
 
     if (!isset($_GET['page'])) $SESSION->restore('cil_'.$tuck.'_page',$_GET['page']);
     
@@ -185,7 +225,7 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled') {
 	    COALESCE(b.value, 0) AS balance, 
 	    COALESCE((SELECT SUM(cv.value) FROM cash cv WHERE cv.customerid = c.id AND cv.time <= l.date), 0) AS bbalance '
 	    .' FROM cashimport l 
-	    LEFT JOIN customers c ON (c.id = l.customerid) 
+	    LEFT JOIN customersview c ON (c.id = l.customerid) 
 	    LEFT JOIN (SELECT ownerid,
 		SUM(access) AS acsum, COUNT(access) AS account,
 		SUM(warning) AS warnsum, COUNT(warning) AS warncount,
@@ -201,12 +241,14 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled') {
 					GROUP BY customerid
 				) b ON (b.customerid = c.id) ')
 	    .'WHERE l.customerid != 0 AND (l.customerid IS NOT NULL) AND closed = 1 '
-			    .($dfrom!='' ? ' AND l.date > '.(strtotime($dfrom)-1) : '')
-			    .($dto!='' ? ' AND l.date < '.strtotime($dto.' 23:59:59') : '')
-			    .($cid ? ' AND l.customerid = '.$cid.' ' : '')
-			    .($sql_search ? $sql_search : '')
-			    .' ORDER BY '.$order.' '.$direction.' '
-			    .' ;';
+	    .($dfrom!='' ? ' AND l.date > '.(strtotime($dfrom)-1) : '')
+	    .($dto!='' ? ' AND l.date < '.strtotime($dto.' 23:59:59') : '')
+	    .($cid ? ' AND l.customerid = '.$cid.' ' : '')
+	    .($division ? ' AND c.divisionid = \''.$division.'\'' : '')
+	    .($srcfile ? ' AND l.sourcefileid = \''.$srcfile.'\'' : '')
+	    .($sql_search ? $sql_search : '')
+	    .' ORDER BY '.$order.' '.$direction.' '
+	    .' ;';
     }
     elseif ($tuck == 'notsettled')
     {
@@ -219,7 +261,7 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled') {
 	    COALESCE(b.value, 0) AS balance, 
 	    COALESCE((SELECT SUM(cv.value) FROM cash cv WHERE cv.customerid = c.id AND cv.time <= l.date), 0) AS bbalance '
 	    .' FROM cashimport l 
-	    LEFT JOIN customers c ON (c.id = l.customerid) 
+	    LEFT JOIN customersview c ON (c.id = l.customerid) 
 	    LEFT JOIN (SELECT ownerid,
 		SUM(access) AS acsum, COUNT(access) AS account,
 		SUM(warning) AS warnsum, COUNT(warning) AS warncount,
@@ -235,12 +277,14 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled') {
 					GROUP BY customerid
 				) b ON (b.customerid = c.id) ')
 	    .'WHERE l.customerid != 0 AND (l.customerid IS NOT NULL) AND closed = 0'
-			    .($dfrom!='' ? ' AND l.date > '.(strtotime($dfrom)-1) : '')
-			    .($dto!='' ? ' AND l.date < '.strtotime($dto.' 23:59:59') : '')
-			    .($cid ? ' AND l.customerid = '.$cid.' ' : '')
-			    .($sql_search ? $sql_search : '')
-			    .' ORDER BY '.$order.' '.$direction.' '
-			    .' ;';
+	    .($dfrom!='' ? ' AND l.date > '.(strtotime($dfrom)-1) : '')
+	    .($dto!='' ? ' AND l.date < '.strtotime($dto.' 23:59:59') : '')
+	    .($cid ? ' AND l.customerid = '.$cid.' ' : '')
+	    .($division ? ' AND c.divisionid = \''.$division.'\'' : '')
+	    .($srcfile ? ' AND l.sourcefileid = \''.$srcfile.'\'' : '')
+	    .($sql_search ? $sql_search : '')
+	    .' ORDER BY '.$order.' '.$direction.' '
+	    .' ;';
     }
 
     $lista = $DB->GetAll($sql);
@@ -267,6 +311,8 @@ elseif ($tuck == 'settled' || $tuck == 'notsettled') {
     $SMARTY->assign('filtr',$filtr);
     $SMARTY->assign('lista',$lista);
     $SMARTY->assign('tuck',$tuck);
+    $SMARTY->assign('srcfile',$DB->getAll('SELECT id,name FROM sourcefiles;'));
+    $SMARTY->assign('divisions',$DB->getAll('SELECT id,shortname FROM divisions;'));
     $SMARTY->display('cashimportlist_box.html');
     die;
 } 

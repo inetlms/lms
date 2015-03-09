@@ -39,7 +39,13 @@ if($layout['module'] != 'customeredit')
 
 }
 
-$expired = !empty($_GET['expired']) ? true : false;
+if(!isset($_GET['expired']))
+	$SESSION->restore('cusinfo_expired', $expired);
+else
+	$expired = $_GET['expired'];
+$expired = !empty($expired) ? true : false;
+$SESSION->save('cusinfo_expired', $expired);
+
 $assignments = $LMS->GetCustomerAssignments($customerid, !empty($expired) ? $expired : NULL);
 $customergroups = $LMS->CustomergroupGetForCustomer($customerid);
 $othercustomergroups = $LMS->GetGroupNamesWithoutCustomer($customerid);

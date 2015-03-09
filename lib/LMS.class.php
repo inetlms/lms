@@ -1432,7 +1432,7 @@ class LMS {
 
 		$saldolist = array();
 
-		if ($tslist = $this->DB->GetAll('SELECT cash.id AS id, time, cash.type AS type, 
+		if ($tslist = $this->DB->GetAll('SELECT cash.id AS id, time, documents.type AS type, 
 					cash.value AS value, taxes.label AS tax, cash.customerid AS customerid, 
 					comment, docid, users.name AS username,
 					documents.type AS doctype, documents.closed AS closed
@@ -1442,7 +1442,9 @@ class LMS {
 					LEFT JOIN taxes ON cash.taxid = taxes.id
 					WHERE cash.customerid = ? '
 				. ($totime ? ' AND time <= ' . intval($totime) : '')
-				. ' ORDER BY time ' . $direction, array($id))) {
+				. ' ORDER BY time ' . $direction, array($id))) 
+			{
+
 			$saldolist['balance'] = 0;
 			$saldolist['total'] = 0;
 			$i = 0;
@@ -1465,6 +1467,7 @@ class LMS {
 		}
 
 		$saldolist['customerid'] = $id;
+//		echo "<pre>"; print_r($saldolist); echo "</pre>"; die;
 		return $saldolist;
 	}
 
@@ -4823,6 +4826,7 @@ class LMS {
 			WHERE (src=? AND dst=?) OR (dst=? AND src=?)', array($dev1, $dev2, $dev1, $dev2));
 	}
 
+
 	function GetNetDevConnectedNames($id) {
 		return $this->DB->GetAll('SELECT d.id, d.name, d.description,
 			d.location, d.producer, d.ports, l.type AS linktype, l.technology AS linktechnology,
@@ -4841,36 +4845,22 @@ class LMS {
 			ORDER BY name', array($id, $id, $id, $id, $id));
 	}
 
-	function GetNetDevList($order = 'name,asc', $status = NULL, $project = NULL, $networknode = NULL) {
+
+	function GetNetDevList($order = 'name,asc', $status = NULL, $project = NULL, $networknode = NULL, $producer = NULL, $model = NULL) 
+	{
 		list($order, $direction) = sscanf($order, '%[^,],%s');
-
+		
 		($direction == 'desc') ? $direction = 'desc' : $direction = 'asc';
-
+		
 		switch ($order) {
-			case 'id':
-				$sqlord = ' ORDER BY id';
-				break;
-			case 'producer':
-				$sqlord = ' ORDER BY producer';
-				break;
-			case 'model':
-				$sqlord = ' ORDER BY model';
-				break;
-			case 'ports':
-				$sqlord = ' ORDER BY ports';
-				break;
-			case 'takenports':
-				$sqlord = ' ORDER BY takenports';
-				break;
-			case 'serialnumber':
-				$sqlord = ' ORDER BY serialnumber';
-				break;
-			case 'location':
-				$sqlord = ' ORDER BY location';
-				break;
-			default:
-				$sqlord = ' ORDER BY name';
-				break;
+			case 'id': $sqlord = ' ORDER BY id'; break;
+			case 'producer': $sqlord = ' ORDER BY producer'; break;
+			case 'model': $sqlord = ' ORDER BY model'; break;
+			case 'ports': $sqlord = ' ORDER BY ports'; break;
+			case 'takenports': $sqlord = ' ORDER BY takenports'; break;
+			case 'serialnumber': $sqlord = ' ORDER BY serialnumber'; break;
+			case 'location': $sqlord = ' ORDER BY location'; break;
+			default: $sqlord = ' ORDER BY name'; break;
 		}
 		
 		$netdevlist = $this->DB->GetAll('SELECT d.id, d.name, d.location,
@@ -4883,14 +4873,17 @@ class LMS {
 			.(!is_null($status) ? ' AND d.status = '.$status : '')
 			.(!is_null($project) ? ' AND invprojectid = '.$project : '')
 			.(!is_null($networknode) ? ' AND networknodeid = '.$networknode : '')
+			.(!is_null($producer) ? ' AND UPPER(producer) = \''.strtoupper($producer).'\'' : '')
+			.(!is_null($model) ? ' AND UPPER(model) = \''.strtoupper($model).'\'' : '')
 			. ($sqlord != '' ? $sqlord . ' ' . $direction : ''));
-
+		
 		$netdevlist['total'] = sizeof($netdevlist);
 		$netdevlist['order'] = $order;
 		$netdevlist['direction'] = $direction;
-
+		
 		return $netdevlist;
 	}
+
 
 	function GetNetDevNames() {
 		return $this->DB->GetAll('SELECT id, name, location, producer 
@@ -4958,8 +4951,8 @@ class LMS {
 				nastype, clients, secret, community, channelid,
 				longitude, latitude, monit_nastype, monit_login, monit_passwd,  monit_port, networknodeid, server, coaport,
 				devtype, managed, sharing, modular, backbone_layer, distribution_layer, access_layer, typeofdevice, netdevicemodelid,
-				invprojectid, status)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
+				invprojectid, status, login, passwd)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
 						$data['name'],
 						($data['location'] ? $data['location'] : ''),
 						($data['location_city'] ? $data['location_city'] : null),
@@ -4999,6 +4992,8 @@ class LMS {
 						($data['netdevicemodelid'] ? $data['netdevicemodelid'] : NULL),
 						($data['invprojectid'] ? $data['invprojectid'] : NULL),
 						($data['status'] ? $data['status'] : 0),
+						($data['login'] ? $data['login'] : NULL),
+						($data['passwd'] ? $data['passwd'] : NULL),
 				))) {
 			$id = $this->DB->GetLastInsertID('netdevices');
 
@@ -5033,7 +5028,7 @@ class LMS {
 				nastype=?, clients=?, secret=?, community=?, channelid=?, longitude=?, latitude=?,
 				monit_nastype = ?, monit_login = ?, monit_passwd = ?, monit_port = ?, networknodeid = ?, server=?, coaport=?,
 				devtype=?, managed=?, sharing=?, modular=?, backbone_layer=?, distribution_layer=?, access_layer=?, typeofdevice=?,
-				netdevicemodelid=?, invprojectid=?, status=? 
+				netdevicemodelid=?, invprojectid=?, status=?, login=?, passwd=? 
 				WHERE id=?', array(
 				$data['name'],
 				($data['description'] ? $data['description'] : ''),
@@ -5074,6 +5069,8 @@ class LMS {
 				($data['netdevicemodelid'] ? $data['netdevicemodelid'] : NULL),
 				($data['invprojectid'] ? $data['invprojectid'] : NULL),
 				($data['status'] ? $data['status'] : 0),
+				($data['login'] ? $data['login'] : NULL),
+				($data['passwd'] ? $data['passwd'] : NULL),
 				$data['id']
 		));
 	}

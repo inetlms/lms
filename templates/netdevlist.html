@@ -44,6 +44,26 @@
 			</select>
 		    </td>
 		    
+		    <td width="1%" align="right" class="pad">Producent</td>
+		    <td width="1%" align="left" class="pad">
+			<select name="producer" size="1" onchange="document.filter.submit();" {if $listdata.producer != '-1'}class="active"{/if}>
+			<option value="-1">{trans('-- all --')}</option>
+			{section name=producerlist loop=$producerlist}
+			<option value="{$producerlist[producerlist].producer}"{if $listdata.producer == ($producerlist[producerlist].producer)} selected{/if}>{if empty($producerlist[producerlist].producer)}- bez producenta -{else}{$producerlist[producerlist].producer}{/if}</option>
+			{/section}
+			</select>
+		    </td>
+		    
+		    <td width="1%" align="right" class="pad">Model</td>
+		    <td width="1%" align="left" class="pad">
+			<select name="model" size="1" onchange="document.filter.submit();" {if $listdata.model != '-1'}class="active"{/if}>
+			<option value="-1">{trans('-- all --')}</option>
+			{section name=modellist loop=$modellist}
+			<option value="{$modellist[modellist].model|upper}"{if $listdata.model == ($modellist[modellist].model|upper)} selected{/if}>{if empty($modellist[modellist].model)}- bez modelu -{else}{$modellist[modellist].model}{/if}</option>
+			{/section}
+			</select>
+		    </td>
+		    
 		    <td width="auto">&nbsp;</td>
 		</tr>
 	    </table>
