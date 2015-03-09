@@ -224,6 +224,7 @@ function edit_model($id)
     $obj->assign("id_model","value",$dane['id']);
     $obj->assign("id_model_name","value",$dane['name']);
     $obj->assign("id_model_alternative_name","value",$dane['alternative_name']);
+    $obj->assign("id_model_ean","value",$dane['ean']);
     $obj->script("document.getElementById('id_model_name').focus();");
     return $obj;
 }
@@ -268,10 +269,11 @@ function save_model($forms)
 		    addlogs('Słownik Producenci: Producent -> '.$pidname.', zmiana nazwy modelu z '.$oldname.' na '.$form['name'],'m=other;e=up');
 	    }
 	    
-	    $DB->Execute('UPDATE netdevicemodels SET name = ?, alternative_name = ? WHERE id = ?;',
+	    $DB->Execute('UPDATE netdevicemodels SET name = ?, alternative_name = ?, ean = ? WHERE id = ?;',
 		array(
 		    $form['name'],
 		    ($form['alternative_name'] ? $form['alternative_name'] : NULL),
+		    $form['ean']
 		    $form['id']
 		)
 	    );
@@ -285,11 +287,12 @@ function save_model($forms)
 		addlogs('Słownik Producenci: Producent -> '.$pidname.', dodano nowy model -> '.$form['name'],'m=other;e=add');
 	    }
 	    
-	    $DB->Execute('INSERT INTO netdevicemodels (netdeviceproducerid, name, alternative_name) VALUES (?, ?, ?);',
+	    $DB->Execute('INSERT INTO netdevicemodels (netdeviceproducerid, name, alternative_name, ean) VALUES (?, ?, ?, ?);',
 		array(
 		    $form['pid'],
 		    $form['name'],
-		    ($form['alternative_name'] ? $form['alternative_name'] : NULL)
+		    ($form['alternative_name'] ? $form['alternative_name'] : NULL),
+		    $form['ean']
 		)
 	    );
 	    
@@ -346,7 +349,7 @@ function getModelList($pid = NULL)
     
     if (!$pid) return NULL;
     
-    $lista = $DB->getAll('SELECT m.id, m.name, m.alternative_name, m.active,
+    $lista = $DB->getAll('SELECT m.id, m.name, m.alternative_name, m.active, m.ean,
 			(SELECT COUNT(i.id) FROM netdevices i WHERE i.netdevicemodelid = m.id) AS netdevcount,
 			(SELECT COUNT(n.id) FROM nodes n WHERE n.netdevicemodelid = m.id) AS nodecount 
 			FROM netdevicemodels m 
