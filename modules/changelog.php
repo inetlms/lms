@@ -34,6 +34,11 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'korekta prędkości w połączeniach interfejs <-> komputer',
+	),
+	array(
 	    'data'	=> '2015-03-09',
 	    'status'	=> '',
 	    'opis'	=> 'dodano możliwość wystawienia korekt w karcie klienta',
