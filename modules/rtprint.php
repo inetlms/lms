@@ -118,7 +118,7 @@ switch($type)
     				$where[] = 'rttickets.state = '.intval($status);
 		}
 
-    		$list = $DB->GetAll('SELECT rttickets.id, createtime, customerid, subject, requestor, '
+    		$list = $DB->GetAll('SELECT rttickets.id, createtime, customerid, subject, requestor,  u.name, '
 			.$DB->Concat('UPPER(customers.lastname)',"' '",'customers.name').' AS customername '
 			.(!empty($_POST['contacts']) || !empty($_GET['contacts'])
 				? ', address, (SELECT phone
@@ -126,6 +126,7 @@ switch($type)
 				WHERE customerid = customers.id LIMIT 1) AS phone ' : '')
 		        .'FROM rttickets
 			LEFT JOIN rtticketcategories tc ON tc.ticketid = rttickets.id
+			LEFT JOIN users u on rttickets.creatorid=u.id
 			LEFT JOIN customers ON (customerid = customers.id)
 			WHERE state != '.RT_RESOLVED
 			.(isset($where) ? ' AND '.implode(' AND ', $where) : '')
@@ -133,21 +134,23 @@ switch($type)
 
 		if ($list && $extended)
 		{
-			$tickets = implode(',', array_keys($list));
+			$tickets_id = implode(',' , array_map(function($element){return $element['id'];}, $list) );
+                        $tickets_idx = array_flip(explode(",", $tickets_id));
 			if ($content = $DB->GetAll('(SELECT body, ticketid, createtime, 0 AS note
 				FROM rtmessages
-				WHERE ticketid in ('.$tickets.'))
+				WHERE ticketid in ('.$tickets_id.'))
 				UNION
 				(SELECT body, ticketid, createtime, 1 AS note
 				FROM rtnotes
-				WHERE ticketid in ('.$tickets.'))
+				WHERE ticketid in ('.$tickets_id.'))
 			        ORDER BY createtime'))
 			{
 				foreach ($content as $idx => $row)
 				{
-					$list[$row['ticketid']]['content'][] = array(
+					$list[$tickets_idx[$row['ticketid']]]['content'][] = array(
 						'body' => trim($row['body']),
 						'note' => $row['note'],
+						'createtime' => $row['createtime']
 					);
 					unset($content[$idx]);
 				}
