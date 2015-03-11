@@ -21,11 +21,11 @@
 		<td class="grey bb fbt" align="center" width="1%" nowrap>
 			<b>{$request.id|string_format:"%08d"}:</b>
 		</td>
-		<td class="grey bb fbt" width="97%">
+		<td class="grey bb fbt" width="65%">
 			<b>{$request.subject|escape}</b>
 		</td>
-		<td class="grey bb frightu" align="center" width="1%">
-			#{counter}
+		<td class="grey bb frightu" align="center" width="25%">
+			{$request.name} #{counter}
 		</td>
 	</tr>
 	<tr>
@@ -65,6 +65,7 @@
 			    {foreach from=$request.content item=item}
 			    <tr>
 				<td width="100%" class="ftop{if $item.note} blend{/if}">
+				    <b>{if isset($item.name)} {$item.name} - {/if}{$item.createtime|date_format:"%Y/%m/%d %H:%M"}:</b><br>
 				    {$item.body|escape|replace:"\n":"<br>"}
 				</td>
 			    </tr>
