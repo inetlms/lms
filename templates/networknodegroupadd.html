@@ -1,0 +1,45 @@
+{include file="header.html"}
+<!--// $Id$ //-->
+{title value=$layout.pagetitle link="<a href='?m=networknodegrouplist'><b>Lista grup</b> <img src='img/list.png'></a>"}
+<form method="POST" name="nodegroupadd" action="?m=networknodegroupadd">
+<input type="submit" class="hiddenbtn">
+<table width="100%" cellpadding="3">
+	<tr class="dark">
+		<td width="1%" class="fleftu">
+			<img src="img/nodegroup.gif" alt="">
+		</td>
+		<td width="1%" class="fbt">
+			<b>{trans("Name:")}</b>
+		</td>
+		<td width="98%" class="frightu">
+			<input type="text" name="nodegroupadd[name]" value="{$nodegroupadd.name}" {tip trigger="name" bold=1}>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/info1.gif" alt="">
+		</td>
+		<td width="1%">
+			<b>{trans("Description:")}</b>
+		</td>
+		<td width="98%" class="fright">
+			<textarea name="nodegroupadd[description]" cols="50" rows="5" {tip text="Enter additional information (optional)"}>{$nodegroupadd.description}</textarea>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="100%" colspan="3" class="FBOTTOMU" align="right"> 
+			<a href="javascript:document.nodegroupadd.submit();" accesskey="s">{trans("Submit")} <img src="img/save.gif" alt=""></a>
+			<a href="?m=networknodegrouplist">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a>
+			<!--//
+			<br>
+			<input type="checkbox" name="nodegroupadd[reuse]" id="reuse" value="ON" id="reuse" {if $nodegroupadd.reuse}checked{/if}><label for="reuse">{trans("Display this form again, when this group is saved")}</label>
+			//-->
+		</td>
+	</tr>
+</table></form></p>
+<script type="text/javascript">
+<!--
+document.forms['nodegroupadd'].elements['nodegroupadd[name]'].focus();
+//-->
+</script>
+{include file="footer.html"}

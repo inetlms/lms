@@ -1,0 +1,60 @@
+{include file="header.html"}
+<!--// $Id$ //-->
+{title value=$layout.pagetitle link="<a href='?m=netdevgroupadd'><b>Nowa grupa</b> <img src='img/add.gif'></a>"}
+
+<form name="tmove" method="POST" action="">
+<input type="submit" class="hiddenbtn">
+<table width="100%" cellpadding="3">
+	<tr class="dark nav-header">
+		
+		<td width="1%" class="fleftu pad" align="center"><b>{trans("ID:")}</b></td>
+		<td width="97%" class="fbt pad tleft" align="left"><b>{trans("Name:")}</b><br>{trans("Description:")}</td>
+		<td width="1%" class="fbt pad tleft" align="right"><b>Interfejsów</b></td>
+		<td width="1%" class="frightu pad tleft" align="right"><nobr><b>{t a=$listdata.total|default:"0"}Total: $a{/t}</b><nobr></td>
+		
+	</tr>
+	{cycle values="lucid,light" print=false}
+	{section name=nodegroups loop=$nodegrouplist}
+	<tr class="{cycle} lista " onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		
+		<td width="1%" class="fleft pad" align="right" onclick="return self.location.href='?m=netdevgroupinfo&id={$nodegrouplist[nodegroups].id}';">
+			{$nodegrouplist[nodegroups].id|string_format:"%04d"}
+		</td>
+		
+		<td width="97%" class="pad tleft" onclick="return self.location.href='?m=netdevgroupinfo&id={$nodegrouplist[nodegroups].id}';" align="left">
+			<b>{$nodegrouplist[nodegroups].name}</b><br>
+			{if $nodegrouplist[nodegroups].description}{$nodegrouplist[nodegroups].description}{/if}
+		</td>
+		
+		<td width="1%" class="pad tleft" align="right" onclick="return self.location.href='?m=netdevgroupinfo&id={$nodegrouplist[nodegroups].id}';">
+			{$nodegrouplist[nodegroups].nodescount} 
+		</td>
+		<td width="1%" class="fright pad tleft" align="right">
+			<nobr>
+			<a href="?m=netdevgroupinfo&id={$nodegrouplist[nodegroups].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></a>
+			<a href="?m=netdevgroupedit&id={$nodegrouplist[nodegroups].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
+			{if $nodegrouplist[nodegroups].nodescount}
+			    <img src="img/deleteoff.gif">
+			{else}
+			    <a href="?m=netdevgroupdel&id={$nodegrouplist[nodegroups].id}" onclick="return confirmLink(this,'{trans("Are you sure, you want to remove this group?")}');"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
+			{/if}
+			<nobr>
+		</td>
+	</tr>
+	{sectionelse}
+	<tr>
+		<td colspan="4" align="center" class="fall">
+			<p>&nbsp;</p>
+			<p><b>{trans("There are no such groups in database.")}</b></p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>
+	{/section}
+	<tr class="dark">
+		<td class="fleftu" colspan="2" width="98%" align="right"><img src="img/info2.gif" alt="">&nbsp;<b>{trans("Total:")}</b></td>
+		<td class="fbt" width="1%" align="right" nowrap><b>{$listdata.nodestotal|default:"0"}</b></td>
+		<td class="frightu" width="1%">	&nbsp;</td>
+	</tr>
+</table>
+</form>
+{include file="footer.html"}
