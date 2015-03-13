@@ -505,6 +505,14 @@ $DEFAULTFORM = array(
 		'login'		=> array(1,'login i hasło do urządzenia'),
 		'replace'	=> array(0,'wymiana urządzenia na inne, pole select "Wynień na:"'),
     ),
+    'quicksearch' => array(
+		'qscustomer'	=> array(1,'szybkie wyszukiwanie klienta'),
+		'qsnodes'	=> array(1,'szybkie wyszukiwanie komputerów'),
+		'qsnetdev'	=> array(1,'szybkie wyszukiwanie interfejsów sieciowych'),
+		'qsticket'	=> array(1,'szybkie wyszukiwanie zgłoszeń'),
+		'qsaccount'	=> array(1,'szybkie wyszukiwanie konta, aliasu'),
+		'qsdocument'	=> array(1,'szybkie wyszukiwanie dokumentów'),
+    ),
 );
 
 foreach ($DEFAULTFORM as $section => $values)

@@ -42,6 +42,7 @@ $layout['pagetitle'] = 'Węzeł : '.$networknode['name'];
 $tucklist[] = array('tuck' => 'interface', 'name' => 'Interfejsy sieciowe', 'link' => '?m=networknodeinfo&tuck=interface&idn='.$idn, 'tip' => 'Lista urządzeń sieciowych przypisanych do tego węzła');
 $tucklist[] = array('tuck' => 'costs', 'name' => trans('Koszty'), 'link' => '?m=networknodeinfo&tuck=costs&idn='.$idn, 'tip' => trans('Koszty związane z utrzymaniem samego węzła'));
 $tucklist[] = array('tuck' => 'annex', 'name' => 'Załączniki', 'link' => '?m=networknodeinfo&tuck=annex&idn='.$idn, 'tip' => 'Załączone dokumenty, pliki itp. do węzła');
+$tucklist[] = array('tuck' => 'group', 'name' => 'Grupy', 'link' => '?m=networknodeinfo&tuck=group&idn='.$idn, 'tip' => 'Grupy do jakich należy węzeł');
 
 $SMARTY->assign('tucklist',$tucklist);
 
@@ -307,6 +308,34 @@ elseif ($tuck == 'annex') {
     include(MODULES_DIR.'/annex.inc.php');
     $SMARTY->display('annex.html');
     die;
+}
+
+elseif ($tuck == 'group') {
+    $layout['popup'] = $layout['ajax'] = true;
+    
+    if (isset($_GET['addgroup']) && !empty($_GET['addgroup'])) {
+	$DB->Execute('INSERT INTO networknodeassignments (networknodeid, networknodegroupid) VALUES (?,?);',array($idn,intval($_GET['addgroup'])));
+    }
+    
+    if (isset($_GET['delgroup']) && !empty($_GET['delgroup'])) {
+	$DB->Execute('DELETE FROM networknodeassignments WHERE networknodeid = ? AND networknodegroupid = ?;',array($idn,intval($_GET['delgroup'])));
+    }
+    
+    $othergroups = $LMS->GetNetworkNodeGroupNamesWithoutNode($idn);
+    $SMARTY->assign('othergroups',$othergroups);
+    
+    $groups = $DB->getAll('SELECT ng.id, ng.name, ng.description 
+			    FROM networknodeassignments na 
+			    JOIN networknodegroups ng ON (ng.id = na.networknodegroupid)
+			    WHERE na.networknodeid = ? 
+			    ORDER BY ng.name ASC;',array($idn));
+    $SMARTY->assign('groups',$groups);
+    
+    
+    $SMARTY->display('networknodegroup.html');
+
+
+die;
 }
 
 $tuck = (isset($_GET['tuck']) ? $_GET['tuck'] : $SESSION->get('net_node_tuck','base'));

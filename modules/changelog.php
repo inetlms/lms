@@ -34,6 +34,32 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-03-12',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość które pola szybkiego wyszukiwania mają być widoczne : Konfigracja -> Formularze -> Szybkie wyszukiwanie',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano szybkie wyszukiwanie interfejsów sieciowych',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowa mechanizmu wyszukiwania klientów w "szybkim wyszukiwaniu"',
+	),
+	
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano grupy dla interfejsów sieciowych, konfiguracja w słownikach',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano grupy dla węzłów, konfiguracja w słownikach',
+	),
+	array(
 	    'data'	=> '',
 	    'status'	=> '',
 	    'opis'	=> 'korekta prędkości w połączeniach interfejs <-> komputer',

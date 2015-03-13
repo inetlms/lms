@@ -592,14 +592,14 @@ class LMS {
 			else
 				$userinfo['passwdlastchange'] = '-';
 
-			if (check_ip($userinfo['lastloginip']))
+			if (get_conf('phpui.gethostbyaddr') && check_ip($userinfo['lastloginip']))
 				$userinfo['lastloginhost'] = gethostbyaddr($userinfo['lastloginip']);
 			else {
 				$userinfo['lastloginhost'] = '-';
 				$userinfo['lastloginip'] = '-';
 			}
 
-			if (check_ip($userinfo['failedloginip']))
+			if (get_conf('phpui.gethostbyaddr') && check_ip($userinfo['failedloginip']))
 				$userinfo['failedloginhost'] = gethostbyaddr($userinfo['failedloginip']);
 			else {
 				$userinfo['failedloginhost'] = '-';
@@ -4846,8 +4846,10 @@ class LMS {
 	}
 
 
-	function GetNetDevList($order = 'name,asc', $status = NULL, $project = NULL, $networknode = NULL, $producer = NULL, $model = NULL) 
+	function GetNetDevList($order = 'name,asc', $status = NULL, $project = NULL, $networknode = NULL, $producer = NULL, $model = NULL, $group = NULL, $groupw = NULL) 
 	{
+		// group -> grupa interfejsu
+		// groupw -> grupa węzłów
 		list($order, $direction) = sscanf($order, '%[^,],%s');
 		
 		($direction == 'desc') ? $direction = 'desc' : $direction = 'asc';
@@ -4869,12 +4871,17 @@ class LMS {
 			(SELECT COUNT(*) FROM nodes WHERE netdev=d.id AND ownerid > 0)
 			+ (SELECT COUNT(*) FROM netlinks WHERE src = d.id OR dst = d.id)
 			AS takenports
-			FROM netdevices d WHERE 1=1 '
+			FROM netdevices d '
+			.(!is_null($group)  ? ' JOIN netdevicesassignments ng ON (ng.netdevicesid = d.id) ' : '')
+			.(!is_null($groupw) ? ' JOIN networknodeassignments nng ON (nng.networknodeid = d.networknodeid) ' : '')
+			.'WHERE 1=1 '
 			.(!is_null($status) ? ' AND d.status = '.$status : '')
 			.(!is_null($project) ? ' AND invprojectid = '.$project : '')
 			.(!is_null($networknode) ? ' AND networknodeid = '.$networknode : '')
 			.(!is_null($producer) ? ' AND UPPER(producer) = \''.strtoupper($producer).'\'' : '')
 			.(!is_null($model) ? ' AND UPPER(model) = \''.strtoupper($model).'\'' : '')
+			.(!is_null($group) ? ' AND ng.netdevicesgroupid = '.$group : '')
+			.(!is_null($groupw) ? ' AND nng.networknodegroupid = '.$groupw : '')
 			. ($sqlord != '' ? $sqlord . ' ' . $direction : ''));
 		
 		$netdevlist['total'] = sizeof($netdevlist);
@@ -5114,6 +5121,59 @@ class LMS {
 			FROM vnodes 
 			WHERE ownerid = 0 AND netdev = ?', array($id));
 	}
+	
+	
+	function GetNetDevWithGroup($groupid) {
+
+		return $this->DB->GetAll('SELECT n.id AS id, n.name AS nodename, a.netdevicesid
+			FROM netdevices n
+			JOIN netdevicesassignments a ON (n.id = a.netdevicesid) 
+			WHERE a.netdevicesgroupid = ? ORDER BY nodename', array($groupid));
+	}
+
+
+	function GetNetDevGroup($id) {
+		$result = $this->DB->GetRow('SELECT id, name, description, 
+				(SELECT COUNT(*) FROM netdevicesassignments 
+					WHERE netdevicesgroupid = netdevicesgroups.id) AS count
+				FROM netdevicesgroups WHERE id = ?', array($id));
+
+		$result['nodes'] = $this->GetNetDevWithGroup($id);
+		$result['nodescount'] = sizeof($result['nodes']);
+
+		return $result;
+	}
+	
+	function GetNetDevGroupNames() {
+		return $this->DB->GetAllByKey('SELECT id, name, description FROM netdevicesgroups
+				ORDER BY name ASC', 'id');
+	}
+	
+	function GetNetDevWithoutGroup($groupid) {
+
+		return $this->DB->GetAll('SELECT n.id AS id, n.name AS nodename, a.netdevicesid
+			FROM netdevices n
+			LEFT JOIN netdevicesassignments a ON (n.id = a.netdevicesid AND a.netdevicesgroupid = ?) 
+			WHERE a.netdevicesid IS NULL ORDER BY nodename', array($groupid));
+	}
+	
+	
+	
+	function GetNetDevGroupNamesWithoutNode($nid) {
+		return $this->DB->GetAllbykey('SELECT id, name FROM netdevicesgroups
+				WHERE id NOT IN (SELECT netdevicesgroupid FROM netdevicesassignments
+					WHERE netdevicesid = ?)
+				ORDER BY name', 'id',array($nid));
+	}
+	
+	
+	function GetNetDevGroupNamesByNode($nodeid) {
+		return $this->DB->GetAllByKey('SELECT id, name, description FROM netdevicesgroups
+				WHERE id IN (SELECT netdevicesgroupid FROM netdevicesassignments
+					WHERE netdevicesid = ?)
+				ORDER BY name', 'id', array($nodeid));
+	}
+
 
 	/*
 	 *   Request Tracker (Helpdesk)
@@ -8188,14 +8248,17 @@ class LMS {
     }
 
 
-    function GetListNetworknode($status = NULL, $project = NULL, $owner = NULL)
+    function GetListNetworknode($status = NULL, $project = NULL, $owner = NULL, $group = NULL)
     {
 	return $this->DB->GetAll('SELECT nn.*, 
 				    (SELECT COUNT(nd.id) FROM netdevices nd WHERE nd.networknodeid = nn.id) AS count_netdev 
-				    FROM networknode nn WHERE 1=1 '
+				    FROM networknode nn '
+				    . (!is_null($group) ? 'JOIN networknodeassignments ng ON (ng.networknodeid = nn.id) ' : '')
+				    .' WHERE 1=1 '
 				    .(!is_null($status) ? ' AND nn.status = '.$status : '')
 				    .(!is_null($project) ? ' AND nn.invprojectid = '.$project : '')
 				    .(!is_null($owner) ? ' AND nn.type = '.$owner : '')
+				    .(!is_null($group) ? ' AND ng.networknodegroupid = '.$group : '')
 				    .' AND deleted = 0;');
     }
     
@@ -8384,81 +8447,57 @@ class LMS {
 	    }
 	}
     }
-    
-	function networknodeGroupGetList() {
-		if ($list = $this->DB->GetAll('SELECT id, name, description,
-				(SELECT COUNT(*)
-					FROM networknodeassignments 
-					WHERE networknodegroupid = networknodegroups.id
-				) AS networknodecount
-				FROM networknodegroups ORDER BY name ASC')) {
-			$totalcount = 0;
+	function GetNetworkNodesWithGroup($groupid) {
 
-			foreach ($list as $idx => $row) {
-				$totalcount += $row['networknodecount'];
-			}
+		return $this->DB->GetAll('SELECT n.id AS id, n.name AS nodename, a.networknodeid
+			FROM networknode n
+			JOIN networknodeassignments a ON (n.id = a.networknodeid) 
+			WHERE a.networknodegroupid = ? ORDER BY nodename', array($groupid));
+	}
 
-			$list['total'] = sizeof($list);
-			$list['totalcount'] = $totalcount;
-		}
 
-		return $list;
+	function GetNetworkNodeGroup($id) {
+		$result = $this->DB->GetRow('SELECT id, name, description, 
+				(SELECT COUNT(*) FROM networknodeassignments 
+					WHERE networknodegroupid = networknodegroups.id) AS count
+				FROM networknodegroups WHERE id = ?', array($id));
+
+		$result['nodes'] = $this->GetNetworkNodesWithGroup($id);
+		$result['nodescount'] = sizeof($result['nodes']);
+
+		return $result;
 	}
 	
-	function networknodegroupAdd($customergroupdata) {
-		if ($this->DB->Execute('INSERT INTO networknodegroups (name, description) VALUES (?, ?)', array($customergroupdata['name'], $customergroupdata['description'])))
-		{
-			if (SYSLOG) addlogs('dodano grupę: '.$customergroupdata['name'].' dla węzłów','e=add;m=netdev;');
-			return $this->DB->GetOne('SELECT id FROM networknodegroups WHERE name=?', array($customergroupdata['name']));
-		}
-		else
-			return FALSE;
-	}
-
-	function NetworknodegroupUpdate($customergroupdata) {
-	
-		if (SYSLOG) {
-		    addlogs('aktualizacja danych grupy: '.$customergroupdata['name'].' dla węzła','e=up;m=netdev;');
-		}
-		
-		return $this->DB->Execute('UPDATE networknodegroups SET name=?, description=? 
-				WHERE id=?', array($customergroupdata['name'],
-						$customergroupdata['description'],
-						$customergroupdata['id']
-				));
+	function GetNetworkNodeGroupNames() {
+		return $this->DB->GetAllByKey('SELECT id, name, description FROM networknodegroups
+				ORDER BY name ASC', 'id');
 	}
 	
-	function networknodegroupWithnetworknodeGet($id) {
-		return $this->DB->GetOne('SELECT COUNT(*) FROM networknodeassignments
-				WHERE networknodegroupid = ?', array($id));
+	function GetNetworkNodesWithoutGroup($groupid) {
+
+		return $this->DB->GetAll('SELECT n.id AS id, n.name AS nodename, a.networknodeid
+			FROM networknode n
+			LEFT JOIN networknodeassignments a ON (n.id = a.networknodeid AND a.networknodegroupid = ?) 
+			WHERE a.networknodeid IS NULL ORDER BY nodename', array($groupid));
+	}
+	
+	
+	function Networknodeexists($id) {
+	    
+	    if ($this->DB->getOne('SELECT 1 FROM networknode WHERE id = ? LIMIT 1;',array($id)))
+		return true;
+	    else
+		return false;
+	}
+	
+	function GetNetworkNodeGroupNamesWithoutNode($nid) {
+		return $this->DB->GetAllbykey('SELECT id, name FROM networknodegroups
+				WHERE id NOT IN (SELECT networknodegroupid FROM networknodeassignments
+					WHERE networknodeid = ?)
+				ORDER BY name', 'id',array($nid));
 	}
 
-	function NetworknodegroupDelete($id) {
-		if (!$this->networknodegroupWithnetworknodeGet($id)) {
-			
-			if (SYSLOG) {
-			    $diff['old'] = $this->DB->GetRow('SELECT * FROM networknodegroups WHERE id=?',array($id));
-			    addlogs('skasowano grupę: '.$diff['old']['name'].' dla węzłów','e=rm;m=netdev;');
-			}
-			
-			$this->DB->Execute('DELETE FROM networknodegroups WHERE id=?', array($id));
-			return TRUE;
-		}
-		else
-			return FALSE;
-	}
 
-	function NetworknodegroupExists($id) {
-		return ($this->DB->GetOne('SELECT id FROM networknodegroups WHERE id=?', array($id)) ? TRUE : FALSE);
-	}
-
-	function networknodegroupGetId($name) {
-		return $this->DB->GetOne('SELECT id FROM networknodegroups WHERE name=?', array($name));
-	}
-
-	function netowrknodegroupGetName($id) {
-		return $this->DB->GetOne('SELECT name FROM networknodegroups WHERE id=?', array($id));
-	}
 
     /******************
     *   UploadFiles   *

@@ -43,6 +43,10 @@ if (!isset($_GET['owner'])) $SESSION->restore('ntk_owner',$owner); else $owner =
 if (is_null($owner)) $owner = '-1';
 $SESSION->save('ntk_owner',$owner);
 
+if (!isset($_GET['group'])) $SESSION->restore('ntk_group',$group); else $group = $_GET['group'];
+if (is_null($group)) $group = '-1';
+$SESSION->save('ntk_group',$group);
+
 $page = (!$_GET['page'] ? 1 : $_GET['page']);
 $pagelimit = get_conf('phpui.networknode_pagelimit','50');
 $start = ($page - 1) * $pagelimit;
@@ -50,13 +54,15 @@ $start = ($page - 1) * $pagelimit;
 $netlist = $LMS->GetListnetworknode(
     ($status != '-1' ? $status : NULL),
     ($project != '-1' ? $project : NULL),
-    ($owner != '-1' ? $owner : NULL)
+    ($owner != '-1' ? $owner : NULL),
+    ($group != '-1' ? $group : NULL)
 );
 
 $listdata['total'] = sizeof($netlist);
 $listdata['status'] = $status;
 $listdata['project'] = $project;
 $listdata['owner'] = $owner;
+$listdata['group'] = $group;
 
 $SESSION->save('ntk_list_page',$_GET['page']);
 
@@ -66,5 +72,6 @@ $SMARTY->assign('page',$page);
 $SMARTY->assign('start',$start);
 $SMARTY->assign('pagelimit',$pagelimit);
 $SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
+$SMARTY->assign('grouplist',$DB->getall('SELECT id,name FROM networknodegroups ORDER BY name ASC;'));
 $SMARTY->display('networknodelist.html');
 ?>

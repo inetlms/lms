@@ -61,11 +61,16 @@ $mode = '';
 
 if(!empty($_POST['qscustomer'])) {
 	$mode = 'customer'; 
+	$qscustomer = $_POST['qscustomer'];
 	$search = urldecode(trim($_POST['qscustomer']));
 
 } elseif(!empty($_POST['qsnode'])) {
 	$mode = 'node'; 
 	$search = urldecode(trim($_POST['qsnode']));
+
+} elseif(!empty($_POST['qsnetdev'])) {
+	$mode = 'netdev';
+	$search = urldecode(trim($_POST['qsnetdev']));
 
 } elseif(!empty($_POST['qsticket'])) {
 	$mode = 'ticket'; 
@@ -91,64 +96,61 @@ switch($mode)
 	case 'customer':
 		if(isset($_GET['ajax'])) // support for AutoSuggest
 		{
-/*
-			$candidates = $DB->GetAll("SELECT id, email, address, post_name, post_address, deleted,
-			    ".$DB->Concat('UPPER(lastname)',"' '",'name')." AS username
-				FROM customersview
-				WHERE ".(preg_match('/^[0-9]+$/', $search) ? 'id = '.intval($search).' OR ' : '')."
-					LOWER(".$DB->Concat('lastname',"' '",'name').") ?LIKE? LOWER($sql_search)
-					OR LOWER(address) ?LIKE? LOWER($sql_search)
-					OR LOWER(post_name) ?LIKE? LOWER($sql_search)
-					OR LOWER(post_address) ?LIKE? LOWER($sql_search)
-					OR LOWER(email) ?LIKE? LOWER($sql_search)
-				ORDER by deleted, username, email, address
-				LIMIT 15");
-*/
-			$candidates = $DB->GetAll("SELECT c.id, c.email, c.address, c.post_name, c.post_address, c.deleted, c.ten, c.ssn, c.regon, c.rbe, c.icn, p.phone, i.uid, 
+			$candidates = $_search = array();
+			$tmp = explode(' ',str_replace("%",'',str_replace("'","",$sql_search)));
+			$sql = "";
+			
+			for ($i=0; $i<sizeof($tmp); $i++)
+			    $_search[] = $tmp[$i];
+			
+			for ($i=0; $i<sizeof($_search); $i++) {
+			    
+			    $sql_search = "'%".$_search[$i]."%'";
+			    $sql .= "AND ("
+			    .(preg_match('/^[0-9]+$/', $_search[$i]) ? ' c.id = '.intval($_search[$i]).' OR ' : '')
+			    ."LOWER(c.name) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(c.lastname) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(c.address) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(c.post_name) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(c.post_address) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(c.email) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(c.ten) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(c.ssn) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(c.regon) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(c.rbe) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(c.icn) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(p.phone) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(i.uid) ?LIKE? LOWER($sql_search) 
+			    ) ";
+			}
+			
+			
+			$candidates = $DB->getAll("SELECT c.id, c.email, c.address, c.post_name, c.post_address, c.deleted, c.ten, c.ssn, c.regon, c.rbe, c.icn, p.phone, i.uid, 
 			    ".$DB->Concat('UPPER(c.lastname)',"' '",'c.name')." AS username 
 				FROM customersview c 
 				LEFT JOIN customercontacts p ON (p.customerid = c.id) 
 				LEFT JOIN imessengers i ON (i.customerid = c.id) 
-				WHERE ".(preg_match('/^[0-9]+$/', $search) ? 'c.id = '.intval($search).' OR ' : '')."
-					LOWER(".$DB->Concat('c.lastname',"' '",'c.name').") ?LIKE? LOWER($sql_search)
-					OR LOWER(c.address) ?LIKE? LOWER($sql_search) 
-					OR LOWER(c.post_name) ?LIKE? LOWER($sql_search) 
-					OR LOWER(c.post_address) ?LIKE? LOWER($sql_search) 
-					OR LOWER(c.email) ?LIKE? LOWER($sql_search) 
-					OR LOWER(c.ten) ?LIKE? LOWER($sql_search) 
-					OR LOWER(c.ssn) ?LIKE? LOWER($sql_search) 
-					OR LOWER(c.regon) ?LIKE? LOWER($sql_search) 
-					OR LOWER(c.rbe) ?LIKE? LOWER($sql_search) 
-					OR LOWER(c.icn) ?LIKE? LOWER($sql_search) 
-					OR LOWER(p.phone) ?LIKE? LOWER($sql_search) 
-					OR LOWER(i.uid) ?LIKE? LOWER($sql_search) 
-				ORDER by deleted, username, email, address
-				LIMIT 15");
-
+				WHERE c.deleted=0 $sql ORDER by username, email, address LIMIT 15");
+			
+			
 			$eglible=array(); $actions=array(); $descriptions=array();
 			if ($candidates)
 			foreach($candidates as $idx => $row) {
 			    
-				if (isset($_GET['infocenterlist']))
-				    $actions[$row['id']] = '?m=infocenterlist&cid='.$row['id'];
-				
-				elseif(isset($_GET['iphistory']))
-				    $actions[$row['id']] = '?m=iphistory&cid='.$row['id'];
-				
-				elseif(isset($_GET['radacct']))
-				    $actions[$row['id']] = '?m=rad_radacct&cid='.$row['id'];
-				
-				elseif(isset($_GET['syslog']))
-				    $actions[$row['id']] = '?m=syslog&cid='.$row['id'];
-				
-				else
-				    $actions[$row['id']] = '?m=customerinfo&id='.$row['id'];
-				
+				if (isset($_GET['infocenterlist'])) $actions[$row['id']] = '?m=infocenterlist&cid='.$row['id'];
+				elseif(isset($_GET['iphistory'])) $actions[$row['id']] = '?m=iphistory&cid='.$row['id'];
+				elseif(isset($_GET['radacct'])) $actions[$row['id']] = '?m=rad_radacct&cid='.$row['id'];
+				elseif(isset($_GET['syslog'])) $actions[$row['id']] = '?m=syslog&cid='.$row['id'];
+				else $actions[$row['id']] = '?m=customerinfo&id='.$row['id'];
 				
 				$eglible[$row['id']] = escape_js(($row['deleted'] ? '<font class="blend">' : '')
 				    .truncate_str($row['username'], 50).($row['deleted'] ? '</font>' : ''));
-
-				if (preg_match("~^$search\$~i",$row['id'])) {
+				
+//				if (preg_match("~^$search\$~i",$row['id'])) {
+//				    $descriptions[$row['id']] = escape_js(trans('Id:').' '.$row['id']);
+//				    continue;
+//				}
+				if (preg_match("~^$search\$~i",intval($row['id']))) {
 				    $descriptions[$row['id']] = escape_js(trans('Id:').' '.$row['id']);
 				    continue;
 				}
@@ -214,6 +216,122 @@ switch($mode)
 		$SESSION->remove('csls');
 
 		$target = '?m=customersearch&search=1';
+	break;
+	
+	case 'netdev':
+		if(isset($_GET['ajax'])) // support for AutoSuggest
+		{
+			$candidates = $_search = array();
+			$tmp = explode(' ',str_replace("%",'',str_replace("'","",$sql_search)));
+			$sql = "";
+			
+			for ($i=0; $i<sizeof($tmp); $i++)
+			    $_search[] = $tmp[$i];
+			
+			for ($i=0; $i<sizeof($_search); $i++) {
+			    
+			    $sql_search = "'%".$_search[$i]."%'";
+			    $sql .= "AND ("
+			    .(preg_match('/^[0-9]+$/', $_search[$i]) ? ' id = '.intval($_search[$i]).' OR ' : '')
+			    ."LOWER(name) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(location) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(description) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(producer) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(model) ?LIKE? LOWER($sql_search) 
+			    OR LOWER(serialnumber) ?LIKE? LOWER($sql_search) 
+			    ) ";
+			}
+			
+			$candidates = $DB->getAll("SELECT id, name, location, description, producer, model, serialnumber
+				FROM netdevices
+				WHERE 1=1 $sql ORDER by name ASC LIMIT 15");
+			
+			$eglible=array(); $actions=array(); $descriptions=array();
+			if ($candidates)
+			    for ($i=0; $i<sizeof($_search); $i++) {
+				$search = $_search[$i];
+				foreach($candidates as $idx => $row) {
+				    $actions[$row['id']] = '?m=netdevinfo&id='.$row['id'];
+				    $eglible[$row['id']] = escape_js($row['name']);
+				    
+				    if (preg_match("~^$search\$~i",$row['id'])) {
+					$res = stripos($descriptions[$row['id']],'ID');
+					if (empty($res))
+					    $descriptions[$row['id']] .= ('ID') . ' ';
+				    }
+				    
+				    if (preg_match("~$search~i",$row['name'])) {
+					$res = stripos($descriptions[$row['id']],'Nazwa'); 
+					if (empty($res))
+					    $descriptions[$row['id']] .= ('Nazwa') . ' ';
+				    }
+				    
+				    
+				    if (preg_match("~$search~i",$row['description'])) {
+					$tmp = strtoupper($descriptions[$row['id']]);
+					$res = stripos("$tmp","OPIS");
+					if ($res=='')
+					    $descriptions[$row['id']] .= ('Opis') . ' ';
+				    }
+				    
+				    if (preg_match("~$search~i",$row['producer'])) {
+				        $res = stripos($descriptions[$row['id']],'Producent');
+				        if (empty($res))
+					    $descriptions[$row['id']] .= ('Producent') . ' ';
+				    }
+				    
+				    if (preg_match("~$search~i",$row['model'])) {
+					$res = stripos(strtoupper($descriptions[$row['id']]),'MODEL');
+					if (empty($res))
+					    $descriptions[$row['id']] .= ('Model') . ' ';
+				    }
+				    
+				    if (preg_match("~$search~i",$row['serialnumber'])) {
+					$res = stripos($descriptions[$row['id']],'S/N');
+					if (empty($res))
+					    $descriptions[$row['id']] .= ('S/N') . ' ';
+				    }
+				}
+			    }
+			header('Content-type: text/plain');
+			if ($eglible) {
+			
+				print "this.eligible = [\"".implode('","',$eglible)."\"];\n";
+//				print "this.descriptions = [\"".implode('","',$descriptions)."\"];\n";
+				print "this.actions = [\"".implode('","',$actions)."\"];\n";
+			} else {
+				print "false;\n";
+			}
+			exit;
+		}
+
+		if(is_numeric($search)) // maybe it's customer ID
+		{
+			if($netdevid = $DB->GetOne('SELECT id FROM netdevices WHERE id = ? LIMIT 1;',array($search)))
+			{
+				
+				    $target = '?m=netdevinfo&id='.$netdevid;
+				    break;
+			}
+		}
+
+		// use customersearch module to find all customers
+		$s['name'] = $search;
+		$s['location'] = $search;
+		$s['description'] = $search;
+		$s['producer'] = $search;
+		$s['model'] = $search;
+		$s['serialnumber'] = $search;
+
+		$SESSION->save('netdevsearch', $s);
+		$SESSION->save('netdevslk', 'OR');
+
+		$SESSION->remove('netdevslp');
+		$SESSION->remove('netdevsln');
+		$SESSION->remove('netdevslg');
+		$SESSION->remove('netdevsls');
+
+		$target = '?m=netdevlist';
 	break;
 
 	case 'node':
@@ -432,7 +550,7 @@ switch($mode)
 		$target = '?m=accountsearch&s=1';
 	break;
 	
-		case 'document':
+	case 'document':
 		if (isset($_GET['ajax'])) {
 			$candidates = $DB->GetAll("SELECT d.id, d.type, d.fullnumber,
 					d.customerid AS cid, d.name AS customername

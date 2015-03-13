@@ -183,8 +183,8 @@
 			</table>
 		</td>
 	</tr>
-	<tr class="light">
-		<td width="100%" class="FBOTTOMU" colspan="3" align="right">
+	<tr class="lucid pgdark">
+		<td width="100%" class="fbottomu" colspan="3" align="right">
 			{if get_conf('monit.live_ping')}<a href="javascript:void(0);" onclick="window.open('?m=nodeping&packetsize=64&ip={$nodeipdata.ip}&netdev={$nodeipdata.id}','pingnode{$nodeipdata.ip}','width=400,height=450')" {tip text="Pinguj urzadzenie"}>Live Ping <img src="img/ping.gif" alt=""></a>&nbsp;{/if}
 			<a href="?m=netdevedit&id={$netdevinfo.id}&action=editip&ip={$nodeipdata.id}" accesskey="E">{trans("Edit")} <img src="img/edit.gif" alt=""></a>&nbsp;
 			<a href="?m=netdevedit&id={$netdevinfo.id}&action=ipdel&ip={$nodeipdata.id}" onclick="return confirmLink(this, '{t a=$nodeipdata.name}Are you sure, you want to delete address \'$a\' from database?{/t}')">{trans("Delete")} <img src="img/delete.gif" alt=""></a>

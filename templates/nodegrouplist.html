@@ -6,34 +6,34 @@
 <input type="submit" class="hiddenbtn">
 <table width="100%" cellpadding="3">
 	<tr class="dark">
-		<td width="97%" class="fleftu">
+		<td width="97%" class="fleftu" align="left">
 			<img src="img/nodegroup.gif" alt="">&nbsp;<b>{trans("Name:")}</b><br>
 			<img src="img/info1.gif" alt="">&nbsp;{trans("Description:")}
 		</td>
-		<td width="1%" class="fbt" align="right">
+		<td width="1%" class="fbt pad tleft" align="right">
 			{trans("ID:")}
 		</td>
-		<td width="1%" class="fbt" align="right">
+		<td width="1%" class="fbt pad tleft" align="right">
 			{trans("Members:")}
 		</td>
-		<td width="1%" class="frightu" align="right">
+		<td width="1%" class="frightu pad tleft" align="right">
 			<nobr><b>{t a=$listdata.total|default:"0"}Total: $a{/t}</b><nobr>
 		</td>
 	</tr>
 	{cycle values="lucid,light" print=false}
 	{section name=nodegroups loop=$nodegrouplist}
 	<tr class="{cycle} lista " onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td width="97%" class="fleft" onclick="return self.location.href='?m=nodegroupinfo&id={$nodegrouplist[nodegroups].id}';" class="fleft">
+		<td width="97%" class="fleft" onclick="return self.location.href='?m=nodegroupinfo&id={$nodegrouplist[nodegroups].id}';" align="left">
 			<img src="img/nodegroup.gif" alt="">&nbsp;<b>{$nodegrouplist[nodegroups].name}</b><br>
 			{if $nodegrouplist[nodegroups].description}<img src="img/info1.gif" alt="">&nbsp;{$nodegrouplist[nodegroups].description}{/if}
 		</td>
-		<td width="1%" align="right" onclick="return self.location.href='?m=nodegroupinfo&id={$nodegrouplist[nodegroups].id}';">
+		<td width="1%" class="pad tleft" align="right" onclick="return self.location.href='?m=nodegroupinfo&id={$nodegrouplist[nodegroups].id}';">
 			({$nodegrouplist[nodegroups].id|string_format:"%04d"})
 		</td>
-		<td width="1%" align="right" onclick="return self.location.href='?m=nodegroupinfo&id={$nodegrouplist[nodegroups].id}';">
+		<td width="1%" class="pad tleft" align="right" onclick="return self.location.href='?m=nodegroupinfo&id={$nodegrouplist[nodegroups].id}';">
 			{$nodegrouplist[nodegroups].nodescount} 
 		</td>
-		<td width="1%" class="fright" align="right">
+		<td width="1%" class="fright pad tleft" align="right">
 			<nobr>
 			<a href="?m=nodegroupinfo&id={$nodegrouplist[nodegroups].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></a>
 			<a href="?m=nodegroupedit&id={$nodegrouplist[nodegroups].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
@@ -42,10 +42,6 @@
 			{else}
 			    <a href="?m=nodegroupdel&id={$nodegrouplist[nodegroups].id}" onclick="return confirmLink(this,'{trans("Are you sure, you want to remove this group?")}');"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
 			{/if}
-			<!--//
-			<input class="radio light" type="radio" name="from" id="{$nodegrouplist[nodegroups].id}" value="{$nodegrouplist[nodegroups].id}" {if $selectednodegroupid==$nodegrouplist[nodegroups].id}checked{/if}></input>>
-			<input class="radio light" type="radio" name="to" id="{$nodegrouplist[nodegroups].id}" value="{$nodegrouplist[nodegroups].id}" onclick="javascript:document.tmove.submit();"></input>>
-			//-->
 			<nobr>
 		</td>
 	</tr>
@@ -58,16 +54,10 @@
 		</td>
 	</tr>
 	{/section}
-	<tr class="light">
-		<td class="fleftu" colspan="2" width="98%" align="right">
-			<img src="img/info2.gif" alt="">&nbsp;<b>{trans("Total:")}</b>
-		</td>
-		<td class="fbt" width="1%" align="right" nowrap>
-			<b>{$listdata.nodestotal|default:"0"} </b>
-		</td>
-		<td class="frightu" width="1%">
-			&nbsp;
-		</td>
+	<tr class="dark">
+		<td class="fleftu" colspan="2" width="98%" align="right"><img src="img/info2.gif" alt="">&nbsp;<b>{trans("Total:")}</b></td>
+		<td class="fbt" width="1%" align="right" nowrap><b>{$listdata.nodestotal|default:"0"}</b></td>
+		<td class="frightu" width="1%">	&nbsp;</td>
 	</tr>
 </table>
 </form>

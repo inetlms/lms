@@ -54,14 +54,28 @@ if (is_null($model)) $model = '-1';
 $model=strtoupper($model);
 $SESSION->save('ndlmodel',$model);
 
+// grupa interfejsów
+if (!isset($_GET['group'])) $SESSION->restore('ndlgroup',$group); else $group = $_GET['group'];
+if (is_null($group)) $group = '-1';
+$SESSION->save('ndlgroup',$group);
+
+// grupa węzłów
+if (!isset($_GET['groupw'])) $SESSION->restore('ndlgroupw',$groupw); else $groupw = $_GET['groupw'];
+if (is_null($groupw)) $groupw = '-1';
+$SESSION->save('ndlgroupw',$groupw);
+
+
 
 $netdevlist = $LMS->GetNetDevList($o,
 				($status != '-1' ? $status : NULL),
 				($project != '-1' ? $project : NULL),
 				($networknode != '-1' ? $networknode : NULL),
 				($producer != '-1' ? $producer : NULL),
-				($model != '-1' ? $model : NULL)
+				($model != '-1' ? $model : NULL),
+				($group != '-1' ? $group : NULL),
+				($groupw != '-1' ? $groupw : NULL)
 );
+
 $listdata['total'] = $netdevlist['total'];
 $listdata['order'] = $netdevlist['order'];
 $listdata['direction'] = $netdevlist['direction'];
@@ -70,6 +84,8 @@ $listdata['project'] = $project;
 $listdata['networknode'] = $networknode;
 $listdata['producer'] = $producer;
 $listdata['model'] = $model;
+$listdata['group'] = $group;
+$listdata['groupw'] = $groupw;
 
 unset($netdevlist['total']);
 unset($netdevlist['order']);
@@ -95,15 +111,18 @@ if ($tmp = $DB->GetAll('SELECT producer FROM netdevices GROUP BY producer ORDER 
 	    $producerlist[]['producer'] = strtoupper($tmp[$i]['producer']);
 }
 
-if ($producer != '-1')
-{
+
+if ($producer != '-1') {
     if ($tmp = $DB->getAll('SELECT model FROM netdevices WHERE UPPER(producer) = ? GROUP BY model ORDER BY model ASC;',array(strtoupper($producer))))
 	for ($i=0; $i<sizeof($tmp); $i++)
 	    if (!empty($tmp[$i]['model']))
 		$modellist[]['model'] = $tmp[$i]['model'];
+} else {
+    if ($tmp = $DB->getAll('SELECT model FROM netdevices GROUP BY model ORDER BY model ASC;'))
+	for ($i=0; $i<sizeof($tmp); $i++)
+	    if (!empty($tmp[$i]['model']))
+		$modellist[]['model'] = $tmp[$i]['model'];
 }
-
-
 
 $SMARTY->assign('page',$page);
 $SMARTY->assign('pagelimit',$pagelimit);
@@ -114,6 +133,8 @@ $SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE
 $SMARTY->assign('networknodelist',$LMS->GetListnetworknode());
 $SMARTY->assign('producerlist',$producerlist);
 $SMARTY->assign('modellist',$modellist);
+$SMARTY->assign('grouplist',$DB->getAll('SELECT id, name FROM netdevicesgroups ORDER BY name ASC;'));
+$SMARTY->assign('groupwlist',$DB->getAll('SELECT id, name FROM networknodegroups ORDER BY name ASC;'));
 $SMARTY->display('netdevlist.html');
 
 ?>

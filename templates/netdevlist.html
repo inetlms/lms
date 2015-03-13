@@ -12,9 +12,10 @@
 	    <table width="100%" cellpadding="2">
 		<tr>
 		    <td width="1%" align="left" class="pad5"><img src="img/Filter.png" alt="" width="16" onclick="document.filter.submit();"></td>
+		    
 		    <td width="1%" align="right" class="pad" nowrap>Status</td>
-		    <td width="1%" align="left" class="pad">
-			<select name="status" size="1" onchange="document.filter.submit();" {if $listdata.status != '-1'}class="active"{/if}>
+		    <td width="1%" align="left">
+			<select name="status" style="width:160px;" onchange="document.filter.submit();" {if $listdata.status != '-1'}class="active"{/if}>
 			<option value="-1"{if $listdata.status == '-1'} selected{/if}>{trans('-- all --')}</option>
 			{foreach $_NSTATUS as $item => $key}
 			<option value="{$item}" {if $item == $listdata.status} selected{/if}>{$key}</option>
@@ -23,8 +24,8 @@
 		    </td>
 		    
 		    <td width="1%" align="right" class="pad">Projekt</td>
-		    <td width="1%" align="left" class="pad">
-			<select name="project" size="1" onchange="document.filter.submit();" {if $listdata.project != '-1'}class="active"{/if}>
+		    <td width="1%" align="left">
+			<select name="project" style="width:160px;" onchange="document.filter.submit();" {if $listdata.project != '-1'}class="active"{/if}>
 			<option value="-1">{trans('-- all --')}</option>
 			<option value="1"{if $listdata.project == '1'} selected{/if}>{trans('From root device')}</option>
 			{section name='projectlist' loop=$projectlist}
@@ -33,20 +34,9 @@
 			</select>
 		    </td>
 		    
-		    <td width="1%" align="right" class="pad">Węzeł</td>
-		    <td width="1%" align="left" class="pad">
-			<select name="networknode" size="1" onchange="document.filter.submit();" {if $listdata.networknode != '-1'}class="active"{/if}>
-			<option value="-1">{trans('-- all --')}</option>
-			<option value="0"{if !$listdata.networknode} selected{/if}>-- BEZ WĘZŁA --</option>
-			{section name=networknodelist loop=$networknodelist}
-			<option value="{$networknodelist[networknodelist].id}"{if $listdata.networknode == $networknodelist[networknodelist].id} selected{/if}>{$networknodelist[networknodelist].name}</option>
-			{/section}
-			</select>
-		    </td>
-		    
 		    <td width="1%" align="right" class="pad">Producent</td>
-		    <td width="1%" align="left" class="pad">
-			<select name="producer" size="1" onchange="document.filter.submit();" {if $listdata.producer != '-1'}class="active"{/if}>
+		    <td width="1%" align="left">
+			<select name="producer" style="width:160px;" onchange="document.getElementById('id_model').value='-1';document.filter.submit();" {if $listdata.producer != '-1'}class="active"{/if}>
 			<option value="-1">{trans('-- all --')}</option>
 			{section name=producerlist loop=$producerlist}
 			<option value="{$producerlist[producerlist].producer}"{if $listdata.producer == ($producerlist[producerlist].producer)} selected{/if}>{if empty($producerlist[producerlist].producer)}- bez producenta -{else}{$producerlist[producerlist].producer}{/if}</option>
@@ -55,8 +45,8 @@
 		    </td>
 		    
 		    <td width="1%" align="right" class="pad">Model</td>
-		    <td width="1%" align="left" class="pad">
-			<select name="model" size="1" onchange="document.filter.submit();" {if $listdata.model != '-1'}class="active"{/if}>
+		    <td width="1%" align="left">
+			<select name="model" id="id_model" style="width:160px;" onchange="document.filter.submit();" {if $listdata.model != '-1'}class="active"{/if}>
 			<option value="-1">{trans('-- all --')}</option>
 			{section name=modellist loop=$modellist}
 			<option value="{$modellist[modellist].model|upper}"{if $listdata.model == ($modellist[modellist].model|upper)} selected{/if}>{if empty($modellist[modellist].model)}- bez modelu -{else}{$modellist[modellist].model}{/if}</option>
@@ -64,8 +54,51 @@
 			</select>
 		    </td>
 		    
-		    <td width="auto">&nbsp;</td>
+		    <td width="91%">&nbsp;</td>
 		</tr>
+		
+		<tr>
+		    <td width="1%" align="left" class="pad5">&nbsp;</td>
+		    
+		    <td width="1%" align="right" class="pad">Grupa</td>
+		    <td width="1%" align="left">
+			<select name="group" style="width:160px;" onchange="document.filter.submit();" {if $listdata.group != '-1'}class="active"{/if} {tip text="Wybierz grupę dla interfejsów sieciowych"}>
+			<option value="-1">{trans('-- all --')}</option>
+			{section name=grouplist loop=$grouplist}
+			<option value="{$grouplist[grouplist].id}"{if $listdata.group == ($grouplist[grouplist].id)} selected{/if}>{$grouplist[grouplist].name}</option>
+			{/section}
+			</select>
+		    </td>
+		    
+		    <td width="1%" align="right" class="pad">Węzeł</td>
+		    <td width="1%" align="left">
+			<select name="networknode" style="width:160px;" onchange="document.filter.submit();" {if $listdata.networknode != '-1'}class="active"{/if}>
+			<option value="-1">{trans('-- all --')}</option>
+			<option value="0"{if !$listdata.networknode} selected{/if}>-- BEZ WĘZŁA --</option>
+			{section name=networknodelist loop=$networknodelist}
+			<option value="{$networknodelist[networknodelist].id}"{if $listdata.networknode == $networknodelist[networknodelist].id} selected{/if}>{$networknodelist[networknodelist].name}</option>
+			{/section}
+			</select>
+		    </td>
+		    
+		    <td width="1%" align="right" class="pad" nowrap>Grupa węzła</td>
+		    <td width="1%" align="left">
+			<select name="groupw" style="width:160px;" onchange="document.filter.submit();" {if $listdata.groupw != '-1'}class="active"{/if} {tip text="Wybierz grupę dla węzłów sieciowych"}>
+			<option value="-1">{trans('-- all --')}</option>
+			{section name=groupwlist loop=$groupwlist}
+			<option value="{$groupwlist[groupwlist].id}"{if $listdata.groupw == ($groupwlist[groupwlist].id)} selected{/if}>{$groupwlist[groupwlist].name}</option>
+			{/section}
+			</select>
+		    </td>
+		    
+		    
+		    <td width="1%" align="right" class="pad"></td>
+		    <td width="1%" align="left"></td>
+		    
+		    <td width="91%">&nbsp;</td>
+		</tr>
+		
+		
 	    </table>
 	</td>
     </tr>
@@ -89,7 +122,7 @@
 			<a href="?m=netdevlist&o=producer{if $listdata.direction eq "asc" && $listdata.order eq "producer"},desc{/if}">{trans("Manufacturer:")}</a> {if $listdata.order eq "producer"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
 			<a href="?m=netdevlist&o=model{if $listdata.direction eq "asc" && $listdata.order eq "model"},desc{/if}">{trans("Model:")}</a> {if $listdata.order eq "model"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td class="fbt pad5 tleft" width="1%" align="left"><b>Węzeł</b></td>
+		<td class="fbt pad5 tleft" width="1%" align="left">Węzeł</td>
 		
 		<td class="fbt pad5 tleft" width="1%" nowrap>
 			<a href="?m=netdevlist&o=ports{if $listdata.direction eq "asc" && $listdata.order eq "ports"},desc{/if}">{trans("Number of ports:")}</a> {if $listdata.order eq "ports"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
