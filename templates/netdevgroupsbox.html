@@ -1,0 +1,62 @@
+<!--// $Id$ //-->
+<table width="100%" cellpadding="3"  class="table table-bordered">
+	<tr class="dark hand info-hover" onclick="ShowOrHideBox('netdevgroupspanel');">
+		<td class="fall">
+			<img src="img/nodegroup.gif" alt="">
+			<b><a name="nodegroups">Grupy interfejsu</a></b> 
+		</td>
+	</tr>
+	<tr id="netdevgroupspanel" style="display:none;">
+		<td width="100%" class="fall">
+			<table cellpadding="5" cellspacing="0" width="100%">
+				<tr class="dark">
+					<td width="1%" nowrap class="fleftu pad" align="center"><b>{trans("ID:")}</b></td>
+					<td width="1%" nowrap class="fbt pad10 tleft" align="left"><b>{trans("Name:")}</b></td>
+					<td width="97%" nowrap class="fbt pad tleft">{trans("Description:")}</td>
+					<td width="1%" class="frightu tleft">&nbsp;</td>
+				</tr>
+				{cycle name=groups values="lucid,light" print=false}
+				{foreach from=$nodegroups item=nodegroup}
+				<tr class="{cycle name=groups} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+					<td width="1%" align="right"class="fleft pad" nowrap>{$nodegroup.id|string_format:"%04d"}</td>
+					<td width="1%" class="tleft pad" align="left" nowrap><b><a href="?m=netdevgroupinfo&id={$nodegroup.id}">{$nodegroup.name}</a></b></td>
+					<td width="97%" nowrap class="pad tleft" align="left">{$nodegroup.description}</td>
+					<td width="1%" align="right" nowrap class="fright tleft"><a onclick="return confirmLink(this, '{trans("Are you sure, you want to remove node from group?")}')" href="?m=netdevgroup&action=delete&nodegroupid={$nodegroup.id}&id={$netdevinfo.id}"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" {tip text="Remove assignment"}></a></td>
+				</tr>
+				{foreachelse}
+				<tr>
+					<td align="center" width="100%" colspan="4">
+						<p>&nbsp;</p>
+						<p><b>Ten interfejs nie należy do żadnej grupy</b></p>
+						<p>&nbsp;</p>
+					</td>
+				</tr>
+				{/foreach}
+				{if $othernodegroups}
+				<form method="POST" name="nodegroupassignment" action="?m=netdevgroup&action=add&id={$netdevinfo.id}">
+				<input type="submit" class="hiddenbtn">
+				<tr class="lucid">
+					<td colspan="4" class="fall" align="right">
+						<a href="javascript:void(0);" onclick="document.nodegroupassignment.submit();"><b>Dodaj grupę</b> : </a>
+						<select style="min-width:200px;" name="nodegroupid" {tip text="Wybierz grupę aby przypisać ją do interfejsu sieciowego"}>
+							<option value="0">{trans("... select group ...")}</option>
+							{foreach from=$othernodegroups item=item}
+							<option value="{$item.id}">{$item.name}</option>
+							{/foreach}
+						</select>
+						<nobr>
+					</td>
+				</tr>
+				</form>
+				{/if}
+			</table>
+		</td>
+	</tr>
+</table>
+{if get_profile('netdevgroupspanel')}
+<script type="text/javascript" language="JavaScript">
+<!--
+	document.getElementById('netdevgroupspanel').style.display = '';
+//-->
+</script>
+{/if}

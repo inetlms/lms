@@ -1,0 +1,89 @@
+<!--// $Id$ //-->
+<script type="text/javascript">
+<!--
+	function removeNodes() {
+		document.nodeassignments.oper.value="0";
+		document.nodeassignments.submit();
+	}
+
+	function changeMembersNetwork() {
+		document.nodeassignments.oper.value="2";
+		document.nodeassignments.submit();
+	}
+
+	function changeOthersNetwork() {
+		document.nodeassignments.oper.value="3";
+		document.nodeassignments.submit();
+	}
+//-->
+</script>
+<p>
+<form name="nodeassignments" method="POST" action="?m=netdevgroup&id={$nodegroup.id}">
+<input type="submit" class="hiddenbtn">
+<input type="hidden" name="oper" value="1">
+<table width="100%" cellpadding="0">
+    <tr><td width="49%" style="vertical-align: top">
+	    <table width="100%" cellpadding="3">
+		<tr class="dark">
+		    <td width="100%" class="fall" nowrap>
+			<img src="img/node.gif" alt="">&nbsp;<b>Interfejsy w grupie</b>
+		    </td>
+		</tr>
+		
+		<tr class="light">
+		    <td width="100%" class="flr" align="center">
+		    {if $nodegroup.nodescount}
+			<select size="20" name="nodeassignments[gmnodeid][]" multiple>
+				{section name=node loop=$nodegroup.nodes}
+					<option value="{$nodegroup.nodes[node].id}">
+					{$nodegroup.nodes[node].nodename|truncate:40:"...":true} ({$nodegroup.nodes[node].id|string_format:"%04d"})
+					</option>
+				{/section}
+			</select>
+		    {else}
+			<br><br><b>Ta grupa nie posiada żadnych interfejsów</b><br><br><br>
+		    {/if}
+		    </td>
+		</tr>
+		<tr class="light">
+		    <td width="100%" class="fbottomu" align="right" nowrap>
+			<a href="javascript:removeNodes();">{trans("Delete")} <img src="img/cancel.gif" alt=""></a>
+		    </td>
+		</tr>
+	    </table>
+    </td>
+    <td width="2%">
+    </td>
+    <td width="49%" style="vertical-align: top;">
+	    <table width="100%" cellpadding="3">
+		<tr class="dark">
+		    <td width="100%" class="fall" nowrap>
+			<img src="img/node.gif" alt="">&nbsp;<b>Dodaj nowe interfejsy</b>
+		    </td>
+		</tr>
+		
+		<tr class="light">
+		    <td width="100%" class="flr" align="center">
+			{if $nodescount}
+			<select size="20" name="nodeassignments[mnodeid][]" multiple>
+				{section name=node loop=$nodes}
+					<option value="{$nodes[node].id}">
+					{$nodes[node].nodename} ({$nodes[node].id|string_format:"%04d"})
+					</option>
+				{/section}
+			</select>
+			{else}
+			    <br><br><b>Wszystkie interfejsy są w tej grupie</b><br><br><br>
+			{/if}
+		    </td>
+		</tr>
+		<tr class="light">
+		    <td width="100%" class="fbottomu" align="right" nowrap>
+			<a href="javascript:document.nodeassignments.submit();">{trans("Submit")} <img src="img/save.gif" alt=""></a>
+		    </td>
+		</tr>
+	</table>
+    </td></tr>
+</table>
+</form>
+</p>
