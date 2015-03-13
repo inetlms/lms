@@ -48,6 +48,8 @@ $layout['pagetitle'] = trans('Device Info: $a $b $c', $netdevinfo['name'], $netd
 
 $netdevinfo['id'] = $_GET['id'];
 
+$SMARTY->assign('nodegroups',$LMS->GetNetDevGroupNamesByNode($netdevinfo['id']));
+$SMARTY->assign('othernodegroups', $LMS->GetNetDevGroupNamesWithoutNode($netdevinfo['id']));
 $SMARTY->assign('netdevinfo', $netdevinfo);
 $SMARTY->assign('netdevlist', $netdevconnected);
 $SMARTY->assign('netcomplist', $netcomplist);

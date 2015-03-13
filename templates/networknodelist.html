@@ -13,9 +13,10 @@
 	    <table width="100%" cellpadding="2">
 		<tr>
 		    <td width="1%" align="left" class="pad5"><img src="img/Filter.png" alt="" width="16" onclick="document.filter.submit();"></td>
+		    
 		    <td width="1%" align="right" class="pad">Status</td>
 		    <td width="1%" align="left" class="pad">
-			<select name="status" size="1" onchange="document.filter.submit();" {if $listdata.status != '-1'}class="active"{/if}>
+			<select name="status" onchange="document.filter.submit();" {if $listdata.status != '-1'}class="active"{/if} style="width:130px;">
 			<option value="-1">{trans('-- all --')}</option>
 			{foreach $_NSTATUS as $item => $key}
 			<option value="{$item}" {if $item == $listdata.status} selected{/if}>{$key}</option>
@@ -23,9 +24,19 @@
 			</select>
 		    </td>
 		    
+		    <td width="1%" align="right" class="pad">Grupa</td>
+		    <td width="1%" align="left" class="pad">
+			<select name="group" onchange="document.filter.submit();" {if $listdata.group != '-1'}class="active"{/if} style="width:130px;">
+			<option value="-1">{trans('-- all --')}</option>
+			{section name='grouplist' loop=$grouplist}
+			<option value="{$grouplist[grouplist].id}"{if $listdata.group == $grouplist[grouplist].id} selected{/if}>{$grouplist[grouplist].name}</option>
+			{/section}
+			</select>
+		    </td>
+		    
 		    <td width="1%" align="right" class="pad">Projekt</td>
 		    <td width="1%" align="left" class="pad">
-			<select name="project" size="1" onchange="document.filter.submit();" {if $listdata.project != '-1'}class="active"{/if}>
+			<select name="project" onchange="document.filter.submit();" {if $listdata.project != '-1'}class="active"{/if} style="width:130px;">
 			<option value="-1">{trans('-- all --')}</option>
 			{section name='projectlist' loop=$projectlist}
 			    <option value="{$projectlist[projectlist].id}"{if $projectlist[projectlist].id == $listdata.project} selected{/if}>{$projectlist[projectlist].name}</option>
@@ -35,7 +46,7 @@
 		    
 		    <td width="1%" align="right" class="pad">Własność</td>
 		    <td width="1%" align="left" class="pad">
-			<select name="owner" size="1" onchange="document.filter.submit();" {if $listdata.owner != '-1'}class="active"{/if}>
+			<select name="owner" onchange="document.filter.submit();" {if $listdata.owner != '-1'}class="active"{/if} style="width:130px;">
 			<option value="-1">{trans('-- all --')}</option>
 			{foreach $_TNODE as $item => $key}
 			<option value="{$item}" {if $item == $listdata.owner} selected{/if}>{$key|truncate:"19":"":true}</option>

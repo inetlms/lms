@@ -97,30 +97,37 @@
     </div>
     <div id="pagecontent">
 	{include file="toolbar.html"}
-    	<div id="autosuggest"><ul></ul></div>
-    	
-    	<form method="post" name="quicksearch" action="?m=quicksearch" id="quicksearch">
+	<div id="autosuggest"><ul></ul></div>
+	
+	{if get_form('quicksearch.qscustomer') || get_form('quicksearch.qsnodes') || get_form('quicksearch.qsnetdev') || get_form('quicksearch.qsticket') || get_form('quicksearch.qsaccount') || get_form('quicksearch.qsdocument')}
+	
+	<form method="post" name="quicksearch" action="?m=quicksearch" id="quicksearch">
 	<table width="100%" cellpadding="0" cellspacing="0">
 	    
 		<tr>
 		    <td width="1%" nowrap>
-			{trans("Search:")}
-			<img src="img/customer.gif" alt="">
-			<input class="blend" type="text" id="customerinput" name="qscustomer" value="" size="15" {tip text="Wprowadź identyfikator klienta, imię, nazwisko, adres, email, nr telefonu, gadu-gadu, skype, yahoo, NIP, Pesel, Regon, EDG/KRS lub serię i nr dowodu osobistego a natępnie naciśniej ENTER"}>
-			&nbsp;<img src="img/node.gif" alt="">
-			<input class="blend" type="text" id="nodeinput" name="qsnode" value="" size="15" {tip text="Enter node ID, name, IP address or MAC address and press Enter"}>
-			&nbsp;<img src="img/ticket.gif" alt="">
-			<input class="blend" type="text" id="rtinput" name="qsticket" value="" size="15" {tip text="Enter request tracker ID, subject or requestor name and press Enter"}>
-			&nbsp;<img src="img/account.gif" alt="">
-			<input class="blend" type="text" id="accountinput" name="qsaccount" value="" size="15" {tip text="Enter account or alias name and press Enter"}>
-			&nbsp;<img src="img/docum.gif" alt="">
-			<input class="blend" type="text" id="documentinput" name="qsdocument" value="" size="15" {tip text="Wprowadź numer dokumentu i naciśnij Enter."}>
+			<p style="padding-top:2px;">
+			{trans("Search:")}&nbsp;
+			{if get_form('quicksearch.qscustomer')}<img src="img/customer.gif" alt=""><input class="blend" type="text" id="customerinput" name="qscustomer" value="" size="15" {tip text="<b>Wyszukaj klienta</b><br>Wprowadź identyfikator klienta, imię, nazwisko, adres, email, nr telefonu, gadu-gadu, skype, yahoo, NIP, Pesel, Regon, EDG/KRS lub serię i nr dowodu osobistego a natępnie naciśniej ENTER"}>&nbsp;{/if}
+			{if get_form('quicksearch.qsnodes')}<img src="img/node.gif" alt=""><input class="blend" type="text" id="nodeinput" name="qsnode" value="" size="15" {tip text="<b>Wyszukaj komputer</b><br>Wprowadź ID, nazwę, adres IP lub adres MAC i naciśniej Enter."}>&nbsp;{/if}
+			
+			{if get_form('quicksearch.qsnodes')}
+			<img src="img/netdev.gif" alt="">
+			<input class="blend" type="text" id="netdevinput" name="qsnetdev" value="" size="15" {tip text="<b>Wyszukaj interfejs sieciowy</b><br>Wprowadź nazwę, lokalizację, numer seryjny, producenta, model lub część informacji z opisu i naciśnij Enter."}>
+			&nbsp;
+			{/if}
+			
+			{if get_form('quicksearch.qsticket')}<img src="img/ticket.gif" alt=""><input class="blend" type="text" id="rtinput" name="qsticket" value="" size="15" {tip text="<b>Wyszukaj zgłoszenie</b><br>Wprowadź ID, temat lub nazwisko/nazwę zgłaszającego i naciśnij Enter"}>&nbsp;{/if}
+			{if get_form('quicksearch.qsaccount')}<img src="img/account.gif" alt=""><input class="blend" type="text" id="accountinput" name="qsaccount" value="" size="15" {tip text="<b>Wyszukaj konto</b><br>Wprowadź nazwę konta lub aliasu i naciśnij Enter"}>&nbsp;{/if}
+			{if get_form('quicksearch.qsdocument')}<img src="img/docum.gif" alt=""><input class="blend" type="text" id="documentinput" name="qsdocument" value="" size="15" {tip text="<b>Wyszukaj dokument</b><br>Wprowadź numer dokumentu i naciśnij Enter."}>{/if}
+			</p>
 			<script type="text/javascript">
-				new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('customerinput'),'?m=quicksearch&ajax=1&mode=customer&what=',1);
-				new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('nodeinput'),'?m=quicksearch&ajax=1&mode=node&what=',1);
-				new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('rtinput'),'?m=quicksearch&ajax=1&mode=ticket&what=',1);
-				new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('accountinput'),'?m=quicksearch&ajax=1&mode=account&what=',1);
-				new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('documentinput'),'?m=quicksearch&ajax=1&mode=document&what=',1);
+				{if get_form('quicksearch.qscustomer')}new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('customerinput'),'?m=quicksearch&ajax=1&mode=customer&what=',1);{/if}
+				{if get_form('quicksearch.qsnodes')}new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('nodeinput'),'?m=quicksearch&ajax=1&mode=node&what=',1);{/if}
+				{if get_form('quicksearch.qsnetdev')}new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('netdevinput'),'?m=quicksearch&ajax=1&mode=netdev&what=',1);{/if}
+				{if get_form('quicksearch.qsticket')}new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('rtinput'),'?m=quicksearch&ajax=1&mode=ticket&what=',1);{/if}
+				{if get_form('quicksearch.qsaccount')}new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('accountinput'),'?m=quicksearch&ajax=1&mode=account&what=',1);{/if}
+				{if get_form('quicksearch.qsdocument')}new AutoSuggest(document.getElementById('quicksearch'),document.getElementById('documentinput'),'?m=quicksearch&ajax=1&mode=document&what=',1);{/if}
 			</script>
 			{* Enter key submit hack for IE *}
 			<input type="image" src="img/empty.gif" width="0" height="0" style="border: none;">
@@ -133,10 +140,12 @@
 	</table>
 	</form>
 	
-	
-<script type="text/javascript">
-<!--//
-document.forms['quicksearch'].elements['customerinput'].focus();
-//-->
-</script>
+	    {if get_form('quicksearch.qscustomer')}
+		<script type="text/javascript" language="JavaScript">
+		<!--//
+			document.forms['quicksearch'].elements['customerinput'].focus();
+		//-->
+		</script>
+	    {/if}
+	{/if}
 {/if}

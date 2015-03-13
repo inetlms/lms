@@ -880,18 +880,18 @@ $menu = array(
 					'tip' => trans('List of Nodes Groups'),
 					'prio' => 20,
 				),
-//				array(
-//					'name' => 'Grupy węzłów',
-//					'link' =>'?m=networknodegrouplist',
-//					'tip' => 'Lista grup węzłów',
-//					'prio' => 21,
-//				),
-//				array(
-//					'name' => 'Grupy Interfejsów',
-//					'link' =>'?m=netdevgrouplist',
-//					'tip' => 'Lista grup interfejsów sieciowych',
-//					'prio' => 22,
-//				),
+				array(
+					'name' => 'Grupy interfejsów',
+					'link' =>'?m=netdevgrouplist',
+					'tip' => 'Lista grup interfejsów sieciowych',
+					'prio' => 21,
+				),
+				array(
+					'name' => 'Grupy węzłów',
+					'link' =>'?m=networknodegrouplist',
+					'tip' => 'Lista grup węzłów',
+					'prio' => 22,
+				),
 				array(
 					'name' => 'Pochodzenie klientów',
 					'link' => '?m=customeroriginlist',

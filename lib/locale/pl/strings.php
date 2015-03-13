@@ -24,6 +24,7 @@
  *  $Id$
  */
 
+$_LANG['quicksearch'] = 'Szybkie wyszukiwanie';
 $_LANG['-- all --'] = '-- wszystko --';
 $_LANG['Investment project:'] = 'Projekt inwestycyjny:';
 $_LANG['Project'] = 'Projekt';

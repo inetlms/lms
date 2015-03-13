@@ -1,57 +1,52 @@
 <!--// $Id$ //-->
 <table width="100%" cellpadding="3">
-	<tr{if $devicepanel} class="dark hand info-hover" onclick="showOrHide('devicepanel');"{else} class="dark"{/if}>
-		<td width="1%" class="fleftu">
-			<img src="img/netdev.gif" alt="">
-		</td>
-		<td width="99%" class="frightu">
-			<b>{$netdevinfo.name} ({$netdevinfo.id|string_format:"%04d"})</b>
-		</td>
-	</tr>
-	<tr class="light"{if $devicepanel} id="devicepanel" style="display:none;"{/if}>
-	    <td width="100%" colspan="2"{if $devicepanel} class="fall container" align="right"{else}class="flr container"{/if}>
-			<table width="100%" cellpadding="0">
+    
+    <tr class="dark hand info-hover" onclick="ShowOrHideBox('devicepanel');">
+	<td width="1%" class="fleftu"><img src="img/netdev.gif" alt=""></td>
+	<td width="99%" class="frightu"><b>{$netdevinfo.name} ({$netdevinfo.id|string_format:"%04d"})</b></td>
+    </tr>
+    
+    <tr class="light" id="devicepanel" style="display:none;">
+	<td width="100%" colspan="2" class="flr container">
+	    <table width="100%" cellpadding="0">
+		<tr class="light">
+		    <td width="50%" style="vertical-align:top;">
+			<table width="100%" cellpadding="3">
+			    <tr class="light">
+				<td width="1%"><img src="img/network-node.png" alt="" width="16"></td>
+				<td width="1%"><b>Węzeł</b></td>
+				<td width="98%">
+				    {if $netdevinfo.networknodename}
+				    <a href="?m=networknodeinfo&idn={$netdevinfo.networknodeid}"><b>{$netdevinfo.networknodename}</b></a>
+				    {else} nie przypisany{/if}
+				</td>
+			    </tr>
+			    {if get_form('netdev.producer')}
+				
+				{if $netdevinfo.producer}
 				<tr class="light">
-					<td width="50%" style="vertical-align:top;">
-						<table width="100%" cellpadding="3">
-	<tr class="light">
-		<td width="1%">
-		    <img src="img/network-node.png" alt="" width="16">
-		</td>
-		<td width="1%">
-		    <b>Węzeł</b>
-		</td>
-		<td width="98%">
-		    {if $netdevinfo.networknodename}
-			<a href="?m=networknodeinfo&idn={$netdevinfo.networknodeid}"><b>{$netdevinfo.networknodename}</b></a>
-			{else} nie przypisany{/if}
-		</td>
-	</tr>
-	{if get_form('netdev.producer')}
-        {if $netdevinfo.producer}
-	<tr class="light">
-		<td width="1%"><img src="img/producer.gif" alt=""></td>
-		<td width="1%"><b>{trans("Producer:")}</b></td>
-		<td width="98%">{$netdevinfo.producer}</td>
-	</tr>
-	{/if}
-	
-	{if $netdevinfo.model}
-	<tr class="light">
-		<td width="1%"><img src="img/netdev_model.gif" alt=""></td>
-		<td width="1%"><b>{trans("Model:")}</b></td>
-		<td width="98%">{$netdevinfo.model}</td>
-	</tr>
-	{/if}
-	{/if}
-	
-	{if get_form('netdev.sn') && $netdevinfo.serialnumber}
-	<tr class="light">
-		<td width="1%"><img src="img/serialnumber.gif" alt=""></td>
-		<td width="1%" nowrap><b>{trans("Serial number:")}</b></td>
-		<td width="98%">{$netdevinfo.serialnumber}</td>
-	</tr>
-	{/if}
+				    <td width="1%"><img src="img/producer.gif" alt=""></td>
+				    <td width="1%"><b>{trans("Producer:")}</b></td>
+				    <td width="98%">{$netdevinfo.producer}</td>
+				</tr>
+				{/if}
+				
+				{if $netdevinfo.model}
+				<tr class="light">
+				    <td width="1%"><img src="img/netdev_model.gif" alt=""></td>
+				    <td width="1%"><b>{trans("Model:")}</b></td>
+				    <td width="98%">{$netdevinfo.model}</td>
+				</tr>
+				{/if}
+			    {/if}
+			
+			    {if get_form('netdev.sn') && $netdevinfo.serialnumber}
+			    <tr class="light">
+				<td width="1%"><img src="img/serialnumber.gif" alt=""></td>
+				<td width="1%" nowrap><b>{trans("Serial number:")}</b></td>
+				<td width="98%">{$netdevinfo.serialnumber}</td>
+				</tr>
+			    {/if}
 	<tr class="light">
 		<td width="1%"><img src="img/port.gif" alt=""></td>
 		<td width="1%" nowrap><b>{trans("Number of ports:")}</b></td>
@@ -312,14 +307,12 @@
 	                                        </table>
 					</td>
 				</tr>
-			</table>
-{if !$devicepanel}
-    		</td>
-	</tr>
-	<tr class="light">
-	        <td width="100%" colspan="2" class="FBOTTOMU" align="right">
-{/if}
-			{if get_form('netdev.project') && $netcomplist}
+	
+	<tr class="lucid">
+	    
+	        <td width="100%" colspan="2" class="fbt pad10" align="right">
+	        <p style="padding-top:10px;">
+			{if get_form('netdev.project')}
 			<p>
 			<form method="GET" action="?m=netdevedit" name="setproject">
 			<input type="submit" class="hiddenbtn">
@@ -341,6 +334,7 @@
 			</p>
 			{/if}
 			{if get_form('netdev.replace') && $replacelisttotal>1}
+			<p>
 			<form method="GET" action="?m=netdevedit" name="replace">
 			<input type="submit" class="hiddenbtn">
 			<input type="hidden" name="m" value="netdevedit">
@@ -359,21 +353,26 @@
 				{/section}
 			</select>
 			</form><br>
+			</p>
 			{/if}
 			<p>
 			<a href="?m=netdevedit&id={$netdevinfo.id}" accesskey="E">{trans("Edit")} <img src="img/edit.gif" alt="[ {trans("Edit")} ]"></a>
 			<a href="?m=netdevdel&id={$netdevinfo.id}" onclick="return confirmLink(this, '{t a=$netdevinfo.name}Are you sure, you want to remove device \'$a\' from database?{/t}');">{trans("Delete")} <img src="img/delete.gif" alt=""></a>
 			</p>
+		</p>
 		</td>
 	</tr>
+	
+			</table>
+    		</td>
+	</tr>
+	
 </table>
-{if $devicepanel}
-<script type="text/javascript">
+
+{if get_profile('devicepanel')}
+<script type="text/javascript" language="JavaScript">
 <!--
-if (getCookie('devicepanel') == '1')
-{
-	document.getElementById('devicepanel').style.display = '';
-}
+    document.getElementById('devicepanel').style.display = '';
 //-->
 </script>
 {/if}
