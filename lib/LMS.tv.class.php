@@ -9,7 +9,7 @@
  *  1.2.1 23/08/2011 19:00:00  
 */
 
-//set_include_path('.' . PATH_SEPARATOR . 'lib' . PATH_SEPARATOR . get_include_path());
+set_include_path('.' . PATH_SEPARATOR . 'lib' . PATH_SEPARATOR . get_include_path());
 
 require_once LIB_DIR."/Zend/Loader.php";
 require_once LIB_DIR."/Zend/XmlRpc/Client.php";
