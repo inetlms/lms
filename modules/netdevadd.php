@@ -38,7 +38,7 @@ if(isset($_POST['netdev']))
 	    $netdevdata['distribution_layer'] = $netdevdata['access_layer'] = 1;
 	}
 	
-	$netdevdata['name'] = (str_replace(" ","_",$netdevdata['name']));
+//	$netdevdata['name'] = (str_replace(" ","_",$netdevdata['name']));
 	
 	if (!$netdevdata['devtype'])
 	    $netdevdata['managed'] = NIE;
