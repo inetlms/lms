@@ -2,7 +2,7 @@
 <!--// $Id$ //-->
 <html>
 <head>
-    <title>::: {$layout.lmsv} :{if $layout.pagetitle neq ""} {$layout.pagetitle|striphtml} :{/if}::</title>
+    <title>{if $layout.pagetitle neq ""}{$layout.pagetitle|striphtml}{else}::: {$layout.lmsv} :::{/if}</title>
     <meta name="GENERATOR" content="{$layout.lmsv}">
     <meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
     <meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
