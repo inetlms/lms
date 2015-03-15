@@ -8250,9 +8250,10 @@ class LMS {
 
     function GetListNetworknode($status = NULL, $project = NULL, $owner = NULL, $group = NULL)
     {
-	return $this->DB->GetAll('SELECT nn.*, 
+	return $this->DB->GetAll('SELECT nn.*, p.name AS projectname, p.title AS projecttitle, p.eu AS projecteu, 
 				    (SELECT COUNT(nd.id) FROM netdevices nd WHERE nd.networknodeid = nn.id) AS count_netdev 
-				    FROM networknode nn '
+				    FROM networknode nn 
+				    LEFT JOIN invprojects p ON (p.id = nn.invprojectid) '
 				    . (!is_null($group) ? 'JOIN networknodeassignments ng ON (ng.networknodeid = nn.id) ' : '')
 				    .' WHERE 1=1 '
 				    .(!is_null($status) ? ' AND nn.status = '.$status : '')

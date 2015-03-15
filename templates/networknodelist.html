@@ -9,7 +9,7 @@
     <input type="hidden" name="page" value="1">
     
     <tr class="dark nav-header">
-	<td colspan="10" class="fall" width="100%" style="vertical-align:top;text-align:left;">
+	<td colspan="9" class="fall" width="100%" style="vertical-align:top;text-align:left;">
 	    <table width="100%" cellpadding="2">
 		<tr>
 		    <td width="1%" align="left" class="pad5"><img src="img/Filter.png" alt="" width="16" onclick="document.filter.submit();"></td>
@@ -62,7 +62,7 @@
     </form>
     {if $listdata.total != 0}
 	<tr class="scroller">
-	    <td colspan="10" class="fall">
+	    <td colspan="9" class="fall">
 		{include file="scroller.html" loop=$netlist}
 	    </td>
 	</tr>
@@ -99,10 +99,6 @@
 	
 	<td class="fbt pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
 	    <strong>Interfejsów<br>sieciowych</strong>
-	</td>
-	
-	<td class="fbt pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
-	    <strong>EU</strong>
 	</td>
 	
 	<td class="frightu pad tleft" width="1%" nowrap>
@@ -148,23 +144,22 @@
 	    {$netlist[list].count_netdev}
 	</td>
 	
-	<td class="pad tleft" width="1%" nowrap style="text-align:center;vertical-align:bottom;cursor:pointer;" onclick="self.location.href='?m=networknodeinfo&idn={$netlist[list].id}'">
-	    {if $netlist[list].eu}<img src="img/Apply.png" alt="Tak">{/if}
-	</td>
-	
-	<td class="fright pad tleft" width="1%" nowrap>
-	    <a href="?m=networknodeinfo&idn={$netlist[list].id}"><img src="img/info.gif"></a>
-	    <a href="?m=networknodeedit&id={$netlist[list].id}"><img src="img/edit.gif"></a>
+	<td class="fright pad tleft" width="1%" nowrap align="right">
+	    {if $netlist[list].invprojectid}
+		<img src="img/money.gif" alt='[ projekt ]' {tip text="<i>Informacja o projekcie</i><br><b>{if $netlist[list].projecteu}<font style='color:blue'>Współfinansowany z EU</font><br>{/if}{$netlist[list].projectname}</b><br>{$netlist[list].projecttitle}"} onclick="self.location.href='?m=projectinfo&id={$netlist[list].invprojectid}';">
+	    {/if}
+	    <a href="?m=networknodeinfo&idn={$netlist[list].id}" alt='[ info ]'><img src="img/info.gif"></a>
+	    <a href="?m=networknodeedit&id={$netlist[list].id}" alt='[ edit ]'><img src="img/edit.gif"></a>
 	    {if !$netlist[list].count_netdev}
-		<a href="?m=networknodedel&id={$netlist[list].id}" onclick="return confirmLink(this,' Potwierdź usunięcie węzła');"><img src="img/delete.gif"></a>
+		<a href="?m=networknodedel&id={$netlist[list].id}" onclick="return confirmLink(this,' Potwierdź usunięcie węzła');"><img src="img/delete.gif" alt='[ del ]'></a>
 	    {else}
-		<img src="img/deleteoff.gif">
+		<img src="img/deleteoff.gif" alt=''>
 	    {/if}
 	</td>
     </tr>
     {sectionelse}
 	<tr class="error">
-		<td colspan="10" align="center" class="fall">
+		<td colspan="9" align="center" class="fall">
 			<p>&nbsp;</p>
 			<p><strong>Brak węzłów</strong></p>
 			<p>&nbsp;</p>
@@ -173,13 +168,13 @@
     {/section}
     {if $listdata.total != 0}
 	<tr class="scroller">
-	    <td colspan="10" class="fall">
+	    <td colspan="9" class="fall">
 		{include file="scroller.html" loop=$netlist}
 	    </td>
 	</tr>
     {/if}
     <tr class="dark nav-footer">
-		<td colspan="10" align="right" class="fall">
+		<td colspan="9" align="right" class="fall">
 		    <a href="?m=networknodeadd" class="button">Nowy węzeł <img src="img/add.gif"></a>
 		</td>
     </tr>

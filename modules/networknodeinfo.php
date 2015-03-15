@@ -86,14 +86,22 @@ elseif ($tuck == 'interface') {
     if (isset($_GET['updateinterface']) && !empty($_GET['updateinterface'])) {
 	if (isset($_GET['save'])) {
 	    $idi = intval($_GET['updateinterface']); // id interfejsu sieciowego;
-	    $pri = (isset($_GET['pri']) ? $_GET['pri'] : '-1');
-	    $prn = (isset($_GET['prn']) ? $_GET['prn'] : '-1');
+	    $pri = (isset($_GET['pri']) ? $_GET['pri'] : '-1'); // projekt dla interfejsów
+	    $prn = (isset($_GET['prn']) ? $_GET['prn'] : '-1'); // projekt dla komputerów
+	    $nts = (isset($_GET['nts']) ? $_GET['nts'] : '-1'); // status projektu dla interfejsów
 	    
 	    if ($pri != '-1') 
 		$DB->Execute('UPDATE netdevices SET invprojectid = ? WHERE id = ?;',array(($pri ? $pri : NULL),$idi));
 	
 	    if ($prn != '-1')
 		$DB->Execute('UPDATE nodes SET invprojectid = ? WHERE netdev = ?;',array(($prn ? $prn : NULL),$idi));
+	    
+	    if ($nts != '-1') {
+		if ($nts == '-2') $status = $DB->getOne('SELECT status FROM networknode WHERE id = ? LIMIT 1;',array($idn));
+		else $status = $nts;
+		$DB->Execute('UPDATE netdevices SET status = ? WHERE id = ?;',array(($status ? $status : 0),$idi));
+	    }
+	
 	} else {
 	    $SMARTY->assign('intinfo',$DB->getRow('SELECT id, name FROM netdevices WHERE id = ? LIMIT 1;',array($_GET['updateinterface'])));
 	    $SMARTY->assign('updateint',true);

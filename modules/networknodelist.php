@@ -71,7 +71,7 @@ $SMARTY->assign('netlist',$netlist);
 $SMARTY->assign('page',$page);
 $SMARTY->assign('start',$start);
 $SMARTY->assign('pagelimit',$pagelimit);
-$SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
+$SMARTY->assign('projectlist',$DB->getAll('SELECT id,name,eu FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
 $SMARTY->assign('grouplist',$DB->getall('SELECT id,name FROM networknodegroups ORDER BY name ASC;'));
 $SMARTY->display('networknodelist.html');
 ?>
