@@ -34,6 +34,11 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '2015-03-17',
+	    'status'	=> '',
+	    'opis'	=> 'Generator SIIS v5',
+	),
+	array(
 	    'data'	=> '2015-03-12',
 	    'status'	=> '',
 	    'opis'	=> 'dodano możliwość które pola szybkiego wyszukiwania mają być widoczne : Konfigracja -> Formularze -> Szybkie wyszukiwanie',

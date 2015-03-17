@@ -890,13 +890,31 @@ INPUT[type='text'].active {
     margin-bottom 		: 10px;
     font-size			: 14pt;
     font-family			:  Tahoma, Verdana, Arial;
-    padding 			: 2px 0px 2px 8px;
+    padding 			: 2px 0px 2px 0px;
     color			: #006500;
 }
 
 .title_sm {
     font-weight 		: normal;
     font-size 			: 14pt;
+    font-family 		:  Tahoma, Verdana, Arial;
+    color			: #006500;
+}
+
+.title_small {
+    width			: 99%;
+    right			: 15px;
+    font-weight			: normal;
+    margin-bottom 		: 10px;
+    font-size			: 11pt;
+    font-family			:  Tahoma, Verdana, Arial;
+    padding 			: 2px 0px 2px 0px;
+    color			: #006500;
+}
+
+.title_sm_small {
+    font-weight 		: normal;
+    font-size 			: 11pt;
     font-family 		:  Tahoma, Verdana, Arial;
     color			: #006500;
 }

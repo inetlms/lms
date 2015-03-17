@@ -67,7 +67,78 @@ $linktypes = array(
     );
 
 
-function add_siis4($forms)
+function import_division($id)
+{
+    global $DB,$SMARTY;
+    $obj = new xajaxResponse();
+    
+    if ($id) {
+	$div = $DB->getRow('SELECT * FROM divisions WHERE id = ? LIMIT 1;',array($id));
+	$obj->assign("id_divname","value",$div['name']);
+	$obj->script("removeClassId('id_divname','alerts');");
+	if ($div['ten']) {
+	    $obj->assign("id_ten","value",$div['ten']);
+	    $obj->script("removeClassId('id_ten','alerts');");
+	}
+	if ($div['regon']) {
+	    $obj->assign("id_regon","value",$div['regon']);
+	    $obj->script("removeClassId('id_regon','alerts');");
+	}
+	if ($div['rbe']) {
+	    $obj->assign("id_krs","value",$div['rbe']);
+	}
+	if ($div['rpt']) {
+	    $obj->assign("id_rpt","value",$div['rpt']);
+	    $obj->script("removeClassId('id_rpt','alerts');");
+	}
+	if ($div['rjpt']) {
+	    $obj->assign("id_rjst","value",$div['rjpt']);
+	}
+	if ($div['city']) {
+	    $obj->assign("id_city","value",$div['city']);
+	    $obj->script("removeClassId('id_city','alerts');");
+	}
+	if ($div['address']) {
+	    $obj->assign("id_street","value",$div['address']);
+	}
+	if ($div['zip']) {
+	    $obj->assign("id_zip","value",$div['zip']);
+	    $obj->script("removeClassId('id_zip','alerts');");
+	}
+	if ($div['url']) {
+	    $obj->assign("id_url","value",$div['url']);
+	}
+	if ($div['email']) {
+	    $obj->assign("id_email","value",$div['email']);
+	    $obj->script("removeClassId('id_email','alerts');");
+	}
+    } else {
+	$obj->assign("id_divname","value","");
+	$obj->script("addClassId('id_divname','alerts');");
+	$obj->assign("id_ten","value","");
+	$obj->script("addClassId('id_ten','alerts');");
+	$obj->assign("id_regon","value","");
+	$obj->script("addClassId('id_regon','alerts');");
+	$obj->assign("id_krs","value","");
+	$obj->assign("id_rpt","value","");
+	$obj->script("addClassId('id_rpt','alerts');");
+	$obj->assign("id_rjst","value","");
+	$obj->assign("id_city","value","");
+	$obj->script("addClassId('id_city','alerts');");
+	$obj->assign("id_street","value","");
+	$obj->script("addClassId('id_street','alerts');");
+	$obj->assign("id_zip","value","");
+	$obj->script("addClassId('id_zip','alerts');");
+	$obj->assign("id_url","value","");
+	$obj->assign("id_email","value","");
+	$obj->script("addClassId('id_email','alerts');");
+    }
+    
+    return $obj;
+}
+
+
+function add_siis($forms)
 {
     global $DB,$LMS,$UKE;
     $obj = new xajaxResponse();
@@ -76,14 +147,12 @@ function add_siis4($forms)
     $blad = false;
     
     $obj->script("removeClassId('id_divisionid','alerts');");
+    $obj->script("removeClassId('id_reportyear','alerts');"); 		$obj->assign("id_reportyear","innerHTML","");
     $obj->script("removeClassId('id_divname','alerts');");
-    $obj->script("removeClassId('id_ten','alerts');");
-    $obj->assign("id_ten_alerts","innerHTML","");
-    $obj->script("removeClassId('id_regon','alerts');");
-    $obj->assign("id_regon_alerts","innerHTML","");
+    $obj->script("removeClassId('id_ten','alerts');");			$obj->assign("id_ten_alerts","innerHTML","");
+    $obj->script("removeClassId('id_regon','alerts');");		$obj->assign("id_regon_alerts","innerHTML","");
     $obj->script("removeClassId('id_krs','alerts');");
-    $obj->script("removeClassId('id_rpt','alerts');");
-    $obj->assign("id_rpt_alerts","innerHTML","");
+    $obj->script("removeClassId('id_rpt','alerts');");			$obj->assign("id_rpt_alerts","innerHTML","");
     $obj->script("removeClassId('location','alerts');");
     $obj->script("removeClassId('id_states','alerts');");
     $obj->script("removeClassId('id_districts','alerts');");
@@ -91,23 +160,29 @@ function add_siis4($forms)
     $obj->script("removeClassId('id_city','alerts');");
     $obj->script("removeClassId('id_street','alerts');");
     $obj->script("removeClassId('id_location_house','alerts');");
-    $obj->script("removeClassId('id_zip','alerts');");
-    $obj->assign("id_zip_alerts","innerHTML","");
-    $obj->script("removeClassId('id_email','alerts');");
-    $obj->assign("id_email_alerts","innerHTML","");
+    $obj->script("removeClassId('id_zip','alerts');");			$obj->assign("id_zip_alerts","innerHTML","");
+    $obj->script("removeClassId('id_email','alerts');");		$obj->assign("id_email_alerts","innerHTML","");
     $obj->script("removeClassId('id_contact_name','alerts');");
     $obj->script("removeClassId('id_contact_lastname','alerts');");
     $obj->script("removeClassId('id_contact_phone','alerts');");
-    $obj->script("removeClassId('id_contact_email','alerts');");
-    $obj->assign("id_contact_email_alerts","innerHTML","");
+    $obj->script("removeClassId('id_contact_email','alerts');");	$obj->assign("id_contact_email_alerts","innerHTML","");
     
-    if (!$form['divisionid']) {
-	$obj->script("addClassId('id_divisionid','alerts');");
-	$blad = true;
-    } 
+//    if (!$form['divisionid']) {
+//	$obj->script("addClassId('id_divisionid','alerts');");
+//	$blad = true;
+//    } 
     
     if (!$form['divname']) {
 	$obj->script("addClassId('id_divname','alerts');");
+	$blad = true;
+    }
+    
+    if (!$form['reportyear']) {
+	$obj->script("addClassId('id_reportyear','alerts');");
+	$blad = true;
+    } elseif (!intval($form['reportyear'])) {
+	$obj->script("addClassId('id_reportyear','alerts');");
+	$obj->assign("id_reportyear_alerts","innerHTML","Błędna data");
 	$blad = true;
     }
     
@@ -129,10 +204,10 @@ function add_siis4($forms)
 	$blad = true;
     }
     
-    if (!$form['krs']) {
-	$obj->script("addClassId('id_krs','alerts');");
-	$blad = true;
-    }
+//    if (!$form['krs']) {
+//	$obj->script("addClassId('id_krs','alerts');");
+//	$blad = true;
+//    }
     
     if (!$form['rpt']) {
 	$obj->script("addClassId('id_rpt','alerts');");
@@ -238,13 +313,13 @@ function add_siis4($forms)
 	}
 	
 	if ($form['action'] == 'add') {
-	    $idr = $UKE->add_siis4($form);
-	    //$obj->script("self.location.href='?m=uke_siis4_info&tuck=&idr=".$idr."';");
-	    $obj->script("self.location.href='?m=uke_siis4';");
+	    $idr = $UKE->add_siis($form);
+	    //$obj->script("self.location.href='?m=uke_siis_info&tuck=&idr=".$idr."';");
+	    $obj->script("self.location.href='?m=uke_siis';");
 	}
 	elseif ($form['action'] == 'edit') {
-	    $UKE->update_siis4($form);
-	    $obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=DP&idr=".$form['id']."');");
+	    $UKE->update_siis($form);
+	    $obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=DP&idr=".$form['id']."');");
 	}
 	
 	
@@ -399,12 +474,12 @@ function add_PO($forms)
 	
 	if ($action == 'add') {
 	    
-	    $UKE->add_siis4_data_po($data);
-	    $obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=PO&idr=".$data['rapid']."');");
+	    $UKE->add_siis_data_po($data);
+	    $obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=PO&idr=".$data['rapid']."');");
 	}
 	elseif ($action == 'edit') {
-	    $UKE->update_siis4_data_po($data);
-	    $obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=PO&idr=".$data['rapid']."');");
+	    $UKE->update_siis_data_po($data);
+	    $obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=PO&idr=".$data['rapid']."');");
 	}
 	
 	
@@ -427,7 +502,7 @@ function add_PO($forms)
 	    )
 	);
 	
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=PO&idr=".$idr."');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=PO&idr=".$idr."');");
 	
 	return $obj;
     }
@@ -469,9 +544,12 @@ function add_PO($forms)
 	global $DB,$LMS;
 	$obj = new xajaxResponse();
 	
-	$networknode = $DB->GetRow('SELECT id,name,type,states,districts,boroughs,city,street,zip,location_city,
-			location_street,location_house,longitude,latitude,buildingtype,instofanten,available_surface,eu 
-			FROM networknode WHERE id = ? LIMIT 1',array($idw));
+	$networknode = $DB->GetRow('SELECT n.id, n.name, n.type, n.states, n.districts, n.boroughs, n.city, n.street, n.zip, n.location_city,
+			n.location_street, n.location_house, n.longitude, n.latitude, n.buildingtype, n.instofanten, n.available_surface, n.eu, n.status, 
+			p.number AS projectnumber 
+			FROM networknode n 
+			LEFT JOIN invprojects p ON (p.id = n.invprojectid) 
+			WHERE n.id = ? LIMIT 1',array($idw));
 	
 	
 	if ($networknode['location_city']) {
@@ -499,8 +577,12 @@ function add_PO($forms)
 		    $idr,'WW',$networknode['name'],1,$data
 		)
 	);
-	
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=WW&idr=".$idr."');");
+//	$obj->script("xajax_import_interfaces('".$idr."');");
+//	$obj->script("xajax_import_lk('".$idr."');");
+//	$obj->script("xajax_import_lb('".$idr."');");
+//	$obj->script("xajax_import_pol)'".$idr."');");
+//	$obj->script("xajax_import_zas('".$idr."');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=WW&idr=".$idr."');");
 	
 	return $obj;
     
@@ -539,8 +621,12 @@ function add_PO($forms)
 		$id,
 	    )
 	);
-	
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=WW&idr=".$idr."');");
+//	$obj->script("xajax_import_interfaces('".$idr."');");
+//	$obj->script("xajax_import_lk('".$idr."');");
+//	$obj->script("xajax_import_lb('".$idr."');");
+//	$obj->script("xajax_import_pol)'".$idr."');");
+//	$obj->script("xajax_import_zas('".$idr."');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=WW&idr=".$idr."');");
 	
 	return $obj;
     }
@@ -606,9 +692,12 @@ function add_PO($forms)
 	
 	if (!$blad) {
 	
-	    $networknode = $DB->GetRow('SELECT id,name,type,states,districts,boroughs,city,street,zip,location_city,
-			location_street,location_house,longitude,latitude,buildingtype 
-			FROM networknode WHERE id = ? LIMIT 1',array($idw));
+	    $networknode = $DB->GetRow('SELECT n.id, n.name, n.type, n.states, n.districts, n.boroughs, n.city, n.street, n.zip, n.location_city,
+			n.location_street, n.location_house, n.longitude, n.latitude, n.buildingtype, n.eu, n.invprojectid,
+			p.number AS projectnumber 
+			FROM networknode n
+			LEFT JOIN invprojects p ON (p.id = n.invprojectid) 
+			WHERE n.id = ? LIMIT 1',array($idw));
 	
 	    $networknode['foreign_entity'] = $DB->GetOne('SELECT markid FROM uke_data WHERE id = ? LIMIT 1;',array($idp));
 	
@@ -630,8 +719,13 @@ function add_PO($forms)
 		    $idr,'WO',$networknode['name'],1,$data
 		)
 	    );
-	
-	    $obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=WO&idr=".$idr."');");
+	    
+//	    $obj->script("xajax_import_interfaces('".$idr."');");
+//	    $obj->script("xajax_import_lk('".$idr."');");
+//	    $obj->script("xajax_import_lb('".$idr."');");
+//	    $obj->script("xajax_import_pol)'".$idr."');");
+//	    $obj->script("xajax_import_zas('".$idr."');");
+	    $obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=WO&idr=".$idr."');");
 	}
 	
 	return $obj;
@@ -650,7 +744,12 @@ function add_PO($forms)
 	    )
 	);
 	
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=WO&idr=".$idr."');");
+//	$obj->script("xajax_import_interfaces('".$idr."');");
+//	$obj->script("xajax_import_lk('".$idr."');");
+//	$obj->script("xajax_import_lb('".$idr."');");
+//	$obj->script("xajax_import_pol)'".$idr."');");
+//	$obj->script("xajax_import_zas('".$idr."');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=WO&idr=".$idr."');");
 	
 	return $obj;
     }
@@ -659,10 +758,13 @@ function add_PO($forms)
     
     function import_interfaces($idr) 
     {
-	global $DB,$UKE;
+	global $DB,$UKE,$NSTATUS;
 	$obj = new xajaxResponse();
+	$DB->Execute('DELETE FROM uke_data WHERE rapid = ? AND mark = ?;',array($idr,'INT'));
 	
-	$nd = $DB->GetAll('SELECT nd.id, nd.ports, nd.name AS netnodename, nn.name AS networknodename, nn.backbone_layer, nn.distribution_layer, nn.access_layer, nn.sharing, 
+	$nd = $DB->GetAll('SELECT nd.id, nd.ports, nd.name AS netnodename, nd.invprojectid AS netdevproject, nd.status AS netdevstatus,  
+		nn.name AS networknodename, nn.backbone_layer, nn.distribution_layer, nn.access_layer, nn.sharing, 
+		nn.invprojectid, 
 		(CASE WHEN nlsrccable.nlsrccount IS NULL THEN 0 ELSE nlsrccable.nlsrccount END) + (CASE WHEN nldstcable.nldstcount IS NULL THEN 0 ELSE nldstcable.nldstcount END) AS cabledistports,
 		(CASE WHEN nlsrcradio.nlsrccount IS NULL THEN 0 ELSE nlsrcradio.nlsrccount END) + (CASE WHEN nldstradio.nldstcount IS NULL THEN 0 ELSE nldstradio.nldstcount END) AS radiodistports,
 		(CASE WHEN nlsrcfiber.nlsrccount IS NULL THEN 0 ELSE nlsrcfiber.nlsrccount END) + (CASE WHEN nldstfiber.nldstcount IS NULL THEN 0 ELSE nldstfiber.nldstcount END) AS fiberdistports,
@@ -689,17 +791,38 @@ function add_PO($forms)
 		LEFT JOIN (SELECT netdev, COUNT(port) AS portcount FROM nodes LEFT JOIN customers ON customers.id = nodes.ownerid WHERE customers.type = 1 AND linktype = 2 GROUP BY netdev) cndpfiber ON cndpfiber.netdev = nd.id 
 		WHERE nd.networknodeid > 0 AND u.useraport=1 AND (u.mark = ? OR u.mark = ?) AND EXISTS (SELECT id FROM netlinks nl WHERE nl.src = nd.id OR nl.dst = nd.id) 
 		ORDER BY nd.name',array('WW','WO'));
+		
+	$count = sizeof($nd);
 	
 	if ($nd) {
-	    $count = sizeof($nd);
+	    
 	    for ($i=0;$i<$count;$i++) {
 		$nd[$i]['personalaccessports'] = $nd[$i]['cablepersonalaccessports'] + $nd[$i]['radiopersonalaccessports'] + $nd[$i]['fiberpersonalaccessports'];
 		$nd[$i]['commercialaccessports'] = $nd[$i]['cablecommercialaccessports'] + $nd[$i]['radiocommercialaccessports'] + $nd[$i]['fibercommercialaccessports'];
 	    }
 	}
 	
+	// info o projektach
+	
+	
 	$dane = array();
+	
+	for ($i=0; $i<$count; $i++) {
+	    if ($nd[$i]['netdevproject'] == '1' && $nd[$i]['invprojectid'] != '0') { // jeśli z jednostki nadrzędnej
+		$dane[$i]['projectnumber'] = $DB->getOne('SELECT number FROM invprojects WHERE id = ? LIMIT 1;',array($nd[$i]['invprojectid']));
+		$dane[$i]['status'] = $NSTATUS[$nd[$i]['netdevstatus']];
+	    } elseif ($nd[$i]['netdevproject'] > '1') {
+		$dane[$i]['projectnumber'] = $DB->getOne('SELECT number FROM invprojects WHERE id = ? LIMIT 1;',array($nd[$i]['netdevproject']));
+		$dane[$i]['status'] = $NSTATUS[$nd[$i]['netdevstatus']];
+	    } else {
+		$dane[$i]['projectnumber'] = '';
+		$dane[$i]['status'] = '';
+	    }
+	    if (empty($dane[$i]['projectnumber']))
+		$dane[$i]['status'] = '';
+	}
 	for ($i=0;$i<$count;$i++) {
+	    
 	    $dane[$i]['id'] = $nd[$i]['id'];
 	    $dane[$i]['netnodename'] = $nd[$i]['netnodename'];
 	    $dane[$i]['networknodename'] = $nd[$i]['networknodename'];
@@ -712,7 +835,7 @@ function add_PO($forms)
 			$dane[$i]['access_layer'] = 'Nie';
 			$dane[$i]['medium'] = 'kablowe parowe miedziane';
 			$dane[$i]['pasmo_radiowe'] = '';
-			$dane[$i]['technologia'] = 'Ethernet';
+			$dane[$i]['technologia'] = '100 Mb/s Fast Ethernet';
 			$dane[$i]['max_to_net'] = '100';
 			$dane[$i]['max_to_user'] = '100';
 			$dane[$i]['ports'] = $nd[$i]['cabledistports'];
@@ -726,9 +849,9 @@ function add_PO($forms)
 			$dane[$i]['access_layer'] = 'Nie';
 			$dane[$i]['medium'] = 'radiowe';
 			$dane[$i]['pasmo_radiowe'] = '5.5';
-			$dane[$i]['technologia'] = 'Ethernet';
-			$dane[$i]['max_to_net'] = '54';
-			$dane[$i]['max_to_user'] = '54';
+			$dane[$i]['technologia'] = 'WiFi - 5 GHz';
+			$dane[$i]['max_to_net'] = '100';
+			$dane[$i]['max_to_user'] = '100';
 			$dane[$i]['ports'] = $nd[$i]['radiodistports'];
 			$dane[$i]['use_ports'] = $nd[$i]['radiodistports'];
 			$dane[$i]['empty_ports'] = 0;
@@ -740,7 +863,7 @@ function add_PO($forms)
 			$dane[$i]['access_layer'] = 'Nie';
 			$dane[$i]['medium'] = 'światłowodowe';
 			$dane[$i]['pasmo_radiowe'] = '';
-			$dane[$i]['technologia'] = 'Ethernet';
+			$dane[$i]['technologia'] = '1 Gigabit Ethernet';
 			$dane[$i]['max_to_net'] = '1000';
 			$dane[$i]['max_to_user'] = '1000';
 			$dane[$i]['ports'] = $nd[$i]['fiberdistports'];
@@ -755,7 +878,7 @@ function add_PO($forms)
 		$dane[$i]['access_layer'] = 'Tak';
 		$dane[$i]['medium'] = 'kablowe parowe miedziane';
 		$dane[$i]['pasmo_radiowe'] = '';
-		$dane[$i]['technologia'] = 'Ethernet';
+		$dane[$i]['technologia'] = '100 Mb/s Fast Ethernet';
 		$dane[$i]['max_to_net'] = '100';
 		$dane[$i]['max_to_user'] = '100';
 		$dane[$i]['ports'] = ($nd[$i]['ports'] - $nd[$i]['cabledistports'] - $nd[$i]['radiodistports'] - $nd[$i]['fiberdistports'] - $nd[$i]['radiopersonalaccessports'] - $nd[$i]['radiocommercialaccessports'] - $nd[$i]['fiberpersonalaccessports'] - $nd[$i]['fibercommercialaccessports']);
@@ -770,9 +893,9 @@ function add_PO($forms)
 		$dane[$i]['access_layer'] = 'Tak';
 		$dane[$i]['medium'] = 'radiowe';
 		$dane[$i]['pasmo_radiowe'] = '2.4';
-		$dane[$i]['technologia'] = 'Ethernet';
-		$dane[$i]['max_to_net'] = '54';
-		$dane[$i]['max_to_user'] = '54';
+		$dane[$i]['technologia'] = 'wiFi - 2,4 GHz';
+		$dane[$i]['max_to_net'] = '100';
+		$dane[$i]['max_to_user'] = '100';
 		$dane[$i]['ports'] = ($nd[$i]['radiopersonalaccessports'] + $nd[$i]['radiocommercialaccessports']);
 		$dane[$i]['use_ports'] = ($nd[$i]['radiopersonalaccessports'] + $nd[$i]['radiocommercialaccessports']);
 		$dane[$i]['empty_ports'] = 0;
@@ -785,7 +908,7 @@ function add_PO($forms)
 		$dane[$i]['access_layer'] = 'Tak';
 		$dane[$i]['medium'] = 'światłowodowe';
 		$dane[$i]['pasmo_radiowe'] = '';
-		$dane[$i]['technologia'] = 'Ethernet';
+		$dane[$i]['technologia'] = '100 Mb/s Fast Ethernet';
 		$dane[$i]['max_to_net'] = '100';
 		$dane[$i]['max_to_user'] = '100';
 		$dane[$i]['ports'] = ($nd[$i]['fiberpersonalaccessports'] + $nd[$i]['fibercommercialaccessports']);
@@ -802,7 +925,7 @@ function add_PO($forms)
 //    $tmp[] = 'I,' . implode(',',$dane[$i]);
 //}
 
-	$DB->Execute('DELETE FROM uke_data WHERE rapid = ? AND mark = ?;',array($idr,'INT'));
+	
 	
 	for ($i=0;$i<sizeof($dane);$i++) {
 	    $tmp['rapid'] = $idr;
@@ -810,10 +933,14 @@ function add_PO($forms)
 	    $tmp['markid'] = $dane[$i]['id'];
 	    $tmp['useraport'] = 1;
 	    $tmp['data'] = serialize($dane[$i]);
-	    $UKE->add_siis4_data($tmp);
+	    $UKE->add_siis_data($tmp);
 	}
-	$obj->script("alert('Dane zostały ponownie zaimportowane');");
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=INT&idr=".$idr."');");
+//	$obj->script("xajax_import_lk('".$idr."');");
+//	$obj->script("xajax_import_lb('".$idr."');");
+//	$obj->script("xajax_import_pol)'".$idr."');");
+//	$obj->script("xajax_import_zas('".$idr."');");
+//	$obj->script("alert('Dane zostały ponownie zaimportowane');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=INT&idr=".$idr."');");
 	return $obj;
     }
 
@@ -830,7 +957,11 @@ function add_PO($forms)
 	    )
 	);
 	
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=INT&idr=".$idr."');");
+//	$obj->script("xajax_import_lk('".$idr."');");
+//	$obj->script("xajax_import_lb('".$idr."');");
+//	$obj->script("xajax_import_pol)'".$idr."');");
+//	$obj->script("xajax_import_zas('".$idr."');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=INT&idr=".$idr."');");
 	
 	return $obj;
     }
@@ -838,11 +969,13 @@ function add_PO($forms)
     
     function import_LK($idr)
     {
-	global $DB,$linktypes;
+	global $DB, $linktypes;
 	$obj = new xajaxResponse();
+	$DB->Execute('DELETE FROM uke_data WHERE rapid=? AND mark = ? ;',array($idr,'LK'));
 	
 	$netdevices = $DB->GetAll('SELECT markid AS id FROM uke_data WHERE rapid=? AND mark=? AND useraport=? ORDER BY markid;',array($idr,'INT',1));
 	$idnetdevices = array();
+
 	if ($netdevices) 
 	{
 	    for ($i=0;$i<sizeof($netdevices);$i++)
@@ -851,41 +984,52 @@ function add_PO($forms)
 	$processed = array();
 	$netlinks = array();
 	
-	if ($netdevices) foreach ($netdevices as $netdevice) {
-		if (($ndnetlinks = $DB->GetAll("SELECT src, dst, type, speed FROM netlinks WHERE src = ? OR dst = ? ORDER BY src",array($netdevice['id'], $netdevice['id'])))) {
-		    foreach ($ndnetlinks as $netlink) {
+	if ($netdevices) foreach ($netdevices as $netdevice) 
+	{
+		$ndnetlinks = $DB->GetAll('SELECT src, dst, type, speed FROM netlinks WHERE src = ? OR dst = ? ORDER BY src',array($netdevice['id'],$netdevice['id']));
+		
+		if ($ndnetlinks) 
+		{
+		    foreach ($ndnetlinks as $netlink) 
+		    {
 			$idnet = $netdevice['id'];
 			$srcnet = $netlink['src'];
 			$dstnet = $netlink['dst'];
+			
 			if (in_array($srcnet,$idnetdevices) && in_array($dstnet,$idnetdevices))
 			{
-			$netnodeid = array($srcnet, $dstnet);
-			sort($netnodeid);
-			$netnodelinkid = implode('_',$netnodeid);
-			if (!isset($processed[$netnodelinkid])) {
+			    $netnodeid = array($srcnet, $dstnet);
+			    sort($netnodeid);
+			    $netnodelinkid = implode('_',$netnodeid);
 			    
-			    if ($netlink['src'] == $netdevice['id']) {
-				if ($idnet != $dstnet) {
-				    $netlinks[] = array(
+			    if (!isset($processed[$netnodelinkid])) 
+			    {
+				if ($netlink['src'] == $netdevice['id']) 
+				{
+				    if ($idnet != $dstnet) 
+				    {
+					$netlinks[] = array(
 					'type' 	=> $netlink['type'], 
 					'speed' => $netlink['speed'], 
 					'src' 	=> $idnet, 
 					'dst' 	=> $dstnet,
-				    );
-				    $processed[$netnodelinkid] = true;
-				    $netnodes[$idnet]['distports']++;
-				}
-			    } else if ($idnet != $srcnet) {
-				    $netlinks[] = array(
+					);
+					$processed[$netnodelinkid] = true;
+					$netnodes[$idnet]['distports']++;
+				    }
+				} 
+				else if ($idnet != $srcnet) 
+				{
+					$netlinks[] = array(
 					'type' 	=> $netlink['type'], 
 					'speed' => $netlink['speed'], 
 					'src' 	=> $idnet, 
 					'dst' 	=> $srcnet,
-				    );
-				    $processed[$netnodelinkid] = true;
-				    $netnodes[$idnet]['distports']++;
+					);
+					$processed[$netnodelinkid] = true;
+					$netnodes[$idnet]['distports']++;
 				}
-			}
+			    }
 			}
 		    }
 		}
@@ -893,7 +1037,7 @@ function add_PO($forms)
 	
 	if ($netlinks)
 	{
-	$DB->Execute('DELETE FROM uke_data WHERE rapid=? AND mark = ? ;',array($idr,'LK'));
+	
 	foreach ($netlinks as $netlink)
 	
 	{
@@ -906,17 +1050,13 @@ function add_PO($forms)
 		    'wlasnosc'		=> 'własna',
 		    'obcy'		=> '',
 		    'rodzaja'		=> 'Węzeł Własny',
-		    
 		    'identyfikatora'	=> $DB->GetOne('SELECT nn.name FROM networknode nn JOIN netdevices nd ON (nn.id = nd.networknodeid) WHERE nd.id = ? LIMIT 1;',array($netlink['src'])),
-		    
 		    'rodzajb'		=> 'Węzeł Własny',
-		    
-		    'identyfikatorb'	=> $DB->GetOne('SELECT nn.name FROM networknode nn JOIN netdevices nd ON (nn.id = nd.networknodeid) WHERE nd.id = ? LIMIT 1;',array($netlink['src'])),
-		    
+		    'identyfikatorb'	=> $DB->GetOne('SELECT nn.name FROM networknode nn JOIN netdevices nd ON (nn.id = nd.networknodeid) WHERE nd.id = ? LIMIT 1;',array($netlink['dst'])),
 		    'medium'		=> $linktypes[$netlink['type']]['technologia'],
 		    'typwlokna'		=> ($netlink['type'] == 2 ? $linktypes[$netlink['type']]['typ'] : ''),
-		    'liczbalwokien'	=> ($netlink['type'] == 2 ? implode(',', array_fill(0, 2, $linktypes[$netlink['type']]['liczba_jednostek'])) : ''),
-		    'wlokienused'	=> '',
+		    'liczbalwokien'	=> ($netlink['type'] == 2 ? $linktypes[$netlink['type']]['liczba_jednostek'] : ''),
+		    'wlokienused'	=> ($netlink['type'] == 2 ? $linktypes[$netlink['type']]['liczba_jednostek'] : ''),
 		    'eu'		=> 'Nie',
 		    'dostepnapasywna'	=> 'Brak danych',
 		    'rodzajpasywnej'	=> '',
@@ -928,6 +1068,7 @@ function add_PO($forms)
 		    );
 		    
 		
+		if ($LK['identyfikatora'] != $LK['identyfikatorb'])
 		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUE (?,?,?,?,?);',
 		    array($idr,'LK',$LK['identyfikator'],1,serialize($LK))
 		);
@@ -935,11 +1076,14 @@ function add_PO($forms)
 		}
 	    }
 	}
-	    $obj->script("alert('Dane zostały ponownie zaimportowane');");
+//	    $obj->script("alert('Dane zostały ponownie zaimportowane');");
 	}
-	else $obj->script("alert('Dane NIE zostały ponownie zaimportowane');");
+//	else $obj->script("alert('Dane NIE zostały ponownie zaimportowane');");
 	
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=LK&idr=".$idr."');");
+//	$obj->script("xajax_import_lb('".$idr."');");
+//	$obj->script("xajax_import_pol)'".$idr."');");
+//	$obj->script("xajax_import_zas('".$idr."');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=LK&idr=".$idr."');");
 	return $obj;
     }
     
@@ -948,6 +1092,8 @@ function add_PO($forms)
     {
 	global $DB,$linktypes;
 	$obj = new xajaxResponse();
+	
+	$DB->Execute('DELETE FROM uke_data WHERE rapid=? AND mark = ? ;',array($idr,'LB'));
 	
 	$netdevices = $DB->GetAll('SELECT markid AS id FROM uke_data WHERE rapid=? AND mark=? AND useraport=? ORDER BY markid;',array($idr,'INT',1));
 	
@@ -1008,7 +1154,7 @@ function add_PO($forms)
 	
 	if ($netlinks)
 	{
-	$DB->Execute('DELETE FROM uke_data WHERE rapid=? AND mark = ? ;',array($idr,'LB'));
+	
 	foreach ($netlinks as $netlink)
 	{
 	    if ($netlink['src'] != $netlink['dst'])
@@ -1027,6 +1173,7 @@ function add_PO($forms)
 		    'sharing'		=> 'Nie',
 		);
 		
+		if ($LB['identyfikatora'] != $LB['identyfikatorb'])
 		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUE (?,?,?,?,?);',
 		    array($idr,'LB',$LB['identyfikator'],1,serialize($LB))
 		);
@@ -1035,8 +1182,10 @@ function add_PO($forms)
 	    }
 	}
 	}
-	$obj->script("alert('Dane zostały ponownie zaimportowane');");
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=LB&idr=".$idr."');");
+//	$obj->script("xajax_import_pol)'".$idr."');");
+//	$obj->script("xajax_import_zas('".$idr."');");
+//	$obj->script("alert('Dane zostały ponownie zaimportowane');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=LB&idr=".$idr."');");
 
 	return $obj;
     }
@@ -1045,6 +1194,8 @@ function add_PO($forms)
     {
 	global $DB,$linktypes;
 	$obj = new xajaxResponse();
+	
+	$DB->Execute('DELETE FROM uke_data WHERE rapid=? AND mark = ? ;',array($idr,'POL'));
 	
 	$netdevices = $DB->GetAll('SELECT markid AS id FROM uke_data WHERE rapid=? AND mark=? AND useraport=? ORDER BY markid;',array($idr,'INT',1));
 	
@@ -1091,7 +1242,6 @@ function add_PO($forms)
 	if ($netlinks)
 	{
 	
-	$DB->Execute('DELETE FROM uke_data WHERE rapid=? AND mark = ? ;',array($idr,'POL'));
 	foreach ($netlinks as $netlink)
 	{
 	    if ($netlink['src'] != $netlink['dst'])
@@ -1113,6 +1263,7 @@ function add_PO($forms)
 		    'speednet'		=> floor($netlink['speed'] / 1000),
 		);
 		
+		if ($POL['identyfikatora'] != $POL['identyfikatorb'])
 		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUE (?,?,?,?,?);',
 		    array($idr,'POL',$POL['identyfikator'],1,serialize($POL)));
 		
@@ -1121,8 +1272,10 @@ function add_PO($forms)
 	}
 	
 	}
-	$obj->script("alert('Dane zostały ponownie zaimportowane');");
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=POL&idr=".$idr."');");
+	
+//	$obj->script("xajax_import_zas('".$idr."');");
+//	$obj->script("alert('Dane zostały ponownie zaimportowane');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=POL&idr=".$idr."');");
 
 	return $obj;
     }
@@ -1139,7 +1292,10 @@ function add_PO($forms)
 	    )
 	);
 	
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=LK&idr=".$idr."');");
+//	$obj->script("xajax_import_lb('".$idr."');");
+//	$obj->script("xajax_import_pol)'".$idr."');");
+//	$obj->script("xajax_import_zas('".$idr."');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=LK&idr=".$idr."');");
 	
 	return $obj;
 	}
@@ -1157,7 +1313,9 @@ function add_PO($forms)
 	    )
 	);
 	
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=LB&idr=".$idr."');");
+//	$obj->script("xajax_import_pol)'".$idr."');");
+//	$obj->script("xajax_import_zas('".$idr."');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=LB&idr=".$idr."');");
 	
 	return $obj;
     }
@@ -1174,7 +1332,8 @@ function add_PO($forms)
 	    )
 	);
 	
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=POL&idr=".$idr."');");
+//	$obj->script("xajax_import_zas('".$idr."');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=POL&idr=".$idr."');");
 	
 	return $obj;
     }
@@ -1184,6 +1343,8 @@ function add_PO($forms)
     {
 	global $DB,$linktypes, $LMS;
 	$obj = new xajaxResponse();
+	
+	$DB->Execute('DELETE FROM uke_data WHERE rapid = ? AND mark=? ;',array($idr,'ZAS'));
 	
 	$nodelist = array();
 	
@@ -1219,7 +1380,7 @@ function add_PO($forms)
 	{
 	    $count = sizeof($nd);
 	    
-	    $DB->Execute('DELETE FROM uke_data WHERE rapid = ? AND mark=? ;',array($idr,'ZAS'));
+	    
 	    
 	    for ($i=0;$i<$count;$i++) {
 		$nd[$i]['personalaccessports'] = $nd[$i]['cablepersonalaccessports'] + $nd[$i]['radiopersonalaccessports'] + $nd[$i]['fiberpersonalaccessports'];
@@ -1227,7 +1388,7 @@ function add_PO($forms)
 		$nodelist[] = $nd[$i]['id'];
 	    }
 	
-	    $ranges = $DB->GetAll("SELECT n.id, n.linktype, n.location_street, n.location_city, n.location_house , n.longitude, n.latitude, 
+	    $ranges = $DB->GetAll("SELECT n.id, n.linktype, n.linkspeed, n.location_street, n.location_city, n.location_house , n.longitude, n.latitude, 
 		(SELECT zip FROM pna WHERE pna.cityid = n.location_city AND (pna.streetid IS NULL OR (pna.streetid IS NOT NULL AND pna.streetid = n.location_street)) LIMIT 1) AS location_zip " 
 		.", t.id AS tariffid "
 		.", CASE t.type
@@ -1299,8 +1460,8 @@ function add_PO($forms)
 		    'int'			=> ($rang[$i]['servicetypes'] == 'INT' ? 'Tak' : 'Nie'),
 		    'intmobile'			=> 'Nie',
 		    'iptv'			=> ($rang[$i]['servicetypes'] == 'TV' ? 'Tak' : 'Nie'),
-		    'otherservice'		=> 'Nie',
-		    'downstream'		=> round($rang[$i]['downstream'] / 1000),
+		    'otherservice'		=> '',
+		    'downstream'		=> round($rang[$i]['linkspeed'] / 1000),
 		    'downstreammobile'		=> 0,
 		    'custype'			=> $rang[$i]['custype'],
 		);
@@ -1311,8 +1472,8 @@ function add_PO($forms)
 	    }
 	}
 	
-	$obj->script("alert('Dane zostały ponownie zaimportowane');");
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=ZAS&idr=".$idr."');");
+//	$obj->script("alert('Dane zostały ponownie zaimportowane');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=ZAS&idr=".$idr."');");
 	
 	
 	return $obj;
@@ -1330,14 +1491,59 @@ function add_PO($forms)
 	    )
 	);
 	
-	$obj->script("loadAjax('id_data','?m=uke_siis4_info&tuck=ZAS&idr=".$idr."');");
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=ZAS&idr=".$idr."');");
+	
+	return $obj;
+    }
+    
+    
+    function add_project($idr,$idp)
+    {
+	global $DB,$UKE, $PROJECTPROGRAM, $PROJECTACTION;
+	$obj = new xajaxResponse();
+	
+	if ($idr && $proj = $DB->GetRow('SELECT * FROM invprojects WHERE id=? LIMIT 1;',array($idp)))
+	{
+	
+	$dane = array(
+	    'identyfikator' => 'PROJ'.sprintf('%02.d',$proj['id']),
+	    'nrprojektu' => $proj['number'],
+	    'nrumowy' => $proj['contract'],
+	    'tytul' => $proj['title'],
+	    'program' => $PROJECTPROGRAM[$proj['program']],
+	    'dzialanie' => $PROJECTACTION[$proj['program']][$proj['action']],
+	    'firma' => $proj['division'],
+	    'datapodpisania' => date('Y-m-d',$proj['contractdate']),
+	    'datazakonczenia' => date('Y-m-d',$proj['todate']),
+	    'wojewodztwo' => $proj['states'],
+	    'zakres' => $proj['scope']
+	);
+	
+	$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUE (?,?,?,?,?);',
+		    array($idr,'PROJ',$dane['identyfikator'],1,serialize($dane)));
+	
+	}
+	
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=PROJ&idr=".$idr."');");
+	
+	return $obj;
+    }
+    
+    function del_project($idr,$idp)
+    {
+	global $DB;
+	$obj = new xajaxResponse();
+	
+	$DB->Execute('DELETE FROM uke_data WHERE id = ? ;',array($idp));
+	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=PROJ&idr=".$idr."');");
 	
 	return $obj;
     }
 
 $LMS->InitXajax();
 $LMS->RegisterXajaxFunction(array(
-    'add_siis4',
+    'import_division',
+    'add_siis',
     'add_PO',
     'set_po_useraport',
     'view_select_po_to_ww',
@@ -1356,7 +1562,10 @@ $LMS->RegisterXajaxFunction(array(
     'set_pol_useraport',
     'set_zas_useraport',
     'import_zas',
+    'add_project',
+    'del_project',
 ));
+
 $SMARTY->assign('xajax', $LMS->RunXajax());
 
 ?>

@@ -28,35 +28,14 @@
 
 include(LIB_DIR.'/UKE.class.php');
 
-$idr = (isset($_GET['idr']) ? intval($_GET['idr']) : (isset($_POST['idr']) ? intval($_POST['idr']) : NULL));
-
-$layout['action'] = 'edit';
-$layout['pagetitle'] = 'Edycja raportu SIIS v4 za rok '.REPORT_YEAR;
+$layout['action'] = 'add';
+$layout['pagetitle'] = 'Nowy raport SIIS';
 
 $divinfo = $DB->GetAll('SELECT id,shortname,name FROM divisions ORDER BY name ASC;');
 $SMARTY->assign('divinfo',$divinfo);
 
-$rapdata = $DB->GetRow('SELECT * FROM uke WHERE id = ? LIMIT 1;',array($idr));
-if ($rapdata['location_city'])
-    $rapdata['teryt'] = true;
-else
-    $rapdata['teryt'] = false;
+include(MODULES_DIR.'/uke_siis_xajax.php');
 
-if ($rapdata['teryt']) {
-    $location = '';
-    $location .= ($rapdata['city'] ? $rapdata['city'].', ' : '');
-    $location .= ($rapdata['street'] ? $rapdata['street'] : '');
-    $rapdata['location'] = $location;
-    unset($location);
-} else 
-    $rapdata['location'] = '';
-
-$rapdata['tuck'] = (isset($_GET['tuck']) ? $_GET['tuck'] : (isset($_POST['tuck']) ? $_POST['tuck'] : 'DP'));
-
-$SMARTY->assign('rapdata',$rapdata);
-
-include(MODULES_DIR.'/uke_siis4_xajax.php');
-
-$SMARTY->display('uke_siis4_edit.html');
+$SMARTY->display('uke_siis_edit.html');
 
 ?>

@@ -24,7 +24,7 @@
 			</td>
 			<td width="1%" nowrap align="left" style="font-weight:bold;">:</td>
 			<td width="98%" nowrap align="left">
-			    <input type="text" name="poedit[shortname]" id="id_shortname" value="{$poinfo.shortname}" style="width:200px;">
+			    <input type="text" name="poedit[shortname]" id="id_shortname" value="{$poinfo.shortname|escape}" style="width:200px;">
 			    <div id="id_shortname_alerts" style="color:red;"></div>
 			</td>
 		    </tr>
@@ -35,7 +35,7 @@
 			</td>
 			<td width="1%" nowrap align="left" style="font-weight:bold;">:</td>
 			<td width="98%" nowrap align="left">
-			    <input type="text" name="poedit[name]" id="id_name" value="{$poinfo.name}" style="width:200px;">
+			    <input type="text" name="poedit[name]" id="id_name" value="{$poinfo.name|escape}" style="width:200px;">
 			    <div id="id_name_alerts" style="color:red;"></div>
 			</td>
 		    </tr>
@@ -228,7 +228,7 @@
 {/literal}
 
 {else}
-    {title value="Dostawcy usług i podmioty udostępniające lub współdzielące infrastrukturę" link="<a href=\"javascript:void(0);\" onclick=\"loadAjax('id_data_po','?m=uke_siis4_info&tuck=PO&action=add&idr={$idr}');\">Dodaj dostawcę <img src='img/add.gif'></a>"}
+    {title small='1' value="Dostawcy usług i podmioty udostępniające lub współdzielące infrastrukturę" link="<a href=\"javascript:void(0);\" onclick=\"loadAjax('id_data_po','?m=uke_siis_info&tuck=PO&action=add&idr={$idr}');\">Dodaj dostawcę <img src='img/add.gif'></a>"}
     <table width="100%"><tr><td width="100%"><div id="id_data_po"></div></td></tr></table>
     
     {if $polist}
@@ -253,7 +253,7 @@
 		    {else}
 			<img src="img/noaccess.gif" {tip text="Uwzględnij rekord w raporcie"} onclick="xajax_set_po_useraport({$idr},{$polist[polist].id},1);" style="cursor:pointer;">
 		    {/if}
-		    <img src="img/edit.gif" style="cursor:pointer;" onclick="loadAjax('id_data_po','?m=uke_siis4_info&tuck=PO&action=edit&idr={$idr}&id={$polist[polist].id}');">
+		    <img src="img/edit.gif" style="cursor:pointer;" onclick="loadAjax('id_data_po','?m=uke_siis_info&tuck=PO&action=edit&idr={$idr}&id={$polist[polist].id}');">
 		    <img src="img/delete.gif" style="cursor:pointer;" onclick="usun_po({$polist[polist].id});">
 		</td>
 	    </tr>
@@ -273,7 +273,7 @@
 	{
 	    if (confirm('Potwierdź usunięcie podmiotu')) 
 	    {
-		loadAjax('id_data','?m=uke_siis4_info&tuck=PO&action=delete&idr={/literal}{$idr}{literal}&id='+id);
+		loadAjax('id_data','?m=uke_siis_info&tuck=PO&action=delete&idr={/literal}{$idr}{literal}&id='+id);
 	    }
 	}
     

@@ -228,43 +228,57 @@
 					{/section}
 				</select>
 				<input type="text" name="port" value="{if $nodeinfo.port}{$nodeinfo.port}{/if}" size="2" {tip text="Enter port number in device (optional)" trigger="port"}>
-				<br>
+				
+				<p style="margin:3px 0 0 0;">
 				<select name="linktype" id="linktype" {tip trigger="linktype" text="Select link type"} onchange="change_linktype(this.options[this.selectedIndex].value)" style="width:300px;">
 					{foreach from=$_LINKTYPES item=item key=key}
 					<option VAlUE="{$key}">{$item}</option>
 					{/foreach}
-				</select><br>
+				</select>
+				</p>
+				
+				<p style="margin:3px 0 0 0;">
 				<select name="linktechnology" id="linktechnology" {tip trigger="linktechnology" text="Wybierz technologię łącza"} style="width:300px;">
 					<option value="0">- nieznana -</option>
 					{foreach $_LINKTECHNOLOGIES[0] as $linktechnologyidx => $linktechnology}
 					<option value="{$linktechnologyidx}">{$linktechnology}</option>
 					{/foreach}
 				</select>
+				
 				<select name="linkspeed" id="linkspeed" {tip trigger="linkspeed" text="Select link speed"}>
 					{foreach from=$_LINKSPEEDS item=item key=key}
 					<option value="{$key}"{if $key==100000} selected{/if}>{$item}</option>
 					{/foreach}
-				</select><br>
+				</select>
+				</p>
 				
-				
+				<p style="margin:3px 0 0 0;">
 				{assign 'dystrybucja' $smarty.const.LAYER_DISTRIBUTION}
 				{assign 'dostep' $smarty.const.LAYER_ACCESS} 
 				<select name="layer" id="layer" {tip text="Wybierz warstwę sieci" trigger="layer"} style="width:300px;">
 					<option value="{$dostep}"{if $nodeinfo.layer == $dostep} selected{/if}>{$_LAYERTYPE.$dostep}</option>
 					<option value="{$dystrybucja}"{if $nodeinfo.layer == $dystrybucja} selected{/if}>{$_LAYERTYPE.$dystrybucja}</option>
 				</select>
-				<br>
+				</p>
+				<p style="margin:3px 0 0 0;">
 				<select name="tracttype" id="tracttype" {tip text="Wybierz rodzaj przyłącza" trigger="tracttype"} style="width:300px;">
 					<option value="">-- żaden --</option>
 					{foreach $_TRACTNODE as $item => $key}
 					<option value="{$item}"{if $nodeinfo.tracttype == $item} selected{/if}>{$key}</option>
 					{/foreach}
 				</select>
-				<br>
+				</p>
 				<div style="width:390px;text-align:right;">
 				<a href="javascript:document.nodelink.submit(); ">{trans("Connect")} <img src="img/save.gif" alt=""></a>
 				</div>
 				</fieldset>
+				{literal}
+				    <script type="text/javascript" language="JavaScript">
+				    <!--
+				    change_linktype(document.getElementById('linktype').value);
+				    //-->
+				    </script>
+				{/literal}
 				{/if}
 			{/if}
 		</td>

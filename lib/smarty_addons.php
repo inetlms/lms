@@ -31,16 +31,19 @@ function _smarty_function_title($params, &$template)
 		if (isset($params['value']) && !empty($params['value'])) $value = trans($params['value']); else $value = NULL;
 		if (isset($params['link']) && !empty($params['link'])) $link = $params['link']; else $link = NULL;
 		if (isset($params['help']) && !empty($params['help'])) $help = $params['help']; else $help = NULL;
+		$small = (isset($params['small']) ? true : false);
 		$width = 100;
 		$return = '';
 		
 		if ($link) $width -= 1;
 		if ($help) $widh -= 1;
 		if ($value) {
-			$return .= '<div class="title" style="margin-top:12px;">';
+			if ($small) $return .= '<div class="title title_small" style="margin-top:10px;">';
+			else $return .= '<div class="title" style="margin-top:12px;">';
 			$return .= '<table width="100%" cellpadding="0" cellspacing="0">';
 			$return .= '<tr>';
-			$return .= '<td width="'.$width.'%" class="title_sm" style="vertical-align:middle;" align="left">'.$value.'</td>';
+			if ($small) $return .= '<td width="'.$width.'%" class="title_sm title_sm_small" style="vertical-align:middle;" align="left">'.$value.'</td>';
+			else $return .= '<td width="'.$width.'%" class="title_sm" style="vertical-align:middle;" align="left">'.$value.'</td>';
 			
 			if ($link)
 				$return .= '<td width="1%" nowrap style="font-weight:normal;">'.$link.'</td>';
@@ -78,12 +81,12 @@ function _smarty_block_box($params, $content, &$template, &$repeat)
 	$boxalign 	= (isset($params['align']) ? $params['align'] : '');
 	$boxvalign 	= (isset($params['valign']) ? $params['valign'] : '');
 	$boxshadow 	= (isset($params['shadow']) ? true : false);
-	$boxid 	= (isset($params['id']) ? $params['id'] : NULL);
+	$boxid 		= (isset($params['id']) ? $params['id'] : NULL);
 	$boxradius 	= (isset($params['radius']) ? true : false);
 	$boxclass 	= (isset($params['class']) ? $params['class'] : '');
 	$boxstyle 	= (isset($params['style']) ? $params['style'] : '');
 	$boxlink 	= (isset($params['link']) ? $params['link'] : '');
-	$contentstyle = (isset($params['contentstyle']) ? $params['contentstyle'] : '');
+	$contentstyle 	= (isset($params['contentstyle']) ? $params['contentstyle'] : '');
 	
 	$template->assignGlobal('boxtitle',$title);
 	$template->assignGlobal('boxlink',$boxlink);
