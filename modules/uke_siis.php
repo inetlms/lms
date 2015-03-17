@@ -28,16 +28,16 @@
 
 include(LIB_DIR.'/UKE.class.php');
 
-$layout['action'] = 'add';
-$layout['pagetitle'] = 'Nowy raport SIIS v4 za rok '.REPORT_YEAR;
+$layout['pagetitle'] = 'Raporty SIIS';
 
-$divinfo = $DB->GetAll('SELECT id,shortname,name FROM divisions ORDER BY name ASC;');
-$SMARTY->assign('divinfo',$divinfo);
+if (isset($_GET['closed_raport']) && !empty($_GET['closed_raport'])) {
+    $DB->Execute('UPDATE uke SET closed=1 WHERE id = ? ;',array(intval($_GET['closed_raport'])));
+}
 
+if (isset($_GET['open_raport']) && !empty($_GET['open_raport'])) {
+    $DB->Execute('UPDATE uke SET closed=0 WHERE id = ? ;',array(intval($_GET['open_raport'])));
+}
 
-
-include(MODULES_DIR.'/uke_siis4_xajax.php');
-
-$SMARTY->display('uke_siis4_edit.html');
-
+$SMARTY->assign('reportlist',$UKE->getSIISlist());
+$SMARTY->display('uke_siis.html');
 ?>

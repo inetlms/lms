@@ -620,9 +620,9 @@ define('NSTATUS_IMPLEMENTATION',1); // w realizacji
 define('NSTATUS_PLANNED',2); // planowany
 
 $NSTATUS = array(
-    NSTATUS_CLOSED		=> 'zakończony',
+    NSTATUS_CLOSED		=> 'zakończone',
     NSTATUS_IMPLEMENTATION	=> 'w realizacji',
-    NSTATUS_PLANNED		=> 'planowany',
+    NSTATUS_PLANNED		=> 'planowane',
 );
 asort($NSTATUS);
 

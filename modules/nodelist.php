@@ -121,6 +121,7 @@ function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $net
 			COUNT(CASE WHEN blockade=1 THEN 1 END) AS blockade 
 			FROM nodes WHERE ownerid > 0;');
     $_nodecount = $DB->getone('SELECT COUNT(id) FROM nodes WHERE ownerid > 0;');
+    $_nodegroup = $DB->getone('SELECT COUNT(id) FROM nodegroupassignments;');
 
     switch ($order) {
 	case 'name': $sqlord = ' ORDER BY n.name'; break;
@@ -166,6 +167,7 @@ function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $net
 	.($_node['warning'] ? $_node['warning'] : '0')
 	.($_node['blockade'] ? $_node['blockade'] : '0')
 	.($_nodecount ? $_nodecount : '0')
+	.($_nodegroup ? $_nodegroup : '0')
     );
     
     $_cache = $LMS->loadcache('nodelist',$md5);
@@ -178,10 +180,9 @@ function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $net
 	JOIN customersview c ON (n.ownerid = c.id) '
 	.(!$search ? ' LEFT JOIN netdevices nd ON (nd.id = n.netdev) ' : '')
 	. ($customergroup ? 'JOIN customerassignments ON (customerid = c.id) ' : '')
-	. ($nodegroup ? 'JOIN nodegroupassignments ON (nodeid = n.id) ' : '')
+	. ($nodegroup ? 'LEFT JOIN nodegroupassignments ng ON (ng.nodeid = n.id) ' : '')
 	. ' WHERE 1=1 '
-	. ($network ? ' AND ((n.ipaddr > ' . $net['address'] . ' AND n.ipaddr < ' . $net['broadcast'] . ')
-	    OR (n.ipaddr_pub > ' . $net['address'] . ' AND n.ipaddr_pub < ' . $net['broadcast'] . '))' : '')
+	. ($network ? ' AND ((n.ipaddr > ' . $net['address'] . ' AND n.ipaddr < ' . $net['broadcast'] . ') OR (n.ipaddr_pub > ' . $net['address'] . ' AND n.ipaddr_pub < ' . $net['broadcast'] . '))' : '')
 	. ($status == 1 ? ' AND n.access = 1' : '') //connected
 	. ($status == 2 ? ' AND n.access = 0' : '') //disconnected
 	. ($status == 3 ? ' AND n.lastonline > ?NOW? - ' . intval(get_conf('phpui.lastonline_limit',600)) : '') //online
@@ -189,7 +190,7 @@ function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $net
 	. ($status == 5 ? ' AND n.blockade = 1' : '') // z blokadą
 	. ($status == 6 ? ' AND n.warning = 1' : '') // z powiadomieniem
 	. ($customergroup ? ' AND customergroupid = ' . intval($customergroup) : '')
-	. ($nodegroup ? ' AND nodegroupid = ' . intval($nodegroup) : '')
+	. ($nodegroup ? ' AND ng.nodegroupid = ' . intval($nodegroup) : '')
 	. (isset($searchargs) ? $searchargs : '')
 	. ($sqlord != '' ? $sqlord . ' ' . $direction : ''));
 	
@@ -229,8 +230,8 @@ function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $net
 	.' FROM vnodes n 
 	JOIN customersview c ON (n.ownerid = c.id) '
 	.(!$search ? ' LEFT JOIN netdevices nd ON (nd.id = n.netdev) ' : '')
-	. ($customergroup ? 'JOIN customerassignments ON (customerid = c.id) ' : '')
-	. ($nodegroup ? 'JOIN nodegroupassignments ON (nodeid = n.id) ' : '')
+//	. ($customergroup ? 'JOIN customerassignments ON (customerid = c.id) ' : '')
+//	. ($nodegroup ? 'JOIN nodegroupassignments ON (nodeid = n.id) ' : '')
 	. ' WHERE 1=1 '
 	.' AND n.id IN ('.$_idlist.') '
 	. ($sqlord != '' ? $sqlord . ' ' . $direction : ''));

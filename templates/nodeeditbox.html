@@ -150,14 +150,14 @@
 				{/section}
 			</select>
 			<input type="text" name="nodeedit[port]" value="{if $nodeinfo.port}{$nodeinfo.port}{/if}" size="2" {tip text="Enter port number in device (optional)" trigger="port"}>
-			<br>
+			<p style="margin:3px 0 0 0;">
 			<select name="nodeedit[linktype]" id="linktype" {tip trigger="linktype" text="Select link type"} onchange="change_linktype(this.options[this.selectedIndex].value)" style="width:300px;">
 				{foreach from=$_LINKTYPES item=item key=key}
 				<option value="{$key}"{if $key==$nodeinfo.linktype} selected{/if}>{$item}</option>
 				{/foreach}
 			</select>
-			
-			<br>
+			</p>
+			<p style="margin:3px 0 0 0;">
 			<select name="nodeedit[linktechnology]" id="linktechnology" {tip trigger="linktechnology" text="Wybierz technologię łącza"} style="width:300px;">
 				<option value="0">- nieznana -</option>
 				{foreach $_LINKTECHNOLOGIES[$nodeinfo.linktype] as $linktechnologyidx => $linktechnology}
@@ -169,20 +169,22 @@
 				<option value="{$key}"{if $key==$nodeinfo.linkspeed} selected{/if}>{$item}</option>
 				{/foreach}
 			</select>
-			<br>
+			</p>
+			<p style="margin:3px 0 0 0;">
 			{assign 'dystrybucja' $smarty.const.LAYER_DISTRIBUTION}
 			{assign 'dostep' $smarty.const.LAYER_ACCESS} 
 			<select name="nodeedit[layer]" id="layer" {tip text="Wybierz warstwę sieci" trigger="layer"} style="width:300px;">
 				<option value="{$dostep}"{if $nodeinfo.layer == $dostep} selected{/if}>{$_LAYERTYPE.$dostep}</option>
 				<option value="{$dystrybucja}"{if $nodeinfo.layer == $dystrybucja} selected{/if}>{$_LAYERTYPE.$dystrybucja}</option>
 			</select>
-			<br>
+			</p><p style="margin:3px 0 0 0;">
 			<select name="nodeedit[tracttype]" id="tracttype" {tip text="Wybierz rodzaj przyłącza" trigger="tracttype"} style="width:300px;">
 				<option value="">-- żadne --</option>
 				{foreach $_TRACTNODE as $item => $key}
 				<option value="{$item}"{if $nodeinfo.tracttype == $item} selected{/if}>{$key}</option>
 				{/foreach}
 			</select>
+			</p>
 			</fieldset>
 		</td>
 	    </tr>

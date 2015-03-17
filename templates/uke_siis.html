@@ -1,0 +1,63 @@
+{include file="header.html"}
+
+{title value=$layout.pagetitle link="<a href='?m=uke_siis_add'><b>Utwórz nowy raport</b> <img src='img/add.gif' alt=''></a>"}
+
+{if $reportlist}
+
+<table width="100%" cellpadding="3" cellspacing="0">
+    <tr class="dark boxtop">
+	<td width="1%"  align="center" class="fleftu pad" nowrap><b>Rok</b></td>
+	<td width="97%" align="left"   class="fbt pad tleft"><b>Firma</b></td>
+	<td width="1%"  align="right"  class="frightu pad10 tleft">&nbsp;</td>
+    </tr>
+    
+    {cycle values="lucid,light" print=false}
+    {section name='reportlist' loop=$reportlist}
+    
+    <tr class="{cycle} lista{if $reportlist[reportlist].closed} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	
+	<td width="1%"  align="center" class="fleft pad" nowrap style="vertical-align:top;cursor:pointer;"  onclick="self.location.href='?m=uke_siis_info&idr={$reportlist[reportlist].id}';">
+	    {$reportlist[reportlist].reportyear}
+	</td>
+	
+	<td width="97%" align="left"   class="pad tleft" style="vertical-align:top;cursor:pointer;"  onclick="self.location.href='?m=uke_siis_info&idr={$reportlist[reportlist].id}';">
+	    {$reportlist[reportlist].divname}, {$reportlist[reportlist].zip} {$reportlist[reportlist].city} {$reportlist[reportlist].street} {$reportlist[reportlist].location_house}{if $reportlist[reportlist].location_flat}/{$reportlist[reportlist].location_flat}{/if}
+	    {if $reportlist[reportlist].description}<br><i>{$reportlist[reportlist].description|nl2br}</i>{/if}
+	</td>
+	
+	
+	<td width="1%"  align="right"  class="fright pad tleft" style="vertical-align:top;" nowrap>
+	
+	    {if $reportlist[reportlist].closed}	
+		<img src="img/dead.gif" alt="[ zamknięty ]" title="Otwórz ponownie raport" onclick="self.location.href='?m=uke_siis&open_raport={$reportlist[reportlist].id}';">
+	    {else}
+		<img src="img/delete.gif" alt="[ kasuj ]" title="Kasuj raport">&nbsp;
+		<img src="img/open.gif" alt="[ otwarty ]" title="Zamknij raport" onclick="self.location.href='?m=uke_siis&closed_raport={$reportlist[reportlist].id}';">
+	    {/if}
+
+	    
+	    
+	    
+	    <a href="?m=uke_siis_gencsv&action=gencsv&idr={$reportlist[reportlist].id}"><img src="img/list.png" alt="[ generuj ]" title="Generuj plik CVS dla generatora"></a>
+	</td>
+    </tr>
+    {/section}
+    <tr>
+	<td width="100%" align="right" class="ftop" colspan="3"></td>
+    </tr>
+</table>
+
+{else}
+
+<table width="100%" cellpadding="5">
+    <tr class="dark">
+	<td class="fall" align="center" style="height:80px;">
+	    <span style="font-weight:bold;font-size:16px;">BRAK RAPORTÓW</span><br><br>
+	    <a href="?m=uke_siis_add"><b>UTWÓRZ NOWY RAPORT</b></a>
+	</td>
+    </tr>
+</table>
+
+{/if}
+
+{include file="footer.html"}

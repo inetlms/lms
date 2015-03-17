@@ -60,174 +60,220 @@ if (
 	),
     );
     
-	$filename = 'iNETLMS_UKE_SIISv4.csv';
+	$filename = 'iNETLMS_UKE_SIISv5.csv';
 	$fullname = '/tmp/'.$filename;
 	$idr = $_GET['idr'];
 	    
 	if ($file = fopen($fullname,'w'))
 	{
-	    // DP - nasz podmiot
-	    $dane = 'DP,';
-	    $dane .= '"'.$DP['divname'].'",';
-	    $dane .= str_replace('-','',$DP['ten']).',';
-	    $dane .= $DP['regon'].',';
-	    $dane .= $DP['rpt'].',';
-	    $dane .= $DP['rjst'].',';
-	    $dane .= $DP['krs'].',';
-	    $dane .= '"'.$DP['states'].'",';
-	    $dane .= '"'.$DP['districts'].'",';
-	    $dane .= '"'.$DP['boroughs'].'",';
-	    $dane .= sprintf('%07d',$DP['kod_terc']).',';
-	    $dane .= '"'.$DP['city'].'",';
-	    $dane .= sprintf('%07s',$DP['kod_simc']).',';
-
-	    if ($DP['kod_ulic'] == '99999' || empty($DP['street'])) {
-		$dane .= 'BRAK ULICY,';
-	    } elseif ($DP['kod_ulic'] == '99998' && !empty($DP['street'])) {
-		$dane .= 'ULICA SPOZA ZAKRESU,';
-	    } else {
-		$dane .= '"'.$DP['street'].'",';
-	    }
-
-	    $dane .= sprintf('%05d',$DP['kod_ulic']).',';
-	    $dane .= '"'.$DP['location_house'].'",';
-	    $dane .= $DP['zip'].',';
-	    $dane .= '"'.$DP['url'].'",';
-	    $dane .= '"'.$DP['email'].'",';
-	    $dane .= ($DP['accept1'] ? 'Tak,' : 'Nie,');
-	    $dane .= ($DP['accept2'] ? 'Tak,' : 'Nie,');
-	    $dane .= ($DP['accept3'] ? 'Tak,' : 'Nie,');
-	    $dane .= ($DP['accept4'] ? 'Tak,' : 'Nie,');
-	    $dane .= ($DP['accept5'] ? 'Tak,' : 'Nie,');
-	    $dane .= ($DP['accept6'] ? 'Tak,' : 'Nie,');
-	    $dane .= '"'.$DP['contact_name'].'",';
-	    $dane .= '"'.$DP['contact_lastname'].'",';
-	    $dane .= str_replace(' ','',str_replace('-','',$DP['contact_phone'])).',';
-	    $dane .= str_replace(' ','',str_replace('-','',$DP['contact_fax'])).',';
-	    $dane .= '"'.$DP['contact_email'].'"';
-	    
-	    fputs($file,$dane."\n");
-	    
-	    // PO - podmioty obce
-	    if ($PO = $DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport=1;',array($idr,'PO'))) {
-		$count = sizeof($PO);
-		for ($i=0;$i<$count;$i++) {
-		    $dane = 'PO,';
-		    $tmp = unserialize($PO[$i]['data']);
-		    
-		    $dane .= '"'.$tmp['shortname'].'",';
-		    $dane .= '"'.$tmp['name'].'",';
-		    $dane .= '"'.str_replace('-','',$tmp['ten']).'",';
-		    $dane .= $tmp['regon'].',';
-		    $dane .= $tmp['rpt'].',';
-		    $dane .= '"'.$tmp['states'].'",';
-		    $dane .= '"'.$tmp['districts'].'",';
-		    $dane .= '"'.$tmp['boroughs'].'",';
-		    $dane .= sprintf('%07d',$tmp['kod_terc']).',';
-		    $dane .= '"'.$tmp['city'].'",';
-		    $dane .= sprintf('%07d',$tmp['kod_simc']).',';
-		    $dane .= '"'.(!empty($tmp['street']) ? $tmp['street'] : 'BRAK ULICY').'",';
-		    $dane .= sprintf('%05d',$tmp['kod_ulic']).',';
-		    $dane .= '"'.$tmp['location_house'].'",';
-		    $dane .= $tmp['zip'];
-		    fputs($file,$dane."\n");
-		}
-		unset($dane);
-		unset($PO);
-	    }
-	    
-	    //WW - węzły własne
-	    if ($WW = $DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'WW'))) {
-		$count = sizeof($WW);
-		for ($i=0;$i<$count;$i++) {
-		    
-		    $dane = 'WW,';
-		    $tmp = unserialize($WW[$i]['data']);
-		    
-		    $teryt = $LMS->getterytcode($tmp['location_city'],$tmp['location_street']);
-		    
-		    
-		    $dane .= '"'.$WW[$i]['markid'].'",';
-		    $dane .= '"'.$TNODE[$tmp['type']].'",';
-		    $dane .= '"'.$tmp['foreign_entity'].'",';
-		    $dane .= '"",';
-		    $dane .= '"'.$tmp['states'].'",';
-		    $dane .= '"'.$tmp['districts'].'",';
-		    $dane .= '"'.$tmp['boroughs'].'",';
-		    $dane .= sprintf('%07d',$tmp['kod_terc']).',';
-		    $dane .= '"'.$tmp['city'].'",';
-		    $dane .= sprintf('%07d',$tmp['kod_simc']).',';
-		    $dane .= '"'.(!empty($teryt['street']) ? $teryt['street'] : 'BRAK ULICY').'",';
-		    $dane .= sprintf('%05d',$tmp['kod_ulic']).',';
-		    $dane .= '"'.$tmp['location_house'].'",';
-		    $dane .= '"'.$tmp['zip'].'",';
-		    $dane .= str_replace(',','.',sprintf('%02.4f',$tmp['latitude'])).',';
-		    $dane .= str_replace(',','.',sprintf('%02.4f',$tmp['longitude'])).',';
-		    $dane .= '"'.$BUILDINGS[$tmp['buildingtype']].'",';
-		    $dane .= ($tmp['available_surface'] == '1' ? 'Tak' : 'Nie').',';
-		    $dane .= ($tmp['instofanten'] == '1' ? 'Tak' : 'Nie').',';
-		    $dane .= ($tmp['eu'] == '1' ? 'Tak' : 'Nie');
-		    fputs($file,$dane."\n");
-		}
-		unset($WW);
-	    }
-	    
-	    //WO - węzły obce
-	    if ($WO = $DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'WO'))) {
-		$count = sizeof($WO);
-		for ($i=0;$i<$count;$i++) {
-		    $dane = 'WO,';
-		    $tmp = unserialize($WO[$i]['data']);
-		    $dane .= '"'.$WO[$i]['markid'].'",';
-		    $dane .= '"'.$tmp['podstawa'].'",';
-		    $dane .= '"'.$tmp['foreign_entity'].'",';
-		    $dane .= '"'.$tmp['states'].'",';
-		    $dane .= '"'.$tmp['districts'].'",';
-		    $dane .= '"'.$tmp['boroughs'].'",';
-		    $dane .= sprintf('%07d',$tmp['kod_terc']).',';
-		    $dane .= '"'.$tmp['city'].'",';
-		    $dane .= sprintf('%07d',$tmp['kod_simc']).',';
-		    $dane .= '"'.(!empty($tmp['street']) ? $tmp['street'] : 'BRAK ULICY').'",';
-		    $dane .= sprintf('%05d',$tmp['kod_ulic']).',';
-		    $dane .= '"'.$tmp['location_house'].'",';
-		    $dane .= '"'.$tmp['zip'].'",';
-		    $dane .= str_replace(',','.',sprintf('%02.4f',$tmp['latitude'])).',';
-		    $dane .= str_replace(',','.',sprintf('%02.4f',$tmp['longitude'])).',';
-		    $dane .= '"'.$BUILDINGS[$tmp['buildingtype']].'"';
-		    fputs($file,$dane."\n");
-		}
-		unset($WO);
-	    }
-	    
-	    // INT - Interfejsy
-	    
-	    if ($INT = $DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'INT'))) {
-		$count = sizeof($INT);
+		// DP - nasz podmiot
+		$dane = 'DP,';
+		$dane .= '"'.str_replace('"','',$DP['divname']).'",';
+		$dane .= '"'.str_replace('-','',$DP['ten']).'",';
+		$dane .= '"'.$DP['regon'].'",';
+		$dane .= '"'.$DP['rpt'].'",';
+		$dane .= '"'.$DP['rjst'].'",';
+		$dane .= '"'.$DP['krs'].'",';
+		$dane .= '"'.$DP['states'].'",';
+		$dane .= '"'.$DP['districts'].'",';
+		$dane .= '"'.$DP['boroughs'].'",';
+		$dane .= '"'.sprintf('%07d',$DP['kod_terc']).'",';
+		$dane .= '"'.$DP['city'].'",';
+		$dane .= '"'.sprintf('%07s',$DP['kod_simc']).'",';
 		
-		for ($i=0;$i<$count;$i++) 
+		if ($DP['kod_ulic'] == '99999' || empty($DP['street'])) $dane .= '"BRAK ULICY",';
+		elseif ($DP['kod_ulic'] == '99998' && !empty($DP['street'])) $dane .= '"ULICA SPOZA ZAKRESU",';
+		else $dane .= '"'.$DP['street'].'",';
+		
+		$dane .= '"'.sprintf('%05d',$DP['kod_ulic']).'",';
+		$dane .= '"'.$DP['location_house'].'",';
+		$dane .= '"'.$DP['zip'].'",';
+		$dane .= '"'.$DP['url'].'",';
+		$dane .= '"'.$DP['email'].'",';
+		$dane .= '"'.($DP['accept1'] ? 'Tak' : 'Nie').'",';
+		$dane .= '"'.($DP['accept2'] ? 'Tak' : 'Nie').'",';
+		$dane .= '"'.($DP['accept3'] ? 'Tak' : 'Nie').'",';
+		$dane .= '"'.($DP['accept4'] ? 'Tak' : 'Nie').'",';
+		$dane .= '"'.($DP['accept5'] ? 'Tak' : 'Nie').'",';
+		$dane .= '"'.($DP['accept6'] ? 'Tak' : 'Nie').'",';
+		$dane .= '"'.$DP['contact_name'].'",';
+		$dane .= '"'.$DP['contact_lastname'].'",';
+		$dane .= '"'.str_replace(' ','',str_replace('-','',$DP['contact_phone'])).'",';
+		$dane .= '"'.str_replace(' ','',str_replace('-','',$DP['contact_fax'])).'",';
+		$dane .= '"'.$DP['contact_email'].'"';
+		
+		fputs($file,$dane."\n");
+		
+		
+		// PO - podmioty obce
+		if ($PO = $DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport=1;',array($idr,'PO'))) 
 		{
-		    // $dane .= '"'.$tmp[$i][''].'",';
-		    $tmp = unserialize($INT[$i]['data']);
-		    $dane = 'I,';
-		    $dane .= '"'.$tmp['netnodename'].'",';
-		    $dane .= '"'.$tmp['networknodename'].'",';
-		    $dane .= '"'.$tmp['backbone_layer'].'",';
-		    $dane .= '"'.$tmp['distribution_layer'].'",';
-		    $dane .= '"'.$tmp['access_layer'].'",';
-		    $dane .= '"'.$tmp['medium'].'",';
-		    $dane .= '"'.$tmp['pasmo_radiowe'].'",';
-		    $dane .= '"'.$tmp['technologia'].'",';
-		    $dane .= $tmp['max_to_net'].',';
-		    $dane .= $tmp['max_to_user'].',';
-		    $dane .= $tmp['ports'].',';
-		    $dane .= $tmp['use_ports'].',';
-		    $dane .= $tmp['empty_ports'].',';
-		    $dane .= $tmp['sharing'];
-		    fputs($file,$dane."\n");
+			$count = sizeof($PO);
+			for ($i=0;$i<$count;$i++) 
+			{
+				$tmp = unserialize($PO[$i]['data']);
+				
+				$dane = 'PO,';
+				$dane .= '"'.str_replace('"','',str_replace(' ','_',$tmp['shortname'])).'",';
+				$dane .= '"'.str_replace('"','',$tmp['name']).'",';
+				$dane .= '"'.str_replace('-','',$tmp['ten']).'",';
+				$dane .= '"'.$tmp['regon'].'",';
+				$dane .= '"'.$tmp['rpt'].'",';
+				$dane .= '"'.$tmp['states'].'",';
+				$dane .= '"'.$tmp['districts'].'",';
+				$dane .= '"'.$tmp['boroughs'].'",';
+				$dane .= '"'.sprintf('%07d',$tmp['kod_terc']).'",';
+				$dane .= '"'.$tmp['city'].'",';
+				$dane .= '"'.sprintf('%07d',$tmp['kod_simc']).'",';
+				$dane .= '"'.(!empty($tmp['street']) ? $tmp['street'] : 'BRAK ULICY').'",';
+				$dane .= '"'.sprintf('%05d',$tmp['kod_ulic']).'",';
+				$dane .= '"'.$tmp['location_house'].'",';
+				$dane .= '"'.$tmp['zip'].'"';
+				
+				fputs($file,$dane."\n");
+			}
+			unset($dane);
+			unset($PO);
 		}
 		
-		unset($INT);
-	    }
+		
+		// PROJ -> projekty EU
+		if ($PROJ = $DB->getAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'PROJ'))) 
+		{
+			$count = sizeof($PROJ);
+			for ($i=0; $i < $count; $i++) 
+			{
+				$tmp = unserialize($PROJ[$i]['data']);
+				
+				$dane  = 'PR,';
+				$dane .= '"'.$tmp['nrprojektu'].'",';
+				$dane .= '"'.$tmp['nrumowy'].'",';
+				$dane .= '"'.$tmp['tytul'].'",';
+				$dane .= '"'.$tmp['program'].'",';
+				$dane .= '"'.$tmp['dzialanie'].'",';
+				$dane .= '"'.str_replace('"','',$tmp['firma']).'",';
+				$dane .= '"'.$tmp['datapodpisania'].'",';
+				$dane .= '"'.$tmp['datazakonczenia'].'",';
+				$dane .= '"'.$tmp['wojewodztwo'].'",';
+				$dane .= '"'.$tmp['zakres'].'"';
+				
+				fputs($file,$dane."\n");
+			}
+			unset($PROJ);
+		}
+		
+		
+		//WW - węzły własne
+		if ($WW = $DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'WW'))) 
+		{
+			$count = sizeof($WW);
+			for ($i=0;$i<$count;$i++) 
+			{
+				$tmp = unserialize($WW[$i]['data']);
+				$teryt = $LMS->getterytcode($tmp['location_city'],$tmp['location_street']);
+				
+				$dane = 'WW,';
+				$dane .= '"'.$WW[$i]['markid'].'",';
+				$dane .= '"'.$TNODE[$tmp['type']].'",';
+				$dane .= '"'.$tmp['foreign_entity'].'",';
+				$dane .= '"",';
+				$dane .= '"'.$tmp['states'].'",';
+				$dane .= '"'.$tmp['districts'].'",';
+				$dane .= '"'.$tmp['boroughs'].'",';
+				$dane .= '"'.sprintf('%07d',$tmp['kod_terc']).'",';
+				$dane .= '"'.$tmp['city'].'",';
+				$dane .= '"'.sprintf('%07d',$tmp['kod_simc']).'",';
+				$dane .= '"'.(!empty($teryt['street']) ? $teryt['street'] : 'BRAK ULICY').'",';
+				$dane .= '"'.sprintf('%05d',$tmp['kod_ulic']).'",';
+				$dane .= '"'.$tmp['location_house'].'",';
+				$dane .= '"'.$tmp['zip'].'",';
+				$dane .= '"'.str_replace(',','.',sprintf('%02.4f',$tmp['latitude'])).'",';
+				$dane .= '"'.str_replace(',','.',sprintf('%02.4f',$tmp['longitude'])).'",';
+				$dane .= '"'.$BUILDINGS[$tmp['buildingtype']].'",';
+				$dane .= '"'.($tmp['available_surface'] == '1' ? 'Tak' : 'Nie').'",';
+				$dane .= '"'.($tmp['instofanten'] == '1' ? 'Tak' : 'Nie').'",';
+				$dane .= '"'.($tmp['eu'] == '1' ? 'Tak' : 'Nie').'",';
+				
+				if ($tmp['eu'] == '1') 
+				{
+					$dane .= '"'.$tmp['projectnumber'].'",';
+					$dane .= '"'.$NSTATUS[$tmp['status']].'"';
+				} else
+					$dane .= '"",""';
+				
+				fputs($file,$dane."\n");
+			}
+			unset($WW);
+		}
+		
+		
+		//WO - węzły obce
+		if ($WO = $DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'WO'))) 
+		{
+			$count = sizeof($WO);
+			for ($i=0;$i<$count;$i++) 
+			{
+				$tmp = unserialize($WO[$i]['data']);
+				
+				$dane = 'WO,';
+				$dane .= '"'.$WO[$i]['markid'].'",';
+				$dane .= '"'.$tmp['podstawa'].'",';
+				$dane .= '"'.str_replace(' ','_',$tmp['foreign_entity']).'",';
+				$dane .= '"'.$tmp['states'].'",';
+				$dane .= '"'.$tmp['districts'].'",';
+				$dane .= '"'.$tmp['boroughs'].'",';
+				$dane .= '"'.sprintf('%07d',$tmp['kod_terc']).'",';
+				$dane .= '"'.$tmp['city'].'",';
+				$dane .= '"'.sprintf('%07d',$tmp['kod_simc']).'",';
+				$dane .= '"'.(!empty($tmp['street']) ? $tmp['street'] : 'BRAK ULICY').'",';
+				$dane .= '"'.sprintf('%05d',$tmp['kod_ulic']).'",';
+				$dane .= '"'.$tmp['location_house'].'",';
+				$dane .= '"'.$tmp['zip'].'",';
+				$dane .= '"'.str_replace(',','.',sprintf('%02.4f',$tmp['latitude'])).'",';
+				$dane .= '"'.str_replace(',','.',sprintf('%02.4f',$tmp['longitude'])).'",';
+				$dane .= '"'.$BUILDINGS[$tmp['buildingtype']].'",';
+				
+				if ($tmp['eu'] == '1') 
+					$dane .= '"'.$tmp['projectnumber'].'"';
+				else
+					$dane .= '""';
+				
+				fputs($file,$dane."\n");
+			}
+			unset($WO);
+		}
+		
+		
+		// INT - Interfejsy
+		if ($INT = $DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'INT'))) 
+		{
+			$count = sizeof($INT);
+			for ($i=0;$i<$count;$i++) 
+			{
+				// $dane .= '"'.$tmp[$i][''].'",';
+				$tmp = unserialize($INT[$i]['data']);
+				$dane = 'I,';
+				$dane .= '"'.$tmp['netnodename'].'",';
+				$dane .= '"'.$tmp['networknodename'].'",';
+				$dane .= '"'.$tmp['backbone_layer'].'",';
+				$dane .= '"'.$tmp['distribution_layer'].'",';
+				$dane .= '"'.$tmp['access_layer'].'",';
+				$dane .= '"'.$tmp['medium'].'",';
+				$dane .= '"'.$tmp['pasmo_radiowe'].'",';
+				$dane .= '"'.$tmp['technologia'].'",';
+				$dane .= '"'.$tmp['max_to_net'].'",';
+				$dane .= '"'.$tmp['max_to_user'].'",';
+				$dane .= '"'.$tmp['ports'].'",';
+				$dane .= '"'.$tmp['use_ports'].'",';
+				$dane .= '"'.$tmp['empty_ports'].'",';
+				$dane .= '"'.$tmp['sharing'].'",';
+				$dane .= '"'.$tmp['projectnumber'].'",';
+				$dane .= '"'.$tmp['status'].'"';
+				fputs($file,$dane."\n");
+			}
+			
+			unset($INT);
+		}
 	    
 	    // LK (PL) - Linie kablowe
 	    if ($LK = $DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'LK'))) {

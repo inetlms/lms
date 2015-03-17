@@ -273,19 +273,35 @@ div.multiselectlayer ul li input { border: none; }
 }
 
 .title {
-    width:99%;
-    right: 15px;
-    font-weight:bold;
-    margin-bottom : 10px;
-    font-size:14pt;
-    font-family: Tahoma, Verdana, Arial;
-    padding : 2px 0px 2px 8px;
+    width		: 99%;
+    right		: 15px;
+    font-weight		: bold;
+    margin-bottom	: 10px;
+    font-size		: 14pt;
+    font-family		: Tahoma, Verdana, Arial;
+    padding 		: 2px 0px 2px 0px;
 }
 
 .title_sm {
-    font-weight : bold;
-    font-size : 14pt;
-    font-family : Tahoma, Verdana, Arial;
+    font-weight 	: bold;
+    font-size 		: 14pt;
+    font-family 	: Tahoma, Verdana, Arial;
+}
+
+.title_small {
+    width		: 99%;
+    right		: 15px;
+    font-weight		: bold;
+    margin-bottom	: 10px;
+    font-size		: 11pt;
+    font-family		: Tahoma, Verdana, Arial;
+    padding 		: 2px 0px 2px 0px;
+}
+
+.title_sm_small {
+    font-weight 	: bold;
+    font-size 		: 11pt;
+    font-family 	: Tahoma, Verdana, Arial;
 }
 
 .newstyle { display:none;}

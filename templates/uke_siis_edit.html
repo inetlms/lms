@@ -1,0 +1,411 @@
+{if $layout.action == 'add'}{include file="header.html"}{/if}
+{$xajax}
+{title value=$layout.pagetitle}
+
+<form name="rapdata" id="rapdata" method="POST">
+<input type="hidden" name="rapdata[location_city]" value="{$rapdata.location_city}">
+<input type="hidden" name="rapdata[location_street]" value="{$rapdata.location_street}">
+<input type="hidden" name="rapdata[action]" value="{$layout.action}">
+{if $layout.action == 'edit'}
+<input type="hidden" name="rapdata[id]" value="{$rapdata.id}">
+{/if}
+
+    <table width="100%" cellpadding="3">
+	<tr class="dark">
+	    <td width="100%" align="left" colspan="2" class="fall">
+		<b>Podmiot przekazujący informacje oraz osoba kontaktowa</b>
+	    </td>
+	</tr>
+	<tr class="light">
+	    
+	    
+	    <!--// lewa strona //-->
+	    
+	    <td width="50%" align="left" style="vertical-align:top;" class="fleft pad10">
+		<table width="100%" cellpadding="2">
+		
+		    
+		
+		    {if $divinfo}
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    Podmiot
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+				<select name="rapdata[divisionid]" id="id_divisionid" style="min-width:200px;cursor:pointer;" onchange="xajax_import_division(this.value);">
+				    <option value=""></option>
+				    {section name='divinfo' loop=$divinfo}
+					<option value="{$divinfo[divinfo].id}" {if $rapdata.divisionid == $divinfo[divinfo].id} selected{/if}>{$divinfo[divinfo].shortname}</option>
+				    {/section}
+				</select>
+			</td>
+		    </tr>
+		    {else}
+				<input type="hidden" name="rapdata[divisionid]" id="id_divisionid" value="0">
+		    {/if}
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">Raport za rok</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+			<td width="98%" align="left" class="pad" style="vertical-align:top;">
+			    <input type="text" name="rapdata[reportyear]" id="id_reportyear" style="width:40px;" value="{$rapdata.reportyear}" placeholder="RRRR" class="required">
+			    <div id="id_reportyear_alerts" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+			    <span class="tiphelp" {tip text="Pełna nazwa podmiotu"}>Nazwa podmiotu</span>
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[divname]" id="id_divname" style="width:200px;" value="{$rapdata.divname|escape}" placeholder="-- WYMAGANE --" class="required">
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">NIP</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[ten]" id="id_ten" value="{$rapdata.ten}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+			    <div id="id_ten_alerts" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">REGON</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[regon]" id="id_regon" value="{$rapdata.regon}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+			    <div id="id_regon_alerts" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">KRS</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[krs]" id="id_krs" value="{$rapdata.krs}" style="width:200px;">
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">
+			    <span class="tiphelp" {tip text="Numer w Rejestrze Przedsiębiorców Telekomunikacyjnych"}>RPT</span></td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[rpt]" id="id_rpt" value="{$rapdata.rpt}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+			    <div id="id_rpt_alerts" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;"><span class="tiphelp" {tip text="Numer w Rejestrze Jednostek Samorządu Terytorialnego"}>RJST</span></td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[rjst]" id="id_rjst" value="{$rapdata.rjst}" style="width:200px;">
+			</td>
+		    </tr>
+		    
+		    <tr class="light" id="id_view_used_teryt">
+			<td width="1%" nowrap class="pad" align="left">
+			    <label for="teryt">Użyj bazy TERYT</label>
+			    <input type="checkbox" name="rapdata[teryt]" value="1" id="teryt" onchange="check_use_teryt();" {if $rapdata.teryt} checked {/if}>
+			</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left">
+			    <a href="javascript: void(0);" id="used_teryt" style="display:none;" onclick="if (check_teryt()) return locationchoosewin('rapdata', 'rapdata', document.forms['rapdata'].elements['rapdata[location_city]'].value, document.forms['rapdata'].elements['rapdata[location_street]'].value)">&raquo;&raquo;&raquo;<strong> WYBIERZ LOKALIZACJĘ </strong>&raquo;&raquo;&raquo;</a>
+			</td>
+		    </tr>
+		    
+		    
+		    <tr class="light" id="id_view_location">
+			<td width="1%" nowrap class="pad" align="left" style="font-weight:bold;">Lokalizacja</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[location]" id="location" style="width:200px;" value="{$rapdata.location}">
+			</td>
+		    </tr>
+		    
+		    <tr class="light" id="id_view_states">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">Województwo</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">	
+			    <input type="text" name="rapdata[states]" id="id_states" value="{$rapdata.states}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+			</td>
+		    </tr>
+		    
+		    <tr class="light" id="id_view_districts">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">Powiat</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[districts]" id="id_districts" value="{$rapdata.districts}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+			</td>
+		    </tr>
+		    
+		    <tr class="light" id="id_view_boroughs">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">Gmina</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[boroughs]" id="id_boroughs" value="{$rapdata.boroughs}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+			</td>
+		    </tr>
+		    
+		    <tr class="light" id="id_view_city">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">Miejscowość</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[city]" id="id_city" value="{$rapdata.city}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+			</td>
+		    </tr>
+		    
+		    <tr class="light" id="id_view_street">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">Ulica</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[street]" id="id_street" value="{$rapdata.street}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">Numer budynku</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[location_house]" id="id_location_house" value="{$rapdata.location_house}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">Numer mieszkania</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[location_flat]" id="id_location_flat" value="{$rapdata.location_flat}" style="width:200px;">
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">Kod pocztowy</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[zip]" id="id_zip" value="{$rapdata.zip}" style="width:80px;" placeholder="WYMAGANE" class="required">
+			    <div id="id_zip_alerts" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;"><span class="tiphelp" {tip text="Adres strony WWW"}>URL</span></td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[url]" id="id_url" value="{$rapdata.url}" style="width:200px;">
+			    <div id="id_url_alerts" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr class="light">
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">E-mail</td>
+			<td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+			<td width="98%" align="left" class="pad">
+			    <input type="text" name="rapdata[email]" id="id_email" value="{$rapdata.email}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+			    <div id="id_email_alerts" style="color:red;"></div>
+			</td>
+		    </tr>
+		</table>
+	    </td>
+	    
+	    
+	    <!--// prawa strona //-->
+	    <td width="50%" align="left" style="vertical-align:top;" class="fright pad10">
+		<table width="100%" cellpadding="2">
+		
+		    <tr class="light">
+			<td width="100%" align="left" style="vertical-align:top;" colspan="3">
+			    <fieldset><legend> <b>Dane osoby kontaktowej</b> </legend>
+			    <table width="100%" cellpadding="3">
+		    
+				<tr class="light">
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">Imię</td>
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+				    <td width="98%" align="left" class="pad">
+					<input type="text" name="rapdata[contact_name]" id="id_contact_name" value="{$rapdata.contact_name}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+					<div id="id_contact_name_alerts" style="color:red;"></div>
+				    </td>
+				</tr>
+		    
+				<tr class="light">
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">Nazwisko</td>
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+				    <td width="98%" align="left" class="pad">
+					<input type="text" name="rapdata[contact_lastname]" id="id_contact_lastname" value="{$rapdata.contact_lastname}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+					<div id="id_contact_lastname_alerts" style="color:red;"></div>
+				    </td>
+				</tr>
+		    
+				<tr class="light">
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">E-mail</td>
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+				    <td width="98%" align="left" class="pad">
+					<input type="text" name="rapdata[contact_email]" id="id_contact_email" value="{$rapdata.contact_email}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+					<div id="id_contact_email_alerts" style="color:red;"></div>
+				    </td>
+				</tr>
+		    
+				<tr class="light">
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">Telefon</td>
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+				    <td width="98%" align="left" class="pad">
+					<input type="text" name="rapdata[contact_phone]" id="id_contact_phone" value="{$rapdata.contact_phone}" style="width:200px;" placeholder="-- WYMAGANE --" class="required">
+					<div id="id_contact_phone_alerts" style="color:red;"></div>
+				    </td>
+				</tr>
+		    
+				<tr class="light">
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">FAX</td>
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;">:</td>
+				    <td width="98%" align="left" class="pad">
+					<input type="text" name="rapdata[contact_fax]" id="id_contact_fax" value="{$rapdata.contact_fax}" style="width:200px;">
+				    </td>
+				</tr>
+		    
+			    </table>
+			    </fieldset>
+			</td>
+		    </tr>
+		    
+		    
+		    <tr class="light">
+			<td width="100%" align="left" style="vertical-align:top;" colspan="3">
+			    <fieldset><legend> <b>Zgody</b> </legend>
+			    <table width="100%" cellpadding="3">
+				
+				<tr class="light">
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+					{foreach $_TN as $item => $key}<input type="radio" name="rapdata[accept1]" id="id_accept1_{$item}" value="{$item}" {if $rapdata.accept1 == $item}checked{/if}><label for="id_accept1_{$item}">&nbsp;{$key}</label>{/foreach}
+				    </td>
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+				    <td width="98%" align="left" class="pad">
+					Wyrażenie zgody na upublicznienie nazwy podmiotu dla węzłów własnych
+				    </td>
+				</tr>
+				
+				<tr class="light">
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+					{foreach $_TN as $item => $key}<input type="radio" name="rapdata[accept2]" id="id_accept2_{$item}" value="{$item}" {if $rapdata.accept2 == $item}checked{/if}><label for="id_accept2_{$item}">&nbsp;{$key}</label>{/foreach}
+				    </td>
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+				    <td width="98%" align="left" class="pad">
+					Wyrażenie zgody na upublicznienie nazwy podmiotu dla elementów infrastruktury telekomunikacyjnej zapewniających łączenie kabli telekomunikacyjnych
+				    </td>
+				</tr>
+		    
+				<tr class="light">
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+					{foreach $_TN as $item => $key}<input type="radio" name="rapdata[accept3]" id="id_accept3_{$item}" value="{$item}" {if $rapdata.accept3 == $item}checked{/if}><label for="id_accept3_{$item}">&nbsp;{$key}</label>{/foreach}
+				    </td>
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+				    <td width="98%" align="left" class="pad">
+					Wyrażenie zgody na upublicznienie nazwy podmiotu dla elementów infrastruktury stanowiących punkty styku z innymi sieciami
+				    </td>
+				</tr>
+		    
+				<tr class="light">
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+					{foreach $_TN as $item => $key}<input type="radio" name="rapdata[accept4]" id="id_accept4_{$item}" value="{$item}" {if $rapdata.accept4 == $item}checked{/if}><label for="id_accept4_{$item}">&nbsp;{$key}</label>{/foreach}
+				    </td>
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+				    <td width="98%" align="left" class="pad">
+					Wyrażenie zgody na upublicznienie nazwy podmiotu dla elementów infrastruktury telekomunikacyjnej stanowiących linie kablowe lub bezprzewodowe
+				    </td>
+				</tr>
+		    
+				<tr class="light">
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+					{foreach $_TN as $item => $key}<input type="radio" name="rapdata[accept5]" id="id_accept5_{$item}" value="{$item}" {if $rapdata.accept5 == $item}checked{/if}><label for="id_accept5_{$item}">&nbsp;{$key}</label>{/foreach}
+				    </td>
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+				    <td width="98%" align="left" class="pad">
+					Wyrażenie zgody na upublicznienie nazwy podmiotu dla połączeń pomiędzy węzłami
+				    </td>
+				</tr>
+		    
+				<tr class="light">
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">
+					{foreach $_TN as $item => $key}<input type="radio" name="rapdata[accept6]" id="id_accept6_{$item}" value="{$item}" {if $rapdata.accept6 == $item}checked{/if}><label for="id_accept6_{$item}">&nbsp;{$key}</label>{/foreach}
+				    </td>
+				    <td width="1%" nowrap align="left" class="pad" style="font-weight:bold;vertical-align:top;">:</td>
+				    <td width="98%" align="left" class="pad">
+					Wyrażenie zgody na upublicznienie nazwy podmiotu dla obszarów i adresów budynków objętych zasięgiem sieci, w których możliwe jest świadczenie usług
+				    </td>
+				</tr>
+			    </table>
+			    </fieldset>
+			</td>
+		    </tr>
+		    
+		    
+		    
+		    <tr class="light">
+			<td width="100%" align="left" style="vertical-align:top;" colspan="3">
+			    <fieldset><legend> <span class="tiphelp" {tip text="dodatkowa informacja tylko dla nas"}><b>Dodatkowa informacja</b></span> </legend>
+			    <table width="100%" cellpadding="3">
+				<tr>
+				    <td width="98%" align="left" class="pad">
+					<textarea name="rapdata[description]" rows="4" id="id_description" style="width:450px;">{$rapdata.description}</textarea>
+				    </td>
+				</tr>
+			    </table>
+			    </fieldset>
+			</td>
+		    </tr>
+		    
+		    
+		</table>
+	    </td>
+	</tr>
+	<tr class="dark">
+	    <td width="100%" align="right" colspan="2" class="fall">
+		<a href="javascript:void(0);" onclick="xajax_add_siis(xajax.getFormValues('rapdata'));">Zapisz <img src="img/save.gif"></a>
+		{if $layout.action == 'edit'}
+		<a href="javascript:void(0);" onclick="loadAjax('id_data','?m=uke_siis_info&idr={$rapdata.id}&tuck={$rapdata.tuck}');">{trans('Cancel')} <img src="img/cancel.gif" alt=""></a>
+		{/if}
+	    </td>
+	</tr>
+    </table>
+</form>
+
+{include file="load_gif.html"}
+
+{literal}
+<script type="text/javascript">
+<!--
+
+    function check_use_teryt()
+    {
+	if (document.getElementById('teryt').checked == true)
+	{
+	    document.getElementById('used_teryt').style.display = '';
+	    document.getElementById('id_view_location').style.display = '';
+	    document.getElementById('id_view_states').style.display = 'none';
+	    document.getElementById('id_view_districts').style.display = 'none';
+	    document.getElementById('id_view_boroughs').style.display = 'none';
+	    document.getElementById('id_view_city').style.display = 'none';
+	    document.getElementById('id_view_street').style.display = 'none';
+	}
+	else
+	{
+	    document.getElementById('used_teryt').style.display = 'none';
+	    document.getElementById('id_view_location').style.display = 'none';
+	    document.getElementById('id_view_states').style.display = '';
+	    document.getElementById('id_view_districts').style.display = '';
+	    document.getElementById('id_view_boroughs').style.display = '';
+	    document.getElementById('id_view_city').style.display = '';
+	    document.getElementById('id_view_street').style.display = '';
+	}
+    }
+    
+    check_use_teryt();
+//-->
+</script>
+{/literal}
+
+{if $layout.action == 'add'}{include file="footer.html"}{/if}

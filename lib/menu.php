@@ -847,10 +847,16 @@ $menu = array(
 			'index' => MODULES_RAPORTY,
 			'submenu' => array(
 				array(
-				    'name' => 'UKE SIIS v4',
-				    'link' => '?m=uke_siis4',
-				    'tip' => 'Raporty tylko do odczytu',
+				    'name' => 'Raporty SIIS',
+				    'link' => '?m=uke_siis',
+				    'tip' => '',
 				    'prio' => 10,
+				),
+				array(
+				    'name' => 'Nowy raport SIIS',
+				    'link' => '?m=uke_siis_add',
+				    'tip' => 'Utwórz nowy raport SIIS',
+				    'prio' => 20,
 				),
 			),
 		),
