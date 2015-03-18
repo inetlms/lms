@@ -22,13 +22,13 @@ if (!$DB->GetOne('SELECT 1 FROM pg_tables WHERE tablename = ?;',array('invprojec
     $DB->Execute("INSERT INTO invprojects (name,type) VALUES ('inherited',1)");
 }
 
-if (!$DB->GetOne('SELECT 1 FROM information_schema.columns WHERE table_name = ?  AND column_name=? ;',array('netdevices','invprojectid'))
+if (!$DB->GetOne('SELECT 1 FROM information_schema.columns WHERE table_name = ?  AND column_name=? ;',array('netdevices','invprojectid')))
     $DB->Execute("ALTER TABLE netdevices ADD COLUMN invprojectid integer DEFAULT NULL");
 
-if (!$DB->GetOne('SELECT 1 FROM information_schema.columns WHERE table_name = ?  AND column_name=? ;',array('netdevices','status'))
+if (!$DB->GetOne('SELECT 1 FROM information_schema.columns WHERE table_name = ?  AND column_name=? ;',array('netdevices','status')))
     $DB->Execute("ALTER TABLE netdevices ADD COLUMN status smallint DEFAULT 0");
 
-if (!$DB->GetOne('SELECT 1 FROM information_schema.columns WHERE table_name = ?  AND column_name=? ;',array('nodes','invprojectid'))
+if (!$DB->GetOne('SELECT 1 FROM information_schema.columns WHERE table_name = ?  AND column_name=? ;',array('nodes','invprojectid')))
     $DB->Execute("ALTER TABLE nodes ADD COLUMN invprojectid integer DEFAULT NULL");
 
 
