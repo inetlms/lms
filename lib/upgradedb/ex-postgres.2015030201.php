@@ -9,10 +9,10 @@ $DB->Execute("DROP VIEW vmacs;");
 
 
 
-if (!$DB->GetOne('SELECT 1 FROM information_schema.columns WHERE table_name = ?  AND column_name=? ;',array('nodes','layer'))
+if (!$DB->GetOne('SELECT 1 FROM information_schema.columns WHERE table_name = ?  AND column_name=? ;',array('nodes','layer')))
     $DB->Execute("ALTER TABLE nodes ADD COLUMN layer integer DEFAULT NULL");
 
-if (!$DB->GetOne('SELECT 1 FROM information_schema.columns WHERE table_name = ?  AND column_name=? ;',array('nodes','tracttype'))
+if (!$DB->GetOne('SELECT 1 FROM information_schema.columns WHERE table_name = ?  AND column_name=? ;',array('nodes','tracttype')))
     $DB->Execute("ALTER TABLE nodes ADD COLUMN tracttype integer DEFAULT NULL");
 
 
