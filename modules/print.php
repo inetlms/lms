@@ -310,6 +310,7 @@ switch($type)
 
 		$from = $_POST['from'];
 		$to = $_POST['to'];
+		$division = intval($_POST['division']);
 
 		// date format 'yyyy/mm/dd'	
 		list($year, $month, $day) = explode('/',$from);
@@ -327,7 +328,7 @@ switch($type)
 		
 		$incomelist = $DB->GetAll('SELECT floor(time/86400)*86400 AS date, SUM(value) AS value
 			FROM cash c
-			WHERE value>0 AND time>=? AND time<=? AND docid=0
+			WHERE value>0 AND time>=? AND time<=? AND docid=0 AND sourceid= '.$division.'
 				AND NOT EXISTS (
 			        	SELECT 1 FROM customerassignments a
 					JOIN excludedgroups e ON (a.customergroupid = e.customergroupid)
@@ -413,7 +414,7 @@ switch($type)
 			$date['from'] = mktime(0,0,0,$month,$day,$year);
 		} else { 
 			$from = date('Y/m/d',time());
-			$date['from'] = mktime(0,0,0); //pocz±tek dnia dzisiejszego
+			$date['from'] = mktime(0,0,0); //poczÂ±tek dnia dzisiejszego
 		}
 
 		$type = '';
@@ -458,7 +459,7 @@ switch($type)
 			$date['from'] = mktime(0,0,0,$month,$day,$year);
 		} else { 
 			$from = date('Y/m/d',time());
-			$date['from'] = mktime(0,0,0); //pocz±tek dnia dzisiejszego
+			$date['from'] = mktime(0,0,0); //poczÂ±tek dnia dzisiejszego
 		}
 
 		$type = '';
@@ -502,7 +503,7 @@ switch($type)
 			$date['from'] = mktime(0,0,0,$month,$day,$year);
 		} else { 
 			$from = date('Y/m/d',time());
-			$date['from'] = mktime(0,0,0); //pocz±tek dnia dzisiejszego
+			$date['from'] = mktime(0,0,0); //poczÂ±tek dnia dzisiejszego
 		}
 		
 		$_GET['from'] = $date['from'];
@@ -538,7 +539,7 @@ switch($type)
 			$date['from'] = mktime(0,0,0,$month,$day,$year);
 		} else { 
 			$from = date('Y/m/d',time());
-			$date['from'] = mktime(0,0,0); //pocz±tek dnia dzisiejszego
+			$date['from'] = mktime(0,0,0); //poczÂ±tek dnia dzisiejszego
 		}
 		
 		$_GET['from'] = $date['from'];
@@ -882,14 +883,14 @@ switch($type)
 			// (summaries and page size calculations)
 			$maxrows = $rows * 2;	// dwie linie na rekord
 			$counter = $maxrows;
-			$rows = 0;		// rzeczywista liczba rekordów na stronie
+			$rows = 0;		// rzeczywista liczba rekordÃ³w na stronie
 			$i = 1;
 			$x = 1;
 
 			foreach($list as $row)
 			{
-				// tutaj musimy trochê pokombinowaæ, bo liczba
-				// rekordów na stronie bêdzie zmienna
+				// tutaj musimy trochÃª pokombinowaÃ¦, bo liczba
+				// rekordÃ³w na stronie bÃªdzie zmienna
 				$tmp = is_array($row['title']) ? sizeof($row['title']) : 2;
 				$counter -= max($tmp,2);
 				if($counter<0)
