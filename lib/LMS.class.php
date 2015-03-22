@@ -1364,7 +1364,7 @@ class LMS {
 	}
 
 	function GetCustomerNodes($id, $count = NULL) {
-		if ($result = $this->DB->GetAll('SELECT n.id, n.name, n.mac, n.ipaddr,
+		if ($result = $this->DB->GetAll('SELECT n.id, n.name, n.mac, n.ipaddr, n.pppoelogin,
 				inet_ntoa(n.ipaddr) AS ip, n.ipaddr_pub,
 				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.passwd, n.access, n.netdev ,
 				nd.id AS devid, nd.name AS devname, nd.location AS devlocation, 
