@@ -35,7 +35,7 @@ define('START_TIME', microtime(true));
 define('LMS-UI', true);
 define('LMSV','15.03.17');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
-ini_set('mbstring_func.overload',0);
+ini_set('mbstring.func_overload',0);
 
 // find alternative config files:
 if (is_readable('lms.ini')) {
