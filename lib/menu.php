@@ -931,6 +931,12 @@ $menu = array(
 					'tip' => trans('Lista projektów inwestycyjnych'),
 					'prio' => 70,
 				),
+//				array(
+//					'name' => 'Podmioty obce',
+//					'link' => '?m=podmiotyobce',
+//					'tip' => 'Podmioty obce i dostawcy usług',
+//					'prio' => 80,
+//				),
 				
 			),
 			

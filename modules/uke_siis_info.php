@@ -40,8 +40,7 @@ $layout['pagetitle'] = 'Informacja o raporcie';
 
 $tucklist[] = array('tuck' => 'DP','name' => 'DP','link' => '?m=uke_siis_info&tuck=DP&idr='.$idr, 'tip'=> 'Podmiot przekazujący informacje oraz osoba kontaktowa',);
 $tucklist[] = array('tuck' => 'PO','name' => 'OB','link' => '?m=uke_siis_info&tuck=PO&idr='.$idr,'tip' => 'Dostawcy usług i podmioty udostępniające lub współdzielące infrastrukturę',);
-if ($rapdata['version'] >= '5')
-    $tucklist[] = array('tuck' => 'PROJ','name' => 'PROJ','link' => '?m=uke_siis_info&tuck=PROJ&idr='.$idr,'tip' => 'Projekty Unijne');
+$tucklist[] = array('tuck' => 'PROJ','name' => 'PROJ','link' => '?m=uke_siis_info&tuck=PROJ&idr='.$idr,'tip' => 'Projekty Unijne');
 $tucklist[] = array('tuck' => 'WW','name' => 'WW','link' => '?m=uke_siis_info&tuck=WW&idr='.$idr,'tip' => 'Charakterystyka własnych lub współdzielonych z innymi podmiotami węzłów sieci telekomunikacyjnej',);
 $tucklist[] = array('tuck' => 'WO','name' => 'WO','link' => '?m=uke_siis_info&tuck=WO&idr='.$idr,'tip' => 'Charakterystyka węzłów sieci telekomunikacyjnej innych podmiotów dla potrzeb przekazania informacji o punktach styku między sieciami lub punktów świadczenia usług przez dostawców',);
 $tucklist[] = array('tuck' => 'INT','name' => 'INT','link' => '?m=uke_siis_info&tuck=INT&idr='.$idr,'tip' => 'Informacje o interfejsach węzłów własnych lub współdzielonych z innymi podmiotami i ich wykorzystanie',);

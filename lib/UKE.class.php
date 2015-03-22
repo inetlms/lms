@@ -59,8 +59,8 @@ class UKE {
 			    states, districts, boroughs, city, zip, street, 
 			    location_city, location_street, location_house, location_flat, kod_terc, kod_simc, kod_ulic,
 			    url, email, accept1, accept2, accept3, accept4, accept5, accept6,
-			    contact_name, contact_lastname, contact_phone, contact_fax, contact_email, closed, passwd, description, version, revision)
-			    VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+			    contact_name, contact_lastname, contact_phone, contact_fax, contact_email, closed, passwd, description, version, revision, vercsv)
+			    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
 			    array(
 				'SIIS',
 				($dane['divisionid'] ? $dane['divisionid'] : 0),
@@ -99,7 +99,7 @@ class UKE {
 				($dane['contact_email'] ? $dane['contact_email'] : NULL),
 				0,NULL,
 				($dane['description'] ? $dane['description'] : NULL),
-				SIIS_VERSION,SIIS_REVISION
+				SIIS_VERSION,SIIS_REVISION,SIIS_VERCSV
 			    )
 	);
 	
@@ -162,7 +162,7 @@ class UKE {
 
     function add_siis_data_po($dane)
     {
-	$this->DB->Execute('INSERT INTO uke_data (rapid, mark, markid, useraport, data) VALUE (?,?,?,?,?) ;',
+	$this->DB->Execute('INSERT INTO uke_data (rapid, mark, markid, useraport, data) VALUES (?,?,?,?,?) ;',
 	    array(
 		$dane['rapid'],
 		$dane['mark'],
@@ -399,10 +399,11 @@ class UKE {
 
 } // end class
 
-define('REPORT_YEAR','2014'); // domyślny rok za który jest raporcik
-define('REPORT_DATE_RANGE',strtotime(REPORT_YEAR.'/12/31 23:59:59'));
+//define('REPORT_YEAR','2014'); // domyślny rok za który jest raporcik
+//define('REPORT_DATE_RANGE',strtotime(REPORT_YEAR.'/12/31 23:59:59'));
 define('SIIS_VERSION','5');
-define('SIIS_REVISION','2.5');
+define('SIIS_REVISION','2.8');
+define('SIIS_VERCSV','1.0'); // wersja generatora csv
 
 $UKE = new UKE($DB,$LMS);
 

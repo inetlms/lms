@@ -8652,7 +8652,7 @@ class LMS {
     
     function GetDictionaryDevicesClientOfType()
     {
-	$result = $this->DB->GetAll('SELECT id,type FROM dictionary_devices_client GROUP BY type ORDER BY type;');
+	$result = $this->DB->GetAll('SELECT id,type FROM dictionary_devices_client GROUP BY type,id ORDER BY type;');
 	return $result;
     }
 

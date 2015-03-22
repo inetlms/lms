@@ -25,7 +25,7 @@ $DB->BeginTrans();
 
 $DB->Execute("CREATE SEQUENCE re_assurance_id_seq;");
 $DB->Execute("
-    CREATE TABLE IF NOT EXISTS re_assurance (
+    CREATE TABLE re_assurance (
 	id INTEGER DEFAULT nextval('re_assurance_id_seq'::text) NOT NULL,
 	idcar INTEGER NOT NULL DEFAULT '0',
 	idother INTEGER NOT NULL DEFAULT '0',
@@ -60,7 +60,7 @@ $DB->Execute("
 
 $DB->Execute("CREATE SEQUENCE re_cars_id_seq;");
 $DB->Execute("
-    CREATE TABLE IF NOT EXISTS re_cars (
+    CREATE TABLE re_cars (
 	id INTEGER DEFAULT nextval('re_cars_id_seq'::text) NOT NULL,
 	dr_a varchar(10) DEFAULT NULL,
 	dr_b INTEGER DEFAULT NULL,
@@ -117,7 +117,7 @@ $DB->Execute("
 
 $DB->Execute("CREATE SEQUENCE re_dictionary_cartype_id_seq;");
 $DB->Execute("
-    CREATE TABLE IF NOT EXISTS re_dictionary_cartype (
+    CREATE TABLE re_dictionary_cartype (
 	id INTEGER DEFAULT nextval('re_dictionary_cartype_id_seq'::text) NOT NULL,
 	name varchar(64) DEFAULT NULL,
 	description text DEFAULT NULL,
@@ -129,7 +129,7 @@ $DB->Execute("
 
 $DB->Execute("CREATE SEQUENCE re_dictionary_event_id_seq;");
 $DB->Execute("
-    CREATE TABLE IF NOT EXISTS re_dictionary_event (
+    CREATE TABLE re_dictionary_event (
 	id INTEGER DEFAULT nextval('re_dictionary_event_id_seq'::text) NOT NULL,
 	name varchar(128) DEFAULT '' NOT NULL,
 	description text DEFAULT NULL,
@@ -144,7 +144,7 @@ $DB->Execute("
 
 $DB->Execute("CREATE SEQUENCE re_event_id_seq;");
 $DB->Execute("
-    CREATE TABLE IF NOT EXISTS re_event (
+    CREATE TABLE re_event (
 	id INTEGER DEFAULT nextval('re_event_id_seq'::text) NOT NULL,
 	idcar INTEGER NOT NULL DEFAULT '0',
 	idother INTEGER NOT NULL DEFAULT '0',
@@ -165,7 +165,7 @@ $DB->Execute("
 
 $DB->Execute("CREATE SEQUENCE re_users_id_seq;");
 $DB->Execute("
-    CREATE TABLE IF NOT EXISTS re_users (
+    CREATE TABLE re_users (
 	id INTEGER DEFAULT nextval('re_users_id_seq'::text) NOT NULL,
 	iduser INTEGER NOT NULL DEFAULT '0',
 	idcar INTEGER NOT NULL DEFAULT '0',
