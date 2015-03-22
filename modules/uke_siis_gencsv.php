@@ -128,7 +128,11 @@ if (
 				$dane .= '"'.(!empty($tmp['street']) ? $tmp['street'] : 'BRAK ULICY').'",';
 				$dane .= '"'.sprintf('%05d',$tmp['kod_ulic']).'",';
 				$dane .= '"'.$tmp['location_house'].'",';
-				$dane .= '"'.$tmp['zip'].'"';
+				$dane .= '"'.$tmp['zip'].'",';
+				if ($tmp['projectnumber'])
+				    $dane .= '"'.str_replace('"','',$tmp['projectnumber']).'"';
+				else
+				    $dane .= '""';
 				
 				fputs($file,$dane."\n");
 			}

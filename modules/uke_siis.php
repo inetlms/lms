@@ -25,10 +25,9 @@
 */
 
 
-
 include(LIB_DIR.'/UKE.class.php');
 
-$layout['pagetitle'] = 'Raporty SIIS';
+$layout['pagetitle'] = 'Raporty SIIS ver. '.SIIS_VERSION.' ('.SIIS_REVISION.') rev. '.SIIS_VERCSV;
 
 if (isset($_GET['closed_raport']) && !empty($_GET['closed_raport'])) {
     $DB->Execute('UPDATE uke SET closed=1 WHERE id = ? ;',array(intval($_GET['closed_raport'])));
@@ -36,6 +35,12 @@ if (isset($_GET['closed_raport']) && !empty($_GET['closed_raport'])) {
 
 if (isset($_GET['open_raport']) && !empty($_GET['open_raport'])) {
     $DB->Execute('UPDATE uke SET closed=0 WHERE id = ? ;',array(intval($_GET['open_raport'])));
+}
+
+if (isset($_GET['del_report']) && isset($_GET['idr']) && isset($_GET['is_sure']) && intval($_GET['idr']) && $_GET['is_sure'] == '1')
+{
+    $DB->Execute('DELETE FROM uke_data WHERE rapid = ?;',array(intval($_GET['idr'])));
+    $DB->Execute('DELETE FROM uke WHERE id = ?;',array(intval($_GET['idr'])));
 }
 
 $SMARTY->assign('reportlist',$UKE->getSIISlist());

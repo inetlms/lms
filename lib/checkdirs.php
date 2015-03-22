@@ -24,6 +24,9 @@
  *  $Id$
  */
 
+if (ini_get('mbstring.func_overload') != '0') {
+    die('Prosze zmienic wartosc zmiennej mbstring.func_overload = 0 w /etc/php5/apache2/php.ini i przeladowac serwer apache');
+}
 if(!is_dir(SMARTY_COMPILE_DIR))
 	die('Missing directory <B>'.SMARTY_COMPILE_DIR.'</B>. Can anybody make them?');
 

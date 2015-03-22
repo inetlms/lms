@@ -7,7 +7,9 @@
 <table width="100%" cellpadding="3" cellspacing="0">
     <tr class="dark boxtop">
 	<td width="1%"  align="center" class="fleftu pad" nowrap><b>Rok</b></td>
-	<td width="97%" align="left"   class="fbt pad tleft"><b>Firma</b></td>
+	<td width="95%" align="left"   class="fbt pad tleft"><b>Firma</b></td>
+	<td width="1%" align="center" class="fbt pad tleft"><b>Ver</b></td>
+	<td width="1%" align="center" class="fbt pad tleft"><b>Rev</b></td>
 	<td width="1%"  align="right"  class="frightu pad10 tleft">&nbsp;</td>
     </tr>
     
@@ -20,30 +22,35 @@
 	    {$reportlist[reportlist].reportyear}
 	</td>
 	
-	<td width="97%" align="left"   class="pad tleft" style="vertical-align:top;cursor:pointer;"  onclick="self.location.href='?m=uke_siis_info&idr={$reportlist[reportlist].id}';">
+	<td width="95%" align="left"   class="pad tleft" style="vertical-align:top;cursor:pointer;"  onclick="self.location.href='?m=uke_siis_info&idr={$reportlist[reportlist].id}';">
 	    {$reportlist[reportlist].divname}, {$reportlist[reportlist].zip} {$reportlist[reportlist].city} {$reportlist[reportlist].street} {$reportlist[reportlist].location_house}{if $reportlist[reportlist].location_flat}/{$reportlist[reportlist].location_flat}{/if}
 	    {if $reportlist[reportlist].description}<br><i>{$reportlist[reportlist].description|nl2br}</i>{/if}
 	</td>
 	
+	<td width="1%" align="center" class="pad tleft" nowrap onclick="self.location.href='?m=uke_siis_info&idr={$reportlist[reportlist].id}';">
+	    {$reportlist[reportlist].version} ({$reportlist[reportlist].revision})
+	</td>
+	
+	<td width="1%" align="center" class="pad tleft" nowrap onclick="self.location.href='?m=uke_siis_info&idr={$reportlist[reportlist].id}';">
+	    {$reportlist[reportlist].vercsv}
+	</td>
 	
 	<td width="1%"  align="right"  class="fright pad tleft" style="vertical-align:top;" nowrap>
 	
 	    {if $reportlist[reportlist].closed}	
 		<img src="img/dead.gif" alt="[ zamknięty ]" title="Otwórz ponownie raport" onclick="self.location.href='?m=uke_siis&open_raport={$reportlist[reportlist].id}';">
 	    {else}
-		<img src="img/delete.gif" alt="[ kasuj ]" title="Kasuj raport">&nbsp;
+		
+		<a href="?m=uke_siis&del_report&idr={$reportlist[reportlist].id}" onclick="return confirmLink(this,'Potwierdź usunięcie raportu');"><img src="img/delete.gif" alt="[ kasuj ]" title="Kasuj raport"></a>&nbsp;
 		<img src="img/open.gif" alt="[ otwarty ]" title="Zamknij raport" onclick="self.location.href='?m=uke_siis&closed_raport={$reportlist[reportlist].id}';">
 	    {/if}
 
-	    
-	    
-	    
 	    <a href="?m=uke_siis_gencsv&action=gencsv&idr={$reportlist[reportlist].id}"><img src="img/list.png" alt="[ generuj ]" title="Generuj plik CVS dla generatora"></a>
 	</td>
     </tr>
     {/section}
     <tr>
-	<td width="100%" align="right" class="ftop" colspan="3"></td>
+	<td width="100%" align="right" class="ftop" colspan="5"></td>
     </tr>
 </table>
 

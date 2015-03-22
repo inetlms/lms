@@ -2,14 +2,14 @@
 {if $action == 'add' || $action == 'edit'}
 
 {else}
-    {title small='1' value="Charakterystyka węzłów sieci telekomunikacyjnej innych podmiotów dla potrzeb przekazania informacji o punktach styku między sieciami lub punktów świadczenia usługi przez dostawców"}
+    {title value="<font style='font-size:10pt;color:brown;'><b>WĘZŁY OBCE</b></font><br><font style='font-size:9pt;color:black;'>Charakterystyka węzłów sieci telekomunikacyjnej innych podmiotów dla potrzeb przekazania informacji o punktach styku między sieciami lub punktów świadczenia usługi przez dostawców</font>"}
 
     <table width="100%" cellpadding="3">
 	<tr class="light">
 	    <td width="1%" nowrap class="ftl pad10" align="left">
 		{if $networknodelist}
 		    <span class="tiphelp" {tip text="Wybierz i dodaj węzeł do raporu"}><b>Węzeł:</b> </span>
-		    <select id="id_select_networknode" style="cursor:pointer;" onchange="xajax_view_select_po_to_wo(this.value,{$idr});">
+		    <select id="id_select_networknode" style="cursor:pointer;width:250px;" onchange="xajax_view_select_po_to_wo(this.value,{$idr});">
 			<option value=""></option>
 			{section name='networknodelist' loop=$networknodelist}
 			    <option value="{$networknodelist[networknodelist].id}">{$networknodelist[networknodelist].name}</option>

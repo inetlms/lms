@@ -167,11 +167,6 @@ function add_siis($forms)
     $obj->script("removeClassId('id_contact_phone','alerts');");
     $obj->script("removeClassId('id_contact_email','alerts');");	$obj->assign("id_contact_email_alerts","innerHTML","");
     
-//    if (!$form['divisionid']) {
-//	$obj->script("addClassId('id_divisionid','alerts');");
-//	$blad = true;
-//    } 
-    
     if (!$form['divname']) {
 	$obj->script("addClassId('id_divname','alerts');");
 	$blad = true;
@@ -203,11 +198,6 @@ function add_siis($forms)
 	$obj->assign('id_regon_alerts','innerHTML','Błędny numer REGON');
 	$blad = true;
     }
-    
-//    if (!$form['krs']) {
-//	$obj->script("addClassId('id_krs','alerts');");
-//	$blad = true;
-//    }
     
     if (!$form['rpt']) {
 	$obj->script("addClassId('id_rpt','alerts');");
@@ -314,7 +304,6 @@ function add_siis($forms)
 	
 	if ($form['action'] == 'add') {
 	    $idr = $UKE->add_siis($form);
-	    //$obj->script("self.location.href='?m=uke_siis_info&tuck=&idr=".$idr."';");
 	    $obj->script("self.location.href='?m=uke_siis';");
 	}
 	elseif ($form['action'] == 'edit') {
@@ -328,265 +317,257 @@ function add_siis($forms)
     return $obj;
 }
 
-function add_PO($forms)
+function add_PO($forms) // podmio obcy
 {
-    global $DB,$LMS,$UKE;
-    $obj = new xajaxResponse();
-    
-    $form = $forms['poedit'];
-    $blad = false;
-    
-    $obj->script("removeClassId('id_shortname','alerts');");
-    $obj->assign("id_shortname_alerts","innerHTML","");
-    $obj->script("removeClassId('id_name','alerts');");
-    $obj->assign("id_name_alerts","innerHTML","");
-    
-    
-    $obj->script("removeClassId('id_ten','alerts');");
-    $obj->assign("id_ten_alerts","innerHTML","");
-    
-    $obj->script("removeClassId('id_regon','alerts');");
-    $obj->assign("id_regon_alerts","innerHTML","");
-    
-    $obj->script("removeClassId('id_rpt','alerts');");
-    $obj->assign("id_rpt_alerts","innerHTML","");
-
-    $obj->script("removeClassId('location','alerts');");
-    $obj->script("removeClassId('id_states','alerts');");
-    $obj->script("removeClassId('id_districts','alerts');");
-    $obj->script("removeClassId('id_boroughs','alerts');");
-    $obj->script("removeClassId('id_city','alerts');");
-    $obj->script("removeClassId('id_street','alerts');");
-    $obj->script("removeClassId('id_location_house','alerts');");
-    $obj->script("removeClassId('id_zip','alerts');");
-    $obj->assign("id_zip_alerts","innerHTML","");
-    
-    if (!$form['shortname']) {
-	$obj->script("addClassId('id_shortname','alerts');");
-	$obj->assign("id_shortname_alets","innerHTML","Identyfikator jest wymagany");
-	$blad = true;
-    } 
-    
-    if (!$form['name']) {
-	$obj->script("addClassId('id_name','alerts');");
-	$obj->assign("id_name_alets","innerHTML","Nazwa firmy jest wymagana");
-	$blad = true;
-    }
-    
-    if (!$form['ten']) {
-	$obj->script("addClassId('id_ten','alerts');");
-	$blad = true;
-    } elseif (!check_ten($form['ten'])) {
-	$obj->script("addClassId('id_ten','alerts');");
-	$obj->assign('id_ten_alerts','innerHTML','Błędny numer NIP');
-	$blad = true;
-    }
-    
-    if (!$form['regon']) {
-	$obj->script("addClassId('id_regon','alerts');");
-	$blad = true;
-    } elseif (!check_regon($form['regon'])) {
-	$obj->script("addClassId('id_regon','alerts');");
-	$obj->assign('id_regon_alerts','innerHTML','Błędny numer REGON');
-	$blad = true;
-    }
-    
-    if (!$form['rpt']) {
-	$obj->script("addClassId('id_rpt','alerts');");
-	$blad = true;
-    } elseif (!is_natural($form['rpt'])) {
-	$obj->script("addClassId('id_rpt','alerts');");
-	$obj->assign('id_rpt_alerts','innerHTML','Błednie podano numer RPT');
-	$blad = true;
-    }
-    
-    if (!$form['teryt']) {
+	global $DB,$LMS,$UKE;
+	$obj = new xajaxResponse();
 	
-	if (!$form['states']) {
-	    $obj->script("addClassId('id_states','alerts');");
-	    $blad = true;
+	$form = $forms['poedit'];
+	$blad = false;
+	
+	$obj->script("removeClassId('id_shortname','alerts');");
+	$obj->assign("id_shortname_alerts","innerHTML","");
+	$obj->script("removeClassId('id_name','alerts');");
+	$obj->assign("id_name_alerts","innerHTML","");
+	$obj->script("removeClassId('id_ten','alerts');");
+	$obj->assign("id_ten_alerts","innerHTML","");
+	$obj->script("removeClassId('id_regon','alerts');");
+	$obj->assign("id_regon_alerts","innerHTML","");
+	$obj->script("removeClassId('id_rpt','alerts');");
+	$obj->assign("id_rpt_alerts","innerHTML","");
+	$obj->script("removeClassId('location','alerts');");
+	$obj->script("removeClassId('id_states','alerts');");
+	$obj->script("removeClassId('id_districts','alerts');");
+	$obj->script("removeClassId('id_boroughs','alerts');");
+	$obj->script("removeClassId('id_city','alerts');");
+	$obj->script("removeClassId('id_street','alerts');");
+	$obj->script("removeClassId('id_location_house','alerts');");
+	$obj->script("removeClassId('id_zip','alerts');");
+	$obj->assign("id_zip_alerts","innerHTML","");
+	
+	if (!$form['shortname']) {
+		$obj->script("addClassId('id_shortname','alerts');");
+		$obj->assign("id_shortname_alets","innerHTML","Identyfikator jest wymagany");
+		$blad = true;
+	} 
+	
+	if (!$form['name']) {
+		$obj->script("addClassId('id_name','alerts');");
+		$obj->assign("id_name_alets","innerHTML","Nazwa firmy jest wymagana");
+		$blad = true;
 	}
 	
-	if (!$form['districts']) {
-	    $obj->script("addClassId('id_districts','alerts');");
-	    $blad = true;
+	if (!$form['ten']) {
+		$obj->script("addClassId('id_ten','alerts');");
+		$blad = true;
+	} elseif (!check_ten($form['ten'])) {
+		$obj->script("addClassId('id_ten','alerts');");
+		$obj->assign('id_ten_alerts','innerHTML','Błędny numer NIP');
+		$blad = true;
 	}
 	
-	if (!$form['boroughs']) {
-	    $obj->script("addClassId('id_boroughs','alerts');");
-	    $blad = true;
+	if (!$form['regon']) {
+		$obj->script("addClassId('id_regon','alerts');");
+		$blad = true;
+	} elseif (!check_regon($form['regon'])) {
+		$obj->script("addClassId('id_regon','alerts');");
+		$obj->assign('id_regon_alerts','innerHTML','Błędny numer REGON');
+		$blad = true;
 	}
 	
-	if (!$form['city']) {
-	    $obj->script("addClassId('id_city','alerts');");
-	    $blad = true;
+	if (!$form['rpt']) {
+		$obj->script("addClassId('id_rpt','alerts');");
+		$blad = true;
+	} elseif (!is_natural($form['rpt'])) {
+		$obj->script("addClassId('id_rpt','alerts');");
+		$obj->assign('id_rpt_alerts','innerHTML','Błednie podano numer RPT');
+		$blad = true;
 	}
 	
-	
-    } elseif (!$form['location']) {
-	$obj->script("addClassId('location','alerts');");
-	$blad = true;
-    }
+	if (!$form['teryt']) {
+		
+		if (!$form['states']) {
+			$obj->script("addClassId('id_states','alerts');");
+			$blad = true;
+		}
+		
+		if (!$form['districts']) {
+			$obj->script("addClassId('id_districts','alerts');");
+			$blad = true;
+		}
+		
+		if (!$form['boroughs']) {
+			$obj->script("addClassId('id_boroughs','alerts');");
+			$blad = true;
+		}
+		
+		if (!$form['city']) {
+			$obj->script("addClassId('id_city','alerts');");
+			$blad = true;
+		}
+		
+	} elseif (!$form['location']) {
+		$obj->script("addClassId('location','alerts');");
+		$blad = true;
+	}
     
-    if (!$form['location_house']) {
-	    $obj->script("addClassId('id_location_house','alerts');");
-	    $blad = true;
-    }
-    
-    if (!$form['zip']) {
-	$obj->script("addClassId('id_zip','alerts');");
-	$blad = true;
-    } elseif (!check_zip($form['zip'])) {
-	$obj->script("addClassId('id_zip','alerts');");
-	$obj->assign("id_zip_alerts","innerHTML","Błędny kod pocztowy");
-	$blad = true;
-    }
-
-    if (!$blad) {
-	
-	if ($form['teryt']) 
-	{
-		$data = $LMS->GetTerytCode($form['location_city'],$form['location_street']);
-		$form['states'] = $data['name_states'];
-		$form['districts'] = $data['name_districts'];
-		$form['boroughs'] = $data['name_boroughs'];
-		$form['city'] = $data['name_city'];
-		$form['street'] = $data['name_street'];
-		$form['kod_terc'] = $data['kod_terc'];
-		$form['kod_simc'] = $data['kod_simc'];
-		$form['kod_ulic'] = $data['kod_ulic'];
-		unset($data);
-	} else {
-	    $form['kod_terc'] = $form['kod_simc'] = $form['kod_ulic'] = 0;
-	    $form['location_city'] = $form['location_street'] = NULL;
+	if (!$form['location_house']) {
+		$obj->script("addClassId('id_location_house','alerts');");
+		$blad = true;
 	}
 	
-	$data = array();
-	$data['id'] = $form['id'];
-	$data['rapid'] = $form['idr'];
-	$data['mark'] = 'PO';
-	$data['markid'] = $form['shortname'];
-	$action = $form['action'];
-	unset($form['id']);
-	unset($form['action']);
-	$data['data'] = serialize($form);
-	
-	
-	if ($action == 'add') {
-	    
-	    $UKE->add_siis_data_po($data);
-	    $obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=PO&idr=".$data['rapid']."');");
-	}
-	elseif ($action == 'edit') {
-	    $UKE->update_siis_data_po($data);
-	    $obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=PO&idr=".$data['rapid']."');");
+	if (!$form['zip']) {
+		$obj->script("addClassId('id_zip','alerts');");
+		$blad = true;
+	} elseif (!check_zip($form['zip'])) {
+		$obj->script("addClassId('id_zip','alerts');");
+		$obj->assign("id_zip_alerts","innerHTML","Błędny kod pocztowy");
+		$blad = true;
 	}
 	
+	if (!$blad) {
+		
+		if ($form['teryt']) 
+		{
+			$data = $LMS->GetTerytCode($form['location_city'],$form['location_street']);
+			$form['states'] = $data['name_states'];
+			$form['districts'] = $data['name_districts'];
+			$form['boroughs'] = $data['name_boroughs'];
+			$form['city'] = $data['name_city'];
+			$form['street'] = $data['name_street'];
+			$form['kod_terc'] = $data['kod_terc'];
+			$form['kod_simc'] = $data['kod_simc'];
+			$form['kod_ulic'] = $data['kod_ulic'];
+			unset($data);
+		} else {
+			$form['kod_terc'] = $form['kod_simc'] = $form['kod_ulic'] = 0;
+			$form['location_city'] = $form['location_street'] = NULL;
+		}
+		
+		$data = array();
+		$data['id'] = $form['id'];
+		$data['rapid'] = $form['idr'];
+		$data['mark'] = 'PO';
+		$data['markid'] = $form['shortname'];
+		$action = $form['action'];
+		unset($form['id']);
+		unset($form['action']);
+		$data['data'] = serialize($form);
+		
+		if ($action == 'add') {
+			
+			$UKE->add_siis_data_po($data);
+			$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=PO&idr=".$data['rapid']."');");
+			
+		} elseif ($action == 'edit') {
+			
+			$UKE->update_siis_data_po($data);
+			$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=PO&idr=".$data['rapid']."');");
+		}
+	}
 	
-    }
-    
-    return $obj;
+	return $obj;
 }
 
 
-
-    function set_PO_useraport($idr,$id,$set)
-    {
+function set_PO_useraport($idr,$id,$set)
+{
 	global $DB;
 	$obj = new xajaxResponse();
 	
 	$DB->Execute('UPDATE uke_data SET useraport = ? WHERE id = ? ;',
-	    array(
-		($set ? 1 : 0),
-		$id,
-	    )
-	);
+		array(($set ? 1 : 0),$id));
 	
 	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=PO&idr=".$idr."');");
 	
 	return $obj;
-    }
+}
 
 
-    function view_select_po_to_ww($idw,$idr)
-    {
+function view_select_po_to_ww($idw,$idr)
+{
 	global $DB;
 	$obj = new xajaxResponse();
 	
 	$polist = $DB->GetAll('SELECT id,markid FROM uke_data WHERE rapid = ? AND mark=? AND useraport=1;',array($idr,'PO'));
-	$available_surface = $DB->GetOne('SELECT available_surface FROM networknode WHERE id = ? LIMIT 1;',array($idw));
+	$types = $DB->getOne('SELECT type FROM networknode WHERE id = ? LIMIT 1;',array($idw));
 	
-	if ($idw)
-	    $obj->assign("id_view_add_po_to_ww","innerHTML","<a href=\"javascript:void(0);\" onclick=\"xajax_add_po_to_ww('".$idr."','".$idw."',document.getElementById('id_select_po').value);\">Dodaj węzeł do raportu</a>");
-	else
-	    $obj->assign("id_view_add_po_to_ww","innerHTML","");
-	
-	if ($polist && $available_surface) {
-	    $tmp = "";
-	    $tmp .= "<span class='tiphelp' onmouseover=\"popup('Dostawcy usług i podmioty udostępniające lub współdzielące infrastrukturę (Podmoty Obce).<br>Wybranie podmiotu oznacza że węzeł jest współdzielony z innym podmiotem.');\" onmouseout=\"pophide();\"><b>Podmiot:</b> </span>";
-	    $tmp .= "<select id='id_select_po' style='cursor:pointer;'>";
-	    $tmp .= "<option value=''></option>";
-	    for ($i=0;$i<sizeof($polist);$i++)
-		$tmp .= "<option value='".$polist[$i]['id']."'>".$polist[$i]['markid']."</option>";
-	    $tmp .= "</select>";
-	    
-	    $obj->assign('id_view_select_po','innerHTML',$tmp);
+	if (($idw && $types == NODE_OWN) || ($idw && $types == NODE_FOREIGN && $polist)) {
+		$obj->assign("id_view_add_po_to_ww","innerHTML","<a href=\"javascript:void(0);\" onclick=\"xajax_add_po_to_ww('".$idr."','".$idw."',document.getElementById('id_select_po').value);\">Dodaj węzeł do raportu</a>");
 	} else {
-	    $obj->assign('id_view_select_po','innerHTML','<input type="hidden" id="id_select_po" value="">');
+		$obj->assign("id_view_add_po_to_ww","innerHTML","");
+	}
+	
+	if (!$polist && $types == NODE_FOREIGN) {
+		$obj->assign("id_view_select_po","innerHTML","<font color='red'>Brak podmiotów obcych, uzupełnij zakładkę <b>OB</b></font>");
+	} elseif ($polist && $types == NODE_FOREIGN) {
+		$tmp = "";
+		$tmp .= "<span class='tiphelp' onmouseover=\"popup('Dostawcy usług i podmioty udostępniające lub współdzielące infrastrukturę (Podmoty Obce).<br>Wybranie podmiotu oznacza że węzeł jest współdzielony z innym podmiotem.');\" onmouseout=\"pophide();\"><b>Podmiot:</b> </span>";
+		$tmp .= "<select id='id_select_po' style='cursor:pointer;min-width:250px;'>";
+		$tmp .= "<option value=''></option>";
+		
+		for ($i=0;$i<sizeof($polist);$i++)
+			$tmp .= "<option value='".$polist[$i]['id']."'>".$polist[$i]['markid']."</option>";
+		
+		$tmp .= "</select>";
+		
+		$obj->assign('id_view_select_po','innerHTML',$tmp);
+	} else {
+		$obj->assign('id_view_select_po','innerHTML','<input type="hidden" id="id_select_po" value="">');
 	}
 	
 	return $obj;
-    }
-    
-    
-    function add_po_to_ww($idr,$idw,$idp=NULL)
-    {
+}
+
+
+function add_po_to_ww($idr,$idw,$idp=NULL)
+{
 	global $DB,$LMS;
 	$obj = new xajaxResponse();
+	$blad = false;
 	
-	$networknode = $DB->GetRow('SELECT n.id, n.name, n.type, n.states, n.districts, n.boroughs, n.city, n.street, n.zip, n.location_city,
-			n.location_street, n.location_house, n.longitude, n.latitude, n.buildingtype, n.instofanten, n.available_surface, n.eu, n.status, 
-			p.number AS projectnumber 
-			FROM networknode n 
-			LEFT JOIN invprojects p ON (p.id = n.invprojectid) 
-			WHERE n.id = ? LIMIT 1',array($idw));
+	$networknode = $DB->GetRow('SELECT n.*, p.number AS projectnumber 
+				    FROM networknode n 
+				    LEFT JOIN invprojects p ON (p.id = n.invprojectid) 
+				    WHERE n.id = ? LIMIT 1',array($idw));
 	
 	
 	if ($networknode['location_city']) {
-	    $tmp = $LMS->getterytcode($networknode['location_city'],$networknode['location_street']);
-	    $networknode['kod_terc'] = $tmp['kod_terc'];
-	    $networknode['kod_simc'] = $tmp['kod_simc'];
-	    $networknode['kod_ulic'] = $tmp['kod_ulic'];
-	    $networknode['street'] = $tmp['street'];
+		$tmp = $LMS->getterytcode($networknode['location_city'],$networknode['location_street']);
+		$networknode['kod_terc'] = $tmp['kod_terc'];
+		$networknode['kod_simc'] = $tmp['kod_simc'];
+		$networknode['kod_ulic'] = $tmp['kod_ulic'];
+		$networknode['street'] = $tmp['street'];
 	} else {
-	    $networknode['kod_terc'] = $networknode['kod_simc'] = $networknode['kod_ulic'] = NULL;
+		$networknode['kod_terc'] = $networknode['kod_simc'] = $networknode['kod_ulic'] = NULL;
 	}
 	
 	if ($idp) {
-	    $networknode['foreign_entity'] = $DB->GetOne('SELECT markid FROM uke_data WHERE id = ? LIMIT 1;',array($idp));
+		$networknode['podmiot_obcy'] = $DB->GetOne('SELECT markid FROM uke_data WHERE id = ? LIMIT 1;',array($idp));
 	} else {
-	    $networknode['foreign_entity'] = NULL;
+		$networknode['podmiot_obcy'] = NULL;
 	}
 	
-	$networknode['colocation'] = NULL;
+	if ($networknode['type'] == NODE_FOREIGN && !$idp) {
+		$blad = true;
+		$obj -> script("alert('Wybierz podmiot obcy dla węzła');");
+	}
 	
-	$data = serialize($networknode);
-	
-	$DB->Execute('INSERT INTO uke_data (rapid,mark,markid,useraport,data) VALUES (?,?,?,?,?);',
-		array(
-		    $idr,'WW',$networknode['name'],1,$data
-		)
-	);
-//	$obj->script("xajax_import_interfaces('".$idr."');");
-//	$obj->script("xajax_import_lk('".$idr."');");
-//	$obj->script("xajax_import_lb('".$idr."');");
-//	$obj->script("xajax_import_pol)'".$idr."');");
-//	$obj->script("xajax_import_zas('".$idr."');");
-	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=WW&idr=".$idr."');");
+	if (!$blad) {
+		
+		$data = serialize($networknode);
+		$DB->Execute('INSERT INTO uke_data (rapid,mark,markid,useraport,data) VALUES (?,?,?,?,?);',array($idr,'WW',$networknode['name'],1,$data));
+		
+//		$obj->script("xajax_import_interfaces('".$idr."');");
+//		$obj->script("xajax_import_lk('".$idr."');");
+//		$obj->script("xajax_import_lb('".$idr."');");
+//		$obj->script("xajax_import_pol)'".$idr."');");
+//		$obj->script("xajax_import_zas('".$idr."');");
+		$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=WW&idr=".$idr."');");
+	}
 	
 	return $obj;
-    
-    }
+}
 /*
     function add_all_to_ww($idr) 
     {
@@ -610,17 +591,14 @@ function add_PO($forms)
 	return $obj;
     }
 */    
-    function set_ww_useraport($idr,$id,$set)
-    {
+
+
+function set_ww_useraport($idr,$id,$set)
+{
 	global $DB;
 	$obj = new xajaxResponse();
 	
-	$DB->Execute('UPDATE uke_data SET useraport = ? WHERE id = ? ;',
-	    array(
-		($set ? 1 : 0),
-		$id,
-	    )
-	);
+	$DB->Execute('UPDATE uke_data SET useraport = ? WHERE id = ? ;',array(($set ? 1 : 0),$id));
 //	$obj->script("xajax_import_interfaces('".$idr."');");
 //	$obj->script("xajax_import_lk('".$idr."');");
 //	$obj->script("xajax_import_lb('".$idr."');");
@@ -629,51 +607,55 @@ function add_PO($forms)
 	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=WW&idr=".$idr."');");
 	
 	return $obj;
-    }
+}
 
 
-    function view_select_po_to_wo($idw,$idr)
-    {
+function view_select_po_to_wo($idw,$idr)
+{
 	global $DB,$PODSTAWA;
 	$obj = new xajaxResponse();
 	
-	$polist = $DB->GetAll('SELECT id,markid FROM uke_data WHERE rapid = ? AND mark=? AND useraport=1;',array($idr,'PO'));
-	$available_surface = $DB->GetOne('SELECT available_surface FROM networknode WHERE id = ? LIMIT 1;',array($idw));
+	$polist = $DB->GetAll('SELECT id,markid FROM uke_data WHERE rapid = ? AND mark=? AND useraport=1;',array($idr,'PO')); // podmioty obce
+	$types = $DB->GetOne('SELECT types FROM networknode WHERE id = ? LIMIT 1;',array($idw));
 	
-	if ($idw) {
-	    $obj->assign("id_view_add_po_to_wo","innerHTML","<a href=\"javascript:void(0);\" onclick=\"xajax_add_po_to_wo('".$idr."','".$idw."',document.getElementById('id_select_po').value,document.getElementById('id_podstawa_wo').value);\">Dodaj węzeł do raportu</a>");
-	    $tmp = "<span class='tiphelp' onmouseover=\"popup('Podstawa i forma korzystania z infrastruktury innego podmiotu');\" onmouseout=\"pophide();\"><b>Podstawa:</b></span> <input type='text' style='width:400px;' id='id_podstawa_wo' value=''>";
-	    $tmp .= "&nbsp;&nbsp;<select style='minwidth:200px;' onchange=\"document.getElementById('id_podstawa_wo').value = this.value;\">";
-	    $tmp .= "<option value=''></option>";
-	    foreach ($PODSTAWA as $item => $key) 
-		$tmp .= "<option value='".$key."'>".$key."</option>";
-	    $tmp .= "</select>";
-	    $obj->assign("id_view_podstawa_wo","innerHTML",$tmp);
+	if ($polist && $idw) {
+		$obj->assign("id_view_add_po_to_wo","innerHTML","<a href=\"javascript:void(0);\" onclick=\"xajax_add_po_to_wo('".$idr."','".$idw."',document.getElementById('id_select_po').value,document.getElementById('id_podstawa_wo').value);\">Dodaj węzeł do raportu</a>");
+		$tmp = "<span class='tiphelp' onmouseover=\"popup('Podstawa i forma korzystania z infrastruktury innego podmiotu');\" onmouseout=\"pophide();\"><b>Podstawa:</b></span> <input type='text' style='width:400px;' id='id_podstawa_wo' value=''>";
+		$tmp .= "&nbsp;&nbsp;<select style='min-width:200px;' id='id_select_po' onchange=\"document.getElementById('id_podstawa_wo').value = this.value;\">";
+		$tmp .= "<option value=''></option>";
+		
+		foreach ($PODSTAWA as $item => $key) 
+			$tmp .= "<option value='".$key."'>".$key."</option>";
+		
+		$tmp .= "</select>";
+		$obj->assign("id_view_podstawa_wo","innerHTML",$tmp);
 	} else {
-	    $obj->assign("id_view_add_po_to_wo","innerHTML","");
-	    $obj->assign("id_view_podstawa_wo","innerHTML","<input type='hidden' id='id_podstawa_wo' value=''>");
+		$obj->assign("id_view_add_po_to_wo","innerHTML","");
+		$obj->assign("id_view_podstawa_wo","innerHTML","<input type='hidden' id='id_podstawa_wo' value=''>");
 	}
 	
-	if ($polist && $available_surface) {
-	    $tmp = "";
-	    $tmp .= "<span class='tiphelp' onmouseover=\"popup('Dostawcy usług i podmioty udostępniające lub współdzielące infrastrukturę (Podmoty Obce).<br>Wybranie podmiotu oznacza że węzeł jest współdzielony z innym podmiotem.');\" onmouseout=\"pophide();\"><b>Podmiot:</b> </span>";
-	    $tmp .= "<select id='id_select_po' style='cursor:pointer;'>";
-	    $tmp .= "<option value=''></option>";
-	    for ($i=0;$i<sizeof($polist);$i++)
-		$tmp .= "<option value='".$polist[$i]['id']."'>".$polist[$i]['markid']."</option>";
-	    $tmp .= "</select>";
-	    
-	    $obj->assign('id_view_select_po','innerHTML',$tmp);
+	if ($polist) {
+		$tmp = "";
+		$tmp .= "<span class='tiphelp' onmouseover=\"popup('Dostawcy usług i podmioty udostępniające lub współdzielące infrastrukturę (Podmoty Obce).<br>Wybranie podmiotu oznacza że węzeł jest współdzielony z innym podmiotem.');\" onmouseout=\"pophide();\"><b>Podmiot:</b> </span>";
+		$tmp .= "<select id='id_select_po' style='cursor:pointer;min-width:200px;'>";
+		$tmp .= "<option value=''></option>";
+		
+		for ($i=0;$i<sizeof($polist);$i++)
+			$tmp .= "<option value='".$polist[$i]['id']."'>".$polist[$i]['markid']."</option>";
+		
+		$tmp .= "</select>";
+		$obj->assign('id_view_select_po','innerHTML',$tmp);
 	} else {
-	    $obj->assign('id_view_select_po','innerHTML','<input type="hidden" id="id_select_po" value="">');
+		$obj->assign('id_view_select_po','innerHTML','<input type="hidden" id="id_select_po" value=""><font color="red">Brak podmiotów obcych, uzupełnij zakładkę <b>OB</b></font>');
 	}
 	
 	return $obj;
-    }
-    
-    
-    function add_po_to_wo($idr,$idw,$idp=NULL,$podstawa=NULL)
-    {
+}
+
+
+
+function add_po_to_wo($idr,$idw,$idp=NULL,$podstawa=NULL)
+{
 	global $DB,$LMS;
 	$obj = new xajaxResponse();
 	$blad = false;
@@ -681,68 +663,59 @@ function add_PO($forms)
 	$obj->script("removeClassId('id_podstawa_wo','alerts');");
 	
 	if (!$idp) {
-	    $blad = true;
-	    $obj->script("addClassId('id_select_po','alerts');");
+		$blad = true;
+		$obj->script("addClassId('id_select_po','alerts');");
 	}
 	
 	if (!$podstawa) {
-	    $blad = true;
-	    $obj->script("addClassId('id_podstawa_wo','alerts');");
+		$blad = true;
+		$obj->script("addClassId('id_podstawa_wo','alerts');");
 	}
 	
 	if (!$blad) {
-	
-	    $networknode = $DB->GetRow('SELECT n.id, n.name, n.type, n.states, n.districts, n.boroughs, n.city, n.street, n.zip, n.location_city,
-			n.location_street, n.location_house, n.longitude, n.latitude, n.buildingtype, n.eu, n.invprojectid,
-			p.number AS projectnumber 
-			FROM networknode n
-			LEFT JOIN invprojects p ON (p.id = n.invprojectid) 
-			WHERE n.id = ? LIMIT 1',array($idw));
-	
-	    $networknode['foreign_entity'] = $DB->GetOne('SELECT markid FROM uke_data WHERE id = ? LIMIT 1;',array($idp));
-	
-	    $networknode['podstawa'] = $podstawa;
-	    
-	    if ($networknode['location_city']) {
-		$tmp = $LMS->getterytcode($networknode['location_city'],$networknode['location_street']);
-	        $networknode['kod_terc'] = $tmp['kod_terc'];
-		$networknode['kod_simc'] = $tmp['kod_simc'];
-		$networknode['kod_ulic'] = $tmp['kod_ulic'];
-	    } else {
-		$networknode['kod_terc'] = $networknode['kod_simc'] = $networknode['kod_ulic'] = NULL;
-	    }
-	
-	    $data = serialize($networknode);
-	
-	    $DB->Execute('INSERT INTO uke_data (rapid,mark,markid,useraport,data) VALUES (?,?,?,?,?);',
-		array(
-		    $idr,'WO',$networknode['name'],1,$data
-		)
-	    );
-	    
-//	    $obj->script("xajax_import_interfaces('".$idr."');");
-//	    $obj->script("xajax_import_lk('".$idr."');");
-//	    $obj->script("xajax_import_lb('".$idr."');");
-//	    $obj->script("xajax_import_pol)'".$idr."');");
-//	    $obj->script("xajax_import_zas('".$idr."');");
-	    $obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=WO&idr=".$idr."');");
+		
+		$networknode = $DB->GetRow('SELECT n.*, p.number AS projectnumber 
+					FROM networknode n 
+					LEFT JOIN invprojects p ON (p.id = n.invprojectid) 
+					WHERE n.id = ? LIMIT 1;',array($idw));
+		
+		$networknode['podmiot_obcy'] = $DB->GetOne('SELECT markid FROM uke_data WHERE id = ? LIMIT 1;',array($idp));
+		
+		$networknode['podstawa'] = $podstawa;
+		
+		if ($networknode['location_city']) {
+			$tmp = $LMS->getterytcode($networknode['location_city'],$networknode['location_street']);
+			$networknode['kod_terc'] = $tmp['kod_terc'];
+			$networknode['kod_simc'] = $tmp['kod_simc'];
+			$networknode['kod_ulic'] = $tmp['kod_ulic'];
+		} else {
+			$networknode['kod_terc'] = $networknode['kod_simc'] = $networknode['kod_ulic'] = NULL;
+		}
+		
+		$data = serialize($networknode);
+		
+		$DB->Execute('INSERT INTO uke_data (rapid,mark,markid,useraport,data) VALUES (?,?,?,?,?);',
+			array($idr,'WO',$networknode['name'],1,$data));
+		
+//		$obj->script("xajax_import_interfaces('".$idr."');");
+//		$obj->script("xajax_import_lk('".$idr."');");
+//		$obj->script("xajax_import_lb('".$idr."');");
+//		$obj->script("xajax_import_pol)'".$idr."');");
+//		$obj->script("xajax_import_zas('".$idr."');");
+		$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=WO&idr=".$idr."');");
 	}
 	
 	return $obj;
 	
-    }
-    
-    function set_wo_useraport($idr,$id,$set)
-    {
+}
+
+
+function set_wo_useraport($idr,$id,$set)
+{
 	global $DB;
 	$obj = new xajaxResponse();
 	
-	$DB->Execute('UPDATE uke_data SET useraport = ? WHERE id = ? ;',
-	    array(
-		($set ? 1 : 0),
-		$id,
-	    )
-	);
+	$DB->Execute('UPDATE uke_data SET useraport = ? WHERE id = ? ;',array(($set ? 1 : 0),$id));
 	
 //	$obj->script("xajax_import_interfaces('".$idr."');");
 //	$obj->script("xajax_import_lk('".$idr."');");
@@ -752,12 +725,11 @@ function add_PO($forms)
 	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=WO&idr=".$idr."');");
 	
 	return $obj;
-    }
-    
-    
-    
-    function import_interfaces($idr) 
-    {
+}
+
+
+function import_interfaces($idr) 
+{
 	global $DB,$UKE,$NSTATUS;
 	$obj = new xajaxResponse();
 	$DB->Execute('DELETE FROM uke_data WHERE rapid = ? AND mark = ?;',array($idr,'INT'));
@@ -1486,12 +1458,7 @@ function add_PO($forms)
 	global $DB;
 	$obj = new xajaxResponse();
 	
-	$DB->Execute('UPDATE uke_data SET useraport = ? WHERE id = ? ;',
-	    array(
-		($set ? 1 : 0),
-		$id,
-	    )
-	);
+	$DB->Execute('UPDATE uke_data SET useraport = ? WHERE id = ? ;',array(($set ? 1 : 0),$id,));
 	
 	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=ZAS&idr=".$idr."');");
 	
@@ -1509,6 +1476,7 @@ function add_PO($forms)
 	
 	$dane = array(
 	    'identyfikator' => 'PROJ'.sprintf('%02.d',$proj['id']),
+	    'nazwa' => $proj['name'],
 	    'nrprojektu' => $proj['number'],
 	    'nrumowy' => $proj['contract'],
 	    'tytul' => $proj['title'],

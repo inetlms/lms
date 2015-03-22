@@ -19,9 +19,7 @@
 	    <td width="50%" align="left" class="fleft pad" style="vertical-align:top;">
 		<table width="100%" cellpadding="3">
 		    <tr>
-			<td width="1%" nowrap align="left" style="font-weight:bold;">
-			    Nazwa skrócona
-			</td>
+			<td width="1%" nowrap align="left" style="font-weight:bold;">Nazwa skrócona</td>
 			<td width="1%" nowrap align="left" style="font-weight:bold;">:</td>
 			<td width="98%" nowrap align="left">
 			    <input type="text" name="poedit[shortname]" id="id_shortname" value="{$poinfo.shortname|escape}" style="width:200px;">
@@ -30,9 +28,7 @@
 		    </tr>
 		    
 		    <tr>
-			<td width="1%" nowrap align="left" style="font-weight:bold;">
-			    <span class="tiphelp" {tip text="Pełna nazwa podmiotu obcego"}>Pełna nazwa</span>
-			</td>
+			<td width="1%" nowrap align="left" style="font-weight:bold;"><span class="tiphelp" {tip text="Pełna nazwa podmiotu obcego"}>Pełna nazwa</span></td>
 			<td width="1%" nowrap align="left" style="font-weight:bold;">:</td>
 			<td width="98%" nowrap align="left">
 			    <input type="text" name="poedit[name]" id="id_name" value="{$poinfo.name|escape}" style="width:200px;">
@@ -41,9 +37,7 @@
 		    </tr>
 		    
 		    <tr>
-			<td width="1%" nowrap align="left" style="font-weight:bold;">
-			    NIP
-			</td>
+			<td width="1%" nowrap align="left" style="font-weight:bold;">NIP</td>
 			<td width="1%" nowrap align="left" style="font-weight:bold;">:</td>
 			<td width="98%" nowrap align="left">
 			    <input type="text" name="poedit[ten]" id="id_ten" value="{$poinfo.ten}" style="width:200px;">
@@ -52,9 +46,7 @@
 		    </tr>
 		    
 		    <tr>
-			<td width="1%" nowrap align="left" style="font-weight:bold;">
-			    REGON
-			</td>
+			<td width="1%" nowrap align="left" style="font-weight:bold;">REGON</td>
 			<td width="1%" nowrap align="left" style="font-weight:bold;">:</td>
 			<td width="98%" nowrap align="left">
 			    <input type="text" name="poedit[regon]" id="id_regon" value="{$poinfo.regon}" style="width:200px;">
@@ -63,15 +55,26 @@
 		    </tr>
 		    
 		    <tr>
-			<td width="1%" nowrap align="left" style="font-weight:bold;">
-			    <span class="tiphelp" {tip text="Numer w rejestrze przedsiębiorców telekomunikacyjnych"}>RPT</span>
-			</td>
+			<td width="1%" nowrap align="left" style="font-weight:bold;"><span class="tiphelp" {tip text="Numer w rejestrze przedsiębiorców telekomunikacyjnych"}>RPT</span></td>
 			<td width="1%" nowrap align="left" style="font-weight:bold;">:</td>
 			<td width="98%" nowrap align="left">
 			    <input type="text" name="poedit[rpt]" id="id_rpt" value="{$poinfo.rpt}" style="width:200px;">
 			    <div id="id_rpt_alerts" style="color:red;"></div>
 			</td>
 		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="font-weight:bold;">Projekt EU</td>
+			<td width="1%" nowrap align="left" style="font-weight:bold;">:</td>
+			<td width="98%" nowrap align="left">
+			    <select name="poedit[projectnumber]" id="id_invprojectid" style="width:200px;">
+				<option value="0">-- żaden --</option>
+				{section name='projectlist' loop=$projectlist}
+				<option value="{$projectlist[projectlist].nrprojektu|escape}"{if $poinfo.projectnumber == $projectlist[projectlist].nrprojektu} selected{/if}>{if $projectlist[projectlist].nazwa}{$projectlist[projectlist].nazwa}{else}{$projectlist[projectlist].tytul}{/if} ({$projectlist[projectlist].nrprojektu})</option>
+				{/section}
+			    </select>
+			</td>
+			
 		</table>
 	    </td>
 	    
@@ -228,7 +231,7 @@
 {/literal}
 
 {else}
-    {title small='1' value="Dostawcy usług i podmioty udostępniające lub współdzielące infrastrukturę" link="<a href=\"javascript:void(0);\" onclick=\"loadAjax('id_data_po','?m=uke_siis_info&tuck=PO&action=add&idr={$idr}');\">Dodaj dostawcę <img src='img/add.gif'></a>"}
+    {title value="<font style='font-size:10pt;color:brown;'><b>PODMIOTY OBCE I DOSTAWCY USŁUG</b></font><br><font style='font-size:9pt;color:black;'>Dostawcy usług i podmioty udostępniające lub współdzielące infrastrukturę</font>" link="<a href=\"javascript:void(0);\" onclick=\"loadAjax('id_data_po','?m=uke_siis_info&tuck=PO&action=add&idr={$idr}');\">Dodaj dostawcę <img src='img/add.gif'></a>"}
     <table width="100%"><tr><td width="100%"><div id="id_data_po"></div></td></tr></table>
     
     {if $polist}
