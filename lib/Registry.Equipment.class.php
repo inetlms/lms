@@ -639,7 +639,7 @@ class RegistryEquipment
 	$DB->Execute('INSERT INTO re_assurance (idcar, idother, cuser, cdate, muser, mdate, dfrom, dto, 
 		oc, ac, nw, assistance, nrpolisy, nrumowy, rata1, rata2, rata1to, rata2to, rata1cash, rata1cashdate, rata2cash, 
 		rata2cashdate, ubezpieczyciel, asekurant,ubezpieczajacy, datazawarcia) 
-		VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);',
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);',
 		array(
 		    ($form['idc'] ? $form['idc'] : 0),
 		    ($form['idother'] ? $form['idother'] : 0),

@@ -23,17 +23,18 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("ALTER TABLE documents ALTER version SET NOT NULL;");
 $DB->Execute("ALTER TABLE documents ALTER version SET DEFAULT '';");
+$DB->Execute("ALTER TABLE documents ALTER version SET NOT NULL;");
 
-$DB->Execute("ALTER TABLE documents ALTER templatetype SET NOT NULL;");
 $DB->Execute("ALTER TABLE documents ALTER templatetype SET DEFAULT '';");
+$DB->Execute("ALTER TABLE documents ALTER templatetype SET NOT NULL;");
 
-$DB->Execute("ALTER TABLE documents ALTER templatefile SET NOT NULL;");
 $DB->Execute("ALTER TABLE documents ALTER templatefile SET DEFAULT '';");
+$DB->Execute("ALTER TABLE documents ALTER templatefile SET NOT NULL;");
 
-$DB->Execute("ALTER TABLE documents ALTER urllogofile SET NOT NULL;");
 $DB->Execute("ALTER TABLE documents ALTER urllogofile SET DEFAULT '';");
+$DB->Execute("ALTER TABLE documents ALTER urllogofile SET NOT NULL;");
+
 
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2015011000', 'dbvex'));

@@ -31,6 +31,7 @@ function _smarty_function_title($params, &$template)
 		if (isset($params['value']) && !empty($params['value'])) $value = trans($params['value']); else $value = NULL;
 		if (isset($params['link']) && !empty($params['link'])) $link = $params['link']; else $link = NULL;
 		if (isset($params['help']) && !empty($params['help'])) $help = $params['help']; else $help = NULL;
+		if (isset($params['color']) && !empty($params['color'])) $color = $params['color']; else $color = NULL;
 		$small = (isset($params['small']) ? true : false);
 		$width = 100;
 		$return = '';
@@ -42,6 +43,10 @@ function _smarty_function_title($params, &$template)
 			else $return .= '<div class="title" style="margin-top:12px;">';
 			$return .= '<table width="100%" cellpadding="0" cellspacing="0">';
 			$return .= '<tr>';
+			
+			if (!is_null($color))
+			    $value = '<font style="color:'.$color.';">'.$value.'</font>';
+			
 			if ($small) $return .= '<td width="'.$width.'%" class="title_sm title_sm_small" style="vertical-align:middle;" align="left">'.$value.'</td>';
 			else $return .= '<td width="'.$width.'%" class="title_sm" style="vertical-align:middle;" align="left">'.$value.'</td>';
 			

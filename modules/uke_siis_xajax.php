@@ -572,7 +572,7 @@ function add_PO($forms)
 	
 	$data = serialize($networknode);
 	
-	$DB->Execute('INSERT INTO uke_data (rapid,mark,markid,useraport,data) VALUE (?,?,?,?,?);',
+	$DB->Execute('INSERT INTO uke_data (rapid,mark,markid,useraport,data) VALUES (?,?,?,?,?);',
 		array(
 		    $idr,'WW',$networknode['name'],1,$data
 		)
@@ -714,7 +714,7 @@ function add_PO($forms)
 	
 	    $data = serialize($networknode);
 	
-	    $DB->Execute('INSERT INTO uke_data (rapid,mark,markid,useraport,data) VALUE (?,?,?,?,?);',
+	    $DB->Execute('INSERT INTO uke_data (rapid,mark,markid,useraport,data) VALUES (?,?,?,?,?);',
 		array(
 		    $idr,'WO',$networknode['name'],1,$data
 		)
@@ -789,8 +789,10 @@ function add_PO($forms)
 		LEFT JOIN (SELECT netdev, COUNT(port) AS portcount FROM nodes LEFT JOIN customers ON customers.id = nodes.ownerid WHERE customers.type = 1 AND linktype = 1 GROUP BY netdev) cndpradio ON cndpradio.netdev = nd.id 
 		LEFT JOIN (SELECT netdev, COUNT(port) AS portcount FROM nodes LEFT JOIN customers ON customers.id = nodes.ownerid WHERE customers.type = 0 AND linktype = 2 GROUP BY netdev) pndpfiber ON pndpfiber.netdev = nd.id 
 		LEFT JOIN (SELECT netdev, COUNT(port) AS portcount FROM nodes LEFT JOIN customers ON customers.id = nodes.ownerid WHERE customers.type = 1 AND linktype = 2 GROUP BY netdev) cndpfiber ON cndpfiber.netdev = nd.id 
-		WHERE nd.networknodeid > 0 AND u.useraport=1 AND (u.mark = ? OR u.mark = ?) AND EXISTS (SELECT id FROM netlinks nl WHERE nl.src = nd.id OR nl.dst = nd.id) 
-		ORDER BY nd.name',array('WW','WO'));
+		WHERE nd.networknodeid > 0 AND u.useraport=1 AND (u.mark = ? OR u.mark = ?) '
+		// .' AND EXISTS (SELECT id FROM netlinks nl WHERE nl.src = nd.id OR nl.dst = nd.id) '
+		.' GROUP BY nd.id 
+		ORDER BY nd.id, nd.name',array('WW','WO'));
 		
 	$count = sizeof($nd);
 	
@@ -1069,7 +1071,7 @@ function add_PO($forms)
 		    
 		
 		if ($LK['identyfikatora'] != $LK['identyfikatorb'])
-		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUE (?,?,?,?,?);',
+		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUES (?,?,?,?,?);',
 		    array($idr,'LK',$LK['identyfikator'],1,serialize($LK))
 		);
 		
@@ -1174,7 +1176,7 @@ function add_PO($forms)
 		);
 		
 		if ($LB['identyfikatora'] != $LB['identyfikatorb'])
-		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUE (?,?,?,?,?);',
+		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUES (?,?,?,?,?);',
 		    array($idr,'LB',$LB['identyfikator'],1,serialize($LB))
 		);
 		
@@ -1264,7 +1266,7 @@ function add_PO($forms)
 		);
 		
 		if ($POL['identyfikatora'] != $POL['identyfikatorb'])
-		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUE (?,?,?,?,?);',
+		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUES (?,?,?,?,?);',
 		    array($idr,'POL',$POL['identyfikator'],1,serialize($POL)));
 		
 		
@@ -1466,7 +1468,7 @@ function add_PO($forms)
 		    'custype'			=> $rang[$i]['custype'],
 		);
 		
-		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUE (?,?,?,?,?);',
+		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUES (?,?,?,?,?);',
 		    array($idr,'ZAS',$dane['identyfikator'],1,serialize($dane)));
 		
 	    }
@@ -1519,7 +1521,7 @@ function add_PO($forms)
 	    'zakres' => $proj['scope']
 	);
 	
-	$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUE (?,?,?,?,?);',
+	$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUES (?,?,?,?,?);',
 		    array($idr,'PROJ',$dane['identyfikator'],1,serialize($dane)));
 	
 	}
