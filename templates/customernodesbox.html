@@ -58,6 +58,7 @@ function setgroup(act)
 	                <td width="{math equation="x-y" x=95 y=$ewx}%" class="fleftu"><b>{trans("Name:")}</b></td>
 			    <td width="1%" class="fbt" align="left" nowrap>Podłączony do:</td>
 		    	    <td width="1%" class="fbt" align="right">{trans("ID:")}</td>
+		    	    <td width="1%" class="fbt" align="right">{trans("PPPoE:")}</td>
 			    {if $ewx}
 		    	    <td width="1%" class="fbt" align="right">{trans("Channel:")}</td>
 			    {/if}
@@ -100,6 +101,9 @@ function setgroup(act)
 			    
 			    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';" align="right">
 				({$customernodes[customernodes].id|string_format:"%04d"})
+			    </td>
+			    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';" align="right">
+				{$customernodes[customernodes].pppoelogin|string_format:"%04d"}
 			    </td>
 			    {if $ewx}
 		    	    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';" align="right" nowrap>
