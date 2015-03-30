@@ -36,25 +36,26 @@ include(LIB_DIR.'/UKE.class.php');
 $SMARTY->assign('idr',$idr);
 $rapdata = $UKE->GetRaportInfo($idr);
 
-$layout['pagetitle'] = 'Informacja o raporcie';
+$layout['pagetitle'] = "Informacja o raporcie";
+$layout['link'] = "<a href='javascript:void(0);' onclick='xajax_refresh_data(".$idr.");'><b>Odśwież dane</b> <img src='img/refresh.png' alt='' width='16'></a>";
 
 
 $tucklist[] = array('tuck' => 'DP','name' => 'DP','link' => '?m=uke_siis_info&tuck=DP&idr='.$idr, 'tip'=> 'Podmiot przekazujący informacje oraz osoba kontaktowa',);
 $tucklist[] = array('tuck' => 'PROJ','name' => 'PROJ','link' => '?m=uke_siis_info&tuck=PROJ&idr='.$idr,'tip' => 'Projekty Unijne');
 $tucklist[] = array('tuck' => 'PO','name' => 'OB','link' => '?m=uke_siis_info&tuck=PO&idr='.$idr,'tip' => 'Dostawcy usług i podmioty udostępniające lub współdzielące infrastrukturę',);
-$tucklist[] = array('tuck' => 'KOL', 'name' => 'KOL','link'=>'?m=uke_siis_info&tuck=KOL&idr='.$idr,'tip'=>'Kolokacje',);
+//$tucklist[] = array('tuck' => 'KOL', 'name' => 'KOL','link'=>'?m=uke_siis_info&tuck=KOL&idr='.$idr,'tip'=>'Kolokacje',);
 $tucklist[] = array('tuck' => 'WW','name' => 'WW','link' => '?m=uke_siis_info&tuck=WW&idr='.$idr,'tip' => 'Charakterystyka własnych lub współdzielonych z innymi podmiotami węzłów sieci telekomunikacyjnej',);
 $tucklist[] = array('tuck' => 'WO','name' => 'WO','link' => '?m=uke_siis_info&tuck=WO&idr='.$idr,'tip' => 'Charakterystyka węzłów sieci telekomunikacyjnej innych podmiotów dla potrzeb przekazania informacji o punktach styku między sieciami lub punktów świadczenia usług przez dostawców',);
 $tucklist[] = array('tuck' => 'INT','name' => 'INT','link' => '?m=uke_siis_info&tuck=INT&idr='.$idr,'tip' => 'Informacje o interfejsach węzłów własnych lub współdzielonych z innymi podmiotami i ich wykorzystanie',);
-$tucklist[] = array('tuck' => 'SR', 'name' => 'SR', 'link'=>'?m=uke_siis_info&tuck=SR&idr='.$idr, 'tip'=>'Sektory radiowe');
-$tucklist[] = array('tuck' => 'EL', 'name' => 'EL', 'link' => '?m=uke_siis_info&tuck=EL&idr='.$idr,'tip'=>'Elementy łączenia kabli');
-$tucklist[] = array('tuck' => 'PS', 'name' => 'PS', 'link' => '?m=uke_siis_info&tuck=PS&idr='.$idr,'tip'=>'Punkty Styku');
+//$tucklist[] = array('tuck' => 'SR', 'name' => 'SR', 'link'=>'?m=uke_siis_info&tuck=SR&idr='.$idr, 'tip'=>'Sektory radiowe');
+//$tucklist[] = array('tuck' => 'EL', 'name' => 'EL', 'link' => '?m=uke_siis_info&tuck=EL&idr='.$idr,'tip'=>'Elementy łączenia kabli');
+//$tucklist[] = array('tuck' => 'PS', 'name' => 'PS', 'link' => '?m=uke_siis_info&tuck=PS&idr='.$idr,'tip'=>'Punkty Styku');
 $tucklist[] = array('tuck' => 'LK','name' => 'LP','link' => '?m=uke_siis_info&tuck=LK&idr='.$idr,'tip' => 'Charakterystyka elementów infrastuktury telekomunikacyjnej stanowiących miedziane linie kablowe, światłowodowe linie kablowe lub ciemne włókna z wyłączeniem instalacji telekomunikacyjnej budynku',);
 $tucklist[] = array('tuck' => 'LB','name' => 'RL','link' => '?m=uke_siis_info&tuck=LB&idr='.$idr,'tip' => 'Charakterystyka elementów infrastruktury telekomunikacyjnej stanowiących linie bezprzewodowe z wyłączeniem instalacji telekomunikacyjnej budynku',);
 $tucklist[] = array('tuck' => 'POL','name' => 'POL','link' => '?m=uke_siis_info&tuck=POL&idr='.$idr,'tip' => 'Charakterystyka połączeń pomiędzy węzłami sieci',);
 $tucklist[] = array('tuck' => 'ZAS','name' => 'ZAS','link' => '?m=uke_siis_info&tuck=ZAS&idr='.$idr,'tip' => 'Charakterystyka adresów budynków lub budowli, w których występuje zakończenie sieci przewodowej lub zainstalowany jest terminal użytkownika końcowego bezprzewodowej sieci dostępowej');
 $tucklist[] = array('tuck' => 'US','name' => 'US','link' => '?m=uke_siis_info&tuck=US&idr='.$idr, 'tip'=>'Charakterystyka świadczonych usług w budynkach objętych zasięgiem sieci');
-$tucklist[] = array('tuck' => 'IDO','name' => 'IDO','link' => '?m=uke_siis_info&tuck=IDO&idr='.$idr,'tip'=>'Inwestycje w sieci dostępowe');
+//$tucklist[] = array('tuck' => 'IDO','name' => 'IDO','link' => '?m=uke_siis_info&tuck=IDO&idr='.$idr,'tip'=>'Inwestycje w sieci dostępowe');
 $tucklist[] = array('tuck' => 'BASE','name' => 'Pomoc','link' => '?m=uke_siis_info&tuck=BASE&idr='.$idr,'tip' => 'Opis przeprowadzenia raportu',);
 
 $SMARTY->assign('tucklist',$tucklist);
@@ -62,19 +63,18 @@ $SMARTY->assign('tucklist',$tucklist);
 $tuck = (isset($_GET['tuck']) ? $_GET['tuck'] : NULL);
 $SESSION->nowsave('uke_siis_info_tuck',$tuck);
 
-
+include($_PATH.'/uke_siis_xajax.php');
 if ($tuck == 'DP') { // dane o podmiocie przekazującym dane
 	
 	$SMARTY->assign('rapdata',$rapdata);
 	$SMARTY->display('uke_siis_info_DP.html');
-	
 	die;
 }
 
 // ***********************************************************************************************************************************************************************************************************
 elseif ($tuck == 'PROJ') { // projeky
 	
-	include($_PATH.'/uke_siis_xajax.php');
+//	include($_PATH.'/uke_siis_xajax.php');
 	
 	$projlist = $DB->getAll('SELECT * FROM invprojects WHERE siis = 1 ORDER BY name ASC');
 	
@@ -89,7 +89,7 @@ elseif ($tuck == 'PROJ') { // projeky
 // ***********************************************************************************************************************************************************************************************************
 elseif ($tuck == 'PO') { // OB podmioty obce
 	
-	include($_PATH.'/uke_siis_xajax.php');
+//	include($_PATH.'/uke_siis_xajax.php');
 	
 	if (!isset($_GET['action']) || empty($_GET['action']))
 		$action = 'lista';
@@ -125,7 +125,7 @@ elseif ($tuck == 'PO') { // OB podmioty obce
 // **********************************************************************************************************************************************************************************************************
 elseif ($tuck == 'KOL') {
 	
-	include($_PATH.'/uke_siis_xajax.php');
+//	include($_PATH.'/uke_siis_xajax.php');
 	
 	$SMARTY->display('uke_siis_info_KOL.html');
 	
@@ -135,7 +135,7 @@ elseif ($tuck == 'KOL') {
 // **********************************************************************************************************************************************************************************************************
 elseif ($tuck == 'WW') {
 	
-	include($_PATH.'/uke_siis_xajax.php');
+//	include($_PATH.'/uke_siis_xajax.php');
 	
 	if (!isset($_GET['action']) || empty($_GET['action'])) 
 		$action = 'lista'; 
@@ -175,7 +175,7 @@ elseif ($tuck == 'WW') {
 // **********************************************************************************************************************************************************************************************************
 elseif ($tuck == 'WO') {
 	
-	include($_PATH.'/uke_siis_xajax.php');
+//	include($_PATH.'/uke_siis_xajax.php');
 	
 	if (!isset($_GET['action']) || empty($_GET['action'])) 
 		$action = 'lista'; 
@@ -215,7 +215,7 @@ elseif ($tuck == 'WO') {
 // **********************************************************************************************************************************************************************************************************
 elseif ($tuck == 'INT') { // generator -> INT interfejsy sieciowe
 	
-	include($_PATH.'/uke_siis_xajax.php');
+//	include($_PATH.'/uke_siis_xajax.php');
 	
 	$intlist = $UKE->getINTList($idr);
 	
@@ -255,7 +255,7 @@ elseif ($tuck == 'PS') { // punkty styku
 // **********************************************************************************************************************************************************************************************************
 elseif ($tuck == 'LK') { // generator -> PL
         
-	include($_PATH.'/uke_siis_xajax.php');
+//	include($_PATH.'/uke_siis_xajax.php');
 	
 	$lklist = $UKE->getlklist($idr);
 	
@@ -269,7 +269,7 @@ elseif ($tuck == 'LK') { // generator -> PL
 // **********************************************************************************************************************************************************************************************************
 elseif ($tuck == 'LB') { // generator -> LR
 	
-	include($_PATH.'/uke_siis_xajax.php');
+//	include($_PATH.'/uke_siis_xajax.php');
 	
 	$lblist = $UKE->getlblist($idr);
 	
@@ -283,7 +283,7 @@ elseif ($tuck == 'LB') { // generator -> LR
 // **********************************************************************************************************************************************************************************************************
 elseif ($tuck == 'POL') { // generator -> POL
 	
-	include($_PATH.'/uke_siis_xajax.php');
+//	include($_PATH.'/uke_siis_xajax.php');
 	
 	$pollist = $UKE->getpollist($idr);
 	
@@ -297,7 +297,7 @@ elseif ($tuck == 'POL') { // generator -> POL
 // **********************************************************************************************************************************************************************************************************
 elseif ($tuck == 'ZAS') { // generator -> POL
 	
-	include($_PATH.'/uke_siis_xajax.php');
+//	include($_PATH.'/uke_siis_xajax.php');
 	
 	$zaslist = $UKE->getzaslist($idr);
 	

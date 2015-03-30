@@ -8195,6 +8195,8 @@ class LMS {
 	    $result['name_street'] = $result['street'] = ($tmp['cecha'] ? $tmp['cecha'].' ' : '') . ($tmp['nazwa_2'] ? $tmp['nazwa_2'].' ' : ''). $tmp['nazwa_1'];
 	}
 	
+	if ($result['kod_ulic'] == '00000') $result['kod_ulic'] = '99999';
+	
 	return $result;
 
     }
@@ -8759,6 +8761,106 @@ class LMS {
 	
 	$result = $this->DB->getRow('SELECT '.$field.' FROM invprojects WHERE id = ? '.$this->DB->Limit(1).' ;',array($id));
 	return $result;
+    }
+
+/*********************************************************************
+*                                                                    *
+*                          PODMIOTY OBCE                             *
+*                                                                    *
+*********************************************************************/
+
+    function getForeignEntityList()
+    {
+	$result = $this->DB->GetAll('SELECT * FROM foreignentity');
+	
+	return $result;
+    }
+    
+    function getForeignEntity($id)
+    {
+	$result = $this->DB->GetRow('SELECT * FROM foreignentity WHERE id = ? LIMIT 1;',array(intval($id)));
+	
+	return $result;
+    }
+    
+    
+    function getForeignEntityShortList()
+    {
+	$result = $this->DB->GetAll('SELECT id, name, number, title FROM foreignentity');
+	
+	return $result;
+    }
+    
+    
+    function AddForeignEntity($dane)
+    {
+	$this->DB->Execute('INSERT INTO foreignentity (shortname, name, ten, regon, rpt, invprojectid, teryt, states, districts,
+			    boroughs, city, street, location_city, location_street, location_house, location_flat, location, zip, kod_terc, kod_simc, kod_ulic,
+			    url, email, phone, description, cdate, mdate, cuser, muser) 
+			    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+			    array(
+				($dane['shortname'] ? $dane['shortname'] : NULL),
+				($dane['name'] ? $dane['name'] : NULL),
+				($dane['ten'] ? $dane['ten'] : NULL),
+				($dane['regon'] ? $dane['regon'] : NULL),
+				($dane['rpt'] ? $dane['rpt'] : NULL),
+				($dane['invprojectid'] ? $dane['invprojectid'] : 0),
+				($dane['teryt'] ? 1 : 0),
+				($dane['states'] ? $dane['states'] : NULL),
+				($dane['districts'] ? $dane['districts'] : NULL),
+				($dane['boroughs'] ? $dane['boroughs'] : NULL),
+				($dane['city'] ? $dane['city'] : NULL),
+				($dane['street'] ? $dane['street'] : NULL),
+				($dane['location_city'] ? $dane['location_city'] : 0),
+				($dane['location_street'] ? $dane['location_street'] : 0),
+				($dane['location_house'] ? $dane['location_house'] : NULL),
+				($dane['location_flat'] ? $dane['location_flat'] : NULL),
+				($dane['location'] ? $dane['location'] : NULL),
+				($dane['zip'] ? $dane['zip'] : NULL),
+				($dane['kod_terc'] ? $dane['kod_terc'] : 0),
+				($dane['kod_simc'] ? $dane['kod_simc'] : 0),
+				($dane['kod_ulic'] ? $dane['kod_ulic'] : 0),
+				NULL,NULL,NULL,NULL,
+				time(),0,$this->AUTH->id,0
+			    )
+	);
+	
+	return $this->DB->GetLastInsertID('foreignentity');
+    }
+    
+    
+    function UpdateForeignEntity($dane)
+    {
+	$this->DB->Execute('UPDATE foreignentity SET shortname=?, name=?, ten=?, regon=?, rpt=?, invprojectid=?, teryt=?, states=?, districts=?,
+			    boroughs=?, city=?, street=?, location_city=?, location_street=?, location_house=?, location_flat=?, location=?, zip=?, kod_terc=?, kod_simc=?, kod_ulic=?,
+			    mdate=?, muser=? WHERE id=? ;',
+			    array(
+				($dane['shortname'] ? $dane['shortname'] : NULL),
+				($dane['name'] ? $dane['name'] : NULL),
+				($dane['ten'] ? $dane['ten'] : NULL),
+				($dane['regon'] ? $dane['regon'] : NULL),
+				($dane['rpt'] ? $dane['rpt'] : NULL),
+				($dane['invprojectid'] ? $dane['invprojectid'] : 0),
+				($dane['teryt'] ? 1 : 0),
+				($dane['states'] ? $dane['states'] : NULL),
+				($dane['districts'] ? $dane['districts'] : NULL),
+				($dane['boroughs'] ? $dane['boroughs'] : NULL),
+				($dane['city'] ? $dane['city'] : NULL),
+				($dane['street'] ? $dane['street'] : NULL),
+				($dane['location_city'] ? $dane['location_city'] : 0),
+				($dane['location_street'] ? $dane['location_street'] : 0),
+				($dane['location_house'] ? $dane['location_house'] : NULL),
+				($dane['location_flat'] ? $dane['location_flat'] : NULL),
+				($dane['location'] ? $dane['location'] : NULL),
+				($dane['zip'] ? $dane['zip'] : NULL),
+				($dane['kod_terc'] ? $dane['kod_terc'] : 0),
+				($dane['kod_simc'] ? $dane['kod_simc'] : 0),
+				($dane['kod_ulic'] ? $dane['kod_ulic'] : 0),
+				time(),$this->AUTH->id,
+				$dane['id']
+			    )
+	);
+	
     }
 
 

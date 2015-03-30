@@ -1,8 +1,11 @@
-{$xajax}
 {if $action == 'add' || $action == 'edit'}
 
 {else}
-    {title value="<font style='font-size:10pt;color:brown;'><b>WĘZŁY WŁASNE I WSPÓŁDZIELONE</b></font><br><font style='font-size:9pt;color:black;'>Charakterystyka własnych lub współdzielonych z innymi podmiotami węzłów sieci telekomunikacyjnej</font>"}
+    {if $networknodelist}
+	{title value="<font style='font-size:10pt;color:brown;'><b>WĘZŁY WŁASNE I WSPÓŁDZIELONE</b></font><br><font style='font-size:9pt;color:black;'>Charakterystyka własnych lub współdzielonych z innymi podmiotami węzłów sieci telekomunikacyjnej</font>" link="<a href='javascript:void(0);' onclick='xajax_add_all_ww({$idr});'><b>Dodaj wszystkie węzły własne</b> <img src='img/add.gif' alt=''></a>"}
+    {else}
+	{title value="<font style='font-size:10pt;color:brown;'><b>WĘZŁY WŁASNE I WSPÓŁDZIELONE</b></font><br><font style='font-size:9pt;color:black;'>Charakterystyka własnych lub współdzielonych z innymi podmiotami węzłów sieci telekomunikacyjnej</font>" link="<a href='javascript:void(0);' onclick='xajax_refresh_ww({$idr});'><b>Odswież dane</b></a>"}
+    {/if}
 <!--//    
     link="<a href=\"javascript:void(0);\" onclick=\"loadAjax('id_data_po','?m=uke_siis_info&tuck=PO&action=add&idr={$idr}');\">Dodaj dostawcę <img src='img/add.gif'></a>"
 //-->
@@ -24,17 +27,9 @@
 		<b>Brak dostępnych węzłów</b>
 		{/if}
 	    </td>
-	    <td width="1%" nowrap class="fbt pad10" align="left">
-		<div id="id_view_select_po"></div>
-	    </td>
-	    <td width="97%" class="fbt pad10" align="left">
-		<div id="id_view_add_po_to_ww"></div>
-	    </td>
-	    <td width="1%" nowrap class="frightu pad2" align="right">
-	    <!--//
-			    <a href="javascript:void(0);"><b>Dodaj wszystkie węzły</b></a>
-	    //-->
-	    </td>
+	    <td width="1%" nowrap class="fbt pad10" align="left"><div id="id_view_select_po"></div></td>
+	    <td width="97%" class="fbt pad10" align="left"><div id="id_view_add_po_to_ww"></div></td>
+	    <td width="1%" nowrap class="frightu pad2" align="right"></td>
 	</tr>
     </table>
     <table width="100%"><tr><td width="100%"><div id="id_data_ww"></div></td></tr></table>
@@ -42,23 +37,29 @@
     {if $nnodelist}
     <br>
     <table width="100%" cellpadding="3">
-	<tr class="dark">
-	    <td width="1%" nowrap class="fleftu pad10" align="center"><b>Węzeł</b></td>
-	    <td width="1%" nowrap class="fbt pad10" align="left"><b>Typ</b></td>
-	    <td width="1%" nowrap class="fbt pad10" align="left"><b>Typ Obiektu</b></td>
-	    <td width="94%" class="fbt pad10" align="left"><b>Lokalizacja</b></td>
-	    <td width="1%" nowrap class="fbt pad10" align="left"><span class="tiphelp" {tip text="Nazwa dostawcy lub podmiotu z którym jest współdzielony węzeł"}><b>Współdzielony</b></span></td>
-	    <td width="1%" nowrap class="frightu pad10" align="right">&nbsp;</td>
+	<tr class="dark ">
+	    <td width="1%" nowrap class="fleftu pad" align="center"><b>LP</b></td>
+	    <td width="1%" nowrap class="fbt pad tleft" align="center"><b>ID</b></td>
+	    <td width="1%" nowrap class="fbt pad tleft" align="center"><b>Węzeł</b></td>
+	    <td width="1%" nowrap class="fbt pad tleft" align="left"><b>Typ</b></td>
+	    <td width="1%" nowrap class="fbt pad tleft" align="left"><b>Typ Obiektu</b></td>
+	    <td width="91%" class="fbt pad tleft" align="left"><b>Lokalizacja</b></td>
+	    <td width="1%" nowrap class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Nazwa dostawcy lub podmiotu z którym jest współdzielony węzeł"}><b>Współdzielony</b></span></td>
+	    <td width="1%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Ilość interfejsów w węźle"}><b>INT</b></span></td>
+	    <td width="1%" nowrap class="frightu pad tleft" align="right">&nbsp;</td>
 	</tr>
 	{cycle values="lucid,light" print=false}
 	{section name='nnodelist' loop=$nnodelist}
-	    <tr class="{cycle} lista{if !$nnodelist[nnodelist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
-		<td width="1%" nowrap class="fleft pad10" align="left">{$nnodelist[nnodelist].markid}</td>
-		<td width="1%" nowrap class="pad10" align="left">{assign var='tmp' value=$nnodelist[nnodelist].type}{$_TNODE.$tmp|truncate:"19":""}</td>
-		<td width="1%" nowrap class="pad10" align="left">{assign var='tmp' value=$nnodelist[nnodelist].buildingtype}{$_BUILDINGS.$tmp}</td>
-		<td width="94%" class="pad10" align="left">{$nnodelist[nnodelist].zip} {$nnodelist[nnodelist].city} {$nnodelist[nnodelist].street} {$nnodelist[nnodelist].location_house}</td>
-		<td width="1%" nowrap class="pad10" align="left">{if $nnodelist[nnodelist].podmiot_obcy}{$nnodelist[nnodelist].podmiot_obcy}{/if}</td>
-	        <td width="1%" nowrap class="fright pad10" align="right">
+	    <tr class="{cycle} lista{if !$nnodelist[nnodelist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');"{if $nnodelist[nnodelist].type == $smarty.const.NODE_FOREIGN} style="color:green;"{/if}>
+		<td width="1%" nowrap class="fleft pad" align="center">{$smarty.section.nnodelist.index+1}</td>
+		<td width="1%" nowrap class="pad tleft" align="center">{$nnodelist[nnodelist].idw|string_format:"%04.d"}</td>
+		<td width="1%" nowrap class="pad tleft" align="left"><a href="javascript:void(0);" onclick="self.location.href='?m=networknodeinfo&idn={$nnodelist[nnodelist].idw}';" {tip text="przejdź do węzła"}>{$nnodelist[nnodelist].markid}</a></td>
+		<td width="1%" nowrap class="pad tleft" align="left">{assign var='tmp' value=$nnodelist[nnodelist].type}{$_TNODE.$tmp|truncate:"19":""}</td>
+		<td width="1%" nowrap class="pad tleft" align="left">{assign var='tmp' value=$nnodelist[nnodelist].buildingtype}{$_BUILDINGS.$tmp}</td>
+		<td width="91%" class="pad tleft" align="left">{$nnodelist[nnodelist].zip} {$nnodelist[nnodelist].city} {$nnodelist[nnodelist].street} {$nnodelist[nnodelist].location_house}</td>
+		<td width="1%" nowrap class="pad tleft" align="left">{if $nnodelist[nnodelist].podmiot_obcy}{$nnodelist[nnodelist].podmiot_obcy}{/if}</td>
+		<td width="1%" nowrap class="pad tleft" align="center">{$nnodelist[nnodelist].intcount}</td>
+	        <td width="1%" nowrap class="fright pad tleft" align="right">
 		    {if $nnodelist[nnodelist].useraport}
 			<img src="img/access.gif" {tip text="Nie uwzględniaj rekordu w raporcie"} onclick="xajax_set_ww_useraport({$idr},{$nnodelist[nnodelist].id},0);" style="cursor:pointer;">
 		    {else}
@@ -68,7 +69,7 @@
 	        </td>
 	    </tr>
 	{/section}
-	<tr class="dark"><td width="100%" colspan="6" class="fall"></td></tr>
+	<tr class="dark"><td width="100%" colspan="9" class="fall"></td></tr>
     </table>
     
     {literal}

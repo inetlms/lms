@@ -354,21 +354,21 @@ define('TARIFF_INTERNET_MOBILE',14);
 define('TARIFF_OTHER', -1);
 
 $TARIFFTYPES = array(
-	TARIFF_INTERNET		=> 'Stacjonarny dostęp do Internetu',
+	TARIFF_INTERNET		=> 'Stacjonarny dostęp do Internetu',										// 
 	TARIFF_HOSTING		=> isset($CONFIG['tarifftypes']['hosting']) ? $CONFIG['tarifftypes']['config'] : trans('hosting'),
 	TARIFF_SERVICE		=> isset($CONFIG['tarifftypes']['service']) ? $CONFIG['tarifftypes']['service'] : trans('service'),
-	TARIFF_PHONE		=> 'Telefonia stacjonarna VoIP',
-	TARIFF_TV		=> 'IPTV lub DTV',
+	TARIFF_PHONE		=> 'Telefonia stacjonarna VoIP',										//
+	TARIFF_TV		=> 'IPTV lub DTV',												//
 //	TARIFF_DEPOSIT		=> isset($CONFIG['tarifftypes']['deposit']) ? $CONFIG['tarifftypes']['deposit'] : trans('deposit'),
 	TARIFF_LEASE		=> isset($CONFIG['tarifftypes']['lease']) ? $CONFIG['tarifftypes']['lease'] : trans('lease'),
 	TARIFF_ITSERVICE	=> isset($CONFIG['tarifftypes']['itservice']) ? $CONFIG['tarifftypes']['itservice'] : trans('it service'),
 	TARIFF_VIP		=> isset($CONFIG['tarifftypes']['vip']) ? $CONFIG['tarifftypes']['vip'] : trans('VIP'),
 	TARIFF_MULTIROOM	=> isset($CONFIG['tarifftypes']['multiroom']) ? $CONFIG['tarifftypes']['multiroom'] : trans('multi room'),
 	TARIFF_SUSPENSION	=> isset($CONFIG['tarifftypes']['suspension']) ? $CONFIG['tarifftypes']['suspension'] : trans('suspension'),
-	TARIFF_OTHER		=> 'Inne usługi',
-	TARIFF_PHONE_ISDN	=> 'Telefonia stacjonarna POTS i ISDN',
-	TARIFF_PHONE_MOBILE	=> 'Telefonia mobilna',
-	TARIFF_INTERNET_MOBILE	=> 'Mobilny dostęp do Internetu',
+	TARIFF_OTHER		=> 'Inne usługi',												//
+	TARIFF_PHONE_ISDN	=> 'Telefonia stacjonarna POTS i ISDN',										//
+	TARIFF_PHONE_MOBILE	=> 'Telefonia mobilna',												//
+	TARIFF_INTERNET_MOBILE	=> 'Mobilny dostęp do Internetu',										//
 );
 asort($TARIFFTYPES);
 

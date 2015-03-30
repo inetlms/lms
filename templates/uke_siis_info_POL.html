@@ -1,4 +1,3 @@
-{$xajax}
 {if $action == 'add' || $action == 'edit'}
 {else}
 
@@ -10,38 +9,37 @@
 	
 	<table width="100%" cellpadding="3">
 	    <tr class="dark">
-		<td width="1%" class="fleftu pad" align="left"><b><span class="tiphelp" {tip text="Identyfikator lini przewodowej"}><b>Identyfikator</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Identyfikator punktu A"}><b>Punkt A</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Identyfikator punktu B"}><b>Punkt B</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Warstwa Szkieletowa"}><b>Szkielet</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Warstwa Dystrybucyjna"}><b>Dystrybucja</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Warstwa Dostępowa"}><b>Dostęp</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Wykorzystanie na potrzeby usług szerokopasmowych"}><b>Szerokopasmowe</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Wykorzystanie na potrzeby usług głosowych"}><b>Głosowe</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Przepustowość całkowita"}><b>Przepustowość</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Przepustowość na potrzeby usług szerokopasmowego dostępu do Internetu"}><b>Przepustowość<br>dla Internetu</b></span></td>
-		<td width="90%" class="frightu pad" align="right"></td>
+		<td width="1%" nowrap class="fleftu pad" align="center"><b>L.P.</b></td>
+		<td width="1%" class="fbt pad tleft" align="left"><b><span class="tiphelp" {tip text="Identyfikator lini przewodowej"}><b>Identyfikator</b></span></td>
+		<td width="45%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Identyfikator punktu A"}><b>Węzeł A</b></span></td>
+		<td width="45%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Identyfikator punktu B"}><b>Węzeł B</b></span></td>
+		<td width="1%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Warstwa Szkieletowa"}><b>W.SZ</b></span></td>
+		<td width="1%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Warstwa Dystrybucyjna"}><b>W.DY</b></span></td>
+		<td width="1%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Warstwa Dostępowa"}><b>W.DO</b></span></td>
+		<td width="1%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Wykorzystanie na potrzeby usług szerokopasmowych"}><b>Szerokopasmowe</b></span></td>
+		<td width="1%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Wykorzystanie na potrzeby usług głosowych"}><b>Głosowe</b></span></td>
+		<td width="1%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Przepustowość całkowita"}><b>Przepustowość</b></span></td>
+		<td width="1%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Przepustowość na potrzeby usług szerokopasmowego dostępu do Internetu"}><b>Przepustowość<br>dla Internetu</b></span></td>
+		<td width="1%" class="frightu pad tleft" align="right"></td>
 	    </tr>
 	    
 	    
 	    {cycle values="lucid,light" print=false}
 	    {section name='pollist' loop=$pollist}
+	    {assign var='indeks' value=$smarty.section.pollist.index+1}
 	    <tr class="{cycle} lista {if !$pollist[pollist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
-		<td width="1%" class="fleft pad" align="left">{$pollist[pollist].identyfikator}</td>
-		
-		<td width="1%" class="pad" align="left">{$pollist[pollist].identyfikatora}</td>
-		<td width="1%" class="pad" align="left">{$pollist[pollist].identyfikatorb}</td>
-		<td width="1%" class="pad" align="left" nowrap>{$pollist[pollist].backbone_layer}</td>
-		
-		<td width="1%" class="pad" align="center">{$pollist[pollist].distribution_layer}</td>
-		<td width="1%" class="pad" align="center">{$pollist[pollist].access_layer}</td>
-		
-		<td width="1%" class="pad" align="center">{$pollist[pollist].szerokopasmowe}</td>
-		<td width="1%" class="pad" align="center">{$pollist[pollist].glosowe}</td>
-		<td width="1%" class="pad" align="center">{$pollist[pollist].speed}</td>
-		<td width="1%" class="pad" align="center">{$pollist[pollist].speednet}</td>
-		
-		<td width="90%" class="fright pad" align="right">
+		<td width="1%" nowrap class="fleft pad" align="center">{$indeks}</td>
+		<td width="1%" class="fleft pad tleft" align="center">{$pollist[pollist].identyfikator}</td>
+		<td width="40%" class="pad tleft" align="left">{$pollist[pollist].identyfikatora}</td>
+		<td width="40%" class="pad tleft" align="left">{$pollist[pollist].identyfikatorb}</td>
+		<td width="1%" class="pad tleft" align="center" nowrap>{$pollist[pollist].backbone_layer}</td>
+		<td width="1%" class="pad tleft" align="center">{$pollist[pollist].distribution_layer}</td>
+		<td width="1%" class="pad tleft" align="center">{$pollist[pollist].access_layer}</td>
+		<td width="1%" class="pad tleft" align="center">{$pollist[pollist].szerokopasmowe}</td>
+		<td width="1%" class="pad tleft" align="center">{$pollist[pollist].glosowe}</td>
+		<td width="1%" class="pad tleft" align="center">{$pollist[pollist].speed}</td>
+		<td width="1%" class="pad tleft" align="center">{$pollist[pollist].speednet}</td>
+		<td width="1%" class="fright pad tleft" align="right">
 		    {if $pollist[pollist].useraport}
 			<img src="img/access.gif" {tip text="Nie uwzględniaj rekordu w raporcie"} onclick="xajax_set_pol_useraport({$idr},{$pollist[pollist].id},0);" style="cursor:pointer;">
 		    {else}
@@ -51,7 +49,7 @@
 	    </tr>
 	    {/section}
 	    <tr>
-		<td width="100%" colspan="11" class="ftop"></td>
+		<td width="100%" colspan="12" class="ftop"></td>
 	    </tr>
 	</table>
 

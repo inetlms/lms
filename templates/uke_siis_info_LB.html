@@ -1,4 +1,3 @@
-{$xajax}
 {if $action == 'add' || $action == 'edit'}
 {else}
 
@@ -10,29 +9,31 @@
 	
 	<table width="100%" cellpadding="3">
 	    <tr class="dark">
-		<td width="1%" class="fleftu pad" align="left"><b><span class="tiphelp" {tip text="Identyfikator lini przewodowej"}><b>Identyfikator</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Identyfikator punktu A"}><b>Punkt A</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Identyfikator punktu B"}><b>Punkt B</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Medium transmisyjne (środowisko wykorzystywane do transmisji sygnałów)"}><b>Medium</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Pasmo radiowe"}><b>Pasmo</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="System transmisyjny dla medium radiowego"}><b>System</b></span></td>
-		<td width="86%" class="frightu pad" align="right"></td>
+		<td width="1%" nowrap class="fleftu pad" align="center"><b>L.P.</b></td>
+		<td width="1%" nowrap class="fbt pad tleft" align="left"><b><span class="tiphelp" {tip text="Identyfikator lini przewodowej"}><b>Identyfikator</b></span></td>
+		<td width="32%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Identyfikator punktu A"}><b>Punkt A</b></span></td>
+		<td width="32%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Identyfikator punktu B"}><b>Punkt B</b></span></td>
+		<td width="31%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Medium transmisyjne (środowisko wykorzystywane do transmisji sygnałów)"}><b>Medium</b></span></td>
+		<td width="1%" nowrap class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Pasmo radiowe"}><b>Pasmo</b></span></td>
+		<td width="1%" nowrap class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="System transmisyjny dla medium radiowego"}><b>System</b></span></td>
+		<td width="1%" nowrap class="frightu pad tleft" align="right"></td>
 	    </tr>
 	    
 	    
 	    {cycle values="lucid,light" print=false}
 	    {section name='lblist' loop=$lblist}
+	    {assign var='indeks' value=$smarty.section.lblist.index+1}
 	    <tr class="{cycle} lista{if !$lblist[lblist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
-		<td width="1%" class="fleft pad" align="left">{$lblist[lblist].identyfikator}</td>
 		
-		<td width="1%" class="pad" align="left">{$lblist[lblist].identyfikatora}</td>
-		<td width="1%" class="pad" align="left">{$lblist[lblist].identyfikatorb}</td>
-		<td width="1%" class="pad" align="left" nowrap>{$lblist[lblist].medium}</td>
+		<td width="1%" nowrap class="fleft pad" align="center">{$indeks}</td>
+		<td width="1%" nowrap class="pad tleft" align="left">{$lblist[lblist].identyfikator}</td>
+		<td width="32%" class="pad tleft" align="left">{$lblist[lblist].identyfikatora}</td>
+		<td width="32%" class="pad tleft" align="left">{$lblist[lblist].identyfikatorb}</td>
+		<td width="31%" class="pad tleft" align="left" nowrap>{$lblist[lblist].medium}</td>
+		<td width="1%" nowrap class="pad tleft" align="center">{$lblist[lblist].pasmo}</td>
+		<td width="1%" nowrap class="pad tleft" align="center">{$lblist[lblist].system}</td>
 		
-		<td width="1%" class="pad" align="center">{$lblist[lblist].pasmo}</td>
-		<td width="1%" class="pad" align="center">{$lblist[lblist].system}</td>
-		
-		<td width="86%" class="fright pad" align="right">
+		<td width="1%" nowrap class="fright pad tleft" align="right">
 		    {if $lblist[lblist].useraport}
 			<img src="img/access.gif" {tip text="Nie uwzględniaj rekordu w raporcie"} onclick="xajax_set_lb_useraport({$idr},{$lblist[lblist].id},0);" style="cursor:pointer;">
 		    {else}
@@ -42,7 +43,7 @@
 	    </tr>
 	    {/section}
 	    <tr>
-		<td width="100%" colspan="7" class="ftop"></td>
+		<td width="100%" colspan="8" class="ftop"></td>
 	    </tr>
 	</table>
 

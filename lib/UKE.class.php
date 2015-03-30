@@ -256,9 +256,56 @@ class UKE {
 		$result[$i]['useraport'] = $tmp[$i]['useraport'];
 		$result[$i]['id'] = $tmp[$i]['id'];
 		$result[$i]['markid'] = $tmp[$i]['markid'];
+		$result[$i]['intcount'] = $this->DB->getOne('SELECT COUNT(id) FROM netdevices WHERE networknodeid = ? ;',array($result[$i]['idw']));
 	    }
 	}
 	
+	return $result;
+    }
+    
+    
+    function getIDWWUseRaport($idr)
+    {
+	$result = array();
+	$tmp = $this->DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'WW'));
+	
+	if ($tmp) {
+	    $count = sizeof($tmp);
+	    for ($i=0; $i<$count; $i++) {
+		$_tmp = unserialize($tmp[$i]['data']);
+		$result[] = $_tmp['id'];
+	    }
+	}
+	else $reslut[] = 0;
+	
+	return $result;
+    }
+    
+    function getIDWOUseRaport($idr)
+    {
+	$result = array();
+	$tmp = $this->DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'WO'));
+	
+	if ($tmp) {
+	    $count = sizeof($tmp);
+	    for ($i=0; $i<$count; $i++) {
+		$_tmp = unserialize($tmp[$i]['data']);
+		$result[] = $_tmp['id'];
+	    }
+	}
+	else $reslut[] = 0;
+	
+	return $result;
+    }
+    
+    function getIdINTUseRaport($idr)
+    {
+	$result = array();
+	$result = $this->DB->GetCol('SELECT markid AS id 
+			FROM uke_data 
+			WHERE rapid=? AND mark=? AND useraport=? 
+			GROUP BY markid 
+			ORDER BY markid ASC;',array($idr,'INT',1));
 	return $result;
     }
     
@@ -278,6 +325,7 @@ class UKE {
 		$result[$i]['useraport'] = $tmp[$i]['useraport'];
 		$result[$i]['id'] = $tmp[$i]['id'];
 		$result[$i]['markid'] = $tmp[$i]['markid'];
+		$result[$i]['intcount'] = $this->DB->getOne('SELECT COUNT(id) FROM netdevices WHERE networknodeid = ? ;',array($result[$i]['idw']));
 	    }
 	}
 	

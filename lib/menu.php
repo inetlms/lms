@@ -933,7 +933,7 @@ $menu = array(
 				),
 //				array(
 //					'name' => 'Podmioty obce',
-//					'link' => '?m=podmiotyobce',
+//					'link' => '?m=foreignentity',
 //					'tip' => 'Podmioty obce i dostawcy usług',
 //					'prio' => 80,
 //				),

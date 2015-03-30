@@ -1122,4 +1122,16 @@ function check_fileexists($filename)
 }
 
 
+function calculate_distance_gps($latitude1,$longitude1,$latitude2,$longitude2,$miles=false)
+{
+    if ($miles) $out = 60;
+    else $out = 111.195;
+    $distance = (rad2deg(acos((sin(deg2rad($latitude1)) * sin(deg2rad($latitude2))) + (cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * cos(deg2rad($longitude1 - $longitude2))))) * $out);
+    $distance = str_replace(',','.',$distance);
+    $distance = sprintf('%0.1f',$distance);
+    $distance = str_replace(',','.',$distance);
+    return $distance;
+}
+
+
 ?>

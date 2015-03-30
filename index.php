@@ -34,7 +34,7 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
-define('LMSV','15.03.17');
+define('LMSV','15.03.30');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 ini_set('mbstring.func_overload','0');
 
@@ -66,20 +66,20 @@ $CONFIG['directories']['doc_dir'] = (!isset($CONFIG['directories']['doc_dir']) ?
 $CONFIG['directories']['uploadfiles_dir'] = (!isset($CONFIG['directories']['uploadfiles_dir']) ? $CONFIG['directories']['sys_dir'].'/uploadfiles' : $CONFIG['directories']['uploadfiles_dir']);
 $CONFIG['directories']['modules_dir'] = (!isset($CONFIG['directories']['modules_dir']) ? $CONFIG['directories']['sys_dir'].'/modules' : $CONFIG['directories']['modules_dir']);
 $CONFIG['directories']['backup_dir'] = (!isset($CONFIG['directories']['backup_dir']) ? $CONFIG['directories']['sys_dir'].'/backups' : $CONFIG['directories']['backup_dir']);
-$CONFIG['directories']['config_templates_dir'] = (!isset($CONFIG['directories']['config_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/config_templates' : $CONFIG['directories']['config_templates_dir']);
+//$CONFIG['directories']['config_templates_dir'] = (!isset($CONFIG['directories']['config_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/config_templates' : $CONFIG['directories']['config_templates_dir']);
 $CONFIG['directories']['smarty_compile_dir'] = (!isset($CONFIG['directories']['smarty_compile_dir']) ? $CONFIG['directories']['sys_dir'].'/templates_c' : $CONFIG['directories']['smarty_compile_dir']);
 $CONFIG['directories']['smarty_templates_dir'] = (!isset($CONFIG['directories']['smarty_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/templates' : $CONFIG['directories']['smarty_templates_dir']);
 $CONFIG['directories']['plug_dir'] = (!isset($CONFIG['directories']['plug_dir']) ? $CONFIG['directories']['sys_dir'].'/plug' : $CONFIG['directories']['plug_dir']);
 $CONFIG['directories']['invoice_dir'] = (!isset($CONFIG['directories']['invoice_dir']) ? $CONFIG['directories']['doc_dir'].'/invoice_pdf' : $CONFIG['directories']['invoice_dir']);
 
 define('SYS_DIR', $CONFIG['directories']['sys_dir']);
+define('LIB_DIR', $CONFIG['directories']['lib_dir']);
 define('TMP_DIR', $CONFIG['directories']['tmp_dir']);
 define('RRD_DIR', $CONFIG['directories']['rrd_dir']);
-define('LIB_DIR', $CONFIG['directories']['lib_dir']);
 define('DOC_DIR', $CONFIG['directories']['doc_dir']);
-define('BACKUP_DIR', $CONFIG['directories']['backup_dir']);
 define('UPLOADFILES_DIR', $CONFIG['directories']['uploadfiles_dir']);
 define('MODULES_DIR', $CONFIG['directories']['modules_dir']);
+define('BACKUP_DIR', $CONFIG['directories']['backup_dir']);
 define('SMARTY_COMPILE_DIR', $CONFIG['directories']['smarty_compile_dir']);
 define('SMARTY_TEMPLATES_DIR', $CONFIG['directories']['smarty_templates_dir']);
 define('PLUG_DIR',$CONFIG['directories']['plug_dir']);
