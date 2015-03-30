@@ -306,7 +306,7 @@ if (
 			$dane .= '"'.$i.'_'.$tmp['id'].'",';
 			$dane .= '"'.$tmp['networknodename'].'",';
 			$dane .= '"'.$tmp['netnodename'].'",';
-			$dane .= '"NIE",';
+			$dane .= '"Nie",';
 			$dane .= '"",';
 			$dane .= '"0",';
 			$dane .= '"360",';

@@ -864,7 +864,7 @@ function add_interface($idr,$idi,$xaj=1) // idi -> id interfejsu
 		JOIN netdevices n ON (n.id = l.src OR n.id = l.dst) 
 		WHERE (l.src = ? OR l.dst = ?) 
 		AND (n.networknodeid IN ('.$idww.') '.($idwo ? ' OR n.networknodeid IN ('.$idwo.')' : '').') 
-		GROUP BY n.networknodeid;',array($idi,$idi));
+		GROUP BY n.networknodeid, l.type, l.speed, l.technology, l.tracttype ;',array($idi,$idi));
 	
 	$nodelink = $DB->GetAll('SELECT n.linktype AS type, n.linkspeed AS speed, n.linktechnology AS technology, d.networknodeid 
 		FROM nodes n 
@@ -949,7 +949,7 @@ function add_interface($idr,$idi,$xaj=1) // idi -> id interfejsu
 	    foreach ($sub as $item2 => $key) {
 	    $pasmo = '';
 	    if ($item == LINKTYPES_RADIO) {
-		    if ($item2 == 101) $pasmo = '5.5'; else $pasmo = '2.2';
+		    if ($item2 == 101) $pasmo = '5.5'; else $pasmo = '2.4';
 	    }
 	    
 	    $result[] = array(
@@ -979,7 +979,7 @@ function add_interface($idr,$idi,$xaj=1) // idi -> id interfejsu
 	    foreach ($sub as $item2 => $key) {
 	    $pasmo = '';
 	    if ($item == LINKTYPES_RADIO) {
-		    if ($item2 == 101) $pasmo = '5.5'; else $pasmo = '2.2';
+		    if ($item2 == 101) $pasmo = '5.5'; else $pasmo = '2.4';
 	    }
 	    
 	    $result[] = array(

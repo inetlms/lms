@@ -664,7 +664,7 @@ define('TRACT_ABOVEGROUND_DEDICATE',7);
 $TRACTTYPE = array(
     TRACT_UNDERGROUND		=> 'podziemny',
     TRACT_UNDERGROUND_SEWER	=> 'podziemny w kanalizacji',
-    TRACT_UNDERGROUND_PIPELINE	=> 'podziemny w rurciągu',
+    TRACT_UNDERGROUND_PIPELINE	=> 'podziemny w rurociągu',
     TRACT_CANALROAD		=> 'podziemny w kanale technicznym drogi',
     TRACT_ABOVEGROUND		=> 'napowietrzny',
     TRACT_RIGGING		=> 'napowietrzny na lini energetycznej',
