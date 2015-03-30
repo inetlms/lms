@@ -1,8 +1,7 @@
-{$xajax}
 {if $action == 'add' || $action == 'edit'}
 
 {else}
-    {title small='1' value="Projekty Unijne"}
+    {title value="<font style='font-size:10pt;color:brown;'><b>PROJEKTY EU</b></font><br><font style='font-size:9pt;color:black;'>Informacja o projektach współfinansowanych ze środków Unii Europejskiej</font>"}
 
     
     <table width="100%" cellpadding="5">
@@ -24,7 +23,7 @@
 	<br>
 	<table width="100%" cellpadding="3">
 	    <tr class="dark">
-		<td width="1%" class="fleftu pad" align="center" nowrap><b>#</b></td>
+		<td width="1%" class="fleftu pad" align="center" nowrap><b>#<br>Nazwa</b></td>
 		<td width="1%" class="fbt pad tleft" align="left" nowrap><b>Nr. projektu<br>Nr. umowy</b></td>
 		<td width="65%" class="fbt pad tleft" align="left"><b>Tytuł<br>Zakres</b></td>
 		<td width="1%" class="fbt pad tleft" align="left" nowrap><b>Program<br>Działanie</b></td>
@@ -36,21 +35,29 @@
 	{cycle values='lucid,light' print=false}
 	{section name='projects' loop=$projects}
 	    <tr class="{cycle} lista">
-		<td width="1%" class="fleftu pad" align="left" nowrap>{$projects[projects].identyfikator}</td>
-		<td width="1%" class="fbt pad tleft" align="left" nowrap>
-		    {$projects[projects].nrprojektu}<br>
-		    {$projects[projects].nrumowy}
+		<td width="1%" class="fleftu pad" align="left" nowrap style="vertical-align:top;">
+		    {$projects[projects].identyfikator}
+		    {if $projects[projects].nazwa}<br>{$projects[projects].nazwa}{/if}
 		</td>
-		<td width="65%" class="fbt pad tleft" align="left">
+		
+		<td width="1%" class="fbt pad tleft" align="left" nowrap style="vertical-align:top;">
+		    <b>P: </b>{$projects[projects].nrprojektu}<br><b>U: </b>{$projects[projects].nrumowy}
+		</td>
+		
+		<td width="65%" class="fbt pad tleft" align="left" style="vertical-align:top;">
 		    <b>T: </b>{$projects[projects].tytul}<br><b>Z: </b>{$projects[projects].zakres}
-		    </td>
-		<td width="1%" class="fbt pad tleft" align="left" nowrap>
+		</td>
+		
+		<td width="1%" class="fbt pad tleft" align="left" nowrap style="vertical-align:top;">
 		    <b>P: </b>{$projects[projects].program}<br><b>D: </b>{$projects[projects].dzialanie}
 		</td>
-		<td width="30%" class="fbt pad tleft" align="left">{$projects[projects].firma}</td>
-		<td width="1%" class="fbt pad tleft" align="left" nowrap>
+		
+		<td width="30%" class="fbt pad tleft" align="left" style="vertical-align:top;">{$projects[projects].firma}</td>
+		
+		<td width="1%" class="fbt pad tleft" align="left" nowrap style="vertical-align:top;">
 		    {$projects[projects].datapodpisania}<br>{$projects[projects].datazakonczenia}
 		</td>
+		
 		<td width="1%" class="frightu pad tleft" align="left" nowrap>
 		    <img src="img/delete.gif" title="[ usuń projekt z raportu ]" alt="[ kasuj ]" onclick="xajax_del_project('{$idr}','{$projects[projects].id}');">
 		</td>

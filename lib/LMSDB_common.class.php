@@ -355,7 +355,7 @@ class LMSDB_common
 	}
 
 	
-	function addconfig($section,$var,$value,$def = '',$description='')
+	function AddConfig($section,$var,$value,$def = '',$description='')
 	{
 	    if (is_null($value) || empty($value)) $value = $def;
 	    

@@ -128,7 +128,11 @@ if (
 				$dane .= '"'.(!empty($tmp['street']) ? $tmp['street'] : 'BRAK ULICY').'",';
 				$dane .= '"'.sprintf('%05d',$tmp['kod_ulic']).'",';
 				$dane .= '"'.$tmp['location_house'].'",';
-				$dane .= '"'.$tmp['zip'].'"';
+				$dane .= '"'.$tmp['zip'].'",';
+				if ($tmp['projectnumber'])
+				    $dane .= '"'.str_replace('"','',$tmp['projectnumber']).'"';
+				else
+				    $dane .= '""';
 				
 				fputs($file,$dane."\n");
 			}
@@ -171,24 +175,28 @@ if (
 			{
 				$tmp = unserialize($WW[$i]['data']);
 				$teryt = $LMS->getterytcode($tmp['location_city'],$tmp['location_street']);
+				$latitude = str_replace(',','.',sprintf('%02.4f',$tmp['latitude']));
+				$longitude = str_replace(',','.',sprintf('%02.4f',$tmp['longitude']));
+				if ($latitude == '0.0000' || $longitude == '0.0000')
+				    $latitude = $longitude = '0.0000';
 				
 				$dane = 'WW,';
-				$dane .= '"'.$WW[$i]['markid'].'",';
-				$dane .= '"'.$TNODE[$tmp['type']].'",';
-				$dane .= '"'.$tmp['foreign_entity'].'",';
-				$dane .= '"",';
-				$dane .= '"'.$tmp['states'].'",';
-				$dane .= '"'.$tmp['districts'].'",';
+				$dane .= '"'.str_replace(' ','_',$WW[$i]['markid']).'",';			// D
+				$dane .= '"'.$TNODE[$tmp['type']].'",';						// E
+				$dane .= '"'.((($tmp['type'] == NODE_ALIEN || $tmp['type'] == NODE_FOREIGN) && $tmp['podmiot_obcy']) ? $tmp['podmiot_obcy'] : '').'",';	// f
+				$dane .= '"",';									// g
+				$dane .= '"'.$tmp['states'].'",';						// h
+				$dane .= '"'.$tmp['districts'].'",';						// i
 				$dane .= '"'.$tmp['boroughs'].'",';
-				$dane .= '"'.sprintf('%07d',$tmp['kod_terc']).'",';
+				$dane .= '"'.sprintf('%07d',$tmp['kod_terc']).'",';				// k
 				$dane .= '"'.$tmp['city'].'",';
-				$dane .= '"'.sprintf('%07d',$tmp['kod_simc']).'",';
+				$dane .= '"'.sprintf('%07d',$tmp['kod_simc']).'",';				// m
 				$dane .= '"'.(!empty($teryt['street']) ? $teryt['street'] : 'BRAK ULICY').'",';
-				$dane .= '"'.sprintf('%05d',$tmp['kod_ulic']).'",';
-				$dane .= '"'.$tmp['location_house'].'",';
-				$dane .= '"'.$tmp['zip'].'",';
-				$dane .= '"'.str_replace(',','.',sprintf('%02.4f',$tmp['latitude'])).'",';
-				$dane .= '"'.str_replace(',','.',sprintf('%02.4f',$tmp['longitude'])).'",';
+				$dane .= '"'.sprintf('%05d',$tmp['kod_ulic']).'",';				// o
+				$dane .= '"'.(empty($tmp['location_house']) ? 'b.d' : $tmp['location_house']).'",';
+				$dane .= '"'.$tmp['zip'].'",';							// q
+				$dane .= '"'.($latitude != '0.0000' ? $latitude : '').'",';			// r 
+				$dane .= '"'.($longitude != '0.0000' ? $longitude : '').'",';			// s
 				$dane .= '"'.$BUILDINGS[$tmp['buildingtype']].'",';
 				$dane .= '"'.($tmp['available_surface'] == '1' ? 'Tak' : 'Nie').'",';
 				$dane .= '"'.($tmp['instofanten'] == '1' ? 'Tak' : 'Nie').'",';
@@ -215,10 +223,16 @@ if (
 			{
 				$tmp = unserialize($WO[$i]['data']);
 				
+				$latitude = str_replace(',','.',sprintf('%02.4f',$tmp['latitude']));
+				$longtude = str_replace(',','.',sprintf('%02.4f',$tmp['longitude']));
+				
+				if ($latitude == '0.0000' || $longitude == '0.0000')
+				    $latitude = $longitude = '0.0000';
+				
 				$dane = 'WO,';
-				$dane .= '"'.$WO[$i]['markid'].'",';
+				$dane .= '"'.str_replace(' ','_',$WO[$i]['markid']).'",'; //  c
 				$dane .= '"'.$tmp['podstawa'].'",';
-				$dane .= '"'.str_replace(' ','_',$tmp['foreign_entity']).'",';
+				$dane .= '"'.$tmp['podmiot_obcy'].'",';
 				$dane .= '"'.$tmp['states'].'",';
 				$dane .= '"'.$tmp['districts'].'",';
 				$dane .= '"'.$tmp['boroughs'].'",';
@@ -227,10 +241,10 @@ if (
 				$dane .= '"'.sprintf('%07d',$tmp['kod_simc']).'",';
 				$dane .= '"'.(!empty($tmp['street']) ? $tmp['street'] : 'BRAK ULICY').'",';
 				$dane .= '"'.sprintf('%05d',$tmp['kod_ulic']).'",';
-				$dane .= '"'.$tmp['location_house'].'",';
+				$dane .= '"'.(empty($tmp['location_house']) ? 'b.d' : $tmp['location_house']).'",';
 				$dane .= '"'.$tmp['zip'].'",';
-				$dane .= '"'.str_replace(',','.',sprintf('%02.4f',$tmp['latitude'])).'",';
-				$dane .= '"'.str_replace(',','.',sprintf('%02.4f',$tmp['longitude'])).'",';
+				$dane .= '"'.($latitude != '0.0000' ? $latitude : '').'",';
+				$dane .= '"'.($longitude != '0.0000' ? $longitude : '').'",';
 				$dane .= '"'.$BUILDINGS[$tmp['buildingtype']].'",';
 				
 				if ($tmp['eu'] == '1') 
@@ -253,6 +267,7 @@ if (
 				// $dane .= '"'.$tmp[$i][''].'",';
 				$tmp = unserialize($INT[$i]['data']);
 				$dane = 'I,';
+				
 				$dane .= '"'.$tmp['netnodename'].'",';
 				$dane .= '"'.$tmp['networknodename'].'",';
 				$dane .= '"'.$tmp['backbone_layer'].'",';
@@ -274,6 +289,37 @@ if (
 			
 			unset($INT);
 		}
+	
+	    // SR
+	    if ($int = $DB->GetAll('SELECT data FROM uke_data WHERE rapid=? AND mark=? AND useraport=1;',array($idr,'INT')))
+	    {
+		$intout = array();
+		
+		for ($i=0; $i<sizeof($int); $i++) 
+		{
+		    $tmp = unserialize($int[$i]['data']);
+		    
+		    if ($tmp['access_layer'] == 'Tak' && $tmp['linktype'] == LINKTYPES_RADIO) 
+		    {
+			$dane = 'Z,';
+			
+			$dane .= '"'.$i.'_'.$tmp['id'].'",';
+			$dane .= '"'.$tmp['networknodename'].'",';
+			$dane .= '"'.$tmp['netnodename'].'",';
+			$dane .= '"NIE",';
+			$dane .= '"",';
+			$dane .= '"0",';
+			$dane .= '"360",';
+			$dane .= '"20",';
+			$dane .= '"'.($tmp['linktechnology'] == 101 ? '1000' : '500').'",';
+			$dane .= '"'.$tmp['max_to_user'].'",';
+			$dane .= '"'.$tmp['projectnumber'].'",';
+			$dane .= '"'.$tmp['status'].'"';
+			fputs($file,$dane."\n");
+		    }
+		}
+	    }
+	    
 	    
 	    // LK (PL) - Linie kablowe
 	    if ($LK = $DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'LK'))) {
@@ -282,25 +328,25 @@ if (
 		for ($i=0;$i<$count;$i++) {
 		    $tmp = unserialize($LK[$i]['data']);
 		    $dane = 'LK,';
-		    $dane .= '"'.$tmp['identyfikator'].'",';
-		    $dane .= '"'.$tmp['wlasnosc'].'",';
-		    $dane .= '"'.$tmp['obcy'].'",';
-		    $dane .= '"'.$tmp['rodzaja'].'",';
-		    $dane .= '"'.$tmp['identyfikatora'].'",';
-		    $dane .= '"'.$tmp['rodzajb'].'",';
-		    $dane .= '"'.$tmp['identyfikatorb'].'",';
-		    $dane .= '"'.$tmp['medium'].'",';
-		    $dane .= '"'.$tmp['typwlokna'].'",';
-		    $dane .= '"'.$tmp['liczbalwokien'].'",';
-		    $dane .= '"'.$tmp['wlokienused'].'",';
-		    $dane .= '"'.$tmp['eu'].'",';
-		    $dane .= '"'.$tmp['dostepnapasywna'].'",';
-		    $dane .= '"'.$tmp['rodzajpasywnej'].'",';
-		    $dane .= '"'.$tmp['sharingfiber'].'",';
-		    $dane .= '"'.$tmp['sharingwlokna'].'",';
-		    $dane .= '"'.$tmp['sharingprzepustowosc'].'",';
-		    $dane .= '"'.$tmp['rodzajtraktu'].'",';
-		    $dane .= '"'.$tmp['dlugosckabla'].'"';
+		    $dane .= '"'.$tmp['identyfikator'].'",';		// D
+		    $dane .= '"'.$tmp['wlasnosc'].'",';			// E
+		    $dane .= '"'.$tmp['obcy'].'",';			// F
+		    $dane .= '"'.$tmp['rodzaja'].'",';			// G
+		    $dane .= '"'.$tmp['identyfikatora'].'",';		// H
+		    $dane .= '"'.$tmp['rodzajb'].'",';			// I
+		    $dane .= '"'.$tmp['identyfikatorb'].'",';		// J
+		    $dane .= '"'.$tmp['medium'].'",';			// K
+		    $dane .= '"'.$tmp['typwlokna'].'",';		// L
+		    $dane .= '"'.$tmp['liczbawlokien'].'",';		// M
+		    $dane .= '"'.$tmp['wlokienused'].'",';		// N
+		    $dane .= '"'.$tmp['eu'].'",';			// O
+		    $dane .= '"'.$tmp['dostepnapasywna'].'",';		// P
+		    $dane .= '"'.$tmp['rodzajpasywnej'].'",';		// Q
+		    $dane .= '"'.$tmp['sharingfiber'].'",';		// R
+		    $dane .= '"'.$tmp['sharingmaxwlokna'].'",';		// S
+		    $dane .= '"'.$tmp['sharingprzepustowosc'].'",';	// T
+		    $dane .= '"'.$tmp['rodzajtraktu'].'",';		// U
+		    $dane .= '"'.$tmp['dlugosckabla'].'"';		// V
 		    fputs($file,$dane."\n");
 		}
 		unset($LK);
@@ -314,15 +360,15 @@ if (
 		    $tmp = unserialize($LB[$i]['data']);
 		    $dane = 'LB,';
 		    
-		    $dane .= '"'.$tmp['identyfikator'].'",';
-		    $dane .= '"'.$tmp['identyfikatora'].'",';
-		    $dane .= '"'.$tmp['identyfikatorb'].'",';
-		    $dane .= '"'.$tmp['medium'].'",';
-		    $dane .= '"'.$tmp['pozwolenie'].'",';
-		    $dane .= '"'.$tmp['pasmo'].'",';
-		    $dane .= '"'.$tmp['system'].'",';
-		    $dane .= '"'.$tmp['przepustowosc'].'",';
-		    $dane .= '"'.$tmp['sharing'].'"';
+		    $dane .= '"'.$tmp['identyfikator'].'",';		// D
+		    $dane .= '"'.$tmp['identyfikatora'].'",';		// E
+		    $dane .= '"'.$tmp['identyfikatorb'].'",';		// F
+		    $dane .= '"'.$tmp['medium'].'",';			// G
+		    $dane .= '"'.$tmp['pozwolenie'].'",';		// H
+		    $dane .= '"'.$tmp['pasmo'].'",';			// I
+		    $dane .= '"'.$tmp['system'].'",';		// J
+		    $dane .= '"'.$tmp['przepustowosc'].'",';		// K
+		    $dane .= '"'.$tmp['sharing'].'"';			// L
 		    fputs($file,$dane."\n");
 		}
 		unset($LB);
@@ -380,7 +426,7 @@ if (
 		    else $tmp2 = $tmp['street'];
 		    $dane .= '"'.$tmp2.'",';
 		    $dane .= sprintf('%05d',$tmp['kod_ulic']).',';
-		    $dane .= '"'.$tmp['location_house'].'",';
+		    $dane .= '"'.($tmp['location_house'] ? $tmp['location_house'] : 'Brak numeru').'",';
 		    $dane .= '"'.$tmp['zip'].'",';
 		    $dane .= (!empty($tmp['latitude']) ? str_replace(',','.',sprintf('%02.4f',$tmp['latitude'])) : '').',';
 		    $dane .= (!empty($tmp['longitude']) ? str_replace(',','.',sprintf('%02.4f',$tmp['longitude'])) : '').',';
@@ -417,13 +463,13 @@ if (
 		    $dane = 'U,';
 		    $dane .= ($i + 1).',';
 		    $dane .= $tmp['identyfikator'].',';
-		    $dane .= 'Nie,';
+		    $dane .= $tmp['isdn'].',';
 		    $dane .= $tmp['voip'].',';
-		    $dane .= 'Nie,';
+		    $dane .= $tmp['telmobile'].',';
 		    $dane .= $tmp['int'].',';
-		    $dane .= 'Nie,';
+		    $dane .= $tmp['intmobile'].',';
 		    $dane .= $tmp['iptv'].',';
-		    $dane .= ',';									// 10
+		    $dane .= ',';// 10
 		    $dane .= ($tmp['custype'] == '1' && strtoupper($tmp['int']) == 'Nie' ? 1 : 0).',';
 		    $dane .= ($tmp['custype'] == '1' ? 0 : ($tmp['downstream'] <= '1' ? 1 : 0)).',';	// 12
 		    $dane .= ($tmp['custype'] == '1' ? 0 : ($tmp['downstream'] > '1' && $tmp['downstream'] < '2' ? 1 : 0)).',';	// 13
@@ -465,6 +511,6 @@ if (
 
 	}
 	
-} else echo "dupa";
+} else echo "dupa z raportu :/";
 
 ?>

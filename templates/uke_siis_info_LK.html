@@ -1,8 +1,7 @@
-{$xajax}
 {if $action == 'add' || $action == 'edit'}
 {else}
 
-    {title small='1' value="Charakterystyka elementów infrastuktury telekomunikacyjnej stanowiących miedziane linie kablowe, światłowodowe linie kablowe lub ciemne włókna z wyłączeniem instalacji telekomunikacyjnej budynku" link="<a href=\"javascript:void(0);\" onclick=\"xajax_import_lk({$idr})\"><b>Pobierz ponownie informacje</b></a>"}
+    {title value="<font style='font-size:10pt;color:brown;'><b>LINIE PRZEWODOWE</b></font><br><font style='font-size:9pt;color:black;'>Charakterystyka elementów infrastruktury telekomunikacyjnej stanowiących miedziane linie kablowe, światłowodowe linie kablowe lub ciemne włókna z wyłączeniem instalacji telekomunikacyjnej budynku</font>" link="<a href=\"javascript:void(0);\" onclick=\"xajax_import_lk({$idr})\"><b>Pobierz ponownie informacje</b></a>"}
     
     <table width="100%"><tr><td width="100%"><div id="id_data_lk"></div></td></tr></table>
     
@@ -10,26 +9,27 @@
 	
 	<table width="100%" cellpadding="3">
 	    <tr class="dark">
-		<td width="1%" class="fleftu pad" align="left"><b><span class="tiphelp" {tip text="Identyfikator lini przewodowej"}><b>Identyfikator</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Określenie własności elementu infrastruktury"}><b>Własność</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Identyfikator punktu A"}><b>Punkt A</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Identyfikator punktu B"}><b>Punkt B</b></span></td>
-		<td width="1%" class="fbt pad" align="left"><span class="tiphelp" {tip text="Medium transmisyjne (środowisko wykorzystywane do transmisji sygnałów)"}><b>Medium</b></span></td>
-		<td width="86%" class="frightu pad" align="right"></td>
+		<td width="1%" nowrap class="fleftu pad" align="center"><b>L.P.</b></td>
+		<td width="1%" class="fbt pad tleft" align="left"><b><span class="tiphelp" {tip text="Identyfikator lini przewodowej"}><b>Identyfikator</b></span></td>
+		<td width="1%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Określenie własności elementu infrastruktury"}><b>Własność</b></span></td>
+		<td width="32%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Identyfikator punktu A"}><b>Punkt A</b></span></td>
+		<td width="32%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Identyfikator punktu B"}><b>Punkt B</b></span></td>
+		<td width="32%" class="fbt pad tleft" align="left"><span class="tiphelp" {tip text="Medium transmisyjne (środowisko wykorzystywane do transmisji sygnałów)"}><b>Medium</b></span></td>
+		<td width="1%" class="frightu pad tleft" align="right"></td>
 	    </tr>
 	    
 	    
 	    {cycle values="lucid,light" print=false}
 	    {section name='lklist' loop=$lklist}
+	    {assign var='indeks' value=$smarty.section.lklist.index+1}
 	    <tr class="{cycle} lista {if !$lklist[lklist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
-		<td width="1%" class="fleft pad" align="left">{$lklist[lklist].identyfikator}</td>
-		<td width="1%" class="pad" align="left">{$lklist[lklist].wlasnosc}</td>
-		<td width="1%" class="pad" align="left">{$lklist[lklist].identyfikatora}</td>
-		<td width="1%" class="pad" align="left">{$lklist[lklist].identyfikatorb}</td>
-		<td width="1%" class="pad" align="left" nowrap>{$lklist[lklist].medium}</td>
-		
-		
-		<td width="86%" class="fright pad" align="right">
+		<td width="1%" class="fleft pad" align="center">{$indeks}</td>
+		<td width="1%" class="pad tleft" align="left">{$lklist[lklist].identyfikator}</td>
+		<td width="1%" class="pad tleft" align="left">{$lklist[lklist].wlasnosc}</td>
+		<td width="32%" class="pad tleft" align="left">{$lklist[lklist].identyfikatora}</td>
+		<td width="32%" class="pad tleft" align="left">{$lklist[lklist].identyfikatorb}</td>
+		<td width="32%" class="pad tleft" align="left" nowrap>{$lklist[lklist].medium}</td>
+		<td width="1%" class="fright pad tleft" align="right">
 		    {if $lklist[lklist].useraport}
 			<img src="img/access.gif" {tip text="Nie uwzględniaj rekordu w raporcie"} onclick="xajax_set_lk_useraport({$idr},{$lklist[lklist].id},0);" style="cursor:pointer;">
 		    {else}
@@ -39,7 +39,7 @@
 	    </tr>
 	    {/section}
 	    <tr>
-		<td width="100%" colspan="6" class="ftop"></td>
+		<td width="100%" colspan="7" class="ftop"></td>
 	    </tr>
 	</table>
 

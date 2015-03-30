@@ -34,6 +34,11 @@ $changelog = array(
 	
 */	
 	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
+	),
+	array(
 	    'data'	=> '2015-03-17',
 	    'status'	=> '',
 	    'opis'	=> 'Generator SIIS v5',
