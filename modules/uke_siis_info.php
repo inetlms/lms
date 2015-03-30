@@ -26,12 +26,13 @@
 */
 
 $idr = (isset($_GET['idr']) ? intval($_GET['idr']) : (isset($_POST['idr']) ? intval($_POST['idr']) : NULL));
-$_PATH = dirname(__FILE__);
+//$_PATH = dirname(__FILE__);
 
 if (!$idr)
     $SESSION->redirect("?m=uke_siis");
 
 include(LIB_DIR.'/UKE.class.php');
+include(MODULES_DIR.'/uke_siis_xajax.php');
 
 $SMARTY->assign('idr',$idr);
 $rapdata = $UKE->GetRaportInfo($idr);
@@ -63,7 +64,7 @@ $SMARTY->assign('tucklist',$tucklist);
 $tuck = (isset($_GET['tuck']) ? $_GET['tuck'] : NULL);
 $SESSION->nowsave('uke_siis_info_tuck',$tuck);
 
-include($_PATH.'/uke_siis_xajax.php');
+
 if ($tuck == 'DP') { // dane o podmiocie przekazującym dane
 	
 	$SMARTY->assign('rapdata',$rapdata);

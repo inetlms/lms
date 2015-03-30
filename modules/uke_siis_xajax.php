@@ -145,34 +145,6 @@ function refresh_wo($idr,$mess = 0)
 	return $obj;
 }
 
-function refresh_int($idr)
-{
-    global $DB,$UKE;
-    
-    $obj = new xajaxResponse();
-    
-    $DB->Execute('DELETE FROM uke_data WHERE rapid = ? AND mark = ?;',array($idr,'INT'));
-    $k=0;
-    
-    
-    $ww = $UKE->getidwwuseraport($idr);
-    $tmp = implode(',',$ww);
-    $count_int = $DB->GetOne('SELECT COUNT(id) FROM netdevices WHERE networknodeid IN ('.$tmp.');');
-    
-    
-    for ($i=0; $i<sizeof($ww); $i++) {
-	$int = $DB->getAll('SELECT id FROM netdevices WHERE networknodeid = ? ;',array($ww[$i]));
-	for ($j=0; $j<sizeof($int); $j++) {
-	    $k++;
-	    $obj->script("xajax_add_interface('".$idr."','".$int[$j]['id']."');");
-	    usleep(400);
-	    $obj->script("xajax_show_procent('id_refresh_show',".($k).",".$count_int.");");
-	}
-    }
-    
-    return $obj;
-}
-
 
 function import_division($id)
 {
@@ -849,12 +821,37 @@ function add_interface_ww($idr,$idw) // dodaje interfejsy z odpowiedniego węzł
 	return $obj;
 }
 
+function refresh_int($idr)
+{
+    global $DB,$UKE;
+    $obj = new xajaxResponse();
+    
+    $DB->Execute('DELETE FROM uke_data WHERE rapid = ? AND mark = ?;',array($idr,'INT'));
+    
+    $ww = $UKE->getidwwuseraport($idr);
+    $idww = implode(',',$ww);
+    
+    $wo = $UKE->getidwouseraport($idr);
+    $idwo = implode(',',$wo);
+    
+    $int = $DB->GetCol('SELECT id FROM netdevices WHERE (networknodeid IN ('.$idww.')) '.($idwo ? ' OR (networknodeid IN ('.$idwo.'))' : '').';');
+    $count = sizeof($int);
+
+    for ($j=0; $j<$count; $j++) {
+	    add_interface($idr,$int[$j],0);
+	}
+
+    $obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=INT&idr=".$idr."');");
+    return $obj;
+}
 
 
-function add_interface($idr,$idi,$idw=NULL) // idi -> id interfejsu
+
+
+function add_interface($idr,$idi,$xaj=1) // idi -> id interfejsu
 {
 	global $DB,$UKE,$LINKTYPES,$LINKTECHNOLOGIES,$NSTATUS;
-	$obj = new xajaxResponse();
+	if ($xaj == 1) $obj = new xajaxResponse();
 	
 	$useww = $UKE->getidwwuseraport($idr);
 	$idww = implode(',',$useww);
@@ -1016,7 +1013,7 @@ function add_interface($idr,$idi,$idw=NULL) // idi -> id interfejsu
 		$idr,'INT',$markid,1,$data
 	    ));
 	}
-	return $obj;
+	if ($xaj == 1 ) return $obj;
 }
 
 
@@ -1080,21 +1077,23 @@ function import_LK($idr)
 			wa.name AS networknode_name_a, wa.type AS networknode_type_a, wa.latitude AS latitude_a, wa.longitude AS longitude_a, 
 			wb.name AS networknode_name_b, wb.type AS networknode_type_b,  wb.latitude AS latitude_b, wb.longitude AS longitude_b 
 			FROM netlinks l 
+			JOIN netdevices nda ON (nda.id = l.src) 
+			JOIN netdevices ndb ON (ndb.id = l.dst)
 			JOIN (
 			    SELECT nna.id, nna.name, nna.type, nna.latitude, nna.longitude 
 			    FROM networknode nna 
-			) wa ON (wa.id = l.src)
+			) wa ON (wa.id = nda.networknodeid)
 			JOIN (
 			    SELECT nnb.id, nnb.name, nnb.type, nnb.latitude, nnb.longitude 
 			    FROM networknode nnb 
-			) wb ON (wb.id = l.dst)
+			) wb ON (wb.id = ndb.networknodeid)
 			    
 			WHERE (l.type = ? OR l.type=? OR l.type=?) 
 			AND (l.src IN ('.$netdev.')) AND (l.dst IN ('.$netdev.')) 
 			AND (wa.id IN ('.$idww.') '.($idwo ? ' OR wa.id IN ('.$idwo.')' : '').') 
 			AND (wb.id IN ('.$idww.') '.($idwo ? ' OR wb.id IN ('.$idwo.')' : '').') 
 			AND wa.id != wb.id 
-			;',array(LINKTYPES_FIBER,LINKTYPES_CABLE,LINKTYPES_CABLECOAXIAL));
+			;',array(LINKTYPES_FIBER,LINKTYPES_CABLE,LINKTYPES_CABLE_COAXIAL));
 	
 	$lp = array();
 	for ($i=0; $i<sizeof($nl); $i++) {
@@ -1168,14 +1167,16 @@ function import_LB($idr)
 			wa.name AS networknode_name_a, wa.latitude AS latitude_a, wa.longitude AS longitude_a, 
 			wb.name AS networknode_name_b, wb.latitude AS latitude_b, wb.longitude AS longitude_b 
 			FROM netlinks l 
+			JOIN netdevices nda ON (nda.id = l.src) 
+			JOIN netdevices ndb ON (ndb.id = l.dst) 
 			JOIN (
 			    SELECT nna.id, nna.name, nna.latitude, nna.longitude 
 			    FROM networknode nna 
-			) wa ON (wa.id = l.src)
+			) wa ON (wa.id = nda.networknodeid)
 			JOIN (
 			    SELECT nnb.id, nnb.name, nnb.latitude, nnb.longitude 
 			    FROM networknode nnb 
-			) wb ON (wb.id = l.dst)
+			) wb ON (wb.id = ndb.networknodeid)
 			    
 			WHERE l.type = ? 
 			AND (l.src IN ('.$netdev.')) AND (l.dst IN ('.$netdev.')) 
@@ -1184,7 +1185,9 @@ function import_LB($idr)
 			AND wa.id != wb.id 
 			;',array(LINKTYPES_RADIO));
 	
+	
 	$lb = array();
+	
 	for ($i=0; $i<sizeof($nl); $i++) {
 	    
 	    $distance = '0.1';
@@ -1217,7 +1220,7 @@ function import_LB($idr)
 		$DB->Execute('INSERT INTO uke_data (rapid, mark, markid,useraport,data) VALUES (?,?,?,?,?);',
 		    array($idr,'LB',$lb[$i]['identyfikator'],1,serialize($lb[$i])));
 	}
-	
+
 	
 	$obj->script("loadAjax('id_data','?m=uke_siis_info&tuck=LB&idr=".$idr."');");
 	return $obj;
@@ -1243,14 +1246,16 @@ function import_POL($idr)
 	    $pol[] = $DB->GetRow('SELECT l.src, l.dst, l.speed, l.layer,
 			wa.name AS networknode_name_a, wb.name AS networknode_name_b 
 			FROM netlinks l 
+			JOIN netdevices nda ON (nda.id = l.src) 
+			JOIN netdevices ndb ON (ndb.id = l.dst)
 			JOIN (
 			    SELECT nna.id, nna.name 
 			    FROM networknode nna 
-			) wa ON (wa.id = l.src)
+			) wa ON (wa.id = nda.networknodeid)
 			JOIN (
 			    SELECT nnb.id, nnb.name 
 			    FROM networknode nnb 
-			) wb ON (wb.id = l.dst)
+			) wb ON (wb.id = ndb.networknodeid)
 			    
 			WHERE l.src = ? AND l.dst = ?
 			;',array($_pol[$i]['src'],$_pol[$i]['dst']));

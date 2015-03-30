@@ -1,5 +1,6 @@
 {if $layout.action == 'add'}{include file="header.html"}{/if}
 {title value=$layout.pagetitle}
+{$xajax}
 
 <form name="rapdata" id="rapdata" method="POST">
 <input type="hidden" name="rapdata[location_city]" value="{$rapdata.location_city}">
