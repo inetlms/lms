@@ -25,6 +25,8 @@ $SMARTY->assign('action',$action);
 $SMARTY->assign('tid',$tid);
 $SMARTY->assign('pid',$pid);
 
+$audiopath = (! $LMS->CONFIG['phpui']['callcenter_audiopath'] ? '/' : $LMS->CONFIG['phpui']['callcenter_audiopath']);
+$SMARTY->assign('audiopath',$audiopath);
 
 if (!is_null($tid) && !empty($tid)) {
     $topic = $DB->GetRow('SELECT i.*, 
