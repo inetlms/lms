@@ -20,6 +20,7 @@ $tucklist = array(
 	array('tuck' => 'event', 'name' => 'Zdarzenia', 'link' => '?m=re_carinfo&tuck=event&idc='.$idc, 'tip' => 'Lista pozostałych zdarzeń / czynności związanych z pojazdem'),
 	array('tuck' => 'users', 'name' => trans('Users'), 'link' => '?m=re_carinfo&tuck=users&idc='.$idc, 'tip' => 'Osoby odpowiedzialne za pojazd'),
 	array('tuck' => 'annex', 'name' => 'Załączniki', 'link' => '?m=re_carinfo&tuck=users&idc='.$idc, 'tip' => 'Załączone zdjęcia / skany dokumenów itp'),
+        array('tuck' => 'chart', 'name' => 'Wykres spalania', 'link' => '?m=re_carinfo&tuck=chart&idc='.$idc, 'tip' => 'Wykres liniowy zużycia paliwa.'),
 //	array('tuck' => 'report', 'name' => 'Raporty', 'link' => '?m=re_carinfo&tuck=report&idc='.$idc, 'tip' => ''),
 );
 
@@ -157,7 +158,25 @@ if ($tuck == 'base') {
 
 } elseif ($tuck == 'report') {
 
+} elseif ( $tuck == 'chart') {
+    
+    $carData = $RE->getCarFuleConsumptionData($idc);
+    
+    $averageConsumption = $RE->getCarAverageConsumption($idc);
+    
+    foreach ( $carData as &$row){
+        
+        $row['spalanie'] = round($averageConsumption['spalanie']/100 * $row['przejechane'],2);
+        
+    }
+    
+    $SMARTY->assign('averageConsumption',$averageConsumption['spalanie']);
+    $SMARTY->assign('carData',$carData);
+
+    
 }
+    
+
 
 
 $SMARTY->display('re_carinfo.html');
