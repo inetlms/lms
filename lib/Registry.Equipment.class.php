@@ -443,16 +443,24 @@ class RegistryEquipment
     }
 
 
-    public function getCar($id) 
+    public function getCar($id)
     {
 	
 	global $DB;
 	
-	$result = $DB->GetRow('SELECT c.*, d.name AS cartypename 
+	$result = $DB->GetRow('SELECT c.*, d.name AS cartypename,
+                                ROUND ( (
+                                    SELECT ( SUM(c.litrow) / SUM( IFNULL (n.stanlicznika - c.stanlicznika,0 ) ) *100 ) AS spalanie
+                                    FROM `re_event` AS c
+                                    LEFT JOIN `re_event` AS n
+                                    ON n.id = ( SELECT MIN(id) FROM `re_event` WHERE stanlicznika  > c.stanlicznika  )
+                                    WHERE c.idcar = ? AND (n.stanlicznika - c.stanlicznika) > 0
+                                    ORDER BY c.datazdarzenia
+                                ),2 ) AS spalanie
 				    FROM re_cars c 
 				    LEFT JOIN re_dictionary_cartype d ON (d.id = c.dr_cartype) 
 				    WHERE c.id = ? '.$DB->Limit(1).' ;',
-				    array($id)
+				    array($id,$id)
 	);
 	
 	if (!$result)
@@ -461,6 +469,51 @@ class RegistryEquipment
 	    return $result;
     }
 
+    public function getCarAverageConsumption($id)
+    {
+	
+	global $DB;
+	
+	$result = $DB->GetRow('
+                                SELECT ROUND ( SUM(c.litrow) / SUM( IFNULL (n.stanlicznika - c.stanlicznika,0 ) ) *100 , 2 ) AS spalanie
+                                FROM `re_event` AS c
+                                LEFT JOIN `re_event` AS n
+                                ON n.id = ( SELECT MIN(id) FROM `re_event` WHERE stanlicznika  > c.stanlicznika  )
+                                WHERE c.idcar = ? AND (n.stanlicznika - c.stanlicznika) > 0
+                                ORDER BY c.datazdarzenia
+				    
+				;',
+				array($id)
+	);
+	
+	if (!$result)
+	    return FALSE;
+	else
+	    return $result;
+    }
+    
+     public function getCarFuleConsumptionData($id) {
+         
+         global $DB;
+	
+	$result = $DB->GetAll('
+                                SELECT c.litrow AS litrow,c.stanlicznika AS stanlicznika,
+                                IFNULL (n.stanlicznika - c.stanlicznika,0) AS przejechane
+                                FROM `re_event` AS c
+                                LEFT JOIN `re_event` AS n
+                                ON n.id = ( SELECT MIN(id) FROM `re_event` WHERE stanlicznika  > c.stanlicznika  )
+                                WHERE c.idcar = ? AND (n.stanlicznika - c.stanlicznika) > 0
+                                ORDER BY c.datazdarzenia 
+                                ;',
+				array($id)
+	);
+	
+	if (!$result)
+	    return FALSE;
+	else
+	    return $result;
+         
+     }
 
     public function getuserscar($idc)
     {
