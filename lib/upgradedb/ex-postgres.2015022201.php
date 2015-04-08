@@ -7,7 +7,7 @@ $DB->BeginTrans();
 $DB->Execute("DROP VIEW vnodes;");
 $DB->Execute("DROP VIEW vmacs;");
 
-if (!$DB->GetOne('SELECT 1 FROM pg_tables WHERE tablename = ?;',array('invprojects'))
+if (!$DB->GetOne('SELECT 1 FROM pg_tables WHERE tablename = ?;',array('invprojects')))
 {
     $DB->Execute("
 	CREATE SEQUENCE invprojects_id_seq;
