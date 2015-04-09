@@ -311,7 +311,7 @@ function delete_model($id)
     
     if (SYSLOG) {
 	$oldname = $DB->getOne('SELECT name FROM netdevicemodels WHERE id = ? '.$DB->Limit(1).';',array($id));
-	$pidname = $DB->getRow('SELECT p.id, p.name FROM netdevicemodels m JOIN netdeviceproducer p ON (p.id = m.netdeviceproducerid) WHERE m.id = ? '.$DB->Limit(1).';',array($id));
+	$pidname = $DB->getRow('SELECT p.id, p.name FROM netdevicemodels m JOIN netdeviceproducers p ON (p.id = m.netdeviceproducerid) WHERE m.id = ? '.$DB->Limit(1).';',array($id));
 	addlogs('Słownik Producenci: Producent -> '.$pidname['name'].', usunięcie modelu '.$oldname,'m=other;e=del;');
     }
     

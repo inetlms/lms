@@ -206,7 +206,7 @@
 		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$carinfo.dr_p3}{$_FUEL.$tmp}</td>
 		</tr>
 		{/if}
-		
+                		
 		{if $carinfo.dr_q}
 		<tr class="display">
 		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Stosunek mocy do masy własnej (w kW/kg); dotyczy motocykli i motorowerów"}><b>Stosunek kW/kg</b></span></td>
@@ -214,7 +214,7 @@
 		    <td width="98%" class="pad" align="left">{$carinfo.dr_q} kW/kg</td>
 		</tr>
 		{/if}
-		
+                	
 		
 	    </table>
 	</td>
@@ -361,6 +361,14 @@
 		</tr>
 		{/if}
 		
+                {if $carinfo.spalanie}
+                <tr class="display">
+                    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Średnie zużycie paliwa dla całego okresu ewidencyjnego.<br/><font color='red'>ŻEBY WYNIK BYŁ MIARODAJNY<br/>DANE MUSZĄ BYĆ UZUPEŁNIANE NA BIEŻĄCO!</font>"}><b>Zużycie paliwa</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.spalanie} l/100km</td>
+                </tr>
+                {/if}
+                
 		{if $carinfo.dr_notes}
 		<tr class="display">
 		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Adnotacje urzędowe</b></td>
