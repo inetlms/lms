@@ -26,10 +26,10 @@
             {section name='carData' loop=$carData}
                 [
                     {$carData[carData].stanlicznika}, 
-                    {$carData[carData].litrow},
-                    {$carData[carData].przejechane},
-                    {$carData[carData].spalanie},
-                    {$averageConsumption}
+                    {$carData[carData].litrow|replace:',':'.'},
+                    {$carData[carData].przejechane|replace:',':'.'},
+                    {$carData[carData].spalanie|replace:',':'.'},
+                    {$averageConsumption|replace:',':'.'}
                 ],
             {/section}
         ]);
