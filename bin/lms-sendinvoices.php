@@ -286,6 +286,10 @@ if (!empty($docs))
 			$body = str_replace('\n', "\n", $body);
 			$subject = preg_replace('/%invoice/', $invoice_number, $subject);
 			$filename = preg_replace('/%docid/', $doc['id'], $invoice_filename);
+                        $filename = preg_replace('/%day/', sprintf("%02d",$day), $filename);
+                        $filename = preg_replace('/%month/', sprintf("%02d",$month), $filename);
+                        $filename = preg_replace('/%year/', sprintf("%04d",$year), $filename);
+
 
 			if (!$quiet || $test)
 				printf("Invoice No. $invoice_number for " . $doc['name'] . " <$custemail>\n");
