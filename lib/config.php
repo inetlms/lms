@@ -328,6 +328,7 @@ $DEFAULTS = array(
 		'mt_port'			=> '8728',
 		'mt_usb'			=> 'usb1',
 		'mt_username'			=> '',
+		'encoding'			=> '',
 	),
 	'hiperus_c5' => array(
 		'numberplanid'			=> '',		// numer planu numeracyjnego
