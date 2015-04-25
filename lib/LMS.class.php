@@ -6131,7 +6131,7 @@ class LMS {
 					return trans('Unable to write to SMSTools outgoing directory ($a)!', $dir);
 
 				$filename = $dir . '/lms-' . $messageid . '-' . $number;
-				if ($this->CONFIG['sms']['encoding']!='UTF8') 
+				if (strtoupper(get_conf('sms.encoding','UTF8')) != 'UTF8')
 				{
 					$latin1 = iconv('UTF-8', 'ISO-8859-15', $message);
 					$alphabet = '';
