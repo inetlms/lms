@@ -889,6 +889,10 @@ function GetConfigList($order='var,asc', $section='', $search='')
 						$config[$idx]['description'] = 'SMSAPI - Ustawienie tego parametru na 1, powoduje pominięcie numerów niepolskich. DEF.: 1';
 					break;
 					
+					case 'encoding':
+						$config[$idx]['description'] = 'Kodowanie wiadomości smstools (UTF8, UCS2). DEF.: UCS2';
+					break;
+					
 					default:
 						$config[$idx]['description'] = trans('Unknown option. No description.');
 					break;
