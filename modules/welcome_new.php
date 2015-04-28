@@ -65,143 +65,134 @@ if (check_conf('privileges.superuser') && $registers = $LMS->CheckRegister()) {
 	
 }
 
+
 function homepage_start()
 {
-    global $pageview,$SMARTY,$LMS,$DB,$CONFIG,$layout,$_language,$PROFILE,$AUTH,$SESSION,$voip, $registers;
-    
-    if (get_conf('homepage.box_customer') && !check_conf('privileges.hide_summaries')) $pageview[] = 'box_customer';
-    if (get_conf('homepage.box_nodes') && !check_conf('privileges.hide_summaries')) $pageview[] = 'box_nodes';
-    if (get_conf('homepage.box_helpdesk') && $LMS->RTStats()) $pageview[] = 'box_helpdesk';
-    if (get_conf('homepage.box_callcenter')) $pageview[] = 'box_callcenter';
-    if (get_conf('homepage.box_links') && !check_conf('privileges.hide_links')) $pageview[] = 'box_links';
-    if (get_conf('homepage.box_board')) $pageview[] = 'box_board';
-    if (get_conf('homepage.box_system') && !check_conf('privileges.hide_sysinfo')) $pageview[] = 'box_system';
-    if (get_conf('homepage.box_lms') && !check_conf('privileges.hide_sysinfo')) $pageview[] = 'box_lms';
-    if (get_conf('homepage.box_totd')) $pageview[] = 'box_totd';
-
-    $obj = new xajaxResponse();
-    
-    if (check_conf('privileges.superuser') && !$registers) {
-	$obj->assign("id_box_0a","innerHTML",$SMARTY->fetch("welcome_box_registers.html"));
-    }
-
-    $count = sizeof($pageview);
-    for ($i=0; $i<$count; $i++)
-    {
-	if ($pageview[$i] == 'box_customer') {
-		$customerstats = $LMS->CustomerStats();
-		$SMARTY->assign('customerstats', $customerstats);
-		$SMARTY->assign('contractending30',$LMS->getIdContractEnding('30'));
-		$SMARTY->assign('contractending7',$LMS->getIdContractEnding('7'));
-		$SMARTY->assign('contractnodata',$LMS->getIdContractEnding('-2'));
+	global $pageview,$SMARTY,$LMS,$DB,$CONFIG,$layout,$_language,$PROFILE,$AUTH,$SESSION,$voip, $registers;
+	
+	if (get_conf('homepage.box_customer') && !check_conf('privileges.hide_summaries')) $pageview[] = 'box_customer';
+	if (get_conf('homepage.box_nodes') && !check_conf('privileges.hide_summaries')) $pageview[] = 'box_nodes';
+	if (get_conf('homepage.box_helpdesk') && $LMS->RTStats()) $pageview[] = 'box_helpdesk';
+	if (get_conf('homepage.box_callcenter')) $pageview[] = 'box_callcenter';
+	if (get_conf('homepage.box_links') && !check_conf('privileges.hide_links')) $pageview[] = 'box_links';
+	if (get_conf('homepage.box_board')) $pageview[] = 'box_board';
+	if (get_conf('homepage.box_system') && !check_conf('privileges.hide_sysinfo')) $pageview[] = 'box_system';
+	if (get_conf('homepage.box_lms') && !check_conf('privileges.hide_sysinfo')) $pageview[] = 'box_lms';
+	if (get_conf('homepage.box_totd')) $pageview[] = 'box_totd';
+	
+	$obj = new xajaxResponse();
+	
+	if (check_conf('privileges.superuser') && !$registers) {
+		$obj->assign("id_box_0a","innerHTML",$SMARTY->fetch("welcome_box_registers.html"));
 	}
-	elseif ($pageview[$i] == 'box_nodes') {
-		$SMARTY->assign('nodestats', $LMS->NodeStats());
-	}
-	elseif ($pageview[$i] == 'box_helpdesk') {
-		$SMARTY->assign('rtstats', $LMS->RTStats());
-	}
-	elseif ($pageview[$i] == 'box_callcenter') {
-	    
-	    $result = $DB->GetRow('SELECT COUNT(id) AS total,
+	
+	$count = sizeof($pageview);
+	for ($i=0; $i<$count; $i++) {
+		if ($pageview[$i] == 'box_customer') {
+			
+			$customerstats = $LMS->CustomerStats();
+			$SMARTY->assign('customerstats', $customerstats);
+			$SMARTY->assign('contractending30',$LMS->getIdContractEnding('30'));
+			$SMARTY->assign('contractending7',$LMS->getIdContractEnding('7'));
+			$SMARTY->assign('contractnodata',$LMS->getIdContractEnding('-2'));
+			
+		} elseif ($pageview[$i] == 'box_nodes') {
+			
+			$SMARTY->assign('nodestats', $LMS->NodeStats());
+			
+		} elseif ($pageview[$i] == 'box_helpdesk') {
+			
+			$SMARTY->assign('rtstats', $LMS->RTStats());
+			
+		} elseif ($pageview[$i] == 'box_callcenter') {
+			
+			$result = $DB->GetRow('SELECT COUNT(id) AS total,
 				COUNT(CASE WHEN closed = 1 THEN 1 END) AS zamkniete,
 				COUNT(CASE WHEN closed = 0 THEN 1 END) AS otwarte
 				FROM info_center WHERE deleted=0');
-	    $SMARTY->assign('callcenter_stats',$result);
+			$SMARTY->assign('callcenter_stats',$result);
+			
+		} elseif ($pageview[$i] == 'box_links') {
+		} elseif ($pageview[$i] == 'box_board') {
+			
+			$userlist = $DB->GetAll('SELECT id, name FROM users WHERE deleted = ? ORDER BY name;',array(0));
+			//$read = $PROFILE->get('board_status');
+			if (!$SESSION->check_exists_key('board_status')){
+				$itemdata['board_status'] = 2;
+				$SESSION->save('board_status',$itemdata['board_status']);
+			} else
+				$itemdata['board_status'] = $SESSION->get('board_status');
+			
+			if (!$SESSION->check_exists_key('board_prio')) {
+				$itemdata['board_prio'] = '';
+				$SESSION->save('board_prio',$itemdata['board_prio']);
+			} else
+				$itemdata['board_prio'] = $SESSION->get('board_prio');
+			
+			if (!$SESSION->check_exists_key('board_author')) {
+				$itemdata['board_author'] = '';
+				$SESSION->save('board_author','');
+			} else
+				$itemdata['board_author'] = $SESSION->get('board_author');
+			
+			$SESSION->_saveSession();
+			
+			$SMARTY->assign('messlist',$messlist);
+			$SMARTY->assign('itemdata',$itemdata);
+			$SMARTY->assign('userlist',$userlist);
+			$obj->script("xajax_board_view_list('-2','-2','-2');");
+			
+		} elseif ($pageview[$i] == 'box_lms') {
+			
+			$layout['dbversion'] = $DB->GetDBVersion();
+			$layout['dbtype'] = $CONFIG['database']['type'];
+			
+		} elseif ($pageview[$i] == 'box_system') {
+			
+			require_once LIB_DIR.'/Sysinfo.class.php';
+			$SI = new Sysinfo;
+			$SMARTY->assign('sysinfo', $SI->get_sysinfo());
+			
+		} elseif ($pageview[$i] == 'box_totd') {
+			
+			@include(LIB_DIR.'/locale/'.$_language.'/fortunes.php');
+			
+		}
+		
+		$obj->assign("id_box_".$i,"innerHTML",$SMARTY->fetch("welcome_".$pageview[$i].".html"));
 	}
 	
-	elseif ($pageview[$i] == 'box_links') {
-	}
-	
-	elseif ($pageview[$i] == 'box_board') {
-	    $userlist = $DB->GetAll('SELECT id, name FROM users WHERE deleted = ? ORDER BY name;',array(0));
-	    //$read = $PROFILE->get('board_status');
-	    
-	    if (!$SESSION->check_exists_key('board_status'))
-	    {
-		$itemdata['board_status'] = 2;
-		$SESSION->save('board_status',$itemdata['board_status']);
-	    }
-	    else
-		$itemdata['board_status'] = $SESSION->get('board_status');
-	
-	    if (!$SESSION->check_exists_key('board_prio'))
-	    {
-		$itemdata['board_prio'] = '';
-		$SESSION->save('board_prio',$itemdata['board_prio']);
-	    }
-	    else
-		$itemdata['board_prio'] = $SESSION->get('board_prio');
-	    
-	    if (!$SESSION->check_exists_key('board_author'))
-	    {
-		$itemdata['board_author'] = '';
-		$SESSION->save('board_author','');
-	    }
-	    else
-		$itemdata['board_author'] = $SESSION->get('board_author');
-	    
-	    $SESSION->_saveSession();
-	    
-	    $SMARTY->assign('messlist',$messlist);
-	    $SMARTY->assign('itemdata',$itemdata);
-	    $SMARTY->assign('userlist',$userlist);
-	    $obj->script("xajax_board_view_list('-2','-2','-2');");
-	}
-	
-	elseif ($pageview[$i] == 'box_lms') {
-		$layout['dbversion'] = $DB->GetDBVersion();
-		$layout['dbtype'] = $CONFIG['database']['type'];
-	}
-	
-	elseif ($pageview[$i] == 'box_system') {
-		require_once LIB_DIR.'/Sysinfo.class.php';
-		$SI = new Sysinfo;
-		$SMARTY->assign('sysinfo', $SI->get_sysinfo());
-	}
-	
-	elseif ($pageview[$i] == 'box_totd') {
-		@include(LIB_DIR.'/locale/'.$_language.'/fortunes.php');
-	}
-	$obj->assign("id_box_".$i,"innerHTML",$SMARTY->fetch("welcome_".$pageview[$i].".html"));
-    }
-    
-    
-    return $obj;
+	return $obj;
 }
+
 
 function board_view_list($status=NULL,$prio=NULL,$author=NULL)
 {
-    global $DB,$SMARTY,$AUTH, $SESSION;
-    $obj = new xajaxResponse();
-    $status_read = $status_notread = $priorytet = $user = false;
-    
-    if (is_null($status) || $status=='-2')
-	$status  = $SESSION->get('board_status');
-    
-    if (is_null($prio) || $prio == '-2')
-	$priorytet = $SESSION->get('board_prio');
-    else
-	$priorytet = $prio;
-    
-    if (is_null($author) || $author == '-2')
-	$user = $SESSION->get('board_author');
-    else
-	$user = $author;
-    
-    if ($status == '1') $status_read = true;
-    if ($status == '2') $status_notread = true;
+	global $DB,$SMARTY,$AUTH, $SESSION;
+	$obj = new xajaxResponse();
+	$status_read = $status_notread = $priorytet = $user = false;
 	
-    
-    $SESSION->save('board_prio',$priorytet);
-    $SESSION->save('board_author',$user);
-    $SESSION->save('board_status',$status);
-    $SESSION->_saveSession();
-    
-    if (is_null($prio)) 
-	$prio = $SESSION->get('board_prio');
-    
-    $messlist = $DB->GetAll('SELECT ta.idtablica AS id, t.ownerid, t.cdate, t.prio, t.description, t.message, ta.readmessage,
+	if (is_null($status) || $status=='-2')
+		$status  = $SESSION->get('board_status');
+	
+	if (is_null($prio) || $prio == '-2') $priorytet = $SESSION->get('board_prio');
+	else $priorytet = $prio;
+	
+	if (is_null($author) || $author == '-2') $user = $SESSION->get('board_author');
+	else $user = $author;
+	
+	if ($status == '1') $status_read = true;
+	if ($status == '2') $status_notread = true;
+	
+	$SESSION->save('board_prio',$priorytet);
+	$SESSION->save('board_author',$user);
+	$SESSION->save('board_status',$status);
+	$SESSION->_saveSession();
+	
+	if (is_null($prio)) 
+		$prio = $SESSION->get('board_prio');
+	
+	$messlist = $DB->GetAll('SELECT ta.idtablica AS id, t.ownerid, t.cdate, t.prio, t.description, t.message, ta.readmessage,
 				    (SELECT u.name FROM users u WHERE u.id = t.ownerid) AS username 
 				    FROM tablicaassign ta
 				    JOIN tablica t ON (t.id = ta.idtablica)
@@ -212,161 +203,140 @@ function board_view_list($status=NULL,$prio=NULL,$author=NULL)
 				    .($priorytet ? ' AND t.prio='.$priorytet : '')
 				    .($user ? ' AND t.ownerid = '.$user : '')
 				    .' ;');
-    $lista = '';
-    $cylce = 'light';
-    $lista .= '<table width="100%" cellpadding="3">';
-    
-    if (sizeof($messlist)) 
-    {
 	
+	$lista = '';
+	$cylce = 'light';
+	$lista .= '<table width="100%" cellpadding="3">';
 	
-	for ($i=0; $i<sizeof($messlist); $i++) 
-	{
-		if ($cycle === 'light')
-			$cycle = 'lucid';
-		else
-			$cycle = 'light';
-		
-		$lista .= '<tr class="'.$cycle.' lista"  onmouseover="addClass(this, \'highlight\')" onmouseout="removeClass(this, \'highlight\')">';
-		$lista .= '<td width="1%"><img src="img/circle_';
-		
-		if ($messlist[$i]['prio'] == '1')
-		    $lista .= 'yellow';
-		elseif ($messlist[$i]['prio'] == '2')
-		    $lista .= 'green';
-		elseif ($messlist[$i]['prio'] == '3')
-		    $lista .= 'red';
-		
-		$lista .= '.png"></td>';
-		
-		$lista .= '<td width="1%" class="pad5" align="left">'.$messlist[$i]['username'].'<br>'.date('Y/m/d',$messlist[$i]['cdate']).'</td>';
-		$lista .= '<td width="97%" class="pad5" align="left">';
-		
-		if (!empty($messlist[$i]['description']))
-		    $lista .= '<b>'.$messlist[$i]['description'].'</b><br>';
-		
-		$lista .= nl2br($messlist[$i]['message']);
-		$lista .= '</td>';
-		$lista .= '<td width="1%" nowrap>';
-		
-		if ($messlist[$i]['ownerid'] == $AUTH->id)
-		{
-		    $lista .= '<img src="img/delete.gif" title="Skasuj wiadomość" style="cursor:pointer;" onclick="xajax_board_set_read('.$messlist[$i]['id'].',2,confirm(\'Napweno ?\'));">&nbsp;';
+	if (sizeof($messlist)) {
+	
+		for ($i=0; $i<sizeof($messlist); $i++) {
+			
+			if ($cycle === 'light') $cycle = 'lucid';
+			else $cycle = 'light';
+			
+			$lista .= '<tr class="'.$cycle.' lista"  onmouseover="addClass(this, \'highlight\')" onmouseout="removeClass(this, \'highlight\')">';
+			$lista .= '<td width="1%"><img src="img/circle_';
+			
+			if ($messlist[$i]['prio'] == '1') $lista .= 'yellow';
+			elseif ($messlist[$i]['prio'] == '2') $lista .= 'green';
+			elseif ($messlist[$i]['prio'] == '3') $lista .= 'red';
+			
+			$lista .= '.png"></td>';
+			
+			$lista .= '<td width="1%" class="pad5" align="left">'.$messlist[$i]['username'].'<br>'.date('Y/m/d',$messlist[$i]['cdate']).'</td>';
+			$lista .= '<td width="97%" class="pad5" align="left">';
+			
+			if (!empty($messlist[$i]['description']))
+				$lista .= '<b>'.$messlist[$i]['description'].'</b><br>';
+			
+			$lista .= nl2br($messlist[$i]['message']);
+			$lista .= '</td>';
+			$lista .= '<td width="1%" nowrap>';
+			
+			if ($messlist[$i]['ownerid'] == $AUTH->id) 
+				$lista .= '<img src="img/delete.gif" title="Skasuj wiadomość" style="cursor:pointer;" onclick="xajax_board_set_read('.$messlist[$i]['id'].',2,confirm(\'Napweno ?\'));">&nbsp;';
+			
+			if ($messlist[$i]['readmessage'] == '0')
+				$lista .= '<img src="img/Apply.png" style="cursor:pointer;" title="oznacz jako przeczytaną" onclick="xajax_board_set_read('.$messlist[$i]['id'].',1);">';
+			else
+				$lista .= '<img src="img/Undo.png" style="cursor:pointer;" title="oznacz jako nieprzeczytaną" onclick="xajax_board_set_read('.$messlist[$i]['id'].',1);">';
+			
+			$lista .= '</td>';
+			$lista .= '</tr>';
 		}
-		
-		if ($messlist[$i]['readmessage'] == '0')
-		    $lista .= '<img src="img/Apply.png" style="cursor:pointer;" title="oznacz jako przeczytaną" onclick="xajax_board_set_read('.$messlist[$i]['id'].',1);">';
-		else
-		    $lista .= '<img src="img/Undo.png" style="cursor:pointer;" title="oznacz jako nieprzeczytaną" onclick="xajax_board_set_read('.$messlist[$i]['id'].',1);">';
-		$lista .= '</td>';
-		$lista .= '</tr>';
+	} else {
+		$lista .= '<tr><td width="100%" align="center"><p><h2 style="color:#666666">Brak wiadomości</h2></p></td></tr>';
 	}
-    } else {
-	    $lista .= '<tr><td width="100%" align="center"><p><h2 style="color:#666666">Brak wiadomości</h2></p></td></tr>';
-    }
-
-    $lista .= '</table>';
-    
-    $obj->assign("id_board_list","innerHTML",$lista);
-    if ($status_read || $status_notread)
-	$obj->script("addClassId('id_board_status','active');");
-    else
-	$obj->script("removeClassId('id_board_status','active');");
-    
-    if ($priorytet)
-	$obj->script("addClassId('id_board_prio','active');");
-    else
-	$obj->script("removeClassId('id_board_prio','active');");
-    
-    if ($user)
-	$obj->script("addClassId('id_board_author','active');");
-    else
-	$obj->script("removeClassId('id_board_author','active');");
-    return $obj;
+	
+	$lista .= '</table>';
+	
+	$obj->assign("id_board_list","innerHTML",$lista);
+	
+	if ($status_read || $status_notread) $obj->script("addClassId('id_board_status','active');");
+	else $obj->script("removeClassId('id_board_status','active');");
+	
+	if ($priorytet) $obj->script("addClassId('id_board_prio','active');");
+	else $obj->script("removeClassId('id_board_prio','active');");
+	
+	if ($user) $obj->script("addClassId('id_board_author','active');");
+	else $obj->script("removeClassId('id_board_author','active');");
+	
+	return $obj;
 }
+
 
 function board_set_read($idb, $co = 1, $confirm = NULL) // id board
 {
-    global $DB,$AUTH;
-    $obj = new xajaxResponse();
-    $co = intval($co);
-    
-    if ($co == '1' && $tmp = $DB->GetRow('SELECT id,readmessage FROM tablicaassign WHERE idtablica = ? AND iduser = ? LIMIT 1;',array(intval($idb),$AUTH->id)))
-    {
-	$DB->Execute('UPDATE tablicaassign SET readmessage = ? WHERE id = ?;',array(
-	($tmp['readmessage'] ? 0 : 1),
-	$tmp['id']
-	));
-    }
-    
-    if ($co =='2' && $confirm == TRUE)
-    {
-	$DB->Execute('DELETE FROM tablicaassign WHERE idtablica = ? ;',array($idb));
-	$DB->Execute('DELETE FROM tablica WHERE id = ? ;',array($idb));
-    }
-    
-    $obj->script("xajax_board_view_list('-2','-2','-2');");
-    return $obj;
+	global $DB,$AUTH;
+	$obj = new xajaxResponse();
+	$co = intval($co);
+	
+	if ($co == '1' && $tmp = $DB->GetRow('SELECT id,readmessage FROM tablicaassign WHERE idtablica = ? AND iduser = ? LIMIT 1;',array(intval($idb),$AUTH->id))) {
+		$DB->Execute('UPDATE tablicaassign SET readmessage = ? WHERE id = ?;',array(
+			($tmp['readmessage'] ? 0 : 1),
+			$tmp['id']
+		));
+	}
+	
+	if ($co =='2' && $confirm == TRUE) {
+		$DB->Execute('DELETE FROM tablicaassign WHERE idtablica = ? ;',array($idb));
+		$DB->Execute('DELETE FROM tablica WHERE id = ? ;',array($idb));
+	}
+	
+	$obj->script("xajax_board_view_list('-2','-2','-2');");
+	return $obj;
 }
 
 
 function board_save($forms) 
 {
-    global $SMARTY,$DB,$PROFILE,$AUTH;
-    $obj = new xajaxResponse();
-    $blad = false;
-    
-    $obj->assign("id_alert_user","innerHTML","");
-    $obj->script("removeClassId('wiadomosc','alerts');");
-    
-    if ($forms) 
-	$form = $forms['boardedit'];
-    else
-	$form = NULL;
+	global $SMARTY,$DB,$PROFILE,$AUTH;
+	$obj = new xajaxResponse();
+	$blad = false;
 	
-    if ($form) {
+	$obj->assign("id_alert_user","innerHTML","");
+	$obj->script("removeClassId('wiadomosc','alerts');");
 	
-	$user = $form['userbox'];
+	if ($forms) $form = $forms['boardedit'];
+	else $form = NULL;
 	
-	if (empty($user)) {
-	    $blad = true;
-	    $obj->assign("id_alert_user","innerHTML","<br>WYBIERZ ODBIORCÓW<br><br>");
-	} else {
-	    $userchk = implode("|",$user);
-	    $PROFILE->nowsave('board_default_user',$userchk);
-	}
-	
-	if (!$blad && empty($form['message'])) {
-	    $blad = true;
-	    $obj->script("addClassId('wiadomosc','alerts');");
-	}
-	
-	if (!$blad) {
-	    if ($DB->Execute('INSERT INTO tablica (ownerid, cdate, prio, description, message, active, deleted) 
-			VALUES (?, ?, ?, ?, ?, ?, ?) ;',array(
-			    $AUTH->id,
-			    time(),
-			    intval($form['prio']),
-			    ($form['description'] ? $form['description'] : NULL),
-			    $form['message'],1,0
-			))) 
-	    {
+	if ($form) {
 		
-		$id = $DB->GetLastInsertId('tablica');
-		$user[] = $AUTH->id;
-		for ($i=0; $i<sizeof($user); $i++)
-		    $DB->Execute('INSERT INTO tablicaassign (idtablica,iduser,deleted,readmessage) VALUES (?,?,?,?);',array($id,$user[$i],0,0));
-	    }
-	    
-	    $obj->script("window.parent.parent.popclick();");
-	    $obj->script("window.parent.self.location='/';");
-	}
+		$user = $form['userbox'];
+		
+		if (empty($user)) {
+			$blad = true;
+			$obj->assign("id_alert_user","innerHTML","<br>WYBIERZ ODBIORCÓW<br><br>");
+		} else {
+			$userchk = implode("|",$user);
+			$PROFILE->nowsave('board_default_user',$userchk);
+		}
+		
+		if (!$blad && empty($form['message'])) {
+			$blad = true;
+			$obj->script("addClassId('wiadomosc','alerts');");
+		}
+		
+		if (!$blad) {
+			
+			if ($DB->Execute('INSERT INTO tablica (ownerid, cdate, prio, description, message, active, deleted) 
+				VALUES (?, ?, ?, ?, ?, ?, ?) ;',array($AUTH->id,time(),intval($form['prio']),($form['description'] ? $form['description'] : NULL),$form['message'],1,0))) 
+			{
+				$id = $DB->GetLastInsertId('tablica');
+				$user[] = $AUTH->id;
+				for ($i=0; $i<sizeof($user); $i++)
+					$DB->Execute('INSERT INTO tablicaassign (idtablica,iduser,deleted,readmessage) VALUES (?,?,?,?);',array($id,$user[$i],0,0));
+			}
+			
+			$obj->script("window.parent.parent.popclick();");
+			$obj->script("window.parent.self.location='?m=welcome_new';");
+		}
+	} 
+	else
+		$obj->script("window.parent.parent.popclick();");
 	
-    } else
-	$obj->script("window.parent.parent.popclick();");
-    
-    
-    return $obj;
+	return $obj;
 }
 
 

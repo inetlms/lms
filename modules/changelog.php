@@ -36,7 +36,17 @@ $changelog = array(
 	array(
 	    'data'	=> '',
 	    'status'	=> '',
-	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
+	    'opis'	=> '',
+	),
+//	array(
+//	    'data'	=> '',
+//	    'status'	=> '',
+//	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
+//	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Poprawka przeładowania głównej strony po dodaniu nowej wiadomości w tablicy informacyjnej',
 	),
 	array(
 	    'data'	=> '2015-03-17',

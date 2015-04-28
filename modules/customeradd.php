@@ -235,6 +235,80 @@ if(!isset($customeradd['address']) && isset($CONFIG['phpui']['default_address'])
 
 $layout['pagetitle'] = trans('New Customer');
 
+function check_isset_icn($val) {
+    global $DB;
+    $obj = new xajaxResponse();
+    $obj->script("document.getElementById('img_icn_warn').style.display='none';");
+    $obj->script("removeClassId('customeradd_icn','alerts');");
+    
+    if(!empty($val)) {
+	$val = str_replace(' ','',$val);
+	$val = strtoupper($val);
+	if ($DB->GetOne('SELECT 1 FROM customers WHERE UPPER(icn)=? LIMIT 1;',array($val))) {
+	    $obj->script("addClassId('customeradd_icn','alerts');");
+	    $obj->script("document.getElementById('img_icn_warn').style.display='';");
+	}
+    }
+    
+    return $obj;
+}
+
+function check_isset_ssn($val) {
+    global $DB;
+    $obj = new xajaxResponse();
+    
+    $obj->script("document.getElementById('img_ssn_warn').style.display='none';");
+    $obj->script("removeClassId('customeradd_ssn','alerts');");
+    
+    if (!empty($val)) 
+    {
+	if ($DB->GetOne('SELECT 1 FROM customers WHERE ssn=? LIMIT 1;',array($val))) {
+	    $obj->script("addClassId('customeradd_ssn','alerts');");
+	    $obj->script("document.getElementById('img_ssn_warn').style.display='';");
+	}
+    }
+    return $obj;
+}
+
+function check_isset_ten($val) {
+    global $DB;
+    $obj = new xajaxResponse();
+    
+    $obj->script("document.getElementById('img_ten_warn').style.display='none';");
+    $obj->script("removeClassId('customeradd_ten','alerts');");
+    
+    if (!empty($val)) 
+    {
+	if ($DB->GetOne('SELECT 1 FROM customers WHERE ten=? LIMIT 1;',array($val))) {
+	    $obj->script("addClassId('customeradd_ten','alerts');");
+	    $obj->script("document.getElementById('img_ten_warn').style.display='';");
+	}
+    }
+    return $obj;
+}
+
+function check_isset_regon($val) {
+    global $DB;
+    $obj = new xajaxResponse();
+    
+    $obj->script("document.getElementById('img_regon_warn').style.display='none';");
+    $obj->script("removeClassId('customeradd_regon','alerts');");
+    
+    if (!empty($val)) 
+    {
+	if ($DB->GetOne('SELECT 1 FROM customers WHERE regon=? LIMIT 1;',array($val))) {
+	    $obj->script("addClassId('customeradd_regon','alerts');");
+	    $obj->script("document.getElementById('img_regon_warn').style.display='';");
+	}
+    }
+    return $obj;
+}
+
+$LMS->InitXajax();
+$LMS->RegisterXajaxFunction(array('check_isset_icn','check_isset_ssn','check_isset_ten','check_isset_regon'));
+
+$SMARTY->assign('xajax', $LMS->RunXajax());
+
 $SMARTY->assign('cstateslist', $LMS->GetCountryStates());
 $SMARTY->assign('originlist',$DB->GetAll('SELECT id, name FROM customerorigin ORDER BY name;'));
 $SMARTY->assign('countrieslist', $LMS->GetCountries());

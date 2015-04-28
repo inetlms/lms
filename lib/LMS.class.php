@@ -1432,7 +1432,7 @@ class LMS {
 
 		$saldolist = array();
 
-		if ($tslist = $this->DB->GetAll('SELECT cash.id AS id, time, documents.type AS type, 
+		if ($tslist = $this->DB->GetAll('SELECT cash.id AS id, time, cash.type AS type, 
 					cash.value AS value, taxes.label AS tax, cash.customerid AS customerid, 
 					comment, docid, users.name AS username,
 					documents.type AS doctype, documents.closed AS closed

@@ -1,4 +1,5 @@
 {include file="header.html"}
+{$xajax}
 <!--// $Id$ //-->
 {title value=$layout.pagetitle}
 <script type="text/javascript">
@@ -185,7 +186,8 @@
 					<td width="1%" style="vertical-align: top"><img src="img/home.gif" alt=""></td>
 					<td width="99%" nowrap>
 					    <fieldset style="width:240px;">
-					    <legend><img src="img/help.png" width="16" {tip text="Odbiorca faktury , jeżeli jest inny niż główny adresat"}><b> Odbiorca faktury </b></legend>
+					    <legend><img src="img/help.png" width="16" {tip text="Odbiorca faktury -> osoba fizyczna/podmiot na który mają być wystawione faktury jeżeli jest inny niż główny adresat"}><b> Odbiorca faktury&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="show_box_invoice();">&raquo;&raquo;&raquo;&raquo;&raquo;&nbsp;</a></b></legend>
+					    <div style="display:none;" id="show_invoice_recipient">
 						<table width="100%" cellpadding="1">
 						    <tr>
 							<td width="1%" nowrap>{trans("Name:")}</td>
@@ -210,27 +212,25 @@
 							<input type="hidden" name="customeradd[invoice_zipwarning]" value="1">
 							{/if}
 						    </tr>
-						    
 						    <tr>
-					        	<td width="1%" nowrap>{trans("TEN")}:</td>
-					        	<td width="99%">
-							<input type="text" size="30" value="{$customeradd.invoice_ten}" name="customeradd[invoice_ten]" {tip text="Enter customer Tax Exempt Number (optional)" trigger="invoice_ten"}>
+							<td width="1%" nowrap>{trans("TEN")}:</td>
+							<td width="99%">
+							<input type="text" size="30" value="{$customeradd.invoice_ten}" name="customeradd[invoice_ten]" id="invoice_ten" {tip text="Enter customer Tax Exempt Number (optional)" trigger="invoice_ten"}>
 							{if $customeradd.invoice_tenwarning}
 							    <input type="hidden" name="customeradd[invoice_tenwarning]" value="1">
 							{/if}
-					            </td>
-				        	    </tr>
-				        	    
-				        	    <tr>
-					        	<td width="1%" nowrap>{trans("SSN")}:</td>
-					        	<td width="99%">
-							<input type="text" size="30" value="{$customeradd.invoice_ssn}" name="customeradd[invoice_ssn]" {tip text="Proszę podać numer PESEL (opcja)" trigger="invoice_ssn"}>
+							</td>
+						    </tr>
+						    <tr>
+							<td width="1%" nowrap>{trans("SSN")}:</td>
+							<td width="99%">
+							<input type="text" size="30" value="{$customeradd.invoice_ssn}" name="customeradd[invoice_ssn]" id="invoice_ssn" {tip text="Proszę podać numer PESEL (opcja)" trigger="invoice_ssn"}>
 							{if $customeradd.invoice_ssnwarning}
 							    <input type="hidden" name="customeradd[invoice_ssnwarning]" value="1">
 							{/if}
-					            </td>
-				        	    </tr>
-						{if get_form('customers.state') && $cstateslist}
+							</td>
+						    </tr>
+						    {if get_form('customers.state') && $cstateslist}
 						    <tr>
 							<td width="1%" nowrap>{trans("State:")}</td>
 							<td width="99%">
@@ -242,30 +242,31 @@
 							    </select>
 							</td>
 						    </tr>
-						{else}
-						    <input type="hidden" name="customeradd[invoice_stateid]" value="{$customeradd.invoice_stateid}">
-						{/if}
-						{if get_form('customers.country') && $countrieslist}
+						    {else}
+							<input type="hidden" name="customeradd[invoice_stateid]" value="{$customeradd.invoice_stateid}">
+						    {/if}
+						    {if get_form('customers.country') && $countrieslist}
 						    <tr>
-						        <td width="1%" nowrap>{trans("Country:")}</td>
-						        <td width="99%">
-						            <select name="customeradd[invoice_countryid]" {tip text="Select country (optional)" trigger="invoice_countryid"}>
-						                <option value="0"></option>
+							<td width="1%" nowrap>{trans("Country:")}</td>
+							<td width="99%">
+							    <select name="customeradd[invoice_countryid]" {tip text="Select country (optional)" trigger="invoice_countryid"}>
+							    <option value="0"></option>
 								{foreach from=$countrieslist item=item key=key}
-						                <option value="{$key}"{if $key==$customeradd.invoice_countryid} selected{/if}>{t}{$item.name}{/t}</option>
+								    <option value="{$key}"{if $key==$customeradd.invoice_countryid} selected{/if}>{t}{$item.name}{/t}</option>
 								{/foreach}
-						            </select>
-							    </td>
+							    </select>
+							</td>
 						    </tr>
-						{else}
-						    <input type="hidden" name="customeradd[invoice_countryid]" value="{$customeradd.invoice_countryid}">
-						{/if}
+						    {else}
+							<input type="hidden" name="customeradd[invoice_countryid]" value="{$customeradd.invoice_countryid}">
+						    {/if}
 						</table>
 						<script type="text/javascript">
 							new AutoSuggest(document.getElementById('customeradd'),document.getElementById('invoice_address'),'?m=customeradd&ajax=1&mode=address&what=',0);
 							new AutoSuggest(document.getElementById('customeradd'),document.getElementById('invoice_zip'),'?m=customeradd&ajax=1&mode=zip&what=',0);
 							new AutoSuggest(document.getElementById('customeradd'),document.getElementById('invoice_city'),'?m=customeradd&ajax=1&mode=city&what=',0);
 						</script>
+						</div>
 						</fieldset>
 					</td>
 				</tr>
@@ -289,7 +290,8 @@
 					</td>
 					<td width="99%" nowrap>
 						<fieldset style="width:240px">
-						<legend><img src="img/help.png" width="16" {tip text="Adresy wysyłki.<br>Jeżeli wypełniliśmy pola z sekcji Odbiorca faktury to adresem wysyłki będą dane odbiorcy w innym przypadku adresem wysyłki będą dane podstawowe. Wpisz adres jeżeli ma być inny"}><b> Adres do wysyłki </b></legend>
+						<legend><img src="img/help.png" width="16" {tip text="Adresy wysyłki.<br>Jeżeli wypełniliśmy pola z sekcji Odbiorca faktury to adresem wysyłki będą dane odbiorcy w innym przypadku adresem wysyłki będą dane podstawowe. Wpisz adres jeżeli ma być inny"}><b> Adres do wysyłki&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="show_box_post();">&raquo;&raquo;&raquo;&raquo;&raquo;&nbsp;</a></b></legend>
+						<div style="display:none;" id="show_post_recipient">
 						<table width="100%" cellpadding="1">
 						    <tr>
 							<td width="1%" nowrap>{trans("Name:")}</td>
@@ -323,23 +325,26 @@
 							    </select>
 							</td>
 						    </tr>
-						{else}<input type="hidden" name="customeradd[post_stateid]" value="{$customeradd.post_stateid}">{/if}
-						
+						{else}
+						    <input type="hidden" name="customeradd[post_stateid]" value="{$customeradd.post_stateid}">
+						{/if}
 						{if get_form('customers.country') && $countrieslist}
 						    <tr>
-						        <td width="1%" nowrap>{trans("Country:")}</td>
-						        <td width="99%">
-						            <select name="customeradd[post_countryid]" {tip text="Select country (optional)" trigger="post_countryid"}>
-						                <option value="0"></option>
+							<td width="1%" nowrap>{trans("Country:")}</td>
+							<td width="99%">
+							    <select name="customeradd[post_countryid]" {tip text="Select country (optional)" trigger="post_countryid"}>
+								<option value="0"></option>
 								{foreach from=$countrieslist item=item key=key}
-						                <option value="{$key}"{if $key==$customeradd.post_countryid} selected{/if}>{t}{$item.name}{/t}</option>
+								<option value="{$key}"{if $key==$customeradd.post_countryid} selected{/if}>{t}{$item.name}{/t}</option>
 								{/foreach}
-						            </select>
-							    </td>
+							    </select>
+							</td>
 						    </tr>
-						{else}<input type="hidden" name="customeradd[post_countryid]" value="{$customeradd.post_countryid}">{/if}
-						
+						{else}
+						    <input type="hidden" name="customeradd[post_countryid]" value="{$customeradd.post_countryid}">
+						{/if}
 						</table>
+						</div>
 						</fieldset>
 						<script type="text/javascript">
 							new AutoSuggest(document.getElementById('customeradd'),document.getElementById('post_address'),'?m=customeradd&ajax=1&mode=address&what=',0);
@@ -459,39 +464,39 @@
 					<td width="99%">
 					    <table width="100%">
 					        <tr>
-					            <td width="1%" nowrap>{trans("ICN")}:</td>
-					            <td width="99%">
-						<input type="text" size="30" value="{$customeradd.icn}" name="customeradd[icn]" {tip text="Enter Identity Card Number (optional)" trigger="icn"}>
-					            </td>
-				            </tr>
-				            <tr>
-					            <td width="1%" nowrap>{trans("SSN")}:</td>
-					            <td width="99%">
-						<input type="text" size="30" value="{$customeradd.ssn}" name="customeradd[ssn]" {tip text="Enter customer Social Security Number (optional)" trigger="ssn"}>
-						{if $customeradd.ssnwarning}
-						<input type="hidden" name="customeradd[ssnwarning]" value="1">
+						    <td width="1%" nowrap>{trans("ICN")}:</td>
+						    <td width="99%">
+							<input type="text" size="30" value="{$customeradd.icn}" name="customeradd[icn]" id="customeradd_icn" {tip text="Enter Identity Card Number (optional)" trigger="icn"} onkeyup="xajax_check_isset_icn(this.value);">&nbsp;<span style="display:none;" id="img_icn_warn"><img src="img/cancel.gif" width="14" {tip text="Podany numer dowodu osobistego jest już w bazie danych"}></span>
+						    </td>
+						</tr>
+						<tr>
+						    <td width="1%" nowrap>{trans("SSN")}:</td>
+						    <td width="99%">
+							<input type="text" size="30" value="{$customeradd.ssn}" name="customeradd[ssn]" id="customeradd_ssn" {tip text="Enter customer Social Security Number (optional)" trigger="ssn"} onkeyup="xajax_check_isset_ssn(this.value);">&nbsp;<span style="display:none;" id="img_ssn_warn"><img src="img/cancel.gif" width="14" {tip text="Podany numer PESEL jest już w bazie danych"}></span>
+							{if $customeradd.ssnwarning}
+							    <input type="hidden" name="customeradd[ssnwarning]" value="1">
+							{/if}
+						    </td>
+						</tr>
+						<tr>
+						    <td width="1%" nowrap>{trans("TEN")}:</td>
+						    <td width="99%">
+							<input type="text" size="30" value="{$customeradd.ten}" name="customeradd[ten]" id="customeradd_ten" {tip text="Enter customer Tax Exempt Number (optional)" trigger="ten"} onkeyup="xajax_check_isset_ten(this.value);" >&nbsp;<span style="display:none;" id="img_ten_warn"><img src="img/cancel.gif" width="14" {tip text="Podany numer NIP jest już w bazie danych"}></span>
+							{if $customeradd.tenwarning}
+							    <input type="hidden" name="customeradd[tenwarning]" value="1">
+							{/if}
+						    </td>
+						</tr>
+						{if get_form('customers.regon')}
+						<tr>
+						    <td width="1%" nowrap>{trans("REGON")}:</td>
+						    <td width="99%">
+							<input type="text" size="30" value="{$customeradd.regon}" name="customeradd[regon]" id="customeradd_regon" {tip text="Enter Business Registration Number (optional)" trigger="regon"} onkeyup="xajax_check_isset_regon(this.value);">&nbsp;<span style="display:none;" id="img_regon_warn"><img src="img/cancel.gif" width="14" {tip text="Podany numer REGON jest już w bazie danych"}></span>
+						    </td>
+						</tr>
+						{else}
+							<input type="hidden" name="customeradd[regon]" value="{$customeradd.regon}">
 						{/if}
-					            </td>
-				            </tr>
-				            <tr>
-					            <td width="1%" nowrap>{trans("TEN")}:</td>
-					            <td width="99%">
-						<input type="text" size="30" value="{$customeradd.ten}" name="customeradd[ten]" {tip text="Enter customer Tax Exempt Number (optional)" trigger="ten"}>
-						{if $customeradd.tenwarning}
-						<input type="hidden" name="customeradd[tenwarning]" value="1">
-						{/if}
-					            </td>
-				            </tr>
-				            {if get_form('customers.regon')}
-				            <tr>
-					            <td width="1%" nowrap>{trans("REGON")}:</td>
-					            <td width="99%">
-							<input type="text" size="30" value="{$customeradd.regon}" name="customeradd[regon]" {tip text="Enter Business Registration Number (optional)" trigger="regon"}>
-					            </td>
-				            </tr>
-				            {else}
-				        	<input type="hidden" name="customeradd[regon]" value="{$customeradd.regon}">
-					    {/if}
 					    {if get_form('customers.rbe')}
 				            <tr>
 					            <td width="1%" nowrap>{trans("RBE")}:</td>
@@ -612,22 +617,22 @@
 		<td width="50%" class="fright container" style="vertical-align: top;">
 			<table width="100%" cellpadding="3">
 			    {if get_form('customers.info')}
-		    		<tr>
+				<tr>
 			            <td width="1%"><img src="img/info1.gif" alt=""></td>
 				    <td width="99%"><textarea rows="10" cols="60" name="customeradd[info]" {tip text="Enter additional information (optional)"}>{$customeradd.info|escape}</textarea></td>
-		    		</tr>
-		    	    {else}
-		    		<input type="hidden" name="customeradd[info]" value="{$customeradd.info|escape}">
-		    	    {/if}
-		    	    {if get_form('customers.warning')}
+				</tr>
+			    {else}
+				<input type="hidden" name="customeradd[info]" value="{$customeradd.info|escape}">
+			    {/if}
+			    {if get_form('customers.warning')}
 				<tr>
 			            <td width="1%"><img src="img/warningon.gif" alt=""></td>
 				    <td width="99%"><textarea rows="10" cols="60" name="customeradd[message]" {tip text="Enter notice contents (optional)"}>{$customeradd.message|escape}</textarea></td>
-		    		</tr>
-		    	    {else}
-		    		<input type="hidden" name="customeradd[message]" value="{$customeradd.message|escape}">
-		    	    {/if}
-		    	    {if get_form('customers.notes')}
+				</tr>
+			    {else}
+				<input type="hidden" name="customeradd[message]" value="{$customeradd.message|escape}">
+			    {/if}
+			    {if get_form('customers.notes')}
 				<tr>
 			            <td width="1%"><img src="img/note.gif" alt=""></td>
 				    <td width="99%"><textarea rows="10" cols="60" name="customeradd[notes]" {tip text="Enter notes (optional)"}>{$customeradd.notes|escape}</textarea></td>
@@ -652,6 +657,41 @@
 <!--
 	document.forms['customeradd'].elements['customeradd[lastname]'].focus();
 	if(document.forms['customeradd'].elements['customeradd[pin]'].value == '') randomize();
+	
+	{if get_form('customers.inv_address')}
+	    function show_box_invoice() {
+		var box = document.getElementById('show_invoice_recipient').style.display;
+		if (box == '') document.getElementById('show_invoice_recipient').style.display = 'none'; 
+		else document.getElementById('show_invoice_recipient').style.display = '';
+	    }
+	    
+	    if (
+		document.getElementById('invoice_name').value != '' ||
+		document.getElementById('invoice_address').value != '' ||
+		document.getElementById('invoice_city').value != '' ||
+		document.getElementById('invoice_zip').value != '' ||
+		document.getElementById('invoice_ten').value != '' ||
+		document.getElementById('invoice_ssn').value != ''
+	    ) 
+		document.getElementById('show_invoice_recipient').style.display = '';
+	{/if}
+	
+	{if get_form('customers.post_address')}
+	    function show_box_post()
+	    {
+		var box = document.getElementById('show_post_recipient').style.display;
+		if (box == '') document.getElementById('show_post_recipient').style.display = 'none'; 
+		else document.getElementById('show_post_recipient').style.display = '';
+	    }
+	    
+	    if (
+		document.getElementById('post_name').value != '' ||
+		document.getElementById('post_address').value != '' ||
+		document.getElementById('post_city').value != '' ||
+		document.getElementById('post_zip').value != ''
+	    )
+		document.getElementById('show_post_recipient').style.display = '';
+	{/if}
 //-->
 </script>
 {include file="footer.html"}
