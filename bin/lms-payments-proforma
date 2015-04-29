@@ -694,6 +694,11 @@ while(my $assign = $dbq->fetchrow_hashref())
 				$dtsdv->execute('invoices','sdateview');
 				my $tsdv = $dtsdv->fetchrow_hashref();
 				if ( !$tsdv->{'value'} ) { $tsdv->{'value'} = '0'; }
+				
+				my $dbalanceinfo = $db->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
+				$dbalanceinfo->execute('invoices','print_balance_info');
+				my $balanceinfo = $dbalanceinfo->fetchrow_hashref();
+				if ($balanceinfo-{'value'} ) { $balanceinfo->{'value'} = '1'; }
 
 				#template logo file
 				my $urllogofile;
@@ -710,9 +715,9 @@ while(my $assign = $dbq->fetchrow_hashref())
 						customerid, name, address, zip, city, ten, ssn, cdate, sdate, paytime, paytype,
 						div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon, div_account, 
 						div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname, fullnumber,
-						version, templatetype, templatefile, sdateview, urllogofile, post_name, post_address, post_zip, post_city)
+						version, templatetype, templatefile, sdateview, urllogofile, post_name, post_address, post_zip, post_city, print_balance_info)
 						VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-						?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+						?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				
 				$idbq->execute($numbers{$plan}, $plan, $assign->{'invoice'}, $countryid, $urow->{'divisionid'}, $uid,
 						$name, $address, $zip, $city, $ten, $ssn, $currtime, $saledate, $paytime, $inv_paytype,
@@ -720,7 +725,7 @@ while(my $assign = $dbq->fetchrow_hashref())
 						$drow->{'ten'}, $drow->{'regon'}, $drow->{'account'}, $drow->{'inv_header'}, $drow->{'inv_footer'},
 						$drow->{'inv_author'}, $drow->{'inv_cplace'}, $drow->{'shortname'}, $fullnumber,$ttiv->{'value'},
 						$ttyp->{'value'}, $templatefile,$tsdv->{'value'}, $urllogofile,
-						$urow->{'post_name'}, $urow->{'post_address'}, $urow->{'post_zip'}, $urow->{'post_city'}
+						$urow->{'post_name'}, $urow->{'post_address'}, $urow->{'post_zip'}, $urow->{'post_city'}, $balanceinfo->{'value'}
 						);
 
 				$idbq = $dbase->prepare("SELECT id FROM documents

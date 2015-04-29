@@ -129,8 +129,8 @@ if (isset($_POST['invoiceconvert']))
 			address, zip, city, countryid, ten, ssn, paytime, paytype, closed, reference, reason,
 			sale, div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
 			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname, fullnumber,
-			version, templatetype, templatefile, sdateview, urllogofile) 
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;',
+			version, templatetype, templatefile, sdateview, urllogofile, print_balance_info) 
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;',
 			array(
 			    DOC_INVOICE, 
 			    $invoice['number'], 
@@ -172,6 +172,7 @@ if (isset($_POST['invoiceconvert']))
 			    ($invoice['templatefile'] ? $invoice['templatefile'] : ''),
 			    ($invoice['sdateview'] ? 1 : 0),
 			    ($invoice['urllogofile'] ? $invoice['urllogofile'] : ''),
+			    get_conf('invoices.print_balance_info','1'),
 			    )
 	);
 

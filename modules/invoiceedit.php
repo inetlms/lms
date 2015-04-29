@@ -246,7 +246,7 @@ switch($action)
 
 		$DB->Execute('UPDATE documents SET cdate = ?, sdate = ?, paytime = ?, paytype = ?, customerid = ?,
 				name = ?, address = ?, ten = ?, ssn = ?, zip = ?, city = ?, divisionid = ?, sdateview = ?,
-				post_name = ?, post_address = ?, post_zip = ?, post_city = ? 
+				post_name = ?, post_address = ?, post_zip = ?, post_city = ?, print_balance_info = ? 
 				WHERE id = ?',
 				array($cdate,
 					$sdate,
@@ -265,6 +265,7 @@ switch($action)
 					($post_address ? $post_address : ''),
 					($post_zip  ? $post_zip : ''),
 					($post_city ? $post_city : ''),
+					get_conf('invoices.print_balance_info','1'),
 					$iid
 				));
 		

@@ -279,6 +279,7 @@ switch($action)
 		$invoice['version'] = get_conf('invoices.template_version');
 		$invoice['templatetype'] = get_conf('invoices.type');
 		$invoice['templatefile'] = get_conf('invoices.cnote_template_file');
+		$invoice['print_balance_info'] = get_conf('invoices.print_balance_info','1');
 //		$invoice['sdateview'] = get_conf('invoices.sdateview');
 		
 		if ($division['urllogofile'])
@@ -296,8 +297,8 @@ switch($action)
 				userid, customerid, name, address, ten, ssn, zip, city, countryid, reference, reason, divisionid,
 				div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
 				div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname, fullnumber,
-				version, templatetype, templatefile, sdateview, urllogofile, post_name, post_address, post_zip, post_city)
-				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				version, templatetype, templatefile, sdateview, urllogofile, post_name, post_address, post_zip, post_city,print_balance_info)
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 				array($cnote['number'],
 					$cnote['numberplanid'] ? $cnote['numberplanid'] : 0,
 					DOC_CNOTE,
@@ -340,6 +341,7 @@ switch($action)
 					($invoice['post_address'] ? $invoice['post_address'] : ''),
 					($invoice['post_zip'] ? $invoice['post_zip'] : ''),
 					($invoice['post_city'] ? $invoice['post_city'] : ''),
+					($invoice['print_balance_info'] ? 1 : 0),
 		));
 
 		$id = $DB->GetOne('SELECT id FROM documents WHERE number = ? AND cdate = ? AND type = ?',
