@@ -701,7 +701,7 @@ class LMS {
 				    icn, cutoffstop, consentdate, einvoice, divisionid, paytime, paytype,
 				    invoicenotice, mailingnotice,
 				    invoice_name, invoice_address, invoice_zip, invoice_city, invoice_countryid, invoice_ten,origin, invoice_lastname, invoice_ssn)
-				    VALUES (?, UPPER(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?NOW?,
+				    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?NOW?,
 				    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(lms_ucwords($customeradd['name']),
 						$customeradd['lastname'],
 						empty($customeradd['type']) ? 0 : 1,
@@ -821,7 +821,7 @@ class LMS {
 		$res = $this->DB->Execute('UPDATE customers SET status=?, type=?, address=?,
 				zip=?, city=?, countryid=?, email=?, ten=?, ssn=?, moddate=?NOW?, modid=?,
 				post_name=?, post_address=?, post_zip=?, post_city=?, post_countryid=?,
-				info=?, notes=?, lastname=UPPER(?), name=?,
+				info=?, notes=?, lastname=?, name=?,
 				deleted=0, message=?, pin=?, regon=?, icn=?, rbe=?,
 				cutoffstop=?, consentdate=?, einvoice=?, invoicenotice=?, mailingnotice=?,
 				divisionid=?, paytime=?, paytype=?,
@@ -1432,7 +1432,7 @@ class LMS {
 
 		$saldolist = array();
 
-		if ($tslist = $this->DB->GetAll('SELECT cash.id AS id, time, documents.type AS type, 
+		if ($tslist = $this->DB->GetAll('SELECT cash.id AS id, time, cash.type AS type, 
 					cash.value AS value, taxes.label AS tax, cash.customerid AS customerid, 
 					comment, docid, users.name AS username,
 					documents.type AS doctype, documents.closed AS closed
@@ -8253,8 +8253,20 @@ class LMS {
     }
 
 
-    function GetListNetworknode($status = NULL, $project = NULL, $owner = NULL, $group = NULL)
+    function GetListNetworknode($order = 'name,asc', $status = NULL, $project = NULL, $owner = NULL, $group = NULL)
     {
+	if (is_null($order)) $order = 'name,asc';
+	
+	list($order,$direction) = sscanf($order,'%[^,],%s');
+	
+	($direction != 'desc') ? $direction = 'asc' : $direction = 'desc';
+	
+	switch ($order) {
+	    case 'id' : $sqlord = 'ORDER BY nn.id'; break;
+	    case 'name' : $sqlord = 'ORDER BY nn.name'; break;
+	    default : $sqlord = 'ORDER BY nn.name'; break;
+	}
+	
 	return $this->DB->GetAll('SELECT nn.*, p.name AS projectname, p.title AS projecttitle, p.eu AS projecteu, 
 				    (SELECT COUNT(nd.id) FROM netdevices nd WHERE nd.networknodeid = nn.id) AS count_netdev 
 				    FROM networknode nn 
@@ -8265,7 +8277,9 @@ class LMS {
 				    .(!is_null($project) ? ' AND nn.invprojectid = '.$project : '')
 				    .(!is_null($owner) ? ' AND nn.type = '.$owner : '')
 				    .(!is_null($group) ? ' AND ng.networknodegroupid = '.$group : '')
-				    .' AND deleted = 0;');
+				    .' AND deleted = 0 '
+				    .($sqlord != '' ? ' '.$sqlord.' '.$direction.' ' : '')
+				    );
     }
     
     function Addnetworknode($dane)
