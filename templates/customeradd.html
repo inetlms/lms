@@ -49,12 +49,12 @@
 		<tr>
 		    <td><b>{trans("Name/Surname:")}</b></td>
 		    <td>&nbsp;</td>
-		    <td><input type="text" name="customeradd[lastname]" class="required" value="{$customeradd.lastname|escape}" size="50" {tip text="Enter customer last name or company name" trigger="lastname" bold=1} placeholder="-- WYMAGANE --"></td>
+		    <td><input type="text" name="customeradd[lastname]" id="customeradd_lastname" onkeyup="checkissetcustomer();" class="required" value="{$customeradd.lastname|escape}" size="50" {tip text="Enter customer last name or company name" trigger="lastname" bold=1} placeholder="-- WYMAGANE --">&nbsp;<span style="display:none;" id="img_lastname_warn"><img src="img/cancel.gif" width="14" alt="!!!" {tip text="Podany klient istnieje już w bazie danych"}></span></td>
 		</tr>
 		<tr>
 		    <td><b>{trans("First name:")}</b></td>
 		    <td>&nbsp;</td>
-		    <td><input type="text" name="customeradd[name]" class="required" value="{$customeradd.name|escape}" size="50" {tip text="Enter customer name" trigger="name" bold=1} placeholder="-- WYMAGANE DLA OSOBY FIZYCZNEJ --"></td>
+		    <td><input type="text" name="customeradd[name]" id="customeradd_name" onkeyup="checkissetcustomer();" class="required" value="{$customeradd.name|escape}" size="50" {tip text="Enter customer name" trigger="name" bold=1} placeholder="-- WYMAGANE DLA OSOBY FIZYCZNEJ --"></td>
 		</tr>
 	    </table>
 	</td>
@@ -128,15 +128,15 @@
 						<table width="100%" cellpadding="1">
 						    <tr>
 							<td width="1%" nowrap>{trans("Address:")}</td>
-							<td width="99%"><input type="text" size="30" value="{$customeradd.address}" name="customeradd[address]" class="required" placeholder="-- WYMAGANE --" id="address" {tip text="Enter customer address" trigger="address"}></td>
+							<td width="99%"><input type="text" size="30" value="{$customeradd.address}" name="customeradd[address]" onkeyup="checkissetcustomer();" class="required" placeholder="-- WYMAGANE --" id="address" {tip text="Enter customer address" trigger="address"}></td>
 						    </tr>
 						    <tr>
 							<td width="1%" nowrap>{trans("City:")}</td>
-							<td width="99%"><input type="text" size="30" value="{$customeradd.city}" name="customeradd[city]" id="city" {tip text="Enter customer city" trigger="city"}></td>
+							<td width="99%"><input type="text" size="30" value="{$customeradd.city}" name="customeradd[city]" onkeyup="checkissetcustomer();" id="city" {tip text="Enter customer city" trigger="city"}></td>
 						    </tr>
 						    <tr>
 							<td width="1%" nowrap>{trans("Zip:")}</td>
-							<td width="99%"><input type="text" size="10" value="{$customeradd.zip}" name="customeradd[zip]" id="zip" {tip text="Enter zip code" trigger="zip"}></td>
+							<td width="99%"><input type="text" size="10" value="{$customeradd.zip}" name="customeradd[zip]" onkeyup="checkissetcustomer();" id="zip" {tip text="Enter zip code" trigger="zip"}></td>
 							{if $customeradd.zipwarning}
 							<input type="hidden" name="customeradd[zipwarning]" value="1">
 							{/if}
@@ -173,9 +173,9 @@
 						{/if}
 						</table>
 						<script type="text/javascript">
-							new AutoSuggest(document.getElementById('customeradd'),document.getElementById('address'),'?m=customeradd&ajax=1&mode=address&what=',0);
+//							new AutoSuggest(document.getElementById('customeradd'),document.getElementById('address'),'?m=customeradd&ajax=1&mode=address&what=',0);
 							new AutoSuggest(document.getElementById('customeradd'),document.getElementById('zip'),'?m=customeradd&ajax=1&mode=zip&what=',0);
-							new AutoSuggest(document.getElementById('customeradd'),document.getElementById('city'),'?m=customeradd&ajax=1&mode=city&what=',0);
+//							new AutoSuggest(document.getElementById('customeradd'),document.getElementById('city'),'?m=customeradd&ajax=1&mode=city&what=',0);
 						</script>
 						</fieldset>
 					</td>
@@ -657,6 +657,17 @@
 <!--
 	document.forms['customeradd'].elements['customeradd[lastname]'].focus();
 	if(document.forms['customeradd'].elements['customeradd[pin]'].value == '') randomize();
+	
+	function checkissetcustomer()
+	{
+	    var lastname = document.getElementById('customeradd_lastname').value;
+	    var names = document.getElementById('customeradd_name').value;
+	    var city = document.getElementById('city').value;
+	    var address = document.getElementById('address').value;
+	    
+	    xajax_check_isset_customer(lastname,names,city,address);
+	    
+	}
 	
 	{if get_form('customers.inv_address')}
 	    function show_box_invoice() {

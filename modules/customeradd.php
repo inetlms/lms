@@ -304,8 +304,42 @@ function check_isset_regon($val) {
     return $obj;
 }
 
+function check_isset_customer($lastname,$name,$city,$address)
+{
+    global $DB;
+    $obj = new xajaxResponse();
+    
+    $obj->script("removeClassId('customeradd_lastname','alerts');");
+    $obj->script("removeClassId('customeradd_name','alerts');");
+    $obj->script("document.getElementById('img_lastname_warn').style.display='none';");
+    $obj->script("removeClassId('address','alerts');");
+    $obj->script("removeClassid('city','alerts');");
+    
+    if (empty($name)) $name = NULL; else $name = strtoupper($name);
+    if (empty($lastname)) $lastname = NULL; else $lastname = strtoupper($lastname);
+    if (empty($city)) $city = NULL; else $city = strtoupper($city);
+    if (empty($address)) $address = NULL; else $address = strtoupper($address);
+    
+    if ($lastname && $city && $address) {
+	$result = $DB->GetOne('SELECT 1 FROM customers 
+		WHERE UPPER(lastname) = \''.$lastname.'\' '
+		.($name ? ' AND UPPER(name) = \''.$name.'\' ' : '')
+		.' AND UPPER(city) = \''.$city.'\' 
+		AND UPPER(address) = \''.$address.'\' LIMIT 1;');
+	if ($result) {
+	    $obj->script("addClassId('customeradd_lastname','alerts');");
+	    $obj->script("addClassId('customeradd_name','alerts');");
+	    $obj->script("document.getElementById('img_lastname_warn').style.display='';");
+	    $obj->script("addClassId('address','alerts');");
+	    $obj->script("addClassId('city','alerts');");
+	}
+    }
+    
+    return $obj;
+}
+
 $LMS->InitXajax();
-$LMS->RegisterXajaxFunction(array('check_isset_icn','check_isset_ssn','check_isset_ten','check_isset_regon'));
+$LMS->RegisterXajaxFunction(array('check_isset_icn','check_isset_ssn','check_isset_ten','check_isset_regon','check_isset_customer'));
 
 $SMARTY->assign('xajax', $LMS->RunXajax());
 

@@ -47,22 +47,34 @@ if (!isset($_GET['group'])) $SESSION->restore('ntk_group',$group); else $group =
 if (is_null($group)) $group = '-1';
 $SESSION->save('ntk_group',$group);
 
+if (!isset($_GET['o'])) $SESSION->restore('ntk_order',$order); else $order = $_GET['o'];
+if (empty($order)) $order = 'name,asc';
+$SESSION->save('ntk_order',$order);
+
+
+
 $page = (!$_GET['page'] ? 1 : $_GET['page']);
 $pagelimit = get_conf('phpui.networknode_pagelimit','50');
 $start = ($page - 1) * $pagelimit;
 
 $netlist = $LMS->GetListnetworknode(
+    $order,
     ($status != '-1' ? $status : NULL),
     ($project != '-1' ? $project : NULL),
     ($owner != '-1' ? $owner : NULL),
     ($group != '-1' ? $group : NULL)
 );
 
+list($order,$direction) = sscanf($order,'%[^,],%s');
+($direction != 'desc') ? $direction = 'asc' : $direction = 'desc';
+
 $listdata['total'] = sizeof($netlist);
 $listdata['status'] = $status;
 $listdata['project'] = $project;
 $listdata['owner'] = $owner;
 $listdata['group'] = $group;
+$listdata['order'] = $order;
+$listdata['direction'] = $direction;
 
 $SESSION->save('ntk_list_page',$_GET['page']);
 

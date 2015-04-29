@@ -70,11 +70,11 @@
     <tr class="dark nav-header">
 	
 	<td class="fleftu pad" width="1%" nowrap style="text-align:center;vertical-align:bottom;">
-	    <strong>ID</strong>
+	    <a href='?m={$layout.module}&o=id,{if $listdata.direction eq "asc" && $listdata.order=="id"}desc{else}asc{/if}'><strong>ID&nbsp;{if $listdata.order == 'id'}<img src="img/{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order.gif">{else}<img src="img/empty.gif" width="7">{/if}</strong></a>
 	</td>
 	
 	<td class="fbt pad tleft" width="1%" nowrap style="text-align:left;vertical-align:bottom;">
-	    <strong>Nazwa</strong>
+	    <a href='?m={$layout.module}&o=name,{if $listdata.direction eq "asc" && $listdata.order=="name"}desc{else}asc{/if}'><strong>Nazwa&nbsp;{if $listdata.order=='name'}<img src="img/{if $listdata.direction eq 'desc'}asc{else}desc{/if}_order.gif">{/if}</strong></a>
 	</td>
 	
 	<td class="fbt pad tleft" width="auto"  style="text-align:left;vertical-align:bottom;">
