@@ -1366,7 +1366,7 @@ class LMS {
 	function GetCustomerNodes($id, $count = NULL) {
 		if ($result = $this->DB->GetAll('SELECT n.id, n.name, n.mac, n.ipaddr, n.pppoelogin,
 				inet_ntoa(n.ipaddr) AS ip, n.ipaddr_pub,
-				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.passwd, n.access, n.netdev ,
+				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.passwd, n.access, n.netdev , n.producer, n.model, 
 				nd.id AS devid, nd.name AS devname, nd.location AS devlocation, 
 				n.warning, n.info, n.ownerid, n.lastonline, n.location, n.blockade, 
 				(SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active=1) AS monitoring, 
@@ -3476,8 +3476,8 @@ class LMS {
 			div_name, div_shortname, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
 			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, fullnumber,
 			version, templatetype, templatefile, sdateview, urllogofile,
-			post_name, post_address, post_zip, post_city)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?)', 
+			post_name, post_address, post_zip, post_city,print_balance_info)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?)', 
 				array(
 				($number ? $number : 0),
 				($invoice['invoice']['numberplanid'] ? $invoice['invoice']['numberplanid'] : 0),
@@ -3519,6 +3519,7 @@ class LMS {
 				($invoice['customer']['post_address'] ? $invoice['customer']['post_address'] : ''),
 				($invoice['customer']['post_zip'] ? $invoice['customer']['post_zip'] : ''),
 				($invoice['customer']['post_city'] ? $invoice['customer']['post_city'] : ''),
+				get_conf('invoices.print_balance_info','1'),
 		));
 		
 
@@ -3661,7 +3662,7 @@ class LMS {
 				d.div_ten AS division_ten, d.div_regon AS division_regon, d.div_account AS account,
 				d.div_inv_header AS division_header, d.div_inv_footer AS division_footer,
 				d.div_inv_author AS division_author, d.div_inv_cplace AS division_cplace,
-				d.fullnumber AS fullnumber,d.version, d.templatetype, d.templatefile, d.sdateview, d.urllogofile,
+				d.fullnumber AS fullnumber,d.version, d.templatetype, d.templatefile, d.sdateview, d.urllogofile, d.print_balance_info, 
 				c.pin AS customerpin, c.divisionid AS current_divisionid,
 				d.post_name, d.post_address, d.post_zip, d.post_city,
 				c.invoice_name, c.invoice_address, c.invoice_zip, c.invoice_city, c.invoice_countryid, c.invoice_ten 

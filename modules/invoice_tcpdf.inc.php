@@ -206,10 +206,11 @@ function invoice_simple_form_fill() {
 	global $pdf, $invoice;
 
 	/* set font style & color */
-	if (strlen($invoice['division_shortname'])>25)
-            	$pdf->SetFont('courier', '', floor(235/strlen($invoice['division_shortname'])) );
-            else
-            	$pdf->SetFont('courier', '', 9);
+	if (mb_strlen($invoice['division_shortname'])>25)
+		$pdf->SetFont('courier', '', floor(235/mb_strlen($invoice['division_shortname'])) );
+	else
+		$pdf->SetFont('courier', '', 9);
+	
 	$pdf->setColor('text', 0, 0, 0);
 
 	/* division name */
@@ -521,7 +522,8 @@ function invoice_body_standard() {
 	invoice_buyer();
 	invoice_data();
 	invoice_to_pay();
-	invoice_balance();
+	if ($invoice['print_balance_info'] == '1')
+	    invoice_balance();
 	invoice_dates();
 	invoice_expositor();
 	invoice_footnote();
@@ -574,7 +576,8 @@ function invoice_body_ft0100() {
 	invoice_buyer();
 	invoice_data();
 	invoice_to_pay();
-	invoice_balance();
+	if ($invoice['print_balance_info'] == '1')
+	    invoice_balance();
 	invoice_dates();
 	invoice_expositor();
 	invoice_footnote();

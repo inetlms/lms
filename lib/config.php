@@ -243,6 +243,7 @@ $DEFAULTS = array(
 		'template_file' 		=> 'FT-0100',
 		'content_type' 			=> 'text/html',
 		'cnote_template_file' 		=> 'standard',
+		'print_balance_info'		=> '1',
 		'print_balance_history' 	=> false,
 		'print_balance_history_limit' 	=> '10',
 		'default_printpage' 		=> 'original,copy',

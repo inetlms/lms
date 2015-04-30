@@ -60,7 +60,7 @@ if(isset($_POST['netdev']))
 
 $layout['pagetitle'] = 'Nowe urządzenie sieciowe';
 
-$SMARTY->assign('networknodelist', $DB->GetAll('SELECT id, name FROM networknode WHERE deleted = ? AND disabled = ? ;',array(0,0)));
+$SMARTY->assign('networknodelist',$LMS->GetListnetworknode());
 
 $annex_info = array('section'=>'netdev','ownerid'=>0);
 $SMARTY->assign('annex_info',$annex_info);

@@ -4,10 +4,10 @@
 <!--// $Id$ //-->
 {title value=$layout.pagetitle}
 {$lastonline_limit = get_conf('phpui.lastonline_limit')}
-<table cellpadding="3" width="100%" class="listradiuscorners">
+<table cellpadding="3" width="100%" class="listradiuscorners_off">
 	
 	<tr class="dark info">
-		<td  colspan="5">
+		<td  colspan="5" class="fleftu">
 			<img src="img/Filter.png">&nbsp;
 			<form method="GET" action="?m={$layout.module}" name="choosefilter">
 				<input type="submit" class="hiddenbtn">
@@ -45,7 +45,7 @@
 					{/section}
 				</select><nobr>
 			</form>
-			<td align="right">
+			<td align="right" class="frightu">
 				<img src="img/search.gif">&nbsp;<a href="?m=nodelist&page=1&s=&n=&ng=&g=" {tip text="Wyczyść filtr"}><img src="img/cancel.gif"></a>
 			</td>
 		</td>
@@ -100,6 +100,15 @@
 			    <img src="img/info1.gif" alt="" {tip text=$nodelist[nodelist].info}>
 			{/if}
 			<b>{$nodelist[nodelist].name}</b></a><br>
+			{if $nodelist[nodelist].producer || $nodelist[nodelist].model}
+			
+			<img src="img/producer.gif" alt="">&nbsp;<font color="blue">
+			{if $nodelist[nodelist].producer}<span {tip text="Producent"}>{$nodelist[nodelist].producer}</span>{/if}
+			{if $nodelist[nodelist].producer && $nodelist[nodelist].model}/{/if}
+			{if $nodelist[nodelist].model}<span {tip text="Model"}>{$nodelist[nodelist].model}</span>{/if}
+			</font>
+			<br>
+			{/if}
 			<img src="img/customer.gif" alt="">&nbsp;
 			{if check_modules(40)}
 			<a href="?m=customerinfo&id={$nodelist[nodelist].ownerid}" {tip a=$nodelist[nodelist].ownerid dynpopup='?m=customerinfoshort&id=$a'} id="idtra{$idek}">{if ! $nodelist[nodelist].access}<font class="blend">{/if}{$nodelist[nodelist].owner|truncate:40:"...":true|replace:" ":"&nbsp;"}{if ! $nodelist[nodelist].access}</font>{/if}</a>

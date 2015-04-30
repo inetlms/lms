@@ -658,6 +658,10 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'create_pdf_file_proforma':
 						$config[$idx]['description'] = 'Automatyczne tworzenie plików pdf na serwerze dla faktur proforma. <b>DEFAULT :0</b>';;
 					break;
+					
+					case 'print_balance_info':
+						$config[$idx]['description'] = 'czy drukować informację o bilansie przed wystawieniem faktury, przełącznik dla faktur w formacie tcpdf wersji 1 i 2';
+					break;
 
 					case 'print_balance_history':
 						$config[$idx]['description'] = trans('If true on invoice (html) will be printed history of financial operations on customer account. Default: not set.');

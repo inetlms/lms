@@ -33,16 +33,27 @@ $changelog = array(
 	),
 	
 */	
-	array(
-	    'data'	=> '',
-	    'status'	=> '',
-	    'opis'	=> '',
-	),
+	
 //	array(
 //	    'data'	=> '',
 //	    'status'	=> '',
 //	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
 //	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość wyłączenia informacji o stanie bilansu klienta na fakturze przed wystawieniem faktury, domyślnie włączone, konf: UI->Invoices->print_balance_info<br>Zmienna dla faktur w formacie pdf (tcpdf) wersji 1 i 2, informacja o wyświetlaniu bilansu jest zapamiętana w dokumencie',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'kilka drobnych poprawek',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano sortowanie w liście urządzeń sieciowych',
+	),
 	array(
 	    'data'	=> '',
 	    'status'	=> '',

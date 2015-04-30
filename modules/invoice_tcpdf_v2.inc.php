@@ -207,8 +207,11 @@ function invoice_simple_form_fill_v2() {
 	global $pdf, $invoice;
 	
 	/* set font style & color */
-	//$pdf->SetFont('courier', '', 9);
-	$pdf->SetFont('arial', '', 9);
+	
+	if (mb_strlen($invoice['division_shortname']) > 25)
+	    $pdf->SetFont('arial','',floor(235/mb_strlen($invoice['division_shortname'])));
+	else
+	    $pdf->SetFont('arial', '', 9);
 	
 	$pdf->setColor('text', 0, 0, 0);
 	
@@ -557,7 +560,8 @@ function invoice_body_standard_v2() {
 	invoice_buyer_v2();
 	invoice_data_v2();
 	invoice_to_pay_v2();
-	invoice_balance_v2();
+	if ($invoice['print_balance_info'] == '1')
+	    invoice_balance_v2();
 	invoice_dates_v2();
 	invoice_expositor_v2();
 	invoice_footnote_v2();
@@ -643,7 +647,8 @@ function invoice_body_ft0100_v2() {
 	invoice_buyer_v2();
 	invoice_data_v2();
 	invoice_to_pay_v2();
-	invoice_balance_v2();
+	if ($invoice['print_balance_info'] == '1')
+	    invoice_balance_v2();
 	invoice_dates_v2();
 	invoice_expositor_v2();
 	invoice_footnote_v2();
