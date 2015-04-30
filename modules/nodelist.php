@@ -223,7 +223,7 @@ function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $net
     
     $nodelist = $DB->GetAll('SELECT n.id AS id, n.ipaddr, inet_ntoa(n.ipaddr) AS ip, n.ipaddr_pub,
 	inet_ntoa(n.ipaddr_pub) AS ip_pub, n.mac, n.name, n.ownerid, n.access, n.warning, n.blockade, 
-	n.linktype, n.linkspeed, n.linktechnology,
+	n.linktype, n.linkspeed, n.linktechnology, n.producer, n.model, 
 	n.netdev, n.lastonline, n.info, (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id LIMIT 1) AS monitoring, '
 	. $DB->Concat('c.lastname', "' '", 'c.name') . ' AS owner '
 	.(!$search ? ', nd.name AS devname, nd.location AS devlocation ' : '')

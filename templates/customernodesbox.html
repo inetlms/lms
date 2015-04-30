@@ -56,22 +56,22 @@ function setgroup(act)
 		    <table cellpadding="5" cellspacing="0" width="100%">
 		        <tr class="dark">
 	                <td width="{math equation="x-y" x=95 y=$ewx}%" class="fleftu"><b>{trans("Name:")}</b></td>
-			    <td width="1%" class="fbt" align="left" nowrap>Podłączony do:</td>
-		    	    <td width="1%" class="fbt" align="right">{trans("ID:")}</td>
-		    	    <td width="1%" class="fbt" align="right">{trans("PPPoE:")}</td>
+			    <td width="1%" class="fbt tleft" align="left" nowrap>Podłączony do:</td>
+		    	    <td width="1%" class="fbt tleft" align="right">{trans("ID:")}</td>
+		    	    <td width="1%" class="fbt tleft" align="right">{trans("PPPoE:")}</td>
 			    {if $ewx}
-		    	    <td width="1%" class="fbt" align="right">{trans("Channel:")}</td>
+		    	    <td width="1%" class="fbt tleft" align="right">{trans("Channel:")}</td>
 			    {/if}
-		    	    <td width="1%" class="fbt" align="right">{trans("Address:")}</td>
-		    	    <td width="1%" class="fbt" align="right">{trans("MAC:")}</td>
-		    	    <td width="1%" class="fbt" align="right">{trans("Groups:")}</td>
-		    	    <td width="1%" class="fbt" align="right">{trans("Network:")}</td>
+		    	    <td width="1%" class="fbt tleft" align="right">Adres IP:</td>
+		    	    <td width="1%" class="fbt tleft" align="right">Adres MAC:</td>
+		    	    <td width="1%" class="fbt tleft" align="right">{trans("Groups:")}</td>
+		    	    <td width="1%" class="fbt tleft" align="right">{trans("Network:")}</td>
 		    	    <td width="1%" class="frightu">&nbsp;</td>
 			</tr>
 			{cycle values="lucid,light" print=false name=nodes}
 			{section name=customernodes loop=$customernodes}
     			<tr class="{cycle name=nodes}{if ! $customernodes[customernodes].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-			    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';">
+			    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';"  class="tleft">
 				{if $customernodes[customernodes].lastonline}
 				    {if ($smarty.now-$customernodes[customernodes].lastonline) > $lastonline_limit}
 					<img src="img/node_off.gif" alt="" {tip a=$customernodes[customernodes].lastonlinedate text="Last online: \$a"}>
@@ -82,6 +82,12 @@ function setgroup(act)
 				<img src="img/node_unk.gif" alt="">
 				{/if}
 				<b>{$customernodes[customernodes].name}</b>
+				{if $customernodes[customernodes].producer || $customernodes[customernodes].model}<br>
+				<img src="img/producer.gif" alt="">&nbsp;
+				{if $customernodes[customernodes].producer}<span style="color:blue;" {tip text="Producent"}>{$customernodes[customernodes].producer}</span>{/if}
+				{if $customernodes[customernodes].producer && $customernodes[customernodes].model}/{/if}
+				{if $customernodes[customernodes].model}<span style="color:blue;" {tip text="Model"}>{$customernodes[customernodes].model}</span>{/if}
+				{/if}
 				{if $customernodes[customernodes].location}<br>
 				<nobr>{$customernodes[customernodes].location|truncate:60:"...":true}<nobr>
 				{/if}
@@ -90,7 +96,7 @@ function setgroup(act)
 				{/if}
 			    </td>
 			    
-			    <td width="1%" align="left" nowrap style="padding-right:10px;">
+			    <td width="1%" align="left" nowrap style="padding-right:10px;" class="tleft">
 				{if $customernodes[customernodes].netdev}
 				    <a href="?m=netdevinfo&id={$customernodes[customernodes].netdev}" {tip a={$customernodes[customernodes].netdev} dynpopup='?m=netdevinfoshort&id=$a' sticky=0}>
 				    {$customernodes[customernodes].devname}</a>{if $customernodes[customernodes].devlocation}<br>{$customernodes[customernodes].devlocation}{/if}
@@ -99,14 +105,14 @@ function setgroup(act)
 				{/if}
 			    </td>
 			    
-			    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';" align="right">
+			    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';" align="right" class="tleft">
 				({$customernodes[customernodes].id|string_format:"%04d"})
 			    </td>
-			    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';" align="right">
-				{$customernodes[customernodes].pppoelogin|string_format:"%04d"}
+			    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';" align="right" class="tleft">
+				{if $customernodes[customernodes].pppoelogin}{$customernodes[customernodes].pppoelogin}{/if}
 			    </td>
 			    {if $ewx}
-		    	    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';" align="right" nowrap>
+		    	    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';" align="right" nowrap  class="tleft">
     				{if $customernodes[customernodes].channelname}
 	        	    <a href="?m=ewxchinfo&id={$customernodes[customernodes].channelid}">{$customernodes[customernodes].channelname|truncate:30:"...":true}</a>
 			    	{elseif $customernodes[customernodes].channelid}
@@ -119,21 +125,21 @@ function setgroup(act)
 				    {if $customernodes[customernodes].downceil}({$customernodes[customernodes].downceil}/{$customernodes[customernodes].upceil|default:0} kbit/s){/if}
 			        </td>
 			    {/if}
-			    <td align="right" nowrap>
+			    <td align="right" nowrap  class="tleft">
 				<a href="javascript:ping_popup('{$customernodes[customernodes].ip}')">{$customernodes[customernodes].ip}</a> {if $customernodes[customernodes].ip_pub != "0.0.0.0"} <a href="javascript:ping_popup('{$customernodes[customernodes].ip_pub}')">({$customernodes[customernodes].ip_pub})</a>{/if}
 			    </td>
-		    	    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';">
+		    	    <td onclick="return self.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';" class="tleft"> 
 				{$customernodes[customernodes].mac|replace:",":"<br>"}
 			    </td>
-			    <td align="right" nowrap>
+			    <td align="right" nowrap class="tleft">
 				{if $customernodes[customernodes].gcount}
 				<img src="img/nodegroup.gif" alt="" {tip a=$customernodes[customernodes].id dynpopup='?m=nodeinfo&id=$a&nodegroups=1' sticky=1}>
 				{/if}
 			    </td>
-			    <td align="right" nowrap>
+			    <td align="right" nowrap class="tleft">
 				<b><a href="?m=netinfo&id={$customernodes[customernodes].netid}">{$customernodes[customernodes].netname|truncate:"20":"...":true}</a></b> {if $customernodes[customernodes].network_pub} (<b><a href="?m=netinfo&id={$customernodes[customernodes].network_pub.id}">{$customernodes[customernodes].network_pub.name|truncate:"20":"...":true}</a></b>){/if}
 			    </td>
-			    <td nowrap align="right">
+			    <td nowrap align="right" class="tleft tright">
 				
 				{if $customernodes[customernodes].monitoring}
 					<img src="img/radar.png" style="cursor:pointer;" {tip text="Kliknij aby otworzyć szczegółowe statystyki"} onclick="monitchart_popup('{$customernodes[customernodes].id}','node');">
@@ -151,7 +157,7 @@ function setgroup(act)
 			</tr>
 			{sectionelse}
 			<tr>
-			    <td width="100%" colspan="{math equation="x+y" x=7 y=$ewx}" align="center">
+			    <td width="100%" colspan="{math equation="x+y" x=8 y=$ewx}" align="center">
 				<p>&nbsp;</p>
 				<p><b>{if $customerinfo.deleted}<font class="red">{trans("That customer has been deleted.")}</font>{else}{trans("That customer hasn't got any node.")}{/if}</b></p>
 				<p>&nbsp;</p>
@@ -159,7 +165,7 @@ function setgroup(act)
 			</tr>
 			{/section}
 			<tr class="light">
-			    <td colspan="{math equation="x+y" x=5 y=$ewx}" class="ftop">
+			    <td colspan="{math equation="x+y" x=6 y=$ewx}" class="ftop">
 				<img src="img/access.gif">
 				<a href="javascript: setstatus(1)"> {trans("Connect")}</a>/<a href="javascript: setstatus(0)">{trans("Disconnect")}</a>
 				<img src="img/warningon.gif">
