@@ -695,10 +695,10 @@ while(my $assign = $dbq->fetchrow_hashref())
 				my $tsdv = $dtsdv->fetchrow_hashref();
 				if ( !$tsdv->{'value'} ) { $tsdv->{'value'} = '0'; }
 				
-				my $dbalanceinfo = $db->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
+				my $dbalanceinfo = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
 				$dbalanceinfo->execute('invoices','print_balance_info');
 				my $balanceinfo = $dbalanceinfo->fetchrow_hashref();
-				if ($balanceinfo-{'value'} ) { $balanceinfo->{'value'} = '1'; }
+				if ($balanceinfo->{'value'} ) { $balanceinfo->{'value'} = '1'; }
 
 				#template logo file
 				my $urllogofile;
