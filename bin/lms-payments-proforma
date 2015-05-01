@@ -698,7 +698,7 @@ while(my $assign = $dbq->fetchrow_hashref())
 				my $dbalanceinfo = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
 				$dbalanceinfo->execute('invoices','print_balance_info');
 				my $balanceinfo = $dbalanceinfo->fetchrow_hashref();
-				if ($balanceinfo->{'value'} ) { $balanceinfo->{'value'} = '1'; }
+				if (!defined $balanceinfo->{'value'} ) { $balanceinfo->{'value'} = '1'; }
 
 				#template logo file
 				my $urllogofile;
