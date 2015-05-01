@@ -375,6 +375,7 @@ while(my $row = $dbq->fetchrow_hashref())
 	$periods{$row->{'id'}} = $row->{'period'} || YEAR;
 }
 
+
 # let's go, fetch *ALL* assignments in given day
 $dbq = $dbase->prepare("SELECT a.tariffid, a.liabilityid, a.customerid,
 	a.period, a.at, a.suspended, a.settlement, a.datefrom, a.pdiscount, a.vdiscount, 
@@ -415,6 +416,8 @@ $dbq = $dbase->prepare("SELECT a.tariffid, a.liabilityid, a.customerid,
 			AND (a.dateto > $currtime OR a.dateto = 0)))
 	ORDER BY a.customerid, a.invoice, a.paytype, a.numberplanid, value DESC");
 $dbq->execute();
+
+
 
 while(my $assign = $dbq->fetchrow_hashref())
 {
@@ -686,8 +689,8 @@ while(my $assign = $dbq->fetchrow_hashref())
 				my $dbalanceinfo = $dbase->prepare("SELECT value FROM uiconfig WHERE section=? AND var=?;");
 				$dbalanceinfo->execute('invoices','print_balance_info');
 				my $balanceinfo = $dbalanceinfo->fetchrow_hashref();
-				if (!$balanceinfo->{'value'} ) { $balanceinfo->{'value'} = '1'; }
-
+				if (!defined $balanceinfo->{'value'}) { $balanceinfo->{'value'} = '1'; }
+				
 				#template logo file
 				my $urllogofile;
 				if ($drow->{'urllogofile'} ne '') {
