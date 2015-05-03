@@ -137,7 +137,6 @@
 	    
 	</td>
 	<td class="fright pad" nowrap width="1%" align="right">
-	<audio src="../documents/{$topiclist[l1].audio_file}" controls="true" ></audio>
 	{if !$topiclist[l1].closed}
 	    <a href="?m=infocenter&tid={$topiclist[l1].id}&backto=infocenterlist&cid={$topiclist[l1].cid}&action=addpost&callback" {tip text="Dodaj notatkę"}><img src="img/add.gif"></a>
 	    {if !get_conf('privileges.hide_callcenteredit')}<a href="?m=infocenter&tid={$topiclist[l1].id}&backto=infocenterlist&cid={$topiclist[l1].cid}&action=edittopic&callback" {tip text="Edytuj temat"}><img src="img/edit.gif"></a>{/if}
