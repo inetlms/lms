@@ -93,7 +93,7 @@ class RADIUS {
 		.($status=='open' ? 'JOIN ( SELECT MAX(radacctid) AS maxid, username FROM radacct GROUP BY username) nd ON (nd.username = r.username) ' : '')
 		.'JOIN nas nass ON (nass.nasname = r.nasipaddress) '
 		.($auth_login == 'id' ? 'JOIN nodes n ON (n.id = r.username) ' : '')
-		.($auth_login == 'name' ? 'JOIN nodes n ON (upper(n.name) = upper(r.username)) ' : '')
+		.($auth_login == 'name' ? 'JOIN nodes n ON (n.name = r.username) ' : '')
 		.($auth_login == 'ip' ? 'JOIN nodes n ON (inet_ntoa(n.ipaddr) = r.username) ' : '')
 		.($auth_login == 'passwd' ? 'JOIN nodes n ON (n.passwd = r.username) ' : '')
 		.'JOIN customersview c ON (c.id = n.ownerid) '
@@ -111,7 +111,7 @@ class RADIUS {
 		.(($cid) ? " AND c.id = '".$cid."'" : '')
 		.(($nid) ? " AND n.id = '".$nid."'" : '')
 		.($status=='completed' && $cause!='NULL' && $cause!='ALL' ? " AND UPPER(r.acctterminatecause)='".$cause."'" : '')
-		.' ORDER BY r.acctstarttime DESC limit 10000'
+		.' ORDER BY r.acctstarttime DESC'
 		.';');
 
 	return $return;
