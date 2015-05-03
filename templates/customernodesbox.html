@@ -125,7 +125,6 @@ function setgroup(act)
 					<img src="img/radar.png" style="cursor:pointer;" {tip text="Kliknij aby otworzyć szczegółowe statystyki"} onclick="monitchart_popup('{$customernodes[customernodes].id}','node');">
 				{/if}
 				
-				{if $customernodes[customernodes].location} <a href="https://www.google.pl/maps/place/{$customernodes[customernodes].location}" target="_blank"><IMG SRC="img/home.gif"  {tip text="Mapa Google'a"}></a> {/if}
 				{if get_conf('monit.live_ping')}<img src="img/ping.gif" {tip text="Pinguj urzadzenie"} style="cursor:pointer;" onclick="window.open('?m=nodeping&packetsize=64&ip={$customernodes[customernodes].ip}','pingnode{$customernodes[customernodes].ip}','width=400,height=450')">{/if}
 				<a href="?m=nodeset&id={$customernodes[customernodes].id}"><img src="img/{if ! $customernodes[customernodes].access}no{/if}access.gif" alt="[ {if ! $customernodes[customernodes].access}{trans("Connect")}{else}{trans("Disconnect")}{/if} ]" title="[ {if ! $customernodes[customernodes].access}{trans("Connect")}{else}{trans("Disconnect")}{/if} ]"></a>
 				<a href="?m=nodewarn&id={$customernodes[customernodes].id}"><img src="img/warning{if ! $customernodes[customernodes].warning}off{else}on{/if}.gif" alt="[ {if ! $customernodes[customernodes].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]" title="[ {if ! $customernodes[customernodes].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]"></a>
