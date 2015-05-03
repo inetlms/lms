@@ -61,13 +61,11 @@
 		<td width="99%">
 		    <fieldset style="width:50%">
 		    <legend><b> Adres siedziby, zameldowania</b></legend>
-		        <a href="https://www.google.pl/maps/place/{$customerinfo.address} {$customerinfo.zip} {$customerinfo.city} {$customerinfo.cstate} {t}{$customerinfo.country}{/t}" target="_blank" {tip text="Mapa Google'a"}>
 			{$customerinfo.address}<br>
 			{$customerinfo.zip} {$customerinfo.city}
 			{if $customerinfo.cstate}<br>{$customerinfo.cstate}{/if}
 			{if $customerinfo.country}<br>{t}{$customerinfo.country}{/t}{/if}
-		        </a>
-		    </fieldset>
+		    </lieldset>
 		</td>
 	</tr>
 {if $customerinfo.invoice_name neq "" || $customerinfo.invoice_address neq ""}
