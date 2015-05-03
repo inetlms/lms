@@ -52,6 +52,11 @@ foreach ($short_to_longs as $short => $long)
 		unset($options[$short]);
 	}
 
+if (array_key_exists('config-file', $options) && is_readable($options['config-file']))
+    $CONFIG_FILE = $options['config-file'];
+include('/etc/lms/init_lms.php');
+
+
 
 if (array_key_exists('quiet', $options)) 
 	$quiet = true; 
@@ -70,7 +75,8 @@ else
 
 if (array_key_exists('help', $options))
 {
-	print <<<EOF
+print <<<EOF
+
 lms-monitoring.php
 version 1.0.3
 (C) 2012-2014 iNET LMS 
@@ -81,7 +87,7 @@ version 1.0.3
 -q, --quiet                             nie wyswietla dodatkowych informacji;
 
 EOF;
-	exit(0);
+exit(0);
 }
 
 if (!$quiet)
@@ -95,60 +101,10 @@ version 1.0.1
 EOF;
 }
 
-if (array_key_exists('config-file', $options) && is_readable($options['config-file']))
-	$CONFIG_FILE = $options['config-file'];
-elseif (is_readable('lms.ini'))
-	$CONFIG_FILE = 'lms.ini';
-elseif (is_readable('/etc/lms/lms.ini'))
-	$CONFIG_FILE = '/etc/lms/lms.ini';
 
 if (!$quiet) 
 	echo "Using file ".$CONFIG_FILE." as config.\n\n";
 
-
-if (!is_readable($CONFIG_FILE))
-	die("Nie mozna odczytac pliku konfiguracyjnego file [".$CONFIG_FILE."]!\n");
-	
-//$ch = curl_init();
-
-if (!$ch)
-	die("Blad krytyczny: Nie zainicjowano biblioteki curl !\n");
-
-$CONFIG = (array) parse_ini_file($CONFIG_FILE, true);
-
-$CONFIG['directories']['sys_dir'] = (!isset($CONFIG['directories']['sys_dir']) ? getcwd() : $CONFIG['directories']['sys_dir']);
-$CONFIG['directories']['lib_dir'] = (!isset($CONFIG['directories']['lib_dir']) ? $CONFIG['directories']['sys_dir'].'/lib' : $CONFIG['directories']['lib_dir']);
-$CONFIG['directories']['tmp_dir'] = (!isset($CONFIG['directories']['tmp_dir']) ? $CONFIG['directories']['sys_dir'].'/tmp' : $CONFIG['directories']['tmp_dir']);
-$CONFIG['directories']['rrd_dir'] = (!isset($CONFIG['directories']['rrd_dir']) ? $CONFIG['directories']['sys_dir'].'/rrd' : $CONFIG['directories']['rrd_dir']);
-
-define('SYS_DIR', $CONFIG['directories']['sys_dir']);
-define('LIB_DIR', $CONFIG['directories']['lib_dir']);
-define('TMP_DIR', $CONFIG['directories']['tmp_dir']);
-define('RRD_DIR', $CONFIG['directories']['rrd_dir']);
-//define('USER_AGENT', "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-//define('COOKIE_FILE', tempnam('/tmp', 'lms-monitoring-cookies-'));
-
-require_once(LIB_DIR.'/config.php');
-
-$_DBTYPE = $CONFIG['database']['type'];
-$_DBHOST = $CONFIG['database']['host'];
-$_DBUSER = $CONFIG['database']['user'];
-$_DBPASS = $CONFIG['database']['password'];
-$_DBNAME = $CONFIG['database']['database'];
-
-require(LIB_DIR.'/LMSDB.php');
-
-$DB = DBInit($_DBTYPE, $_DBHOST, $_DBUSER, $_DBPASS, $_DBNAME);
-
-if(!$DB)
-{
-	die("Fatal error: cannot connect to database!\n");
-}
-
-
-if($cfg = $DB->GetAll('SELECT section, var, value FROM uiconfig WHERE disabled=0'))
-	foreach($cfg as $row)
-		$CONFIG[$row['section']][$row['var']] = $row['value'];
 
 $test_netdev = $test_nodes = $test_owner = $test_signal = TRUE;
 

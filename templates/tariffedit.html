@@ -8,7 +8,7 @@
 	}
 //-->
 </script>
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <form method="POST" name="tariff" action="?m=tariffedit&id={$tariff.id}">
 <input type="submit" class="hiddenbtn">
 <table width="100%" cellpadding="3">
@@ -43,6 +43,13 @@
             				<option value="{$key}"{if $tariff.period == $key} selected{/if}>{$item}</option>
 			            	{/if}{/foreach}
 			            </select>
+				    </td>
+				</tr>
+				<tr class="light">
+				    <td width="1%"><img src="img/value.gif" alt=""></td>
+				    <td width="1%"><b>Upust:</b></td>
+				    <td width="98%">
+					<input type="text" value="{$tariff.relief}" size="8" name="tariff[relief]" {tip text="Podaj wartość upustu jeżeli podana cena taryfy to cena promocyjna :), do zastosowania np. w umowach (opcja)" trigger="relief"}>
 				    </td>
 				</tr>
 				<tr class="light">

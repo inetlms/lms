@@ -140,6 +140,7 @@ if (isset($_POST['document'])) {
 		include(DOC_DIR . '/templates/' . $document['templ'] . '/info.php');
 
 		foreach ($customerlist as $gencust) {
+		//    print_r($engine); continue;
 			if (!is_array($gencust))
 				continue;
 
@@ -182,15 +183,19 @@ if (isset($_POST['document'])) {
 
 			$DB->BeginTrans();
 			
-			$division = $this->DB->GetRow('SELECT name, address, city, zip, countryid, ten, regon,
+			$division = $DB->GetRow('SELECT name, shortname, address, city, zip, countryid, ten, regon,
 				account, inv_header, inv_footer, inv_author, inv_cplace 
 				FROM divisions WHERE id = ? ;',array($gencust['divisionid']));
+			
+			$fullnumber = docnumber($document['number'],
+				$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($document['numberplanid'])),
+				$time);
 
 			$DB->Execute('INSERT INTO documents (type, number, numberplanid, cdate, customerid, userid, divisionid, name, address, zip, city, ten, ssn, closed,
-			div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
-			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace
+			div_name, div_shortname, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
+			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, fullnumber
 			)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($document['type'],
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($document['type'],
 					$document['number'],
 					$document['numberplanid'],
 					$time,
@@ -205,6 +210,7 @@ if (isset($_POST['document'])) {
 					$gencust['ssn'] ? $gencust['ssn'] : '',
 					!empty($document['closed']) ? 1 : 0,
 					($division['name'] ? $division['name'] : ''),
+					($division['shortname'] ? $division['shortname'] : ''),
 					($division['address'] ? $division['address'] : ''), 
 					($division['city'] ? $division['city'] : ''), 
 					($division['zip'] ? $division['zip'] : ''),
@@ -216,6 +222,7 @@ if (isset($_POST['document'])) {
 					($division['inv_footer'] ? $division['inv_footer'] : ''), 
 					($division['inv_author'] ? $division['inv_author'] : ''), 
 					($division['inv_cplace'] ? $division['inv_cplace'] : ''),
+					($fullnumber ? $fullnumber : NULL),
 			));
 			
 
@@ -230,7 +237,7 @@ if (isset($_POST['document'])) {
 					$document['fromdate'],
 					$document['todate'],
 					$document['filename'],
-					$document['contenttype'],
+					$engine['content_type'],
 					$document['md5sum'],
 					$document['description']
 			));

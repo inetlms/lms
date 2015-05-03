@@ -1,0 +1,126 @@
+{if $akcja == 'edit' || $akcja == 'add'}
+    <form name="eventtype" id="eventtype" method="POST">
+    <input type="hidden" name="eventtype[id]" value="{$eventtype.id}">
+    <table width="100%" cellpadding="3">
+	<tr class="dark pgdark">
+	    <td width="100%" class="fall pad10">{if $akcja=='edit'}<b>Edycja pozycji : {$eventtype.name}</b>{else}<b>Nowa pozycja</b>{/if}</td>
+	</tr>
+	<tr class="light pglight">
+	    <td width="100%" class="flr" style="text-align:left;vertical-align:top;">
+		<table width="100%">
+		    <tr>
+			<td width="1%" class="pad5" align="left"><b>Nazwa</b></td>
+			<td width="1%" class="pad5"><b>:</b></td>
+			<td width="98%" class="pad5" align="left"><input type="text" name="eventtype[name]" id="id_name" style="width:400px;" value="{$eventtype.name}"><div style="color:red;" id="id_name_alerts"></div></td>
+		    </tr>
+		    <tr>
+			<td width="1%" class="pad5" align="left"><b>Opis</b></td>
+			<td width="1%" class="pad5"><b>:</b></td>
+			<td width="98%" class="pad5" align="left"><textarea type="text" name="eventtype[description]" style="width:400px;">{$eventtype.description}</textarea></td>
+		    </tr>
+		    <tr>
+			<td width="1%" class="pad5" align="center">
+			    <input type="checkbox" name="eventtype[licznik]" id="id_licznik" value="1" {if $eventtype.licznik}checked{/if}>
+			</td>
+			<td width="1%" class="pad5"><b>:</b></td>
+			<td width="98%" class="pad5" align="left">
+			    <label for="id_licznik"><b>Wymagaj podania stanu licznika</b></label>
+			</td>
+		    </tr>
+		    <tr>
+			<td width="1%" class="pad5" align="center">
+			    <input type="checkbox" name="eventtype[koszt]" id="id_koszt" value="1" {if $eventtype.koszt}checked{/if}>
+			</td>
+			<td width="1%" class="pad5"><b>:</b></td>
+			<td width="98%" class="pad5" align="left">
+			    <label for="id_koszt"><b>Wymagaj podania kosztów</b></label>
+			</td>
+		    </tr>
+		    <tr>
+			<td width="1%" class="pad5" align="center">
+			    <input type="checkbox" name="eventtype[paliwo]" id="id_paliwo" value="1" {if $eventtype.paiwo}checked{/if}>
+			</td>
+			<td width="1%" class="pad5"><b>:</b></td>
+			<td width="98%" class="pad5" align="left">
+			    <label for="id_paliwo"><b>Wymagaj podania ilości zakupionego paliwa</b></label>
+			</td>
+		    </tr>
+		</table>
+	    </td>
+	</tr>
+	<tr class="dark pgdark">
+	    <td width="100%" class="fall pad10" align="right">
+		<a href="javascript:void(0);" onclick="xajax_save_event_type(xajax.getFormValues('eventtype'));"><b>{trans('Save')}</b>&nbsp;<img src="img/save.gif"></a>&nbsp;&nbsp;
+		<a href="javascript:void(0);" onclick="document.getElementById('id_edit_event_type').innerHTML='';"><b>{trans('Cancel')}</b><img src="img/cancel.gif"></a>
+	    </td>
+	</tr>
+    </table>
+    </form>
+
+    <br>
+{else}
+    {include file="header.html"}
+    {$xajax}
+    {title value=$layout.pagetitle}
+    <div id="id_edit_event_type"></div>
+    <table width="100%" cellpadding="3" class="table">
+	<tr class="dark">
+	    <td width="1%" class="fleftu pad10" nowrap align="center"><b>#</b></td>
+	    <td width="1%" class="fbt pad10" nowrap align="left"><b>Nazwa</b></td>
+	    <td width="95%" class="fbt pad10" align="left"><b>Opis</b></td>
+	    <td width="1%" class="fbt pad10" align="center"><b>Wymagany<br>stan&nbsp;licznika</b></td>
+	    <td width="1%" class="fbt pad10" align="center"><b>Wymagany<br>koszt</b></td>
+	    <td width="1%" class="fbt pad10" align="center"><b>Wymagana<br>ilość&nbsp;paliwa</b></td>
+	    <td width="1%" class="fbt pad10" align="center"><b>Zdarzeń<br>przypisanych</b></td>
+	    <td width="1%" class="frightu pad10" align="right">
+		<img src="img/add.gif" title="[ dodaj nową pozycję ]" alt="[ dodaj ]" onclick="xajax_add_event_type();" style="cursor:pointer;">
+	    </td>
+	</tr>
+	{if $eventlist}
+	    {cycle values="lucid,light" print=false}
+	    {section name=eventlist loop=$eventlist}
+	    <tr class="{cycle} lista{if !$eventlist[eventlist].active} blend{/if}" id="id_eventlist_tr_{$eventlist[eventlist].id}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td width="1%" class="fleft pad10" nowrap align="center">{$eventlist[eventlist].id|string_format:"%04d"}</td>
+		<td width="1%" class="pad10" nowrap align="left">{$eventlist[eventlist].name}</td>
+		<td width="96%" class="pad10" align="left">{$eventlist[eventlist].description}</td>
+		<td width="1%" class="pad10" align="center">{if $eventlist[eventlist].licznik}<img src="img/Apply.png" alt="TAK">{/if}</td>
+		<td width="1%" class="pad10" align="center">{if $eventlist[eventlist].koszt}<img src="img/Apply.png" alt="TAK">{/if}</td>
+		<td width="1%" class="pad10" align="center">{if $eventlist[eventlist].paliwo}<img src="img/Apply.png" alt="TAK">{/if}</td>
+		<td width="1%" class="pad10" align="right">{if $eventlist[eventlist].eventused}{$eventlist[eventlist].eventused}{/if}
+		<td width="1%" class="fright pad10" align="right" nowrap>
+		    {if $eventlist[eventlist].active}
+			<img id="id_img_active_{$eventlist[eventlist].id}" src="img/access.gif" onclick="xajax_set_active_event_type({$eventlist[eventlist].id});">
+		    {else}
+			<img id="id_img_active_{$eventlist[eventlist].id}" src="img/noaccess.gif" onclick="xajax_set_active_event_type({$eventlist[eventlist].id});">
+		    {/if}&nbsp;
+		    {if !$eventlist[eventlist].eventused}
+		    <a href="?m=re_dictionaryevent&delete&id={$eventlist[eventlist].id}" onclick="return confirmLink(this,'Potwierdź usunięcie pozycji');"><img src="img/delete.gif"></a>
+		    {else}
+			<img src="img/deleteoff.gif">
+		    {/if}
+		    &nbsp;
+		    <img src="img/edit.gif" alt="[ Edit ]" onclick="xajax_edit_event_type('{$eventlist[eventlist].id}');">
+		</td>
+	    </tr>
+	    {/section}
+	    
+	{else}
+	    <tr class="light">
+		<td width="100%" colspan="8" width="100%" align="center" class="fall">
+		    <p>
+			<h3>Brak pozycji w słowniku</h3>
+		    </p>
+		</td>
+	    </tr>
+	{/if}
+	<tr class="dark">
+		<td width="100%" class="fall pad10" align="right" colspan="8">
+		    <a href="javascript:void(0);" onclick="xajax_add_event_type();"><b>Dodaj nową pozycję</b>&nbsp;<img src="img/add.gif"></a>
+		</td>
+	    </tr>
+    
+    </table>
+    {include file="load_gif.html"}
+    {include file="footer.html"}
+{/if}
+

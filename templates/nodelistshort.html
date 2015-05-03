@@ -24,14 +24,11 @@
 			{/if}
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=customernodes loop=$customernodes}
 	<tr class="{cycle} lista {if ! $customernodes[customernodes].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td width="1%">
+		<td width="1%" nowrap>
 			<a href="?m=nodeset&id={$customernodes[customernodes].id}&shortlist=1&popup=1"><img src="img/{if ! $customernodes[customernodes].access}no{/if}access.gif" alt="[ {if ! $customernodes[customernodes].access}{trans("Connect")}{else}{trans("Disconnect")}{/if} ]"></a>
-			<a href="?m=nodewarn&id={$customernodes[customernodes].id}&shortlist=1&popup=1"><img src="img/warning{if ! $customernodes[customernodes].warning}off{else}on{/if}.gif" alt="[ {if ! $customernodes[customernodes].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]"></a>
-		</td>
-		<td width="99%" onclick="parent.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';">
 			{if $customernodes[customernodes].lastonline}
                                 {if ($smarty.now-$customernodes[customernodes].lastonline) > $lastonline_limit}
 				<img src="img/node_off.gif" alt="" title="{t a=$customernodes[customernodes].lastonlinedate}Last online: $a{/t}">
@@ -41,6 +38,13 @@
 			{else}
 			<img src="img/node_unk.gif" alt="">
 			{/if}
+			<br>
+			<a href="?m=nodewarn&id={$customernodes[customernodes].id}&shortlist=1&popup=1"><img src="img/warning{if ! $customernodes[customernodes].warning}off{else}on{/if}.gif" alt="[ {if ! $customernodes[customernodes].warning}{trans("Enable notice")}{else}{trans("Disable notice")}{/if} ]"></a>
+			<a href="?m=nodeblockade&id={$customernodes[customernodes].id}&shortlist=1&popup=1"><img src="img/padlock{if !$customernodes[customernodes].blockade}off{/if}.png"></a>
+			
+		</td>
+		<td width="99%" onclick="parent.location.href='?m=nodeinfo&id={$customernodes[customernodes].id}';">
+			
 			<b>{$customernodes[customernodes].name}</b><br>
 			<nobr>{$customernodes[customernodes].ip} {if $customernodes[customernodes].ip_pub!="0.0.0.0"} ({$customernodes[customernodes].ip_pub}) {/if} / {$customernodes[customernodes].mac}<nobr><br>
 			<nobr>{$customernodes[customernodes].info|truncate:40:"...":true}<nobr>

@@ -286,6 +286,9 @@ while(my $row = $dbq->fetchrow_hashref())
 			next;
 		}
 
+		my $dbqi = $dbase->prepare("INSERT INTO syslog (cdate, uid, cid, module, event ,msg ,oid  ) VALUES ( $utsfmt, 1, $row->{'customerid'}, 1,1,  'Wyslano list postivo ID: $result->{'shipments'}[0]->{'id'}  ' , 1  ) " );
+                $dbqi->execute();
+
 		if(!$quiet)
                 {
                         print "Invoice No. $invoice_number for $row->{'name'} $row->{'lastname'} Status: $result->{'shipments'}[0]->{'status_description'} ID: $result->{'shipments'}[0]->{'id'}\n";

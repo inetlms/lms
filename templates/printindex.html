@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {include file="calendar_js.html"}
 {$default_printpage = get_conf('invoices.default_printpage')}
 {if $printmenu=="customer"}
@@ -1044,10 +1044,24 @@ cal15.time_comp = false;
 					<td width="1%">
 						<img src="img/calendar.gif" alt="">
 					</td>
-					<td width="99%" nowrap>
+					<td width="1%" nowrap>
 						<b>{trans("Period:")}</b>&nbsp;
 						{trans("From")}&nbsp;<input type="text" name="from" size="10" maxsize="10" onclick="javascript:cal5.popup();" {tip text="Enter date in 'yyyy/mm/dd' format or click to choose it from calendar"}>
 						{trans("To")}&nbsp;<input type="text" name="to" size="10" maxsize="10" onclick="javascript:cal6.popup();" {tip text="Enter date in 'yyyy/mm/dd' format (empty field means current date) or click to choose it from calendar"}>	
+					</td>
+					<td width="1%">
+						<img src="img/division.gif" alt="">
+					</td>
+					<td width="1%" nowrap>
+						<b>{trans("Division")}:</b>
+					</td>
+					<td width="98%" nowrap>
+						<select size="1" name="division" {tip text="Select division"}>
+							<option value="0">- {trans("all")} -</option>
+							{foreach from=$divisions item=item}
+							<option value="{$item.id}">{$item.shortname}</option>
+							{/foreach}
+						</select>
 					</td>
 				</tr>
 			</table>

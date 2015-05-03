@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <table width="100%" cellpadding="3">
 	<tr class="dark">
 		<td width="1%" class="fleftu">
@@ -199,7 +199,7 @@
 					<td width="19%" nowrap class="fbt">{trans("ID:")}</td>
 					<td width="1%" class="frightu">&nbsp;</td>
 				</tr>
-				{cycle name=assign values="light,lucid" print=false}
+				{cycle name=assign values="lucid,light" print=false}
 				{foreach from=$account.aliases item=alias}
 				<tr class="{cycle name=assign}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td width="80%" nowrap onclick="return self.location.href='?m=aliasinfo&id={$alias.id}'">

@@ -23,8 +23,13 @@
 
 $DB->BeginTrans();
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'users','access'))) 
 $DB->Execute("ALTER TABLE users ADD access TINYINT( 1 ) NOT NULL DEFAULT '1';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'users','accessfrom'))) 
 $DB->Execute("ALTER TABLE users ADD accessfrom INT NOT NULL DEFAULT '0';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'users','accessto'))) 
 $DB->Execute("ALTER TABLE users ADD accessto INT NOT NULL DEFAULT '0';");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2012092000', 'dbversion'));

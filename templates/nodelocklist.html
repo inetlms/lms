@@ -5,7 +5,7 @@
 	<td style="width: 1%; white-space: nowrap;" class="fbt">{trans("To:")}</td>
 	<td style="width: 97%;" class="frightu">&nbsp;</td>
 </tr>
-{cycle name=locks values="light,lucid" print=false}
+{cycle name=locks values="lucid,light" print=false}
 {foreach from=$nodelocks item=nodelock}
 <tr class="{cycle name=locks}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	<td style="width: 1%; white-space: nowrap;" colspan="2">

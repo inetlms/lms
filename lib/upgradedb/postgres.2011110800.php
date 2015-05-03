@@ -27,8 +27,8 @@
 $DB->BeginTrans();
 
 $DB->Execute("
-	DROP VIEW vnodes;
-	DROP VIEW vmacs;
+	DROP VIEW IF EXISTS vnodes;
+	DROP VIEW IF EXISTS vmacs;
 ");
 
 $DB->Execute("ALTER TABLE nodes ADD longitude numeric(10, 6) DEFAULT NULL");

@@ -771,3 +771,10 @@ function v_ipchoosewin(formfield)
     var url = '?m=v_chooseip';
 	return openSelectWindow(url,'chooseip',350,380,'true',formfield);
 }
+
+
+function netdevmodelchoosewin(varname, formname, netdevmodelid, producer, model)
+{
+	return openSelectWindow('?m=choosenetdevmodel&name='+varname+'&form='+formname+'&netdevmodelid='+netdevmodelid+'&producer='+producer+'&model='+model,'chooselocation',350,200,'true');
+}
+

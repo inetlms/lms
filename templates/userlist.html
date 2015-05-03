@@ -1,47 +1,47 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <table width="100%" cellpadding="3" class="listradiuscorners">
 	<tr class="dark">
-		<td class="fleftu" width="1%">
+		<td class="fleftu" width="1%" align="left">
 			<nobr><img src="img/users.gif" alt=""> <b>{trans("Login:")}</b><nobr>
 		</td>
-		<td class="fbt" width="92%">
+		<td class="fbt pad5 tleft" width="92%" align="left">
 			<nobr><img src="img/info2.gif" alt=""> <b>{trans("First/last name:")}</b><nobr>
 		</td>
-		<td class="fbt" width="2%">
+		<td class="fbt pad10 tleft" width="2%" align="left">
 		    <nobr><img src="img/calendar.gif" alt=""> <b>{trans("Active from:")} </b> </nobr>
 		</td>
-		<td class="fbt" width="2%">
+		<td class="fbt pad10 tleft" width="2%" align="left">
 		    <nobr><img src="img/calendar.gif" alt=""> <b>{trans("Active to:")} </b> </nobr>
 		</td>
-		<td class="fbt" width="2%" nowrap>
+		<td class="fbt pad10 tleft" width="2%" nowrap align="left">
 			<img src="img/time.gif" alt=""> <b>{trans("Last login:")}</b>
 		</td>
-		<td class="frightu" width="1%">
+		<td class="frightu pad5 tleft" width="1%" align="right">
 			<nobr><b>{trans("Total:")} {$userslist.total}</b><nobr>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=userslist loop=$userslist}{if $userslist[userslist].id}
 	<tr class="{cycle} lista {if !$userslist[userslist].access}blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" width="1%" onclick="return self.location.href='?m=userinfo&id={$userslist[userslist].id}';">
 			<nobr><img src="img/users.gif" alt=""> <b>{$userslist[userslist].login}</b><nobr>
 		</td>
-		<td width="92%" onclick="return self.location.href='?m=userinfo&id={$userslist[userslist].id}';">
+		<td width="92%" onclick="return self.location.href='?m=userinfo&id={$userslist[userslist].id}';" class="pad5 tleft" align="left">
 			<nobr><img src="img/info2.gif" alt=""> {$userslist[userslist].name}<nobr>
 		</td>
-		<td width="2%"  onclick="return self.location.href='?m=userinfo&id={$userslist[userslist].id}';">
+		<td width="2%"  onclick="return self.location.href='?m=userinfo&id={$userslist[userslist].id}';" class="pad10 tleft" align="left">
 			<nobr><img src="img/calendar.gif" alt=""> {$userslist[userslist].accessfrom}</nobr>
 		</td>
-		<td width="2%"  onclick="return self.location.href='?m=userinfo&id={$userslist[userslist].id}';">
+		<td width="2%"  onclick="return self.location.href='?m=userinfo&id={$userslist[userslist].id}';" class="pad10 tleft" align="left">
 			<nobr><img src="img/calendar.gif" alt=""> {$userslist[userslist].accessto}</nobr>
 		</td>
-		<td width="1%" onclick="return self.location.href='?m=userinfo&id={$userslist[userslist].id}';">
+		<td width="1%" onclick="return self.location.href='?m=userinfo&id={$userslist[userslist].id}';" class="pad10 tleft" align="left">
 			<nobr><img src="img/time.gif" alt=""> {$userslist[userslist].lastlogin}
 			{$userslist[userslist].lastloginip} {if $userslist[userslist].lastloginip neq $userslist[userslist].lastloginhost}({$userslist[userslist].lastloginhost}){/if}<nobr>
 		</td>
-		<td width="1%" class="fright" style="text-align:right;">
+		<td width="1%" class="fright pad5 tleft" style="text-align:right;" align="right">
 			<nobr>
 			{if $layout.logid ne $userslist[userslist].id}
 			    {if !$userslist[userslist].access}

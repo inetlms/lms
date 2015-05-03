@@ -55,6 +55,8 @@ class LMS {
 
 	function InitUI() {
 		// set current user
+//		$sus = f_round($this->CONFIG['finances']['suspension_percentage']);
+		
 		switch ($this->CONFIG['database']['type']) {
 			case 'postgres':
 				$this->DB->Execute('SELECT set_config(\'lms.current_user\', ?, false)', array($this->AUTH->id));
@@ -62,6 +64,7 @@ class LMS {
 			case 'mysql':
 			case 'mysqli':
 				$this->DB->Execute('SET @lms_current_user=?', array($this->AUTH->id));
+//				$this->DB->Execute('SET @lms_suspension_percentage=?;',array($sus));
 				break;
 		}
 	}
@@ -93,6 +96,32 @@ class LMS {
 				$this->xajax->register(XAJAX_FUNCTION, $funcname);
 		}
 	}
+	
+	function saveCache($action,$md5,$value=NULL)
+	{
+	    if (is_array($value))
+		$value = serialize($value);
+	    
+	    $action = strtolower($action);
+	    
+	    $this->DB->Execute('DELETE FROM cache WHERE id = ? AND action = ? ;',array($this->AUTH->id,$action));
+	    $this->DB->Execute('INSERT INTO cache (id,md5,action,value) VALUES (?,?,?,?);',array($this->AUTH->id,($md5 ? $md5 : ''),($action ? $action : ''),($value ? $value : '')));
+	}
+	
+	function loadCache($action,$md5)
+	{
+	    if ($tmp = $this->DB->GetOne('SELECT value FROM cache WHERE id=? AND action=? AND md5=? LIMIT 1;',array($this->AUTH->id,$action,$md5)))
+		return unserialize($tmp);
+	    else
+		return NULL;
+	}
+	
+	function deleteCache($action=NULL)
+	{
+	    $this->DB->Execute('DELETE FROM cache WHERE id=? '
+		.($action ? ' AND action=\''.$action.'\'' : '')
+	    ,array($this->AUTH->id));
+	}
 
     function GetIdContractEnding($dni=NULL)
     {
@@ -102,14 +131,21 @@ class LMS {
 	    -2		: którzy są na czas nieokreślony
 	    -3		: bez jakich kolwiek zobowiązań
 	    FALSE	: domyślnie 30 dni, w ciągu 30 dni
-	    $>0	: w ciągu ilu dni kończy się zobowiązanie
+	    $>0		: w ciągu ilu dni kończy się zobowiązanie
+	    -4		: zawieszona taryfa
+	    -10 do -17	: okres naliczania
+	    -18		: tylko naliczanie
+	    -19 	: naliczanie - faktury
+	    -20		: naliczanie - proformy
+	    
+         
 	*/
 	if ( (is_null($dni))||($dni>'0'))
 	{
 	    if (is_null($dni)) $dateto = time() + 2592000;
 		else $dateto = time() + ($dni*86400);
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE '
+	    JOIN customersview c ON (a.customerid = c.id) WHERE '
 	    .' a.suspended=0 AND a.at!=0 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    .' AND a.dateto!=0'
 	    .' AND a.dateto<='.$dateto
@@ -125,7 +161,7 @@ class LMS {
 	{
 	    $dateto = time() + 2592000;
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.suspended=0 AND a.at!=0 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    .' AND a.dateto=0'
 	    ;
@@ -134,15 +170,101 @@ class LMS {
 	{
 	    $dateto = time();
 	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
-	    LEFT JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
 	    .' a.suspended=0 AND a.at!=0 AND (a.tariffid!=0 OR a.liabilityid!=0)'
 	    .' AND a.dateto!=0'
 	    .' AND a.dateto<'.time()
 	    .' AND NOT EXISTS (SELECT 1 FROM assignments aa WHERE aa.customerid=a.customerid AND aa.datefrom>=(a.dateto-86400) LIMIT 1)'
 	    ;
 	}
+        elseif ($dni=='-4')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.suspended=1 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-15')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=5 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-17')
+	{
+	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=7 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-14')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=4 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-13')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=3 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-12')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=2 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-11')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=1 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+        elseif ($dni=='-10')
+	{	  
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a '
+	    .'JOIN customersview c ON (a.customerid = c.id) WHERE'
+	    .' a.period=0 AND (a.tariffid!=0 OR a.liabilityid!=0)'
+	    ;
+	}
+	elseif ($dni=='-18')
+	{
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) 
+	    WHERE (a.dateto=0 OR a.dateto > '.time().') 
+	    AND a.suspended=0 
+	    AND a.period!=0 
+	    AND a.invoice=0 AND (a.tariffid!=0 OR a.liabilityid!=0)';
+	}
+	elseif ($dni=='-19')
+	{
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) 
+	    WHERE (a.dateto=0 OR a.dateto > '.time().') 
+	    AND a.suspended=0 
+	    AND a.period!=0 
+	    AND a.invoice='.DOC_INVOICE.' AND (a.tariffid!=0 OR a.liabilityid!=0)';
+	}
+	elseif ($dni=='-20')
+	{
+	    $zap = 'SELECT '.$this->DB->distinct().' (a.customerid) customerid FROM assignments a 
+	    JOIN customersview c ON (a.customerid = c.id) 
+	    WHERE (a.dateto=0 OR a.dateto > '.time().') 
+	    AND a.suspended=0 
+	    AND a.period!=0 
+	    AND a.invoice='.DOC_INVOICE_PRO.' AND (a.tariffid!=0 OR a.liabilityid!=0)';
+	}
 	
-	return $this->DB->GetCol($zap);
+	$result = $this->DB->GetCol($zap);
+	
+	return $result;
     }
 
 	/*
@@ -363,7 +485,7 @@ class LMS {
 				else
 					$userlist[$idx]['passwdlastchange'] = '-';
 
-				if (check_ip($row['lastloginip']))
+				if (get_conf('phpui.gethostbyaddr') && check_ip($row['lastloginip']))
 					$userlist[$idx]['lastloginhost'] = gethostbyaddr($row['lastloginip']);
 				else {
 					$userlist[$idx]['lastloginhost'] = '-';
@@ -470,14 +592,14 @@ class LMS {
 			else
 				$userinfo['passwdlastchange'] = '-';
 
-			if (check_ip($userinfo['lastloginip']))
+			if (get_conf('phpui.gethostbyaddr') && check_ip($userinfo['lastloginip']))
 				$userinfo['lastloginhost'] = gethostbyaddr($userinfo['lastloginip']);
 			else {
 				$userinfo['lastloginhost'] = '-';
 				$userinfo['lastloginip'] = '-';
 			}
 
-			if (check_ip($userinfo['failedloginip']))
+			if (get_conf('phpui.gethostbyaddr') && check_ip($userinfo['failedloginip']))
 				$userinfo['failedloginhost'] = gethostbyaddr($userinfo['failedloginip']);
 			else {
 				$userinfo['failedloginhost'] = '-';
@@ -578,9 +700,9 @@ class LMS {
 				    creatorid, info, notes, message, pin, regon, rbe,
 				    icn, cutoffstop, consentdate, einvoice, divisionid, paytime, paytype,
 				    invoicenotice, mailingnotice,
-				    invoice_name, invoice_address, invoice_zip, invoice_city, invoice_countryid, invoice_ten,origin)
-				    VALUES (?, UPPER(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?NOW?,
-				    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(lms_ucwords($customeradd['name']),
+				    invoice_name, invoice_address, invoice_zip, invoice_city, invoice_countryid, invoice_ten,origin, invoice_lastname, invoice_ssn)
+				    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?NOW?,
+				    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(lms_ucwords($customeradd['name']),
 						$customeradd['lastname'],
 						empty($customeradd['type']) ? 0 : 1,
 						$customeradd['address'],
@@ -612,13 +734,15 @@ class LMS {
 						!empty($customeradd['paytype']) ? $customeradd['paytype'] : NULL,
 						$customeradd['invoicenotice'],
 						$customeradd['mailingnotice'],
-						$customeradd['invoice_name'],
-						$customeradd['invoice_address'],
-						$customeradd['invoice_zip'],
-						$customeradd['invoice_city'],
-						$customeradd['invoice_countryid'],
-						$customeradd['invoice_ten'],
+						($customeradd['invoice_name'] ? $customeradd['invoice_name'] : ''),
+						($customeradd['invoice_address']? $customeradd['invoice_address'] : ''),
+						($customeradd['invoice_zip']? $customeradd['invoice_zip'] : ''),
+						($customeradd['invoice_city']? $customeradd['invoice_city'] : ''),
+						($customeradd['invoice_countryid']? $customeradd['invoice_countryid'] : 0),
+						($customeradd['invoice_ten']? $customeradd['invoice_ten'] : ''),
 						($customeradd['origin'] ? $customeradd['origin'] : 0),
+						($customeradd['invoice_lastname'] ? $customeradd['invoice_lastname'] : ''),
+						($customeradd['invoice_ssn'] ? $customeradd['invoice_ssn'] : ''),
 				))
 		) {
 			$this->UpdateCountryState($customeradd['zip'], $customeradd['stateid']);
@@ -629,7 +753,7 @@ class LMS {
 				$this->UpdateCountryState($customeradd['invoice_zip'], $customeradd['invoice_stateid']);
 			}
 			$return = $this->DB->GetLastInsertID('customers');
-			if (SYSLOG) addlogs('dodano klienta: '.$customeradd['name'].' '.$customeradd['lastname'],'e=add;m=cus;c='.$return);
+			if (SYSLOG) addlogs('dodano klienta: <b>'.$customeradd['name'].' '.$customeradd['lastname'].'</b>, adres: '.$customeradd['zip'].' '.$customeradd['city'].' '.$customeradd['address'],'e=add;m=cus;c='.$return);
 			return $return;
 		} else
 			return FALSE;
@@ -654,7 +778,13 @@ class LMS {
 		$this->DB->Execute('UPDATE customers SET deleted=1, moddate=?NOW?, modid=?
 				WHERE id=?', array($this->AUTH->id, $id));
 		$this->DB->Execute('DELETE FROM customerassignments WHERE customerid=?', array($id));
-		$this->DB->Execute('DELETE FROM assignments WHERE customerid=?', array($id));
+                
+                //kasowanie zobowiązań taryfowych
+                $assignments = $this->DB->GetCol('SELECT id FROM assignments WHERE customerid=?', array($id));
+                if ($assignments) {
+
+		    for ($i=0; $i< sizeof($assignments); $i++) $this->DeleteAssignment($assignments[$i]);
+		}
 		// nodes
 		$nodes = $this->DB->GetCol('SELECT id FROM nodes WHERE ownerid=?', array($id));
 		if ($nodes) {
@@ -691,21 +821,21 @@ class LMS {
 		$res = $this->DB->Execute('UPDATE customers SET status=?, type=?, address=?,
 				zip=?, city=?, countryid=?, email=?, ten=?, ssn=?, moddate=?NOW?, modid=?,
 				post_name=?, post_address=?, post_zip=?, post_city=?, post_countryid=?,
-				info=?, notes=?, lastname=UPPER(?), name=?,
+				info=?, notes=?, lastname=?, name=?,
 				deleted=0, message=?, pin=?, regon=?, icn=?, rbe=?,
 				cutoffstop=?, consentdate=?, einvoice=?, invoicenotice=?, mailingnotice=?,
 				divisionid=?, paytime=?, paytype=?,
 				invoice_name=?, invoice_address=?, invoice_zip=?, invoice_city=?, invoice_countryid=?, invoice_ten=?,
-				origin = ?
+				origin = ?, invoice_lastname = ?, invoice_ssn = ? 
 				WHERE id=?', array($customerdata['status'],
 				empty($customerdata['type']) ? 0 : 1,
-				$customerdata['address'],
-				$customerdata['zip'],
-				$customerdata['city'],
-				$customerdata['countryid'],
-				$customerdata['email'],
-				$customerdata['ten'],
-				$customerdata['ssn'],
+				($customerdata['address'] ? $customerdata['address'] : ''),
+				($customerdata['zip'] ? $customerdata['zip'] : ''),
+				($customerdata['city'] ? $customerdata['city'] : ''),
+				($customerdata['countryid'] ? $customerdata['countryid'] : NULL),
+				($customerdata['email'] ? $customerdata['email'] : ''),
+				($customerdata['ten'] ? $customerdata['ten'] : ''),
+				($customerdata['ssn'] ? $customerdata['ssn'] : ''),
 				isset($this->AUTH->id) ? $this->AUTH->id : 0,
 				$customerdata['post_name'],
 				$customerdata['post_address'],
@@ -728,14 +858,16 @@ class LMS {
 				$customerdata['mailingnotice'],
 				$customerdata['divisionid'],
 				$customerdata['paytime'],
-				$customerdata['paytype'] ? $customerdata['paytype'] : null,
-				$customerdata['invoice_name'],
-				$customerdata['invoice_address'],
-				$customerdata['invoice_zip'],
-				$customerdata['invoice_city'],
-				$customerdata['invoice_countryid'],
-				$customerdata['invoice_ten'],
+				($customerdata['paytype'] ? $customerdata['paytype'] : null),
+				($customerdata['invoice_name'] ? $customerdata['invoice_name'] : ''),
+				($customerdata['invoice_address'] ? $customerdata['invoice_address'] : ''),
+				($customerdata['invoice_zip'] ? $customerdata['invoice_zip'] : ''),
+				($customerdata['invoice_city'] ? $customerdata['invoice_city'] : ''),
+				($customerdata['invoice_countryid'] ? $customerdata['invoice_countryid'] : 0),
+				($customerdata['invoice_ten'] ? $customerdata['invoice_ten'] : ''),
 				($customerdata['origin'] ? $customerdata['origin'] : 0),
+				($customerdata['invoice_lastname'] ? $customerdata['invoice_lastname'] : ''),
+				($customerdata['invoice_ssn'] ? $customerdata['invoice_ssn'] : ''),
 				$customerdata['id'],
 				));
 
@@ -892,7 +1024,7 @@ class LMS {
 	}
 
 
-	function GetCustomerList($order = 'customername,asc', $state = NULL, $network = NULL, $customergroup = NULL, $search = NULL, $time = NULL, $sqlskey = 'AND', $nodegroup = NULL, $division = NULL, $firstletter = NULL, $status = NULL, $contractend = NULL, $odlaczeni = NULL, $warn = NULL, $origin = NULL, $osobowosc = NULL) {
+	function GetCustomerList($order = 'customername,asc', $state = NULL, $network = NULL, $customergroup = NULL, $search = NULL, $time = NULL, $sqlskey = 'AND', $nodegroup = NULL, $division = NULL, $firstletter = NULL, $status = NULL, $contractend = NULL, $odlaczeni = NULL, $warn = NULL, $origin = NULL, $osobowosc = NULL, $nodeblock = NULL) {
 		list($order, $direction) = sscanf($order, '%[^,],%s');
 
 		($direction != 'desc') ? $direction = 'asc' : $direction = 'desc';
@@ -967,6 +1099,8 @@ class LMS {
 				break;
 			case 15: $tying = 1;
 				break;
+			case 16: $balanceok = 1; break;
+			case 17: $balanceok2 = 1; break;
 		}
 		
 		switch ($odlaczeni) {
@@ -981,6 +1115,14 @@ class LMS {
 			case 2 : $warning = 2; break;
 			case 3 : $warning = 3; break;
 			default: $warning = NULL; break;
+		}
+		
+		switch ($nodeblock) {
+			case 1 : $blockade = 1; break;
+			case 2 : $blockade = 2; break;
+			case 3 : $blockade = 3; break;
+                        case 4 : $blockade = 4; break;
+			default: $blockade = NULL; break;
 		}
 		
 
@@ -1100,13 +1242,12 @@ class LMS {
 				'SELECT c.id AS id, ' . $this->DB->Concat('UPPER(lastname)', "' '", 'c.name') . ' AS customername, 
 				status, address, zip, city, countryid, countries.name AS country, email, ten, ssn, c.info AS info, 
 				message, c.divisionid, c.paytime AS paytime, COALESCE(b.value, 0) AS balance,
-				COALESCE(t.value, 0) AS tariffvalue, s.account, s.warncount, s.online,
+				COALESCE(t.value, 0) AS tariffvalue, s.account, s.warncount, s.online, s.blockcount,
 				c.type AS customertype, cutoffstop, 
 				(SELECT max(cash.time) FROM cash WHERE cash.customerid = c.id) AS lastcash,
-				(CASE WHEN s.account = s.acsum THEN 1
-					WHEN s.acsum > 0 THEN 2	ELSE 0 END) AS nodeac,
-				(CASE WHEN s.warncount = s.warnsum THEN 1
-					WHEN s.warnsum > 0 THEN 2 ELSE 0 END) AS nodewarn
+				(CASE WHEN s.account = s.acsum THEN 1 WHEN s.acsum > 0 THEN 2	ELSE 0 END) AS nodeac,
+				(CASE WHEN s.warncount = s.warnsum THEN 1 WHEN s.warnsum > 0 THEN 2 ELSE 0 END) AS nodewarn,
+				(CASE WHEN s.blockcount = s.blocksum THEN 1 WHEN s.blocksum > 0 THEN 2 ELSE 0 END) as nodeblock 
 				FROM customersview c
 				LEFT JOIN countries ON (c.countryid = countries.id) '
 				. ($customergroup ? 'LEFT JOIN customerassignments ON (c.id = customerassignments.customerid) ' : '')
@@ -1143,6 +1284,7 @@ class LMS {
 				LEFT JOIN (SELECT ownerid,
 					SUM(access) AS acsum, COUNT(access) AS account,
 					SUM(warning) AS warnsum, COUNT(warning) AS warncount, 
+					SUM(blockade) AS blocksum, COUNT(blockade) AS blockcount,
 					(CASE WHEN MAX(lastonline) > ?NOW? - ' . intval($this->CONFIG['phpui']['lastonline_limit']) . '
 						THEN 1 ELSE 0 END) AS online
 					FROM nodes
@@ -1158,6 +1300,8 @@ class LMS {
 				. ($indebted ? ' AND b.value < 0' : '')
 				. ($indebted2 ? ' AND b.value < -t.value' : '')
 				. ($indebted3 ? ' AND b.value < -t.value * 2' : '')
+				. ($balanceok ? ' AND (b.value = 0 OR b.value IS NULL) ' : '')
+				. ($balanceok2 ? ' AND b.value > 0' : '')
 				. ($origin ? ' AND c.origin = '.$origin : '')
 				. (!$odlaczeni && $disabled ? ' AND s.ownerid IS NOT NULL AND s.account > s.acsum' : '')
 				. ($odlaczeni && $disabled == 1 ? ' AND s.ownerid IS NOT NULL AND s.acsum = 0 ' : '')
@@ -1166,6 +1310,10 @@ class LMS {
 				. ($warn && $warning == 1 ? ' AND s.ownerid IS NOT NULL AND s.warnsum = 0 ' : '')
 				. ($warn && $warning == 2 ? ' AND s.ownerid IS NOT NULL AND s.warncount = s.warnsum' : '')
 				. ($warn && $warning == 3 ? ' AND s.ownerid IS NOT NULL AND s.warncount > s.warnsum AND s.warnsum != 0' : '')
+				. ($nodeblock && $blockade == 1 ? ' AND s.ownerid IS NOT NULL AND s.blockcount = s.blocksum ' : '')
+				. ($nodeblock && $blockade == 2 ? ' AND s.ownerid IS NOT NULL AND s.blocksum = 0 ' : '')
+				. ($nodeblock && $blockade == 3 ? ' AND s.ownerid IS NOT NULL AND s.blockcount > s.blocksum AND s.blocksum != 0 ' : '')
+                                . ($nodeblock && $blockade == 4 ? ' AND s.ownerid IS NOT NULL AND c.cutoffstop >= ?NOW? ' : '')
 				. ($osobowosc && $osobowosc == 1 ? ' AND c.type=0 ' : '')
 				. ($osobowosc && $osobowosc == 2 ? ' AND c.type=1 ' : '')
 				. ($odlaczeni && $disabled == 4 ? ' AND s.ownerid IS NULL' : '')
@@ -1216,14 +1364,16 @@ class LMS {
 	}
 
 	function GetCustomerNodes($id, $count = NULL) {
-		if ($result = $this->DB->GetAll('SELECT n.id, n.name, n.mac, n.ipaddr,
+		if ($result = $this->DB->GetAll('SELECT n.id, n.name, n.mac, n.ipaddr, n.pppoelogin,
 				inet_ntoa(n.ipaddr) AS ip, n.ipaddr_pub,
-				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.passwd, n.access, n.netdev ,
+				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.passwd, n.access, n.netdev , n.producer, n.model, 
 				nd.id AS devid, nd.name AS devname, nd.location AS devlocation, 
-				n.warning, n.info, n.ownerid, n.lastonline, n.location, 
+				n.warning, n.info, n.ownerid, n.lastonline, n.location, n.blockade, 
 				(SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active=1) AS monitoring, 
-				(SELECT COUNT(*) FROM nodegroupassignments WHERE nodeid = n.id) AS gcount 
+				(SELECT COUNT(*) FROM nodegroupassignments WHERE nodeid = n.id) AS gcount,
+				n.netid, net.name AS netname 
 				FROM vnodes n 
+				JOIN networks net ON net.id = n.netid 
 				LEFT JOIN netdevices nd ON (nd.id = n.netdev) 
 				WHERE ownerid = ?
 				ORDER BY name ASC ' . ($count ? 'LIMIT ' . $count : ''), array($id))) {
@@ -1234,11 +1384,11 @@ class LMS {
 				$ids[$node['id']] = $idx;
 				$result[$idx]['lastonlinedate'] = lastonline_date($node['lastonline']);
 
-				foreach ($networks as $net)
-					if (isipin($node['ip'], $net['address'], $net['mask'])) {
-						$result[$idx]['network'] = $net;
-						break;
-					}
+//				foreach ($networks as $net)
+//					if (isipin($node['ip'], $net['address'], $net['mask'])) {
+//						$result[$idx]['network'] = $net;
+//						break;
+//					}
 
 				if ($node['ipaddr_pub'])
 					foreach ($networks as $net)
@@ -1292,7 +1442,9 @@ class LMS {
 					LEFT JOIN taxes ON cash.taxid = taxes.id
 					WHERE cash.customerid = ? '
 				. ($totime ? ' AND time <= ' . intval($totime) : '')
-				. ' ORDER BY time ' . $direction, array($id))) {
+				. ' ORDER BY time ' . $direction, array($id))) 
+			{
+
 			$saldolist['balance'] = 0;
 			$saldolist['total'] = 0;
 			$i = 0;
@@ -1315,6 +1467,7 @@ class LMS {
 		}
 
 		$saldolist['customerid'] = $id;
+//		echo "<pre>"; print_r($saldolist); echo "</pre>"; die;
 		return $saldolist;
 	}
 
@@ -1324,18 +1477,31 @@ class LMS {
 				COUNT(CASE WHEN status = 2 THEN 1 END) AS awaiting,
 				COUNT(CASE WHEN status = 1 THEN 1 END) AS interested
 				FROM customersview WHERE deleted=0');
-
-		$tmp = $this->DB->GetRow('SELECT SUM(a.value)*-1 AS debtvalue, COUNT(*) AS debt 
-				FROM (SELECT SUM(value) AS value 
-				    FROM cash 
-				    LEFT JOIN customersview ON (customerid = customersview.id) 
-				    WHERE deleted = 0 
-				    GROUP BY customerid 
-				    HAVING SUM(value) < 0
-				) a');
-
-		if (is_array($tmp))
-			$result = array_merge($result, $tmp);
+		
+		$tmp = $this->DB->GetAll('SELECT SUM(value) AS value, customerid
+					FROM cash  
+					JOIN customersview c ON (c.id = customerid) 
+					WHERE c.deleted = 0 
+					GROUP BY customerid
+					');
+		if ($tmp) {
+		    $debtvalue = $debt = $excessvalue = $excess = 0;
+		    for ($i=0; $i<sizeof($tmp); $i++) {
+			if ($tmp[$i]['value'] < 0) {
+			    $debtvalue = $debtvalue + ($tmp[$i]['value'] * -1);
+			    $debt++;
+			}
+			if ($tmp[$i]['value'] > 0) {
+			    $excessvalue = $excessvalue + $tmp[$i]['value'];
+			    $excess++;
+			}
+		    }
+		    $result['debt'] = $debt;
+		    $result['debtvalue'] = ($debtvalue * -1);
+		    $result['excess'] = $excess;
+		    $result['excessvalue'] = $excessvalue;
+		    unset($tmp);
+		}
 
 		return $result;
 	}
@@ -1680,7 +1846,7 @@ class LMS {
 			
 			$return = $this->DB->GetLastInsertID('customers');
 			
-			if (SYSLOG) addlogs('Dodano kontrahenta: '.strtoupper($customeradd['lastname']).' '.$customeradd['name'],'e=add;m=con;c='.$return);
+			if (SYSLOG) addlogs('Dodano kontrahenta: '.strtoupper($dane['lastname']).' '.$dane['name'],'e=add;m=con;c='.$return);
 			
 			return $return;
 		} else
@@ -1743,7 +1909,7 @@ class LMS {
 //					$result['invoice_cstate'] = $cstate['name'];
 //				}
 			}
-//			$result['balance'] = $this->GetCustomerBalance($result['id']);
+			$result['balance'] = $this->GetCustomerBalance($result['id']);
 //			$result['bankaccount'] = bankaccount($result['id'], $result['account']);
 
 			$result['messengers'] = $this->DB->GetAllByKey('SELECT uid, type 
@@ -2041,7 +2207,7 @@ class LMS {
 	}
 
 	function NodeUpdate($nodedata, $deleteassignments = FALSE) {
-	
+
 		if (SYSLOG) {
 		    $diff['old'] = $this->getnode($nodedata['id']);
 		}
@@ -2077,46 +2243,63 @@ class LMS {
 		if (!$nodedata['netid'])
 			$nodedata['netid'] = $this->DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id '.$this->DB->Limit(1).';',
 					array($nodedata['ipaddr']));
-		
+					
+		if (empty($nodedata['name'])) {
+		    $_name = 'C_';
+		    $_name .= sprintf('%04.d',($nodedata['ownerid'] ? $nodedata['ownerid'] : '0'));
+		    $_name .= '_N_';
+		    $_name .= sprintf('%04.d',$nodedata['id']);
+		    $nodedata['name'] = $_name;
+		    
+		}
 		$this->DB->Execute('UPDATE nodes SET name=UPPER(?), ipaddr_pub=inet_aton(?),
 				ipaddr=inet_aton(?), passwd=?, netdev=?, moddate=?NOW?,
 				modid=?, access=?, warning=?, ownerid=?, info=?, location=?,
 				location_city=?, location_street=?, location_house=?, location_flat=?,
 				chkmac=?, halfduplex=?, linktype=?, linkspeed=?, port=?, nas=?,
-				longitude=?, latitude=?, netid=?, linktechnology=?, access_from=?, access_to=?, typeofdevice=?, producer=?, model=?, sn=? 
-				WHERE id=?', array($nodedata['name'],
-				$nodedata['ipaddr_pub'],
-				$nodedata['ipaddr'],
-				$nodedata['passwd'],
-				$nodedata['netdev'],
-				$this->AUTH->id,
-				$nodedata['access'],
-				$nodedata['warning'],
-				$nodedata['ownerid'],
-				$nodedata['info'],
-				$nodedata['location'],
-				$nodedata['location_city'] ? $nodedata['location_city'] : null,
-				$nodedata['location_street'] ? $nodedata['location_street'] : null,
-				$nodedata['location_house'] ? $nodedata['location_house'] : null,
-				$nodedata['location_flat'] ? $nodedata['location_flat'] : null,
-				$nodedata['chkmac'],
-				$nodedata['halfduplex'],
-				isset($nodedata['linktype']) ? intval($nodedata['linktype']) : 0,
-				isset($nodedata['linkspeed']) ? intval($nodedata['linkspeed']) : 100000,
-				isset($nodedata['port']) && $nodedata['netdev'] ? intval($nodedata['port']) : 0,
-				isset($nodedata['nas']) ? $nodedata['nas'] : 0,
-				!empty($nodedata['longitude']) ? str_replace(',', '.', $nodedata['longitude']) : null,
-				!empty($nodedata['latitude']) ? str_replace(',', '.', $nodedata['latitude']) : null,
-				($nodedata['netid'] ? $nodedata['netid'] : 0),
-				($nodedata['linktechnology'] ? $nodedata['linktechnology'] : 0),
-				($nodedata['access_from'] ? $nodedata['access_from'] : 0),
-				($nodedata['access_to'] ? $nodedata['access_to'] : 0),
-				($nodedata['typeofdevice'] ? $nodedata['typeofdevice'] : 0),
-				($nodedata['producer'] ? $nodedata['producer'] : NULL),
-				($nodedata['model'] ? $nodedata['model'] : NULL),
-				($nodedata['sn'] ? $nodedata['sn'] : NULL),
-				$nodedata['id']
-		)	);
+				longitude=?, latitude=?, netid=?, linktechnology=?, access_from=?, access_to=?, typeofdevice=?, producer=?, 
+				model=?, sn=?, blockade=?, pppoelogin = ?, netdevicemodelid = ?, invprojectid=?, layer=?, tracttype=? 
+				WHERE id=?', array(
+					$nodedata['name'],
+					($nodedata['ipaddr_pub'] ? $nodedata['ipaddr_pub'] : 0),
+					($nodedata['ipaddr'] ? $nodedata['ipaddr'] : 0),
+					($nodedata['passwd'] ? $nodedata['passwd'] : ''),
+					($nodedata['netdev'] ? $nodedata['netdev'] : 0),
+					($this->AUTH->id ? $this->AUTH->id : 0),
+					($nodedata['access'] ? 1 : 0),
+					($nodedata['warning'] ? 1 : 0),
+					($nodedata['ownerid'] ? $nodedata['ownerid'] : 0),
+					($nodedata['info'] ? $nodedata['info'] : ''),
+					($nodedata['location'] ? $nodedata['location'] : NULL),
+					($nodedata['location_city'] ? $nodedata['location_city'] : NULL),
+					($nodedata['location_street'] ? $nodedata['location_street'] : NULL),
+					($nodedata['location_house'] ? $nodedata['location_house'] : NULL),
+					($nodedata['location_flat'] ? $nodedata['location_flat'] : NULL),
+					($nodedata['chkmac'] ? 1 : 0),
+					($nodedata['halfduplex'] ? 1 : 0),
+					(isset($nodedata['linktype']) ? intval($nodedata['linktype']) : 0),
+					(isset($nodedata['linkspeed']) ? intval($nodedata['linkspeed']) : 100000),
+					(isset($nodedata['port']) && $nodedata['netdev'] ? intval($nodedata['port']) : 0),
+					(isset($nodedata['nas']) ? $nodedata['nas'] : 0),
+					(!empty($nodedata['longitude']) ? str_replace(',', '.', $nodedata['longitude']) : NULL),
+					(!empty($nodedata['latitude']) ? str_replace(',', '.', $nodedata['latitude']) : NULL),
+					($nodedata['netid'] ? $nodedata['netid'] : 0),
+					($nodedata['linktechnology'] ? $nodedata['linktechnology'] : 0),
+					($nodedata['access_from'] ? $nodedata['access_from'] : 0),
+					($nodedata['access_to'] ? $nodedata['access_to'] : 0),
+					($nodedata['typeofdevice'] ? $nodedata['typeofdevice'] : 0),
+					($nodedata['producer'] ? $nodedata['producer'] : NULL),
+					($nodedata['model'] ? $nodedata['model'] : NULL),
+					($nodedata['sn'] ? $nodedata['sn'] : NULL),
+					($nodedata['blockade'] ? 1 : 0),
+					($nodedata['pppoelogin'] ? $nodedata['pppoelogin'] : ''),
+					($nodedata['netdevicemodelid'] ? $nodedata['netdevicemodelid'] : NULL),
+					($nodedata['invprojectid'] ? $nodedata['invprojectid'] : NULL),
+					($nodedata['layer'] ? $nodedata['layer'] : NULL),
+					($nodedata['tracttype'] ? $nodedata['tracttype'] : NULL),
+					$nodedata['id']
+				)
+		);
 		
 		
 		if (!empty($nodedata['monitoring']))
@@ -2171,9 +2354,11 @@ class LMS {
 		$this->DB->BeginTrans();
 		
 		$old = $this->getnode($id);
+                $macadress = $old['macs'][0]['mac'];
 		
 		if (SYSLOG) 
-		    addlogs('skasowano komputer: '.$old['name'].', klient: '.$this->getcustomername($old['ownerid']),'e=rm;m=node;c='.$old['ownerid']);
+		    addlogs('skasowano komputer: <b>'.$old['name'].'</b>, adres IP:'.$old['ip'].', publiczny adres IP:'.$old['ip_pub'].', MAC:'.$macadress.', utworzony dnia: '.$old['creationdateh'].', przez: '.$old['createdby'].', klient: '.$this->getcustomername($old['ownerid']),'e=rm;m=node;c='.$old['ownerid']);
+
 		
 		if (get_conf('phpui.iphistory'))
 		{
@@ -2250,6 +2435,7 @@ class LMS {
 		    lc.name AS city_name ' 
 		    .',(SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active = 1) AS monitoring '
 		    .',(SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id AND monitnodes.active = 1 AND monitnodes.signaltest=1) AS monitoringsignal '
+		    .',(SELECT name FROM invprojects WHERE invprojects.id = n.invprojectid) AS projectname '
 			.', (CASE WHEN ls.name2 IS NOT NULL THEN ' . $this->DB->Concat('ls.name2', "' '", 'ls.name') . ' ELSE ls.name END) AS street_name, lt.name AS street_type
 			FROM vnodes n
 			LEFT JOIN location_cities lc ON (lc.id = n.location_city)
@@ -2272,19 +2458,13 @@ class LMS {
 			else
 			    $result['acces_to'] = '';
 			$result['lastonlinedate'] = lastonline_date($result['lastonline']);
-			$result['networkname'] = $this->DB->GetOne('SELECT name FROM networks WHERE id=? LIMIT 1;',array($result['netid']));
+			$result['networkname'] = $result['netname'] = $this->DB->GetOne('SELECT name FROM networks WHERE id=? LIMIT 1;',array($result['netid']));
 			$result['hostname'] = $this->DB->GetOne('SELECT h.name FROM networks n LEFT JOIN hosts h ON (h.id = n.hostid) WHERE n.id = ? LIMIT 1;',array($result['netid']));
 
 			$result['mac'] = preg_split('/,/', $result['mac']);
 			foreach ($result['mac'] as $mac)
 				$result['macs'][] = array('mac' => $mac, 'producer' => get_producer($mac));
 			unset($result['mac']);
-
-			if ($net = $this->DB->GetRow('SELECT id, name FROM networks
-				WHERE address = (inet_aton(?) & inet_aton(mask))', array($result['ip']))) {
-				$result['netid'] = $net['id'];
-				$result['netname'] = $net['name'];
-			}
 
 			return $result;
 		} else
@@ -2365,7 +2545,7 @@ class LMS {
 			$net = $this->GetNetworkParams($network);
 
 		if ($nodelist = $this->DB->GetAll('SELECT n.id AS id, n.ipaddr, inet_ntoa(n.ipaddr) AS ip, n.ipaddr_pub,
-				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.mac, n.name, n.ownerid, n.access, n.warning,
+				inet_ntoa(n.ipaddr_pub) AS ip_pub, n.mac, n.name, n.ownerid, n.access, n.warning, n.blockade, 
 				n.linktype, n.linkspeed, n.linktechnology,
 				n.netdev, n.lastonline, n.info, (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id LIMIT 1) AS monitoring, '
 				. $this->DB->Concat('c.lastname', "' '", 'c.name') . ' AS owner '
@@ -2381,6 +2561,9 @@ class LMS {
 				. ($status == 1 ? ' AND n.access = 1' : '') //connected
 				. ($status == 2 ? ' AND n.access = 0' : '') //disconnected
 				. ($status == 3 ? ' AND n.lastonline > ?NOW? - ' . intval($this->CONFIG['phpui']['lastonline_limit']) : '') //online
+				. ($status == 4 ? ' AND NOT EXISTS (SELECT * FROM nodeassignments na  WHERE n.id = na.nodeid)' : '') //without nodeassignments
+				. ($status == 5 ? ' AND n.blockade = 1' : '') // z blokadą
+				. ($status == 6 ? ' AND n.warning = 1' : '') // z powiadomieniem
 				. ($customergroup ? ' AND customergroupid = ' . intval($customergroup) : '')
 				. ($nodegroup ? ' AND nodegroupid = ' . intval($nodegroup) : '')
 				. (isset($searchargs) ? $searchargs : '')
@@ -2461,6 +2644,72 @@ class LMS {
 			return $this->DB->Execute('UPDATE nodes SET access=0 WHERE ownerid=?', array($id));
 		}
 	}
+	
+	
+	function NodeBlockade($id, $access = -1) {
+		if ($access != -1) {
+			if ($access)
+			{
+				$return = $this->DB->Execute('UPDATE nodes SET blockade = 1 WHERE id = ?
+					AND EXISTS (SELECT 1 FROM customers WHERE id = ownerid 
+						AND status = 3)', array($id));
+				if (SYSLOG && $return) 
+				{
+				    $tmp = $this->DB->GetRow('SELECT name, ownerid FROM nodes WHERE id=? LIMIT 1;',array($id));
+				    addlogs('włączono blokadę, komputer: '.$tmp['name'].', klient: '.$this->getcustomername($tmp['ownerid']),'e=acl;m=node;n='.$id.';c='.$tmp['ownerid'].';');
+				    unset($tmp);
+				}
+				return $return;
+			}
+			else
+			{
+				$return = $this->DB->Execute('UPDATE nodes SET blockade = 0 WHERE id = ?', array($id));
+				if (SYSLOG && $return)
+				{
+				    $tmp = $this->DB->GetRow('SELECT name, ownerid FROM nodes WHERE id=? LIMIT 1;',array($id));
+				    addlogs('wyłączono blokadę, komputer: '.$tmp['name'].', klient: '.$this->getcustomername($tmp['ownerid']),'e=acl;m=node;n='.$id.';c='.$tmp['ownerid'].';');
+				}
+				return $return;
+			}
+		}
+		elseif ($this->DB->GetOne('SELECT blockade FROM nodes WHERE id = ?', array($id)) == 1) {
+		
+			$return = $this->DB->Execute('UPDATE nodes SET blockade = 0 WHERE id = ?', array($id));
+			if (SYSLOG && $return)
+			{
+			    $tmp = $this->DB->GetRow('SELECT name, ownerid FROM nodes WHERE id=? LIMIT 1;',array($id));
+			    addlogs('wyłączono blokadę, komputer: '.$tmp['name'].', klient: '.$this->getcustomername($tmp['ownerid']),'e=acl;m=node;n='.$id.';c='.$tmp['ownerid'].';');
+			}
+			return $return;
+		}
+		else {
+			$return = $this->DB->Execute('UPDATE nodes SET blockade = 1 WHERE id = ?
+					AND EXISTS (SELECT 1 FROM customers WHERE id = ownerid 
+						AND status = 3)', array($id));
+			if (SYSLOG && $return)
+			{
+			    $tmp = $this->DB->GetRow('SELECT name, ownerid FROM nodes WHERE id=? LIMIT 1;',array($id));
+			    addlogs('włączono blokadę, komputer: '.$tmp['name'].', klient: '.$this->getcustomername($tmp['ownerid']),'e=acl;m=node;n='.$id.';c='.$tmp['ownerid'].';');
+			}
+			return $return;
+		}
+	}
+
+	function NodeBlockadeU($id, $access = FALSE) {
+		
+		if (SYSLOG) $cusname = $this->getcustomername($id);
+		if ($access) {
+			if ($this->DB->GetOne('SELECT status FROM customers WHERE id = ?', array($id)) == 3) {
+				if (SYSLOG) addlogs('włączono blokadę komputerów klienta: '.$cusname,'e=acl;m=node;c='.$id);
+				return $this->DB->Execute('UPDATE nodes SET blockade=1 WHERE ownerid=?', array($id));
+			}
+		} else {
+			if (SYSLOG) addlogs('wyłączono blokadę komputerów klienta: '.$cusname,'e=acl;m=node;c='.$id);
+			return $this->DB->Execute('UPDATE nodes SET blockade=0 WHERE ownerid=?', array($id));
+		}
+	}
+	
+	
 
 	function NodeSetWarn($id, $warning = FALSE) {
 		
@@ -2532,48 +2781,68 @@ class LMS {
 		$nodedata['netid'] = $this->DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id '.$this->DB->Limit(1).';',
 				array($nodedata['ipaddr']));
 		
-		if ($this->DB->Execute('INSERT INTO nodes (name, ipaddr, ipaddr_pub, ownerid,
+		$this->DB->LockTables(array('nodes'));
+		
+		if (empty($nodedata['name'])) {
+		    $newid = $this->DB->GetOne('SELECT (MAX(id)+1) AS id FROM nodes;');
+		    $_name = 'C_';
+		    $_name .= sprintf('%04.d',($nodedata['ownerid'] ? $nodedata['ownerid'] : '0'));
+		    $_name .= '_N_';
+		    $_name .= sprintf('%04.d',$newid);
+		    $nodedata['name'] = $_name;
+		    
+		}
+		$result = $this->DB->Execute('INSERT INTO nodes (name, ipaddr, ipaddr_pub, ownerid,
 			passwd, creatorid, creationdate, access, warning, info, netdev,
 			location, location_city, location_street, location_house, location_flat,
 			linktype, linkspeed, port, chkmac, halfduplex, nas, longitude, latitude, netid, linktechnology, 
-			access_from, access_to, typeofdevice, producer, model, sn)
+			access_from, access_to, typeofdevice, producer, model, sn, blockade,
+			pppoelogin, netdevicemodelid, invprojectid, layer, tracttype )
 			VALUES (?, inet_aton(?), inet_aton(?), ?, ?, ?,
-			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($nodedata['name']),
-						$nodedata['ipaddr'],
-						$nodedata['ipaddr_pub'],
-						$nodedata['ownerid'],
-						$nodedata['passwd'],
-						$this->AUTH->id,
-						$nodedata['access'],
-						$nodedata['warning'],
-						$nodedata['info'],
-						$nodedata['netdev'],
-						$nodedata['location'],
-						$nodedata['location_city'] ? $nodedata['location_city'] : null,
-						$nodedata['location_street'] ? $nodedata['location_street'] : null,
-						$nodedata['location_house'] ? $nodedata['location_house'] : null,
-						$nodedata['location_flat'] ? $nodedata['location_flat'] : null,
-						isset($nodedata['linktype']) ? intval($nodedata['linktype']) : 0,
-						isset($nodedata['linkspeed']) ? intval($nodedata['linkspeed']) : 100000,
-						isset($nodedata['port']) && $nodedata['netdev'] ? intval($nodedata['port']) : 0,
-						$nodedata['chkmac'],
-						$nodedata['halfduplex'],
-						isset($nodedata['nas']) ? $nodedata['nas'] : 0,
-						!empty($nodedata['longitude']) ? str_replace(',', '.', $nodedata['longitude']) : null,
-						!empty($nodedata['latitude']) ? str_replace(',', '.', $nodedata['latitude']) : null,
-						($nodedata['netid'] ? $nodedata['netid'] : 0),
-						($nodedata['linktechnology'] ? $nodedata['linktechnology'] : 0),
-						($nodedata['access_from'] ? $nodedata['access_from'] : 0),
-						($nodedata['access_to'] ? $nodedata['access_to'] : 0),
-						($nodedata['typeofdevice'] ? $nodedata['typeofdevice'] : 0),
-						($nodedata['producer'] ? $nodedata['producer'] : NULL),
-						($nodedata['model'] ? $nodedata['model'] : NULL),
-						($nodedata['sn'] ? $nodedata['sn'] : NULL),
-				))) 
-			{
-			    
-			    $id = $this->DB->GetLastInsertID('nodes');
-			    
+			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
+				strtoupper($nodedata['name']),
+				($nodedata['ipaddr'] ? $nodedata['ipaddr'] : 0),
+				($nodedata['ipaddr_pub'] ? $nodedata['ipaddr_pub'] : 0),
+				($nodedata['ownerid'] ? $nodedata['ownerid'] : 0),
+				($nodedata['passwd'] ? $nodedata['passwd'] : ''),
+				($this->AUTH->id ? $this->AUTH->id : 0),
+				($nodedata['access'] ? $nodedata['access'] : 1),
+				($nodedata['warning'] ? $nodedata['warning'] : 0),
+				($nodedata['info'] ? $nodedata['info'] : ''),
+				($nodedata['netdev'] ? $nodedata['netdev'] : 0),
+				($nodedata['location'] ? $nodedata['location'] : NULL),
+				($nodedata['location_city'] ? $nodedata['location_city'] : NULL),
+				($nodedata['location_street'] ? $nodedata['location_street'] : NULL),
+				($nodedata['location_house'] ? $nodedata['location_house'] : NULL),
+				($nodedata['location_flat'] ? $nodedata['location_flat'] : NULL),
+				(isset($nodedata['linktype']) ? intval($nodedata['linktype']) : 0),
+				(isset($nodedata['linkspeed']) ? intval($nodedata['linkspeed']) : 100000),
+				(isset($nodedata['port']) && $nodedata['netdev'] ? intval($nodedata['port']) : 0),
+				($nodedata['chkmac'] ? 1 : 0),
+				($nodedata['halfduplex'] ? 1 : 0),
+				(isset($nodedata['nas']) ? $nodedata['nas'] : 0),
+				(!empty($nodedata['longitude']) ? str_replace(',', '.', $nodedata['longitude']) : NULL),
+				(!empty($nodedata['latitude']) ? str_replace(',', '.', $nodedata['latitude']) : NULL),
+				($nodedata['netid'] ? $nodedata['netid'] : 0),
+				($nodedata['linktechnology'] ? $nodedata['linktechnology'] : 0),
+				($nodedata['access_from'] ? $nodedata['access_from'] : 0),
+				($nodedata['access_to'] ? $nodedata['access_to'] : 0),
+				($nodedata['typeofdevice'] ? $nodedata['typeofdevice'] : 0),
+				($nodedata['producer'] ? $nodedata['producer'] : NULL),
+				($nodedata['model'] ? $nodedata['model'] : NULL),
+				($nodedata['sn'] ? $nodedata['sn'] : NULL),
+				($nodedata['blockade'] ? 1 : 0),
+				($nodedata['pppoelogin'] ? $nodedata['pppoelogin'] : ''),
+				($nodedata['netdevicemodelid'] ? $nodedata['netdevicemodelid'] : NULL),
+				($nodedata['invprojectid'] ? $nodedata['invprojectid'] : NULL),
+				($nodedata['layer'] ? $nodedata['layer'] : NULL),
+				($nodedata['tracttype'] ? $nodedata['tracttype'] : NULL),
+			)); 
+			$id = $this->DB->GetLastInsertID('nodes');
+		$this->DB->UnLockTables();
+		
+			if ($result) {
+			
 			    if (!empty($nodedata['monitoring']))
 				$this->SetMonit($id);
 			
@@ -2615,7 +2884,7 @@ class LMS {
 			if (SYSLOG) {
 			    if (!empty($nodedata['ownerid'])) {
 				$ownerid = $this->getnodeowner($id);
-				addlogs('dodano komputer: '.$this->getnodename($id).', klient: '.$this->getcustomername($ownerid),'e=add;m=node;n='.$id.';c='.$ownerid.';');
+				addlogs('dodano komputer: <b>'.$this->getnodename($id).'</b>, IP:'.$this->GetNodeIPByID($id).', IP publiczne:'.$this->GetNodePubIPByID($id).', MAC:'.$this->GetNodeMACByID($id).', klient: '.$this->getcustomername($ownerid),'e=add;m=node;n='.$id.';c='.$ownerid.';');
 			    }
 			    else
 				addlogs('dodano adres IP do urządzenia sieciowego '.$this->getnodename($id),'e=add;m=netdev;n='.$nodedata['netdev'].';');
@@ -2722,7 +2991,7 @@ class LMS {
 	}
 
 	function GetNetDevLinkedNodes($id) {
-		return $this->DB->GetAll('SELECT nodes.id AS id, nodes.name AS name, linktype, linkspeed, ipaddr, linktechnology,
+		return $this->DB->GetAll('SELECT nodes.id AS id, nodes.name AS name, linktype, linkspeed, ipaddr, linktechnology, layer, tracttype, 
 			inet_ntoa(ipaddr) AS ip, ipaddr_pub, inet_ntoa(ipaddr_pub) AS ip_pub, 
 			netdev, port, ownerid,
 			' . $this->DB->Concat('c.lastname', "' '", 'c.name') . ' AS owner 
@@ -2731,13 +3000,15 @@ class LMS {
 			ORDER BY nodes.name ASC', array($id));
 	}
 
-	function NetDevLinkNode($id, $devid, $type = 0, $speed = 100000, $port = 0, $technology=0) {
-		return $this->DB->Execute('UPDATE nodes SET netdev=?, linktype=?, linkspeed=?, port=?, linktechnology=? 
+	function NetDevLinkNode($id, $devid, $type = 0, $speed = 100000, $port = 0, $technology=0, $layer=NULL, $tracttype = NULL) {
+		return $this->DB->Execute('UPDATE nodes SET netdev=?, linktype=?, linkspeed=?, port=?, linktechnology=?, layer=?, tracttype=? 
 			 WHERE id=?', array($devid,
 						intval($type),
 						intval($speed),
 						intval($port),
 						intval($technology),
+						($layer ? intval($layer) : NULL),
+						($tracttype ? intval($tracttype) : NULL),
 						$id
 				));
 	}
@@ -2753,6 +3024,28 @@ class LMS {
 			WHERE tariffid = tariffs.id AND customerid = ? AND suspended = 0
 			    AND (datefrom <= ?NOW? OR datefrom = 0) AND (dateto > ?NOW? OR dateto = 0)', array($id));
 	}
+
+
+	function GetCustomerTariffsValueRabat($id)
+	{
+		// Add function Krzysztof Puchała - Pro-Admin
+		$value = $this->DB->GetOne('SELECT SUM(tariffs.value)
+		FROM assignments, tariffs
+		WHERE tariffid = tariffs.id AND customerid = ? AND suspended = 0
+		AND (datefrom <= ?NOW? OR datefrom = 0) AND (dateto > ?NOW? OR dateto = 0)',
+		array($id));
+		$rabat = $this->DB->GetOne('SELECT SUM(assignments.vdiscount)
+		FROM assignments, tariffs
+		WHERE tariffid = tariffs.id AND customerid = ? AND suspended = 0
+		AND (datefrom <= ?NOW? OR datefrom = 0) AND (dateto > ?NOW? OR dateto = 0)',
+		array($id));
+		
+		$val = $value - $rabat;
+		return $val;
+		
+	}
+	
+	
 //AND (a.liabilityid = 0 OR (a.liabilityid != 0 AND (a.at >= ' . $now . ' OR a.at < 531)))' : '')
 	function GetCustomerAssignments($id, $show_expired = false) {
 		$now = mktime(0, 0, 0, date('n'), date('d'), date('Y'));
@@ -2760,7 +3053,7 @@ class LMS {
 		if ($assignments = $this->DB->GetAll('SELECT a.id AS id, a.tariffid,
 			a.customerid, a.period, a.at, a.suspended, a.invoice, a.settlement,
 			a.datefrom, a.dateto, a.pdiscount, a.vdiscount, a.liabilityid,
-			t.uprate, t.upceil, t.downceil, t.downrate, t.type, 
+			t.uprate, t.upceil, t.downceil, t.downrate, t.type, t.relief, 
 			(CASE WHEN t.value IS NULL THEN l.value ELSE t.value END) AS value,
 			(CASE WHEN t.name IS NULL THEN l.name ELSE t.name END) AS name
 			FROM assignments a
@@ -2769,7 +3062,7 @@ class LMS {
 			WHERE a.customerid=? '
 				. (!$show_expired ? 'AND (a.dateto > ' . $now . ' OR a.dateto = 0)
 			    AND (a.at >= ' . $now . ' OR a.at < 531)' : '')
-				. ' ORDER BY t.name, a.datefrom, value', array($id))) {
+				. ' ORDER BY a.datefrom, t.name,  value', array($id))) {
 			foreach ($assignments as $idx => $row) {
 				switch ($row['period']) {
 					case DISPOSABLE:
@@ -2999,14 +3292,15 @@ class LMS {
 					));
 
 					$result[] = $this->DB->GetLastInsertID('assignments');
+                                        
+                                   	if (SYSLOG && !empty($result) && !empty($data['customerid'])) {
+                                            if (!empty($data['liabilityid']))
+                                                $nazwa = $this->DB->GetOne('SELECT name FROM liabilites WHERE id=? LIMIT 1;',array($data['liabilityid']));
+                                            else
+                                                $nazwa = $this->DB->GetOne('SELECT name FROM tariffs WHERE id=? LIMIT 1;',array($data['tariffid']));
+                                        addlogs('dodano zobowiązanie: '.$nazwa.', klient: '.$this->getcustomername($data['customerid']),'e=add;m=fin;c='.$data['customerid']);
+                                        }
 					
-					if (SYSLOG && !empty($result) && !empty($data['customerid'])) {
-					    if (!empty($data['liabilityid']))
-						$nazwa = $this->DB->GetOne('SELECT name FROM liabilites WHERE id=? LIMIT 1;',array($data['liabilityid']));
-					    else
-						$nazwa = $this->DB->GetOne('SELECT name FROM tariffs WHERE id=? LIMIT 1;',array($data['tariffid']));
-					    addlogs('dodano zobowiązanie: '.$nazwa.', klient: '.$this->getcustomername($data['customerid']),'e=add;m=fin;c='.$data['customerid']);
-					}
 				}
 			}
 		}
@@ -3040,15 +3334,42 @@ class LMS {
 			));
 
 			$result[] = $this->DB->GetLastInsertID('assignments');
-			
-			if (SYSLOG && !empty($result) && !empty($data['customerid'])) {
-				if (!empty($data['liabilityid']))
-				    $nazwa = $this->DB->GetOne('SELECT name FROM liabilites WHERE id=? LIMIT 1;',array($data['liabilityid']));
-				else
-				    $nazwa = $this->DB->GetOne('SELECT name FROM tariffs WHERE id=? LIMIT 1;',array($data['tariffid']));
-			    addlogs('dodano zobowiązanie: '.$nazwa.', klient: '.$this->getcustomername($data['customerid']),'e=add;m=fin;c='.$data['customerid']);
-			}
-			
+					if (SYSLOG && !empty($result) && !empty($data['customerid'])) {
+					
+					    if ($data['datefrom'] != 0) $data_od = ( ' okres od: '.date('Y/m/d', $data['datefrom']));
+					    else $data_od = 'od: "nie ustawiono" ';
+					    
+					    if ($data['dateto'] != 0) $data_do = ( 'do: '.date('Y/m/d', $data['dateto']));
+					    else $data_do = 'do: "nie ustawiono" ';
+					
+					    if ($data['period'] == 5) $nalicz = ', nalicza rocznie, '; 
+					    elseif ($data['period'] == 7) $nalicz = ', nalicza półrocznie, '; 
+					    elseif ($data['period'] == 4) $nalicz = ', nalicza kwartalnie, '; 
+					    elseif ($data['period'] == 3) $nalicz = ', nalicza miesięcznie, '; 
+					    elseif ($data['period'] == 0) $nalicz = ', nalicza jednorazowo, ';
+					
+					    if ($data['pdiscount'] !=0 || $data['vdiscount'] != 0) $rabat = ' z rabatem'; 
+					    else $rabat = ' bez rabatu';
+					
+					    if ($data['invoice'] == 1) $opcje = ', z fakturą VAT'; 
+					    elseif ($data['invoice'] == 6) $opcje = ', z fakturą proforma '; 
+					    else $opcje = ', tylko naliczanie ';
+					
+					    if ($data['settlement'] != 0) $opcje_ = ' z wyrównaniem';
+					
+					    if ($data['tariffid'] == 0) {
+						$zap = $this->DB->GetRow('SELECT name, value FROM liabilities WHERE id=? LIMIT 1;',array($lid));
+						    $nazwa = ' beztaryfowe <b> '.$zap['name'].'</b> na kwotę: <b>'.moneyf($zap['value']).'</b> ';
+					    }
+					    else 
+					    {
+						$zap = $this->DB->GetRow('SELECT name, value FROM tariffs WHERE id=? LIMIT 1;',array($data['tariffid']));
+						$nazwa = ' taryfa <b>'.$zap['name'].'</b> na kwotę: <b>'.moneyf($zap['value']).'</b> ';
+					    }
+					    
+					    addlogs('dodano zobowiązanie: '.$nazwa.' '.$rabat.' '.$nalicz.' '.$data_od.' '.$data_do.' '.$opcje.' '.$opcje_.', klient: '.$this->getcustomername($data['customerid']),'e=add;m=fin;c='.$data['customerid']);
+					}			
+	
 		}
 
 		if (!empty($result) && count($result = array_filter($result))) {
@@ -3088,7 +3409,7 @@ class LMS {
 	}
 
 	function AddInvoice($invoice) {
-		
+//		echo "<pre>"; print_r($invoice); echo "</pre>"; die;
 		$currtime = time();
 		$cdate = $invoice['invoice']['cdate'] ? $invoice['invoice']['cdate'] : $currtime;
 		$sdate = $invoice['invoice']['sdate'] ? $invoice['invoice']['sdate'] : $currtime;
@@ -3101,38 +3422,82 @@ class LMS {
 		    $invoice['customer']['address'] = $invoice['customer']['invoice_address'];
 		    $invoice['customer']['zip'] = $invoice['customer']['invoice_zip'];
 		    $invoice['customer']['city'] = $invoice['customer']['invoice_city'];
-		    $invoice['customer']['countryid'] = ($invoice['customer']['invoice_countryid'] ? $invoice['customer']['invoice_countryid'] : $invoice['customer']['countryid']);
-		    $invoice['customer']['ten'] = ($invoice['customer']['invoice_ten'] ? $invoice['customer']['invoice_ten'] : $invoice['customer']['ten']);
+		    $invoice['customer']['countryid'] = ($invoice['customer']['invoice_countryid'] ? $invoice['customer']['invoice_countryid'] : 0);
+		    $invoice['customer']['ten'] = ($invoice['customer']['invoice_ten'] ? $invoice['customer']['invoice_ten'] : '');
+		    $invoice['customer']['ssn'] = ($invoice['customer']['invoice_ssn'] ? $invoice['customer']['invoice_ssn'] : '');
 		}
 		
-		$division = $this->DB->GetRow('SELECT name, address, city, zip, countryid, ten, regon,
-				account, inv_header, inv_footer, inv_author, inv_cplace 
+		if ($invoice['customer']['type'] == '1')
+		    $invoice['customer']['ssn'] = '';
+		elseif ($invoice['customer']['type'] == '0')
+		    $invoice['customer']['ten'] = '';
+		
+		$division = $this->DB->GetRow('SELECT name, shortname, address, city, zip, countryid, ten, regon,
+				account, inv_header, inv_footer, inv_author, inv_cplace, urllogofile 
 				FROM divisions WHERE id = ? ;',array($invoice['customer']['divisionid']));
+		
+		if ($invoice['invoice']['numberplanid'])
+		    $fullnumber = docnumber($number, $this->DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($invoice['invoice']['numberplanid'])), $cdate);
+		else
+		    $fullnumber = null;
+		
+		$invoice['version'] = get_conf('invoices.template_version');
+		$invoice['templatetype'] = get_conf('invoices.type');
+		
+		if (!isset($invoice['invoice']['sdateview']))
+		    $invoice['sdateview'] = get_conf('invoices.sdateview');
+		else
+		    $invoice['sdateview'] = $invoice['invoice']['sdateview'];
+		
+		if ($division['urllogofile'])
+		    $invoice['urllogofile'] = $division['urllogofile'];
+		else
+		    $invoice['urllogofile'] = get_conf('invoices.urllogofile','');
+		
+		
+		if ($type == '6') {
+		    
+		    $invoice['templatefile'] = get_conf('invoices.template_file_proforma');
+		    
+		    if (empty($invoice['templatefile']))
+			$invoice['templatefile'] = get_conf('invoices.template_file');
+		
+		} else {
+		    $invoice['templatefile'] = get_conf('invoices.template_file');
+		}
+		
+		
+		if (empty($division['inv_author']))
+		    $division['inv_author'] = $this->DB->GetOne('SELECT name FROM users WHERE id = ? LIMIT 1;',array($this->AUTH->id));
 		
 		$this->DB->Execute('INSERT INTO documents (number, numberplanid, type,
 			cdate, sdate, paytime, paytype, userid, customerid, name, address, 
 			ten, ssn, zip, city, countryid, divisionid,
-			div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
-			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-				array($number,
-				$invoice['invoice']['numberplanid'] ? $invoice['invoice']['numberplanid'] : 0,
-				$type,
-				$cdate,
-				$sdate,
-				$invoice['invoice']['paytime'],
-				$invoice['invoice']['paytype'],
-				$this->AUTH->id,
-				$invoice['customer']['id'],
-				$invoice['customer']['customername'],
-				$invoice['customer']['address'],
-				$invoice['customer']['ten'],
-				$invoice['customer']['ssn'],
-				$invoice['customer']['zip'],
-				$invoice['customer']['city'],
-				$invoice['customer']['countryid'],
-				$invoice['customer']['divisionid'],
+			div_name, div_shortname, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
+			div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, fullnumber,
+			version, templatetype, templatefile, sdateview, urllogofile,
+			post_name, post_address, post_zip, post_city,print_balance_info)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?)', 
+				array(
+				($number ? $number : 0),
+				($invoice['invoice']['numberplanid'] ? $invoice['invoice']['numberplanid'] : 0),
+				($type ? $type : 0),
+				($cdate ? $cdate : 0),
+				($sdate ? $sdate : 0),
+				($invoice['invoice']['paytime'] ? $invoice['invoice']['paytime'] : 0),
+				($invoice['invoice']['paytype'] ? $invoice['invoice']['paytype'] : NULL),
+				($this->AUTH->id ? $this->AUTH->id : 0),
+				($invoice['customer']['id'] ? $invoice['customer']['id'] : 0),
+				($invoice['customer']['customername'] ? $invoice['customer']['customername'] : ''),
+				($invoice['customer']['address'] ? $invoice['customer']['address'] : ''),
+				($invoice['customer']['ten'] ? $invoice['customer']['ten'] : ''),
+				($invoice['customer']['ssn'] ? $invoice['customer']['ssn'] : ''),
+				($invoice['customer']['zip'] ? $invoice['customer']['zip'] : ''),
+				($invoice['customer']['city'] ? $invoice['customer']['city'] : ''),
+				($invoice['customer']['countryid'] ? $invoice['customer']['countryid'] : 0),
+				($invoice['customer']['divisionid'] ? $invoice['customer']['divisionid'] : 0),
 				($division['name'] ? $division['name'] : ''),
+				($division['shortname'] ? $division['shortname'] : ''),
 				($division['address'] ? $division['address'] : ''), 
 				($division['city'] ? $division['city'] : ''), 
 				($division['zip'] ? $division['zip'] : ''),
@@ -3144,7 +3509,19 @@ class LMS {
 				($division['inv_footer'] ? $division['inv_footer'] : ''), 
 				($division['inv_author'] ? $division['inv_author'] : ''), 
 				($division['inv_cplace'] ? $division['inv_cplace'] : ''),
+				($fullnumber ? $fullnumber : ''),
+				($invoice['version'] ? $invoice['version'] : ''),
+				($invoice['templatetype'] ? $invoice['templatetype'] : ''),
+				($invoice['templatefile'] ? $invoice['templatefile'] : ''),
+				($invoice['sdateview'] ? 1 : 0),
+				($invoice['urllogofile'] ? $invoice['urllogofile'] : ''),
+				($invoice['customer']['post_name'] ? $invoice['customer']['post_name'] : ''),
+				($invoice['customer']['post_address'] ? $invoice['customer']['post_address'] : ''),
+				($invoice['customer']['post_zip'] ? $invoice['customer']['post_zip'] : ''),
+				($invoice['customer']['post_city'] ? $invoice['customer']['post_city'] : ''),
+				get_conf('invoices.print_balance_info','1'),
 		));
+		
 
 		$iid = $this->DB->GetLastInsertID('documents');
 
@@ -3185,6 +3562,7 @@ class LMS {
 			),false);
 		}
 		
+		
 		if (SYSLOG) {
 		    global $DOCTYPES;
 		    $tmpsum_val = $this->DB->GetOne('SELECT SUM(value) FROM cash WHERE docid = ?',array($iid));
@@ -3198,33 +3576,41 @@ class LMS {
 	}
 
 	function InvoiceDelete($invoiceid) {
-		$this->DB->BeginTrans();
 
 		if (SYSLOG) {
 		    $invoice = $this->GetInvoiceContent($invoiceid);
 		    $diff['old'] = $invoice;
 		    $diff['type'] = 'del';
 		    $diff['card'] = 'invoice';
-		    $number = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+		    if (!$invoice['fullnumber'])
+			$number = docnumber($invoice['number'], $invoice['template'], $invoice['cdate']);
+		    else
+			$number = $invoice['fullnumber'];
+			
 		    if(!isset($invoice['invoice'])) 
 		    {
 			if ($invoice['type'] == DOC_INVOICE)
-			    $tekst = trans('Invoice No. $a', $number);
+			    $tekst = 'Faktura nr '.$number;
 			else
-			    $tekst = trans('Invoice Pro Forma No. $a', $number);
+			    $tekst = 'Faktura Proforma nr '.$number;
 		    }
 		    else
-			$tekst = trans('Credit Note No. $a', $number);
+			$tekst = 'Faktura Korygująca nr '.$number;
+		    
 		    addlogs('Skasowano dokument: '.$tekst.', Klient: '.$this->getcustomername($invoice['customerid']),'e=del;m=fin;c='.$invoice['customerid']);
 		    unset($tekst);
 		    unset($invoice);
 		    unset($number);
 		}
 		
+		$filename = $this->getInvoiceFilename($invoiceid,true);
+		if (check_fileexists($filename))
+		    @unlink($filename);
+		
 		$this->DB->Execute('DELETE FROM documents WHERE id = ?', array($invoiceid));
+		$this->DB->Execute('DELETE FROM documentcontents WHERE docid = ?', array($invoiceid));
 		$this->DB->Execute('DELETE FROM invoicecontents WHERE docid = ?', array($invoiceid));
 		$this->DB->Execute('DELETE FROM cash WHERE docid = ?', array($invoiceid));
-		$this->DB->CommitTrans();
 	}
 
 	function InvoiceContentDelete($invoiceid, $itemid = 0) {
@@ -3270,14 +3656,15 @@ class LMS {
 				d.ten, d.ssn, d.cdate, d.sdate, d.paytime, d.paytype, d.numberplanid,
 				d.closed, d.reference, d.reason, d.divisionid, 
 				(SELECT name FROM users WHERE id = d.userid) AS user, n.template,
-				d.div_name AS division_name, d.div_name AS division_shortname,
+				d.div_name AS division_name, d.div_name AS division_shortname, d.div_shortname AS division_shortnames,
 				d.div_address AS division_address, d.div_zip AS division_zip,
 				d.div_city AS division_city, d.div_countryid AS division_countryid, 
 				d.div_ten AS division_ten, d.div_regon AS division_regon, d.div_account AS account,
 				d.div_inv_header AS division_header, d.div_inv_footer AS division_footer,
 				d.div_inv_author AS division_author, d.div_inv_cplace AS division_cplace,
+				d.fullnumber AS fullnumber,d.version, d.templatetype, d.templatefile, d.sdateview, d.urllogofile, d.print_balance_info, 
 				c.pin AS customerpin, c.divisionid AS current_divisionid,
-				c.post_name, c.post_address, c.post_zip, c.post_city, c.post_countryid,
+				d.post_name, d.post_address, d.post_zip, d.post_city,
 				c.invoice_name, c.invoice_address, c.invoice_zip, c.invoice_city, c.invoice_countryid, c.invoice_ten 
 				FROM documents d
 				JOIN customers c ON (c.id = d.customerid)
@@ -3291,8 +3678,24 @@ class LMS {
 			$result['totalbase'] = 0;
 			$result['totaltax'] = 0;
 			$result['total'] = 0;
-
-			if ($result['reference'])
+			
+			if ($firma = $this->DB->getrow('SELECT shortname,name,address,city,zip,ten,account,inv_header,inv_footer,inv_author,inv_cplace 
+				FROM divisions WHERE id = ? LIMIT 1;',array($result['divisionid'])))
+			{
+			    if (empty($result['division_name'])) $result['division_name'] = $firma['name'];
+			    if (empty($result['division_shortname'])) $result['division_shortname'] = $firma['name'];
+			    if (empty($result['division_address'])) $result['division_address'] = $firma['address'];
+			    if (empty($result['division_zip'])) $result['division_zip'] = $firma['zip'];
+			    if (empty($result['division_city'])) $result['division_city'] = $firma['city'];
+			    if (empty($result['division_ten'])) $result['division_ten'] = $firma['ten'];
+			    if (empty($result['account'])) $result['account'] = $firma['account'];
+			    if (empty($result['division_header'])) $result['division_header'] = $firma['inv_header'];
+			    if (empty($result['division_footer'])) $result['division_footer'] = $firma['inv_footer'];
+			    if (empty($result['division_author'])) $result['division_author'] = $firma['inv_author'];
+			    if (empty($result['division_cplace'])) $result['division_cplace'] = $firma['inv_cplace'];
+			}
+			
+			if ($result['reference'] && $result['type'] != DOC_INVOICE_PRO)
 				$result['invoice'] = $this->GetInvoiceContent($result['reference']);
 
 			if (!$result['division_header'])
@@ -3373,13 +3776,19 @@ class LMS {
 			$result['month'] = date('m', $result['cdate']);
 			$result['pesel'] = $result['ssn'];
 			$result['nip'] = $result['ten'];
+			
+				
 			if ($result['post_name'] || $result['post_address']) {
+				
 				$reulst['serviceaddr'] = $result['post_name'];
+				
 				if ($result['post_address'])
 					$result['serviceaddr'] .= "\n" . $result['post_address'];
+				
 				if ($result['post_zip'] && $result['post_city'])
 					$result['serviceaddr'] .= "\n" . $result['post_zip'] . ' ' . $result['post_city'];
 			}
+			
 			
 			return $result;
 		}
@@ -3400,8 +3809,9 @@ class LMS {
 				d.div_ten AS division_ten, d.div_regon AS division_regon, d.div_account AS account,
 				d.div_inv_header AS division_header, d.div_inv_footer AS division_footer,
 				d.div_inv_author AS division_author, d.div_inv_cplace AS division_cplace,
+				d.fullnumber,
 				c.pin AS customerpin, c.divisionid AS current_divisionid,
-				c.post_name, c.post_address, c.post_zip, c.post_city, c.post_countryid
+				d.post_name, d.post_address, d.post_zip, d.post_city
 				FROM documents d
 				JOIN customers c ON (c.id = d.customerid)
 				LEFT JOIN countries cn ON (cn.id = d.countryid)
@@ -3456,6 +3866,66 @@ class LMS {
 			return FALSE;
 	}
 
+	function getInvoiceFilename($docid,$full = false)
+	{
+	    //zwraca nazwę pliku pdf zapisanego na dysku
+	    // full = true -> zwraca pełną ścieżkę
+	    
+	    $filename = $this->DB->GetOne('SELECT filename FROM documentcontents WHERE docid = ? LIMIT 1;',array($docid));
+	    
+	    if (!$filename)
+		return NULL;
+	    
+	    if ($full) {
+		$data = $this->DB->GetOne('SELECT cdate FROM documents WHERE id = ? LIMIT 1;',array($docid));
+		$year = date('Y',$data);
+		$month = date('m',$data);
+		$dom = date('d',$data);
+		$filename = INVOICE_DIR.'/'.$year.'/'.$month.'/'.$dom.'/'.$filename;
+	    }
+	    
+	    return $filename;
+	}
+	
+	function genInvoiceFilename($docid,$full=false)
+	{
+		// generuje nazę pliku dokumentu
+		$doc = $this->DB->GetRow('SELECT number, numberplanid, cdate, fullnumber, templatetype FROM documents WHERE id = ? LIMIT 1;',array($docid));
+		
+		if (!$doc)
+			return NULL;
+		
+		if (!$doc['fullnumber'])
+			$number = docnumber($doc['number'],$doc['numberplanid'],$doc['cdate']);
+		else
+			$number = $doc['fullnumber'];
+		
+		$filename = str_replace('/','_',$number);
+		$filename = str_replace("\\","-",$filename);
+		$cid = 'CID'.sprintf('%06.d',$doc[$i]['customerid']);
+		$did = 'DID'.sprintf('%08.d',$doc[$i]['id']);
+		$ext = '';
+		
+		switch (strtoupper($doc['templatetype']))
+		{
+		    case 'PDF'		: $ext = '.pdf';	break;
+		    case 'TXT'		: $ext = '.txt';	break;
+		    case 'HTML'		: 
+		    case 'HTML/TXT'	: $ext = '.html';	break;
+		    case 'HTM'		: $ext = '.htm';	break;
+		}
+		
+		$filename = $cid.'_'.$did.'_'.$filename.$ext;
+		
+		if ($full) {
+			$PREFIX = date('Y/m/d',$doc['cdate']);
+			$filename = INVOICE_DIR.'/'.$PREFIX.'/'.$filename;
+		}
+		
+		return $filename;
+	}
+
+
 	function TariffAdd($tariff) {
 		$result = $this->DB->Execute('INSERT INTO tariffs (name, description, value,
 				period, taxid, prodid, uprate, downrate, upceil, downceil, climit,
@@ -3467,8 +3937,8 @@ class LMS {
 				burst_limit_dn, burst_threshold_dn, burst_time_dn,
 				burst_limit_up_n, burst_threshold_up_n, burst_time_up_n,
 				burst_limit_dn_n, burst_threshold_dn_n, burst_time_dn_n,
-				start_night_h, start_night_m, stop_night_h, stop_night_m)
-				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+				start_night_h, start_night_m, stop_night_h, stop_night_m, relief)
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
 				array(
 				$tariff['name'],
 				($tariff['description'] ? $tariff['description'] : ''),
@@ -3519,6 +3989,7 @@ class LMS {
 				($tariff['start_night_m'] ? $tariff['start_night_m'] : 0),
 				($tariff['stop_night_h'] ? $tariff['stop_night_h'] : 0),
 				($tariff['stop_night_m'] ? $tariff['stop_night_m'] : 0),
+				($tariff['relief'] ? $tariff['relief'] : '0.00'),
 				));
 		if ($result)
 		{
@@ -3546,7 +4017,7 @@ class LMS {
 				burst_limit_dn=?, burst_threshold_dn=?, burst_time_dn=?,
 				burst_limit_up_n=?, burst_threshold_up_n=?, burst_time_up_n=?,
 				burst_limit_dn_n=?, burst_threshold_dn_n=?, burst_time_dn_n=?,
-				start_night_h=?, start_night_m=?, stop_night_h=?, stop_night_m=? 
+				start_night_h=?, start_night_m=?, stop_night_h=?, stop_night_m=?, relief=? 
 				WHERE id=?', array(
 					$tariff['name'],
 					($tariff['description'] ? $tariff['description'] : ''),
@@ -3597,6 +4068,7 @@ class LMS {
 					($tariff['start_night_m'] ? $tariff['start_night_m'] : 0), 
 					($tariff['stop_night_h'] ? $tariff['stop_night_h'] : 0),
 					($tariff['stop_night_m'] ? $tariff['stop_night_m'] : 0),
+					($tariff['relief'] ? $tariff['relief'] : '0.00'),
 					$tariff['id']
 				));
 	}
@@ -3700,7 +4172,7 @@ class LMS {
 	function GetTariffs() {
 		return $this->DB->GetAll('SELECT t.id, t.name, t.value, uprate, taxid, prodid,
 				downrate, upceil, downceil, climit, plimit, taxes.value AS taxvalue,
-				taxes.label AS tax, t.period
+				taxes.label AS tax, t.period, t.relief 
 				FROM tariffs t
 				LEFT JOIN taxes ON t.taxid = taxes.id 
 				WHERE t.active = 1 
@@ -3749,7 +4221,7 @@ class LMS {
 		if (SYSLOG && $sys_log) {
 			    $cusname = $this->getcustomername($addbalance['customerid']);
 			    if ($addbalance['type'] == '0') $str = 'zobowiązanie'; else $str = 'przychód';
-			    addlogs('dodano '.$str.' <b>'.moneyf($addbalance['value']).'</b> dla '.$cusname,'e=add;m=fin;c='.$addbalance['customerid']);
+			    addlogs('dodano '.$str.' Pozycja: <b>"'.$addbalance['comment'].'"</b> na kwotę: <b>'.moneyf($addbalance['value']).'</b> dla '.$cusname.'','e=add;m=fin;c='.$addbalance['customerid']);
 		}
 
 		return $this->DB->Execute('INSERT INTO cash (time, userid, value, type, taxid,
@@ -3769,7 +4241,7 @@ class LMS {
 	}
 
 	function DelBalance($id) {
-		$row = $this->DB->GetRow('SELECT docid, itemid, cash.customerid AS cid, value, documents.type AS doctype, importid
+		$row = $this->DB->GetRow('SELECT docid, itemid, cash.customerid AS cid, value, documents.type AS doctype, importid, comment 
 					FROM cash
 					LEFT JOIN documents ON (docid = documents.id)
 					WHERE cash.id = ? ', array($id));
@@ -3784,7 +4256,7 @@ class LMS {
 		else {
 			if (SYSLOG) {
 			    $cusname = $this->getcustomername($row['cid']);
-			    addlogs('skasowano zobowiązanie <b>'.moneyf($row['value']).'</b> dla '.$cusname,'e=rm;m=fin;c='.$row['customerid']);
+			    addlogs('skasowano zobowiązanie Pozycja: <b>"'.$row['comment'].'"</b> na kwotę: <b>'.moneyf($row['value']).'</b> dla '.$cusname,'e=rm;m=fin;c='.$row['cid']);
 		    }
 			$this->DB->Execute('DELETE FROM cash WHERE id = ?', array($id));
 			if ($row['importid'])
@@ -3945,15 +4417,20 @@ class LMS {
 
 	function IsIPFree($ip, $netid = 0) 
 	{
-		if ($netid)
-			return !($this->DB->GetOne('SELECT id FROM nodes WHERE (ipaddr=inet_aton(?) AND netid=?) OR ipaddr_pub=inet_aton(?)', array($ip, $netid, $ip)) ? TRUE : FALSE);
-		else
+		if ($netid){
+			return !($this->DB->GetOne('SELECT id FROM nodes WHERE (ipaddr=inet_aton(?) AND netid=?) OR (ipaddr_pub=inet_aton(?) AND netid=?)', array($ip, $netid, $ip, $netid)) ? TRUE : FALSE);
+			
+		} else {
 			return !($this->DB->GetOne('SELECT id FROM nodes WHERE ipaddr=inet_aton(?) OR ipaddr_pub=inet_aton(?)', array($ip, $ip)) ? TRUE : FALSE);
+		}
 	}
 
 
-	function IsIPGateway($ip) {
-		return ($this->DB->GetOne('SELECT gateway FROM networks WHERE gateway = ?', array($ip)) ? TRUE : FALSE);
+	function IsIPGateway($ip, $netid = 0) {
+		if ($netid)
+		    return ($this->DB->GetOne('SELECT gateway FROM networks WHERE gateway = ? AND netid = ?', array($ip, $netid)) ? TRUE : FALSE);
+		else
+		    return ($this->DB->GetOne('SELECT gateway FROM networks WHERE gateway = ?', array($ip)) ? TRUE : FALSE);
 	}
 
 	function GetPrefixList() {
@@ -3970,8 +4447,8 @@ class LMS {
 			$netadd['mask'] = prefix2mask($netadd['prefix']);
 
 		if ($this->DB->Execute('INSERT INTO networks (name, address, mask, interface, gateway, 
-				dns, dns2, domain, wins, dhcpstart, dhcpend, notes, hostid) 
-				VALUES (?, inet_aton(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($netadd['name']),
+				dns, dns2, domain, wins, dhcpstart, dhcpend, notes, hostid, ipnat) 
+				VALUES (?, inet_aton(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(strtoupper($netadd['name']),
 						$netadd['address'],
 						$netadd['mask'],
 						strtolower($netadd['interface']),
@@ -3984,8 +4461,9 @@ class LMS {
 						$netadd['dhcpend'],
 						$netadd['notes'],
 						($netadd['hostid'] ? $netadd['hostid'] : NULL),
+						($netadd['ipnat'] ? $netadd['ipnat'] : ''),
 				)))
-			return $this->DB->GetOne('SELECT id FROM networks WHERE address = inet_aton(?)', array($netadd['address']));
+			return $this->DB->getLastInsertId('networks');
 		else
 			return FALSE;
 	}
@@ -4022,24 +4500,58 @@ class LMS {
 			FROM networks WHERE id = ?', array($id));
 	}
 
-	function GetNetworkList($status = NULL, $hostid = NULL) 
-	{
+	function GetNetworkList($status = NULL, $hostid = NULL, $order='id,asc') 
+	{ if($order=='')
+		$order='id,asc';
+		list($order,$direction) = sscanf($order, '%[^,],%s');
+		($direction=='desc') ? $direction = 'desc' : $direction = 'asc';
+                       switch($order)
+                        {
+                        case 'name':
+                        $sqlord = ' ORDER BY n.name';
+                        break;
+                        case 'id':
+                        $sqlord = ' ORDER BY n.id';
+                        break;
+                        case 'address':
+                        $sqlord = ' ORDER BY n.address';
+                        break;
+                        case 'mask':
+                        $sqlord = ' ORDER BY n.mask';
+                        break;
+                        case 'interface':
+                        $sqlord = ' ORDER BY n.interface';
+                        break;
+                        case 'host':
+                        $sqlord = ' ORDER BY hostname';
+                        break;
+                        case 'size':
+                        $sqlord = ' ORDER BY size';
+                        break;
+                        case 'assigned':
+                        $sqlord = ' ORDER BY assigned';
+                        break;
+                        case 'online':
+                        $sqlord = ' ORDER BY online';
+                        break;
+                        }
+
 		if ($networks = $this->DB->GetAll('SELECT n.id, n.name, h.name AS hostname, inet_ntoa(address) AS address, 
 				address AS addresslong, mask, interface, gateway, dns, dns2, 
-				domain, wins, dhcpstart, dhcpend,
+				domain, wins, dhcpstart, dhcpend, ipnat,
 				mask2prefix(inet_aton(mask)) AS prefix,
 				broadcast(address, inet_aton(mask)) AS broadcastlong,
 				inet_ntoa(broadcast(address, inet_aton(mask))) AS broadcast,
 				pow(2,(32 - mask2prefix(inet_aton(mask)))) AS size, disabled, 
 				(SELECT COUNT(*) 
 					FROM nodes 
-					WHERE (ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
-						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask)))
+					WHERE netid = n.id AND ((ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
+						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask))))
 				) AS assigned,
 				(SELECT COUNT(*) 
 					FROM nodes 
-					WHERE ((ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
-						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask))))
+					WHERE netid = n.id AND (((ipaddr >= address AND ipaddr <= broadcast(address, inet_aton(mask))) 
+						OR (ipaddr_pub >= address AND ipaddr_pub <= broadcast(address, inet_aton(mask)))))
 						AND (?NOW? - lastonline < ?)
 				) AS online 
 				FROM networks n 
@@ -4048,7 +4560,7 @@ class LMS {
 				.($status == '1' ? ' AND disabled=1' : '')
 				.($status == '0' ? ' AND disabled=0' : '')
 				.($hostid ? ' AND hostid = '.intval($hostid) : '')
-				.' ORDER BY name', array(intval($this->CONFIG['phpui']['lastonline_limit'])))) {
+				.($sqlord != '' ? $sqlord.' '.$direction : ''), array(intval($this->CONFIG['phpui']['lastonline_limit'])))) {
 			$size = 0;
 			$assigned = 0;
 			$online = 0;
@@ -4062,6 +4574,8 @@ class LMS {
 			$networks['size'] = $size;
 			$networks['assigned'] = $assigned;
 			$networks['online'] = $online;
+			$networks['order'] = $order;
+			$networks['direction'] = $direction;
 		}
 		return $networks;
 	}
@@ -4092,9 +4606,14 @@ class LMS {
 	}
 
 
-	function NetworkShift($network = '0.0.0.0', $mask = '0.0.0.0', $shift = 0) {
-		return ($this->DB->Execute('UPDATE nodes SET ipaddr = ipaddr + ? 
-				WHERE ipaddr >= inet_aton(?) AND ipaddr <= inet_aton(?)', array($shift, $network, getbraddr($network, $mask)))
+	function NetworkShift($network = '0.0.0.0', $mask = '0.0.0.0', $shift = 0, $netid = NULL) {
+		if ($netid)
+		$result = $this->DB->Execute('UPDATE nodes SET ipaddr = ipaddr + ? 
+				WHERE ipaddr >= inet_aton(?) AND ipaddr <= inet_aton(?) AND netid=?', array($shift, $network, getbraddr($network, $mask),$netid));
+		else
+		$result = $this->DB->Execute('UPDATE nodes SET ipaddr = ipaddr + ? 
+				WHERE ipaddr >= inet_aton(?) AND ipaddr <= inet_aton(?)', array($shift, $network, getbraddr($network, $mask)));
+		return ($result 
 				+ $this->DB->Execute('UPDATE nodes SET ipaddr_pub = ipaddr_pub + ? 
 				WHERE ipaddr_pub >= inet_aton(?) AND ipaddr_pub <= inet_aton(?)', array($shift, $network, getbraddr($network, $mask))));
 	}
@@ -4103,7 +4622,7 @@ class LMS {
 	function NetworkUpdate($networkdata) {
 		return $this->DB->Execute('UPDATE networks SET name=?, address=inet_aton(?), 
 			mask=?, interface=?, gateway=?, dns=?, dns2=?, domain=?, wins=?, 
-			dhcpstart=?, dhcpend=?, notes=?, hostid=? WHERE id=?', array(strtoupper($networkdata['name']),
+			dhcpstart=?, dhcpend=?, notes=?, hostid=?, ipnat=? WHERE id=?', array(strtoupper($networkdata['name']),
 						$networkdata['address'],
 						$networkdata['mask'],
 						strtolower($networkdata['interface']),
@@ -4116,6 +4635,7 @@ class LMS {
 						$networkdata['dhcpend'],
 						$networkdata['notes'],
 						($networkdata['hostid'] ? $networkdata['hostid'] : NULL),
+						($networkdata['ipnat'] ? $networkdata['ipnat'] : ''),
 						$networkdata['id'],
 				));
 	}
@@ -4191,7 +4711,7 @@ class LMS {
 			while (in_array($i, (array) $destnodes))
 				$i++;
 
-			if (!$this->DB->Execute('UPDATE nodes SET ipaddr=? WHERE ipaddr=?', array($i, $ip)))
+			if (!$this->DB->Execute('UPDATE nodes SET ipaddr=?, netid=? WHERE netid=? AND ipaddr=?', array($i, $dst, $src, $ip)))
 				$this->DB->Execute('UPDATE nodes SET ipaddr_pub=? WHERE ipaddr_pub=?', array($i, $ip));
 
 			$counter++;
@@ -4199,10 +4719,12 @@ class LMS {
 
 		return $counter;
 	}
+
+
 	function GetNetworkRecord($id, $page = 0, $plimit = 4294967296, $firstfree = false) {
 		$network = $this->DB->GetRow('SELECT id, name, inet_ntoa(address) AS address, 
 				address AS addresslong, mask, interface, gateway, dns, dns2, 
-				domain, wins, dhcpstart, dhcpend, hostid,
+				domain, wins, dhcpstart, dhcpend, hostid, ipnat,
 				mask2prefix(inet_aton(mask)) AS prefix,
 				inet_ntoa(broadcast(address, inet_aton(mask))) AS broadcast, 
 				notes 
@@ -4305,15 +4827,17 @@ class LMS {
 			WHERE (src=? AND dst=?) OR (dst=? AND src=?)', array($dev1, $dev2, $dev1, $dev2));
 	}
 
+
 	function GetNetDevConnectedNames($id) {
 		return $this->DB->GetAll('SELECT d.id, d.name, d.description,
 			d.location, d.producer, d.ports, l.type AS linktype, l.technology AS linktechnology,
+			l.layer AS layer, l.teleline AS teleline, l.tracttype AS tracttype, 
 			l.speed AS linkspeed, l.srcport, l.dstport,
 			(SELECT COUNT(*) FROM netlinks WHERE src = d.id OR dst = d.id) 
 			+ (SELECT COUNT(*) FROM nodes WHERE netdev = d.id AND ownerid > 0)
 			AS takenports 
 			FROM netdevices d
-			JOIN (SELECT DISTINCT type, speed, technology ,
+			JOIN (SELECT DISTINCT type, speed, technology, layer, teleline, tracttype, 
 				(CASE src WHEN ? THEN dst ELSE src END) AS dev, 
 				(CASE src WHEN ? THEN dstport ELSE srcport END) AS srcport, 
 				(CASE src WHEN ? THEN srcport ELSE dstport END) AS dstport 
@@ -4322,38 +4846,26 @@ class LMS {
 			ORDER BY name', array($id, $id, $id, $id, $id));
 	}
 
-	function GetNetDevList($order = 'name,asc') {
+
+	function GetNetDevList($order = 'name,asc', $status = NULL, $project = NULL, $networknode = NULL, $producer = NULL, $model = NULL, $group = NULL, $groupw = NULL) 
+	{
+		// group -> grupa interfejsu
+		// groupw -> grupa węzłów
 		list($order, $direction) = sscanf($order, '%[^,],%s');
-
+		
 		($direction == 'desc') ? $direction = 'desc' : $direction = 'asc';
-
+		
 		switch ($order) {
-			case 'id':
-				$sqlord = ' ORDER BY id';
-				break;
-			case 'producer':
-				$sqlord = ' ORDER BY producer';
-				break;
-			case 'model':
-				$sqlord = ' ORDER BY model';
-				break;
-			case 'ports':
-				$sqlord = ' ORDER BY ports';
-				break;
-			case 'takenports':
-				$sqlord = ' ORDER BY takenports';
-				break;
-			case 'serialnumber':
-				$sqlord = ' ORDER BY serialnumber';
-				break;
-			case 'location':
-				$sqlord = ' ORDER BY location';
-				break;
-			default:
-				$sqlord = ' ORDER BY name';
-				break;
+			case 'id': $sqlord = ' ORDER BY id'; break;
+			case 'producer': $sqlord = ' ORDER BY producer'; break;
+			case 'model': $sqlord = ' ORDER BY model'; break;
+			case 'ports': $sqlord = ' ORDER BY ports'; break;
+			case 'takenports': $sqlord = ' ORDER BY takenports'; break;
+			case 'serialnumber': $sqlord = ' ORDER BY serialnumber'; break;
+			case 'location': $sqlord = ' ORDER BY location'; break;
+			default: $sqlord = ' ORDER BY name'; break;
 		}
-
+		
 		$netdevlist = $this->DB->GetAll('SELECT d.id, d.name, d.location,
 			d.description, d.producer, d.model, d.serialnumber, d.ports,
 			d.networknodeid, (SELECT nn.name FROM networknode nn WHERE nn.id = d.networknodeid) AS networknodename, 
@@ -4361,14 +4873,25 @@ class LMS {
 			+ (SELECT COUNT(*) FROM netlinks WHERE src = d.id OR dst = d.id)
 			AS takenports
 			FROM netdevices d '
-				. ($sqlord != '' ? $sqlord . ' ' . $direction : ''));
-
+			.(!is_null($group)  ? ' JOIN netdevicesassignments ng ON (ng.netdevicesid = d.id) ' : '')
+			.(!is_null($groupw) ? ' JOIN networknodeassignments nng ON (nng.networknodeid = d.networknodeid) ' : '')
+			.'WHERE 1=1 '
+			.(!is_null($status) ? ' AND d.status = '.$status : '')
+			.(!is_null($project) ? ' AND invprojectid = '.$project : '')
+			.(!is_null($networknode) ? ' AND networknodeid = '.$networknode : '')
+			.(!is_null($producer) ? ' AND UPPER(producer) = \''.strtoupper($producer).'\'' : '')
+			.(!is_null($model) ? ' AND UPPER(model) = \''.strtoupper($model).'\'' : '')
+			.(!is_null($group) ? ' AND ng.netdevicesgroupid = '.$group : '')
+			.(!is_null($groupw) ? ' AND nng.networknodegroupid = '.$groupw : '')
+			. ($sqlord != '' ? $sqlord . ' ' . $direction : ''));
+		
 		$netdevlist['total'] = sizeof($netdevlist);
 		$netdevlist['order'] = $order;
 		$netdevlist['direction'] = $direction;
-
+		
 		return $netdevlist;
 	}
+
 
 	function GetNetDevNames() {
 		return $this->DB->GetAll('SELECT id, name, location, producer 
@@ -4389,7 +4912,7 @@ class LMS {
 
 	function GetNetDev($id) {
 		$result = $this->DB->GetRow('SELECT d.*, t.name AS nastypename, tt.name AS monit_nastypename, c.name AS channel,
-		        lc.name AS city_name,
+		        lc.name AS city_name,p.name AS projectname, 
 		        (SELECT nn.name FROM networknode nn WHERE nn.id = d.networknodeid) AS networknodename,
 		        (SELECT dt.type FROM dictionary_devices_client dt WHERE dt.id = d.typeofdevice) AS typeofdevicename,
 			(CASE WHEN ls.name2 IS NOT NULL THEN ' . $this->DB->Concat('ls.name2', "' '", 'ls.name') . ' ELSE ls.name END) AS street_name, lt.name AS street_type
@@ -4400,6 +4923,7 @@ class LMS {
 			LEFT JOIN location_cities lc ON (lc.id = d.location_city)
 			LEFT JOIN location_streets ls ON (ls.id = d.location_street)
 			LEFT JOIN location_street_types lt ON (lt.id = ls.typeid)
+			LEFT JOIN invprojects p ON (p.id = d.invprojectid) 
 			WHERE d.id = ?', array($id));
 
 		$result['takenports'] = $this->CountNetDevLinks($id);
@@ -4434,8 +4958,9 @@ class LMS {
 				ports, purchasetime, guaranteeperiod, shortname,
 				nastype, clients, secret, community, channelid,
 				longitude, latitude, monit_nastype, monit_login, monit_passwd,  monit_port, networknodeid, server, coaport,
-				devtype, managed, sharing, modular, backbone_layer, distribution_layer, access_layer, typeofdevice)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
+				devtype, managed, sharing, modular, backbone_layer, distribution_layer, access_layer, typeofdevice, netdevicemodelid,
+				invprojectid, status, login, passwd)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
 						$data['name'],
 						($data['location'] ? $data['location'] : ''),
 						($data['location_city'] ? $data['location_city'] : null),
@@ -4472,6 +4997,11 @@ class LMS {
 						($data['distribution_layer'] ? 1 : 0),
 						($data['access_layer'] ? 1 : 0),
 						($data['typeofdevice'] ? $data['typeofdevice'] : 0),
+						($data['netdevicemodelid'] ? $data['netdevicemodelid'] : NULL),
+						($data['invprojectid'] ? $data['invprojectid'] : NULL),
+						($data['status'] ? $data['status'] : 0),
+						($data['login'] ? $data['login'] : NULL),
+						($data['passwd'] ? $data['passwd'] : NULL),
 				))) {
 			$id = $this->DB->GetLastInsertID('netdevices');
 
@@ -4505,7 +5035,8 @@ class LMS {
 				model=?, serialnumber=?, ports=?, purchasetime=?, guaranteeperiod=?, shortname=?,
 				nastype=?, clients=?, secret=?, community=?, channelid=?, longitude=?, latitude=?,
 				monit_nastype = ?, monit_login = ?, monit_passwd = ?, monit_port = ?, networknodeid = ?, server=?, coaport=?,
-				devtype=?, managed=?, sharing=?, modular=?, backbone_layer=?, distribution_layer=?, access_layer=?, typeofdevice=? 
+				devtype=?, managed=?, sharing=?, modular=?, backbone_layer=?, distribution_layer=?, access_layer=?, typeofdevice=?,
+				netdevicemodelid=?, invprojectid=?, status=?, login=?, passwd=? 
 				WHERE id=?', array(
 				$data['name'],
 				($data['description'] ? $data['description'] : ''),
@@ -4543,6 +5074,11 @@ class LMS {
 				($data['distribution_layer'] ? 1 : 0),
 				($data['access_layer'] ? 1 : 0),
 				($data['typeofdevice'] ? $data['typeofdevice'] : 0),
+				($data['netdevicemodelid'] ? $data['netdevicemodelid'] : NULL),
+				($data['invprojectid'] ? $data['invprojectid'] : NULL),
+				($data['status'] ? $data['status'] : 0),
+				($data['login'] ? $data['login'] : NULL),
+				($data['passwd'] ? $data['passwd'] : NULL),
 				$data['id']
 		));
 	}
@@ -4552,13 +5088,17 @@ class LMS {
 			WHERE (src=? AND dst=?) OR (dst=? AND src=?)', array($dev1, $dev2, $dev1, $dev2));
 	}
 
-	function NetDevLink($dev1, $dev2, $type = 0, $speed = 100000, $sport = 0, $dport = 0, $technology=0) {
+	function NetDevLink($dev1, $dev2, $type = 0, $speed = 100000, $sport = 0, $dport = 0, $technology=0, $layer = NULL, $teleline = 0, $tracttype = NULL) {
 		if ($dev1 != $dev2)
 			if (!$this->IsNetDevLink($dev1, $dev2))
 				return $this->DB->Execute('INSERT INTO netlinks 
-					(src, dst, type, speed, srcport, dstport,technology) 
-					VALUES (?, ?, ?, ?, ?, ?,?)', array($dev1, $dev2, $type, $speed,
-								intval($sport), intval($dport),intval($technology)));
+					(src, dst, type, speed, srcport, dstport,technology, layer, teleline, tracttype) 
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($dev1, $dev2, $type, $speed,
+					intval($sport), intval($dport),intval($technology),
+					($layer ? intval($layer) : NULL),
+					($teleline ? intval($teleline) : 0),
+					($tracttype ? intval($tracttype) : NULL),
+					));
 
 		return FALSE;
 	}
@@ -4573,13 +5113,68 @@ class LMS {
 	}
 
 	function GetNetDevIPs($id) {
+	    $result['networkname'] = $result['netname'] = $this->DB->GetOne('SELECT name FROM networks WHERE id=? LIMIT 1;',array($result['netid']));
 		return $this->DB->GetAll('SELECT id, name, mac, ipaddr, inet_ntoa(ipaddr) AS ip, 
-			ipaddr_pub, inet_ntoa(ipaddr_pub) AS ip_pub, access, info, port , 
+			ipaddr_pub, inet_ntoa(ipaddr_pub) AS ip_pub, access, info, port , netid,
+			(SELECT n.name FROM networks n WHERE n.id = netid LIMIT 1) AS netname,
 			(SELECT 1 FROM monitnodes WHERE monitnodes.id = vnodes.id and monitnodes.active=1) AS monitoring ,
 			(SELECT 1 FROM monitnodes WHERE monitnodes.id = vnodes.id and monitnodes.active=1 AND monitnodes.signaltest=1) AS monitoringsignal 
 			FROM vnodes 
 			WHERE ownerid = 0 AND netdev = ?', array($id));
 	}
+	
+	
+	function GetNetDevWithGroup($groupid) {
+
+		return $this->DB->GetAll('SELECT n.id AS id, n.name AS nodename, a.netdevicesid
+			FROM netdevices n
+			JOIN netdevicesassignments a ON (n.id = a.netdevicesid) 
+			WHERE a.netdevicesgroupid = ? ORDER BY nodename', array($groupid));
+	}
+
+
+	function GetNetDevGroup($id) {
+		$result = $this->DB->GetRow('SELECT id, name, description, 
+				(SELECT COUNT(*) FROM netdevicesassignments 
+					WHERE netdevicesgroupid = netdevicesgroups.id) AS count
+				FROM netdevicesgroups WHERE id = ?', array($id));
+
+		$result['nodes'] = $this->GetNetDevWithGroup($id);
+		$result['nodescount'] = sizeof($result['nodes']);
+
+		return $result;
+	}
+	
+	function GetNetDevGroupNames() {
+		return $this->DB->GetAllByKey('SELECT id, name, description FROM netdevicesgroups
+				ORDER BY name ASC', 'id');
+	}
+	
+	function GetNetDevWithoutGroup($groupid) {
+
+		return $this->DB->GetAll('SELECT n.id AS id, n.name AS nodename, a.netdevicesid
+			FROM netdevices n
+			LEFT JOIN netdevicesassignments a ON (n.id = a.netdevicesid AND a.netdevicesgroupid = ?) 
+			WHERE a.netdevicesid IS NULL ORDER BY nodename', array($groupid));
+	}
+	
+	
+	
+	function GetNetDevGroupNamesWithoutNode($nid) {
+		return $this->DB->GetAllbykey('SELECT id, name FROM netdevicesgroups
+				WHERE id NOT IN (SELECT netdevicesgroupid FROM netdevicesassignments
+					WHERE netdevicesid = ?)
+				ORDER BY name', 'id',array($nid));
+	}
+	
+	
+	function GetNetDevGroupNamesByNode($nodeid) {
+		return $this->DB->GetAllByKey('SELECT id, name, description FROM netdevicesgroups
+				WHERE id IN (SELECT netdevicesgroupid FROM netdevicesassignments
+					WHERE netdevicesid = ?)
+				ORDER BY name', 'id', array($nodeid));
+	}
+
 
 	/*
 	 *   Request Tracker (Helpdesk)
@@ -4986,7 +5581,6 @@ class LMS {
 			case 'to_words_short_version':
 			case 'newticket_notify':
 			case 'print_balance_list':
-			case 'short_pagescroller':
 			case 'big_networks':
 			case 'ewx_support':
 			case 'helpdesk_stats':
@@ -5132,7 +5726,7 @@ class LMS {
 	}
 
 	function CheckRegister() {
-		if (!$this->DB->GetOne('SELECT 1 FROM dbinfo WHERE keytype = ? AND keyvalue = ? LIMIT 1;',array('inetlms_registers',1)))
+		if (!$this->DB->GetOne('SELECT 1 FROM dbinfo WHERE keytype = ? AND keyvalue = ? LIMIT 1;',array('inetlms_registers','1')))
 		    return FALSE;
 		else
 		    return TRUE;
@@ -5175,6 +5769,48 @@ class LMS {
 		    return FALSE;
 		return $result;
 	}
+
+
+	// dzielenie długiego tekstu na części o okreśnlonej długości,
+	// funkcja rozdziela na słowa
+	function share_news($string,$maxchar=158,$separator=" ") {
+		
+		$result = $tmp = array();
+		
+		$string = preg_replace("/\r/", "", $string);
+		$string = iconv("UTF-8","ASCII//TRANSLIT",$string);
+		$czesci = (ceil(mb_strlen($string)/$maxchar)-1);
+		
+		$tab1 = explode($separator,$string);
+		$c = 0; // część
+		
+		for ($i=0; $i<count($tab1); $i++) {
+			$tmp[] = $tab1[$i];
+			$tmpstr = implode($separator,$tmp);
+			
+			if (strlen($tmpstr) > $maxchar && $c != $czesci) {
+				$x = (count($tmp)-1);
+				$_tmp = $tmp[$x];
+				unset($tmp[$x]);
+				$result[$c] = $tmp;
+				$c++;
+				$tmp = array();
+				$tmp[] = $_tmp;
+			} 
+			elseif ($c == $czesci && $i==(count($tab1)-1)) {
+				$result[] = $tmp;
+			}
+		}
+		
+		$return = array();
+		
+		for ($i=0;$i<count($result);$i++)
+			$return[] = implode($separator,$result[$i]);
+		
+		
+		return $return;
+	}
+
 
 	function SendMail($recipients, $headers, $body, $files = NULL) {
 		@include_once('Mail.php');
@@ -5241,6 +5877,7 @@ class LMS {
 	}
 
 	function SendSMS($number, $message, $messageid = 0) {
+		global $MT;
 		$msg_len = mb_strlen($message);
 
 		if (!$msg_len) {
@@ -5256,8 +5893,10 @@ class LMS {
 		$number = preg_replace('/^0+/', '', $number);
 
 		// add prefix to the number if needed
-		if ($prefix && substr($number, 0, strlen($prefix)) != $prefix)
+		if ($prefix && substr($number, 0, strlen($prefix)) != $prefix) {
+		    if (strtoupper(get_conf('sms.service'))  != 'MIKROTIK')
 			$number = $prefix . $number;
+		}
 
 		// message ID must be unique
 		if (!$messageid) {
@@ -5424,6 +6063,66 @@ class LMS {
 				    return MSG_SENT;
 				return $ret;
 			break;
+			case 'serwersms' :
+				if ($msg_len < 160)
+					$type_sms = 'sms';
+				else 
+				    if ($msg_len <= 459)
+					$type_sms = 'concat';
+				    else
+					return trans('SMS Message too long!');
+				$param = array();
+				$param['numer'] = $number;
+				$param['wiadomosc'] = $message;
+				$param['test'] = 0;
+				if (!get_conf('sms.smsapi_eco',1) && get_conf('sms.from','')) {
+				    $param['nadawca'] = get_conf('sms.from');
+				}
+				$result = SerwerSMS::wyslij_sms($param);
+				if ($result)
+				    return MSG_SENT;
+				else
+				    return FALSE;
+			break;
+			case 'mikrotik' :
+			    $MT->debug = (get_conf('sms.mt_debug',false) ? true : false);
+			    $MT->port = get_conf('sms.mt_port',8728);
+			    $blad = false;
+			    
+			    if ($MT->connect(get_conf('sms.mt_host'),get_conf('sms.mt_username'),get_conf('sms.mt_password'))) {
+			    
+				$part = $this->share_news($message);
+				$cmd = "/tool/sms/send";
+				$usb = get_conf('sms.mt_usb','usb1');
+				
+				if (count($part) > 0) {
+				    if (get_conf('sms.mt_partreverse',false) && count($part) > 1)
+					$part = array_reverse($part);
+					
+				    for ($p=0; $p<count($part); $p++) {
+					$mess = $part[$p];
+					$vars = array(
+					    "phone-number"	=> "$number",
+					    "port"		=> "$usb",
+					    "message"	=> "$mess",
+					);
+					
+					if (!$MT->comm($cmd,$vars)) $blad = true;
+					if ($p < count($part)) usleep(1500);
+				    }
+				}
+				
+				$MT->disconnect();
+			    } else $blad = true;
+			    
+			    if (!$blad)
+				return MSG_SENT;
+			    else
+				return FALSE;
+			    
+			    
+			    
+			break;
 			case 'smstools':
 				$dir = !empty($this->CONFIG['sms']['smstools_outdir']) ? $this->CONFIG['sms']['smstools_outdir'] : '/var/spool/sms/outgoing';
 
@@ -5433,11 +6132,14 @@ class LMS {
 					return trans('Unable to write to SMSTools outgoing directory ($a)!', $dir);
 
 				$filename = $dir . '/lms-' . $messageid . '-' . $number;
-				$latin1 = iconv('UTF-8', 'ISO-8859-15', $message);
-				$alphabet = '';
-				if (strlen($latin1) != mb_strlen($message, 'UTF-8')) {
-					$alphabet = "Alphabet: UCS2\n";
-					$message = iconv('UTF-8', 'UNICODEBIG', $message);
+				if (strtoupper(get_conf('sms.encoding','UTF8')) != 'UTF8')
+				{
+					$latin1 = iconv('UTF-8', 'ISO-8859-15', $message);
+					$alphabet = '';
+					if (strlen($latin1) != mb_strlen($message, 'UTF-8')) {
+						$alphabet = "Alphabet: UCS2\n";
+						$message = iconv('UTF-8', 'UNICODEBIG', $message);
+					}
 				}
 				//$message = clear_utf($message);
 				$file = sprintf("To: %s\n%s\n%s", $number, $alphabet, $message);
@@ -7497,6 +8199,8 @@ class LMS {
 	    $result['name_street'] = $result['street'] = ($tmp['cecha'] ? $tmp['cecha'].' ' : '') . ($tmp['nazwa_2'] ? $tmp['nazwa_2'].' ' : ''). $tmp['nazwa_1'];
 	}
 	
+	if ($result['kod_ulic'] == '00000') $result['kod_ulic'] = '99999';
+	
 	return $result;
 
     }
@@ -7518,9 +8222,9 @@ class LMS {
     {
 	$id = intval($id);
 	$result = NULL;
-	if ($return = $this->DB->GetRow('SELECT 
-		n.*, 
-		(SELECT COUNT(nd.id) FROM netdevices nd WHERE nd.networknodeid = n.id) AS count_netdev 
+	if ($return = $this->DB->GetRow('SELECT n.*, 
+		(SELECT COUNT(nd.id) FROM netdevices nd WHERE nd.networknodeid = n.id) AS count_netdev,
+		(SELECT name FROM invprojects p WHERE p.id = n.invprojectid) AS projectname 
 		FROM networknode n WHERE n.id = ? '.$this->DB->Limit(1).' ;',array($id)))
 	{
 	    $return['backbone_layer'] = intval($return['backbone_layer']);
@@ -7550,12 +8254,33 @@ class LMS {
     }
 
 
-    function GetListNetworknode($filter = NULL)
+    function GetListNetworknode($order = 'name,asc', $status = NULL, $project = NULL, $owner = NULL, $group = NULL)
     {
-	return $this->DB->GetAll('SELECT nn.*, 
+	if (is_null($order)) $order = 'name,asc';
+	
+	list($order,$direction) = sscanf($order,'%[^,],%s');
+	
+	($direction != 'desc') ? $direction = 'asc' : $direction = 'desc';
+	
+	switch ($order) {
+	    case 'id' : $sqlord = 'ORDER BY nn.id'; break;
+	    case 'name' : $sqlord = 'ORDER BY nn.name'; break;
+	    default : $sqlord = 'ORDER BY nn.name'; break;
+	}
+	
+	return $this->DB->GetAll('SELECT nn.*, p.name AS projectname, p.title AS projecttitle, p.eu AS projecteu, 
 				    (SELECT COUNT(nd.id) FROM netdevices nd WHERE nd.networknodeid = nn.id) AS count_netdev 
-				    FROM networknode nn WHERE 1=1 '
-				    .' AND deleted = 0;');
+				    FROM networknode nn 
+				    LEFT JOIN invprojects p ON (p.id = nn.invprojectid) '
+				    . (!is_null($group) ? 'JOIN networknodeassignments ng ON (ng.networknodeid = nn.id) ' : '')
+				    .' WHERE 1=1 '
+				    .(!is_null($status) ? ' AND nn.status = '.$status : '')
+				    .(!is_null($project) ? ' AND nn.invprojectid = '.$project : '')
+				    .(!is_null($owner) ? ' AND nn.type = '.$owner : '')
+				    .(!is_null($group) ? ' AND ng.networknodegroupid = '.$group : '')
+				    .' AND deleted = 0 '
+				    .($sqlord != '' ? ' '.$sqlord.' '.$direction.' ' : '')
+				    );
     }
     
     function Addnetworknode($dane)
@@ -7578,10 +8303,10 @@ class LMS {
 				deleted, disabled, room_area, room_area_empty, technical_floor, technical_ceiling, 
 				air_conditioning, telecommunication, instmast, instofanten, foreign_entity,
 				entity_fiber_end, sharing_fiber, dc12, dc24, dc48, ac230, height_anten, 
-				service_broadband, service_voice, service_other, total_bandwidth, bandwidth_broadband, available_surface, eu
-				) 
+				service_broadband, service_voice, service_other, total_bandwidth, bandwidth_broadband, available_surface, eu,
+				invprojectid, status ) 
 				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;',
+				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ;',
 				array(
 					$dane['name'],
 					($dane['type'] ? $dane['type'] : NODE_OWN),
@@ -7629,7 +8354,8 @@ class LMS {
 					($dane['bandwidth_broadband'] ? $dane['bandwidth_broadband'] : 0),
 					($dane['available_surface'] ? 1 : 0),
 					($dane['eu'] ? 1 : 0),
-					
+					($dane['invprojectid'] ? $dane['invprojectid'] : NULL),
+					($dane['status'] ? $dane['status'] : 0),
 				));
 	    return $this->DB->GetLastInsertID('networknode');
     }
@@ -7654,8 +8380,8 @@ class LMS {
 				room_area=?, room_area_empty=?, technical_floor=?, technical_ceiling=?, 
 				air_conditioning=?, telecommunication=?, instmast=?, instofanten=?, foreign_entity=?,
 				entity_fiber_end=?, sharing_fiber=?, dc12=?, dc24=?, dc48=?, ac230=?, height_anten=?, 
-				service_broadband=?, service_voice=?, service_other=?, total_bandwidth=?, bandwidth_broadband=?, available_surface=?, eu=? 
-				
+				service_broadband=?, service_voice=?, service_other=?, total_bandwidth=?, bandwidth_broadband=?, available_surface=?, eu=?,
+				invprojectid=?, status=? 
 				WHERE id = ? ;',
 				array(
 					$dane['name'],
@@ -7704,6 +8430,8 @@ class LMS {
 					($dane['bandwidth_broadband'] ? $dane['bandwidth_broadband'] : 0),
 					($dane['available_surface'] ? 1 : 0),
 					($dane['eu'] ? 1 : 0),
+					($dane['invprojectid'] ? $dane['invprojectid'] : NULL),
+					($dane['status'] ? $dane['status'] : 0),
 					$dane['networknodeid']
 				))
 		) return true; else return false;
@@ -7740,6 +8468,57 @@ class LMS {
 	    }
 	}
     }
+	function GetNetworkNodesWithGroup($groupid) {
+
+		return $this->DB->GetAll('SELECT n.id AS id, n.name AS nodename, a.networknodeid
+			FROM networknode n
+			JOIN networknodeassignments a ON (n.id = a.networknodeid) 
+			WHERE a.networknodegroupid = ? ORDER BY nodename', array($groupid));
+	}
+
+
+	function GetNetworkNodeGroup($id) {
+		$result = $this->DB->GetRow('SELECT id, name, description, 
+				(SELECT COUNT(*) FROM networknodeassignments 
+					WHERE networknodegroupid = networknodegroups.id) AS count
+				FROM networknodegroups WHERE id = ?', array($id));
+
+		$result['nodes'] = $this->GetNetworkNodesWithGroup($id);
+		$result['nodescount'] = sizeof($result['nodes']);
+
+		return $result;
+	}
+	
+	function GetNetworkNodeGroupNames() {
+		return $this->DB->GetAllByKey('SELECT id, name, description FROM networknodegroups
+				ORDER BY name ASC', 'id');
+	}
+	
+	function GetNetworkNodesWithoutGroup($groupid) {
+
+		return $this->DB->GetAll('SELECT n.id AS id, n.name AS nodename, a.networknodeid
+			FROM networknode n
+			LEFT JOIN networknodeassignments a ON (n.id = a.networknodeid AND a.networknodegroupid = ?) 
+			WHERE a.networknodeid IS NULL ORDER BY nodename', array($groupid));
+	}
+	
+	
+	function Networknodeexists($id) {
+	    
+	    if ($this->DB->getOne('SELECT 1 FROM networknode WHERE id = ? LIMIT 1;',array($id)))
+		return true;
+	    else
+		return false;
+	}
+	
+	function GetNetworkNodeGroupNamesWithoutNode($nid) {
+		return $this->DB->GetAllbykey('SELECT id, name FROM networknodegroups
+				WHERE id NOT IN (SELECT networknodegroupid FROM networknodeassignments
+					WHERE networknodeid = ?)
+				ORDER BY name', 'id',array($nid));
+	}
+
+
 
     /******************
     *   UploadFiles   *
@@ -7893,7 +8672,7 @@ class LMS {
     
     function GetDictionaryDevicesClientOfType()
     {
-	$result = $this->DB->GetAll('SELECT id,type FROM dictionary_devices_client GROUP BY type ORDER BY type;');
+	$result = $this->DB->GetAll('SELECT id,type FROM dictionary_devices_client GROUP BY type,id ORDER BY type;');
 	return $result;
     }
 
@@ -7907,10 +8686,199 @@ class LMS {
 	return $result;
     }
     
+    /*********************************
+    *     Linie telekomunikacyjne    *
+    *********************************/
+    
+    function delTeleLine($id)
+    {
+	if (SYSLOG) {
+	    $nazwa = $this->DB->GetOne('SELECT name FROM teleline WHERE id = ? LIMIT 1;',array($id));
+	    addlogs('Usunięcie linii telekomunikacyjnej '.$nazwa,'e=del;m=netdev;');
+	}
+	
+	$this->DB->BeginTrans();
+	//$DB->Execute('UPDATE fiberlineassign SET fiberline=0 WHERE fiberline = ?;',array($id));
+	$this->DB->Execute('UPDATE netlinks SET teleline=0 WHERE teleline = ?;',array($id));
+	$this->DB->Execute('DELETE FROM teleline WHERE id=?;',array($id));
+	$this->DB->CommitTrans();
+    }
+    
+    
+    function updateTeleLine($form)
+    {
+    
+	$this->DB->Execute('UPDATE teleline SET name=?, description=? WHERE id = ? ;',
+	    array(
+		$form['name'],
+		($form['description'] ? $form['description'] : NULL),
+		intval($form['id'])
+	    )
+	);
+    }
+    
+    
+    function addTeleLine($form)
+    {
+	$this->DB->Execute('INSERT INTO teleline (name,description,active) VALUES (?,?,?) ;',
+	    array(
+		$form['name'],
+		($form['description'] ? $form['description'] : NULL),
+		1
+	    )
+	);
+	
+	return $this->DB->getlastinsertid('teleline');
+    }
+    
     
     function getTeleLine()
     {
-	return $this->DB->GetAll('SELECT l.*, (SELECT COUNT(*) FROM telelineassign a WHERE a.teleline = l.id) AS countlink FROM teleline l ORDER BY name ASC;');
+	$result = $this->DB->GetAll('SELECT l.*, 
+				    (SELECT COUNT(*) FROM netlinks n WHERE n.teleline = l.id) AS countlink 
+				    FROM teleline l 
+				    ORDER BY name ASC;');
+	return $result;
+    }
+    
+    function getTeleLineList()
+    {
+	$result = $this->DB->getAll('SELECT id,name FROM teleline WHERE active=1 ORDER BY name ASC;');
+	return $result;
+    }
+    
+    function getListDictionaryCnote()
+    {
+	
+	$result = $this->DB->GetAll('SELECT * FROM dictionary_cnote ORDER BY name ASC;');
+	return $result;
+    }
+    
+//    function GetDictionaryCnoteClientOfType()
+//    {
+//	$result = $this->DB->GetAll('SELECT id,name FROM dictionary_cnote GROUP BY name ORDER BY name;');
+//	return $result;
+//    }
+
+/*********************************************************************
+*                                                                    *
+*                            PROJEKTY                                *
+*                                                                    *
+*********************************************************************/
+
+    function getListProjects()
+    {
+	$result = $this->DB->GetAll('SELECT * FROM invprojects WHERE type = 0;');
+	
+	return $result;
+    }
+    
+    function getRowProjects($id,$filed = 'name')
+    {
+	// $field = 'name, number' itd itp
+	
+	$result = $this->DB->getRow('SELECT '.$field.' FROM invprojects WHERE id = ? '.$this->DB->Limit(1).' ;',array($id));
+	return $result;
+    }
+
+/*********************************************************************
+*                                                                    *
+*                          PODMIOTY OBCE                             *
+*                                                                    *
+*********************************************************************/
+
+    function getForeignEntityList()
+    {
+	$result = $this->DB->GetAll('SELECT * FROM foreignentity');
+	
+	return $result;
+    }
+    
+    function getForeignEntity($id)
+    {
+	$result = $this->DB->GetRow('SELECT * FROM foreignentity WHERE id = ? LIMIT 1;',array(intval($id)));
+	
+	return $result;
+    }
+    
+    
+    function getForeignEntityShortList()
+    {
+	$result = $this->DB->GetAll('SELECT id, name, number, title FROM foreignentity');
+	
+	return $result;
+    }
+    
+    
+    function AddForeignEntity($dane)
+    {
+	$this->DB->Execute('INSERT INTO foreignentity (shortname, name, ten, regon, rpt, invprojectid, teryt, states, districts,
+			    boroughs, city, street, location_city, location_street, location_house, location_flat, location, zip, kod_terc, kod_simc, kod_ulic,
+			    url, email, phone, description, cdate, mdate, cuser, muser) 
+			    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+			    array(
+				($dane['shortname'] ? $dane['shortname'] : NULL),
+				($dane['name'] ? $dane['name'] : NULL),
+				($dane['ten'] ? $dane['ten'] : NULL),
+				($dane['regon'] ? $dane['regon'] : NULL),
+				($dane['rpt'] ? $dane['rpt'] : NULL),
+				($dane['invprojectid'] ? $dane['invprojectid'] : 0),
+				($dane['teryt'] ? 1 : 0),
+				($dane['states'] ? $dane['states'] : NULL),
+				($dane['districts'] ? $dane['districts'] : NULL),
+				($dane['boroughs'] ? $dane['boroughs'] : NULL),
+				($dane['city'] ? $dane['city'] : NULL),
+				($dane['street'] ? $dane['street'] : NULL),
+				($dane['location_city'] ? $dane['location_city'] : 0),
+				($dane['location_street'] ? $dane['location_street'] : 0),
+				($dane['location_house'] ? $dane['location_house'] : NULL),
+				($dane['location_flat'] ? $dane['location_flat'] : NULL),
+				($dane['location'] ? $dane['location'] : NULL),
+				($dane['zip'] ? $dane['zip'] : NULL),
+				($dane['kod_terc'] ? $dane['kod_terc'] : 0),
+				($dane['kod_simc'] ? $dane['kod_simc'] : 0),
+				($dane['kod_ulic'] ? $dane['kod_ulic'] : 0),
+				NULL,NULL,NULL,NULL,
+				time(),0,$this->AUTH->id,0
+			    )
+	);
+	
+	return $this->DB->GetLastInsertID('foreignentity');
+    }
+    
+    
+    function UpdateForeignEntity($dane)
+    {
+	$this->DB->Execute('UPDATE foreignentity SET shortname=?, name=?, ten=?, regon=?, rpt=?, invprojectid=?, teryt=?, states=?, districts=?,
+			    boroughs=?, city=?, street=?, location_city=?, location_street=?, location_house=?, location_flat=?, location=?, zip=?, kod_terc=?, kod_simc=?, kod_ulic=?,
+			    mdate=?, muser=? WHERE id=? ;',
+			    array(
+				($dane['shortname'] ? $dane['shortname'] : NULL),
+				($dane['name'] ? $dane['name'] : NULL),
+				($dane['ten'] ? $dane['ten'] : NULL),
+				($dane['regon'] ? $dane['regon'] : NULL),
+				($dane['rpt'] ? $dane['rpt'] : NULL),
+				($dane['invprojectid'] ? $dane['invprojectid'] : 0),
+				($dane['teryt'] ? 1 : 0),
+				($dane['states'] ? $dane['states'] : NULL),
+				($dane['districts'] ? $dane['districts'] : NULL),
+				($dane['boroughs'] ? $dane['boroughs'] : NULL),
+				($dane['city'] ? $dane['city'] : NULL),
+				($dane['street'] ? $dane['street'] : NULL),
+				($dane['location_city'] ? $dane['location_city'] : 0),
+				($dane['location_street'] ? $dane['location_street'] : 0),
+				($dane['location_house'] ? $dane['location_house'] : NULL),
+				($dane['location_flat'] ? $dane['location_flat'] : NULL),
+				($dane['location'] ? $dane['location'] : NULL),
+				($dane['zip'] ? $dane['zip'] : NULL),
+				($dane['kod_terc'] ? $dane['kod_terc'] : 0),
+				($dane['kod_simc'] ? $dane['kod_simc'] : 0),
+				($dane['kod_ulic'] ? $dane['kod_ulic'] : 0),
+				time(),$this->AUTH->id,
+				$dane['id']
+			    )
+	);
+	
     }
 
 

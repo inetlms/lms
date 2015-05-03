@@ -1,0 +1,93 @@
+{if $akcja == 'edit' || $akcja == 'add'}
+    <form name="cartype" id="cartype" method="POST">
+    <input type="hidden" name="cartype[id]" value="{$cartype.id}">
+    <table width="100%" cellpadding="3">
+	<tr class="dark pgdark">
+	    <td width="100%" class="fall pad10">{if $akcja=='edit'}<b>Edycja pozycji : {$cartype.name}</b>{else}<b>Nowa pozycja</b>{/if}</td>
+	</tr>
+	<tr class="light pglight">
+	    <td width="100%" class="flr" style="text-align:left;vertical-align:top;">
+		<table width="100%">
+		    <tr>
+			<td width="1%" class="pad5" align="left"><b>Nazwa</b></td>
+			<td width="1%" class="pad5"><b>:</b></td>
+			<td width="98%" class="pad5" align="left"><input type="text" name="cartype[name]" id="id_name" style="width:400px;" value="{$cartype.name}"><div style="color:red;" id="id_name_alerts"></div></td>
+		    </tr>
+		    <tr>
+			<td width="1%" class="pad5" align="left"><b>Opis</b></td>
+			<td width="1%" class="pad5"><b>:</b></td>
+			<td width="98%" class="pad5" align="left"><textarea type="text" name="cartype[description]" style="width:400px;">{$cartype.description}</textarea></td>
+		    </tr>
+		</table>
+	    </td>
+	</tr>
+	<tr class="dark pgdark">
+	    <td width="100%" class="fall pad10" align="right">
+		<a href="javascript:void(0);" onclick="xajax_save_car_type(xajax.getFormValues('cartype'));"><b>{trans('Save')}</b>&nbsp;<img src="img/save.gif"></a>&nbsp;&nbsp;
+		<a href="javascript:void(0);" onclick="document.getElementById('id_edit_car_type').innerHTML='';"><b>{trans('Cancel')}</b><img src="img/cancel.gif"></a>
+	    </td>
+	</tr>
+    </table>
+    </form>
+
+    <br>
+{else}
+    {include file="header.html"}
+    {$xajax}
+    {title value=$layout.pagetitle}
+    <div id="id_edit_car_type"></div>
+    <table width="100%" cellpadding="3" class="table">
+	<tr class="dark">
+	    <td width="1%" class="fleftu pad10" nowrap align="center"><b>#</b></td>
+	    <td width="1%" class="fbt pad10" nowrap align="left"><b>Nazwa</b></td>
+	    <td width="97%" class="fbt pad10" align="left"><b>Opis</b></td>
+	    <td width="1%" class="fbt pad10" align="right"><b>Pojazdów</b></td>
+	    <td width="1%" class="frightu pad10" align="right">
+		<img src="img/add.gif" onclick="xajax_add_car_type();" style="cursor:pointer;" title="[ dodaj nową pozycję ]" alt="[ dodaj ]">
+	    </td>
+	</tr>
+	{if $carlist}
+	    {cycle values="lucid,light" print=false}
+	    {section name=carlist loop=$carlist}
+	    <tr class="{cycle} lista{if !$carlist[carlist].active} blend{/if}" id="id_carlist_tr_{$carlist[carlist].id}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td width="1%" class="fleft pad10" nowrap align="center">{$carlist[carlist].id|string_format:"%04d"}</td>
+		<td width="1%" class="pad10" nowrap align="left">{$carlist[carlist].name}</td>
+		<td width="98%" class="pad10" align="left">{$carlist[carlist].description}</td>
+		<td width="1%" class="pad10" align="right" nowrap>{if $carlist[carlist].caruse}{$carlist[carlist].caruse}{/if}</td>
+		<td width="1%" class="fright pad10" align="right" nowrap>
+		    {if $carlist[carlist].active}
+			<img id="id_img_active_{$carlist[carlist].id}" src="img/access.gif" onclick="xajax_set_active_car_type({$carlist[carlist].id});">
+		    {else}
+			<img id="id_img_active_{$carlist[carlist].id}" src="img/noaccess.gif" onclick="xajax_set_active_car_type({$carlist[carlist].id});">
+		    {/if}&nbsp;
+		    {if !$carlist[carlist].caruse}
+		    <a href="?m=re_dictionarycartype&delete&id={$carlist[carlist].id}" onclick="return confirmLink(this,'Potwierdź usunięcie pozycji');"><img src="img/delete.gif"></a>
+		    {else}
+			<img src="img/deleteoff.gif">
+		    {/if}
+		    &nbsp;
+		    <img src="img/edit.gif" alt="[ Edit ]" onclick="xajax_edit_car_type('{$carlist[carlist].id}');">
+		</td>
+	    </tr>
+	    {/section}
+	    
+	{else}
+	    <tr class="light">
+		<td width="100%" colspan="5" width="100%" align="center" class="fall">
+		    <p>
+			<h3>Brak pozycji w słowniku</h3>
+		    </p>
+		</td>
+	    </tr>
+	{/if}
+	<tr class="dark">
+		<td width="100%" class="fall pad10" align="right" colspan="5">
+		    <a href="javascript:void(0);" onclick="xajax_add_car_type();"><b>Dodaj nową pozycję</b>&nbsp;<img src="img/add.gif"></a>
+		</td>
+	    </tr>
+    
+    </table>
+    {include file="load_gif.html"}
+    {include file="footer.html"}
+{/if}
+

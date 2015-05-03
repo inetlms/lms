@@ -50,7 +50,7 @@
 		else if (type == 'note')
 			document.addbalance.action = '?m=notelist';
 		else
-			return window.location = '?m=customerbalance&id={$balancelist.customerid}';
+			return window.location = '?m=contractorbalance&id={$balancelist.customerid}';
 
 		document.addbalance.target = '';
 		document.addbalance.submit();
@@ -76,7 +76,7 @@
 </script>
 {$default_printpage = get_conf('invoices.default_printpage')}
 {$default_taxrate   = get_conf('phpui.default_taxrate')}
-<form name="addbalance" method="POST" action="?m=balanceadd&id={$balancelist.customerid}">
+<form name="addbalance" method="POST" action="?m=balanceadd&contractor&id={$balancelist.customerid}">
 <input type="submit" class="hiddenbtn">
 <table width="100%" cellpadding="3">
 	<tr class="dark">
@@ -122,16 +122,30 @@
 					<td width="92%" class="fbt">{trans("Description:")}</td>
 					<td width="1%" class="frightu">&nbsp;</td>
 				</tr>
-				{cycle name=bal values="light,lucid" print=false}
+				{cycle name=bal values="lucid,light" print=false}
 				{section name=balancelist loop=$balancelist.id start=$limit}
 				<tr class="{cycle name=bal}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td width="1%"><nobr>{$balancelist.date[balancelist]}</nobr></td>
 					<td width="1%" nowrap>{$balancelist.username[balancelist]|truncate:16:"...":true}</td>
-					<td width="1%" align="right" nowrap>{if !$balancelist.type[balancelist]}{($balancelist.value[balancelist]*-1)|money_format}{else}-{/if}</td>
-					<td width="1%" align="right" nowrap>{if $balancelist.type[balancelist] && $balancelist.value[balancelist] > 0}{$balancelist.value[balancelist]|money_format}{else}-{/if}</td>
-					<td width="1%" align="right" nowrap>{if $balancelist.type[balancelist] && $balancelist.value[balancelist] < 0}{($balancelist.value[balancelist]*-1)|money_format}{else}-{/if}</td>
+					<td width="1%" align="right" nowrap>
+						    {if !$balancelist.type[balancelist]}
+						    {assign var='cash' value=$balancelist.value[balancelist]*-1}
+						    {if $balancelist.value[balancelist] < 0}<font class="alert">{/if}
+						    {if $balancelist.value[balancelist] > 0}<font class="surplus">{/if}
+						    {$cash|money_format}
+						    {if $cash != 0}</font>{/if}
+						    {else}-{/if}
+					</td>
+					<td width="1%" align="right" nowrap>
+					{if $balancelist.type[balancelist] && $balancelist.value[balancelist] > 0}<font class="surplus">+{$balancelist.value[balancelist]|money_format}</font>{else}-{/if}
+					</td>
+					<td width="1%" align="right" nowrap>
+					{if $balancelist.type[balancelist] && $balancelist.value[balancelist] < 0}<font class="alert">{($balancelist.value[balancelist]*-1)|money_format}</font>{else}-{/if}
+					</td>
 					<td width="1%" align="center">&raquo;</td>
-					<td width="1%" align="right" nowrap>{if $balancelist.after[balancelist] < 0}<font class="red">{/if}{$balancelist.after[balancelist]|money_format}{if $balancelist.after[balancelist] < 0}</font>{/if}</td>
+					<td width="1%" align="right" nowrap>
+					    {if $balancelist.after[balancelist] < 0}<font class="red" style="font-weight:bold;">{/if}{if $balancelist.after[balancelist] > 0}<font class="surplus" style="font-weight:bold;">+{/if}{$balancelist.after[balancelist]|money_format}{if $balancelist.after[balancelist] != 0}</font>{/if}
+					</td>
 					<td width="92%">{$balancelist.comment[balancelist]}</td>
 					<td width="1%" align="right" nowrap>
 						{if $balancelist.docid[balancelist]}
@@ -216,7 +230,7 @@
 				<tr class="light">
 					<td colspan="7">
 						{if $customerinfo.balance < 0}
-						<a href="?m=customerbalanceok&id={$customerinfo.id}" onclick="return confirmLink(this, '{t a=$customerinfo.customername|escape:"javascript"|escape:"html"}Are you sure, you want to account ALL debts of customer \'$a\'?{/t}');">{trans("Clear Account")} <img src="img/edit.gif" alt=""></a>
+						<a href="?m=contractorbalanceok&id={$customerinfo.id}" onclick="return confirmLink(this, '{t a=$customerinfo.customername|escape:"javascript"|escape:"html"}Are you sure, you want to account ALL debts of customer \'$a\'?{/t}');">{trans("Clear Account")} <img src="img/edit.gif" alt=""></a>
 						{/if}
 					</td>
 					<td align="right" colspan="2">

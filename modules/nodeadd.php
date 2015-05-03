@@ -70,15 +70,18 @@ if (isset($_POST['nodedata']))
 		}else{
 			$SESSION->redirect('?m=nodelist');
 		}
-
-	if($nodedata['name']=='')
+	
+	if (!get_form('nodes.node_autoname') || !empty($nodedata['name'])) {
+	    
+	    if($nodedata['name']=='') 
 		$error['name'] = trans('Node name is required!');
-	elseif(strlen($nodedata['name']) > 32)
+	    elseif(strlen($nodedata['name']) > 32)
 		$error['name'] = trans('Node name is too long (max.32 characters)!');
-	elseif(!preg_match('/^[_a-z0-9-.]+$/i', $nodedata['name']))
+	    elseif(!preg_match('/^[_a-z0-9-.]+$/i', $nodedata['name']))
 		$error['name'] = trans('Specified name contains forbidden characters!');
-	elseif($LMS->GetNodeIDByName($nodedata['name']))
+	    elseif($LMS->GetNodeIDByName($nodedata['name']))
 		$error['name'] = trans('Specified name is in use!');
+	}
 
 	if(!$nodedata['ipaddr'])
 		$error['ipaddr'] = trans('Node IP address is required!');
@@ -112,6 +115,13 @@ if (isset($_POST['nodedata']))
     		$nodedata['ipaddr_pub'] = '0.0.0.0';
 
 	$macs = array();
+	
+	if (!get_form('nodes.macaddress') && (!isset($nodedata['macs']) || empty($nodedata['macs'][0])))
+	    $nodedata['macs'][0] = '00:00:00:00:00:00';
+	elseif (get_form('nodes.automac') && (!isset($nodedata['macs']) || empty($nodedata['macs'][0])))
+	    $nodedata['macs'][0] = '00:00:00:00:00:00';
+	
+	
 	foreach($nodedata['macs'] as $key => $value)
 		if(check_mac($value))
 		{
@@ -130,6 +140,13 @@ if (isset($_POST['nodedata']))
 
 	if(strlen($nodedata['passwd']) > 32)
 		$error['passwd'] = trans('Password is too long (max.32 characters)!');
+	
+	if (!empty($nodedata['pppoelogin'])) {
+	    if (mb_strlen($nodedata['pppoelogin']) > 128)
+		$error['pppoelogin'] = 'Długość loginu to max 128 znaków';
+	    elseif ($DB->GetOne('SELECT 1 FROM nodes WHERE pppoelogin = ? LIMIT 1;',array($nodedata['pppoelogin'])))
+		$error['pppoelogin'] = 'podany login jest już w użyciu';
+	}
 
     if (!$nodedata['ownerid'])
         $error['ownerid'] = trans('Customer not selected!');
@@ -256,6 +273,7 @@ if (isset($_POST['nodedata']))
 	}
 }
 
+$SMARTY->assign('error', $error);
 if(empty($nodedata['macs']))
     $nodedata['macs'][] = '';
 
@@ -291,7 +309,7 @@ $nodedata = $LMS->ExecHook('node_add_init', $nodedata);
 $SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
 $SMARTY->assign('netdevices', $LMS->GetNetDevNames());
 $SMARTY->assign('networks', $LMS->GetNetworks(false));
-$SMARTY->assign('error', $error);
+$SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
 $SMARTY->assign('nodedata', $nodedata);
 $SMARTY->display('nodeadd.html');
 

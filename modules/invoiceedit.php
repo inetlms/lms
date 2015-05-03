@@ -221,11 +221,32 @@ switch($action)
 		$cdate = $invoice['cdate'] ? $invoice['cdate'] : $currtime;
 		$sdate = $invoice['sdate'] ? $invoice['sdate'] : $currtime;
 		$iid   = $invoice['id'];
+		
+		$cus = $DB->GetRow('SELECT * FROM customers WHERE id = ? LIMIT 1;',array($customer['id']));
+		
+		$post_name = $post_address = $post_zip = $post_city = '';
+		
+		if (!empty($cus['invoice_name']) && !empty($cus['invoice_address']) && !empty($cus['invoice_zip']) && !empty($cus['invoice_city'])) {
+		    $customer['customername'] = $cus['invoice_name'].' '.$cus['invoice_lastname'];
+		    $customer['address'] = $cus['invoice_address'];
+		    $customer['zip'] = $cus['invoice_zip'];
+		    $customer['city'] = $cus['invoice_city'];
+		    $customer['ten'] = $cus['invoice_ten'];
+		    $customer['ssn'] = $cus['invoice_ssn'];
+		}
+		
+		if (!empty($cus['post_address']) && !empty($cus['post_zip']) && !empty($cus['post_city'])) {
+		    $post_name = $cus['post_name'];
+		    $post_address = $cus['post_address'];
+		    $post_zip = $cus['post_zip'];
+		    $post_city = $cus['post_city'];
+		}
 
 		$DB->BeginTrans();
 
 		$DB->Execute('UPDATE documents SET cdate = ?, sdate = ?, paytime = ?, paytype = ?, customerid = ?,
-				name = ?, address = ?, ten = ?, ssn = ?, zip = ?, city = ?, divisionid = ?
+				name = ?, address = ?, ten = ?, ssn = ?, zip = ?, city = ?, divisionid = ?, sdateview = ?,
+				post_name = ?, post_address = ?, post_zip = ?, post_city = ?, print_balance_info = ? 
 				WHERE id = ?',
 				array($cdate,
 					$sdate,
@@ -239,8 +260,17 @@ switch($action)
 					$customer['zip'],
 					$customer['city'],
 					$customer['divisionid'],
+					($invoice['sdateview'] ? 1 : 0),
+					($post_name ? $post_name : ''),
+					($post_address ? $post_address : ''),
+					($post_zip  ? $post_zip : ''),
+					($post_city ? $post_city : ''),
+					get_conf('invoices.print_balance_info','1'),
 					$iid
 				));
+		
+		
+		
 
 		if (!$invoice['closed']) {
 			$DB->Execute('DELETE FROM invoicecontents WHERE docid = ?', array($iid));
@@ -280,6 +310,9 @@ switch($action)
 		}
 
 		$DB->CommitTrans();
+		
+		if (get_conf('invoices.create_pdf_file'))
+		    include(MODULES_DIR.'/invoicecreatepdffile.php');
 
 		if (isset($_GET['print']))
 			$SESSION->save('invoiceprint', array('invoice' => $invoice['id'],

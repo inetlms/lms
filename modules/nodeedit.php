@@ -43,10 +43,12 @@ switch ($action) {
 		} else if ($netdev['ports'] > $netdev['takenports']) {
 			
 			$LMS->NetDevLinkNode($nodeid, $_GET['devid'],
-				isset($_GET['linktype']) ? intval($_GET['linktype']) : 0,
-				isset($_GET['linkspeed']) ? intval($_GET['linkspeed']) : 100000,
+				(isset($_GET['linktype']) ? intval($_GET['linktype']) : 0),
+				(isset($_GET['linkspeed']) ? intval($_GET['linkspeed']) : 100000),
 				intval($_GET['port']),
-				isset($_GET['linktechnology']) ? intval($_GET['linktechnology']) : 0
+				(isset($_GET['linktechnology']) ? intval($_GET['linktechnology']) : 0),
+				(isset($_GET['layer']) ? intval($_GET['layer']) : NULL),
+				(isset($_GET['tracttype']) ? intval($_GET['tracttype']) : NULL)
 				);
 			
 			$SESSION->redirect('?m=nodeinfo&id=' . $nodeid);
@@ -94,6 +96,8 @@ if (isset($_POST['nodeedit'])) {
 	$nodeedit['ipaddr'] = $_POST['nodeeditipaddr'];
 	$nodeedit['ipaddr_pub'] = $_POST['nodeeditipaddrpub'];
 	
+
+//	echo "MODUEL<br><br><br><pre>"; print_r($nodeedit); echo "</pre>"; die;
 	foreach ($nodeedit['macs'] as $key => $value)
 		$nodeedit['macs'][$key] = str_replace('-', ':', $value);
 
@@ -118,7 +122,7 @@ if (isset($_POST['nodeedit'])) {
 			if ($ip != $nodeedit['ipaddr'] && !$LMS->IsIPFree($nodeedit['ipaddr'],$nodeedit['netid']))
 				$error['ipaddr'] = trans('Specified IP address is in use!');
 			
-			elseif ($ip != $nodeedit['ipaddr'] && $LMS->IsIPGateway($nodeedit['ipaddr']))
+			elseif ($ip != $nodeedit['ipaddr'] && $LMS->IsIPGateway($nodeedit['ipaddr'],$nodeedit['netid']))
 				$error['ipaddr'] = trans('Specified IP address is network gateway!');
 		}
 		else
@@ -161,17 +165,27 @@ if (isset($_POST['nodeedit'])) {
 		$error['mac0'] = trans('MAC address is required!');
 	$nodeedit['macs'] = $macs;
 
-	if ($nodeedit['name'] == '')
+	if (!empty($nodeedit['name']) || !get_form('nodes.node_autoname')) 
+	{
+	    if ($nodeedit['name'] == '')
 		$error['name'] = trans('Node name is required!');
-	elseif (!preg_match('/^[_a-z0-9-.]+$/i', $nodeedit['name']))
+	    elseif (!preg_match('/^[_a-z0-9-.]+$/i', $nodeedit['name']))
 		$error['name'] = trans('Specified name contains forbidden characters!');
-	elseif (strlen($nodeedit['name']) > 32)
+	    elseif (strlen($nodeedit['name']) > 32)
 		$error['name'] = trans('Node name is too long (max.32 characters)!');
-	elseif (($tmp_nodeid = $LMS->GetNodeIDByName($nodeedit['name'])) && $tmp_nodeid != $nodeedit['id'])
+	    elseif (($tmp_nodeid = $LMS->GetNodeIDByName($nodeedit['name'])) && $tmp_nodeid != $nodeedit['id'])
 		$error['name'] = trans('Specified name is in use!');
+	}
 
 	if (strlen($nodeedit['passwd']) > 32)
 		$error['passwd'] = trans('Password is too long (max.32 characters)!');
+	
+	if (!empty($nodeedit['pppoelogin'])) {
+	    if (mb_strlen($nodeedit['pppoelogin']) > 128)
+		$error['pppoelogin'] = 'Długość loginu to max 128 znaków';
+	    elseif ($DB->getOne('SELECT 1 FROM nodes WHERE pppoelogin = ? AND id != ? LIMIT 1;',array($nodeedit['pppoelogin'],$nodeedit['id'])))
+		$error['pppoelogin'] = 'podany login PPPoE jest już w u życiu';
+	}
 
 	if (!isset($nodeedit['access']))
 		$nodeedit['access'] = 0;
@@ -260,7 +274,7 @@ if (isset($_POST['nodeedit'])) {
 			$nodeedit['location_house'] = null;
 			$nodeedit['location_flat'] = null;
 		}
-
+		
 		$nodeedit = $LMS->ExecHook('node_edit_before', $nodeedit);
 		$nodeedit['access_from'] = $access_from;
 		$nodeedit['access_to'] = $access_to;
@@ -303,6 +317,9 @@ if (isset($_POST['nodeedit'])) {
 	$nodeinfo['linktype'] = $nodeedit['linktype'];
 	$nodeinfo['linktechnology'] = $nodeedit['linktechnology'];
 	$nodeinfo['linkspeed'] = $nodeedit['linkspeed'];
+	$nodeinfo['blockade'] = $nodeedit['blockade'];
+	$nodeinfo['pppoelogin'] = $nodeedit['pppoelogin'];
+	$nodeinfo['netdevicemodelid'] = $nodeedit['netdevicemodelid'];
 	
 
 	if ($nodeedit['ipaddr_pub'] == '0.0.0.0')
@@ -344,6 +361,7 @@ $SMARTY->assign('netdevices', $LMS->GetNetDevNames());
 $SMARTY->assign('networks', $LMS->GetNetworks(false));
 $SMARTY->assign('nodegroups', $LMS->GetNodeGroupNamesByNode($nodeid));
 $SMARTY->assign('othernodegroups', $LMS->GetNodeGroupNamesWithoutNode($nodeid));
+$SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
 $SMARTY->assign('hostlist',$DB->GetAll('SELECT id,name FROM hosts ORDER BY name'));
 $SMARTY->assign('error', $error);
 $SMARTY->assign('nodeinfo', $nodeinfo);

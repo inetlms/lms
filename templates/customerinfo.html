@@ -22,7 +22,7 @@
 		</td>
 	</tr>
 	{/if}
-	{if check_modules(110)}
+	{if check_conf('priviledes.monitoring') && check_modules(110)}
 	<tr>
 		<td width="100%">
 			{include file="customermonit.html"}
@@ -61,6 +61,19 @@
         </tr>
 	{/if}
 	
+	{if get_conf('jambox.enabled') && check_modules(360)}
+	<tr>
+	    <td width="100%">
+		{include file="customertvjamboxaccountsbox.html"}
+	    </td>
+	</tr>
+	<tr>
+	    <td width="100%">
+		{include file="customertvmessages.html"}
+	    </td>
+	</tr>
+	{/if}
+	
 	{if check_modules(180)}
 	<tr>
 		<td width="100%">
@@ -68,11 +81,13 @@
 		</td>
 	</tr>
 	{/if}
+	{if check_conf('privileges.customerannex')}
 	<tr>
 		<td width="100%">
 			{include file="customerannexbox.html"}
 		</td>
 	</tr>
+	{/if}
 	{if check_modules(220)}
 	<tr>
 		<td width="100%">
@@ -119,5 +134,17 @@
 			{include file="customeractions.html"}
 		</td>
 	</tr>
+	
+	{if $_pluginc.customer}
+	    {assign var='inclist' value=$_pluginc.customer}
+	    {section name='inclist' loop=$inclist}
+		{assign var='plik' value=$inclist[inclist].htmlfile}
+		<tr>
+		    <td width="100%">
+			{include file=$plik}
+		    </td>
+		</tr>
+	    {/section}
+	{/if}
 </table>
 {include file="footer.html"}

@@ -1088,5 +1088,50 @@ function seconds_to_hours($seconds)
     return sprintf("%02d:%02d:%02d",$h,$m,$s);
 }
 
+function check_date($data) {
+	$data = str_replace('-','/',$data);
+	if(preg_match('/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/',$data))
+	{
+		list($y, $m, $d) = explode('/', $data);
+		if(checkdate($m, $d, $y))
+			return TRUE;
+		else
+			return FALSE;
+	} else
+	    return FALSE;
+}
+
+
+function check_natural($val) {
+
+    if(!empty($val)) {
+	if (!preg_match('/^[0-9]+\.[0-9]{1,2}+$/ ', $val) && !preg_match('/^[0-9]+$/', $val))
+	    return FALSE;
+	else
+	    return TRUE;
+    } else
+	return FALSE;
+}
+
+function check_fileexists($filename)
+{
+    if (file_exists($filename) && is_readable($filename))
+	return true;
+    else
+	return false;
+}
+
+
+function calculate_distance_gps($latitude1,$longitude1,$latitude2,$longitude2,$miles=false)
+{
+    if ($miles) $out = 60;
+    else $out = 111.195;
+    $distance = (rad2deg(acos((sin(deg2rad($latitude1)) * sin(deg2rad($latitude2))) + (cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * cos(deg2rad($longitude1 - $longitude2))))) * $out);
+    $distance = str_replace(',','.',$distance);
+    $distance = sprintf('%0.1f',$distance);
+    $distance = str_replace(',','.',$distance);
+    return $distance;
+}
+
 
 ?>

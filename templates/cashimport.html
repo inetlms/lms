@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <script type="text/javascript">
 <!--
 	function Delete()
@@ -51,7 +51,7 @@
 		    <a href="?m=cashimport&action=csv&division={$division.id}">{trans("Download (CSV)")} <img src="img/save.gif" alt="">
 		</td>
 	</tr>
-		{cycle values="light,lucid" print=false}
+		{cycle values="lucid,light" print=false}
 		{foreach from=$division.list item=item}
 		<tr class="{cycle} lista">
 		    <td class="fleft">
@@ -127,7 +127,7 @@
 				    <td width="1%" class="fleftu"><b>{trans("Line:")}</b></td>
 				    <td width="99%" class="frightu"><b>{trans("Content:")}</b></td>
 				</tr>
-				{cycle name=err values="light,lucid" print=false}
+				{cycle name=err values="lucid,light" print=false}
 				{foreach from=$error.lines key=key item=item}
 				<tr class="{cycle name=err}">
 				    <td>{$key}.</td>
@@ -207,7 +207,7 @@
 					<td width="1%" nowrap class="fbt" align="right">{trans("Records:")}</td>
 					<td width="1%" class="frightu">&nbsp;</td>
 				</tr>
-				{cycle name=files values="light,lucid" print=false}
+				{cycle name=files values="lucid,light" print=false}
 				{foreach from=$sourcefiles item=item}
 				<tr class="{cycle name=files}">
 					<td nowrap><b>{$item.idate|date_format:"%Y/%m/%d %H:%M"}</b></td>

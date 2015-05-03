@@ -32,7 +32,7 @@
 			</tr>
 			
 			    <tr><td colspan="2"><div id="id_alert_user" style="color:red;font-weight:bold;text-align:center;"></div></td></tr>
-			{cycle values="light,lucid" print=false}
+			{cycle values="lucid,light" print=false}
 			{section name="userlist" loop=$userlist}
 			    {assign var='indeks' value=$smarty.section.userlist.index}
 			    <tr class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">

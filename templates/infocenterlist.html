@@ -111,7 +111,7 @@
 	</tr>
     {/if}
     
-    {cycle values="light,lucid" print=false}
+    {cycle values="lucid,light" print=false}
     {section name='l1' loop=$topiclist start=$start max=$pagelimit}
     <tr class="{cycle} lista {if $topiclist[l1].closed} blend{/if}"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	<td class="fleft" align="center">
@@ -137,6 +137,9 @@
 	    
 	</td>
 	<td class="fright pad" nowrap width="1%" align="right">
+	{if isset($topiclist[l1].mp3)}
+            <audio src="{$audiopath}{$topiclist[l1].mp3}" controls="true" ></audio>
+        {/if}
 	{if !$topiclist[l1].closed}
 	    <a href="?m=infocenter&tid={$topiclist[l1].id}&backto=infocenterlist&cid={$topiclist[l1].cid}&action=addpost&callback" {tip text="Dodaj notatkę"}><img src="img/add.gif"></a>
 	    {if !get_conf('privileges.hide_callcenteredit')}<a href="?m=infocenter&tid={$topiclist[l1].id}&backto=infocenterlist&cid={$topiclist[l1].cid}&action=edittopic&callback" {tip text="Edytuj temat"}><img src="img/edit.gif"></a>{/if}

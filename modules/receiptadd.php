@@ -585,9 +585,19 @@ switch($action)
 				if($error)
 					$receipt['number'] = $LMS->GetNewDocumentNumber(DOC_RECEIPT, $receipt['numberplanid'], $receipt['cdate']);
 			}
+			
+			$fullnumber = docnumber($receipt['number'],
+				$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($receipt['numberplanid'])),
+				$receipt['cdate']);
+			
+			$divisionid = $DB->GetOne('SELECT divisionid FROM customers WHERE id = ? LIMIT 1;',array($customer['id']));
+			$division = $DB->GetRow('SELECT shortname, name, address, city, zip, account, inv_header, inv_footer, 
+						inv_author, inv_cplace, ten, regon, countryid FROM divisions WHERE id = ? LIMIT 1;',array($divisionid));
 
-			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, customerid, userid, name, address, zip, city, closed)
-					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)',
+			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, customerid, userid, name, address, zip, city, closed, 
+				    div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon, div_account, div_inv_header,
+				    div_inv_footer, div_inv_author, div_inv_cplace,fullnumber)
+					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 					array(	DOC_RECEIPT,
 						$receipt['number'],
 						isset($receipt['extnumber']) ? $receipt['extnumber'] : '',
@@ -598,7 +608,21 @@ switch($action)
 						$customer['customername'],
 						$customer['address'],
 						$customer['zip'],
-						$customer['city']
+						$customer['city'],
+						1,
+						($division['name'] ? $division['name'] : ''),
+						($division['address'] ? $division['address'] : ''),
+						($division['city'] ? $division['city'] : ''),
+						($division['zip'] ? $division['zip'] : ''),
+						($division['countryid'] ? $division['countryid'] : 0),
+						($division['ten'] ? $division['ten'] : ''),
+						($division['regon'] ? $division['regon'] : ''),
+						($division['account'] ? $division['account'] : ''),
+						($division['inv_header'] ? $division['inv_header'] : ''),
+						($division['inv_footer'] ? $division['inv_footer'] : ''),
+						($division['inv_author'] ? $division['inv_author'] : ''),
+						($division['inv_cplace'] ? $division['inv_cplace'] : ''),
+						($fullnumber ? $fullnumber : NULL),
 						));
 			$DB->UnLockTables();
 
@@ -648,7 +672,7 @@ switch($action)
 		elseif($contents && ($receipt['o_type'] == 'other' || $receipt['o_type'] == 'advance'))
 		{
 			$DB->BeginTrans();
-			$DB->LockTables(array('documents', 'numberplans'));
+			$DB->LockTables(array('documents', 'numberplans','divisions'));
 
 			if(!$receipt['number'])
 				$receipt['number'] = $LMS->GetNewDocumentNumber(DOC_RECEIPT, $receipt['numberplanid'], $receipt['cdate']);
@@ -662,17 +686,45 @@ switch($action)
 				if($error)
 					$receipt['number'] = $LMS->GetNewDocumentNumber(DOC_RECEIPT, $receipt['numberplanid'], $receipt['cdate']);
 			}
-
-			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, userid, name, closed)
-					VALUES(?, ?, ?, ?, ?, ?, ?, ?)',
+			
+			$fullnumber = docnumber($receipt['number'],
+				$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($receipt['numberplanid'])),
+				$receipt['cdate']);
+			
+			$div = array();
+			$divisionid = get_conf('phpui.default_division',0);
+			if ($divisionid)
+			    $div = $DB->GetRow('SELECT id, shortname, name, address, city, zip, account, inv_header, inv_footer, inv_author,
+					inv_cplace, ten, regon, countryid FROM divisions WHERE id = ? LIMIT 1;',array($divisionid));
+			
+			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, userid, name, closed, 
+				    divisionid, div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
+				    div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname,
+				    fullnumber)
+					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 					array(	DOC_RECEIPT,
 						$receipt['number'],
 						isset($receipt['extnumber']) ? $receipt['extnumber'] : '',
 						$receipt['numberplanid'],
 						$receipt['cdate'],
 						$AUTH->id,
-						$receipt['o_type'] == 'advance' ? $receipt['adv_name'] : $receipt['other_name'],
-						$receipt['o_type'] == 'advance' ? 0 : 1
+						($receipt['o_type'] == 'advance' ? $receipt['adv_name'] : $receipt['other_name']),
+						($receipt['o_type'] == 'advance' ? 0 : 1),
+						($div['id'] ? $div['id'] : 0),
+						($div['name'] ? $div['name'] : ''),
+						($div['address'] ? $div['address'] : ''),
+						($div['city'] ? $div['city'] : ''),
+						($div['zip'] ? $div['zip'] : ''),
+						($div['countryid'] ? $div['countryid'] : 0),
+						($div['ten'] ? $div['ten'] : ''),
+						($div['regon'] ? $div['regon'] : ''),
+						($div['account'] ? $div['account'] : ''),
+						($div['inv_header'] ? $div['inv_header'] : ''),
+						($div['inv_footer'] ? $div['inv_footer'] : ''),
+						($div['inv_author'] ? $div['inv_author'] : ''),
+						($div['inv_cplace'] ? $div['inv_cplace'] : ''),
+						($div['shortname'] ? $div['shortname'] : ''),
+						($fullnumber ? $fullnumber : NULL),
 						));
 			$DB->UnLockTables();
 
@@ -760,15 +812,44 @@ switch($action)
 
 			// cash-out
 			$description = trans('Moving assets to registry $a',$DB->GetOne('SELECT name FROM cashregs WHERE id=?', array($dest)));
+			
+			$fullnumber = docnumber($receipt['number'],
+				$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($receipt['numberplanid'])),
+				$receipt['cdate']);
+			
+			$div = array();
+			$divisionid = get_conf('phpui.default_division',0);
+			if ($divisionid)
+			    $div = $DB->GetRow('SELECT id, shortname, name, address, city, zip, account, inv_header, inv_footer, inv_author,
+					inv_cplace, ten, regon, countryid FROM divisions WHERE id = ? LIMIT 1;',array($divisionid));
 
-			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, userid, name, closed)
-					VALUES(?, ?, ?, ?, ?, ?, \'\', 1)',
+			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, userid, name, closed, 
+				    divisionid, div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
+				    div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname, fullnumber)
+					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 					array(	DOC_RECEIPT,
 						$receipt['number'],
 						isset($receipt['extnumber']) ? $receipt['extnumber'] : '',
 						$receipt['numberplanid'],
 						$receipt['cdate'],
-						$AUTH->id
+						$AUTH->id,
+						'',
+						1,
+						($div['id'] ? $div['id'] : 0),
+						($div['name'] ? $div['name'] : ''),
+						($div['address'] ? $div['address'] : ''),
+						($div['city'] ? $div['city'] : ''),
+						($div['zip'] ? $div['zip'] : ''),
+						($div['countryid'] ? $div['countryid'] : 0),
+						($div['ten'] ? $div['ten'] : ''),
+						($div['regon'] ? $div['regon'] : ''),
+						($div['account'] ? $div['account'] : ''),
+						($div['inv_header'] ? $div['inv_header'] : ''),
+						($div['inv_footer'] ? $div['inv_footer'] : ''),
+						($div['inv_author'] ? $div['inv_author'] : ''),
+						($div['inv_cplace'] ? $div['inv_cplace'] : ''),
+						($div['shortname'] ? $div['shortname'] : ''),
+						($fullnumber ? $fullnumber : NULL),
 						));
 
 			$rid = $DB->GetOne('SELECT id FROM documents WHERE type=? AND number=? AND cdate=? AND numberplanid=?', array(DOC_RECEIPT, $receipt['number'], $receipt['cdate'], $receipt['numberplanid'])); 
@@ -790,14 +871,22 @@ switch($action)
 			$description = trans('Moving assets from registry $a ($b)',$DB->GetOne('SELECT name FROM cashregs WHERE id=?', array($receipt['regid'])), $r_number);
 			$numberplan = $DB->GetOne('SELECT in_numberplanid FROM cashregs WHERE id=?', array($dest));
 			$number = $LMS->GetNewDocumentNumber(DOC_RECEIPT, $numberplan, $receipt['cdate']);
+			
+			if ($numberplan)
+				$fullnumber = docnumber($number,
+					$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($numberplan)),
+					$receipt['cdate']);
+			else
+				$fullnumber = null;
 
-			$DB->Execute('INSERT INTO documents (type, number, numberplanid, cdate, userid, closed)
-					VALUES(?, ?, ?, ?, ?, 1)',
+			$DB->Execute('INSERT INTO documents (type, number, numberplanid, cdate, userid, closed, fullnumber)
+					VALUES(?, ?, ?, ?, ?, 1, ?)',
 					array(	DOC_RECEIPT,
 						$number,
 						$numberplan ? $numberplan : 0,
 						$receipt['cdate'],
-						$AUTH->id
+						$AUTH->id,
+						($fullnumber ? $fullnumber : NULL),
 						));
 
 			$did = $DB->GetOne('SELECT id FROM documents WHERE type=? AND number=? AND cdate=? AND numberplanid=?', array(DOC_RECEIPT, $number, $receipt['cdate'], $numberplan)); 

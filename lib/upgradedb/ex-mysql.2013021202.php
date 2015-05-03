@@ -26,10 +26,15 @@ $DB->BeginTrans();
 $DB->Execute("DROP VIEW IF EXISTS customersview;");
 $DB->Execute("DROP VIEW IF EXISTS contractorview;");
 
-$DB->Execute("ALTER TABLE customers ADD origin INT (11) NOT NULL DEFAULT 0;");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'customers','origin'))) 
+	$DB->Execute("ALTER TABLE customers ADD origin INT (11) NOT NULL DEFAULT 0;");
 // add dla rozwiązanego klienta, czyli rozwiązanie umowy, status=4
-$DB->Execute("ALTER TABLE customers ADD ctying INT (11) NOT NULL DEFAULT 0;"); 	// data rozwiąznia umowy
-$DB->Execute("ALTER TABLE customers ADD dtying TEXT DEFAULT NULL;");		// przyczyna/opis rozwiązania umowy
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'customers','ctying'))) 
+	$DB->Execute("ALTER TABLE customers ADD ctying INT (11) NOT NULL DEFAULT 0;"); 	// data rozwiąznia umowy
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'customers','dtying'))) 
+	$DB->Execute("ALTER TABLE customers ADD dtying TEXT DEFAULT NULL;");		// przyczyna/opis rozwiązania umowy
 
 $DB->Execute("
 CREATE TABLE IF NOT EXISTS customerorigin (
@@ -41,7 +46,7 @@ CREATE TABLE IF NOT EXISTS customerorigin (
 ");
 
 $DB->Execute("
-CREATE VIEW customersview AS
+CREATE OR REPLACE VIEW customersview AS
 SELECT c.* FROM customers c
 WHERE NOT EXISTS (
 SELECT 1 FROM customerassignments a
@@ -51,7 +56,7 @@ AND c.type IN ('0','1');
 ");
 
 $DB->Execute("
-CREATE VIEW contractorview AS
+CREATE OR REPLACE VIEW contractorview AS
 SELECT c.* FROM customers c
 WHERE c.type = '2';
 ");

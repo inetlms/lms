@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <p><table cellpadding="3" width="100%">
 	<tr class="dark">
 		<td width="94%" class="fleftu" nowrap>
@@ -26,7 +26,7 @@
 		</td>
 	</tr>
 	{/if}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=taxratelist loop=$taxratelist start=$start max=$pagelimit}
 	<tr class="{cycle} lista {if ($taxratelist[taxratelist].validfrom !=0 && $taxratelist[taxratelist].validfrom > $smarty.now) || ($taxratelist[taxratelist].validto !=0 && $taxratelist[taxratelist].validto < $smarty.now)} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" nowrap onclick="return self.location.href='?m=taxrateedit&id={$taxratelist[taxratelist].id}';">

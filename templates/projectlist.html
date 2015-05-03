@@ -1,0 +1,66 @@
+{include file="header.html"}
+{title value=$layout.pagetitle link="<a href='?m=projectadd'><b>Nowy&nbsp;projekt&nbsp;</b><img src='img/add.gif' alt=''></a>"}
+
+<table width="100%" class="table" cellpadding="3">
+    
+    <tr class="dark nav-header">
+	<td width="1%" class="fleftu pad" align="center" nowrap><b>#</b></td>
+	<td width="93%" class="fbt pad tleft" align="left"><b>{trans('Name')}<br><i>{trans('Title')}</i></b></td>
+	<td width="1%" class="fbt pad tleft" align="left" nowrap style="min-width:120px;"><b>{trans('Project number')}<br>{trans('Contract number')}</b></td>
+	<td width="1%" class="fbt pad tleft" align="center" nowrap><b>{trans('Status')}</b></td>
+	<td width="1%" class="fbt pad tleft" align="center" nowrap><b>{trans('Value')}</b></td>
+	<td width="1%" class="fbt pad tleft" align="center" nowrap><b>EU</b></td>
+	<td width="1%" class="fbt pad tleft" align="center" nowrap><b>{trans('Program')}<br>{trans('Action')}</b></td>
+	<td width="1%" class="frightu pad tleft" align="right" nowrap>&nbsp;</td>
+    </tr>
+    
+    {cycle values="lucid,light" print=false}
+    {section name='projectlist' loop=$projectlist}
+    {assign var='idek' value=$projectlist[projectlist].id}
+    <tr class="{cycle} lista{if $projectlist[projectlist].status == $smarty.const.NSTATUS_CLOSED} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	
+	<td width="1%" class="fleft pad" align="center" nowrap onclick="self.location.href='?m=projectinfo&id={$idek}';">
+	    {$projectlist[projectlist].id|string_format:"%02.d"}
+	</td>
+	
+	<td width="93%" class="pad tleft" align="left" onclick="self.location.href='?m=projectinfo&id={$idek}';">
+	    <b>{$projectlist[projectlist].name|truncate:"100":"..."}</b>{if $projectlist[projectlist].title}<br><i>{$projectlist[projectlist].title|truncate:"100":"..."}</i>{/if}
+	</td>
+	
+	<td width="1%" class="pad tleft" align="left" nowrap onclick="self.location.href='?m=projectinfo&id={$idek}';">
+	    {$projectlist[projectlist].number}<br>{if $projectlist[projectlist].contract}{$projectlist[projectlist].contract}{else}&nbsp;{/if}
+	</td>
+	
+	<td width="1%" class="pad tleft" align="center" nowrap onclick="self.location.href='?m=projectinfo&id={$idek}';">
+	    {assign var='tmp' value=$projectlist[projectlist].status}<span style="color:#000000;">{$_NSTATUS.$tmp}</span>
+	</td>
+	
+	<td width="1%" class="pad tleft" align="right" nowrap onclick="self.location.href='?m=projectinfo&id={$idek}';">
+	    {if $projectlist[projectlist].value != '0.00'}{$projectlist[projectlist].value|money_format}{/if}
+	</td>
+	
+	<td width="1%" class="pad tleft" align="center" nowrap onclick="self.location.href='?m=projectinfo&id={$idek}';">
+	    {if $projectlist[projectlist].eu}<img src="img/Apply.png" alt="TAK">{else}<img src="img/empty.gif" alt="NIE" style="width:16px;">{/if}
+	</td>
+	
+	<td width="1%" class="pad tleft" align="center" nowrap onclick="self.location.href='?m=projectinfo&id={$idek}';">
+	    {if $projectlist[projectlist].eu}
+		{assign var='program' value=$projectlist[projectlist].program}
+		{assign var='action' value=$projectlist[projectlist].action}
+		{$_PROJECTPROGRAM.$program}<br>
+		{$_PROJECTACTION.$program.$action}
+	    {/if}
+	</td>
+	
+	<td width="1%" class="fright tleft" align="right" nowrap style="padding-left:10px;">
+	    <img src="img/delete.gif" alt="[ delete ]">
+	    <img src="img/edit.gif" alt="[ edit ]" onclick="self.location.href='?m=projectedit&id={$idek}';">
+	</td>
+    </tr>
+    
+    {/section}
+    
+    
+</table>
+
+{include file="footer.html"}

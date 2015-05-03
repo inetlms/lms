@@ -4,7 +4,7 @@ BODY {
     overflow			: scroll;
     overflow-x			: auto;
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
     background-color		: #FdFdFd; 
     margin			: 0; 
     padding			: 0; 
@@ -46,6 +46,13 @@ tr.lista td {
     cursor			: pointer;
 }
 
+tr.display td,
+TR.display TD {
+/*    padding-top			: 2px; */
+/*    padding-bottom		: 2px; */
+height:20px;
+}
+
 TR.info, 
 tr.info { 
     background-color		: #DDDDDD;
@@ -78,7 +85,7 @@ td.info-hover:hover {
 
 TD,p { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
     vertical-align		: middle; 
     border-color		: #CCCCCC; 
     border-width		: 1px;
@@ -194,6 +201,14 @@ TD.container {
     padding			: 0; 
 }
 
+td.tleft {
+    border-left : solid 1px #CCCCCC;
+}
+
+td.tright {
+    border-right : solid 1px #CCCCCC;
+}
+
 FORM { 
     display			: inline; 
 }
@@ -244,46 +259,46 @@ TR.suspended A {
 
 P { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
 }
 
 P.nor { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
 }
 
 P.txt { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
     text-align			: justify; 
 }
 
 P.separated { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
     margin-top			: 5px; 
     margin-bottom		: 5px;
 }
 
 h1,H1 { 
     font-size			: 14pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
     color 			: #006500;
 }
 
 h2,H2 { 
     font-size			: 12pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
 }
 
 h3,H3 { 
     font-size			: 10pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
 }
 
 h4,H4 { 
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica; 
+    font-family			:  Tahoma, Verdana, Arial, Helvetica; 
 }
 
 hr,HR { 
@@ -296,7 +311,7 @@ hr,HR {
 ht,HT {
     font-size			: 12pt;
     font-weight			: bold;
-    font-family 		: Tahoma, Verdana, Arial, Helvetica;
+    font-family 		:  Tahoma, Verdana, Arial, Helvetica;
     margin-bottom		: 7px;
     margin-top			: 5px;
     display			: block;
@@ -341,9 +356,10 @@ INPUT[type="submit"] {
     border		: solid 0px transparent;
     color		: #800000;
     font-size		: 8pt; 
-    font-family		: Tahoma, Verdana, Arial, Helvetica; 
+    font-family		:  Tahoma, Verdana, Arial, Helvetica; 
     background		: transparent;
 }
+
 
 button:hover, 
 BUTTON:hover,
@@ -368,13 +384,14 @@ INPUT[type="calendar"] {
 
 INPUT { /* IE */
     font-size			:  8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     vertical-align		: middle;
     border-style		: expression(this.type=='checkbox' || this.type=='radio' ? 'none' : 'solid');
     border-width		: expression(this.type=='checkbox' || this.type=='radio' ? '0' : '1px');
     border-color		: expression(this.type=='checkbox' || this.type=='radio' ? '' : 'black');
     background-color		: expression(this.type=='checkbox' || this.type=='radio' ? 'transparent' : '#f6feff');
 }
+
 
 INPUT[type="radio"] {
     vertical-align		: text-bottom;
@@ -420,7 +437,7 @@ INPUT.scroller {
 
 TEXTAREA {
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border			: solid 1px #CCCCCC;
     background-color		: #ffffff;
     vertical-align		: middle; 
@@ -433,7 +450,7 @@ TEXTAREA:hover {
 
 TEXTAREA.alert {
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border-style		: solid;
     border-width		: 1px;
     background-color		: #FF9B9B;
@@ -442,7 +459,7 @@ TEXTAREA.alert {
 
 TEXTAREA.alerts {
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border-style		: solid;
     border-width		: 1px;
     border-color		: #FF0000;
@@ -452,7 +469,7 @@ TEXTAREA.alerts {
 
 SELECT {
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border			: solid 1px #CCCCCC; 
     background-color		: #FFFFFF;
     vertical-align		: middle; 
@@ -466,7 +483,7 @@ SELECT:hover {
 
 SELECT.alert {
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border-style		: solid;
     border-width		: 1px;
     background-color		: #FF9B9B;
@@ -475,7 +492,7 @@ SELECT.alert {
 
 SELECT.alerts {
     font-size			: 8pt; 
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border-style		: solid;
     border-width		: 1px;
     border-color		: #FF0000;
@@ -504,9 +521,10 @@ input[type="submit"].hiddenbtn {
     display 			: none;
 }
 
-.pad { 
-    padding-left		: 4px; 
-    padding-right		: 4px; 
+.pad,
+.pad5 { 
+    padding-left		: 5px; 
+    padding-right		: 5px; 
 }
 
 .pad2 { 
@@ -521,7 +539,7 @@ input[type="submit"].hiddenbtn {
 
 div.multiselect { 
     font-size			: 8pt;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     border			: solid 1px #888888;
     vertical-align		: middle;
     padding			: 0px 20px 0px 4px;
@@ -685,18 +703,25 @@ div.multiselectlayer ul li input {
 
 .dark,
 .DARK { 
-    background-color		: #ebebeb; 
+    background-color		: #E0E0E0; 
 }
 
 .light,
 .LIGHT {
-//    background-color		: #EFEFEF; 
         background-color		: #F4F4F4; 
 }
 
 .lucid,
 .LUCID {
-    background-color		: #ffffff; 
+    background-color		: #ececec; 
+}
+
+.pgdark {
+    background			: #CECF9C;
+}
+
+.pglight {
+    background-color			: #F3F3E9;
 }
 
 .superlight,
@@ -782,8 +807,8 @@ INPUT[type='text'].active {
 }
 
 .scroller TD { 
-    padding-top			: 5px; 
-    padding-bottom		: 5px;
+/*    padding-top			: 5px; */
+/*    padding-bottom		: 5px; */
 }
 
 .pre { 
@@ -833,7 +858,7 @@ INPUT[type='text'].active {
 
 .overlib {
     width			: 150px;
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     background			: #f6feff;
     padding			: 2px 4px;
     border			: 1px solid #333333;
@@ -846,7 +871,7 @@ INPUT[type='text'].active {
 }
 
 .overlib_popup {
-    font-family			: Tahoma, Verdana, Arial, Helvetica;
+    font-family			:  Tahoma, Verdana, Arial, Helvetica;
     background			: #f6feff;
     padding			: 2px 4px;
     border			: 1px solid #333333;
@@ -864,15 +889,33 @@ INPUT[type='text'].active {
     font-weight			: normal;
     margin-bottom 		: 10px;
     font-size			: 14pt;
-    font-family			: Tahoma, Verdana, Arial;
-    padding 			: 2px 0px 2px 8px;
+    font-family			:  Tahoma, Verdana, Arial;
+    padding 			: 2px 0px 2px 0px;
     color			: #006500;
 }
 
 .title_sm {
     font-weight 		: normal;
     font-size 			: 14pt;
-    font-family 		: Tahoma, Verdana, Arial;
+    font-family 		:  Tahoma, Verdana, Arial;
+    color			: #006500;
+}
+
+.title_small {
+    width			: 99%;
+    right			: 15px;
+    font-weight			: normal;
+    margin-bottom 		: 10px;
+    font-size			: 11pt;
+    font-family			:  Tahoma, Verdana, Arial;
+    padding 			: 2px 0px 2px 0px;
+    color			: #006500;
+}
+
+.title_sm_small {
+    font-weight 		: normal;
+    font-size 			: 11pt;
+    font-family 		:  Tahoma, Verdana, Arial;
     color			: #006500;
 }
 
@@ -903,7 +946,7 @@ div.nodata {
     width			: 100%;
     padding-top			: 20px;
     padding-bottom		: 20px;
-    font			: bold 18px Tahoma,Arial,Verdana;
+    font			: bold 18px  Tahoma,Arial,Verdana;
     text-align			: center;
     color			: #000000;
     background-color		: #DFD5BD;
@@ -928,7 +971,7 @@ div.nodata {
 }
 
 .ddsmoothmenu {
-    font			: normal 11px Arial, Tahoma, Helvetica, Verdana;
+    font			: normal 11px  Arial, Tahoma, Helvetica, Verdana;
     display			: block;
     background			: #333333;
     margin-left			: 10px;
@@ -961,7 +1004,7 @@ div.nodata {
     border-right		: 1px solid #999999;
     color			: #ffffff;
     text-decoration		: none;
-    font			: bold 11px Tahoma, Arial;
+    font			: bold 11px  Tahoma, Arial;
 }
 
 * html .ddsmoothmenu ul li a {
@@ -1123,7 +1166,7 @@ div.nodata {
 
 .boxtitletd {
 	padding-left		: 5px;
-	font			: normal 80% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
 	height			: 24px;
 	border-left		: solid 1px #D7D7D7;
 	border-right		: solid 1px #D7D7D7;
@@ -1139,7 +1182,7 @@ div.nodata {
 .boxcontenttd {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #D7D7D7;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana, Helvetica, Arial;
 }
 
 .boxtitlealert, .boxtitlealerts {
@@ -1148,7 +1191,7 @@ div.nodata {
 
 .boxtitlealerttd, .boxtitlealerts td {
 	padding-left		: 5px;
-	font			: normal 80% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
 	height			: 24px;
 	border-left		: solid 1px #d54937;
 	border-right		: solid 1px #d54937;
@@ -1165,7 +1208,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #d54937;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana, Helvetica, Arial;
 }
 
 .boxcontentalerts {
@@ -1176,7 +1219,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #FF0000;
 	color			: #ff0000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 	
@@ -1193,7 +1236,7 @@ div.nodata {
 	border-right		: solid 1px #4889f1;
 	border-top		: solid 1px #4889f1;
 	height			: 24px;
-	font			: normal 80% 'SignikaL',Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 80% Tahoma, Verdana, Helvetica, Arial;
 }
 
 .boxcontentinfo {
@@ -1205,7 +1248,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #4889f1;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 .boxtitlemess {
@@ -1219,7 +1262,7 @@ div.nodata {
 	border-right		: solid 1px #079e5b;
 	border-top		: solid 1px #079e5b;
 	height			: 24px;
-	font			: normal 80% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
 }
 
 .boxcontentmess {
@@ -1231,7 +1274,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #079e5b;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 .boxtitlewarn {
@@ -1245,7 +1288,7 @@ div.nodata {
 	border-right		: solid 1px #f9c73d;
 	border-top		: solid 1px #f9c73d;
 	height			: 24px;
-	font			: normal 80% 'SignikaL', Tahoma, Verdana, Helvetica, Arial;
+	font			: normal 80%  Tahoma, Verdana, Helvetica, Arial;
 }
 
 .boxcontentwarn {
@@ -1257,7 +1300,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #f9c73d;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 .boxtitleteal {
@@ -1271,7 +1314,7 @@ div.nodata {
 	border-right		: solid 1px #008080;
 	border-top		: solid 1px #008080;
 	height			: 24px;
-	font			: normal 80% 'SignikaL', Verdana, Helvetica, Arial;
+	font			: normal 80%  Verdana, Helvetica, Arial;
 }
 
 .boxcontentteal {
@@ -1282,7 +1325,7 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #008080;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 .boxtitlemediumblue {
@@ -1296,7 +1339,7 @@ div.nodata {
 	border-right		: solid 1px #0000CD;
 	border-top		: solid 1px #0000CD;
 	height			: 24px;
-	font			: normal 80% 'SignikaL', Verdana, Helvetica, Arial;
+	font			: normal 80%  Verdana, Helvetica, Arial;
 }
 
 .boxcontentmediumblue {
@@ -1307,15 +1350,31 @@ div.nodata {
 	padding			: 5px 5px 5px 5px;
 	border			: solid 1px #0000CD;
 	color			: #000000;
-	font			: normal 76% 'SignikaL', Tahoma, Verdana,Helvetica, Arial;
+	font			: normal 76%  Tahoma, Verdana,Helvetica, Arial;
 }
 
 .nav-header {
     height:24px;
-    }
+}
+
+.nav-tuck {
+    height			: 24px;
+    color			: #000000;
+    background			: #EBF8A4;
+}
+
+.nav-tuck td {
+    border-color		: #A2D246;
+}
+
+.nav-tuck .active {
+    background			: #A2D246;
+}
+
+
 
 .listradiuscorners {
-        font-family             : Tahoma, Verdana, Arial, Helvetica;`
+        font-family             :  Tahoma, Verdana, Arial, Helvetica;`
         background              : #f6feff;
         padding                 : 2px 4px;
         border-radius           : 6px;
@@ -1397,3 +1456,33 @@ td.empty-table { text-align: center; font-weight: bold; padding: 2em; background
 .lighter { font-weight: lighter; }
 .valign-top { vertical-align: top; }
 .valign-bottom { vertical-align: bottom; }
+.h24 { height : 24px;}
+
+A.green { color			: #006500; }
+TR.green A { color			: #006500; }
+.greenbg,.greenBG { background-color		: #006500; }
+.green { color			: #006500; }
+
+.boxtop {
+/*    background		: #E0E0E0 url(topnav_bg.gif) repeat-x center; */
+    background-color	: #E0E0E0;
+    height		: 24px;
+    color		: #00126D;
+    font-weight		: bold;
+    text-transform	: uppercase;
+    
+}
+
+::-webkit-input-placeholder { color : #333; }
+::-moz-placeholder { color : #333; }
+:-ms-input-placeholder { color : #333; }
+input:-moz-placeholder { color : #333; }
+
+.required_select { color : #FF7575; font-weight:bold;}
+
+.required::-webkit-input-placeholder { color : red; font-weight:bold; }
+.required::-moz-placeholder { color : red; font-weight:bold; }
+.required:-ms-input-placeholder { color : red; font-weight:bold;}
+input.other:-moz-placeholder { color : red; font-weight:bold; }
+
+

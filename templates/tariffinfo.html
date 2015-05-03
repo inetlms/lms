@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <script type="text/javascript">
 <!--
 	function getText(index)
@@ -40,6 +40,15 @@
 				    {$tariff.value|money_format}
 				    {if $tariff.period}{assign var=tperiod value=$tariff.period}({$_PERIODS.$tperiod})
 				    {else}<font class="blend">({trans("period undefined")})</font>{/if}
+				</td>
+			    </tr>
+			    <tr class="light">
+				<td width="1%" nowrap>
+				    <img src="img/value.gif" alt="">
+				</td>
+				<td width="1%"><b>Upust:</b></td>
+				<td width="98%" nowrap>
+				    {$tariff.relief|money_format}
 				</td>
 			    </tr>
 			    <tr class="light">
@@ -89,7 +98,7 @@
 		    </td>
 		    <td width="50%" valign="50%"><br>
 			    <table width="1%" cellpadding="4" style="border:solid 1px #CCCCCC;">
-				{cycle values="light,lucid" print=false}
+				{cycle values="lucid,light" print=false}
 				<tr class="dark lista">
 				    <td width="1%" nowrap class="pad10"></td>
 				    <td width="1%" nowrap class="pad10" align="center"><b>Upload</b></td>
@@ -293,7 +302,7 @@
 	<tr>
 		<td width="100%" class="fall" colspan="2">
 			<table width="100%" cellpadding="2">
-				{cycle values="light,lucid" print=false}
+				{cycle values="lucid,light" print=false}
 				{section name=l1 loop=$tariff.customers max=$tariff.rows}
 				<tr>
 					{section name=l2 loop=$tariff.customers start=$smarty.section.l1.index step=$tariff.rows}

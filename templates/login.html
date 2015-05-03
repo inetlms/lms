@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
     <link href="{get_conf('phpui.style', 'img/style.css')}" rel="stylesheet" type="text/css">
     <link href="img/lms-net.gif" rel="shortcut icon">
-    <title> Witaj w iNET LMS </title>
+    <title>Witaj w {$layout.lmsv}</title>
 </head>
 <body>
 
@@ -21,8 +21,8 @@
 					    <div style="width:404px;height:374px;text-align:center;margin-top:auto;overflow:auto;" id="id_login_adbox"></div>
 					</td>
 					<td align="center" class="light loginform" width="300" height="400">
-						<b>{$layout.lmsv} LMS<br>{$layout.lmsvr}</b><br><br>
-						<b>&copy;2012-{$smarty.now|date_format:"Y"} iNET LMS Developers</b><br><br><br>
+						<b>{$layout.lmsv}<br>{$layout.lmsvr}</b><br><br>
+						<b>&copy;2012-{$smarty.now|date_format:"Y"} {$layout.lmsv} Developers</b><br><br><br>
 						{if $error}<font class="alert bold">{$error}</font>{else}&nbsp;{/if}<br>
 						<br>
 						<form method="post" name="loginform" action="{$target}">
@@ -62,6 +62,7 @@
 						<a href="http://inetlms.pl/dokuwiki/doku.php?id=start"><font class="blend">{trans("Documentation")}</font></a><br>
 						<a href="http://www.inetlms.pl" target="_blank"><font class="blend">{trans("iNET LMS Project Homepage")}</font></a><br>
 						{if get_conf('phpui.installation_name')}<br><br><b>{get_conf('phpui.installation_name')}</b>{/if}
+						{if $_newversion}<br><br><a href="https://github.com/inetlms/lms" target="_blank"><span style='color:blue;'><b>Dostępna jest nowa wersja {$_newversion}</b></span></a>{/if}
 					</td>
 				</tr>
 				{if $layout.dberrors}

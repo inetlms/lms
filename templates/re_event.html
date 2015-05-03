@@ -1,0 +1,189 @@
+{if $akcja == 'add' || $akcja == 'edit'}
+{$xajax}
+<form name="eventedit" id="eventedit" method="POST">
+<input type="hidden" name="eventedit[id]" value="{$eventinfo.id}">
+<input type="hidden" name="eventedit[idc]" value="{$idc}">
+
+<table width="100%" cellpadding="3" cellspacing="0">
+    <tr class="dark pgdark">
+	<td width="100%" align="left" class="fall pad10"><b>{if $eventinfo.id}Edycja zdarzenia{else}Nowe zdarzenie{/if}</b></td>
+    </tr>
+    <tr class="light pglight">
+	<td width="100%" align="left" class="pad10 flr">
+	
+	<table width="100%" cellpadding="3">
+	    <tr>
+		<td width="1%" nowrap align="left" style="vertical-align:top;"><b>Data zdarzenia</b></td>
+		<td width="1%" class="pad10" style="vertical-align:top;"><b>:</b></td>
+		<td width="98%" align="left">
+		    <input type="text" name="eventedit[datazdarzenia]" class="tcal" id="id_datazdarzenia" style="width:100px;" value="{if $eventinfo.datazdarzenia}{$eventinfo.datazdarzenia|date_format:'Y-m-d'}{/if}" readonly>&nbsp;<img src="img/cancel.gif" width="12" {tip text="Wyczyść datę"} style="cursor:pointer;" onclick="document.getElementById('id_datazdarzenia').value='';">
+		    <div id="id_datazdarzenia_alerts" style="color:red;"></div>
+		</td>
+	    </tr>
+	    <tr>
+		<td width="1%" nowrap align="left" style="vertical-align:top;"><b>Zdarzenie</b></td>
+		<td width="1%" class="pad10" style="vertical-align:top;"><b>:</b></td>
+		<td width="98%" align="left">
+		    {if get_conf('registryequipment.car_eventdic','0')}
+			<input type="hidden" name="eventedit[name]" id="id_name" value="{$eventinfo.name}">
+		    {else}
+			<input type="text" name="eventedit[name]" id="id_name" style="width:200px;" value="{$eventinfo.name}" placeholder="podaj nazwę zdarzenia lub wybrać z listy">&nbsp;&nbsp;
+		    {/if}
+		    {if $dicevent}
+			<select name="eventedit[eventid]" style="width:200px;" id="id_eventid" onchange="swapnameevent();">
+			    <option value="">------------</option>
+			    {section name="dicevent" loop=$dicevent}
+				<option value="{$dicevent[dicevent].id}"{if $dicevent[dicevent].id == $eventinfo.eventid} selected{/if}>{$dicevent[dicevent].name}</option>
+			    {/section}
+			</select>
+		    {else}
+			<span style="color:red;">Brak dostępnych pozycji w słowniku</span>
+			<input type="hidden" name="eventedit[eventid]" id="id_event" value="">
+		    {/if}
+		    <div id="id_name_alerts" style="color:red;"></div>
+		</td>
+	    </tr>
+	    
+	    <tr>
+		<td width="1%" nowrap align="left" style="vertical-align:top;"><b>Opis</b></td>
+		<td width="1%" class="pad10" style="vertical-align:top;"><b>:</b></td>
+		<td width="98%" align="left">
+		    <textarea name="eventedit[description]" style="width:410px;" rows="5">{$eventinfo.description}</textarea>
+		    <div id="id_name_alerts" style="color:red;"></div>
+		</td>
+	    </tr>
+	    
+	    <tr>
+		<td width="1%" nowrap align="left" style="vertical-align:top;"><b>Koszt</b></td>
+		<td width="1%" class="pad10" style="vertical-align:top;"><b>:</b></td>
+		<td width="98%" align="left">
+		    <input type="text" name="eventedit[koszt]" id="id_koszt" style="width:100px;" value="{if $eventinfo.koszt}{$eventinfo.koszt}{/if}">
+		    <div id="id_koszt_alerts" style="color:red;"></div>
+		</td>
+	    </tr>
+		
+	    <tr>
+		<td width="1%" nowrap align="left" style="vertical-align:top;"><b>Stan licznika</b></td>
+		<td width="1%" class="pad10" style="vertical-align:top;"><b>:</b></td>
+		<td width="98%" align="left">
+		    <input type="text" name="eventedit[stanlicznika]" id="id_stanlicznika" style="width:100px;" value="{if $eventinfo.stanlicznika}{$eventinfo.stanlicznika}{/if}">
+		    <div id="id_stanlicznika_alerts" style="color:red;"></div>
+		</td>
+	    </tr>
+	    
+	    <tr>
+		<td width="1%" nowrap align="left" style="vertical-align:top;"><b>Ilość paliwa</b></td>
+		<td width="1%" class="pad10" style="vertical-align:top;"><b>:</b></td>
+		<td width="98%" align="left">
+		    <input type="text" name="eventedit[litrow]" id="id_litrow" style="width:100px;" value="{if $eventinfo.litrow}{$eventinfo.litrow}{/if}" placeholder="ilość litrów">
+		    <div id="id_litrow_alerts" style="color:red;"></div>
+		</td>
+	    </tr>
+
+	</table>
+	
+	</td>
+    </tr>
+    <tr class="dark pgdark">
+	<td width="100%" align="right" class="fall pad10">
+	    <a href="javascript:void(0);" onclick="xajax_saveevent(xajax.getFormValues('eventedit'));"><b>{trans('Save')}</b> <img src="img/save.gif"></a>
+	    <a href="javascript:void(0);" onclick="self.location.href='?m=re_carinfo&tuck=event&idc={$idc}';"><b>{trans('Cancel')}</b> <img src="img/cancel.gif"></a>
+	</td>
+    </tr>
+</table>
+
+</form>
+
+{literal}
+<script type="text/javascript" language="JavaScript">
+<!--
+	function swapnameevent()
+	{
+	    if (document.getElementById('id_eventid').value=='') {
+		document.getElementById('id_name').readOnly = false;
+		document.getElementById('id_name').value = '';
+		document.getElementById('id_name').focus();
+	    } else {
+		var e = document.getElementById('id_eventid');
+		var strUser = e.options[e.selectedIndex].text;
+		document.getElementById('id_name').value = strUser;
+		document.getElementById('id_name').readOnly = true;
+	    }
+	}
+//-->
+</script>
+{/literal}
+
+{else}
+
+    <table width="100%" cellpadding="3" cellspacing="0">
+	<tr class="dark">
+	    <td class="fleftu pad5" width="1%" nowrap align="center"><b>#<b></td>
+	    <td class="fbt pad10" width="1%" nowrap align="center"><b>Data<br>Zdarzenia</b></td>
+	    <td class="fbt pad10" width="1%" nowrap align="center"><b>Dodano<br>Przez</b></td>
+	    
+	    <td class="fbt pad10" width="1%" nowrap align="left"><b>Zdarzenie</b></td>
+	    <td class="fbt pad10" width="93%" align="left"><b>Dodatkowa Informacja</b></td>
+	    <td class="fbt pad10" width="1%" nowrap align="center"><b>Stan<br>Licznika</b></td>
+	    <td class="fbt pad10" width="1%" nowrap align="center"><b>Koszt</b></td>
+	    <td class="fbt pad10" width="1%" nowrap align="center"><b>Litrów</b></td>
+	    
+	    <td class="frightu pad10" width="1%" nowrap align="center">
+		<img src="img/add.gif" title="[ dodaj nowe zdarzenie ]" alt="[dodaj]" style="cursor:pointer;" onclick="self.location.href='?m=re_carinfo&tuck=event&idc={$idc}&add';">
+	    </td>
+	</tr>
+	
+	
+	{if $eventlist}
+	{cycle values="lucid,light" print=false}
+	
+	{section name='eventlist' loop=$eventlist}
+	{assign var='event' value=$eventlist[eventlist]}
+	<tr class="{cycle} lista" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+	    <td class="fleft pad5" width="1%" nowrap align="center">{$event.id|string_format:"%04d"}</td>
+	    <td class="pad10" width="1%" nowrap align="center">{$event.datazdarzenia|date_format:"Y-m-d"}</td>
+	    <td class="pad10" width="1%" nowrap align="center">
+		{$event.cdate|date_format:"Y-m-d"}
+		{assign var='tmp' value=$event.cuser}<br><span class="blend">{$userlist[$tmp].name}</span>
+	    </td>
+	    <td class="pad10" width="1%" nowrap align="left">
+		{if $event.eventid}
+		    {assign var='tmp' value=$event.eventid}
+		    {$eventdiclist[$tmp].name}
+		{else}
+		    {$event.name}
+		{/if}
+	    </td>
+	    <td class="pad10" width="93%" align="left">{if $event.description}{$event.description}{/if}</td>
+	    <td class="pad10" width="1%" nowrap align="right">{if $event.stanlicznika}{$event.stanlicznika}{/if}</td>
+	    <td class="pad10" width="1%" nowrap align="right">{if $event.koszt != '0.00'}{$event.koszt|money_format}{/if}</td>
+	    <td class="pad10" width="1%" nowrap align="right">{if $event.litrow}{$event.litrow} L{/if}</td>
+	    
+	    <td class="fright pad10" width="1%" nowrap align="center">
+		<a href="?m=re_carinfo&tuck=event&idc={$idc}&del={$event.id}" onclick="return confirmLink(this,'Potwierdź usunięcie zdarzenia');"><img src="img/delete.gif"></a>
+		<img src="img/edit.gif" style="border:0;cursor:pointer;" title="[ Edytuj ]" onclick="self.location.href='?m=re_carinfo&tuck=event&idc={$idc}&edit={$event.id}';">
+	    </td>
+	</tr>
+	{/section}
+	{else}
+	
+	<tr class="light">
+	    <td width="100%" class="fall pad10" width="100%" colspan="9" align="center">
+	    <p>Brak zdarzeń</p>
+	    </td>
+	</tr>
+	
+	{/if}
+	
+	
+	
+	
+	
+	<tr class="dark">
+	    <td width="100%" class="fall pad10" width="100%" colspan="9" align="right">
+	    <a href="javascript:void(0);" onclick="self.location.href='?m=re_carinfo&tuck=event&idc={$idc}&add';"><b>Dodaj nowe zdarzenie</b> <img src="img/add.gif"></a>
+	    </td>
+	</tr>
+    </table>
+
+{/if}

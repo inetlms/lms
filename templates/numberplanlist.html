@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <p><table cellpadding="3" width="100%">
 	<tr class="dark">
 		<td width="93%" class="fleftu" nowrap><img src="img/id.gif" alt=""> <b>{trans("Template:")}</b></td>
@@ -19,7 +19,7 @@
 		</td>
 	</tr>
 	{/if}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=numberplanlist loop=$numberplanlist}
 	<tr class="{cycle} lista{if ($numberplanlist[numberplanlist].validfrom !=0 && $numberplanlist[numberplanlist].validfrom > $smarty.now) || ($numberplanlist[numberplanlist].validto !=0 && $numberplanlist[numberplanlist].validto < $smarty.now)} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" nowrap onclick="return self.location.href='?m=numberplanedit&id={$numberplanlist[numberplanlist].id}';">

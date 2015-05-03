@@ -25,8 +25,8 @@
 $DB->BeginTrans();
 
 $DB->Execute("
-	DROP VIEW vnodes;
-	DROP VIEW vmacs;
+	DROP VIEW IF EXISTS vnodes;
+	DROP VIEW IF EXISTS vmacs;
 	ALTER TABLE netlinks ADD technology integer DEFAULT 0 NOT NULL;
 	ALTER TABLE nodes ADD linktechnology integer DEFAULT 0 NOT NULL;
 	CREATE VIEW vnodes AS

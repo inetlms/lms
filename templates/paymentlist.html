@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!-- $Id$ -->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <table width="100%" cellpadding="3">
 	<tr class="dark">
 		<td width="1%" class="fleftu">
@@ -24,7 +24,7 @@
 			<b>{t a=$listdata.total}Total: $a{/t}</b>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=payments loop=$paymentlist}
 	<form name="addbalance{$smarty.section.payments.index}" method="POST" action="?m=balanceadd">
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">

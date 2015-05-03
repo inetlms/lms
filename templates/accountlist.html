@@ -1,7 +1,7 @@
 {include file="header.html"}
 <!--// $Id$ //-->
 {if $layout.module=="accountsearch"}{assign var=suffix value="&s=1"}{/if}
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <p><table cellpadding="3" width="100%">
 	<tr class="dark"">
 		<td width="96%" class="fleftu" nowrap>
@@ -81,7 +81,7 @@
 		</td>
 	</tr>
 	{/if}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=accountlist loop=$accountlist start=$start max=$pagelimit}
 	<tr class="{cycle} lista{if $accountlist[accountlist].expdate != 0 && $accountlist[accountlist].expdate < $smarty.now} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" onclick="return self.location.href='?m=accountinfo&id={$accountlist[accountlist].id}';">

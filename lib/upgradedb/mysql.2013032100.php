@@ -23,8 +23,8 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("ALTER TABLE networks
-				ADD COLUMN hostid int(11) NULL");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'networks','hostid'))) 
+$DB->Execute("ALTER TABLE networks ADD COLUMN hostid int(11) NULL");
 //				ADD FOREIGN KEY (hostid) REFERENCES hosts (id) ON DELETE SET NULL ON UPDATE CASCADE");
 
 $DB->Execute("ALTER TABLE networks DROP INDEX address,

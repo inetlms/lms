@@ -1,5 +1,5 @@
 {include file="header.html"}
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <script type="text/javascript">
 <!--
     function clear_filtr()
@@ -56,7 +56,7 @@
 	<td width="1%" nowrap class="frightu pad2" align="center">&nbsp;</td>
     </tr>
 
-    {cycle values="light,lucid" print=false}
+    {cycle values="lucid,light" print=false}
     {section name="list" loop=$iplist start=$start max=$pagelimit}
 
     <tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">

@@ -24,7 +24,7 @@
 	</tr>
 </thead>
 </tbody>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=tariffs loop=$tarifflist}
 	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="93%" class="fleft" onclick="return self.location.href='?m=v_cenninfo&id={$tarifflist[tariffs].id}';" class="fleft">

@@ -74,8 +74,8 @@ if(!empty($_POST['division']))
 	{
 		$DB->Execute('INSERT INTO divisions (name, shortname, address, city, zip,
 			countryid, ten, regon, account, inv_header, inv_footer, inv_author,
-			inv_cplace, inv_paytime, inv_paytype, description, status, url, email, rpt, rjpt, rbe) 
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+			inv_cplace, inv_paytime, inv_paytype, description, status, url, email, rpt, rjpt, rbe, urllogofile) 
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 			array(
 				    $division['name'],
 				    $division['shortname'],
@@ -99,6 +99,7 @@ if(!empty($_POST['division']))
 				    ($division['rpt'] ? $division['rpt'] : NULL),
 				    ($division['rjpt'] ? $division['rjpt'] : NULL),
 				    ($division['rbe'] ? $division['rbe'] : NULL),
+				    ($division['urllogofile'] ? $division['urllogofile'] : ''),
 				    
 			));
 

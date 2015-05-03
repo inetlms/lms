@@ -20,6 +20,27 @@
 				<tr class="light">
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
+	<input type="hidden" name="nodeeditnetid" id="nodeeditnetid" value="{$netdevinfo.id}">
+	
+	<tr class="light">
+		<td style="width: 1%;">
+			<img src="img/host.gif">
+		</td>
+		<td style="width: 99%;" colspan="2">
+			<div id="id_host_name">{if $nodeipdata.hostname}{$nodeipdata.hostname}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}</div>
+		</td>
+	</tr>
+	
+	<tr class="light">
+		<td style="width: 1%;">
+			<img src="img/network.gif">
+		</td>
+		<td style="width: 99%;" colspan="2">
+			<div id="id_network_name">{$nodeipdata.networkname}</div>
+		</td>
+	</tr>
+	
+	
 	<tr class="light">
 		<td width="1%">
 			<img src="img/ip.gif" alt="">
@@ -28,10 +49,10 @@
 			<b>{trans("IP address:")}</b>
 		</td>
 		<td width="98%">
-			<input type="text" name="ipadd[ipaddr]" value="{$nodeipdata.ipaddr}" {tip text="Enter IP address" trigger="ipaddr"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.editipaddr['ipadd[ipaddr]'],0,{$netdevinfo.id});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
+			<input type="text" name="ipadd[ipaddr]" value="{$nodeipdata.ipaddr}" {tip text="Enter IP address" trigger="ipaddr"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.editipaddr['ipadd[ipaddr]'],document.editipaddr.nodeeditnetid,{$netdevinfo.id});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
-	{if check_conf('phpui.public_ip')}
+	{if get_form('nodes.public_ip')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}">
@@ -125,7 +146,7 @@
 			</table>
 		</td>
 	</tr>
-	<tr class="light">
+	<tr class="lucid">
 		<td width="100%" class="FBOTTOMU" colspan="3" align="right">
 			<a href="javascript:document.editipaddr.submit();" accesskey="s">{trans("Submit")} <img src="img/save.gif" alt=""></a>
 			<a href="?m=netdevinfo&id={$netdevinfo.id}">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a>

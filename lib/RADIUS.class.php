@@ -37,21 +37,33 @@ class RADIUS {
 	}
     
 
-    function send_disconnect_user ($theUser, $nasaddr, $coaport, $sharedsecret) 
+    function send_disconnect_user ($theUser, $theAcctid, $nasaddr, $coaport, $sharedsecret) 
     {
-	    $command = "echo \"User-Name=$theUser\"|radclient -x $nasaddr:$coaport disconnect $sharedsecret";
+	    $command = "echo \"User-Name=$theUser, Acct-Session-Id=$theAcctid\" |radclient -x $nasaddr:$coaport disconnect $sharedsecret";
 	    $result=`$command`;
 	    return $result;
     }
+    
+    function GetRadaccidByName($name)  
+    {
+        return $this->DB->GetOne('SELECT radacctid FROM radacct WHERE (acctstoptime IS NULL OR acctstoptime=\'0000-00-00 00:00:00\') AND  username = ? LIMIT 1;',array($name));
+    } //pobiera radacctid po nazwie użytkownika (login pppoe) z aktualnej sesji zapisanej w tabeli radacct
+
+    function GetacctidByName($name)
+    {
+     return $this->DB->GetOne('SELECT acctsessionid FROM radacct WHERE (acctstoptime IS NULL OR acctstoptime=\'0000-00-00 00:00:00\') AND  username = ? LIMIT 1;',array($name));
+    } //pobiera acctsessionid po nazwie użytkownika (login pppoe) z aktualnej sesji zapisanej w tabeli radacct
+    
 
     function disconnect_user($radacctid)
     {
 	
-	$radacct = $this->DB->GetRow('SELECT username, nasipaddress FROM radacct WHERE radacctid = ? LIMIT 1;',array($radacctid));
+	$radacct = $this->DB->GetRow('SELECT username, acctsessionid, nasipaddress FROM radacct WHERE radacctid = ? LIMIT 1;',array($radacctid));
 	$nas = $this->DB->GetRow('SELECT secret, coaport FROM nas WHERE nasname = ? LIMIT 1;',array($radacct['nasipaddress']));
+    
 	
 	if ($radacct && $nas) {
-	    return $this->send_disconnect_user($radacct['username'], $radacct['nasipaddress'], (!empty($nas['coaport']) ? $nas['coaport'] : get_conf('radius.coa_port','3799')), $nas['secret']);
+	    return $this->send_disconnect_user($radacct['username'], $radacct['acctsessionid'], $radacct['nasipaddress'], (!empty($nas['coaport']) ? $nas['coaport'] : get_conf('radius.coa_port','3799')), $nas['secret']);
 	} else
 	    return FALSE;
 	
@@ -91,14 +103,18 @@ class RADIUS {
 		.($status=='open' ? ', nd.maxid AS maxid ' : ', 0 AS maxid ')
 		.'FROM radacct r '
 		.($status=='open' ? 'JOIN ( SELECT MAX(radacctid) AS maxid, username FROM radacct GROUP BY username) nd ON (nd.username = r.username) ' : '')
-		.'JOIN nas nass ON (nass.nasname = r.nasipaddress) '
+		.($this->DB->_dbtype!='postgres' ? 'JOIN nas nass ON (nass.nasname = r.nasipaddress) ' : 'JOIN nas nass ON (nass.nasname::inet = r.nasipaddress) ')
 		.($auth_login == 'id' ? 'JOIN nodes n ON (n.id = r.username) ' : '')
-		.($auth_login == 'name' ? 'JOIN nodes n ON (n.name = r.username) ' : '')
+		.($auth_login == 'name' ? 'JOIN nodes n ON (upper(n.name) = upper(r.username)) ' : '')
 		.($auth_login == 'ip' ? 'JOIN nodes n ON (inet_ntoa(n.ipaddr) = r.username) ' : '')
 		.($auth_login == 'passwd' ? 'JOIN nodes n ON (n.passwd = r.username) ' : '')
+		.($auth_login == 'pppoe_login' ? 'JOIN nodes n ON (n.pppoelogin = r.username) ' : '')
 		.'JOIN customersview c ON (c.id = n.ownerid) '
-		.($status=='open' ? ' WHERE (r.acctstoptime IS NULL OR r.acctstoptime=\'0000-00-00 00:00:00\') ' : '')
-		.($status=='completed' ? ' WHERE r.acctstoptime IS NOT NULL AND r.acctstoptime!=\'0000-00-00 00:00:00\' ' : '')
+		.($this->DB->_dbtype!='postgres' ?
+                ($status=='open' ? ' WHERE (r.acctstoptime IS NULL OR r.acctstoptime=\'0000-00-00 00:00:00\') ' : '')
+                .($status=='completed' ? ' WHERE r.acctstoptime IS NOT NULL AND r.acctstoptime!=\'0000-00-00 00:00:00\' ' : '') :
+                ($status=='open' ? ' WHERE (r.acctstoptime IS NULL OR r.acctstoptime=\'0001-01-01 00:00:00\') ' : '')
+                .($status=='completed' ? ' WHERE r.acctstoptime IS NOT NULL AND r.acctstoptime!=\'0001-01-01 00:00:00\' ' : '') )
 		.($nullsession=='tak' ? ' AND r.acctsessiontime = 0 ' : '')
 		.($nullsession=='nie' ? ' AND r.acctsessiontime != 0 ' : '')
 		.($sessions=='cur' && $status=='open' ? ' AND r.radacctid = nd.maxid ' : '')

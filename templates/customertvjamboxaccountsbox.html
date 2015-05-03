@@ -1,0 +1,348 @@
+<!--// customertvjamboxaccountsbox.html,v 1.2 23/08/2011 19:00:00 ITMSOFT $ //-->
+
+{literal}<style>
+.errormsg {
+	 color: white;
+	 padding: 10px 0px;
+	 width: 100%;
+	 margin-top: 5px;
+	 margin-bottom: 5px;
+	 text-align: center;
+	 font-weight: bold;
+	 background-color: red;
+}
+</style>{/literal}
+
+{if $errormsg}
+	<div id="#errormsg" class="errormsg">{$errormsg}</div>
+{/if}
+
+<table width="100%" cellpadding="3">
+	<tr class="dark hand">
+		<td width="99%" class="fleftu hand" onclick="showOrHide('tvjamboxaccountspanel');">
+			<img src="img/tv_icon.png" alt="">
+			<b>{t a=$customertvjamboxaccounts|@count|default:"0"}Konta TV ($a){if $accblockednum > 0}<span style="color: red;"> ({$accblockednum} wstrzymane)</span>{/if}:{/t}</b>
+		</td>
+		<td width="1%" class="frightu" align="right" nowrap>
+			{if $cust_data.cust_number > 0}			
+			Numer klienta: {$cust_data.cust_number}, jPIN: {$cust_data.cust_vod_pin}, tvPIN: {$cust_data.cust_master_pin}
+			<a href="#tv-edit-pin0" class="hand" onclick="showOrHide('tv-tr-edit');showOrHide('tv-edit-pin');">Edytuj piny &raquo;</a>					
+			{/if}
+			{if $customerinfo.status neq "1" and ! $customerinfo.deleted}<a href="#tv-add-account0" class="hand" onclick="showOrHide('tv-tr-edit');showOrHide('tv-add-account');">{t}Nowe konto{/t} &raquo;</a>&nbsp;{/if}
+		</td>
+	</tr>
+	<tr id="tv-tr-edit" style="display: none;"><td colspan=2>
+			{if $cust_data.cust_number > 0}			
+			<div id="tv-edit-pin" style="display: none;">
+				<form action="" name="formeditpin" method="post">
+					<table cellpadding="5" cellspacing="0" width="100%">
+						<tr class="dark">
+							<td width="80%"></td>
+							<td width="1%">jPIN:</td>
+							<td><input type="text" name="cust_vod_pin" value="{$cust_data.cust_vod_pin}" size="4"></td>
+							<td width="1%">tvPIN:</td>
+							<td><input type="text" name="cust_master_pin" value="{$cust_data.cust_master_pin}" size="4"></td>
+							<td width="250px"><a href="javascript:document.formeditpin.submit();" accesskey="S" style="float:right">Zapisz&nbsp;<img src="img/save.gif" alt=""></a></td>								
+							</tr>						
+					</table>
+				</form>
+				</div>						
+			{/if}		
+		
+				<div id="tv-add-account" style="display: none;">
+				<form action="" name="formaddaccount" id="formaddaccount" method="post">
+					<table cellpadding="5" cellspacing="0" width="100%">
+						<tr class="dark">
+							<td width="1%">Ulica:</td>
+							<td><input type="text" name="cust_i_street" id="cust_i_street[0]" value="{$customerinfo.address}" size="10"></td>
+							<td width="1%">Nr:</td>
+							<td><input type="text" name="cust_i_home_nr" id="cust_i_home_nr[0]" value="" size="3"></td>
+							<td width="1%">Mieszkanie:</td>
+							<td><input type="text" name="cust_i_flat" value="" size="3"></td>
+							<td width="1%">Kod:</td>
+							<td><input type="text" name="cust_i_postal_code" id="cust_i_postal_code[0]" value="{$customerinfo.zip}" size="10"></td>							
+							<td width="1%">Miasto:</td>
+							<td><input type="text" name="cust_i_city" id="cust_i_city[0]" value="{$customerinfo.city}" size="10"></td>
+							<td><a href="javascript:document.formaddaccount.submit();" accesskey="S" style="float:right">Zapisz <img src="img/save.gif" alt=""></a></td>								
+						</tr>
+					</table>
+					<script type="text/javascript"> 
+					new AutoSuggest(document.getElementById('formaddaccount'),document.getElementById('cust_i_street[0]'),'?m=customeradd&ajax=1&mode=address&what=',0);
+					new AutoSuggest(document.getElementById('formaddaccount'),document.getElementById('cust_i_postal_code[0]'),'?m=customeradd&ajax=1&mode=zip&what=',0);
+					new AutoSuggest(document.getElementById('formaddaccount'),document.getElementById('cust_i_city[0]'),'?m=customeradd&ajax=1&mode=city&what=',0);
+					</script> 
+					<input type="hidden" id="add_account" name="add_account" value="1" />
+					<input type="hidden" id="cust_number" name="cust_number" value="{$cust_data.cust_number}" />
+				</form>
+				</div>		
+	</td></tr>
+	<tr id="tvjamboxaccountspanel" style="display:none;">
+		<td width="100%" colspan="2" class="fall">
+			<table cellpadding="5" cellspacing="0" width="100%">
+				{foreach from=$customertvjamboxaccounts item=acc}
+				{if $acc.acc_closed eq 0}
+				<tr>
+					<td>
+					<table cellpadding="5" cellspacing="0" width="100%">
+					<tr class="dark">
+					<td colspan=3><img src="img/account.png">&nbsp;Konto numer: <u><strong><font {if $acc.acc_active eq 0}style="background-color: red"{/if}>{$cust_data.cust_number}/{$acc.account_id}</font></strong></u> / 
+					Adres: {$acc.cust_i_street} {$acc.cust_i_home_nr} {$acc.cust_i_flat}, {$acc.cust_i_postal_code} {$acc.cust_i_city}</td>
+					<td colspan=10 align="right">
+							<a href="#tv-edit-account1{$acc.account_id}" class="hand" onclick="showOrHide('tv-edit-account{$acc.account_id}');">Edytuj <img src="img/edit.gif" alt="[ Edytuj ]"></a>
+							{if $acc.subscriptions|@count eq 0 }
+							<a href="?m=customerinfo&id={$customerinfo.id}&account_del={$acc.account_id}" class="hand" onclick="return confirmLink(this, 'Czy na pewno chcesz usunąć konto?')">Usuń <img src="img/cancel.gif" alt="[ Usuń ]"></a>
+							{else if}
+								{if $acc.acc_active eq 0}
+								<a href="?m=customerinfo&id={$customerinfo.id}&account_unlock={$acc.account_id}" onclick="return confirmLink(this, 'Czy na pewno chcesz wznowić usługi na tym koncie?')">Wznów usługi <img src="img/warningoff.gif" alt="[ Wznów usługi ]"></a>
+								{else if}
+								<a href="?m=customerinfo&id={$customerinfo.id}&account_lock={$acc.account_id}" onclick="return confirmLink(this, 'Czy na pewno chcesz wstrzymać świadczenie usług na tym koncie? \nKlient będzie bilingowany mimo blokady.')">Wstrzymaj usługi <img src="img/warningon.gif" alt="[ Wstrzymaj usługi ]"></a>
+								{/if}
+							{/if}
+							{if $acc.acc_active eq 1}
+							<a href="#tv-add-packages0{$acc.account_id}" class="hand" onclick="showOrHide('tv-add-packages{$acc.account_id}');">Dodaj usługę <img src="img/next.gif" alt="[ Dodaj usługę ]"></a>
+							{/if}
+					</td>
+				</table>
+				<div id="tv-edit-account{$acc.account_id}" style="display: none;">
+				<form action="" name="formeditaccount{$acc.account_id}" id="formeditaccount{$acc.account_id}" method="post">
+					<table cellpadding="5" cellspacing="0" width="100%">
+						<tr class="dark">
+							<td width="1%">Ulica:</td>
+							<td><input type="text" name="cust_i_street" id="cust_i_street[{$acc.account_id}]" value="{$acc.cust_i_street}" size="10"></td>
+							<td width="1%">Nr:</td>
+							<td><input type="text" name="cust_i_home_nr" value="{$acc.cust_i_home_nr}" size="3"></td>
+							<td width="1%">Mieszkanie:</td>
+							<td><input type="text" name="cust_i_flat" value="{$acc.cust_i_flat}" size="3"></td>
+							<td width="1%">Kod:</td>
+							<td><input type="text" name="cust_i_postal_code" id="cust_i_postal_code[{$acc.account_id}]" value="{$acc.cust_i_postal_code}" size="10"></td>							
+							<td width="1%">Miasto:</td>
+							<td><input type="text" name="cust_i_city" id="cust_i_city[{$acc.account_id}]" value="{$acc.cust_i_city}" size="10"></td>
+							<td><a href="javascript:document.formeditaccount{$acc.account_id}.submit();" accesskey="S" style="float:right">Zapisz <img src="img/save.gif" alt=""></a></td>								
+						</tr>						
+					</table>
+					<script type="text/javascript"> 
+					new AutoSuggest(document.getElementById('formaddaccount{$acc.account_id}'),document.getElementById('cust_i_street[{$acc.account_id}]'),'?m=customeradd&ajax=1&mode=address&what=',0);
+					new AutoSuggest(document.getElementById('formaddaccount{$acc.account_id}'),document.getElementById('cust_i_postal_code[{$acc.account_id}]'),'?m=customeradd&ajax=1&mode=zip&what=',0);
+					new AutoSuggest(document.getElementById('formaddaccount{$acc.account_id}'),document.getElementById('cust_i_city[{$acc.account_id}]'),'?m=customeradd&ajax=1&mode=city&what=',0);
+					</script> 
+					<input type="hidden" id="account_id" name="account_id" value="{$acc.account_id}" />
+					<input type="hidden" id="edit_account" name="edit_account" value="1" />
+				</form>
+				</div>			
+					
+				<div id="tv-add-packages{$acc.account_id}" style="display: none;">
+				{if $acc.can_add_package_list|@count eq 0 }
+					<br>Brak dostępnych pakietów dla tego konta.<br><br>
+				{else}
+				<form action="" name="formaddpackages{$acc.account_id}" method="post">
+					<input type="hidden" value="1" name="acttype" id="acttype" />
+					<br><br>
+					Data aktywacji: <input type="text" id="pkglistdate{$acc.account_id}" name="pkglistdate" value="{$todaydate}" onclick="calpkg{$acc.account_id}.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" size="10">
+							<script>
+							var calpkg{$acc.account_id} = new calendar(document.forms['formaddpackages{$acc.account_id}'].elements['pkglistdate{$acc.account_id}']);
+							calpkg{$acc.account_id}.time_comp = false;
+							</script>		
+					{if $acc.subscriptions|@count eq 0 }
+					&nbsp;&nbsp;&nbsp;<a href="javascript:document.formaddpackages{$acc.account_id}.acttype.value=1;document.formaddpackages{$acc.account_id}.submit();" accesskey="S" style="float:right">Dodaj i aktywuj <img src="img/save.gif" alt=""></a>&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;<a href="javascript:document.formaddpackages{$acc.account_id}.acttype.value=0;document.formaddpackages{$acc.account_id}.submit();" accesskey="S" style="float:right">Dodaj nieaktywną <img src="img/save.gif" alt=""></a>&nbsp;&nbsp;&nbsp;
+					{else}
+					&nbsp;&nbsp;&nbsp;<a href="javascript:document.formaddpackages{$acc.account_id}.acttype.value=0;javascript:document.formaddpackages{$acc.account_id}.submit();" accesskey="S" style="float:right">Dodaj <img src="img/save.gif" alt=""></a>&nbsp;&nbsp;&nbsp;
+					{/if}
+					<a href="#tv-add-packages0{$acc.account_id}" style="float:right" class="hand" onclick="showOrHide('tv-add-packages{$acc.account_id}');">Anuluj <img src="img/cancel.gif" alt=""></a>&nbsp;&nbsp;&nbsp;
+					<table cellpadding="5" cellspacing="0" width="100%">
+						{foreach from=$acc.can_add_package_list item=type}
+						<tr>
+							<td colpan="10"><b>{$type.pkgt_name}</b></td>
+						</tr>
+						<tr class="dark">
+							<td width="1%"></td>
+							<td>Nazwa produktu</td>
+							<td>Opis produktu</td>
+						</tr>						
+						{foreach from=$type.packages item=item}
+						<tr class="{cycle values="lucid,light"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">			
+							<td><span id="pkg_list[{$item.package_id}]"></span><input type="checkbox" id="pkglist[]" name="pkglist[{$item.package_id}]" {if in_array($item.package_id, $tocheck)}checked="checked"{/if} /></td>
+							<td valign="top">{$item.pkg_name}</td>
+							<td valign="top">{$item.pkg_desc}</td>
+						</tr>
+						{/foreach}
+						{/foreach}
+					</table><br>	
+					{if $acc.subscriptions|@count eq 0 }
+					&nbsp;&nbsp;&nbsp;<a href="javascript:document.formaddpackages{$acc.account_id}.submit();" accesskey="S" style="float:right">Dodaj i aktywuj <img src="img/save.gif" alt=""></a>
+					&nbsp;&nbsp;&nbsp;<a href="javascript:document.formaddpackages{$acc.account_id}.submit();" accesskey="S" style="float:right">Dodaj nieaktywną <img src="img/save.gif" alt=""></a>
+					{else}
+					&nbsp;&nbsp;&nbsp;<a href="javascript:document.formaddpackages{$acc.account_id}.submit();" accesskey="S" style="float:right">Dodaj <img src="img/save.gif" alt=""></a>
+					{/if}
+					<br><br>
+					<input type="hidden" id="account_id" name="account_id" value="{$acc.account_id}" />
+					<input type="hidden" id="packagesadd" name="packagesadd" value="true" />
+				</form>
+				{/if}
+				</div>
+				
+				<table cellpadding="5" cellspacing="0" width="100%">
+					<tr class="dark">
+						<td class="fbt" nowrap="nowrap" width="1%">Numer:</td>
+						<td class="fbt"><b>Pakiet:</td>
+						<td class="fbt"><b>Data aktywacji:</b></td>
+						<td class="fbt">Data końca:</td>
+						<td class="fbt" class="fbt" nowrap="nowrap" width="1%">Status:</td>
+						<td class="fbt" align="right">Funkcje:</td>
+					</tr>
+					{foreach from=$acc.subscriptions item=item}
+					{cycle values="lucid,light" print=false}
+					<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')" {if $item.sub_valid_to != null && $item.sub_valid_to < '2011-01-30'}style="color: gray"{/if}>
+						<td>{$item.cust_order_id}</td>
+						<td><b>{$item.pkg_name}</b></td>
+						<td><b>{$item.sub_valid_from}</b></td>
+						<td>{$item.sub_valid_to}</td>
+						<td>
+							{if $item.order_status_id eq 1}Wydaj&nbsp;STB{/if}	
+							{if $item.order_status_id eq 2}Oczekuje&nbsp;na&nbsp;instalację{/if}
+							{if $item.order_status_id eq 3}Zainstalowana{/if}
+						</td>
+						<td align="right">
+							
+							{if $item.sub_valid_to != null}
+							<!--<a href="">Anuluj <img src="img/cancel.gif" alt="[ Anuluj terminację ]"></a>-->
+							{/if}
+							 
+							{if $item.sub_valid_to == null}
+
+								{if $item.order_status_id eq 3}
+								<a href="#tv-terminate-{$item.cust_order_id}" class="hand" onclick="showOrHide('tv-terminate-{$item.cust_order_id}');">Terminuj <img src="img/cancel.gif" alt="[ Terminuj ]"></a>
+								<div id="tv-terminate-{$item.cust_order_id}" style="display: none;">
+									<form action="" method="post" id="tvterminate{$item.cust_order_id}" name="tvterminate{$item.cust_order_id}">
+									Data: <input type="text" name="term_date" id="term_date{$item.cust_order_id}" value="{$todaydate}" onclick="calterm00{$item.cust_order_id}.popup();" onmouseover="return overlib('Wprowadź datę w formacie RRRR/MM/DD.',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);" onmouseout="nd();" size="10"> <br />
+									<script>
+									var calterm00{$item.cust_order_id} = new calendar(document.forms['tvterminate{$item.cust_order_id}'].elements['term_date{$item.cust_order_id}']);
+									calterm00{$item.cust_order_id}.time_comp = false;
+									</script>	
+									Opcjonalnie<br />
+									Kwota kary: <input type="text" name="term_fee" value="" size="4"><br />
+									Powód terminacji: <br /> <input type="text" name="term_desc" value="" size="20"><br />
+									<input type="hidden" name="cust_order_id" id="cust_order_id" value="{$item.cust_order_id}">
+									<input type="hidden" name="subscription_termiante" id="subscription_termiante" value="{$item.subscription_id}">
+									<input type="hidden" name="subscription_id" id="subscription_id" value="{$item.subscription_id}">
+									<input type="hidden" name="account_id" id="account_id" value="{$acc.account_id}">
+									<a href="#tv-edit-account" class="hand" onclick="showOrHide('tv-terminate-{$item.cust_order_id}');">Anuluj</a>&nbsp;&nbsp;&nbsp;<a href="javascript:document.tvterminate{$item.cust_order_id}.submit();" accesskey="S" style="float:right">OK <img src="img/save.gif" alt=""></a>
+									</form>
+								</div>
+								{/if}
+								
+								{if $item.order_status_id eq 2}
+								<!--<a href="">Anuluj usługę <img src="img/cancel.gif" alt="[ Anuluj usługę ]"></a>-->
+								{/if}
+								
+								{if $item.order_status_id eq 2}
+								<a href="?m=customerinfo&id={$customerinfo.id}&account_id={$acc.account_id}&activate={$item.subscription_id}" onclick="return confirmLink(this, 'Czy na pewno chcesz aktywować usługę? \nTa operacja ma skutek finansowy, klient będzie bilingowany od dnia po dacie aktywacji.')">Aktywuj <img src="img/confirm.gif" alt="[ Aktywuj ]"></a>
+								{/if}
+								
+								{if $item.stb_left > 0 }
+								<a href="#tv-add-stb{$item.cust_order_id}" class="hand" onclick="showOrHide('tv-add-stb{$item.cust_order_id}');">Wydaj STB <img src="img/node_on.gif" alt="[ Wydaj STB ]"></a>
+								{/if}
+							{/if}
+						</td>
+					</tr>	
+					{if $item.stb_left > 0}
+					<tr><td colspan=10 align=right>
+						<div id="tv-add-stb{$item.cust_order_id}" style="display: none;">
+						Do tego zamówienia możesz wydać {$item.stb_left} STB model {$item.pkg_additional_type}<br /> <br />
+						<form action="" name="formaddstb{$item.cust_order_id}" id="formaddstb{$item.cust_order_id}" method="post">
+							MAC: <input type="text" name="linkstb" id="linkstb{$item.cust_order_id}" value=""> 
+							VLAN: <select id="subnet_id" name="subnet_id">{foreach from=$subnetlist item=subnet}<option value="{$subnet.subnet_id}">{$subnet.subnet_name}</option>{/foreach}</select>	
+							<a href="javascript:document.formaddstb{$item.cust_order_id}.submit();" accesskey="S" style="float:right">Zapisz <img src="img/save.gif" alt=""></a>
+							<input type="hidden" id="account_id" name="account_id" value="{$acc.account_id}" />
+							<input type="hidden" id="cust_order_id" name="cust_order_id" value="{$item.cust_order_id}" />
+						</form>
+						
+						<script type="text/javascript">
+							new AutoSuggest(null,document.getElementById('linkstb{$item.cust_order_id}'),'?m=tvquicksearch&ajax=1&mode=customer&model={$item.pkg_additional_type}&what=',1);
+						</script>
+
+						</div>
+					</td></tr>
+					{/if}
+
+					{if $item.stb_count }
+					<tr>
+						<td></td>
+						<td colspan=10>
+								
+						<table cellpadding="5" cellspacing="0" width="100%" {if $item.sub_valid_to != null && $item.sub_valid_to < '2011-01-30'}style="color: gray"{/if}>
+						<tr>
+							<td class="">Model:</td>
+							<td class="">MAC:</td>
+							<td class="">Serial:</td>
+							<td class="">IP:</td>
+							<td class="">Podsieć:</td>
+							<td class="" align="right">Funkcje:</td>
+						</tr>
+						{foreach from=$item.stb_list item=stb}
+						<tr onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+							<td>{$stb.stb_model}</td>
+							<td><b>{$stb.stb_mac}</b></td>
+							<td><a href="{$smsurl}stock/tracestb/stb/{$stb.stb_serial}">{$stb.stb_serial}<img src="img/netdev_model.gif" alt="[ Testuj STB w SMS ]"></a></td>
+							<td>{$stb.stb_ip}</td>							
+							<td>{$stb.subnet_name}</td>
+							<td align="right"><a href="?m=customerinfo&id={$customerinfo.id}&unlink={$stb.stb_mac}&account_id={$acc.account_id}" onclick="return confirmLink(this, 'Czy na pewno chcesz zwrócić STB na magazyn?')">Zwróć STB <img src="img/node_off.gif" alt="[ Zwróć STB ]"></a></td>
+						</tr>							
+						{/foreach}
+						</table>									
+						</td>
+					</tr>
+					{/if}		
+			
+					{foreachelse}
+					<tr>
+						<td align="center" width="100%" colspan="6">
+							<p><b>{t}Klient ma nie usług na tym koncie{/t}</b></p>
+						</td>
+					</tr>
+					{/foreach}		
+					</table>
+					
+					</td>
+				</tr>
+				{/if}
+				{literal}<script type="text/javascript">
+				<!--
+				//if(getCookie('tv-add-packages{/literal}{$acc.account_id}{literal}')=='1') {
+					//document.getElementById('tv-add-packages{/literal}{$acc.account_id}{literal}').style.display = 'block';
+				//}
+				//-->
+				</script>{/literal}		
+				
+				
+				{if $toopen}
+					{literal}<script type="text/javascript">	
+					document.getElementById('{/literal}{$toopen}{literal}').style.display = 'block';
+					</script>{/literal}		
+				{/if}
+				
+				
+					
+			
+			
+				{foreachelse}
+				<tr>
+					<td align="center" width="100%" colspan="6">
+						<p>&nbsp;</p>
+						<p><b>{t}Klient nie posiada kont{/t}</b></p>
+						<p>&nbsp;</p>
+					</td>
+				</tr>
+				{/foreach}
+			</table>
+		</td>
+	</tr>
+</table>
+{literal}<script type="text/javascript">
+<!--
+
+if(getCookie('tvjamboxaccountspanel')=='1') {
+	document.getElementById('tvjamboxaccountspanel').style.display = '';
+}	
+//-->
+</script>{/literal}

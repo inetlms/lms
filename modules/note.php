@@ -126,7 +126,11 @@ elseif(isset($_GET['fetchallnotes']))
 }
 elseif($note = $LMS->GetNoteContent($_GET['id']))
 {
-	$number = docnumber($note['number'], $note['template'], $note['cdate']);
+	if (!$note['fullnumber'])
+	    $number = docnumber($note['number'], $note['template'], $note['cdate']);
+	else
+	    $number = $note['fullnumber'];
+	
 	$layout['pagetitle'] = trans('Debit Note No. $a', $number);
 
 	$SMARTY->display('noteheader.html');

@@ -24,9 +24,9 @@
 $DB->BeginTrans();
 
 $DB->Execute("
-    DROP VIEW customersview;
-    DROP VIEW vnodes;
-    DROP VIEW vmacs;
+    DROP VIEW IF EXISTS customersview;
+    DROP VIEW IF EXISTS vnodes;
+    DROP VIEW IF EXISTS vmacs;
 
     ALTER TABLE customers ADD post_address varchar(255) DEFAULT NULL;
     ALTER TABLE customers ADD post_zip varchar(10) DEFAULT NULL;

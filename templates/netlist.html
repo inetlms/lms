@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-{title value=$layout.pagetitle link="<a href='?m=netadd'>Nowa sieć <img src='img/add.gif'></a>"}
+{title value=$layout.pagetitle link="<a href='?m=netadd'><b>Nowa sieć</b> <img src='img/add.gif'></a>"}
 <table cellpadding="3" width="100%">
 	<form method="GET" action="?m=netlist" name="choosefilter">
 				<input type="submit" class="hiddenbtn">
@@ -10,6 +10,7 @@
 	<tr class="dark">
 	    <td width="100%" colspan="7" class="fall">
 		<img src="img/Filter.png">&nbsp;&nbsp;
+		<a href="?m=netlist&s=&h=&fletter=" {tip text="wyczyść filtr"}><img src="img/cancel.gif"></a>
 		Status:&nbsp;
 		    <select name="s" onchange="document.choosefilter.submit();" {if $listdata.state != ''} class="active"{/if}>
 			<option value="">-- {trans('all')} --</option>
@@ -26,63 +27,76 @@
 	    </td>
 	</tr>
 	</form>
-	<tr class="dark">
-		<td class="fleftu" width="94%">
-			<nobr><img src="img/network.gif" alt=""> <b>{trans("Name:")}</b><br><img src="img/ip.gif" alt=""> {trans("Network/prefix (interface):")}<nobr>
+	{if $listdata.total != 0}
+	    <tr class="scroller">
+		<td class="fall" colspan="7">
+		    {include file="scrollerpage.html" loop=$listdata.total}
 		</td>
-		<td class="fbt pad10" align="left" width="1%" style="vertical-align:top;min-width:80px;">
-		    <b>Host:</b>
+	    </td>
+	{/if}
+	<tr class="dark" {tip text="Click on column name to change sorting order"}>
+		<td class="fleftu" width="94%" align="left" class="pad5">
+		    <a href="?m=netlist&o=name{if $listdata.direction eq "asc" && $listdata.order eq "name"},desc{/if}"> <span class="bold">{trans("Name:")}</span></a>{if $listdata.order eq "name"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		    <br>
+		    <a href="?m=netlist&o=address{if $listdata.direction eq "asc" && $listdata.order eq "address"},desc{/if}">{trans("network")}</a>{if $listdata.order eq "address"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if} /
+		    <a href="?m=netlist&o=mask{if $listdata.direction eq "asc" && $listdata.order eq "mask"},desc{/if}">{trans("prefix")}</a>{if $listdata.order eq "mask"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		    (<a href="?m=netlist&o=interface{if $listdata.direction eq "asc" && $listdata.order eq "interface"},desc{/if}">{trans("interface")}</a>{if $listdata.order eq "interface"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if})
 		</td>
-		<td class="fbt" valign="top" align="right" width="1%">
-			<nobr><img src="img/empty.gif" width="1" height="16" alt="">{trans("ID:")}<nobr><br>
-			<nobr><img src="img/empty.gif" width="1" height="16" alt="">{trans("Addresses (total/busy/online):")}<nobr>
+		<td class="fbt pad5 tleft" align="left" width="1%" nowrap>
+		    <a href="?m=netlist&o=host{if $listdata.direction eq "asc" && $listdata.order eq "host"},desc{/if}">{trans("host")}</a>{if $listdata.order eq "host"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
+		    IP Nat</b>
 		</td>
-		<td class="fbt" width="1%">
-			<nobr><img src="img/dns.gif" alt=""> {trans("DNS servers:")}<br>
-			<img src="img/domain.gif" alt=""> {trans("Domain:")}<nobr>
+		<td class="fbt pad5 tleft" align="right" width="1%" nowrap>
+			<a href="?m=netlist&o=id{if $listdata.direction eq "asc" && $listdata.order eq "id"},desc{/if}"> <span class="bold">{trans("ID:")}</span></a>{if $listdata.order eq "id"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
+			IP (<a href="?m=netlist&o=size{if $listdata.direction eq "asc" && $listdata.order eq "size"},desc{/if}">{trans("total")}</a>{if $listdata.order eq "size"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if} /
+			<a href="?m=netlist&o=assigned{if $listdata.direction eq "asc" && $listdata.order eq "assigned"},desc{/if}">{trans("busy")}</a>{if $listdata.order eq "assigned"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if})
+
 		</td>
-		<td class="fbt" width="1%">
-			<nobr><img src="img/gateway.gif" alt=""> {trans("Gateway:")}<br>
-			<img src="img/wins.gif" alt=""> {trans("WINS server:")}<nobr>
+		<td class="fbt pad5 tleft" width="1%" nowrap align"left">
+			{trans("DNS servers:")}<br>
+			{trans("Domain:")}
 		</td>
-		<td class="fbt" valign="top" width="1%">
-			<nobr><img src="img/dhcp.gif" alt=""> {trans("DHCP range:")}<nobr>
+		<td class="fbt pad5 tleft" width="1%" nowrap align="left">
+			{trans("Gateway:")}<br>
+			{trans("WINS server:")}
 		</td>
-		<td class="frightu" width="1%" align="right">
+		<td class="fbt pad5 tleft" valign="top" width="1%" align="center">
+			<nobr>{trans("DHCP range:")}<nobr>
+		</td>
+		<td class="frightu pad5 tleft" width="1%" align="right">
 			<nobr><b>{t a=$listdata.total}Total: $a{/t} </b><nobr>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=netlist loop=$netlist}
 	<tr class="{cycle} lista{if $netlist[netlist].disabled == 1} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td class="fleft" width="94%" onclick="return self.location.href='?m=netinfo&id={$netlist[netlist].id}';">
+		<td class="fleft pad5" width="94%" onclick="return self.location.href='?m=netinfo&id={$netlist[netlist].id}';">
 		<a name="{$netlist[netlist].id}">
-			<nobr><img src="img/network.gif" alt=""> <b>{$netlist[netlist].name|truncate:40:"...":true}</b><br><img src="img/ip.gif" alt=""> {$netlist[netlist].address} / {$netlist[netlist].prefix} {if $netlist[netlist].interface}({$netlist[netlist].interface}){/if}</nobr>
+			<nobr><b>{$netlist[netlist].name|truncate:40:"...":true}</b><br>{$netlist[netlist].address} / {$netlist[netlist].prefix} {if $netlist[netlist].interface}({$netlist[netlist].interface}){/if}</nobr>
 		</td>
-		<td width="1%" align="left" class="pad10">
-		    {if $netlist[netlist].hostname}{$netlist[netlist].hostname}{else}<span style="color:red;">nie przypisano</span>{/if}
+		<td width="1%" align="left" class="pad5 tleft" onclick="return self.location.href='?m=netinfo&id={$netlist[netlist].id}';">
+		    {if $netlist[netlist].hostname}<span title="[ host ]">{$netlist[netlist].hostname}</span>{else}<span style="color:red;">nie przypisano</span>{/if}<br>
+		    {if $netlist[netlist].ipnat}<span title="[ IP NAT ]">{$netlist[netlist].ipnat}</span>{else}<br>{/if}
 		</td>
-		<td valign="top" align="right" onclick="return self.location.href='?m=netinfo&id={$netlist[netlist].id}';" width="1%">
-			<nobr><img src="img/empty.gif" width="1" height="16" alt="">({$netlist[netlist].id|string_format:"%04d"})<br><img src="img/empty.gif" width="1" height="16" alt="">{$netlist[netlist].size}/{$netlist[netlist].assigned|string_format:"%01d"}/{$netlist[netlist].online|string_format:"%01d"}</nobr>
+		<td align="right" onclick="return self.location.href='?m=netinfo&id={$netlist[netlist].id}';" width="1%" class="pad5 tleft" nowrap style="vertical-align:top;">
+			<span title="[ ID Sieci ]">#&nbsp;{$netlist[netlist].id|string_format:"%04d"}</span><br><span title="[ IP (wszystkie / zajęte) ]">{$netlist[netlist].size}&nbsp;/&nbsp;{$netlist[netlist].assigned|string_format:"%01d"}</span>
 		</td>
-		<td width="1%" onclick="return self.location.href='?m=netinfo&id={$netlist[netlist].id}';">
-			<nobr>{if $netlist[netlist].dns neq ""}<img src="img/dns.gif" alt=""> {$netlist[netlist].dns}{if $netlist[netlist].dns2 neq ""}, {$netlist[netlist].dns2}{/if}{/if}<br>
-			{if $netlist[netlist].domain neq ""}<img src="img/domain.gif" alt=""> {$netlist[netlist].domain}{/if}&nbsp;</nobr>
+		<td width="1%" onclick="return self.location.href='?m=netinfo&id={$netlist[netlist].id}';" class="pad5 tleft" align="left" nowrap style="vertical-align:top;">
+			{if $netlist[netlist].dns neq ""}<span title="[ Serwery DNS ]">{$netlist[netlist].dns}{if $netlist[netlist].dns2 neq ""}, {$netlist[netlist].dns2}{/if}</span>{/if}<br>
+			{if $netlist[netlist].domain neq ""}<span title="[ Domena ]">{$netlist[netlist].domain}</span>{/if}
 		</td>
-		<td width="1%" onclick="return self.location.href='?m=netinfo&id={$netlist[netlist].id}';">
-			<nobr>{if $netlist[netlist].gateway neq ""}<img src="img/gateway.gif" alt=""> {$netlist[netlist].gateway}{/if}<br>
-			{if $netlist[netlist].wins neq ""}<img src="img/wins.gif" alt=""> {$netlist[netlist].wins}{/if}&nbsp;</nobr>
+		<td width="1%" onclick="return self.location.href='?m=netinfo&id={$netlist[netlist].id}';" class="pad5 tleft" align="left" nowrap style="vertical-align:top;">
+			{if $netlist[netlist].gateway neq ""}<span title="[ Brama ]">{$netlist[netlist].gateway}</span>{else}&nbsp;<br>{/if}<br>
+			{if $netlist[netlist].wins neq ""}<span title="[ Serwer WINS ]">{$netlist[netlist].wins}</span>{/if}
 		</td>
-		<td width="1%" onclick="return self.location.href='?m=netinfo&id={$netlist[netlist].id}';">
-			<nobr>{if $netlist[netlist].dhcpstart}<img src="img/dhcpstart.gif" alt=""> {$netlist[netlist].dhcpstart}<br><img src="img/dhcpend.gif" alt=""> {$netlist[netlist].dhcpend}{/if}</nobr>
+		<td width="1%" onclick="return self.location.href='?m=netinfo&id={$netlist[netlist].id}';" class="pad5 tleft" align="right" nowrap style="vertical-align:top;">
+			{if $netlist[netlist].dhcpstart}<span title="[ Zakres serwera DHCP ]">{$netlist[netlist].dhcpstart}<br>{$netlist[netlist].dhcpend}</span>{/if}
 		</td>
-		<td class="fright">
-			<nobr>
+		<td class="fright pad5 tleft" align="right" nowrap>
 			<a href="?m=netedit&networkset&id={$netlist[netlist].id}">{if $netlist[netlist].disabled}<img src="img/noaccess.gif" alt="[ {trans("Enable")} ]" title="[ {trans("Enable")} ]">{else}<img src="img/access.gif" alt="[ {trans("Disable")} ]" title="[ {trans("Disable")} ]">{/if}</a>
 			<a href="?m=netdel&id={$netlist[netlist].id}" onclick="return confirmLink(this,'{t a=$netlist[netlist].name}Are you sure, you want to remove network \'$a\'?{/t}')"><img src="img/delete.gif" alt="[ {trans("Remove")} ]" title="[ {trans("Remove")} ]"></a>
 			<a href="?m=netedit&id={$netlist[netlist].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
 			<a href="?m=netinfo&id={$netlist[netlist].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></a>
-			</nobr>
 		</td>
 	</tr>
 	{sectionelse}
@@ -94,11 +108,12 @@
 		</td>
 	</tr>
 	{/section}
-	<tr class="dark">
-		<td width="99%" colspan="3" class="fleftu" align="right"> 
-			<b>{trans("Total:")} {$listdata.size|default:"0"}/{$listdata.assigned|default:"0"}/{$listdata.online|default:"0"}</b>
+	{if $listdata.total != 0}
+	    <tr class="scroller">
+		<td class="fall" colspan="7">
+		    {include file="scrollerpage.html" loop=$listdata.total}
 		</td>
-		<td width="1%" colspan="4" class="frightu"></td>
-	</tr>
+	    </td>
+	{/if}
 </table>
 {include file="footer.html"}

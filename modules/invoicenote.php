@@ -31,7 +31,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : NULL;
 if (isset($_GET['id']) && $action == 'init')
 {
 	$invoice = $LMS->GetInvoiceContent($_GET['id']);
-
+	
 	$taxeslist = $LMS->GetTaxes($invoice['cdate'],$invoice['cdate']);
 
 	foreach ($invoice['content'] as $item)
@@ -57,9 +57,18 @@ if (isset($_GET['id']) && $action == 'init')
 	$cnote['numberplanid'] = $DB->GetOne('SELECT id FROM numberplans WHERE doctype = ? AND isdefault = 1', array(DOC_CNOTE));
 	$currtime = time();
 	$cnote['cdate'] = $currtime;
-	$cnote['sdate'] = $currtime;
+	if ($invoice['version'] == '1') {
+	    $cnote['sdate'] = $currtime;
+	} else {
+	    $cnote['sdate'] = $invoice['sdate'];
+	}
 	$cnote['reason'] = '';
 	$cnote['paytype'] = $invoice['paytype'];
+	$cnote['version'] = $invoice['version'];
+	$cnote['templatefile'] = $invoice['templatefile'];
+	$cnote['templatetype'] = $invoice['templatetype'];
+	$cnote['sdateview'] = $invoice['sdateview'];
+	$cnote['urllogofile'] = $invoice['urllogofile'];
 
 	$t = $invoice['cdate'] + $invoice['paytime'] * 86400;
 	$deadline = mktime(23, 59, 59, date('m',$t), date('d',$t), date('Y',$t));
@@ -156,6 +165,10 @@ switch($action)
 		}
 		else
 			$cnote['cdate'] = $currtime;
+		
+		if (empty($cnote['reason'])) {
+		    $error['reason'] = 'Powód korekty jest wymagany';
+		}
 
 		if($cnote['number'])
 		{
@@ -173,12 +186,17 @@ switch($action)
 		{
 		        $error['number'] = trans('Selected numbering plan doesn\'t match customer\'s division!');
 		}
+		
+		if (!$error)
+		    $cnote['init_header'] = 1;
+		else
+		    $cnote['init_header'] = NULL;
 
 	break;
 
 	case 'save':
 
-		if (empty($contents) || empty($cnote))
+		if (empty($contents) || empty($cnote) || $error)
 			break;
 
 		$SESSION->restore('invoiceid', $invoice['id']);
@@ -247,15 +265,40 @@ switch($action)
 				$cnote['number'] = $LMS->GetNewDocumentNumber(DOC_CNOTE, $cnote['numberplanid'], $cnote['cdate']);
 		}
 		
-		$division = $DB->GetRow('SELECT name, address, city, zip, countryid, ten, regon,
-				account, inv_header, inv_footer, inv_author, inv_cplace 
+		$division = $DB->GetRow('SELECT name, shortname, address, city, zip, countryid, ten, regon,
+				account, inv_header, inv_footer, inv_author, inv_cplace , urllogofile 
 				FROM divisions WHERE id = ? ;',array((!empty($cnote['use_current_division']) ? $invoice['current_divisionid'] : $invoice['divisionid'])));
+		
+		if ($cnote['numberplanid'])
+		    $fullnumber = docnumber($cnote['number'],
+				$DB->GetOne('SELECT template FROM numberplans WHERE id = ? LIMIT 1;',array($cnote['numberplanid'])),
+				$cnote['cdate']);
+		else
+		    $fullnumber = NULL;
+		
+		$invoice['version'] = get_conf('invoices.template_version');
+		$invoice['templatetype'] = get_conf('invoices.type');
+		$invoice['templatefile'] = get_conf('invoices.cnote_template_file');
+		$invoice['print_balance_info'] = get_conf('invoices.print_balance_info','1');
+//		$invoice['sdateview'] = get_conf('invoices.sdateview');
+		
+		if ($division['urllogofile'])
+		    $invoice['urllogofile'] = $division['urllogofile'];
+		else
+		    $invoice['urllogofile'] = get_conf('invoices.urllogofile','');
+		
+//		if (!is_readable($invoice['urllogofile']))
+//		    $invoice['urllogofile'] = '';
+		
+		if (empty($division['inv_author']))
+		    $division['inv_author'] = $DB->GetOne('SELECT name FROM users WHERE id = ? LIMIT 1;',array($AUTH->id));
 		
 		$DB->Execute('INSERT INTO documents (number, numberplanid, type, cdate, sdate, paytime, paytype,
 				userid, customerid, name, address, ten, ssn, zip, city, countryid, reference, reason, divisionid,
 				div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon,
-				div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				div_account, div_inv_header, div_inv_footer, div_inv_author, div_inv_cplace, div_shortname, fullnumber,
+				version, templatetype, templatefile, sdateview, urllogofile, post_name, post_address, post_zip, post_city,print_balance_info)
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 				array($cnote['number'],
 					$cnote['numberplanid'] ? $cnote['numberplanid'] : 0,
 					DOC_CNOTE,
@@ -287,6 +330,18 @@ switch($action)
 					($division['inv_footer'] ? $division['inv_footer'] : ''), 
 					($division['inv_author'] ? $division['inv_author'] : ''), 
 					($division['inv_cplace'] ? $division['inv_cplace'] : ''),
+					($division['shortname'] ? $division['shortname'] : ''),
+					($fullnumber ? $fullnumber : ''),
+					($invoice['version'] ? $invoice['version'] : '1'),
+					($invoice['templatetype'] ? $invoice['templatetype'] : ''),
+					($invoice['templatefile'] ? $invoice['templatefile'] : ''),
+					($cnote['sdateview'] ? 1 : 0),
+					($invoice['urllogofile'] ? $invoice['urllogofile'] : ''),
+					($invoice['post_name'] ? $invoice['post_name'] : ''),
+					($invoice['post_address'] ? $invoice['post_address'] : ''),
+					($invoice['post_zip'] ? $invoice['post_zip'] : ''),
+					($invoice['post_city'] ? $invoice['post_city'] : ''),
+					($invoice['print_balance_info'] ? 1 : 0),
 		));
 
 		$id = $DB->GetOne('SELECT id FROM documents WHERE number = ? AND cdate = ? AND type = ?',
@@ -316,12 +371,12 @@ switch($action)
 						$item['tariffid']
 			));
 
-			if (isset($item['cash']) && $item['cash'] != 0)
+//			if (isset($item['cash']))
 				$DB->Execute('INSERT INTO cash (time, userid, value, taxid, customerid, comment, docid, itemid)
 					VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
 					array($cnote['cdate'],
 						$AUTH->id,
-						str_replace(',','.',$item['cash']),
+						($item['cash'] != 0 ? str_replace(',','.',$item['cash']) : '0.00'),
 						$item['taxid'],
 						$invoice['customerid'],
 						$item['name'],
@@ -331,6 +386,11 @@ switch($action)
 		}
 
 		$DB->CommitTrans();
+		
+		if (get_conf('invoices.create_pdf_file') || get_conf('invoices.create_pdf_file_proforma')) {
+		    $iid = $id;
+		    include(MODULES_DIR.'/invoicecreatepdffile.php');
+		}
 
 		$SESSION->remove('invoice');
 		$SESSION->remove('invoiceid');
@@ -364,6 +424,7 @@ $SMARTY->assign('cnote', $cnote);
 $SMARTY->assign('invoice', $invoice);
 $SMARTY->assign('taxeslist', $taxeslist);
 $SMARTY->assign('numberplanlist', $numberplanlist);
+$SMARTY->assign('cnotelist',$LMS->getListDictionaryCnote());
 $SMARTY->display('invoicenote.html');
 
 ?>

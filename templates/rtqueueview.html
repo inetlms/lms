@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!-- $Id$ -->
-<h1><b>{$layout.pagetitle}</b></h1>
+{title value=$layout.pagetitle}
 <table cellpadding="3" width="100%">
 	<tr class="dark" {tip text="Click on column name to change sorting order"}>
 		<td class="fleftu" colspan="2" width="1%" nowrap>
@@ -75,7 +75,7 @@
 		</td>
 	</tr>
 	{/if}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=ticket loop=$queue start=$start max=$pagelimit}
 	<tr class="{cycle} lista{if $queue[ticket].state == 2} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" onclick="return self.location.href='?m=rtticketview&id={$queue[ticket].id}';">

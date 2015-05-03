@@ -1,0 +1,18 @@
+{include file="header.html"}
+<!--// tvconfig.html,v 1.2 23/08/2011 19:00:00 ITMSOFT $ //-->
+{title value=$layout.pagetitle}
+
+<form action="?m=tvconfig" name="formaddaccount" method="post">
+<b>Cache:</b><br>
+<label for="cache">Cacheowanie danych w LMS (szybsze działanie, ale zmiany w SMS wymagają wyczyszczenia cache w LMS):</label><input type="checkbox" name="cache" id="cache" {if $config.cache eq 1}checked="checked"{/if} /><br />
+<a href="?m=tvconfig&clean=1">Wyczyść ręcznie cache w LMS</a><br /><br />
+
+<b>Billing:</b><br>
+<label for="be_wait">Czekaj na zdarzenia SGT*:</label><input type="checkbox" name="be_wait" id="be_wait" {if $config.be_wait eq 1}checked="checked"{/if} /><br />
+*Generowanie faktur jest wstrzymane do momentu w którym będą dostępne nowe zdarzenia z SGT. Odznaczona opcja oznacza wygenerowanie osobnych faktur w momencie, gdy SGT
+wygeneruje z opóźnieniem zdarzenia bilingowe.
+<br /><br />
+<input type="hidden" name="m" value="tvconfig" id="m" />
+<td><a href="javascript:document.formaddaccount.submit();" accesskey="S" style="float:right">Zapisz <img src="img/save.gif" alt=""></a></td>
+</form>
+{include file="footer.html"}

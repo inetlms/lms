@@ -124,7 +124,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 				break;
 				
 				case 'auth_login':
-					$config[$idx]['description'] = 'pole z karty urządzenia klienta (komputer) które jest loginem dla autoryzacji w radius\'ie.<br>Dopuszczalne wartości : <br><b>id</b> - id komputera<br><b>name</b> - nazwa komputera<br><b>ip</b> - IP komputera<br><b>passwd</b> - hasło logowania urządzenia<br>DEFAULT : id';
+					$config[$idx]['description'] = 'pole z karty urządzenia klienta (komputer) które jest loginem dla autoryzacji w radius\'ie.<br>Dopuszczalne wartości : <br><b>id</b> - id komputera<br><b>name</b> - nazwa komputera<br><b>ip</b> - IP komputera<br><b>passwd</b> - hasło logowania urządzenia<br><b>pppoe_login</b> - dodatkowe pole na login z karty komputera<br>DEFAULT : id';
 				break;
 				
 				case 'page_view':
@@ -145,18 +145,23 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'shift_port':
 						$config[$idx]['description'] = 'Pozwala na przestawianie kolejności portów w interfejsie sieciowym. DEF: 0';
 					break;
+					
 					case 'def_nameport':
 						$config[$idx]['description'] = 'Domyślna nazwa portu dla aktywnych interfejsów sieciowych. DEF: eth';
 					break;
+					
 					case 'def_pnameport':
 						$config[$idx]['description'] = 'Domyślna nazwa portu dla pasywnych interfejsów sieciowyh. DEF: port';
 					break;
+					
 					case 'link_networknode':
 						$config[$idx]['description'] = 'Interfejs sieciowy musi być przypisany do węzła. DEF.: 1';
 					break;
+					
 					case 'link_tosame':
 						$config[$idx]['description'] = 'Pozwól na połączenie sieciowe w obrębie tego samego pasywnego interfejsu sieciowego do innego portu. DEF.: 1';
 					break;
+					
 					case 'link_tosame_active':
 						$config[$idx]['description'] = 'Pozwól na połączenie sieciowe w obrębie tego samego aktywnego interfejsu sieciowego do innego portu. DEF.: 0';
 					break;
@@ -164,21 +169,22 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'delinfoservice':
 						$config[$idx]['description'] = 'Zezwalaj na kasowanie informacji o czynnościach serwisowych w interfejsach sieciowych DEF.: 0';
 					break;
+					
 					case 'force_connection':
 						$config[$idx]['description'] = 'wymusza skonfigurowania połączenia sieciowego podczas edycji/dodawania komputera klienta DEF.: 1';
 					break;
+					
 					case 'force_network_to_host':
 						$config[$idx]['description'] = 'wymusza powiązanie klasy adresowej IP z hostem  DEF.: 0';
 					break;
 					
-					
 					case 'force_network_gateway':
 						$config[$idx]['description'] = 'wymusza wpisanie bramy w konfiguracji sieci DEF.: 1';
 					break;
+					
 					case 'force_network_dns':
 						$config[$idx]['description'] = 'wymusza wpisanie chociaż jednego adresu serwera DNS w konfiguracji sieci  DEF.: 1';
 					break;
-					
 					
 					
 				default:
@@ -303,6 +309,14 @@ function GetConfigList($order='var,asc', $section='', $search='')
 				
 				case 'allow_from':
 					$config[$idx]['description'] = trans('List of networks and IP addresses, with access to LMS. If empty, every IP address has access to LMS. When you write list of addresses or address pools here, LMS will dismiss every unwanted user with HTTP 403 error.');
+				break;
+				
+				case 'networknode_pagelimit':
+					$config[$idx]['description'] = 'Lista węzłów na jednej stronie';
+				break;
+				
+				case 'default_division':
+					$config[$idx]['description'] = 'Domyślne ID firmy dla dokumentów wystawianych dla klientów nie będącymi klientami sieci / brak ich na liście';
 				break;
 				
 				case 'config_empty_value':
@@ -495,10 +509,6 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					$config[$idx]['description'] = trans('Support for big ISPs e.g. hidding long customers selection dropdowns. Default: false');
 				break;
 
-				case 'short_pagescroller':
-					$config[$idx]['description'] = trans('Enables page scroller designed for lists with very big number of pages. Default: false');
-				break;
-
 				case 'ewx_support':
 					$config[$idx]['description'] = trans('Support for EtherWerX devices. Default: false');
 				break;
@@ -546,6 +556,18 @@ function GetConfigList($order='var,asc', $section='', $search='')
 				case 'syslog_pagelimit':
 					$config[$idx]['description'] = trans('Limit the events displayed on a single page in the system logs. Default: 100');
 				break;
+				
+				case 'syslog_maxrecord':
+					$config[$idx]['description'] = 'Maksymalna ilość rekordów jakie mogą być odczytane, zabezpieczenie przed przepełnieniem pamięci przez DB.<br><b>DEF.: 150000</b> ( dla 128MB )';
+				break;
+				
+				case 'gethostbyaddr':
+					$config[$idx]['description'] = 'włączenie rozwiązywania adresu IP na nazwę hosta w liście użytkowników.<br><b>DEF.: 1</b>';
+				break;
+				
+				case 'netlist_pagelimit':
+					$config[$idx]['description'] = 'Ilość wyświetlanych sieci IP na jednej stronie.<br><b>DEF.: 50</b>';
+				break;
 
 				default:
 					$config[$idx]['description'] = trans('Unknown option. No description.');
@@ -588,12 +610,25 @@ function GetConfigList($order='var,asc', $section='', $search='')
 						$config[$idx]['description'] = trans('Default invoice issuer');
 					break;
 
+					case 'edit_closed':
+						$config[$idx]['description'] = 'Pozwala na edycję zamkniętych faktur, DEFAULT : 0';
+					break;
+					
+					case 'deleted_closed':
+						$config[$idx]['description'] = 'Pozwala na usunięcie zamkniętych faktur, DEFAULT : 0';
+					break;
+
+
 					case 'cplace':
 						$config[$idx]['description'] = trans('Invoice draw-up place.');
 					break;
 
 					case 'template_file':
 						$config[$idx]['description'] = trans('Invoice template file. Default: "invoice.html". Should be placed in templates directory.');
+					break;
+					
+					case 'template_file_proforma':
+						$config[$idx]['description'] = 'Szablon dla faktury PROFORMA';
 					break;
 
 					case 'cnote_template_file':
@@ -611,6 +646,22 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'type':
 						$config[$idx]['description'] = trans('Documents type. You can use "html" or "pdf". Default: html.');
 					break;
+					
+					case 'set_protection':
+						$config[$idx]['description'] = 'Zabezpieczenie dokumentów PDF przed modyfikacją. <b>DEFAULT :1</b>';;
+					break;
+					
+					case 'create_pdf_file':
+						$config[$idx]['description'] = 'Automatyczne tworzenie plików pdf na serwerze dla faktur VAR i faktur korygujących. <b>DEFAULT :0</b>';;
+					break;
+					
+					case 'create_pdf_file_proforma':
+						$config[$idx]['description'] = 'Automatyczne tworzenie plików pdf na serwerze dla faktur proforma. <b>DEFAULT :0</b>';;
+					break;
+					
+					case 'print_balance_info':
+						$config[$idx]['description'] = 'czy drukować informację o bilansie przed wystawieniem faktury, przełącznik dla faktur w formacie tcpdf wersji 1 i 2';
+					break;
 
 					case 'print_balance_history':
 						$config[$idx]['description'] = trans('If true on invoice (html) will be printed history of financial operations on customer account. Default: not set.');
@@ -624,14 +675,6 @@ function GetConfigList($order='var,asc', $section='', $search='')
 						$config[$idx]['description'] = trans('Coma-separated list of default invoice printout pages. You can use "original", "copy", "duplicate". Default: "original,copy".');
 					break;
 
-					case 'radius':
-						$config[$idx]['description'] = trans('Enable RADIUS support. Default: 1');
-					break;
-
-					case 'public_ip':
-						$config[$idx]['description'] = trans('Enable public IP address fields. Default: 1');
-					break;
-
 					case 'paytime':
 						$config[$idx]['description'] = trans('Default documents paytime in days. Default: 14');
 					break;
@@ -643,6 +686,24 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					case 'default_type_of_documents':
 						$config[$idx]['description'] = 'zmienna określa nam domyślny typ dokumentu przy dodawaniu nowego zobowiązania/taryfy dla klienta, DEFAULT: <br>dozwolone wartości: <Br>invoice - faktura<br>proforma - faktura proforma<br>pusta wartość - tylko naliczenie opłat';
 					break;
+					
+					case 'template_version':
+						$config[$idx]['description'] = 'wersja szablonu dokumentu tylko dla pdf, jeżeli mamy własny szablon należy pozostawić wartość 1 !!!<br>
+						1 - stary szablon pdf (tcpdf)<br>
+						2 - dla szablonu faktur które są obowiązujące od Stycznia 2015 roku (tcpdf)<br>
+						<b>DEFAULT : 1</b>';
+					break;
+					
+					case 'sdateview':
+					    $config[$idx]['description'] = 'czy wyświetlać datę dostawy / wykonania usługi. zmienna dla faktur w wersji 2.<br>
+							Jeżeli w pozycjach faktur mamy zawarty okres usługi wtedy zmienna powinna być na 0 !!! w innym przypadku wartość = 1<br>
+							<b>DEFAULT : 0</b>';
+					break;
+					
+					case 'urllogofile':
+						$config[$idx]['description'] = 'adres url pliku z logo naszej firmy, Zmienna dla faktur w wersji 2<br><b>UWAGA</b> - musi być podany pełny adres url np. http://localhost/lms/img/moje_logo.jpg';
+					break;
+					
 					
 
 					default:
@@ -725,12 +786,67 @@ function GetConfigList($order='var,asc', $section='', $search='')
 
 				} //end: var
 			break;
+			
+			
+			case 'jambox':
+				switch($item['var'])
+				{
+				    case 'numberplanid':
+					$config[$idx]['description'] = 'ID planu numeracyjnego dla wystawianych faktur VAT za TV';
+				    break;
+				    
+				    case 'enabled':
+					$config[$idx]['description'] = '1 - właczenie , 0 - wyłączenie modułu w systemie';
+				    break;
+				    
+				    case 'login':
+					$config[$idx]['description'] = 'Imię i Nazwisko';
+				    break;
+				    
+				    case 'haslo':
+					$config[$idx]['description'] = 'Hasło do sms OTWARTYM TEKSTEM !!!';
+				    break;
+				    
+				    case 'serwer':
+					$config[$idx]['description'] = 'namiary na serwer<br>Piaskownica : https://sms.sgtsa.pl/test/xmlrpc<br>Produkcja : https://sms.agtsa.pl/sms/xmlrpc';
+				    break;
+				    
+				}
+			break;
 
 			case 'sms':
 				switch($item['var'])
 				{
 					case 'service':
-						$config[$idx]['description'] = 'Domyślny typ serwisu używanego do wysyłania wiadomości, dozwolone smscenter, smsapi i smstools';
+						$config[$idx]['description'] = 'Domyślny typ serwisu używanego do wysyłania wiadomości, dozwolone smscenter, smsapi , smstools , serwersms, mikrotik';
+					break;
+					
+					case 'mt_host':
+						$config[$idx]['description'] = 'adres IP mikrotika';
+					break;
+					
+					case 'mt_password':
+						$config[$idx]['description'] = 'hasło do zalogowania się';
+					break;
+					
+					case 'mt_usb':
+						$config[$idx]['description'] = 'port usb do którego jest podpięty modem';
+					break;
+					
+					case 'mt_username':
+						$config[$idx]['description'] = 'nazwa użytkownika';
+					break;
+					
+					case 'mt_port':
+						$config[$idx]['description'] = 'port na którym działa API na MT';
+					break;
+					
+					case 'mt_debug':
+						$config[$idx]['description'] = 'włączenie dodatkowych informacji, używać w razie problemów z wysyłką';
+					break;
+					
+					case 'mt_partreverse':
+						$config[$idx]['description'] = 'odwraca kolejność wysyłanych części<br>Wartość 0 : wysyłka jest w kolejności od pierwszej do ostatniej części<br>Wartość 1 : wysyłka w kolejności od ostatniej do pierwszej';
 					break;
 
 					case 'prefix':
@@ -754,7 +870,7 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					break;
 					
 					case 'smsapi_eco':
-						$config[$idx]['description'] = 'SMSAPI - Wysyłka ekonomicznej wiadomości, bez pola nadawcy. DEF.: 1';
+						$config[$idx]['description'] = 'SMSAPI / SerwerSMS - Wysyłka ekonomicznej wiadomości, bez pola nadawcy. DEF.: 1';
 					break;
 					
 					case 'smsapi_fast':
@@ -775,6 +891,10 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					
 					case 'smsapi_skip_foreign':
 						$config[$idx]['description'] = 'SMSAPI - Ustawienie tego parametru na 1, powoduje pominięcie numerów niepolskich. DEF.: 1';
+					break;
+					
+					case 'encoding':
+						$config[$idx]['description'] = 'Kodowanie wiadomości smstools (UTF8, UCS2). DEF.: UCS2';
 					break;
 					
 					default:

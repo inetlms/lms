@@ -73,6 +73,8 @@ if (isset($_POST['name']))
 		    WHERE networknodeid = ? ;',
 		    array($location, $loc['location_city'], $loc['location_street'], $loc['location_house'], $loc['location_flat'], $loc['longitude'], $loc['latitude'],
 			$loc['backbone_layer'], $loc['distribution_layer'], $loc['access_layer'], $loc['sharing'], $id));
+	
+//	$DB->Execute('UPDATE netdevices SET invprojectid = 1 WHERE networknodeid = ? AND invprojectid IS NULL;',array($id));
     
     if ($target)
 	$SESSION->redirect('?m='.$target);
@@ -81,5 +83,6 @@ if (isset($_POST['name']))
 }
 
 $SMARTY->assign('actions','edit');
+$SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
 $SMARTY->display('networknodeedit.html');
 ?>

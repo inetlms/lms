@@ -1,297 +1,219 @@
 <!--// $Id$ //-->
 <table width="100%" cellpadding="3">
-	<tr{if $devicepanel} class="dark hand" onclick="showOrHide('devicepanel');"{else} class="dark"{/if}>
-		<td width="1%" class="fleftu">
+	<tr class="dark hand info-hover">
+		<td width="1%" class="fleftu" onclick="ShowOrHideBox('devicepanel_{$netdevinfo.id}');">
 			<img src="img/netdev.gif" alt="">
 		</td>
-		<td width="99%" class="frightu">
-			<b>{$netdevinfo.name} ({$netdevinfo.id|string_format:"%04d"})</b>
+		<td width="99%" class="fbt" onclick="ShowOrHideBox('devicepanel_{$netdevinfo.id}');">
+			<b>({$netdevinfo.id|string_format:"%04d"}) {$netdevinfo.name} </b>
+		</td>
+		<td width="1%" nowrap align="right" class="frightu">
+			<a href="?m=netdevinfo&id={$netdevinfo.id}">Przejdź do interfejsu <img src="img/netdev.gif"></a>&nbsp;&nbsp;
+			<a href="javascript:void(0);" onclick="del_interface({$netdevinfo.id});">Usuń z węzła <img src="img/delete.gif" alt=""></a>&nbsp;&nbsp;
+			<a href="javascript:void(0);" onclick="update_interface({$netdevinfo.id});">Aktualizuj inf. o projektach <img src="img/money.png" alt=""></a>
+			
 		</td>
 	</tr>
-	<tr class="light"{if $devicepanel} id="devicepanel" style="display:none;"{/if}>
-	    <td width="100%" colspan="2"{if $devicepanel} class="fall container" align="right"{else}class="flr container"{/if}>
+	<tr class="light" id="devicepanel_{$netdevinfo.id}" style="display:none;">
+	    <td width="100%" colspan="3" class="fall container" align="right">
 			<table width="100%" cellpadding="0">
 				<tr class="light">
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
         {if $netdevinfo.producer}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/producer.gif" alt="">
-		</td>
-		<td width="1%">
-		        <b>{trans("Producer:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.producer}
-		</td>
+		<td width="1%"><img src="img/producer.gif" alt=""></td>
+		<td width="1%"><b>{trans("Producer:")}</b></td>
+		<td width="98%">{$netdevinfo.producer}</td>
 	</tr>
 	{/if}
 	{if $netdevinfo.model}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/netdev_model.gif" alt="">
-		</td>
-		<td width="1%">
-		        <b>{trans("Model:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.model}
-		</td>
+		<td width="1%"><img src="img/netdev_model.gif" alt=""></td>
+		<td width="1%"><b>{trans("Model:")}</b></td>
+		<td width="98%">{$netdevinfo.model}</td>
 	</tr>
 	{/if}
 	{if $netdevinfo.serialnumber}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/serialnumber.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-		        <b>{trans("Serial number:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.serialnumber}
-		</td>
+		<td width="1%"><img src="img/serialnumber.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Serial number:")}</b></td>
+		<td width="98%">{$netdevinfo.serialnumber}</td>
 	</tr>
 	{/if}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/port.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-		        <b>{trans("Number of ports:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.ports}
-		</td>
+		<td width="1%"><img src="img/port.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Number of ports:")}</b></td>
+		<td width="98%">{$netdevinfo.ports}</td>
 	</tr>
 	<tr class="light">
-		<td width="1%">
-			<img src="img/netdev_takenports.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-		        <b>{trans("Ports used:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.takenports}
-		</td>
+		<td width="1%"><img src="img/netdev_takenports.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Ports used:")}</b></td>
+		<td width="98%">{$netdevinfo.takenports}</td>
 	</tr>
 	{if $netdevinfo.location}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/home.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-		        <b>{trans("Location:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.location}
-		</td>
+		<td width="1%"><img src="img/home.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Location:")}</b></td>
+		<td width="98%">{$netdevinfo.location}</td>
 	</tr>
 	{/if}
 	{if $netdevinfo.longitude || $netdevinfo.latitude}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/home.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("GPS longitude:")}</b>
-		</td>
-		<td width="98%">
-			<input id="longitude" type="hidden" value="{$netdevinfo.longitude}">
-			{$netdevinfo.longitude}
-		</td>
+		<td width="1%"><img src="img/home.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("GPS longitude:")}</b></td>
+		<td width="98%"><input id="longitude" type="hidden" value="{$netdevinfo.longitude}">{$netdevinfo.longitude}</td>
 	</tr>
 	<tr class="light">
-		<td width="1%">
-			<img src="img/home.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("GPS latitude:")}</b>
-		</td>
-		<td width="98%">
-			<input id="latitude" type="hidden" value="{$netdevinfo.latitude}">
-			{$netdevinfo.latitude}
-		</td>
+		<td width="1%"><img src="img/home.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("GPS latitude:")}</b></td>
+		<td width="98%"><input id="latitude" type="hidden" value="{$netdevinfo.latitude}">{$netdevinfo.latitude}</td>
 	</tr>
 	<tr class="light">
-		<td width="2%" colspan="2">
-		</td>
-		<td width="98%">
-			<a href="?m=netdevmap&netdevid={$netdevinfo.id}"><img src="img/network.gif" alt=""> {trans("Show on map")} &raquo;&raquo;&raquo;</a>
-		</td>
+		<td width="2%" colspan="2"></td>
+		<td width="98%"><a href="?m=netdevmap&netdevid={$netdevinfo.id}"><img src="img/network.gif" alt=""> {trans("Show on map")} &raquo;&raquo;&raquo;</a></td>
 	</tr>
 	{/if}
 {if check_conf('phpui.radius')}
 	{if $netdevinfo.shortname}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/radius.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Shortname:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.shortname}
-		</td>
+		<td width="1%"><img src="img/radius.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Shortname:")}</b></td>
+		<td width="98%">{$netdevinfo.shortname}</td>
 	</tr>
 	{/if}
 	{if $netdevinfo.nastype}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/radius.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Type:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.nastypename}
-		</td>
+		<td width="1%"><img src="img/radius.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Type:")}</b></td>
+		<td width="98%">{$netdevinfo.nastypename}</td>
 	</tr>
 	{/if}
 	{if $netdevinfo.clients}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/radius.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Max clients:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.clients}
-		</td>
+		<td width="1%"><img src="img/radius.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Max clients:")}</b></td>
+		<td width="98%">{$netdevinfo.clients}</td>
 	</tr>
 	{/if}
 	{if $netdevinfo.secret}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/radius.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Secret:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.secret}
-		</td>
+		<td width="1%"><img src="img/radius.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Secret:")}</b></td>
+		<td width="98%">{$netdevinfo.secret}</td>
 	</tr>
 	{/if}
 	{if $netdevinfo.community}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/radius.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Community:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.community}
-		</td>
+		<td width="1%"><img src="img/radius.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Community:")}</b></td>
+		<td width="98%">{$netdevinfo.community}</td>
 	</tr>
 	{/if}
 	{if $netdevinfo.coaport}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/radius.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>CoA Port</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.coaport}
-		</td>
+		<td width="1%"><img src="img/radius.gif" alt=""></td>
+		<td width="1%" nowrap><b>CoA Port</b></td>
+		<td width="98%">{$netdevinfo.coaport}</td>
 	</tr>
 	{/if}
 {/if}
 {if $netdevinfo.monit_nastype}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/radar.png" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>Typ:</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.monit_nastypename}
-		</td>
+		<td width="1%"><img src="img/radar.png" alt=""></td>
+		<td width="1%" nowrap><b>Typ:</b></td>
+		<td width="98%">{$netdevinfo.monit_nastypename}</td>
 	</tr>
 {/if}
 {if $netdevinfo.monit_login}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/radar.png" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>Login:</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.monit_login}
-		</td>
+		<td width="1%"><img src="img/radar.png" alt=""></td>
+		<td width="1%" nowrap><b>Login:</b></td>
+		<td width="98%">{$netdevinfo.monit_login}</td>
 	</tr>
 	{/if}
 	
 {if $netdevinfo.monit_passwd}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/radar.png" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>Hasło:</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.monit_passwd}
-		</td>
+		<td width="1%"><img src="img/radar.png" alt=""></td>
+		<td width="1%" nowrap><b>Hasło:</b></td>
+		<td width="98%">{$netdevinfo.monit_passwd}</td>
 	</tr>
 {/if}
 {if $netdevinfo.monit_port}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/radar.png" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>Port:</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.monit_port}
-		</td>
+		<td width="1%"><img src="img/radar.png" alt=""></td>
+		<td width="1%" nowrap><b>Port:</b></td>
+		<td width="98%">{$netdevinfo.monit_port}</td>
 	</tr>
 {/if}
 
 	{if $netdevinfo.channelid}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/channel.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Channel:")}</b>
-		</td>
-		<td width="98%">
-		        <a href="?m=ewxchinfo&id={$netdevinfo.channelid}">{$netdevinfo.channel} ({$netdevinfo.channelid|string_format:"%04d"})</a>
-		</td>
+		<td width="1%"><img src="img/channel.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Channel:")}</b></td>
+		<td width="98%"><a href="?m=ewxchinfo&id={$netdevinfo.channelid}">{$netdevinfo.channel} ({$netdevinfo.channelid|string_format:"%04d"})</a></td>
 	</tr>
 	{/if}
 	                        	</table>
 				</td>
 				<td width="50%" style="vertical-align:top;">
 				        <table width="100%" cellpadding="3">
-	{if $netdevinfo.purchasetime}
+	{if $netdevinfo.typeofdevice}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/calendar.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-		        <b>{trans("Purchase date:")}</b>
-		</td>
-		<td width="98%">
-		        {$netdevinfo.purchasetime|date_format:"%Y/%m/%d"}
-		</td>
+	    <td width="1%"><img src="img/netdev.gif"></td>
+	    <td width="1%" nowrap><b>Rodzaj urządzenia:</b> </td>
+	    <td width="98%">{$netdevinfo.typeofdevicename}</td>
 	</tr>
 	{/if}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/guarantee.png" alt="">
-		</td>
-		<td width="1%" nowrap>
-		        <b>{trans("Guarantee:")}</b>
-		</td>
+	    <td width="1%"><img src="img/options.gif"></td>
+	    <td width="1%" nowrap><b>Typ urządzenia:</b> </td>
+	    <td width="98">{assign var='tmp' value=$netdevinfo.devtype}{$_DEVTYPE.$tmp}</td>
+	</tr>
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Urz. zarządzalne:</b> </td>
+	    <td width="98%">{assign var='tmp' value=$netdevinfo.managed}{$_TN.$tmp}</td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Udostępnianie portów:</b> </td>
+	    <td width="98%">{assign var='tmp' value=$netdevinfo.sharing}{$_TN.$tmp}</td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Budowa modułowa:</b> </td>
+	    <td width="98%">{assign var='tmp' value=$netdevinfo.modular}{$_TN.$tmp}</td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Warstwa szkieletowa:</b> </td>
+	    <td width="98%">{assign var='tmp' value=$netdevinfo.backbone_layer}{$_TN.$tmp}</td>
+	</tr>
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Warstwa dystrybucyjna:</b> </td>
+	    <td width="98%">{assign var='tmp' value=$netdevinfo.distribution_layer}{$_TN.$tmp}</td>
+	</tr>
+	<tr class="light">
+	    <td width="1%"></td>
+	    <td width="1%" nowrap><b>Warstwa dostępowa:</b> </td>
+	    <td width="98%">{assign var='tmp' value=$netdevinfo.access_layer}{$_TN.$tmp}</td>
+	</tr>
+	{if $netdevinfo.purchasetime}
+	<tr class="light">
+		<td width="1%"><img src="img/calendar.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Purchase date:")}</b></td>
+		<td width="98%">{$netdevinfo.purchasetime|date_format:"%Y/%m/%d"}</td>
+	</tr>
+	{/if}
+	<tr class="light">
+		<td width="1%"><img src="img/guarantee.png" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Guarantee:")}</b></td>
 		<td width="98%">
 			{if !$netdevinfo.guaranteeperiod}
 				{trans("no guarantee")}
@@ -306,31 +228,34 @@
 	</tr>
         {if $netdevinfo.description}
         <tr class="light">
-                <td width="1%">
-                        <img src="img/desc.gif" alt="">
-                </td>
-                <td width="99%" colspan="2">
-                        <table width="100%" cellpadding="5">
-                                <tr>
-                                        <td class="fall super"light">
-						{$netdevinfo.description|escape|replace:"\n":"<br>"}
-                                        </td>
-                                </tr>
-                        </table>
-                </td>
+                <td width="1%"><img src="img/desc.gif" alt=""></td>
+                <td width="99%" colspan="2"><table width="100%" cellpadding="5"><tr><td class="fall superlight">{$netdevinfo.description|escape|replace:"\n":"<br>"}</td></tr></table></td>
         </tr>
         {/if}
+        <tr class="light">
+	    <td width="1%"><img src="img/money.gif" alt=""></td>
+	    <td width="1%"><b>{trans("Investment project:")}</b></td>
+	    <td width="98%" align="left">{if !$netdevinfo.invprojectid}{trans('none')}{else if $netdevinfo.invprojectid == 1}{trans('From root device')}{else}{$netdevinfo.projectname}{/if}</td>
+	</tr>
+	
+	<tr class="light">
+	    <td width="1%"><img src="img/producer.gif" alt=""></td>
+	    <td width="1%"><b>Status urządzenia</b></td>
+	    <td width="98%" align="left">{assign var='tmp' value=$netdevinfo.status}{$_NSTATUS.$tmp}</td>
+	</tr>
 	                                        </table>
 					</td>
 				</tr>
 			</table>
     		</td>
 	</tr>
-	<tr class="dark">
-	        <td width="100%" colspan="2" class="fall" align="right">
-			<a href="?m=netdevinfo&id={$netdevinfo.id}" class="button">Przejdź do interfejsu <img src="img/netdev.gif"></a>&nbsp;&nbsp;
-			<a href="javascript:void(0);" onclick="del_interface({$netdevinfo.id});" class="button">Usuń interfejs z węzła <img src="img/delete.gif" alt=""></a>
-		</td>
-	</tr>
 </table>
+{assign 'boxid' "devicepanel_{$netdevinfo.id}" }
+{if get_profile({$boxid})}
+<script type="text/javascript">
+<!--
+	document.getElementById('{$boxid}').style.display = '';
+//-->
+</script>
+{/if}
 

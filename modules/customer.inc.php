@@ -23,6 +23,8 @@
  *
  *  $Id$
  */
+if (get_conf('jambox.enabled',0))
+    require_once(MODULES_DIR.'/customer.tv.inc.php');
 
 if($layout['module'] != 'customeredit')
 {
@@ -37,7 +39,13 @@ if($layout['module'] != 'customeredit')
 
 }
 
-$expired = !empty($_GET['expired']) ? true : false;
+if(!isset($_GET['expired']))
+	$SESSION->restore('cusinfo_expired', $expired);
+else
+	$expired = $_GET['expired'];
+$expired = !empty($expired) ? true : false;
+$SESSION->save('cusinfo_expired', $expired);
+
 $assignments = $LMS->GetCustomerAssignments($customerid, !empty($expired) ? $expired : NULL);
 $customergroups = $LMS->CustomergroupGetForCustomer($customerid);
 $othercustomergroups = $LMS->GetGroupNamesWithoutCustomer($customerid);
@@ -65,6 +73,14 @@ if(!empty($documents))
         $SMARTY->assign('docrights', $DB->GetAllByKey('SELECT doctype, rights
 	        FROM docrights WHERE userid = ? AND rights > 1', 'doctype', array($AUTH->id)));
 }
+
+if ($_pluginc['customer']) {
+    
+    $inclist = $_pluginc['customer'];
+    for ($i=0; $i<sizeof($inclist); $i++)
+	@include($inclist[$i]['modfile']);
+}
+
 
 $SMARTY->assign(array(
 	'expired' => $expired, 

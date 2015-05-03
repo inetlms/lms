@@ -22,8 +22,12 @@
  *
  */
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'divisions','inv_paytime'))) 
 $DB->Execute("ALTER TABLE divisions ADD inv_paytime tinyint DEFAULT NULL");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'divisions','inv_paytype'))) 
 $DB->Execute("ALTER TABLE divisions ADD inv_paytype varchar(255) DEFAULT NULL");
+
 $DB->Execute("ALTER TABLE invoicecontents CHANGE description description text DEFAULT '' NOT NULL");
 $DB->Execute("ALTER TABLE receiptcontents CHANGE description description text DEFAULT '' NOT NULL");
 $DB->Execute("ALTER TABLE cash CHANGE comment comment text DEFAULT '' NOT NULL");

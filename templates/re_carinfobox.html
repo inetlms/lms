@@ -1,0 +1,401 @@
+<table width="100%" cellpadding="3" cellspacing="0" class="table">
+    <tr class="dark">
+	<td width="100%" colspan="2" class="fall pad" align="left">
+	    <b>Dane pojazdu</b>
+	</td>
+    </tr>
+    
+    <tr class="light">
+<!--// lewa strona //-->
+	<td class="fleft pad" align="left" width="50%" style="vertical-align:top;">
+	    <table width="100%" cellpadding="3">
+		
+		<tr class="display">
+		    <td width="1%" class="pad" nowrap align="left" style="vertical-align:top;"><b>Nazwa skrócona</b></td>
+		    <td width="1%" class="pad" nowrap style="vertical-align:top;"><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.shortname}</td>
+		</tr>
+		
+		{if $carinfo.status}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Status</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$carinfo.status}{$_STATUSCAR.$tmp}</td>
+		</tr>
+		{/if}
+		{if $carinfo.dr_a}
+		<tr class="display">
+		    <td width="1%" class="pad" nowrap align="left" style="vertical-align:top;"><b>Nr. rejestracyjny</b></td>
+		    <td width="1%" class="pad" nowrap style="vertical-align:top;"><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_a}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_d1}
+		<tr class="display">
+		    <td width="1%" class="pad" nowrap align="left" style="vertical-align:top;"><b>Marka pojazdu</b></td>
+		    <td width="1%" class="pad" nowrap style="vertical-align:top;"><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_d1}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_d2}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Typ pojazdu<br>- wariant, jeżeli występuje<br>- wersja, jeżeli wysępuje"}><b>Typ pojazdu</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_d2}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_d3}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Model pojazdu</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_d3}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_e}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Numer identyfikacyjny pojazdu (numer VIN albo nadwozia, podwozia lub ramy)"}><b>Numer identyfikacyjny</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_e}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_rokprodukcji}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Rok produkcji pojazdu w formacie RRRR"}><b>Rok produkcji</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_rokprodukcji}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_b}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Data pierwszej rejestracji w formacie RRRR/MM/DD"}><b>Data pierwszej rej.</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_b|date_format:'Y/m/d'}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_i}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Data wydania dowodu rejestracyjnego w fromacie RRRR/MM/DD"}><b>Data wyd. DR.</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_i|date_format:'Y/m/d'}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_h}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Okres ważności dowodu rejestracyjnego, jeżeli występuje ograniczenie"}><b>Ważność DR</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_h|date_format:'Y/m/d'}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_ladownosc}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Dopuszczalna ładowność</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_ladownosc} kg</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_nacisk}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Dopuszczalny największy nacisk osi"}><b>Nacisk osi</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_nacisk} kN</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_f1}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Maksymalna masa całkowita pojazdu (w kg)"}><b>Max. masa całkowita</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_f1} kg</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_f2}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Dopuszczalna masa całkowita pojazdu (w kg)"}><b>Dop. masa całkowita</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_f2} kg</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_f3}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Dopuszczalna masa całkowita zespołu pojazdów (w kg)"}><b>Dop. masa zespołu</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_f3} kg</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_g}
+		<tr class="display">
+		    <td width="1%" class="pad" nowrap align="left"><span class="tiphelp" {tip text="Masa własna pojazdu; w przypadku pojazdu ciągnącego innego niż kategoria M1 masa własna pojazdu obejmuje urządzenie sprzęgające (w kg)"}><b>Masa własna</b></span></td>
+		    <td width="1%" class="pad" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_g} kg</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_j}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Kategoria pojazdu</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_j}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_k}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Numer świadectwa homologacji, jeżeli występuje"}><b>Nr. homologacji</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_k}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_l}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Liczba osi</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_l}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_o1}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Maksymalna masa całkowita przyczepy z hamulcem (w kg)"}><b>Masa przycz. z hamulcem</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_o1} kg</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_o2}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Maksymalna masa całkowita przyczepy bez hamulca (w kg)"}><b>Masa przycz. bez hamulca</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_o2} kg</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_p1}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Pojemność silnika</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_p1} cm3</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_p2}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Maksymalna moc netto silnika (w kW)"}><b>Moc silnika</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_p2} kW {math assign='koni' equation="x*y" x=$carinfo.dr_p2 y=1.35961155} ({$koni|string_format:'%0.2f'} KM )</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_p3}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Rodzaj paliwa</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$carinfo.dr_p3}{$_FUEL.$tmp}</td>
+		</tr>
+		{/if}
+                		
+		{if $carinfo.dr_q}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Stosunek mocy do masy własnej (w kW/kg); dotyczy motocykli i motorowerów"}><b>Stosunek kW/kg</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_q} kW/kg</td>
+		</tr>
+		{/if}
+                	
+		
+	    </table>
+	</td>
+	
+<!--// prawa strona //-->
+	<td class="fright pad" align="left" width="50%" style="vertical-align:top;">
+	    <table width="100%" cellpadding="3">
+		
+		{if $carinfo.dr_s1}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Liczba miejsc siedzących, włączając siedzenie kierowcy"}><b>Miejsc siedzących</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_s1}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_s2}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Liczba miejsc stojących, jeżeli występuje"}><b>Miejsc stojących</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_s2}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_wydajacy}
+		<tr class="display">
+		    <td width="1%" class="pad" nowrap align="left" style="vertical-align:top;"><b>Organ wydający</b></td>
+		    <td width="1%" class="pad" nowrap style="vertical-align:top;"><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_wydajacy|nl2br}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_c11}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Nazwisko lub nazwa posiadacza dowodu rejestracyjnego"}><b>Imię/nazwa posiadacza DR</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_c11}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_c12}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="numer PESEL lub REGON posiadacza dowodu rejestracyjnego"}><b>PESEL / REGON</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_c12}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_c13}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Adres posiadacza dowodu rejestracyjnego"}><b>Adres</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_c13}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_c21}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Nazwisko lub nazwa właściciela pojazdu"}><b>Imię/nazwa właściciela</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_c21}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_c22}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="numer PESEL lub REGON właściciela pojazdu"}><b>PESEL / REGON</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_c22}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_c23}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Adres właściciela pojazdu"}><b>Adres</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_c23}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_cartype && $carinfo.cartypename}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Rodzaj Pojazdu</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.cartypename}
+			
+		    </td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_przeznaczenie}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Przeznaczenie</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_przeznaczenie}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_kartapojazdu}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Nr. karty pojazdu</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_kartapojazdu}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.dr_seriadr}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Seria DR/BAC</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_seriadr}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.forma_nabycia}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Forma nabycia</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{assign var='tmp' value=$carinfo.forma_nabycia}{$_NABYCIE.$tmp}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.datazakupu}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Data zakupu</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.datazakupu|date_format:'Y/m/d'}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.stanlicznika}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="początkowy stan licznika"}><b>Stan licznika</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.stanlicznika}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.zbiornik}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Pojemność zbiornika</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.zbiornik} Litrów</td>
+		</tr>
+		{/if}
+		
+                {if $carinfo.spalanie}
+                <tr class="display">
+                    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><span class="tiphelp" {tip text="Średnie zużycie paliwa dla całego okresu ewidencyjnego.<br/><font color='red'>ŻEBY WYNIK BYŁ MIARODAJNY<br/>DANE MUSZĄ BYĆ UZUPEŁNIANE NA BIEŻĄCO!</font>"}><b>Zużycie paliwa</b></span></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.spalanie} l/100km</td>
+                </tr>
+                {/if}
+                
+		{if $carinfo.dr_notes}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Adnotacje urzędowe</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.dr_notes|nl2br}</td>
+		</tr>
+		{/if}
+		
+		{if $carinfo.description}
+		<tr class="display">
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap align="left"><b>Własna notatka</b></td>
+		    <td width="1%" class="pad" style="vertical-align:top;" nowrap><b>:</b></td>
+		    <td width="98%" class="pad" align="left">{$carinfo.description|nl2br}</td>
+		</tr>
+		{/if}
+		
+	    </table>
+	</td>
+
+    </tr>
+    
+    <tr class="dark">
+	<td width="100%" colspan="2" class="fall pad" align="right">
+	    <a href="javascript:void(0);" onclick="self.location.href='?m=re_carinfo&tuck=base&idc={$carinfo.id}&edit';"><b>{trans('Edit')}</b>&nbsp;<img src="img/edit.gif"></a>&nbsp;
+	</td>
+    </tr>
+</table>
+
+</form>
+

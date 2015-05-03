@@ -19,7 +19,7 @@
 			<a href="?m=hostadd">{trans("Add host")} <img src="img/save.gif" alt=""></a>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$hostlist item=host}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" onclick="return self.location.href='?m=hostedit&id={$host.id}';" nowrap>

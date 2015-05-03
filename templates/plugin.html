@@ -1,0 +1,73 @@
+{include file="header.html"}
+{title value=$layout.pagetitle}
+
+{if $pluglist}
+
+<table width="100%" cellpadding="3" class="table">
+
+    <tr class="dark">
+	<td width="1%" class="pad10 h24 fleftu" align="left"><b>{trans('Name')}<br>{trans('Description')}</b></td>
+	<td width="1%" class="pad10 h24 fbt" nowrap align="right"><b>{trans('Version')}</b></td>
+	<td width="1%" class="pad10 h24 fbt" nowrap align="right"><b>{trans('Version DB')}</b></td>
+	<td width="92%" class="pad10 h24 fbt" align="left"><b>{trans('Author')}<br>{trans('E-mail')}</b></td>
+	<td width="1%" class="pad10 h24 fbt" align="center" nowrap><b>{trans('Minimum version')}<br>iNET LMS</b></td>
+	<td width="1%" class="pad10 h24 fbt" align="center"><b>{trans('Supported<br>Databases')}</b></td>
+	
+	<td width="1%" class="pad h24 fbt" align="center"><b>{trans('Installed')}</b></td>
+	<td width="1%" class="pad h24 fbt" align="center"><b>{trans('Enabled')}</b></td>
+	<td width="1%" class="pad h24 frightu" align="right">&nbsp;</td>
+    </tr>
+    
+    {cycle values="lucid,light" print=false}
+    {foreach from=$pluglist item=item}
+    
+    <tr class="{cycle}{if !$item.enabled} blend{/if}{if !$item.install} green{/if} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td width="1%" class="pad10 h24 fleft" nowrap align="left"><b>{$item.display}</b>{if $item.description}<br>{$item.description}{/if}</td>
+	<td width="1%" class="pad10 h24" nowrap align="right">{$item.version}</td>
+	<td width="1%" class="pad10 h24" nowrap align="right">{if $item.install}{$item.dbver}{else}{$item.dbversion}{/if}</td>
+	<td width="92%" class="pad10 h24" align="left">{$item.author}{if $item.email}{if $item.email}<br><i>{$item.email}</i>{/if}{/if}</td>
+	<td width="1%" class="pad h24" align="center">{if !$item.minversion}n.d.{else}{$item.minversion}{/if}</td>
+	<td width="1%" class="pad h24" align="center">{if $item.installdb}{if $item.mysql}MySQL{/if}{if $item.mysql && $item.postgres}<br>{/if}{if $item.postgres}Postgres{/if}{else}n.d.{/if}</td>
+	<td width="1%" class="pad h24" align="center">{if $item.install}{trans('YES')}{else}{trans('NO')}{/if}</td>
+	<td width="1%" class="pad h24" align="center">{if $item.enabled}{trans('YES')}{else}{trans('NO')}{/if}</td>
+	<td width="1%" class="pad h24 fright" nowrap align="right">
+	{if !$item.install}
+	    {if (($item.mysql && get_conf('database.type') == 'mysql') || ($item.postgres && get_conf('database.type') == 'postgres') || (!$item.installdb)) && (version_compare($item.minversion,$smarty.const.LMSV) != '1')}
+		{if !$item.installdb}
+		    <img src="img/add.gif" {tip text="install the plug"} onclick="self.location.href='?m=plugin&action=install&ind={$item.indexes}&name={$item.name}';">
+		{else}
+		    <a href="?m=plugin&action=installdb&ind={$item.indexes}&name={$item.name}" onclick="return confirmLink(this,'Instalacja wymaga ingerencji\nw strukturze bazy danych\nKontynuować ?');"><img src="img/add.gif" {tip text="install the plug"} alt="[ install ]"></a>
+		{/if}
+	    {/if}
+	{else}
+	    {if $item.config}<a href="?plug={$item.name}&m=config" ><img src="img/options.gif" alt="[ {trans('configuration')} ]" title="[ {trans('configuration')} ]"></a>{/if}
+	    {if $item.enabled}
+		<img src="img/access.gif" title="[ {trans('disable')} ]" onclick="self.location.href='?m=plugin&action=enabled&set=0&id={$item.id}';">
+	    {else}
+		<img src="img/noaccess.gif" title="[ {trans('enable')} ]" onclick="self.location.href='?m=plugin&action=enabled&set=1&id={$item.id}';">
+	    {/if}
+	{/if}
+	</td>
+    </tr>
+    
+    
+    {/foreach}
+    
+    <tr class="dark">
+	<td width="100%" colspan="9" class="pad10 fall" align="right"></td>
+    </tr>
+    
+</table>
+
+{else}
+    <table width="100%">
+    <tr class='light'>
+	<td width="100%" class="fall" align="center">
+	<p><h3>Brak dostępnych wtyczek</h3></p>
+	</td>
+    </tr>
+    </td>
+    </table>
+{/if}
+
+{include file="footer.html"}

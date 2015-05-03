@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {include file="calendar_js.html"}
 <script type="text/javascript">
 	<!--
@@ -64,7 +64,6 @@
 		document.page.submit();
 	}
 
-	{if check_conf('phpui.short_pagescroller')}
 	function pagechange1()
 	{
 		document.page.action="?m=balancelist&page=" + document.forms['page'].elements['page1'].value;
@@ -77,7 +76,6 @@
 		document.page.target="";
 		document.page.submit();
 	}
-	{/if}
 	//-->
 </script>
 <form method="POST" name="page">
@@ -154,7 +152,7 @@
 		</td>
 		<td width="1%" class="frightu">&nbsp;</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=balancelist loop=$balancelist start=$start max=$pagelimit}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td width="1%" class="fleft" nowrap>

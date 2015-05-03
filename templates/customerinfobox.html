@@ -37,7 +37,7 @@
 		</td>
 	</tr>
 {/if}
-{if $customerinfo.origin}
+{if get_form('customers.origin') && $customerinfo.origin}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/group.gif"> 
@@ -61,14 +61,17 @@
 		<td width="99%">
 		    <fieldset style="width:50%">
 		    <legend><b> Adres siedziby, zameldowania</b></legend>
+		    	<a href="https://www.google.pl/maps/place/{$customerinfo.address} {$customerinfo.zip} {$customerinfo.city} {$customerinfo.cstate} {t}{$customerinfo.country}{/t}" target="_blank" {tip text="Mapa Google'a"}>
 			{$customerinfo.address}<br>
 			{$customerinfo.zip} {$customerinfo.city}
-			{if $customerinfo.cstate}<br>{$customerinfo.cstate}{/if}
-			{if $customerinfo.country}<br>{t}{$customerinfo.country}{/t}{/if}
+			{if get_form('customers.state') && $customerinfo.cstate}<br>{$customerinfo.cstate}{/if}
+			{if get_form('customers.country') && $customerinfo.country}<br>{t}{$customerinfo.country}{/t}{/if}
+			</a>
 		    </lieldset>
 		</td>
 	</tr>
-{if $customerinfo.invoice_name neq "" || $customerinfo.invoice_address neq ""}
+	
+	{if get_form('customers.inv_address')}
 	<tr class="light">
 		<td width="1%" style="vertical-align:top;">
 			<img src="img/home.gif" alt="">
@@ -76,18 +79,35 @@
 		<td width="99%" nowrap>
 		    <fieldset style="width:50%">
 		    <legend><b> Odbiorca faktury </b></legend>
-			{if $customerinfo.invoice_name neq ""}{$customerinfo.invoice_name}{/if}
-			{if $customerinfo.invoice_address neq ""}<br>{$customerinfo.invoice_address}{/if}
-			<br>{$customerinfo.invoice_zip} {$customerinfo.invoice_city}
-			{if $customerinfo.invoice_cstate}<br>{$customerinfo.invoice_cstate}{/if}
-			{if $customerinfo.invoice_country}<br>{t}{$customerinfo.invoice_country}{/t}{/if}
-			{if $customerinfo.invoice_ten}<br>{$customerinfo.invoice_ten}{/if}
+			{if $customerinfo.invoice_name neq "" || $customerinfo.invoice_address neq ""}
+				{if $customerinfo.invoice_name neq ""}{$customerinfo.invoice_name} {$customerinfo.invoice_lastname}{/if}
+				{if $customerinfo.invoice_address neq ""}<br>{$customerinfo.invoice_address}{/if}
+				<br>{$customerinfo.invoice_zip} {$customerinfo.invoice_city}
+				{if get_form('customers.state') && $customerinfo.invoice_cstate}<br>{$customerinfo.invoice_cstate}{/if}
+				{if get_form('customers.country') && $customerinfo.invoice_country}<br>{t}{$customerinfo.invoice_country}{/t}{/if}
+				{if $customerinfo.type == 1}
+				    {if $customerinfo.invoice_ten}<br>{trans('TEN:')} {$customerinfo.invoice_ten}{/if}
+				{else}
+				    {if $customerinfo.invoice_ssn}<br>{trans('SSN:')} {$customerinfo.invoice_ssn}{/if}
+				{/if}
+			{else}
+				{$customerinfo.lastname} {$customerinfo.name}<br>
+				{$customerinfo.address}<br>
+				{$customerinfo.zip} {$customerinfo.city}
+				{if get_form('customers.state') && $customerinfo.cstate}<br>{$customerinfo.cstate}{/if}
+				{if get_form('customers.country') && $customerinfo.country}<br>{t}{$customerinfo.country}{/t}{/if}
+				{if $customerinfo.type == 1}
+				     {if $customerinfo.ten}<br>{trans('TEN:')} {$customerinfo.ten}{/if}
+				{else}
+				    {if $customerinfo.ssn}<br>{trans('SSN:')} {$customerinfo.ssn}{/if}
+				{/if}
+			{/if}
 		    </fieldset>
 		</td>
 	</tr>
-{/if}
-
-{if $customerinfo.post_name neq "" || $customerinfo.post_address neq ""}
+	{/if}
+	
+	{if get_form('customers.post_address')}
 	<tr class="light">
 		<td width="1%" style="vertical-align:top;">
 			<img src="img/post.gif" alt="">
@@ -95,16 +115,33 @@
 		<td width="99%" nowrap>
 		    <fieldset style="width:50%">
 		    <legend><b> Adres do wysyłki</b></legend>
-			{if $customerinfo.post_name neq ""}{$customerinfo.post_name}{/if}
-			{if $customerinfo.post_address neq ""}<br>{$customerinfo.post_address}{/if}
-			<br>{$customerinfo.post_zip} {$customerinfo.post_city}
-			{if $customerinfo.post_cstate}<br>{$customerinfo.post_cstate}{/if}
-			{if $customerinfo.post_country}<br>{t}{$customerinfo.post_country}{/t}{/if}
+			{if $customerinfo.post_name neq "" || $customerinfo.post_address neq ""}
+				{if $customerinfo.post_name neq ""}{$customerinfo.post_name}{/if}
+				{if $customerinfo.post_address neq ""}<br>{$customerinfo.post_address}{/if}
+				<br>{$customerinfo.post_zip} {$customerinfo.post_city}
+				{if get_form('customers.state') && $customerinfo.post_cstate}<br>{$customerinfo.post_cstate}{/if}
+				{if get_form('customers.country') && $customerinfo.post_country}<br>{t}{$customerinfo.post_country}{/t}{/if}
+			{elseif $customerinfo.invoice_name neq ""}
+				{if $customerinfo.invoice_name neq ""}{$customerinfo.invoice_name} {$customerinfo.invoice_lastname}{/if}
+				{if $customerinfo.invoice_address neq ""}<br>{$customerinfo.invoice_address}{/if}
+				<br>{$customerinfo.invoice_zip} {$customerinfo.invoice_city}
+				{if get_form('customers.state') && $customerinfo.invoice_cstate}<br>{$customerinfo.invoice_cstate}{/if}
+				{if get_form('customers.coutry') && $customerinfo.invoice_country}<br>{t}{$customerinfo.invoice_country}{/t}{/if}
+				{if $customerinfo.invoice_ten}<br>{$customerinfo.invoice_ten}{/if}
+			{else}
+				{$customerinfo.lastname} {$customerinfo.name}<br>
+				{$customerinfo.address}<br>
+				{$customerinfo.zip} {$customerinfo.city}
+				{if get_form('customers.state') && $customerinfo.cstate}<br>{$customerinfo.cstate}{/if}
+				{if get_form('customers.country') && $customerinfo.country}<br>{t}{$customerinfo.country}{/t}{/if}
+			{/if}
 		    </fieldset>
 		</td>
 	</tr>
-{/if}
-{foreach from=$customerinfo.contacts item=item}
+	{/if}
+	
+	{if get_form('customers.contacts')}
+	{foreach from=$customerinfo.contacts item=item}
 	<tr class="light">
 		<td width="1%" style="vertical-align: top">
 			<img src="img/phone.gif" alt="">
@@ -115,8 +152,10 @@
 			{if $item.name} ({$item.name|truncate:"40":"...":true}){/if}
 		</td>
 	</tr>
-{/foreach}
-{if $customerinfo.email neq ""}
+	{/foreach}
+	{/if}
+	
+	{if get_form('customers.email') && $customerinfo.email neq ""}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/mail.gif" alt="">
@@ -125,26 +164,28 @@
 			<a href="mailto:{$customerinfo.email}">{$customerinfo.email}</a>
 		</td>
 	</tr>
-{/if}
+	{/if}
+
+{if get_form('customers.gadugadu') || get_form('customers.yahoo') || get_form('customers.skype')}
 {foreach from=$customerinfo.messengers item=item}
 	<tr class="light">
 		<td>
-			{if $item.type == $smarty.const.IM_GG}
+			{if get_form('customers.gadugadu') && $item.type == $smarty.const.IM_GG}
 			<img src="http://status.gadu-gadu.pl/users/status.asp?id={$item.uid}&styl=1" alt="">
-			{elseif $item.type == $smarty.const.IM_YAHOO}
+			{elseif get_form('customers.yahoo') && $item.type == $smarty.const.IM_YAHOO}
 			<img src="http://opi.yahoo.com/online?u='{$item.uid}'&m=g&t=5" alt="">
-			{elseif $item.type == $smarty.const.IM_SKYPE}
+			{elseif get_form('customers.skype') && $item.type == $smarty.const.IM_SKYPE}
 			<img src="http://mystatus.skype.com/smallicon/{$item.uid}" alt="">
 			{else}
 			<img src="img/gg.gif" alt="">
 			{/if}
 		</td>
 		<td>
-			{if $item.type == $smarty.const.IM_GG}
+			{if get_form('customers.gadugadu') && $item.type == $smarty.const.IM_GG}
 			<a href="gg:{$item.uid}">{$item.uid}</a>
-			{elseif $item.type == $smarty.const.IM_YAHOO}
+			{elseif get_form('customers.yahoo') && $item.type == $smarty.const.IM_YAHOO}
 			<a href="ymsgr:sendIM?{$item.uid}">{$item.uid}</a>
-			{elseif $item.type == $smarty.const.IM_SKYPE}
+			{elseif get_form('customers.skype') && $item.type == $smarty.const.IM_SKYPE}
 			<a href="skype:{$item.uid}?call">{$item.uid}</a>
 			{else}
 			{$item.uid}
@@ -152,7 +193,8 @@
 		</td>
 	</tr>
 {/foreach}
-{if $customerinfo.pin neq 0}
+{/if}
+{if get_form('customers.pin') && ($customerinfo.pin neq 0)}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/pin.gif" alt="">
@@ -192,7 +234,7 @@
 		</td>
 	</tr>
 {/if}
-{if $customerinfo.regon neq ""}
+{if get_form('customers.regon') && ($customerinfo.regon neq "")}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/serialnumber.gif" alt="">
@@ -202,7 +244,7 @@
 		</td>
 	</tr>
 {/if}
-{if $customerinfo.rbe neq ""}
+{if get_form('customers.rbe') && ($customerinfo.rbe neq "")}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/serialnumber.gif" alt="">
@@ -222,6 +264,7 @@
 		</td>
 	</tr>
 {/if}
+
 	<tr class="light">
 		<td width="1%" style="vertical-align: top">
 			<img src="img/options.gif" alt="">
@@ -229,33 +272,22 @@
 		<td width="99%">
 		    <table cellpadding="2">
 		        <tr>
-		            <td>
-			            {trans("Deadline:")}
-			        </td>
-			        <td>
-			            {if $customerinfo.paytime eq -1}{trans("default")}{else}{$customerinfo.paytime}&nbsp;{trans("days")}{/if}
-		            </td>
-	            </tr>
-                <tr>
-                    <td>
-			            {trans("Payment type:")}
-			        </td>
-			        <td>
-			            {assign var=paytype value=$customerinfo.paytype}{if $_PAYTYPES.$paytype}{$_PAYTYPES.$paytype}{else}{trans("default")}{/if}
-		            </td>
-	            </tr>
-                {if $customerinfo.cutoffstop > $smarty.now}
-			    <tr>
-			        <td colspan="2">
-			            <font class="alert">
-			            {t a=$customerinfo.cutoffstop|date_format:"%Y/%m/%d"}Cutoff suspended to $a{/t}
-			            </font>
-			        </td>
-			    </tr>
-                {/if}
-            </table>
+		            <td>{trans("Deadline:")}</td>
+		            <td>{if $customerinfo.paytime eq -1}{trans("default")}{else}{$customerinfo.paytime}&nbsp;{trans("days")}{/if}</td>
+			</tr>
+			<tr>
+			    <td>{trans("Payment type:")}</td>
+			    <td>{assign var=paytype value=$customerinfo.paytype}{if $_PAYTYPES.$paytype}{$_PAYTYPES.$paytype}{else}{trans("default")}{/if}</td>
+			</tr>
+			{if $customerinfo.cutoffstop > $smarty.now}
+			<tr>
+			    <td colspan="2"><font class="alert">{t a=$customerinfo.cutoffstop|date_format:"%Y/%m/%d"}Cutoff suspended to $a{/t}</font></td>
+			</tr>
+			{/if}
+		    </table>
 		</td>
 	</tr>
+
 	<tr class="light">
 		<td width="1%" style="vertical-align: top">
 			<img src="img/options.gif" alt="">
@@ -263,46 +295,29 @@
 		<td width="99%">
 		    <table cellpadding="2">
 		        <tr>
-		            <td>
-			            {trans("Consent to personal data processing:")}
-		            </td>
-		            <td>
-		                {if $customerinfo.consentdate}{$customerinfo.consentdate}{else}{trans("no")}{/if}
-	                </td>
-	            </tr>
-	            <tr>
-	                <td>
-			            {trans("Consent to electronic invoices:")}
-            		</td>
-            		<td>
-            		    {if $customerinfo.einvoice}{trans("yes")}{else}{trans("no")}{/if}
-	                </td>
-	            </tr>
-	            <tr>
-	                <td>
-            			{trans("Consent to invoices delivery via e-mail:")}
-            		</td>
-            		<td>
-            		    {if $customerinfo.invoicenotice}{trans("yes")}{else}{trans("no")}{/if}
-	                </td>
-	            </tr>
-                <tr>
-                    <td>
-			            {trans("Consent to messages delivery via e-mail or sms:")}
-		            </td>
-		            <td>
-		                {if $customerinfo.mailingnotice}{trans("yes")}{else}{trans("no")}{/if}
-	                </td>
-	            </tr>
-            </table>
-        </td>
-    </tr>
-
+		            <td>{trans("Consent to personal data processing:")}</td>
+		            <td>{if $customerinfo.consentdate}{$customerinfo.consentdate}{else}{trans("no")}{/if}</td>
+			</tr>
+			<tr>
+			    <td>{trans("Consent to electronic invoices:")}</td>
+			    <td>{if $customerinfo.einvoice}{trans("yes")}{else}{trans("no")}{/if}</td>
+			</tr>
+			<tr>
+			    <td>{trans("Consent to invoices delivery via e-mail:")}</td>
+			    <td>{if $customerinfo.invoicenotice}{trans("yes")}{else}{trans("no")}{/if}</td>
+			</tr>
+			<tr>
+			    <td>{trans("Consent to messages delivery via e-mail or sms:")}</td>
+		            <td>{if $customerinfo.mailingnotice}{trans("yes")}{else}{trans("no")}{/if}</td>
+			</tr>
+		    </table>
+		</td>
+	</tr>
                                         </table>
 				</td>
 				<td width="50%" style="vertical-align:top;">
 					<table width="100%" cellpadding="3">
-	{if $customerinfo.info}
+	{if get_form('customers.info') && $customerinfo.info}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/info1.gif" alt="">
@@ -318,7 +333,7 @@
 		</td>
 	</tr>
 	{/if}
-	{if $customerinfo.message}
+	{if get_form('customers.warning') && $customerinfo.message}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/warningon.gif" alt="">
@@ -334,7 +349,7 @@
 		</td>
 	</tr>
 	{/if}
-	{if $customerinfo.notes}
+	{if get_form('customers.notes') && $customerinfo.notes}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/note.gif" alt="">
@@ -404,6 +419,11 @@
 	<tr class="light">
 		<td width="100%" class="fbottomu" align="right">
 //-->
+			{if get_conf('jambox.enabled') && check_modules(360)}
+			
+			    <a href="?m=customerinfo&id={$customerinfo.id}&tvexport=1">Eksport do SMS <img src="img/tv_icon.png"></a> 
+			
+			{/if}
 			{if $customerinfo.deleted}
 				<a href="?m=customeredit&id={$customerinfo.id}&action=recover">{trans("Restore")} <img src="img/recover.gif" alt="[ {trans("Restore")} ]"></a>
 			{else}

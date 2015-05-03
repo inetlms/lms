@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {if $note}
 <script type="text/javascript">
 <!--
@@ -45,7 +45,6 @@ window.open('?m=note&id={$note}');
 		document.page.submit();
 	}
 
-{if check_conf('phpui', 'short_pagescroller')}
 	function pagechange1()
 	{
 		document.page.action="?m=notelist&page=" + document.forms['page'].elements['page1'].value;
@@ -59,7 +58,6 @@ window.open('?m=note&id={$note}');
 		document.page.target="";
 		document.page.submit();
 	}
-{/if}
 //-->
 </script>
 <form method="POST" name="page">
@@ -128,7 +126,7 @@ window.open('?m=note&id={$note}');
 			&nbsp;
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=notelist loop=$notelist start=$start max=$pagelimit}
 	{assign var=note value=$notelist[notelist]}
 	{assign var=noteid value=$note.id}

@@ -1,6 +1,6 @@
 {include file="header.html"}
 
-<h3>{$layout.pagetitle}</h3>
+{title value=$layout.pagetitle}
 
 <table width="100%" cellpadding="3">
     <tr class="dark">
@@ -11,7 +11,7 @@
     <tr>
 	<td width="100%" class="flr" nowrap>
 	    <table cellpadding="4" width="100%">
-		{cycle values="light,lucid" print=false}
+		{cycle values="lucid,light" print=false}
 		{section name=lista loop=$lista step=8}
 		    <tr class="{cycle} lista">
 			{section name=l2 loop=$lista start=$smarty.section.lista.index max=8}

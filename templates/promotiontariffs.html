@@ -17,7 +17,7 @@
 					<td class="fbt" width="1%" align="right" nowrap>{trans("Upceil:")}</td>
 					<td class="frightu" width="1%">&nbsp;</td>
 			    </tr>
-				{cycle values="light,lucid" print=false name=tariffs}
+				{cycle values="lucid,light" print=false name=tariffs}
 				{foreach from=$promotion.tariffs item=tariff}
 				<tr class="{cycle name=tariffs}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td onclick="return self.location.href='?m=tariffinfo&id={$tariff.id}';" nowrap>

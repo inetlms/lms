@@ -35,7 +35,7 @@
 					<td style="width: 1%; white-space: nowrap;" class="fbt">{trans("Period:")}</td>
 					<td style="width: 1%;" class="frightu">&nbsp;</td>
 				</tr>
-				{cycle name=assign values="light,lucid" print=false}
+				{cycle name=assign values="lucid,light" print=false}
 				{foreach from=$assignments item=a}
 				<tr class="{cycle name=assign}
 					{if ($a.dateto < $today && $a.dateto) || ($a.liabilityid && $a.at < $today && $a.at > 365)} blend{elseif ($a.datefrom > $today && $a.datefrom && $a.period) && !($a.suspended)} alertblend{elseif ($a.suspended)}suspended{/if}"
@@ -59,7 +59,7 @@
 					<td style="text-align: right;" onclick="return self.location.href='?m=customerassignmentedit&id={$a.id}'">
 						{if !check_conf('privileges.hide_finances')}{if $a.pdiscount != 0}{$a.pdiscount}%{else}{if $a.vdiscount != 0}{$a.vdiscount|money_format}{else}-{/if}{/if}{/if}
 					</td>
-					<td style="white-space: nowrap;" onclick="return self.location.href='?m=customerassignmentedit&id={$a.id}'">{$a.payday}</td>
+					<td style="white-space: nowrap;" onclick="return self.location.href='?m=customerassignmentedit&id={$a.id}'">{$a.payday}<br>{assign var='tmp' value=$a.invoice}{$_DOCTYPES.$tmp}</td>
 					<td style="white-space: nowrap; text-align: right;" onclick="return self.location.href='?m=customerassignmentedit&id={$a.id}'">
 						{if $a.downceil}{$a.downceil} kbit/s{else}-{/if}
 					</td>
@@ -70,9 +70,9 @@
 						<img src="img/options.gif" alt="" {tip a=$a.id dynpopup='?m=customerassignmentinfo&id=$a'}>
 					</td>
 					{/if}
-					<td style="white-space: nowrap;" onclick="return self.location.href='?m=customerassignmentedit&id={$a.id}'">
+					<td style="white-space: nowrap;" class="pad" onclick="return self.location.href='?m=customerassignmentedit&id={$a.id}'">
 						{if $a.datefrom}{trans("from")} {$a.datefrom|date_format:"%Y/%m/%d"}{/if}
-						{if $a.dateto}{trans("to")} {$a.dateto|date_format:"%Y/%m/%d"}{/if}
+						{if $a.dateto}<br>{trans("to")} {$a.dateto|date_format:"%Y/%m/%d"}{/if}
 					</td>
 					<td style="text-align: right; white-space: nowrap;">
 						{if ($a.tariffid || $a.liabilityid) && (($a.dateto > $today || !$a.dateto) || ($a.liabilityid && $a.at > $today))}

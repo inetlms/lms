@@ -31,7 +31,7 @@ $menu = array(
 			'link' =>'?m=welcome',
 			'tip' => trans('System information and management'),
 			'accesskey' =>'i',
-			'prio' => 0,
+			'prio' => 10,
 			'index' => MODULES_ADMIN,
 			'submenu' => array(
 				array(
@@ -97,7 +97,7 @@ $menu = array(
 			'link' =>'?m=customerlist',
 			'tip' => trans('Customers Management'),
 			'accesskey' =>'u',
-			'prio' => 5,
+			'prio' => 20,
 			'index' => MODULES_CUSTOMERS,
 			'submenu' => array(
 				array(
@@ -146,7 +146,7 @@ $menu = array(
 			'link' =>'?m=nodelist',
 			'tip' => trans('Nodes Management'),
 			'accesskey' =>'k',
-			'prio' => 10,
+			'prio' => 30,
 			'index' => MODULES_NODES,
 			'submenu' => array(
 				array(
@@ -194,7 +194,7 @@ $menu = array(
 			'img' =>'voip.gif',
 			'tip' => trans('VoIP Management'),
 			'accesskey' =>'v',
-			'prio' => 11,
+			'prio' => 40,
 			'index' => MODULES_VOIP,
 			'submenu' => array(
 				array(
@@ -224,7 +224,7 @@ $menu = array(
 			'link' =>'',
 			'tip' => 'Telefonia Internetowa Hiperus',
 			'accesskey' => '',
-			'prio' => 12,
+			'prio' => 50,
 			'index'	=> MODULES_VOIPC5,
 			'submenu' => array(
 				array(
@@ -261,12 +261,12 @@ $menu = array(
 		),
 
 		'netdevices' => array(
-			'name' => 'Sieć',
+			'name' => 'Osprzęt sieciowy',
 			'img' =>'netdev.gif',
 			'link' =>'?m=netdevlist',
 			'tip' => trans('Network Devices Management'),
 			'accesskey' =>'o',
-			'prio' => 15,
+			'prio' => 80,
 			'index' => MODULES_NETDEVICES,
 			'submenu' => array(
 				array(
@@ -285,31 +285,38 @@ $menu = array(
 					'name' => 'Węzły',
 					'link' => '?m=networknodelist',
 					'tip' => 'Węzły sieciowe',
-					'prio' => 21,
+					'prio' => 30,
 				),
 				array(
 					'name' => 'Nowy Węzeł',
 					'link' => '?m=networknodeadd',
 					'tip' => 'Dodaj nowy węzeł sieciowy',
-					'prio' => 22,
-				),
-				array(
-					'name' => trans('Search'),
-					'link' => '?m=netdevsearch',
-					'tip' => trans('Allows you to search device'),
-					'prio' => 30,
-				),
-				array(
-					'name' => trans('Map'),
-					'link' => '?m=netdevmap',
-					'tip' => trans('Network map display'),
 					'prio' => 40,
 				),
 				array(
 					'name' => trans('Hosts'),
 					'link' => '?m=hostlist',
 					'tip' => trans('List of Hosts'),
+					'prio' => 50,
+				),
+				array(
+					'name' => 'Linie telekomunikacyjne',
+					'link' => '?m=teleline',
+					'tip' => 'Lista linii telekomunikacyjnych',
 					'prio' => 60,
+				),
+				
+				array(
+					'name' => trans('Map'),
+					'link' => '?m=netdevmap',
+					'tip' => trans('Network map display'),
+					'prio' => 80,
+				),
+				array(
+					'name' => trans('Search'),
+					'link' => '?m=netdevsearch',
+					'tip' => trans('Allows you to search device'),
+					'prio' => 90,
 				),
 				
 			
@@ -329,7 +336,7 @@ $menu = array(
 			'link' =>'',
 			'tip' => '',
 			'accesskey' =>'',
-			'prio' =>18,
+			'prio' =>100,
 			'index' => MODULES_MONITORING,
 			'submenu' => array(
 				array(
@@ -366,7 +373,7 @@ $menu = array(
 			'link' =>'?m=netlist',
 			'tip' => trans('IP Address Pools Management'),
 			'accesskey' =>'t',
-			'prio' => 20,
+			'prio' => 110,
 			'index' => MODULES_NETWORKS,
 			'submenu' => array(
 				array(
@@ -389,7 +396,7 @@ $menu = array(
 			'link' =>'?m=customerlist',
 			'tip' => trans('Contractors Management'),
 			'accesskey' =>'u',
-			'prio' => 23,
+			'prio' => 120,
 			'index' => MODULES_CONTRACTORS,
 			'submenu' => array(
 				array(
@@ -429,7 +436,7 @@ $menu = array(
 			'link' =>'?m=tarifflist',
 			'tip' => 'Zarządzanie taryfami',
 			'accesskey' =>'f',
-			'prio' => 24,
+			'prio' => 130,
 			'index' => MODULES_TARIFFS,
 			'submenu' => array(
 				array(
@@ -459,7 +466,7 @@ $menu = array(
 			'link' =>'?m=tarifflist',
 			'tip' => 'Zarządzanie finansami sieci',
 			'accesskey' =>'f',
-			'prio' => 25,
+			'prio' => 140,
 			'index' => MODULES_FINANCES,
 			'submenu' => array(
 				array(
@@ -561,7 +568,7 @@ $menu = array(
 			'link' =>'?m=documentlist',
 			'tip' => trans('Documents Management'),
 			'accesskey' => '',
-			'prio' => 26,
+			'prio' => 150,
 			'index' => MODULES_DOCUMENTS,
 			'submenu' => array(
 				array(
@@ -603,7 +610,7 @@ $menu = array(
 			'link' =>'?m=accountlist',
 			'tip' => trans('Hosting Services Management'),
 			'accesskey' =>'a',
-			'prio' => 30,
+			'prio' => 160,
 			'index' => MODULES_HOSTING,
 			'submenu' => array(
 				array(
@@ -657,7 +664,7 @@ $menu = array(
 			'link' =>'?m=messageadd',
 			'tip' => trans('Customers Messaging'),
 			'accesskey' =>'m',
-			'prio' => 35,
+			'prio' => 180,
 			'index' => MODULES_MESSAGES,
 			'submenu' => array(
 				array(
@@ -689,7 +696,7 @@ $menu = array(
 			'link' =>'?m=reload',
 			'tip' => trans(''),
 			'accesskey' =>'r',
-			'prio' => 40,
+			'prio' => 190,
 			'index' => MODULES_RELOAD,
 		),
 
@@ -699,7 +706,7 @@ $menu = array(
 			'link' =>'?m=traffic',
 			'tip' => trans('Statistics of Internet Link Usage'),
 			'accesskey' =>'x',
-			'prio' => 45,
+			'prio' => 200,
 			'index' => MODULES_STATS,
 			'submenu' => array(
 				array(
@@ -753,7 +760,7 @@ $menu = array(
 			'link' =>'?m=rtqueuelist',
 			'tip' => trans('Requests Tracking'),
 			'accesskey' =>'h',
-			'prio' => 50,
+			'prio' => 210,
 			'index' => MODULES_HELPDESK,
 			'submenu' => array(
 				array(
@@ -807,7 +814,7 @@ $menu = array(
 			'link' =>'?m=eventlist',
 			'tip' => trans('Events Tracking'),
 			'accesskey' =>'v',
-			'prio' => 55,
+			'prio' => 220,
 			'index' => MODULES_TIMETABLE,
 			'submenu' => array(
 				array(
@@ -836,14 +843,20 @@ $menu = array(
 			'img' => 'reports.png',
 			'link' => '',
 			'tip' => '',
-			'prio' => 57,
+			'prio' => 230,
 			'index' => MODULES_RAPORTY,
 			'submenu' => array(
 				array(
-				    'name' => 'UKE SIIS v4',
-				    'link' => '?m=uke_siis4',
+				    'name' => 'Raporty SIIS',
+				    'link' => '?m=uke_siis',
 				    'tip' => '',
 				    'prio' => 10,
+				),
+				array(
+				    'name' => 'Nowy raport SIIS',
+				    'link' => '?m=uke_siis_add',
+				    'tip' => 'Utwórz nowy raport SIIS',
+				    'prio' => 20,
 				),
 			),
 		),
@@ -852,7 +865,7 @@ $menu = array(
 			'name'		=> 'Słowniki',
 			'img'		=> 'dictionary.png',
 			'link'		=> '',
-			'prio'		=> 58,
+			'prio'		=> 240,
 			'index'		=> MODULES_SLOWNIK,
 			'submenu'	=> array(
 				array(
@@ -874,6 +887,18 @@ $menu = array(
 					'prio' => 20,
 				),
 				array(
+					'name' => 'Grupy interfejsów',
+					'link' =>'?m=netdevgrouplist',
+					'tip' => 'Lista grup interfejsów sieciowych',
+					'prio' => 21,
+				),
+				array(
+					'name' => 'Grupy węzłów',
+					'link' =>'?m=networknodegrouplist',
+					'tip' => 'Lista grup węzłów',
+					'prio' => 22,
+				),
+				array(
 					'name' => 'Pochodzenie klientów',
 					'link' => '?m=customeroriginlist',
 					'tip'	=> 'Źródła pochodzenia klientów',
@@ -887,6 +912,32 @@ $menu = array(
 					'prio' => 40,
 				),
 				
+				array(
+					'name' => 'Producenci, modele',
+					'link' => '?m=netdevicemodels',
+					'tip'	=> 'Producenci i modele urządzeń sieciowych',
+					'prio' => 50,
+				),
+				
+				array(
+					'name' => 'Powody korekt faktur',
+					'link'	=> '?m=dictionarycnote',
+					'tip'	=> 'Rodzaje powodów dla których jest dokonan korekta faktury',
+					'prio'	=> 60,
+				),
+				array(
+					'name' => trans('Projekty'),
+					'link' => '?m=projectlist',
+					'tip' => trans('Lista projektów inwestycyjnych'),
+					'prio' => 70,
+				),
+//				array(
+//					'name' => 'Podmioty obce',
+//					'link' => '?m=foreignentity',
+//					'tip' => 'Podmioty obce i dostawcy usług',
+//					'prio' => 80,
+//				),
+				
 			),
 			
 		),
@@ -897,7 +948,7 @@ $menu = array(
 			'link' =>'?m=configlist',
 			'tip' => trans('System Configuration'),
 			'accesskey' =>'o',
-			'prio' => 60,
+			'prio' => 250,
 			'index' => MODULES_CONFIG,
 			'submenu' => array(
 				array(
@@ -905,6 +956,12 @@ $menu = array(
 					'link' =>'?m=configlist',
 					'tip' => trans('Allows you to configure UI'),
 					'prio' => 10,
+				),
+				array(
+					'name' 	=> 'Formularze',
+					'link'	=> '?m=configform',
+					'tip'	=> 'Konfigurowanie wyświetlanych i wymaganych pól w formularzach',
+					'prio'	=> 15,
 				),
 				array(
 					'name' => trans('Tax Rates'),
@@ -942,6 +999,12 @@ $menu = array(
 					'tip' => trans('List of Cash Import Sources'),
 					'prio' => 80,
 				),
+				array(
+					'name'	=> 'Wtyczki',
+					'link'	=> '?m=plugin',
+					'tip'	=> 'Konfiguracja wtyczek',
+					'prio'	=> 90,
+				),
 				
 			),
 		),
@@ -954,7 +1017,7 @@ $menu = array(
 			'link' => '?m=chpasswd',
 			'tip' => trans('Allows you to change your password'),
 			'accesskey' => 'p',
-			'prio' => 65,
+			'prio' => 260,
 			'index' => MODULES_PASSWORD,
 		),
 /*
@@ -979,7 +1042,7 @@ if (get_conf('phpui.radius')) {
 		'link'		=> '',
 		'tip'		=> '',
 		'accesskey'	=> '',
-		'prio'		=> 18,
+		'prio'		=> 90,
 		'index'		=> MODULES_RADIUS,
 		'submenu'	=> array(
 			array(
@@ -1013,7 +1076,7 @@ if (get_conf('voip.enabled','0')) {
 			'link' =>'?m=configlist',
 			'tip' => 'Telefonia internetowa',
 			'accesskey' =>'v',
-			'prio' => 13,
+			'prio' => 60,
 			'index' => MODULES_VOIPNT,
 			'submenu' => array(
 				array(
@@ -1092,6 +1155,107 @@ TEMPORARY DISABLED			'name' => 'Bilans kosztów',
 		);
 }
 
+if (get_conf('registryequipment.enabled')) {
+	$menu['registryequipment'] = array(
+		'name'		=> 'Ew. Pojazdów',
+		'img'		=> 'car.png',
+		'link'		=> '',
+		'tip'		=> '',
+		'prio'		=> 170,
+		'index'		=> MODULES_REGISTRYEQUIPMENT,
+		'submenu'	=> array(
+			array(
+				'name'	=> 'Lista pojazdów',
+				'link'  => '?m=re_carlist',
+				'prio' => 1,
+			),
+			array(
+				'name' => 'Nowy pojazd',
+				'link' => '?m=re_caradd',
+				'prio' => 2,
+			),
+//			array(
+//				'name' => 'Ubezpieczenia',
+//				'link' => '?m=re_insurance',
+//				'prio' => 10,
+//			),
+			array(
+				'name' => 'Rodzaje pojazdów',
+				'link' => '?m=re_dictionarycartype',
+				'prio' => 50,
+			),
+			array(
+				'name' => 'Rodzaje zdarzeń',
+				'link' => '?m=re_dictionaryevent',
+				'prio' => 60,
+			),
+		),
+	);
+}
+
+if (get_conf('jambox.enabled',0)) {
+	$menu['TV'] = array( 
+			'name' => 'TV Jambox',
+			'img' =>'tv_icon.png',
+			'tip' => 'TV Management',
+			'accesskey' =>'t',
+			'prio' => 70,
+			'index' => MODULES_JAMBOX,
+			'submenu' => array(
+				array(
+					'name' => trans('Lista klientów'),
+					'link' => '?m=tvcustomers',
+					'tip' => trans('Lista klientów'),
+					'prio' => 10,
+				),
+				array(
+					'name' => trans('Lista pakietów'),
+					'link' => '?m=tvpackageslist',
+					'tip' => trans('Lista dostępnych pakietów'),
+					'prio' => 20,
+				),
+				array(
+					'name' => trans('Lista STB'),
+					'link' => '?m=tvstblist',
+					'tip' => trans('Lista STB'),
+					'prio' => 30,
+				),				
+				array(
+					'name' => trans('Podziel podsieć'),
+					'link' => '?m=tvsubnetlist',
+					'tip' => trans('Podziel podsieć'),
+					'prio' => 40,
+				),				
+//				array(
+//					'name' => trans('Bilingi'),
+//					'link' => '?m=tvbillingevents',
+//					'tip' => trans('Lista zdarzeń bilingowych'),
+//					'prio' => 50,
+//				),
+				array(
+					'name' => trans('Lista wiadomości'),
+					'link' => '?m=tvmessages',
+					'tip' => trans('Lista wiadomości'),
+					'prio' => 60,
+				),
+				array(
+					'name' => trans('Nowa wiadomość'),
+					'link' => '?m=tvmessagessend',
+					'tip' => trans('Nowa wiadomość'),
+					'prio' => 61,
+				),			
+				array(
+					'name' => trans('Odśwież dane'),
+					'link' => '?m=tvcleancache',
+					'tip' => trans('Odśwież dane'),
+					'prio' => 71,
+				),												
+			),
+		);								
+		
+}
+
+
 // menu item for EtherWerX STM channels management
 if (chkconfig($CONFIG['phpui']['ewx_support'])) {
 	$menu['netdevices']['submenu'][] = array(
@@ -1143,11 +1307,11 @@ if(!function_exists('menu_cmp'))
 	    return ($a['prio'] < $b['prio']) ? -1 : 1;
 	}
 }
-
+/*
 foreach($menu as $idx => $item)
 	if(isset($item['submenu']))
 		uasort($menu[$idx]['submenu'],'menu_cmp');
 
 uasort($menu,'menu_cmp');
-
+*/
 ?>

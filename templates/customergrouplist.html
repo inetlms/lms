@@ -3,34 +3,34 @@
 {title value=$layout.pagetitle link="<a href='?m=customergroupadd'><b>Dodaj nową grupę</b> <img src='img/add.gif'></a>"}
 <table width="100%" cellpadding="3">
 	<tr class="dark">
-		<td width="97%" class="fleftu">
+		<td width="97%" class="fleftu" align="left">
 			<img src="img/group.gif" alt="">&nbsp;<b>{trans("Name:")}</b><br>
 			<img src="img/info1.gif" alt="">&nbsp;{trans("Description:")}
 		</td>
-		<td width="1%" class="fbt" align="right">
+		<td width="1%" class="fbt pad tleft" align="right">
 			{trans("ID:")}
 		</td>
-		<td width="1%" class="fbt" align="right">
+		<td width="1%" class="fbt pad tleft" align="right">
 			{trans("Members:")}
 		</td>
-		<td width="1%" class="frightu" align="right" nowrap>
+		<td width="1%" class="frightu pad tleft" align="right" nowrap>
 			<b>{t a=$listdata.total|default:"0"}Total: $a{/t}</b>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=customergroups loop=$customergrouplist}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td width="97%" class="fleft" onclick="return self.location.href='?m=customergroupinfo&id={$customergrouplist[customergroups].id}';" class="fleft">
+		<td width="97%" class="fleft" onclick="return self.location.href='?m=customergroupinfo&id={$customergrouplist[customergroups].id}';" align="left">
 			<img src="img/group.gif" alt="">&nbsp;<b>{$customergrouplist[customergroups].name}</b><br>
 			{if $customergrouplist[customergroups].description}<img src="img/info1.gif" alt="">&nbsp;{$customergrouplist[customergroups].description}{/if}
 		</td>
-		<td width="1%" align="right" onclick="return self.location.href='?m=customergroupinfo&id={$customergrouplist[customergroups].id}';">
+		<td width="1%" align="right" class="pad tleft" onclick="return self.location.href='?m=customergroupinfo&id={$customergrouplist[customergroups].id}';">
 			({$customergrouplist[customergroups].id|string_format:"%04d"})
 		</td>
-		<td width="1%" align="right" onclick="return self.location.href='?m=customergroupinfo&id={$customergrouplist[customergroups].id}';">
+		<td width="1%" align="right" class="pad tleft" onclick="return self.location.href='?m=customergroupinfo&id={$customergrouplist[customergroups].id}';">
 			{$customergrouplist[customergroups].customerscount} 
 		</td>
-		<td width="1%" class="fright" align="right">
+		<td width="1%" class="fright pad tleft" align="right">
 			<nobr>
 			{if $customergrouplist[customergroups].customers}
 				<a href="javascript:alert('{trans("Group with members cannot be deleted!")}');">

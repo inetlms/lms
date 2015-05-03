@@ -38,35 +38,33 @@ class UKE {
     }
 
 
-    function getreportlist()
+    function getSIISlist()
     {
-	$result = $this->DB->GetAll('SELECT * FROM uke ORDER BY divname ASC;');
+	$result = $this->DB->GetAll('SELECT * FROM uke WHERE report_type=? ORDER BY reportyear DESC;',array('SIIS'));
 	return $result;
     }
 
 
-    function getInfoSiis4($idr) 
+    function getRaportInfo($id) 
     {
-	$result = $this->DB->GetRow('SELECT u.*, (SELECT d.shortname FROM divisions d WHERE d.id = u.divisionid) AS divshortname 
-				    FROM uke u WHERE u.id = ? LIMIT 1;',array($idr));
-	
+	$result = $this->DB->GetRow('SELECT * FROM uke WHERE id = ? LIMIT 1;',array($id));
 	return $result;
     }
 
 
-    function add_siis4($dane)
+    function add_siis($dane)
     {
 	
 	$this->DB->Execute('INSERT INTO uke (report_type, divisionid, reportyear, divname, ten, regon, rpt, rjst, krs, 
 			    states, districts, boroughs, city, zip, street, 
 			    location_city, location_street, location_house, location_flat, kod_terc, kod_simc, kod_ulic,
 			    url, email, accept1, accept2, accept3, accept4, accept5, accept6,
-			    contact_name, contact_lastname, contact_phone, contact_fax, contact_email, closed, passwd, description)
-			    VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+			    contact_name, contact_lastname, contact_phone, contact_fax, contact_email, closed, passwd, description, version, revision, vercsv)
+			    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
 			    array(
-				'SIISv4',
+				'SIIS',
 				($dane['divisionid'] ? $dane['divisionid'] : 0),
-				REPORT_YEAR,
+				($dane['reportyear'] ? $dane['reportyear'] : 0),
 				($dane['divname'] ? $dane['divname'] : NULL),
 				($dane['ten'] ? $dane['ten'] : NULL),
 				($dane['regon'] ? $dane['regon'] : NULL),
@@ -100,7 +98,8 @@ class UKE {
 				($dane['contact_fax'] ? $dane['contact_fax'] : NULL),
 				($dane['contact_email'] ? $dane['contact_email'] : NULL),
 				0,NULL,
-				($dane['description'] ? $dane['description'] : NULL)
+				($dane['description'] ? $dane['description'] : NULL),
+				SIIS_VERSION,SIIS_REVISION,SIIS_VERCSV
 			    )
 	);
 	
@@ -109,10 +108,10 @@ class UKE {
     }
 
 
-    function update_siis4($dane)
+    function update_siis($dane)
     {
 	
-	$this->DB->Execute('UPDATE uke SET divisionid=?, divname=?, ten=?, regon=?, rpt=?, rjst=?, krs=?, 
+	$this->DB->Execute('UPDATE uke SET divisionid=?, divname=?, reportyear=?, ten=?, regon=?, rpt=?, rjst=?, krs=?, 
 			    states=?, districts=?, boroughs=?, city=?, zip=?, street=?, 
 			    location_city=?, location_street=?, location_house=?, location_flat=?, kod_terc=?, kod_simc=?, kod_ulic=?,
 			    url=?, email=?, accept1=?, accept2=?, accept3=?, accept4=?, accept5=?, accept6=?,
@@ -121,6 +120,7 @@ class UKE {
 			    array(
 				($dane['divisionid'] ? $dane['divisionid'] : 0),
 				($dane['divname'] ? $dane['divname'] : NULL),
+				($dane['reportyear'] ? $dane['reportyear'] : 0),
 				($dane['ten'] ? $dane['ten'] : NULL),
 				($dane['regon'] ? $dane['regon'] : NULL),
 				($dane['rpt'] ? $dane['rpt'] : NULL),
@@ -160,9 +160,9 @@ class UKE {
     }
 
 
-    function add_siis4_data_po($dane)
+    function add_siis_data_po($dane)
     {
-	$this->DB->Execute('INSERT INTO uke_data (rapid, mark, markid, useraport, data) VALUE (?,?,?,?,?) ;',
+	$this->DB->Execute('INSERT INTO uke_data (rapid, mark, markid, useraport, data) VALUES (?,?,?,?,?) ;',
 	    array(
 		$dane['rapid'],
 		$dane['mark'],
@@ -175,12 +175,12 @@ class UKE {
 	return $this->DB->GetLastInsertId('uke_data');
     }
     
-    function add_siis4_data($dane) {
-	$this->add_siis4_data_po($dane);
+    function add_siis_data($dane) {
+	$this->add_siis_data_po($dane);
     }
     
     
-    function update_siis4_data_po($dane)
+    function update_siis_data_po($dane)
     {
 	$this->DB->Execute('UPDATE uke_data SET markid=?, data=? WHERE id=?;',array($dane['markid'],$dane['data'],$dane['id']));
     }
@@ -221,6 +221,25 @@ class UKE {
 	return $result;
     }
     
+    function getPROJlist($idr)
+    {
+	$result = array();
+	$tmp = $this->DB->getAll('SELECT id,markid,useraport,data FROM uke_data WHERE rapid = ? AND mark = ?;',array($idr,'PROJ'));
+	
+	if ($tmp) {
+	    $count = sizeof($tmp);
+	    for ($i=0; $i<$count; $i++) {
+		$result[$i] = unserialize($tmp[$i]['data']);
+		$result[$i]['idr'] = $tmp[$i]['rapid'];
+		$result[$i]['useraport'] = $tmp[$i]['useraport'];
+		$result[$i]['id'] = $tmp[$i]['id'];
+		$result[$i]['markid'] = $tmp[$i]['markid'];
+	    }
+	}
+	
+	return $result;
+    }
+    
     
     function getWWList($idr)
     {
@@ -237,9 +256,56 @@ class UKE {
 		$result[$i]['useraport'] = $tmp[$i]['useraport'];
 		$result[$i]['id'] = $tmp[$i]['id'];
 		$result[$i]['markid'] = $tmp[$i]['markid'];
+		$result[$i]['intcount'] = $this->DB->getOne('SELECT COUNT(id) FROM netdevices WHERE networknodeid = ? ;',array($result[$i]['idw']));
 	    }
 	}
 	
+	return $result;
+    }
+    
+    
+    function getIDWWUseRaport($idr)
+    {
+	$result = array();
+	$tmp = $this->DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'WW'));
+	
+	if ($tmp) {
+	    $count = sizeof($tmp);
+	    for ($i=0; $i<$count; $i++) {
+		$_tmp = unserialize($tmp[$i]['data']);
+		$result[] = $_tmp['id'];
+	    }
+	}
+	else $reslut[] = 0;
+	
+	return $result;
+    }
+    
+    function getIDWOUseRaport($idr)
+    {
+	$result = array();
+	$tmp = $this->DB->GetAll('SELECT * FROM uke_data WHERE rapid = ? AND mark = ? AND useraport = 1;',array($idr,'WO'));
+	
+	if ($tmp) {
+	    $count = sizeof($tmp);
+	    for ($i=0; $i<$count; $i++) {
+		$_tmp = unserialize($tmp[$i]['data']);
+		$result[] = $_tmp['id'];
+	    }
+	}
+	else $reslut[] = 0;
+	
+	return $result;
+    }
+    
+    function getIdINTUseRaport($idr)
+    {
+	$result = array();
+	$result = $this->DB->GetCol('SELECT markid AS id 
+			FROM uke_data 
+			WHERE rapid=? AND mark=? AND useraport=? 
+			GROUP BY markid 
+			ORDER BY markid ASC;',array($idr,'INT',1));
 	return $result;
     }
     
@@ -259,6 +325,7 @@ class UKE {
 		$result[$i]['useraport'] = $tmp[$i]['useraport'];
 		$result[$i]['id'] = $tmp[$i]['id'];
 		$result[$i]['markid'] = $tmp[$i]['markid'];
+		$result[$i]['intcount'] = $this->DB->getOne('SELECT COUNT(id) FROM netdevices WHERE networknodeid = ? ;',array($result[$i]['idw']));
 	    }
 	}
 	
@@ -380,8 +447,11 @@ class UKE {
 
 } // end class
 
-define('REPORT_YEAR',2013); // domyślny rok za który jest raporcik
-define('REPORT_DATE_RANGE',strtotime(REPORT_YEAR.'/12/31 23:59:59'));
+//define('REPORT_YEAR','2014'); // domyślny rok za który jest raporcik
+//define('REPORT_DATE_RANGE',strtotime(REPORT_YEAR.'/12/31 23:59:59'));
+define('SIIS_VERSION','5');
+define('SIIS_REVISION','2.8');
+define('SIIS_VERCSV','1.0'); // wersja generatora csv
 
 $UKE = new UKE($DB,$LMS);
 

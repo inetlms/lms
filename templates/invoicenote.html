@@ -1,12 +1,13 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {include file="calendar_js.html"}
 <script type="text/javascript">
 <!--
 	function printinvoice()
 	{
 		var add = "";
+		
 		if (document.save.original.checked)
 			add += "&original=1";
 		if (document.save.copy.checked)
@@ -14,6 +15,7 @@
 		document.save.action = "?m=invoicenote&action=save&print=1" + add;
 		document.save.submit();
 	}
+	
 
 	function deadline_calendar(elem)
 	{
@@ -34,10 +36,16 @@
 
 		return cal3.prs_date(ts);
 	}
+	
+	function select_reason(names)
+	{
+	    document.getElementById('id_reason').value = names;
+	}
 //-->
 </script>
 <form name="setheader" method="POST" action="?m=invoicenote&action=setheader">
 <input type="submit" class="hiddenbtn">
+<input type="hidden" name="cnote[version]" value="{$cnote.version}">
 <table width="100%" cellpadding="3">
 	<tr class="dark">
 		<td class="fall" width="100%" colspan="2">
@@ -75,10 +83,19 @@
 	</tr>
 	<tr class="light">
 		<td class="fleft" width="1%" nowrap>
+			{if get_conf('invoices.template_version') == '1'}
 			<b>{trans("Sale date:")}</b>
+			{else}
+			<b>Data dost./wyk. usł.</b>
+			{/if}
 		</td>
 		<td class="fright" width="99%" nowrap>
 			<input type="text" name="cnote[sdate]" value="{$cnote.sdate|date_format:"%Y/%m/%d"}" size="10" {tip text="Enter date of sale in YYYY/MM/DD format (empty field means current date) or click to select it from calendar" trigger="sdate"} onclick="javascript:cal2.popup();" >
+			{if get_conf('invoices.template_version')  == '1'}
+			    <input type="hidden" name="cnote[sdateview]" value="1">
+			{else}
+			    <input type="checkbox" name="cnote[sdateview]" value="1" id="id_sdateview"{if $cnote.sdateview} checked{/if}><label for="id_sdateview" {tip text="Jeżeli na fakturze w pozycjach jest podany okres zobowiązania to ta data nie powinna widnieć na dokumencie, w innym przypadku jest wymagana"}>&nbsp;Pokaż datę dostawy / wykonania usługi na fakturze</label>
+			{/if}
 		</td>
 	</tr>
 	<tr class="light">
@@ -116,16 +133,25 @@
 			<b>{trans("Reason:")}</b>
 		</td>
 		<td class="fright" width="99%" nowrap>
-			<textarea name="cnote[reason]" rows="4" cols="50" {tip text="Enter reason (optional)"}>{$cnote.reason}</textarea>
+			<textarea name="cnote[reason]" id="id_reason" rows="4" style="width:300px;" {tip text="Podaj powód korekty, obowiązkowe" trigger="reason"}>{$cnote.reason}</textarea>
+			{if $cnotelist}<br><br>
+			    <select name="cnotelist" style="width:300px;" {tip text="Wybierz przyczynę korekty ze słownika"} onchange="select_reason(this.value);">
+				<option value=""></option>
+				{section name='cnotelist' loop=$cnotelist}
+				<option value="{$cnotelist[cnotelist].name}">{$cnotelist[cnotelist].name}</option>
+				{/section}
+			    </select>
+			{/if}
 		</td>
 	</tr>
 	<tr class="light">
 		<td class="fbottomu" width="100%" align="right" colspan="2">
-			<a href="javascript:document.setheader.submit();">{trans("Submit")} <img src="img/save.gif" alt=""></a>
+			<a href="javascript:document.setheader.submit();">{if $cnote.init_header}{trans("Submit")}{else}Dalej{/if} <img src="img/save.gif" alt=""></a>
 		</td>
 	</tr>
 </table>
 </form>
+{if $cnote.init_header}
 <br>
 <form name="save" method="POST" action="?m=invoicenote&action=save">
 <input type="submit" class="hiddenbtn">
@@ -160,7 +186,7 @@
 			&nbsp;
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$contents item=item}
 	<tr class="{cycle} lista{if $item.deleted} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" width="1%">
@@ -288,6 +314,7 @@
 	</tr>
 </table>
 </form>
+{/if}
 <script type="text/javascript">
 <!--
 deadline_callback = function(val)

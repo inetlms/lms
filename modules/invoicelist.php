@@ -94,7 +94,8 @@ function GetInvoicesList($search=NULL, $cat=NULL, $group=NULL, $hideclosed=NULL,
 		}
 	}
 
-	if($hideclosed || $intype == DOC_INVOICE_PRO)
+	//if($hideclosed || $intype == DOC_INVOICE_PRO)
+	if($hideclosed)
 		$where .= ' AND closed = 0';
 	
 	if ($intype == DOC_INVOICE_PRO) {
@@ -106,12 +107,16 @@ function GetInvoicesList($search=NULL, $cat=NULL, $group=NULL, $hideclosed=NULL,
 	}
 
 	if($res = $DB->Exec('SELECT d.id AS id, number, cdate, type,
-			d.customerid, d.name, address, zip, city, countries.name AS country, template, closed, 
+			d.customerid, d.name, address, zip, city, countries.name AS country, template, closed, d.reference, 
 			(SELECT customers.type FROM customers WHERE customers.id = d.customerid) AS customertype, 
 			CASE reference WHEN 0 THEN
 			    SUM(a.value*a.count) 
 			ELSE
-			    SUM((a.value+b.value)*(a.count+b.count)) - SUM(b.value*b.count)
+			    CASE type WHEN '.DOC_INVOICE_PRO.' THEN
+				SUM(a.value * a.count)
+			    ELSE
+				SUM((a.value + b.value) * (a.count + b.count)) - SUM(b.value*b.count)
+			    END
 			END AS value, 
 			COUNT(a.docid) AS count
 			FROM documents d

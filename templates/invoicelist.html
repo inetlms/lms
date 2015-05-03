@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {if $invoice.invoice}
 <script type="text/javascript">
 window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy={$invoice.copy}&duplicate={$invoice.duplicate}');
@@ -51,7 +51,6 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 		document.page.submit();
 	}
 
-{if check_conf('phpui.short_pagescroller')}
 	function pagechange1()
 	{
 		document.page.action="?m=invoicelist&page=" + document.forms['page'].elements['page1'].value;
@@ -64,7 +63,6 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 		document.page.target="";
 		document.page.submit();
 	}
-{/if}
 //-->
 </script>
 {$default_printpage = get_conf('invoices.default_printpage')}
@@ -103,9 +101,7 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 				<input type="checkbox" name="groupexclude" id="groupexclude"{if $listdata.groupexclude} checked{/if}><label for="groupexclude" {if $listdata.groupexclude}style="font-weight:bold;"{/if}>{trans("exclude group")}</label>
 				<nobr>
 				<nobr>
-				{if $listdata.intype != $smarty.const.DOC_INVOICE_PRO}
 				<input type="checkbox" name="hideclosed" id="hideclosed"{if $listdata.hideclosed} checked{/if}><label for="hideclosed" {if $listdata.hideclosed}style="font-weight:bold;"{/if}>{trans("hide accounted<!plural>")}</label>
-				{/if}
 				&nbsp;<a href="javascript: filter();">&raquo;&raquo;&raquo;</a>
 				<nobr>
 		</td>
@@ -118,75 +114,88 @@ window.open('?m=invoice&id={$invoice.invoice}&original={$invoice.original}&copy=
 	</tr>
 	{/if}
 	<tr class="dark">
-		<td class="fleftu" width="1%" nowrap>
+		<td class="fleftu pad5" width="1%" nowrap align="left">
 			<a href="?m=invoicelist&o=id{if $listdata.direction eq "asc" && $listdata.order eq "id"},desc{/if}">{trans("ID:")}</a> {if $listdata.order eq "id"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="1%" class="fbt" nowrap>
+		<td width="1%" class="fbt pad5 tleft" nowrap align="left">
 			<a href="?m=invoicelist&o=cdate{if $listdata.direction eq "asc" && $listdata.order eq "cdate"},desc{/if}">{trans("Date:")}</a> {if $listdata.order eq "cdate"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="1%" class="fbt" nowrap>
+		<td width="1%" class="fbt pad5 tleft" nowrap align="right">
 			<a href="?m=invoicelist&o=number{if $listdata.direction eq "asc" && $listdata.order eq "number"},desc{/if}">{trans("Number:")}</a> {if $listdata.order eq "number"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="1%" class="fbt" nowrap>
+		<td width="1%" class="fbt pad5 tleft" nowrap align="right">
 			<a href="?m=invoicelist&o=value{if $listdata.direction eq "asc" && $listdata.order eq "value"},desc{/if}">{trans("Value:")}</a> {if $listdata.order eq "value"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="1%" class="fbt" nowrap>
+		<td width="1%" class="fbt pad5 tleft" nowrap align="right">
 			<a href="?m=invoicelist&o=count{if $listdata.direction eq "asc" && $listdata.order eq "count"},desc{/if}">{trans("Items:")}</a> {if $listdata.order eq "count"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="94%" class="fbt" nowrap>
+		<td width="94%" class="fbt pad5 tleft" nowrap align="left">
 			<a href="?m=invoicelist&o=name{if $listdata.direction eq "asc" && $listdata.order eq "name"},desc{/if}">{trans("For:")}</a> {if $listdata.order eq "name"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
-		<td width="1%" class="frightu">
+		<td width="1%" class="frightu tleft" align="right">
 			&nbsp;
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=invoicelist loop=$invoicelist start=$start max=$pagelimit}
 	{assign var=invoice value=$invoicelist[invoicelist]}
 	{assign var=invoiceid value=$invoice.id}
 	<tr class="{cycle} lista{if $invoice.closed} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td width="1%" class="fleft">
+		<td width="1%" class="fleft pad5" align="left">
 			{$invoice.id|string_format:"%06d"}
 		</td>
-		<td width="1%" nowrap>
-			{$invoice.cdate|date_format:"%Y/%m/%d %H:%M"}
+		<td width="1%" nowrap class="pad5 tleft" align="left">
+			{$invoice.cdate|date_format:"%Y/%m/%d"}
 		</td>
-		<td width="1%" nowrap align="right">
+		<td width="1%" nowrap align="right" class="pad5 tleft">
 			{number number=$invoice.number template=$invoice.template time=$invoice.cdate assign=number}{$number}
 		</td>
-		<td width="1%" nowrap align="right">
+		<td width="1%" nowrap align="right" class="pad5 tleft">
 			{$invoice.value|money_format} 
 		</td>
-		<td width="1%" nowrap align="right">
+		<td width="1%" nowrap align="right" class="tleft pad5">
 			{$invoice.count}
 		</td>
-		<td width="94%">
+		<td width="94%" class="pad5 tleft" align="left">
 			<a href="?m={if $invoice.customertype == $smarty.const.CTYPES_CONTRACTOR}contractor{else}customer{/if}info&id={$invoice.customerid}"{if $invoice.closed} class="blend"{/if}>{$invoice.name}, {$invoice.address}, {$invoice.zip} {$invoice.city}{if $invoice.country neq ""}, {t}{$invoice.country}{/t}{/if}</a>
 		</td>
-		<td width="1%" align="right" class="fright">
+		<td width="1%" align="right" class="fright tleft">
 			<nobr>
-			{if $invoice.type == $smarty.const.DOC_INVOICE_PRO}
-			    <a href="?m=invoiceconvert&docid={$invoice.id}&parent=invoicelist" {tip text="Convert a proforma invoice to invoice"}><img src="img/convert.png"></a>
+			
+			{if $invoice.type == $smarty.const.DOC_INVOICE_PRO && $invoice.closed}
+			    <img src="img/info2.gif" alt="[ info ]" {tip a=$invoice.reference dynpopup='?m=invoiceinfo&id=$a' sticky=1}>
+			{/if}
+			
+			{if $invoice.type == $smarty.const.DOC_INVOICE_PRO && !$invoice.reference}
+			    <a href="?m=invoiceconvert&docid={$invoice.id}&parent=invoicelist" title="[ Konwertuj fakture proforma na fakturę VAT ]"><img src="img/convert.png"></a>
 			{/if}
 			
 			{if $invoice.type == $smarty.const.DOC_INVOICE || $invoice.type == $smarty.const.DOC_INVOICE_PRO}
 			    {if $invoice.type != $smarty.const.DOC_INVOICE_PRO}
 				<a href="?m=invoicenote&id={$invoice.id}&action=init"><img src="img/eraser.gif" alt="[ {trans("Revise")} ]" title="[ {trans("Revise")} ]"></a>
 			    {/if}
-			    {if ! $invoice.closed}
+			    {if ! $invoice.closed || get_conf('invoices.deleted_closed')}
 			    <a onclick="return confirmLink(this, '{t a=$number}Are you sure, you want to remove invoice \'$a\' from database?{/t}')" href="?m=invoicedel&id={$invoice.id}"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
 			    {/if}
-		        <a href="?m=invoiceedit&id={$invoice.id}&action=edit"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
+			    {if ! $invoice.closed || get_conf('invoices.edit_closed')}
+			    <a href="?m=invoiceedit&id={$invoice.id}&action=edit"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
+			    {/if}
+			    
+			    
 			{/if}
 			
-			{if $invoice.type == $smarty.const.DOC_CNOTE && !$invoice.closed}
+			{if $invoice.type == $smarty.const.DOC_CNOTE && (!$invoice.closed || get_conf('invoices.deleted_closed'))}
 			    <a onclick="return confirmLink(this, '{t a=$number}Are you sure, you want to remove credit note \'$a\' from database?{/t}')" href="?m=invoicedel&id={$invoice.id}"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
 			{/if}
-			{if $invoice.type == $smarty.const.DOC_INVOICE || $invoice.type == $smarty.const.DOC_INVOICE_PRO}
-			    <a href="?m=invoice&id={$invoice.id}" target="_blank"><img src="img/print.gif" alt="[ {trans("Print")} ]" title="[ {trans("Print")} ]"></a>
+			
+			{if $invoice.type == $smarty.const.DOC_INVOICE}
+			    <a href="?m=invoice&id={$invoice.id}" target="_blank"><img src="img/print.gif" alt="[ {trans("Print")} ]" title="[ Drukuj Fakturę ]"></a>
+			{/if}
+			{if $invoice.type == $smarty.const.DOC_INVOICE_PRO}
+			    <a href="?m=invoice&id={$invoice.id}" target="_blank"><img src="img/print.gif" alt="[ {trans("Print")} ]" title="[ Drukuj Proformę ]"></a>
 			{/if}
 			{if $invoice.type == $smarty.const.DOC_CNOTE}
-			    <a href="?m=invoice&id={$invoice.id}" target="_blank"><img src="img/printn.gif" alt="[ {trans("Print")} ]" title="[ {trans("Print")} ]"></a>
+			    <a href="?m=invoice&id={$invoice.id}" target="_blank"><img src="img/printn.gif" alt="[ {trans("Print")} ]" title="[ Drukuj Korektę ]"></a>
 			{/if}
 			<input type="checkbox" name="marks[{$invoice.id}]" value="{$invoice.id}"{if $marks.$invoiceid}checked{/if}>
 			<nobr>

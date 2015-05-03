@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <table cellpadding="3" width="100%">
 	<tr class="dark">
 		<td width="100%" class="fall" colspan="2" nowrap>
@@ -88,7 +88,7 @@
 					<td width="67%" class="fbt">{trans("Location:")}</td>
 					<td width="1%" class="frightu">&nbsp;</td>
 				</tr>
-				{cycle values="light,lucid" print=false}
+				{cycle values="lucid,light" print=false}
 				{foreach from=$channel.devices item=item}
 				<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td onclick="return self.location.href='?m=netdevinfo&id={$item.id}';">

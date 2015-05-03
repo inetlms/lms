@@ -1,0 +1,76 @@
+{if $action == 'add' || $action == 'edit'}
+{else}
+
+    {title value="<font style='font-size:10pt;color:brown;'><b>BUDYNKI W ZASIĘGU SIECI</b></font><br><font style='font-size:9pt;color:black;'>Charakterystyka adresów budynków lub budowli, w których występuje zakończenie sieci przewodowej lub zainstalowany jest terminal użytkownika końcowego bezprzewodowej sieci dostępowej</font>" link="<a href=\"javascript:void(0);\" onclick=\"xajax_import_zas({$idr})\"><b>Pobierz ponownie informacje</b></a>"}
+    
+    
+    {if $zaslist}
+	
+	<table width="100%" cellpadding="3">
+	    <tr class="dark">
+		<td width="1%" class="fleftu pad2" align="left"><b><span class="tiphelp" {tip text="ID komputera"}><b>ID</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text=""}><b>Województwo</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text=""}><b>Powiat</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text=""}><b>Gmina</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text=""}><b>Miejscowość</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text=""}><b>Ulica</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text="Numer porządkowy"}><b>Numer</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text=""}><b>Węzeł</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text="Medium transmisyjne"}><b>Medium</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text=""}><b>Technologia</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text="Stacjonarny dostę do internetu"}><b>INT</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text="Telefonia stacjonarna VoIP"}><b>TEL</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text="IPTV lub DTV"}><b>TV</b></span></td>
+		<td width="1%" class="fbt pad2" align="left"><span class="tiphelp" {tip text=""}><b>Przepustowość</b></span></td>
+		<td width="90%" class="frightu pad2" align="right"></td>
+	    </tr>
+	    
+	    
+	    {cycle values="lucid,light" print=false}
+	    {section name='zaslist' loop=$zaslist}
+	    <tr class="{cycle} lista {if !$zaslist[zaslist].useraport} blend{/if}" onmouseover="addClass(this,'highlight');" onmouseout="removeClass(this,'highlight');">
+		<td width="1%" class="fleft pad2" align="left">{$zaslist[zaslist].markid|string_format:"%04d"}</td>
+		<td width="1%" class="pad2" align="left" nowrap>{$zaslist[zaslist].states}</td>
+		<td width="1%" class="pad2" align="left" nowrap>{$zaslist[zaslist].districts}</td>
+		<td width="1%" class="pad2" align="left" nowrap>{$zaslist[zaslist].boroughs}</td>
+		<td width="1%" class="pad2" align="left" nowrap>{$zaslist[zaslist].city}</td>
+		<td width="1%" class="pad2" align="left" nowrap>{$zaslist[zaslist].street}</td>
+		<td width="1%" class="pad2" align="left">{$zaslist[zaslist].location_house}</td>
+		<td width="1%" class="pad2" align="left">{$zaslist[zaslist].networknode}</td>
+		<td width="1%" class="pad2" align="left">{$zaslist[zaslist].medium}</td>
+		<td width="1%" class="pad2" align="left">{$zaslist[zaslist].dostepowa}</td>
+		<td width="1%" class="pad2" align="left">{$zaslist[zaslist].int}</td>
+		<td width="1%" class="pad2" align="left">{$zaslist[zaslist].voip}</td>
+		<td width="1%" class="pad2" align="left">{$zaslist[zaslist].iptv}</td>
+		<td width="1%" class="pad2" align="left">{$zaslist[zaslist].downstream} Mb/s</td>
+		<td width="90%" class="fright pad2" align="right">
+		    {if $zaslist[zaslist].useraport}
+			<img src="img/access.gif" {tip text="Nie uwzględniaj rekordu w raporcie"} onclick="xajax_set_zas_useraport({$idr},{$zaslist[zaslist].id},0);" style="cursor:pointer;">
+		    {else}
+			<img src="img/noaccess.gif" {tip text="Uwzględnij rekord w raporcie"} onclick="xajax_set_zas_useraport({$idr},{$zaslist[zaslist].id},1);" style="cursor:pointer;">
+		    {/if}
+		    <a href="?m=nodeedit&id={$zaslist[zaslist].identyfikator}" target="_blank"><img src="img/edit.gif"></a>
+		</td>
+	    </tr>
+	    {/section}
+	    <tr>
+		<td width="100%" colspan="15" class="ftop"></td>
+	    </tr>
+	</table>
+
+    {else}
+	
+	<table width="100%" cellpadding="10">
+	    <tr class="dark">
+		<td width="100%" class="pad fall" align="center">
+		    <br>
+		    <a href="javascript:void(0);" onclick="xajax_import_zas({$idr})"><b>Pobierz informacje o połączeniach między węzłami</b></a><br><br>
+		</td>
+	    </tr>
+	</table>
+		
+    
+    {/if}
+    
+    {include file="load_gif.html"}
+{/if}

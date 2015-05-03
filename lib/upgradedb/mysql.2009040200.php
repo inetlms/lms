@@ -25,18 +25,29 @@
  */
 
 $DB->Execute("
-CREATE TABLE nastypes (
+CREATE TABLE IF NOT EXISTS nastypes (
     	id int(11) NOT NULL auto_increment,
 	name varchar(255) NOT NULL DEFAULT '',
 	PRIMARY KEY (id),
 	UNIQUE KEY name (name)
 ) ENGINE=MyISAM");
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'nodes','nas'))) 
 $DB->Execute("ALTER TABLE nodes ADD nas tinyint(1) NOT NULL DEFAULT '0'");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','shortname'))) 
 $DB->Execute("ALTER TABLE netdevices ADD shortname varchar(32) NOT NULL DEFAULT ''");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','nastype'))) 
 $DB->Execute("ALTER TABLE netdevices ADD nastype int(11) NOT NULL DEFAULT '0'");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','clients'))) 
 $DB->Execute("ALTER TABLE netdevices ADD clients int(11) NOT NULL DEFAULT '0'");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','secret'))) 
 $DB->Execute("ALTER TABLE netdevices ADD secret varchar(60) NOT NULL DEFAULT ''");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'netdevices','community'))) 
 $DB->Execute("ALTER TABLE netdevices ADD community varchar(50) NOT NULL DEFAULT ''");
 
 $DB->Execute("CREATE VIEW nas AS 

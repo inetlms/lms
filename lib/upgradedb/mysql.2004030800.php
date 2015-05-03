@@ -27,7 +27,7 @@
 // Add rtqueues - table that contains information about RT (Request Tracker) queues.
 
 $DB->Execute("
-    CREATE TABLE rtqueues (
+    CREATE TABLE IF NOT EXISTS rtqueues (
 	id int(11) NOT NULL auto_increment, 
 	name varchar(255) NOT NULL default '', 
 	email varchar(255) NOT NULL default '', 
@@ -37,7 +37,7 @@ $DB->Execute("
 // rttickets - Tickets in RT
 
 $DB->Execute("
-    CREATE TABLE rttickets (
+    CREATE TABLE IF NOT EXISTS rttickets (
 	id int(11) NOT NULL auto_increment, 
 	queueid int(11) NOT NULL default '0', 
 	requestor varchar(255) NOT NULL default '', 
@@ -51,7 +51,7 @@ $DB->Execute("
 // rtmessages - content of mails in RT
 
 $DB->Execute("
-    CREATE TABLE rtmessages (
+    CREATE TABLE IF NOT EXISTS rtmessages (
 	id int(11) NOT NULL auto_increment,
 	ticketid int(11) NOT NULL default '0', 
 	sender int(11) NOT NULL default '0', 

@@ -25,7 +25,7 @@
 $DB->BeginTrans();
 
 $DB->Execute("
-    CREATE TABLE info_center ( 
+    CREATE TABLE IF NOT EXISTS info_center ( 
 	id int not null auto_increment,
 	cid int default null,
 	nid int default null,
@@ -50,7 +50,7 @@ $DB->Execute("
 ");
 
 $DB->Execute("
-    create table info_center_post (
+    CREATE TABLE IF NOT EXISTS info_center_post (
 	id bigint not null auto_increment,
 	infoid int not null default 0,
 	post text default null,
@@ -63,7 +63,7 @@ $DB->Execute("
 ) ENGINE=InnoDB;
 ");
 
-$DB->Execute("INSERT INTO uiconfig (section,var,value) VALUES (?,?,?) ;",array('phpui','callcenter_pagelimit',50));
+$DB->Execute("INSERT INTO uiconfig (section,var,value) VALUES (?,?,?) ;",array('phpui','callcenter_pagelimit','50'));
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2012122200', 'dbvex'));
 

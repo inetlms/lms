@@ -220,7 +220,7 @@ function receipt_body()
 	global $receipt,$pdf,$id,$CONFIG, $type;
 
 	$template = $CONFIG['receipts']['template_file'];
-
+	$template = 'standard';
 	switch ($template)
 	{
 		case 'standard':

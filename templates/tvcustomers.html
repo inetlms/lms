@@ -1,0 +1,73 @@
+{include file="header.html"}
+<!--// tvcustomers.html,v 1.2 23/08/2011 19:00:00 ITMSOFT $ //-->
+{title value=$layout.pagetitle}
+
+<table cellpadding="5" cellspacing="0" width="100%">
+	<tr class="dark">
+		<td class="fall" colspan="16">
+			<div style="float:right; margin-bottom: 5px;">
+			<b>Pokaż stronę: </b>
+				{section name=foo start=1 loop=$all step=1}
+					{if $page eq $smarty.section.foo.index}
+					<b>[ {$smarty.section.foo.index} ]</b>
+					{else}
+					<a href="?m=tvcustomers&page={$smarty.section.foo.index}&order={$order}&direction={$direction}">[ {$smarty.section.foo.index} ]</a>
+					{/if}
+				{/section}
+				
+					{if $page eq -1}
+					<b>[ wszyscy klienci ]</b>
+					{else}
+					<a href="?m=tvcustomers&page=-1">[ wszyscy klienci ]</a>
+					{/if}	
+			</div>
+		</td>
+	</tr>
+	<tr class="dark">
+		<td></td>
+		<td><a href="?m={$layout.module}&page={$page}&order=cust_external_id&direction={if $direction eq "asc" && $order eq "cust_external_id"}desc{/if}">LMS ID:</a></b> {if $order eq "cust_external_id"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=cust_number&direction={if $direction eq "asc" && $order eq "cust_number"}desc{/if}">SMS ID:</a></b> {if $order eq "cust_number"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=cust_name&direction={if $direction eq "asc" && $order eq "cust_name"}desc{/if}">Imię:</a></b> {if $order eq "cust_name"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=cust_surname&direction={if $direction eq "asc" && $order eq "cust_surname"}desc{/if}">Nazwisko:</a></b> {if $order eq "cust_surname"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td>jPIN:</td>
+		<td>tvPIN:</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=cust_m_street&direction={if $direction eq "asc" && $order eq "cust_m_street"}desc{/if}">Ulica:</a></b> {if $order eq "cust_m_street"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&page={$page}&order=cust_m_city&direction={if $direction eq "asc" && $order eq "cust_m_city"}desc{/if}">Miasto:</a></b> {if $order eq "cust_m_city"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+	</tr>
+	{foreach from=$list item=item}
+	<tr class="{cycle values="lucid,light"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td></td>
+		<td onclick="return self.location.href='?m=customerinfo&amp;id={$item.cust_external_id}';" valign="top"><b><a href="?m=customerinfo&id={$item.cust_external_id}" onmouseover="return overlib('<iframe id=&quot;autoiframe&quot; width=100 height=10 frameborder=0 scrolling=no src=&quot;?m=customerinfoshort&amp;id={$item.cust_external_id}&amp;popup=1&quot;></iframe>',HAUTO,VAUTO,OFFSETX,30,OFFSETY,15);" onmouseout="nd();">{$item.cust_external_id} <img src="img/customer.gif" alt="[ Klient w LMS ]"></a></b></td>
+		<td valign="top"><a href="{$smsurl}customer/show/id/{$item.cust_number|substr:3:6}">{$item.cust_number} <img src="img/customer.gif" alt="[ Klient w SMS ]"></a></td>
+		<td onclick="return self.location.href='?m=customerinfo&amp;id={$item.cust_external_id}';" valign="top">{$item.cust_name}</td>
+		<td onclick="return self.location.href='?m=customerinfo&amp;id={$item.cust_external_id}';" valign="top">{$item.cust_surname}</td>
+		<td valign="top">{$item.cust_vod_pin}</td>
+		<td valign="top">{$item.cust_master_pin}</td>
+		<td valign="top">{$item.cust_m_street} {$item.cust_m_home_nr} {$item.cust_m_flat}</td>
+		<td valign="top">{$item.cust_m_city}</td>
+	</tr>
+	{/foreach}
+	
+	<tr class="dark">
+		<td class="fall" colspan="16">
+			<div style="float:right; margin-bottom: 5px;">
+			<b>Pokaż stronę: </b>
+				{section name=foo start=1 loop=$all step=1}
+					{if $page eq $smarty.section.foo.index}
+					<b>[ {$smarty.section.foo.index} ]</b>
+					{else}
+					<a href="?m=tvcustomers&page={$smarty.section.foo.index}&order={$order}&direction={$direction}">[ {$smarty.section.foo.index} ]</a>
+					{/if}
+				{/section}
+				
+					{if $page eq -1}
+					<b>[ wszyscy klienci ]</b>
+					{else}
+					<a href="?m=tvcustomers&page=-1">[ wszyscy klienci ]</a>
+					{/if}	
+			</div>
+		</td>
+	</tr>	
+	
+</table>	
+{include file="footer.html"}

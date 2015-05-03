@@ -296,7 +296,13 @@ else
 		$a['at'] = $CONFIG['phpui']['default_assignment_at'];
 }
 
-$expired = isset($_GET['expired']) ? $_GET['expired'] : false;
+
+if(!isset($_GET['expired']))
+	$SESSION->restore('cusinfo_expired', $expired);
+else
+	$expired = $_GET['expired'];
+$expired = !empty($expired) ? true : false;
+$SESSION->save('cusinfo_expired', $expired);
 
 $layout['pagetitle'] = trans('New Liability: $a', '<A href="?m=customerinfo&id='.$customer['id'].'">'.$customer['name'].'</A>');
 

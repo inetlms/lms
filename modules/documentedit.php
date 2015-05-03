@@ -175,13 +175,18 @@ if(isset($_POST['document']))
 	if(!$error)
 	{
 		$DB->BeginTrans();
+		
+		$fullnumber = docnumber($documentedit['number'],
+			$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($documentedit['numberplanid'])),
+			$document['cdate']);
 
-		$DB->Execute('UPDATE documents SET type=?, closed=?, number=?, numberplanid=?
+		$DB->Execute('UPDATE documents SET type=?, closed=?, number=?, numberplanid=?, fullnumber=? 
 				WHERE id=?',
 				array(	$documentedit['type'],
 					$documentedit['closed'],
 					$documentedit['number'],
 					$documentedit['numberplanid'],
+					($fullnumber ? $fullnumber : NULL),
 					$documentedit['id'],
 					));
 		

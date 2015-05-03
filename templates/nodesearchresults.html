@@ -1,7 +1,7 @@
 {include file="header.html"}
 <!--// $Id: nodesearchresults.html,v 1.57 2012/02/07 13:10:34 alec Exp $ //-->
 {$xajax}
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {$lastonline_limit = get_conf('phpui.lastonline_limit')}
 <form name="nodesearchresults">
 <p><table cellpadding="3" style="width: 100%;">
@@ -29,7 +29,7 @@
 		</td>
 	</tr>
 	{/if}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=nodelist loop=$nodelist start=$start max=$pagelimit}
 	<tr class="{cycle} lista {if ! $nodelist[nodelist].access} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" style="width: 95%;" onclick="return self.location.href='?m=nodeinfo&id={$nodelist[nodelist].id}';">
@@ -59,6 +59,7 @@
 		</td>
 		<td style="width: 1%; white-space: nowrap;">
 			<a href="?m=nodeset&id={$nodelist[nodelist].id}"><img src="img/{if ! $nodelist[nodelist].access}no{/if}access.gif" alt="{if ! $nodelist[nodelist].access}[ {trans("Disconnect")} ]{else}[ {trans("Connect")} ]{/if}"></a>
+			<a href="?m=nodeblockade&id={$nodelist[nodelist].id}"><img src="img/padlock{if !$nodelist[nodelist].blockade}off{/if}.png"></a>
 			<a href="?m=nodewarn&id={$nodelist[nodelist].id}"><img src="img/warning{if ! $nodelist[nodelist].warning}off{else}on{/if}.gif" alt="{if ! $nodelist[nodelist].warning}[ {trans("Enable notices")} ]{else}[ {trans("Disable notices")} ]{/if}"></a>
 			<a href="?m=nodedel&id={$nodelist[nodelist].id}" onclick="return confirmLink(this, '{t a=$nodelist[nodelist].name}Are you sure, you want to delete node \'$a\' from database?{/t}')"><img src="img/delete.gif" alt="[ {trans("Delete")} ]"></a>
 			<a href="?m=nodeedit&id={$nodelist[nodelist].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]"></a>

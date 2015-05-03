@@ -1,0 +1,112 @@
+{include file="header.html"}
+<!--// tvstblist.html,v 1.2 23/08/2011 19:00:00 ITMSOFT $ //-->
+<h1>{$layout.pagetitle}</h1>
+
+{literal}<style>
+.errormsg {
+	 color: white;
+	 padding: 10px 0px;
+	 width: 100%;
+	 margin-top: 5px;
+	 margin-bottom: 5px;
+	 text-align: center;
+	 font-weight: bold;
+	 background-color: red;
+}
+</style>{/literal}
+
+{if $errormsg}
+	<div class="errormsg">{$errormsg}</div>
+{/if}
+
+<table cellpadding="5" cellspacing="0" width="100%">
+	<tr class="dark">
+		<td class="fall" colspan="16">
+			
+		<div style="float:left">
+		<b>Dodaj nowy:</b>
+		<form name="addstb" method="post" action="?m=tvstblist">
+			MAC: <input type="text" name="stb_mac" id="stb_mac" value=""> serial: <input type="text" name="stb_serial" id="stb_serial" value=""> model: 
+			<select name="stb_model"> 
+			<option value="VIP1910-9" {if $show_mode eq "stock"}selected{/if}>VIP1910-9</option>
+			<option value="VIP1960" {if $show_mode eq "customer"}selected{/if}>VIP1960</option>
+			<option value="STB-2101H" {if $show_mode eq ""}selected{/if}>STB-2101H</option>			
+			<option value="STB-1001H" {if $show_mode eq ""}selected{/if}>STB-1001H</option>
+			<option value="MAG200" {if $show_mode eq ""}selected{/if}>MAG200</option>
+			<option value="MAG250" {if $show_mode eq ""}selected{/if}>MAG250</option>
+			<option value="VIP1003" {if $show_mode eq ""}selected{/if}>VIP1003</option>
+			</select>
+			<input type="hidden" name="m" id="m" value="tvstbadd">
+			<a href="javascript:document.addstb.submit();" accesskey="S">Zapisz <img src="img/save.gif" alt=""></a>
+		</form>
+		</div>
+		
+		<br />
+		
+		<div style="float:right">
+		<b>Filtr:</b> <form name="filter" method="get" action="?m=tvstblist">
+			<select onchange="filter.submit()" name="show_mode">
+				<option value="" {if $show_mode eq ""}selected{/if}> - wszystkie - </option> 
+				<option value="stock" {if $show_mode eq "stock"}selected{/if}> na magazynie </option>
+				<option value="customer" {if $show_mode eq "customer"}selected{/if}> u klientów </option>
+			</select>
+			<input type="hidden" name="m" id="m" value="tvstblist">
+		</form>
+		</div>			
+			
+		</td>
+	</tr>		
+	
+	<tr class="dark" class="fall">
+		<td></td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=id&direction={if $direction eq "asc" && $order eq "id"}desc{/if}">ID:</a></b> {if $order eq "id"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_mac&direction={if $direction eq "asc" && $order eq "stb_mac"}desc{/if}">MAC:</a></b> {if $order eq "stb_mac"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_serial&direction={if $direction eq "asc" && $order eq "stb_serial"}desc{/if}">Serial:</a></b> {if $order eq "stb_serial"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_model&direction={if $direction eq "asc" && $order eq "stb_model"}desc{/if}">Model:</a></b> {if $order eq "stb_model"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_usage&direction={if $direction eq "asc" && $order eq "stb_usage"}desc{/if}">Lokacja:</a></b> {if $order eq "stb_usage"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=stb_ip&direction={if $direction eq "asc" && $order eq "stb_ip"}desc{/if}">IP:</a></b> {if $order eq "stb_ip"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=cust_number&direction={if $direction eq "asc" && $order eq "cust_number"}desc{/if}">Klient w SMS:</a></b> {if $order eq "cust_number"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td><a href="?m={$layout.module}&show_mode={$show_mode}&order=customerid&direction={if $direction eq "asc" && $order eq "customerid"}desc{/if}">Klient w LMS:</a></b> {if $order eq "customerid"}<img src="img/{if $direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td align="right">Funkcje:</td>
+	</tr>
+	{foreach from=$list item=item}
+	<tr class="{cycle values="lucid,light"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<td></td>
+		<td valign="top"><b>{$item.stb_id}</b></td>
+		<td valign="top">{$item.stb_mac}</td>
+		<td valign="top"><b><a href="{$smsurl}stock/tracestb/stb/{$item.stb_serial}">{$item.stb_serial} <img src="img/node_on.png" alt="[ STB w SMS ]"></a></td>
+		<td valign="top">{$item.stb_model}</td>
+		<td valign="top">{$item.stb_usage}</td>
+		<td valign="top">{$item.stb_ip}</td>
+		<td valign="top">
+			{if $item.stb_usage eq 'customer'}
+			<b><a href="{$smsurl}customer/show/id/{$item.cust_number|substr:3:6}">{$item.cust_number} <img src="img/customer.gif" alt="[ Klient w SMS ]"></a></b>
+			{/if}
+		</td>
+		<td valign="top">
+			{if $item.stb_usage eq 'customer'}
+			<b><a href="?m=customerinfo&id={$item.customerid}">{$item.customerid} <img src="img/customer.gif" alt="[ Klient w LMS ]"></a></b>
+			{/if}
+		</td>
+		<td valign="top" align="right">
+			{if $item.stb_usage eq 'stock'}
+			<a href="?m=tvstblist&show_mode={$show_mode}&rem={$item.stb_mac}">Usuń z bazy <img src="img/delete.gif" alt="[ Usuń z bazy ]"></a>
+			{/if}
+			<a href="{$smsurl}stock/tracestb/stb/{$item.stb_serial}">Testuj STB <img src="img/netdev_model.gif" alt="[ Testuj STB w SMS ]"></a>
+		</td>
+	</tr>
+	{/foreach}
+	<tr class="light">	
+		<td colspan="4" class="fleftu" align="right">
+			<b>
+				{t}Total:{/t}<br>
+			</b>
+		</td>
+		<td colspan="10" class="frightu" valign="top">
+			<b>
+				{if $list|@count}{$list|@count}{else}0{/if}
+			</b>
+		</td>
+	</tr>		
+</table>
+{include file="footer.html"}

@@ -25,7 +25,7 @@
 
 $DB->BeginTrans();
 
-$DB->addconfig('netdevices','force_connection',1);
+$DB->addconfig('netdevices','force_connection','0');
 $DB->addconfig('netdevices','force_network_to_host','0');
 $DB->addconfig('netdevices','force_network_gateway','1');
 $DB->addconfig('netdevices','force_network_dns','1');

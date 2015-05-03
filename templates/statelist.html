@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <p><table cellpadding="3" width="100%">
 	<tr class="dark">
 		<td width="1%" class="fleftu" nowrap><img src="img/state.gif" alt=""> <b>{trans("Name:")}</b></td>
@@ -15,7 +15,7 @@
 		</td>
 	</tr>
 	{/if}
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=statelist loop=$statelist}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" nowrap onclick="return self.location.href='?m=stateedit&id={$statelist[statelist].id}';">

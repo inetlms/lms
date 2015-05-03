@@ -27,7 +27,7 @@
 $DB->BeginTrans();
 
 $DB->Execute("
-CREATE TABLE networknode (
+CREATE TABLE IF NOT EXISTS networknode (
     id int(11) NOT NULL AUTO_INCREMENT,
     name varchar(100) COLLATE utf8_polish_ci DEFAULT NULL,
     type tinyint(1) NOT NULL DEFAULT '1',

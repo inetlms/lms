@@ -52,7 +52,7 @@ if(empty($CONFIG['directories']['sys_dir']) || !file_exists($CONFIG['directories
 else
 	$CONFIG['directories']['sys_dir'] = $CONFIG['directories']['sys_dir'];
 
-$CONFIG['directories']['lib_dir'] = (!isset($CONFIG['directories']['lib_dir']) ? $CONFIG['directories']['sys_dir'].'lib' : $CONFIG['directories']['lib_dir']);
+$CONFIG['directories']['lib_dir'] = (!isset($CONFIG['directories']['lib_dir']) ? $CONFIG['directories']['sys_dir'].'/lib' : $CONFIG['directories']['lib_dir']);
 $CONFIG['directories']['modules_dir'] = (!isset($CONFIG['directories']['modules_dir']) ? $CONFIG['directories']['sys_dir'].'/modules' : $CONFIG['directories']['modules_dir']);
 $CONFIG['directories']['userpanel_dir'] = (!isset($CONFIG['directories']['userpanel_dir']) ? getcwd() : $CONFIG['directories']['userpanel_dir']);
 $CONFIG['directories']['smarty_compile_dir'] = $CONFIG['directories']['userpanel_dir'].'/templates_c';
@@ -98,12 +98,12 @@ $SMARTY = new Smarty;
 
 // test for proper version of Smarty
 
-if (constant('Smarty::SMARTY_VERSION'))
+if (defined('Smarty::SMARTY_VERSION'))
 	$ver_chunks = preg_split('/[- ]/', Smarty::SMARTY_VERSION);
 else
 	$ver_chunks = NULL;
-if (count($ver_chunks) != 2 || version_compare('3.0', $ver_chunks[1]) > 0)
-	die('<B>Wrong version of Smarty engine! We support only Smarty-3.x greater than 3.0.</B>');
+if (count($ver_chunks) < 2 || version_compare('3.1', $ver_chunks[1]) > 0)
+	die('<B>Wrong version of Smarty engine! We support only Smarty-3.x greater than 3.1.</B> - '.Smarty::SMARTY_VERSION);
 
 define('SMARTY_VERSION', $ver_chunks[1]);
 

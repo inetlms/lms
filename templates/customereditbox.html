@@ -6,7 +6,7 @@
 		if (document.customeredit.elements['customerdata[pin]'].value != '')
 			if (!confirm('{trans("Are you sure, you want to generate new PIN?")}'))
 				return;
-
+		
 		var r = 0;
 		do
 			r = Math.floor(Math.random()*1000000-1);
@@ -49,11 +49,11 @@
 		        <table width="100%" cellpadding="1">
 				<tr>
 					<td width="1%"><b>{trans("Name/Surname:")}</b></td>
-					<td width="99%"><input type="text" size="50" name="customerdata[lastname]" value="{$customerinfo.lastname|escape}" {tip text="Enter first/lastname of customer" trigger="lastname" bold=1}></td>
+					<td width="99%"><input type="text" size="50" name="customerdata[lastname]" class="required" placeholder="-- WYMAGANE --" value="{$customerinfo.lastname|escape}" {tip text="Enter first/lastname of customer" trigger="lastname" bold=1}></td>
 				</tr>
 				<tr>
 					<td width="1%"><b>{trans("First name:")}</b></td>
-					<td width="99%"><input type="text" size="50" name="customerdata[name]" value="{$customerinfo.name|escape}" {tip text="Enter first name of customer (optional)" trigger="name" bold=1}></td>
+					<td width="99%"><input type="text" size="50" name="customerdata[name]" class="required" placeholder="-- WYMAGANE DLA OSOBY FIZYCZNEJ --" value="{$customerinfo.name|escape}" {tip text="Enter first name of customer (optional)" trigger="name" bold=1}></td>
 				</tr>
 			</table>
 		</td>
@@ -92,10 +92,10 @@
 		</td>
 	</tr>
 	{/if}
-	{if $originlist}
+	{if get_form('customers.origin') && $originlist}
 	<tr>
 		<td width="1%">
-			<img src="img/group.gif" alt="">
+			<img src="img/group.gif" alt="">{get_form('customers.origin')} - 
 		</td>
 		<td width="99%">
 			<select size="1" name="customerdata[origin]" {tip text="Wybierz źródło pochodzenia klienta (opcja)"} style="min-width:130px;">
@@ -106,7 +106,10 @@
 			</select>
 		</td>
 	</tr>
+	{else}
+	    <input type="hidden" name="customerdata[origin]" value="{$customerinfo.origin}">
 	{/if}
+	
 	<tr class="light">
 		<td width="1%">
 			<img src="img/folder.gif" alt="">
@@ -122,11 +125,11 @@
 		</td>
 		<td width="99%">
 		<fieldset style="width:240px;">
-					    <legend><b> Adres siedziby, zameldowania</b></legend>
+					    <legend>| <b>Adres siedziby / zameldowania</b> |</legend>
 			<table width="100%" cellpadding="1">
 			    <tr>
     				<td width="1%" nowrap>{trans("Address:")}</td>
-	    			<td width="99%"><input type="text" name="customerdata[address]" id="address" value="{$customerinfo.address}" size="30" {tip text="Enter address" trigger="address"}></td>
+	    			<td width="99%"><input type="text" name="customerdata[address]" id="address" class="required" placeholder="-- WYMAGANE --" value="{$customerinfo.address}" size="30" {tip text="Enter address" trigger="address"}></td>
 			    </tr>
 			    <tr>
 		    		<td width="1%" nowrap>{trans("City:")}</td>
@@ -139,7 +142,7 @@
 	    			<input type="hidden" name="customerdata[zipwarning]" value="1">
 		    		{/if}
 			    </tr>
-			    {if $cstateslist}
+			    {if get_form('customers.state') && $cstateslist}
 			    <tr>
 			        <td width="1%" nowrap>{trans("State:")}</td>
 			        <td width="99%">
@@ -151,8 +154,12 @@
 			            </select>
 				</td>
 			    </tr>
-                {/if}
-                {if $countrieslist}
+			    {else}
+				<input type="hidden" name="customerdata[stateid]" value="{$customerinfo.stateid}">
+            		    {/if}
+			    
+			    
+			    {if get_form('customers.country') && $countrieslist}
 			    <tr>
 			        <td width="1%" nowrap>{trans("Country:")}</td>
 			        <td width="99%">
@@ -164,6 +171,8 @@
 			            </select>
     				</td>
 			    </tr>
+			    {else}
+				<input type="hidden" name="customerdata[countryid]" value="{$customerinfo.countryid}">
 			    {/if}
 			</table>
 		<script type="text/javascript">
@@ -173,6 +182,7 @@
 		</script>
 		</fieldset>
 	</tr>
+	{if get_form('customers.inv_address')}
 	<tr>
 		<td width="1%" style="vertical-align: top">
 						<img src="img/home.gif" alt="">
@@ -180,11 +190,15 @@
 					</td>
 					<td width="99%" nowrap>
 					    <fieldset style="width:240px">
-					    <legend><img src="img/help.png" width="16" {tip text="Odbiorca faktury VAT lub proformy, jeżeli jest inny niż główny adresat"}><b> Odbiorca faktury VAT / Proforma </b></legend>
+					    <legend><img src="img/help.png" width="16" {tip text="Odbiorca faktury , jeżeli jest inny niż główny adresat"}>|<b> Odbiorca faktury </b>|</legend>
 						<table width="100%" cellpadding="1">
 						    <tr>
 							<td width="1%" nowrap>{trans("Name:")}</td>
-							<td width="99%"><input type="text" size="30" value="{$customerinfo.invoice_name}" name="customerdata[invoice_name]" id="invoice_name" {tip text="Enter service name" trigger="invoice_name"}></td>
+							<td width="99%"><input type="text" size="30" value="{$customerinfo.invoice_name|escape}" name="customerdata[invoice_name]" id="invoice_name" {tip text="Enter service name" trigger="invoice_name"}></td>
+						    </tr>
+						    <tr>
+							<td width="1%" nowrap>Nazwa cd.</td>
+							<td width="99%"><input type="text" size="30" value="{$customerinfo.invoice_lastname|escape}" name="customerdata[invoice_lastname]" id="invoice_lastname"></td>
 						    </tr>
 						    <tr>
 							<td width="1%" nowrap>{trans("Address:")}</td>
@@ -197,8 +211,8 @@
 						    <tr>
 							<td width="1%" nowrap>{trans("Zip:")}</td>
 							<td width="99%"><input type="text" size="10" value="{$customerinfo.invoice_zip}" name="customerdata[invoice_zip]" id="invoice_zip" {tip text="Enter zip code" trigger="invoice_zip"}></td>
-							{if $customerinfo.zipwarning}
-							<input type="hidden" name="customerdata[invoice+zipwarning]" value="1">
+							{if $customerinfo.invoice_zipwarning}
+							<input type="hidden" name="customerdata[invoice_zipwarning]" value="1">
 							{/if}
 						    </tr>
 						    
@@ -210,32 +224,49 @@
 							    <input type="hidden" name="customerdata[invoice_tenwarning]" value="1">
 							{/if}
 					            </td>
+					            
 				        	    </tr>
-						{if $cstateslist}
+				        	    <tr>
+					        	<td width="1%" nowrap>{trans("SSN")}:</td>
+					        	<td width="99%">
+							<input type="text" size="30" value="{$customerinfo.invoice_ssn}" name="customerdata[invoice_ssn]" {tip text="Porszę podać numer PESEL (opcja)" trigger="invoice_ssn"}>
+							{if $customerinfo.invoice_ssnwarning}
+							    <input type="hidden" name="customerdata[invoice_ssnwarning]" value="1">
+							{/if}
+					            </td>
+					            
+				        	    </tr>
+						{if get_form('customers.state') && $cstateslist}
 						    <tr>
 							<td width="1%" nowrap>{trans("State:")}</td>
 							<td width="99%">
 							    <select name="customerdata[invoice_stateid]" {tip text="Select country state (optional)" trigger="invoice_stateid"}>
 								<option value="0"></option>
 								{foreach from=$cstateslist item=item key=key}
-								<option value="{$key}"{if $key==$customerinfo.stateid} selected{/if}>{$item.name}</option>
+								<option value="{$key}"{if $key==$customerinfo.invoice_stateid} selected{/if}>{$item.name}</option>
 								{/foreach}
 							    </select>
 							</td>
 						    </tr>
+						{else}
+						    <input type="hidden" name="customerdata[invoice_stateid]" value="{$customerinfo.invoice_stateid}">
 						{/if}
-						{if $countrieslist}
+						
+						
+						{if get_form('customers.country') && $countrieslist}
 						    <tr>
 						        <td width="1%" nowrap>{trans("Country:")}</td>
 						        <td width="99%">
 						            <select name="customerdata[invoice_countryid]" {tip text="Select country (optional)" trigger="invoice_countryid"}>
 						                <option value="0"></option>
 								{foreach from=$countrieslist item=item key=key}
-						                <option value="{$key}"{if $key==$customerinfo.countryid} selected{/if}>{t}{$item.name}{/t}</option>
+						                <option value="{$key}"{if $key==$customerinfo.invoice_countryid} selected{/if}>{t}{$item.name}{/t}</option>
 								{/foreach}
 						            </select>
 							    </td>
 						    </tr>
+						{else}
+						    <input type="hidden" name="customerdata[invoice_countryid]" value="{$customerinfo.invoice_countryid}">
 						{/if}
 						</table>
 						<script type="text/javascript">
@@ -246,17 +277,30 @@
 						</fieldset>
 					</td>
 				</tr>
+	{else}
+		<input type="hidden" value="{$customerinfo.invoice_name|escape}" name="customerdata[invoice_name]">
+		<input type="hidden" value="{$customerinfo.invoice_lastname|escape}" name="customerdata[invoice_lastname]">
+		<input type="hidden" value="{$customerinfo.invoice_address}" name="customerdata[invoice_address]">
+		<input type="hidden" value="{$customerinfo.invoice_city}" name="customerdata[invoice_city]">
+		<input type="hidden" value="{$customerinfo.invoice_zip}" name="customerdata[invoice_zip]">
+		<input type="hidden" value="{$customerinfo.invoice_ten}" name="customerdata[invoice_ten]">
+		<input type="hidden" value="{$customerinfo.invoice_ssn}" name="customerdata[invoice_ssn]">
+		<input type="hidden" name="customerdata[invoice_stateid]" value="{$customerinfo.invoice_stateid}">
+		<input type="hidden" name="customerdata[invoice_countryid]" value="{$customerinfo.invoice_countryid}">
+	{/if}
+	
+	{if get_form('customers.post_address')}
 	<tr class="light">
 		<td width="1%" style="vertical-align: top">
 			<img src="img/post.gif" alt="">
 		</td>
 		<td width="99%">
 		<fieldset style="width:240px">
-		<legend><img src="img/help.png" width="16" {tip text="Adresy wysyłki jeżeli jest inny niż adres odbiorcy faktury lub adres siedziby"}><b> Adres do wysyłki </b></legend>
+		<legend><img src="img/help.png" width="16" {tip text="Adresy wysyłki.<br>Jeżeli wypełniliśmy pola z sekcji Odbiorca faktury to adresem wysyłki będą dane odbiorcy w innym przypadku adresem wysyłki będą dane podstawowe. Wpisz adres jeżeli ma być inny"}><b> Adres do wysyłki </b></legend>
 			<table width="100%" cellpadding="1">
 			    <tr>
 				<td width="1%" nowrap>{trans("Name:")}</td>
-				<td width="99%"><input type="text" name="customerdata[post_name]" id="post_name" value="{$customerinfo.post_name}" size="30" {tip text="Enter service name (optional)" trigger="post_name"}></td>
+				<td width="99%"><input type="text" name="customerdata[post_name]" id="post_name" value="{$customerinfo.post_name|escape}" size="30" {tip text="Enter service name (optional)" trigger="post_name"}></td>
 			    </tr>
 			    <tr>
     				<td width="1%" nowrap>{trans("Address:")}</td>
@@ -273,7 +317,7 @@
 	    			<input type="hidden" name="customerdata[post_zipwarning]" value="1">
 		    		{/if}
 			    </tr>
-			    {if $cstateslist}
+			    {if get_form('customers.state') && $cstateslist}
 			    <tr>
 			        <td width="1%" nowrap>{trans("State:")}</td>
 			        <td width="99%">
@@ -285,8 +329,11 @@
 			            </select>
 				</td>
 			    </tr>
-                {/if}
-                {if $countrieslist}
+			    {else}
+				<input type="hidden" name="customerdata[post_stateid]" value="{$customerinfo.post_stateid}">
+            		    {/if}
+            		    
+            		    {if get_form('customers.country') && $countrieslist}
 			    <tr>
 			        <td width="1%" nowrap>{trans("Country:")}</td>
 			        <td width="99%">
@@ -298,6 +345,8 @@
 			            </select>
     				</td>
 			    </tr>
+			    {else}
+				<input type="hidden" name="customerdata[post_countryid]" value="{$customerinfo.post_countryid}">
 			    {/if}
 			</table>
 		<script type="text/javascript">
@@ -307,6 +356,16 @@
 		</script>
 		</fieldset>
 	</tr>
+	{else}
+		<input type="hidden" name="customerdata[post_name]" value="{$customerinfo.post_name|escape}">
+		<input type="hidden" name="customerdata[post_address]" value="{$customerinfo.post_address}">
+		<input type="hidden" name="customerdata[post_city]" value="{$customerinfo.post_city}">
+		<input type="hidden" name="customerdata[post_zip]" value="{$customerinfo.post_zip}">
+		<input type="hidden" name="customerdata[post_stateid]" value="{$customerinfo.post_stateid}">
+		<input type="hidden" name="customerdata[post_countryid]" value="{$customerinfo.post_countryid}">
+	{/if}
+	
+	{if get_form('customers.contacts')}
 	{foreach from=$customerinfo.contacts item=item key=key}
 	<tr class="light" id="contact{$key}">
 		<td width="1%" style="vertical-align: top">
@@ -321,6 +380,7 @@
 		</td>
 	</tr>
 	{/foreach}
+	
 	<tr class="light">
 		<td width="1%"></td>
 		<td width="99%">
@@ -328,6 +388,16 @@
 			<a href="javascript: newcontact()">{trans("Add contact field")} &raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
+	{else}
+		{foreach from=$customerinfo.contacts item=item key=key}
+			<input type="hidden" value="{$item.phone}" name="customerdata[contacts][{$key}][phone]">
+			<input type="hidden" value="{if ($item.type & $smarty.const.CONTACT_MOBILE)}{$smarty.const.CONTACT_MOBILE}{/if}" name="customerdata[contacts][{$key}][type][]">
+			<input type="hidden" value="{if ($item.type & $smarty.const.CONTACT_FAX)}{$smarty.const.CONTACT_FAX}{/if}" name="customerdata[contacts][{$key}][type][]">
+			<input type="hidden" value="{$item.name}" name="customerdata[contacts][{$key}][name]">
+		{/foreach}
+	{/if}
+	
+	{if get_form('customers.gadugadu')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/gg.gif" alt="Gadu-Gadu">
@@ -337,6 +407,12 @@
 			<input type="text" name="customerdata[uid][{$gg}]" value="{if $customerinfo.uid.$gg}{$customerinfo.uid.$gg}{/if}" size="20" {tip text="Enter Gadu-Gadu ID (optional)" trigger="gg"}>
 		</td>
 	</tr>
+	{else}
+	    {assign var=gg value=$smarty.const.IM_GG}
+	    <input type="hidden" name="customerdata[uid][{$gg}]" value="{if $customerinfo.uid.$gg}{$customerinfo.uid.$gg}{/if}">
+	{/if}
+	
+	{if get_form('customers.yahoo')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/yim.gif" alt="Yahoo">
@@ -346,6 +422,12 @@
 			<input type="text" name="customerdata[uid][{$yahoo}]" value="{if $customerinfo.uid.$yahoo}{$customerinfo.uid.$yahoo}{/if}" size="20" {tip text="Enter Yahoo Messenger ID (optional)" trigger="yahoo"}>
 		</td>
 	</tr>
+	{else}
+	    {assign var=yahoo value=$smarty.const.IM_YAHOO}
+	    <input type="hidden" name="customerdata[uid][{$yahoo}]" value="{if $customerinfo.uid.$yahoo}{$customerinfo.uid.$yahoo}{/if}">
+	{/if}
+	
+	{if get_form('customers.skype')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/skype.gif" alt="Skype">
@@ -355,14 +437,25 @@
 			<input type="text" name="customerdata[uid][{$skype}]" value="{if $customerinfo.uid.$skype}{$customerinfo.uid.$skype}{/if}" size="20" {tip text="Enter Skype ID (optional)" trigger="skype"}>
 		</td>
 	</tr>
+	{else}
+	    {assign var=skype value=$smarty.const.IM_SKYPE}
+	    <input type="hidden" name="customerdata[uid][{$skype}]" value="{if $customerinfo.uid.$skype}{$customerinfo.uid.$skype}{/if}">
+	{/if}
+	
+	{if get_form('customers.email')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/mail.gif" alt="">
 		</td>
 		<td width="99%">
-			<input type="text" name="customerdata[email]" value="{$customerinfo.email}" size="38" {tip text="Enter e-mail address (optional)" trigger="email" }><br>
+			<input type="text" name="customerdata[email]" value="{$customerinfo.email}" size="38" {tip text="Enter e-mail address (optional)" trigger="email" }>
 		</td>
 	</tr>
+	{else}
+	    <input type="hidden" name="customerdata[email]" value="{$customerinfo.email}">
+	{/if}
+	
+	{if get_form('customers.pin')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/pin.gif" alt="">
@@ -372,6 +465,9 @@
 			<a href="javascript: randomize()" {tip text="Generate PIN"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
+	{else}
+	    <input type="hidden" name="customerdata[pin]" value="{$customerinfo.pin}">
+	{/if}
 	<tr class="light">
 		<td width="1%" style="vertical-align: top">
 			<img src="img/serialnumber.gif" alt="">
@@ -381,146 +477,159 @@
 		        <tr>
 		            <td width="1%" nowrap>{trans("ICN")}:</td>
 		            <td width="99%">
-			<input type="text" value="{$customerinfo.icn}" name="customerdata[icn]" size="30" {tip text="Enter Identity Card Number (optional)" trigger="icn"}>
-			        </td>
-			    </tr>
+				<input type="text" value="{$customerinfo.icn}" name="customerdata[icn]" size="30" {tip text="Enter Identity Card Number (optional)" trigger="icn"}>
+			    </td>
+			</tr>
 		        <tr>
 		            <td width="1%" nowrap>{trans("SSN")}:</td>
 		            <td width="99%">
-			<input type="text" name="customerdata[ssn]" value="{$customerinfo.ssn}" size="30" {tip text="Enter Social Security Number (optional)" trigger="ssn"}>
-			{if $customerinfo.ssnwarning}
-			<input type="hidden" name="customerdata[ssnwarning]" value="1">
-			{/if}
-			        </td>
-			    </tr>
+				<input type="text" name="customerdata[ssn]" value="{$customerinfo.ssn}" size="30" {tip text="Enter Social Security Number (optional)" trigger="ssn"}>
+				{if $customerinfo.ssnwarning}
+				<input type="hidden" name="customerdata[ssnwarning]" value="1">
+				{/if}
+			    </td>
+			</tr>
 		        <tr>
 		            <td width="1%" nowrap>{trans("TEN")}:</td>
 		            <td width="99%">
-			<input type="text" name="customerdata[ten]" value="{$customerinfo.ten}" size="30" {tip text="Enter Tax Exempt Number (optional)" trigger="ten"}>
-			{if $customerinfo.tenwarning}
-			<input type="hidden" name="customerdata[tenwarning]" value="1">
-			{/if}
-			        </td>
-			    </tr>
+				<input type="text" name="customerdata[ten]" value="{$customerinfo.ten}" size="30" {tip text="Enter Tax Exempt Number (optional)" trigger="ten"}>
+				{if $customerinfo.tenwarning}
+				<input type="hidden" name="customerdata[tenwarning]" value="1">
+				{/if}
+			    </td>
+			</tr>
+			{if get_form('customers.regon')}
 		        <tr>
 		            <td width="1%" nowrap>{trans("REGON")}:</td>
 		            <td width="99%">
-			<input type="text" value="{$customerinfo.regon}" name="customerdata[regon]" size="30" {tip text="Enter Business Registration Number (optional)" trigger="regon"}>
-			        </td>
-			    </tr>
+				<input type="text" value="{$customerinfo.regon}" name="customerdata[regon]" size="30" {tip text="Enter Business Registration Number (optional)" trigger="regon"}>
+			    </td>
+			</tr>
+			{else}
+			    <input type="hidden" value="{$customerinfo.regon}" name="customerdata[regon]">
+			{/if}
+			
+			{if get_form('customers.rbe')}
 		        <tr>
 		            <td width="1%" nowrap>{trans("RBE")}:</td>
 		            <td width="99%">
-			<input type="text" value="{$customerinfo.rbe}" name="customerdata[rbe]" size="30" {tip text="Enter National Court Register / Register of Business Entities Number (optional)" trigger="rbe"}>
-			        </td>
-			    </tr>
-            </table>
+				<input type="text" value="{$customerinfo.rbe}" name="customerdata[rbe]" size="30" {tip text="Enter National Court Register / Register of Business Entities Number (optional)" trigger="rbe"}>
+			    </td>
+			</tr>
+			{else}
+			    <input type="hidden" value="{$customerinfo.rbe}" name="customerdata[rbe]">
+			{/if}
+        	    </table>
 		</td>
 	</tr>
+	{if get_form('customers.payment') || get_form('customers.cutoff')}
 	<tr class="light">
 		<td width="1%" style="vertical-align: top">
 			<img src="img/options.gif" alt="">
 		</td>
 		<td width="98%">
 		    <table>
-		        <tr>
-		            <td>
-			            {trans("Deadline:")}
-			        </td>
-			        <td>
-			<select name="customerdata[paytime]" {tip text="Select default deadline in days" trigger="paytime"}>
-				<option value="-1"{if $customerinfo.paytime==-1} selected{/if}>- {trans("default")} -</option>
-				<option value="0"{if $customerinfo.paytime==0} selected{/if}>0</option>
-				<option value="7"{if $customerinfo.paytime==7} selected{/if}>7</option>
-				<option value="10"{if $customerinfo.paytime==10} selected{/if}>10</option>
-				<option value="14"{if $customerinfo.paytime==14} selected{/if}>14</option>
-				<option value="21"{if $customerinfo.paytime==21} selected{/if}>21</option>
-				<option value="30"{if $customerinfo.paytime==30} selected{/if}>30</option>
-			</select>
+			{if get_form('customers.payment')}
+			<tr>
+			    <td>{trans("Deadline:")}</td>
+			    <td>
+				<select name="customerdata[paytime]" {tip text="Select default deadline in days" trigger="paytime"}>
+				    <option value="-1"{if $customerinfo.paytime==-1} selected{/if}>- {trans("default")} -</option>
+				    <option value="0"{if $customerinfo.paytime==0} selected{/if}>0</option>
+				    <option value="7"{if $customerinfo.paytime==7} selected{/if}>7</option>
+				    <option value="10"{if $customerinfo.paytime==10} selected{/if}>10</option>
+				    <option value="14"{if $customerinfo.paytime==14} selected{/if}>14</option>
+				    <option value="21"{if $customerinfo.paytime==21} selected{/if}>21</option>
+				    <option value="30"{if $customerinfo.paytime==30} selected{/if}>30</option>
+				</select>
 		            </td>
-	            </tr>
-	            <tr>
-	                <td>
-			            {trans("Payment type:")}
-			        </td>
-			        <td>
-			<select name="customerdata[paytype]" {tip text="Select default invoices payment type" trigger="paytype"}>
-				<option value=""{if !$customerinfo.paytype} selected{/if}>- {trans("default")} -</option>
-				{foreach from=$_PAYTYPES item=item key=key}
-				<option value="{$key}"{if $customerinfo.paytype==$key} selected{/if}>{$item}</option>
-				{/foreach}
-			</select>
-		            </td>
-	            </tr>
-                <tr>
-                    <td>
-			            {trans("Cutoff suspending:")}
-			        </td>
-			        <td>
-			<select name="customerdata[cutoffstop]" {tip text="Select days number of cutoff suspending (optional)" trigger="cutoffstop"}>
-			    <option value="0"{if !$customerinfo.cutoffstop} selected{/if}>0</option>
-			    <option value="1"{if $customerinfo.cutoffstop==1} selected{/if}>1</option>
-			    <option value="2"{if $customerinfo.cutoffstop==2} selected{/if}>2</option>
-			    <option value="3"{if $customerinfo.cutoffstop==3} selected{/if}>3</option>
-			    <option value="4"{if $customerinfo.cutoffstop==4} selected{/if}>4</option>
-			    <option value="5"{if $customerinfo.cutoffstop==5} selected{/if}>5</option>
-			    <option value="6"{if $customerinfo.cutoffstop==6} selected{/if}>6</option>
-			    <option value="7"{if $customerinfo.cutoffstop==7} selected{/if}>7</option>
-			    <option value="14"{if $customerinfo.cutoffstop==14} selected{/if}>14</option>
-			    <option value="21"{if $customerinfo.cutoffstop==21} selected{/if}>21</option>
-			    <option value="30"{if $customerinfo.cutoffstop==30} selected{/if}>30</option>
-			</select>
-			        </td>
-			    </tr>
-			</table>
+			</tr>
+			<tr>
+			    <td>{trans("Payment type:")}</td>
+			    <td>
+				<select name="customerdata[paytype]" {tip text="Select default invoices payment type" trigger="paytype"}>
+				    <option value=""{if !$customerinfo.paytype} selected{/if}>- {trans("default")} -</option>
+				    {foreach from=$_PAYTYPES item=item key=key}
+				    <option value="{$key}"{if $customerinfo.paytype==$key} selected{/if}>{$item}</option>
+				    {/foreach}
+				</select>
+			    </td>
+			</tr>
+			{else}
+			    <input type="hidden" name="customerdata[paytime]" value="{$customerinfo.paytime}">
+			    <input type="hidden" name="customerdata[paytype]" value="{$customerinfo.paytype}">
+			{/if}
+			{if get_form('customer.cutoff')}
+			<tr>
+			    <td>{trans("Cutoff suspending:")}</td>
+			    <td>
+				<select name="customerdata[cutoffstop]" {tip text="Select days number of cutoff suspending (optional)" trigger="cutoffstop"}>
+				    <option value="0"{if !$customerinfo.cutoffstop} selected{/if}>0</option>
+				    <option value="1"{if $customerinfo.cutoffstop==1} selected{/if}>1</option>
+				    <option value="2"{if $customerinfo.cutoffstop==2} selected{/if}>2</option>
+				    <option value="3"{if $customerinfo.cutoffstop==3} selected{/if}>3</option>
+				    <option value="4"{if $customerinfo.cutoffstop==4} selected{/if}>4</option>
+				    <option value="5"{if $customerinfo.cutoffstop==5} selected{/if}>5</option>
+				    <option value="6"{if $customerinfo.cutoffstop==6} selected{/if}>6</option>
+				    <option value="7"{if $customerinfo.cutoffstop==7} selected{/if}>7</option>
+				    <option value="14"{if $customerinfo.cutoffstop==14} selected{/if}>14</option>
+				    <option value="21"{if $customerinfo.cutoffstop==21} selected{/if}>21</option>
+				    <option value="30"{if $customerinfo.cutoffstop==30} selected{/if}>30</option>
+				    <option value="60"{if $customerinfo.cutoffstop==60} selected{/if}>60</option>
+				    <option value="90"{if $customerinfo.cutoffstop==90} selected{/if}>90</option>
+				</select>
+			    </td>
+			</tr>
+			{else}
+			    <input type="hidden" name="customerdata[cutoffstop]" value="{$customerinfo.cutoffstop}">
+			{/if}
+		    </table>
 		</td>
 	</tr>
+	{else}
+	    <input type="hidden" name="customerdata[paytime]" value="{$customerinfo.paytime}">
+	    <input type="hidden" name="customerdata[paytype]" value="{$customerinfo.paytype}">
+	    <input type="hidden" name="customerdata[cutoffstop]" value="{$customerinfo.cutoffstop}">
+	{/if}
+	
+	{if get_form('customers.agreement')}
 	<tr class="light">
 		<td width="1%" style="vertical-align: top">
 			<img src="img/options.gif" alt="">
 		</td>
 		<td width="99%">
 		    <table cellpadding="0">
-		        <tr>
-		            <td>
-			            <label for="chkconsent">{trans("Consent to personal data processing:")}</label>
-			        </td>
-			        <td>
-			            <input type="checkbox" name="customerdata[consentdate]" id="chkconsent" value="{$smarty.now}"{if $customerinfo.consentdate} checked{/if}>
-		            </td>
-	            </tr>
-	            <tr>
-	                <td>
-			            <label for="chkeinvoice">{trans("Consent to electronic invoices:")}</label>
-			        </td>
-			        <td>
-			            <input type="checkbox" name="customerdata[einvoice]" id="chkeinvoice" value="1"{if $customerinfo.einvoice} checked{/if}>
-		            </td>
-	            </tr>
-	            <tr>
-	                <td>
-			            <label for="chkinvoicenotice">{trans("Consent to invoices delivery via e-mail:")}</label>
-			        </td>
-			        <td>
-			            <input type="checkbox" name="customerdata[invoicenotice]" id="chkinvoicenotice" value="1"{if $customerinfo.invoicenotice} checked{/if}>
-		            </td>
-	            </tr>
-	            <tr>
-	                <td>
-			            <label for="chkmailingnotice">{trans("Consent to messages delivery via e-mail or sms:")}</label>
-			        </td>
-			        <td>
-			            <input type="checkbox" name="customerdata[mailingnotice]" id="chkmailingnotice" value="1"{if $customerinfo.mailingnotice} checked{/if}>
-		            </td>
-	            </tr>
-	        </table>
-	    </td>
+			<tr>
+			    <td><label for="chkconsent">{trans("Consent to personal data processing:")}</label></td>
+			    <td><input type="checkbox" name="customerdata[consentdate]" id="chkconsent" value="{$smarty.now}"{if $customerinfo.consentdate} checked{/if}></td>
+			</tr>
+			<tr>
+			    <td><label for="chkeinvoice">{trans("Consent to electronic invoices:")}</label></td>
+			    <td><input type="checkbox" name="customerdata[einvoice]" id="chkeinvoice" value="1"{if $customerinfo.einvoice} checked{/if}></td>
+			</tr>
+			<tr>
+			    <td><label for="chkinvoicenotice">{trans("Consent to invoices delivery via e-mail:")}</label></td>
+			    <td><input type="checkbox" name="customerdata[invoicenotice]" id="chkinvoicenotice" value="1"{if $customerinfo.invoicenotice} checked{/if}></td>
+			</tr>
+			<tr>
+			    <td><label for="chkmailingnotice">{trans("Consent to messages delivery via e-mail or sms:")}</label></td>
+			    <td><input type="checkbox" name="customerdata[mailingnotice]" id="chkmailingnotice" value="1"{if $customerinfo.mailingnotice} checked{/if}></td>
+			</tr>
+		    </table>
+		</td>
 	</tr>
+	{else}
+	    <input type="hidden" name="customerdata[consentdate]" value="{if $customerinfo.consentdate}{$smarty.now}{/if}">
+	    <input type="hidden" name="customerdata[einvoice]" value="{if $customerinfo.einvoice}1{/if}">
+	    <input type="hidden" name="customerdata[invoicenotice]" value="{if $customerinfo.invoicenotice}1{/if}">
+	    <input type="hidden" name="customerdata[mailingnotice]" value="{if $customerinfo.mailingnotice}1{/if}">
+	{/if}
 	
                                     		</table>
 					</td>
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
+	{if get_form('customers.info')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/info1.gif" alt="">
@@ -529,6 +638,8 @@
 			<textarea name="customerdata[info]" cols="60" rows="10" {tip text="Enter additional information (optional)"}>{$customerinfo.info|escape}</textarea>
 		</td>
 	</tr>
+	{else}<input type="hidden" name="customerdata[info]" value="{$customerinfo.info|escape}">{/if}
+	{if get_form('customers.warning')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/warningon.gif" alt="">
@@ -537,6 +648,8 @@
 			<textarea name="customerdata[message]" cols="60" rows="10" {tip text="Enter notice contents (optional)"}>{$customerinfo.message|escape}</textarea>
 		</td>
 	</tr>
+	{else}<input type="hidden" name="customerdata[message]" value="{$customerinfo.message|escape}">{/if}
+	{if get_form('customers.notes')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/note.gif" alt="">
@@ -545,6 +658,7 @@
 			<textarea name="customerdata[notes]" cols="60" rows="10" {tip text="Enter notes (optional)"}>{$customerinfo.notes|escape}</textarea>
 		</td>
 	</tr>
+	{else}<input type="hidden" name="customerdata[notes]" value="{$customerinfo.notes|escape}">{/if}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/money.gif" alt="">

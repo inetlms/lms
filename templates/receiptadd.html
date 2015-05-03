@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {include file="calendar_js.html"}
 <script type="text/javascript">
 <!--
@@ -310,7 +310,7 @@
 								<td width="1%" class="fbt" align="right">{trans("Value:")}</td>
 								<td width="1%" class="frightu">&nbsp;</td>
 							</tr>
-							{cycle values="light,lucid" print=false}
+							{cycle values="lucid,light" print=false}
 							{foreach from=$invoicelist item=item}
 							<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 							        <td onclick="checkElement('mark{$item.id}')"><nobr>{$item.cdate|date_format:"%Y/%m/%d"}</nobr></td>
@@ -358,7 +358,7 @@
 		</td>
 		<td width="1%" nowrap class="frightu"></td>
 	</tr>
-	{cycle values="light,lucid" print=false name="items"}
+	{cycle values="lucid,light" print=false name="items"}
 	{foreach from=$contents item=item}
 	<tr class="{cycle name="items"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" width="1%">

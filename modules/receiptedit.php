@@ -355,10 +355,22 @@ switch($action)
 
 			// delete old receipt 
 			$DB->Execute('DELETE FROM documents WHERE id = ?', array($receipt['id']));
+			
+			$divisionid = $DB->GetOne('SELECT divisionid FROM customers WHERE id = ? LIMIT 1;',array($customer['id']));
+			
+			$division = $DB->GetRow('SELECT name, shortname, address, city, zip, countryid, ten, regon,
+				account, inv_header, inv_footer, inv_author, inv_cplace 
+				FROM divisions WHERE id = ? ;',array($divisionid));
+			
+			$fullnumber = docnumber($documentedit['number'],
+			$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($documentedit['numberplanid'])),
+			$document['cdate']);
 		
 			// re-add receipt 
-			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, customerid, userid, name, address, zip, city, closed)
-					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, customerid, userid, name, address, zip, city, closed, 
+				    div_name, div_address, div_city, div_zip, div_countryid, div_ten, div_regon, div_account, div_inv_header, div_inv_footer, 
+				    div_inv_author, div_inv_cplace, div_shortname,fullnumber)
+					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 					array(	DOC_RECEIPT,
 						$receipt['number'],
 						$receipt['extnumber'] ? $receipt['extnumber'] : '',
@@ -370,7 +382,21 @@ switch($action)
 						$customer['address'],
 						$customer['zip'],
 						$customer['city'],
-						$receipt['closed']
+						$receipt['closed'],
+						($division['name'] ? $division['name'] : ''),
+						($division['address'] ? $division['address'] : ''),
+						($division['city'] ? $division['city'] : ''),
+						($division['zip'] ? $division['zip'] : ''),
+						($division['countryid'] ? $division['countryid'] : 0),
+						($division['ten'] ? $division['ten'] : ''),
+						($division['regon'] ? $division['regon'] : ''),
+						($division['account'] ? $division['account'] : ''),
+						($division['inv_header'] ? $division['inv_header'] : ''),
+						($division['inv_footer'] ? $division['inv_footer'] : ''),
+						($division['inv_author'] ? $division['author'] : ''),
+						($division['inv_cplace'] ? $division['inv_cplace'] : ''),
+						($division['shortname'] ? $division['shortname'] : ''),
+						($fullnumber ? $fullnumber : 0),
 						));
 			$DB->UnLockTables();
 						
@@ -421,8 +447,12 @@ switch($action)
 			// delete old receipt 
 			$DB->Execute('DELETE FROM documents WHERE id = ?', array($receipt['id']));
 			
-			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, userid, name, closed)
-			    		VALUES(?, ?, ?, ?, ?, ?, ?, ?)',
+			$fullnumber = docnumber($receipt['number'],
+				$DB->GetOne('SELECT template FROM numberplans WHERE id = ?', array($receipt['numberplanid'])),
+				$receipt['cdate']);
+			
+			$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, userid, name, closed,fullnumber)
+			    		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
 			                array(  DOC_RECEIPT,
 					        $receipt['number'],
 						$receipt['extnumber'] ? $receipt['extnumber'] : '',
@@ -430,7 +460,8 @@ switch($action)
 						$receipt['cdate'],
 						$AUTH->id,
 						$receipt['o_type'] == 'advance' ? $receipt['adv_name'] : $receipt['other_name'],
-						$receipt['closed']
+						$receipt['closed'],
+						($fullnumber ? $fullnumber : NULL),
 					));
 			$DB->UnLockTables();
 						

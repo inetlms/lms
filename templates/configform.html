@@ -1,0 +1,22 @@
+{include file="header.html"}
+{$xajax}
+{title value=$layout.pagetitle}
+
+<table width="100%" cellpadding="3">
+    <tr class="dark boxtop">
+	<td width="100%" class="pad fall">
+	    <b>Wybierz formularz : </b>
+	    <select name="getform" id="getform" onchange="xajax_select_form(this.value);">
+	    <option value="">-- wybierz formularz --</option>
+	    {foreach $_CONFIGFORM as $item => $key}
+		<option value="{$item}">{trans({$item})}</option>
+	    {/foreach}
+	    </select>
+	</td>
+    </tr>
+</table>
+<p>
+<div id="formfield"></div>
+</p>
+
+{include file="footer.html"}

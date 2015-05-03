@@ -8,24 +8,24 @@
 <div id="id_edit_dictionary_devices"></div>
     
 <table width="100%" cellpadding="3">
-    <tr class="dark">
+    <tr class="dark nav-header">
     
-	<td width="1%" nowrap style="height:22px;min-width:100px;vertical-align:bottom;" class="pad10 fleftu" align="left"><b>Rodzaj<br>Urządzenia</b></td>
-	<td width="96%" style="height:22px;vertical-align:bottom;" class="pad10 fbt" align="left"><b>Opis</b></td>
-	<td width="1%" nowrap style="height:22px;min-width:50px;vertical-align:bottom;" class="pad10 fbt" align="center"><span class="tiphelp" {tip text="Ilość przypysinaych urządzeń klienckich"}<b>Przypisanych<br>Urządzeń</b></span></td>
-	<td width="1%" nowrap style="height:22px;min-width:50px;vertical-align:bottom;" class="pad10 fbt" align="center"><span class="tiphelp" {tip text="Ilość przypysinaych interfejsów sieciowych"}<b>Przypisanych<br>Interfejsów</b></span></td>
-	<td width="1%" nowrap style="height:22px;" class="pad10 frightu" align="right"></td>
+	<td width="1%" nowrap style="height:22px;min-width:100px;vertical-align:bottom;" class="pad fleftu" align="left"><b>Rodzaj<br>Urządzenia</b></td>
+	<td width="96%" style="height:22px;vertical-align:bottom;" class="pad fbt tleft" align="left"><b>Opis</b></td>
+	<td width="1%" nowrap style="height:22px;min-width:50px;vertical-align:bottom;" class="pad fbt tleft" align="center"><b>Przypisanych<br>Urządzeń</b></td>
+	<td width="1%" nowrap style="height:22px;min-width:50px;vertical-align:bottom;" class="pad fbt tleft" align="center"><b>Przypisanych<br>Interfejsów</b></td>
+	<td width="1%" nowrap style="height:22px;" class="pad frightu tleft" align="right"></td>
     </tr>
     
     {cycle values="lucid,light" print=false}
     {section name='deviceslist' loop=$deviceslist}
 	
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-	    <td width="1%" nowrap style="min-width:100px;" align="left" class="fleft pad10">{$deviceslist[deviceslist].type}</td>
-	    <td width="96%" align="left" class="pad10">{if $deviceslist[deviceslist].description}{$deviceslist[deviceslist].description|nl2br}{/if}</td>
-	    <td width="1%" nowrap style="min-width:50px;" align="center" class="pad10">{$deviceslist[deviceslist].countnodes}</td>
-	    <td width="1%" nowrap style="min-width:50px;" align="center" class="pad10">{$deviceslist[deviceslist].countnetdev}</td>
-	    <td width="1%" align="right" class="pl10 fright" nowrap>
+	    <td width="1%" nowrap style="min-width:100px;" align="left" class="fleft pad">{$deviceslist[deviceslist].type}</td>
+	    <td width="96%" align="left" class="pad tleft">{if $deviceslist[deviceslist].description}{$deviceslist[deviceslist].description|nl2br}{/if}</td>
+	    <td width="1%" nowrap style="min-width:50px;" align="center" class="pad tleft">{$deviceslist[deviceslist].countnodes}</td>
+	    <td width="1%" nowrap style="min-width:50px;" align="center" class="pad tleft">{$deviceslist[deviceslist].countnetdev}</td>
+	    <td width="1%" align="right" class="pl fright tleft" nowrap>
 		{if $deviceslist[deviceslist].countnodes || $deviceslist[deviceslist].countnetdev}
 		    <img src="img/deleteoff.gif" title="Nie można usunąć pozycji">
 		{else}

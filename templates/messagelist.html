@@ -13,7 +13,7 @@
 //-->
 </script>
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <table width="100%" cellpadding="3">
 	
 	<tr class="dark">
@@ -78,7 +78,7 @@
 			<b>{t a=$listdata.total}Total: $a{/t}</b>&nbsp;
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=messagelist loop=$messagelist start=$start max=$pagelimit}
 	{assign var=message value=$messagelist[messagelist]}
 	<tr class="{cycle} lista{if $message.error == $message.cnt} alert{elseif $message.error} blendalert{elseif $message.sent == $message.cnt} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">

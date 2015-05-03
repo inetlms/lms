@@ -1,7 +1,7 @@
 <?php
 
 /*
- * LMS version 1.11-git ( iNET )
+ *  iNET LMS
  *
  *  (C) Copyright 2012 LMS-EX Developers
  *
@@ -25,16 +25,18 @@
  */
 
 // REPLACE THIS WITH PATH TO YOUR CONFIG FILE
-
 $CONFIG_FILE = '/etc/lms/lms.ini';
 
 // PLEASE DO NOT MODIFY ANYTHING BELOW THIS LINE UNLESS YOU KNOW
 // *EXACTLY* WHAT ARE YOU DOING!!!
 // *******************************************************************
 
+
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
+define('LMSV','15.03.30');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
+ini_set('mbstring.func_overload','0');
 
 // find alternative config files:
 if (is_readable('lms.ini')) {
@@ -64,20 +66,24 @@ $CONFIG['directories']['doc_dir'] = (!isset($CONFIG['directories']['doc_dir']) ?
 $CONFIG['directories']['uploadfiles_dir'] = (!isset($CONFIG['directories']['uploadfiles_dir']) ? $CONFIG['directories']['sys_dir'].'/uploadfiles' : $CONFIG['directories']['uploadfiles_dir']);
 $CONFIG['directories']['modules_dir'] = (!isset($CONFIG['directories']['modules_dir']) ? $CONFIG['directories']['sys_dir'].'/modules' : $CONFIG['directories']['modules_dir']);
 $CONFIG['directories']['backup_dir'] = (!isset($CONFIG['directories']['backup_dir']) ? $CONFIG['directories']['sys_dir'].'/backups' : $CONFIG['directories']['backup_dir']);
-$CONFIG['directories']['config_templates_dir'] = (!isset($CONFIG['directories']['config_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/config_templates' : $CONFIG['directories']['config_templates_dir']);
+//$CONFIG['directories']['config_templates_dir'] = (!isset($CONFIG['directories']['config_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/config_templates' : $CONFIG['directories']['config_templates_dir']);
 $CONFIG['directories']['smarty_compile_dir'] = (!isset($CONFIG['directories']['smarty_compile_dir']) ? $CONFIG['directories']['sys_dir'].'/templates_c' : $CONFIG['directories']['smarty_compile_dir']);
 $CONFIG['directories']['smarty_templates_dir'] = (!isset($CONFIG['directories']['smarty_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/templates' : $CONFIG['directories']['smarty_templates_dir']);
+$CONFIG['directories']['plug_dir'] = (!isset($CONFIG['directories']['plug_dir']) ? $CONFIG['directories']['sys_dir'].'/plug' : $CONFIG['directories']['plug_dir']);
+$CONFIG['directories']['invoice_dir'] = (!isset($CONFIG['directories']['invoice_dir']) ? $CONFIG['directories']['doc_dir'].'/invoice_pdf' : $CONFIG['directories']['invoice_dir']);
 
 define('SYS_DIR', $CONFIG['directories']['sys_dir']);
+define('LIB_DIR', $CONFIG['directories']['lib_dir']);
 define('TMP_DIR', $CONFIG['directories']['tmp_dir']);
 define('RRD_DIR', $CONFIG['directories']['rrd_dir']);
-define('LIB_DIR', $CONFIG['directories']['lib_dir']);
 define('DOC_DIR', $CONFIG['directories']['doc_dir']);
-define('BACKUP_DIR', $CONFIG['directories']['backup_dir']);
 define('UPLOADFILES_DIR', $CONFIG['directories']['uploadfiles_dir']);
 define('MODULES_DIR', $CONFIG['directories']['modules_dir']);
+define('BACKUP_DIR', $CONFIG['directories']['backup_dir']);
 define('SMARTY_COMPILE_DIR', $CONFIG['directories']['smarty_compile_dir']);
 define('SMARTY_TEMPLATES_DIR', $CONFIG['directories']['smarty_templates_dir']);
+define('PLUG_DIR',$CONFIG['directories']['plug_dir']);
+define('INVOICE_DIR',$CONFIG['directories']['invoice_dir']);
 
 // Do some checks and load config defaults
 
@@ -103,9 +109,6 @@ if(!$DB)
 	die();
 }
 
-// Call any of upgrade process before anything else
-
-require_once(LIB_DIR.'/upgradedb.php');
 
 // Initialize templates engine (must be before locale settings)
 
@@ -119,8 +122,8 @@ if (defined('Smarty::SMARTY_VERSION'))
 	$ver_chunks = preg_split('/[- ]/', Smarty::SMARTY_VERSION);
 else
 	$ver_chunks = NULL;
-if (count($ver_chunks) != 2 || version_compare('3.0', $ver_chunks[1]) > 0)
-	die('<B>Wrong version of Smarty engine! We support only Smarty-3.x greater than 3.0.</B>');
+if (count($ver_chunks) < 2 || version_compare('3.1', $ver_chunks[1]) > 0)
+	die('<B>Wrong version of Smarty engine! We support only Smarty-3.x greater than 3.1.</B> - '.Smarty::SMARTY_VERSION);
 
 define('SMARTY_VERSION', $ver_chunks[1]);
 
@@ -130,8 +133,8 @@ define('SMARTY_VERSION', $ver_chunks[1]);
 // Read configuration of LMS-UI from database
 
 if($cfg = $DB->GetAll('SELECT section, var, value FROM uiconfig WHERE disabled=0'))
-	foreach($cfg as $row)
-		$CONFIG[$row['section']][$row['var']] = $row['value'];
+	foreach($cfg as $row) $CONFIG[$row['section']][$row['var']] = $row['value'];
+
 
 
 // SYSLOG
@@ -139,6 +142,12 @@ if (empty($CONFIG['phpui']['syslog_level']))
     define('SYSLOG',FALSE);
 else
     define('SYSLOG',TRUE);
+
+// Call any of upgrade process before anything else
+require_once(LIB_DIR.'/functions.php');
+
+require_once(LIB_DIR.'/upgradedb.php');
+
 
 // Redirect to SSL
 $_FORCE_SSL = (isset($CONFIG['phpui']['force_ssl']) ? chkconfig($CONFIG['phpui']['force_ssl']) : FALSE);
@@ -164,6 +173,8 @@ require_once(LIB_DIR.'/Session.class.php');
 require_once(LIB_DIR.'/GaduGadu.class.php');
 require_once(LIB_DIR.'/LMS.Hiperus.class.php');
 require_once(LIB_DIR.'/RADIUS.class.php');
+require_once(LIB_DIR.'/Routeros_api.class.php');
+require_once(LIB_DIR.'/LMS.PLUG.class.php');
 
 
 // Initialize Session, Auth and LMS classes
@@ -176,6 +187,27 @@ $LMS->ui_lang = $_ui_language;
 $LMS->lang = $_language;
 $GG = new rfGG(GG_VER_77);
 $RAD = new radius($DB,$LMS);
+$MT = new routeros_api();
+
+require_once(LIB_DIR.'/smarty_addons.php');
+
+$layout['plugin'] = NULL;
+$layout['logname'] = $AUTH->logname;
+$layout['logid'] = $AUTH->id;
+$layout['lmsdbv'] = $DB->_version;
+$layout['smarty_version'] = SMARTY_VERSION;
+$layout['hostname'] = hostname();
+$layout['lmsv'] = 'iNET LMS';
+$layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
+$layout['lmsvr'] = LMSV;
+$layout['dberrors'] =& $DB->errors;
+$layout['dbdebug'] = $_DBDEBUG;
+$layout['popup'] = isset($_GET['popup']) ? true : false;
+$menu = NULL;
+
+if (get_conf('registryequipment.enabled')) {
+	require_once(LIB_DIR.'/Registry.Equipment.class.php');
+}
 
 if(get_conf('voip.enabled','0') )
 {
@@ -194,61 +226,72 @@ if(get_conf('voip.enabled','0') )
 }
     else $voip = NULL;
 
+if (get_conf('sms.service') == 'serwersms') {
+    require_once(LIB_DIR.'/SerwerSMS_api.php');
+}
 
+if (get_conf('jambox.enabled',0)) {
+    require_once(LIB_DIR.'/LMS.tv.class.php');
+    $LMSTV = new LMSTV($DB,$AUTH,$CONFIG);
+}
 // Set some template and layout variables
 
-$SMARTY->template_dir = SMARTY_TEMPLATES_DIR;
+$SMARTY->setTemplateDir(NULL);
+$SMARTY->addTemplateDir(
+	array(
+	    SMARTY_TEMPLATES_DIR.'/custom',
+	    SMARTY_TEMPLATES_DIR
+	)
+);
+//if (get_conf('phpui.custom_module'))
+//    $SMARTY->addTemplateDir(array(SMARTY_TEMPLATES_DIR.'/custom'));
+
 $SMARTY->compile_dir = SMARTY_COMPILE_DIR;
 $SMARTY->debugging = (isset($CONFIG['phpui']['smarty_debug']) ? chkconfig($CONFIG['phpui']['smarty_debug']) : FALSE);
 $SMARTY->use_sub_dirs = TRUE;
 
-$layout['logname'] = $AUTH->logname;
-$layout['logid'] = $AUTH->id;
-$layout['lmsdbv'] = $DB->_version;
-$layout['smarty_version'] = SMARTY_VERSION;
-$layout['hostname'] = hostname();
-$layout['lmsv'] = 'iNET';
-$layout['lmsvr'] = $LMS->_revision.'/'.$AUTH->_revision;
-$layout['lmsvr'] = '14.06.14';
-$layout['dberrors'] =& $DB->errors;
-$layout['dbdebug'] = $_DBDEBUG;
-$layout['popup'] = isset($_GET['popup']) ? true : false;
+
+
 
 $SMARTY->assignByRef('layout', $layout);
 $SMARTY->assignByRef('LANGDEFS', $LANGDEFS);
 $SMARTY->assignByRef('_ui_language', $LMS->ui_lang);
 $SMARTY->assignByRef('_language', $LMS->lang);
 
-require_once(LIB_DIR.'/smarty_addons.php');
 
 $error = NULL; // initialize error variable needed for (almost) all modules
 
-// Load menu
 
-if(!$layout['popup'])
-{
-	require_once(LIB_DIR.'/menu.php');
-	$SMARTY->assign('newmenu', $menu);
-}
+header('X-Powered-By: iNET LMS/'.$layout['lmsv']);
 
-header('X-Powered-By: LMS/'.$layout['lmsv']);
+$PLUG->updateDBPlugins();
 
 // Check privileges and execute modules
 if ($AUTH->islogged) {
+	
+	// info o polach w formularzach
+	if($cfg = $DB->GetAll('SELECT section, var, value FROM formconfig'))
+		foreach($cfg as $row) $CONFIGFORM[$row['section']][$row['var']] = ($row['value'] ? $row['value'] : 0);
 	
 	// Load plugin files and register hook callbacks
 	$plugins = preg_split('/[;,\s\t\n]+/', $CONFIG['phpui']['plugins'], -1, PREG_SPLIT_NO_EMPTY);
 	if (!empty($plugins))
 		foreach ($plugins as $plugin_name)
 			require LIB_DIR . '/plugins/' . $plugin_name . '.php';
-
+	
 	$res = $LMS->ExecHook('access_table_init', array('accesstable' => $access['table']));
 	if (isset($res['accesstable']))
 		$access['table'] = $res['accesstable'];
-
+	
 	$module = isset($_GET['m']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_GET['m']) : '';
+	$plug = isset($_GET['plug']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_GET['plug']) : '';
+	
+	if (!$layout['popup'])
+	    require_once(LIB_DIR.'/menu.php');
+	
+	
 	$deny = $allow = FALSE;
-
+	
 	$res = $LMS->ExecHook('module_load_before', array('module' => $module));
 	if ($res['abort']) {
 		$SESSION->close();
@@ -256,18 +299,117 @@ if ($AUTH->islogged) {
 		die;
 	}
 	$module = $res['module'];
-
+	
 	if ($AUTH->passwdrequiredchange)
 		$module = 'chpasswd';
-
+	
+	$PLUG->initPlugins();
+	$_plugcount = sizeof($_pluglist);
+	
 	if ($module == '')
 	{
 		$module = $CONFIG['phpui']['default_module'];
 		if (!file_exists(MODULES_DIR.'/'.$module.'.php'))
-		    $module = 'welcome';
+		    $module = 'welcome_new';
+		    $plug = '';
 	}
+	
+	if (!$layout['popup']) {
+	    
+	    if ($_pluglist) {
+		for ($i=0; $i<($_plugcount); $i++) {
+		    if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php') && is_readable(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php'))
+			include(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php');
+		}
+	    }
+	    
+	    foreach($menu as $idx => $item) if(isset($item['submenu'])) uasort($menu[$idx]['submenu'],'menu_cmp');
+	    uasort($menu,'menu_cmp');
+	    $SMARTY->assign('newmenu',$menu);
+	}
+	
+	if ($_plugcount > 0) {
+	    
+	    for ($i=0; $i<$_plugcount; $i++) {
+		
+		if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/lang/'.$LMS->lang.'.php'))
+			require_once(PLUG_DIR.'/'.$_pluglist[$i].'/lang/'.$LMS->lang.'.php');
+		
+		if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/inc.php'))
+			require_once(PLUG_DIR.'/'.$_pluglist[$i].'/inc.php');
+		
+		if (is_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes')) {
+		    $phpfile = $PLUG->list_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes','php');
+		    $jsfile = $PLUG->list_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes','js');
+		    $cssfile = $PLUG->list_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes','css');
+		    for ($j=0; $j<sizeof($phpfile); $j++) require_once(PLUG_DIR.'/'.$_pluglist[$i].'/includes/'.$phpfile[$j]);
+		    for ($j=0; $j<sizeof($jsfile); $j++) $layout['includesjs'][] = 'plug/'.$_pluglist[$i].'/includes/'.$jsfile[$j];
+		    for ($j=0; $j<sizeof($cssfile); $j++) $layout['includescss'][] = 'plug/'.$_pluglist[$i].'/includes/'.$cssfile[$j];
+		}
+		
+	    }
+	    
+	    $SMARTY->assignByRef('_pluginc',$_pluginc);
+	}
+	
+	if ($plug) {
+	    
+	    if (file_exists(PLUG_DIR.'/'.$plug.'/lang/'.$LMS->lang.'.php'))
+		require_once(PLUG_DIR.'/'.$plug.'/lang/'.$LMS->lang.'.php');
+	    
+	    if (is_dir(PLUG_DIR.'/'.$plug.'/includes_call')) {
+		$phpfile = $PLUG->list_dir(PLUG_DIR.'/'.$plug.'/includes_call','php');
+		$jsfile = $PLUG->list_dir(PLUG_DIR.'/'.$plug.'/includes_call','js');
+		$cssfile = $PLUG->list_dir(PLUG_DIR.'/'.$plug.'/includes_call','css');
+		for ($j=0; $j<sizeof($phpfile); $j++) require_once(PLUG_DIR.'/'.$plug.'/includes_call/'.$phpfile[$j]);
+		for ($j=0; $j<sizeof($jsfile); $j++) $layout['includesjs'][] = 'plug/'.$plug.'/includes_call/'.$jsfile[$j];
+		for ($j=0; $j<sizeof($cssfile); $j++) $layout['includescss'][] = 'plug/'.$plug.'/includes_call/'.$cssfile[$j];
+	    }
 
-	if (file_exists(MODULES_DIR.'/'.$module.'.php'))
+	    if (file_exists(PLUG_DIR.'/'.$plug.'/modules/'.$module.'.php')) {
+		$layout['plug'] = $plug;
+		$layout['module'] = $module;
+		include(PLUG_DIR.'/'.$plug.'/modules/'.$module.'.php');
+	    } else {
+		$layout['module'] = 'notfound';
+		$layout['pagetitle'] = trans('Error!');
+		$SMARTY->assign('layout', $layout);
+		$SMARTY->assign('server', $_SERVER);
+		$SMARTY->display('notfound.html');
+	    }
+	    
+//	    $SMARTY->assign('plug',$plug);
+	}
+	elseif (file_exists(MODULES_DIR.'/custom/'.$module.'.php'))
+	{
+		$global_allow = !$AUTH->id || (!empty($access['allow']) && preg_match('/'.$access['allow'].'/i', $module));
+
+		if ($AUTH->id && ($rights = $LMS->GetUserRights($AUTH->id)))
+			foreach ($rights as $level)
+			{
+				if ($level === 0) {
+					$CONFIG['privileges']['superuser'] = true;
+				}
+
+				if (!$global_allow && !$deny && isset($access['table'][$level]['deny_reg']))
+					$deny = (bool) preg_match('/'.$access['table'][$level]['deny_reg'].'/i', $module);
+				elseif (!$allow && isset($access['table'][$level]['allow_reg']))
+					$allow = (bool) preg_match('/'.$access['table'][$level]['allow_reg'].'/i', $module);
+
+				if (isset($access['table'][$level]['privilege']))
+					$CONFIG['privileges'][$access['table'][$level]['privilege']] = TRUE;
+			}
+
+		if ($global_allow || ($allow && !$deny))
+		{
+			$layout['module'] = $module;
+			$LMS->InitUI();
+			include(MODULES_DIR.'/custom/'.$module.'.php');
+		}
+		else
+			$SMARTY->display('noaccess.html');
+	}
+	elseif (file_exists(MODULES_DIR.'/'.$module.'.php'))
 	{
 		$global_allow = !$AUTH->id || (!empty($access['allow']) && preg_match('/'.$access['allow'].'/i', $module));
 
@@ -326,9 +468,21 @@ else
 	    return $obj;
 	}
 	
+	$ver = @file_get_contents('https://raw.githubusercontent.com/inetlms/lms/master/README.md');
+	$_newversion = NULL;
+	
+	if ($ver) {
+		$ver = str_replace("\n","",$ver);
+		$ver = str_replace("iNET LMS ","",$ver);
+		
+		if ($ver != LMSV && version_compare($ver,LMSV) == '1') 
+			$_newversion = $ver;
+	}
+	
 	$LMS->InitXajax();
 	$LMS->RegisterXajaxFunction('login_adbox');
 	$SMARTY->assign('xajax',$LMS->RunXajax());
+	$SMARTY->assign('_newversion',$_newversion);
 	$SMARTY->display('login.html');
 }
 

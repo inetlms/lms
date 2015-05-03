@@ -31,7 +31,7 @@
 </script>
 <form name="nodelist">
 <table width="100%" cellpadding="3" id="table">
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{if $nodelist.total > 0}
 	{section name=nodelist loop=$nodelist}
 	{if $nodelist[nodelist].id}

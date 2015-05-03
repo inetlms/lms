@@ -23,6 +23,18 @@
 			{include file="customersipbox.html"}
 		</td>
 	</tr>
+	{if get_conf('jambox.enabled') && check_modules(360)}
+	<tr>
+	    <td width="100%">
+		{include file="customertvjamboxaccountsbox.html"}
+	    </td>
+	</tr>
+	<tr>
+	    <td width="100%">
+		{include file="customertvmessages.html"}
+	    </td>
+	</tr>
+	{/if}
 	<tr>
 		<td width="100%">
 			{include file="customerdocuments.html" limit=10}
@@ -43,5 +55,17 @@
 			{include file="customerbalancebox.html" limit=-10}
 		</td>
 	</tr>
+	
+	{if $_pluginc.customer}
+	    {assign var='inclist' value=$_pluginc.customer}
+	    {section name='inclist' loop=$inclist}
+		{assign var='plik' value=$inclist[inclist].htmlfile}
+		<tr>
+		    <td width="100%">
+			{include file=$plik}
+		    </td>
+		</tr>
+	    {/section}
+	{/if}
 </table>
 {include file="footer.html"}

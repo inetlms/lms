@@ -3,7 +3,7 @@
 <table width="100%">
     <tr>
 	<td width="99%" align="left">
-	    <h1>{$layout.pagetitle}</h1>
+	    {title value=$layout.pagetitle}
 	</td>
 	<td width="1%" nowrap>
 	    <a href="?m=contractorgroupadd" {tip text='Allows you to add new group'}><b>{trans('New Group')}</b> <img src="img/add.gif" alt=""></a>
@@ -12,38 +12,38 @@
 </table>
 <table width="100%" cellpadding="3">
 	<tr class="dark">
-		<td width="1%" class="fleftu">
+		<td width="1%" class="fleftu" align="left">
 			<img src="img/group.gif" alt="">&nbsp;<b>{trans("Name:")}</b><br>
 		</td>
-		<td width="96%" class="fbt">
+		<td width="96%" class="fbt pad tleft">
 			<img src="img/info1.gif" alt="">&nbsp;{trans("Description:")}
 		</td>
-		<td width="1%" class="fbt" align="right">
+		<td width="1%" class="fbt pad tleft" align="right">
 			{trans("ID:")}
 		</td>
-		<td width="1%" class="fbt" align="right">
+		<td width="1%" class="fbt pad tleft" align="right">
 			{trans("Members:")}
 		</td>
-		<td width="1%" class="frightu" align="right" nowrap>
+		<td width="1%" class="frightu pad tleft" align="right" nowrap>
 			<b>{t a=$listdata.total|default:"0"}Total: $a{/t}</b>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=contractorgroups loop=$contractorgrouplist}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td width="1%" class="fleft" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';" nowrap style="padding-right:10px;">
+		<td width="1%" class="fleft" align="left" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';" nowrap style="padding-right:10px;">
 			<b>{$contractorgrouplist[contractorgroups].name}</b>
 		</td>
-		<td width="96%" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';">
+		<td width="96%" class="pad tleft" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';">
     			{if $contractorgrouplist[contractorgroups].description}{$contractorgrouplist[contractorgroups].description}{/if}
 		</td>
-		<td width="1%" align="right" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';">
+		<td width="1%" class="pad tleft" align="right" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';">
 			({$contractorgrouplist[contractorgroups].id|string_format:"%04d"})
 		</td>
-		<td width="1%" align="right" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';">
+		<td width="1%" class="pad tleft" align="right" onclick="return self.location.href='?m=contractorgroupinfo&id={$contractorgrouplist[contractorgroups].id}';">
 			{$contractorgrouplist[contractorgroups].contractorscount} 
 		</td>
-		<td width="1%" class="fright" align="right">
+		<td width="1%" class="fright pad tleft" align="right">
 			<nobr>
 			{if $contractorgrouplist[contractorgroups].contractorscount}
 				<a href="javascript:alert('{trans("Group with members cannot be deleted!")}');">

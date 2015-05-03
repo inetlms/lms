@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!-- $Id$ -->
-<h1><b>{$layout.pagetitle}</b></h1>
+{title value=$layout.pagetitle}
 <table cellpadding="5" width="100%">
 	<tr class="dark">
 		<td class="fleftu" width="95%">
@@ -25,7 +25,7 @@
 			&nbsp;
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{foreach from=$queues item=queue}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" onclick="return self.location.href='?m=rtqueueview&id={$queue.id}';">

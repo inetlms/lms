@@ -8,7 +8,7 @@
 
 <H2 align="center" class="hdf">
 {number number=$note.number template=$note.template time=$note.cdate assign=number}
-<b>{t a=$number}Debit Note No. $a{/t}</b>
+<b>{if !$note.fullnumber}{t a=$number}Debit Note No. $a{/t}{else}{t a=$note.fullnumber}Debit Note No. $a{/t}{/if}</b>
 </h2>
 <br>
 

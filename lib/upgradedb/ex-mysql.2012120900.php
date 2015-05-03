@@ -23,7 +23,7 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("CREATE TABLE syslog (
+$DB->Execute("CREATE TABLE IF NOT EXISTS syslog (
     id bigint NOT NULL AUTO_INCREMENT,
     cdate integer default 0 not null,
     uid integer default null,

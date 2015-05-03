@@ -27,7 +27,6 @@
 				<tr class="light">
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
-	
 	<tr class="light">
 		<td style="width: 1%;">
 			<img src="img/host.gif">
@@ -65,7 +64,7 @@
 <a href="javascript: void(0);" onclick="return ipchoosewin(document.editipaddr['ipadd[ipaddr]'],document.editipaddr['ipadd[netid]'],document.getElementById('netid').value);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
-	{if check_conf('phpui.public_ip')}
+	{if get_form('nodes.public_ip')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/ip_pub.gif" alt="">

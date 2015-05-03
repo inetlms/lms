@@ -26,7 +26,7 @@
 $DB->BeginTrans();
 
 $DB->Execute("CREATE SEQUENCE notatnik_id_seq;");
-$D->Execute("
+$DB->Execute("
 CREATE TABLE notatnik (
 	id INTEGER DEFAULT nextval('notatnik_id_seq'::text) NOT NULL,
 	iduser integer default 0,

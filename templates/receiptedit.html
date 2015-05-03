@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {include file="calendar_js.html"}
 <script type="text/javascript">
 <!--
@@ -228,7 +228,7 @@
 		</td>
 		<td width="1%" nowrap class="frightu"></td>
 	</tr>
-	{cycle values="light,lucid" print=false name="items"}
+	{cycle values="lucid,light" print=false name="items"}
 	{foreach from=$contents item=item}
 	<tr class="{cycle name="items"}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" width="1%">

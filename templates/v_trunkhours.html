@@ -22,7 +22,7 @@
 	</tr>
 </thead>
 </tbody>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=hours loop=$hours}
 	<tr class="{cycle}" onmouseover="addClass(this, 'highlight');{if $hours[hours].overlib} return overlib('{$hours[hours].overlib}',HAUTO,VAUTO,OFFSETX,15,OFFSETY,15);{/if}" onmouseout="removeClass(this, 'highlight');{if $hours[hours].overlib} nd();{/if}">
 		<td class="fleft">

@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!--// $Id$ //-->
+<html><head>
+<meta name="GENERATOR" content="LMS {$layout.lmsv}">
+<meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
+<meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
+<title>::: LMS :::</title>
+<link href="{get_conf('phpui.style', 'img/style.css')}" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="img/autoiframe.js"></script>
+<script type="text/javascript" src="img/common.js"></script>
+</head>
+<body>
+
+<table width="100%" cellpadding="3" id="table">
+    <tr class="dark">
+	<td width="100%" nowrap class="fall" colspan="3">
+	<a href="?m=invoice&id={$info.id}" target="_blank"><img src="img/print.gif" alt="[ {trans("Print")} ]" title="[ Drukuj Fakturę ]"></a>
+	<b>Informacja o  fakturze : ({$info.id})</b>
+	</td>
+    </tr>
+    {cycle values="lucid,light" print=false}
+    
+    <tr class="{cycle}">
+	<td width="1%" nowrap align="left"><b>Numer</b></td>
+	<td width="1%" nowrap class="pad">:</td>
+	<td width="98%" nowrap align="left">{$info.fullnumber}</td>
+    </tr>
+    
+    <tr class="{cycle}">
+	<td width="1%" nowrap align="left" style="vertical-align:top;"><b>Wartość faktury</b></td>
+	<td width="1%" nowrap class="pad">:</td>
+	<td width="98%" nowrap align="left">{$info.total|money_format}</td>
+    </tr>
+    
+    <tr class="{cycle}">
+	<td width="1%" nowrap align="left"><b>Z dnia</b></td>
+	<td width="1%" nowrap class="pad">:</td>
+	<td width="98%" nowrap align="left">{$info.cdate|date_format:"d.m.Y"}</td>
+    </tr>
+    
+    <tr class="{cycle}">
+	<td width="1%" nowrap align="left" style="vertical-align:top;"><b>Wystawca</b></td>
+	<td width="1%" nowrap class="pad">:</td>
+	<td width="98%" nowrap align="left">{$info.division_name}<br>{$info.division_address}<br>{$info.division_zip} {$info.division_city}</td>
+    </tr>
+    
+    <tr class="{cycle}">
+	<td width="1%" nowrap align="left" style="vertical-align:top;"><b>Nabywca</b></td>
+	<td width="1%" nowrap class="pad">:</td>
+	<td width="98%" nowrap align="left">{$info.name}<br>{$info.address}<br>{$info.zip} {$info.city}</td>
+    </tr>
+    
+</table>
+
+{literal}
+<script type="text/javascript" language="JavaScript">
+<!--
+var table = document.getElementById('table');
+autoiframe_setsize('autoiframe', table.offsetWidth, table.offsetHeight);
+//-->
+</script>
+{/literal}
+</body>
+</html>

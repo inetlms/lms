@@ -275,7 +275,7 @@ while(my $row = $dbq->fetchrow_hashref())
 				messageid => '<lms.sendinvoice.'.$row->{'id'}.'.'.$row->{'customerid'}.'@lms>',
 			}))) {
 				$sender->Body ({
-					ctype => 'text/plain',
+					ctype => 'text/html; charset=utf-8;',
 			    		encoding => 'quoted-printable',
 					charset => 'UTF-8',
 					msg => "$body\n",

@@ -44,8 +44,8 @@ elseif (isset($_POST['customerdata']))
 	if($customerdata['lastname'] == '')
 		$error['lastname'] = trans('Last/Company name cannot be empty!');
 
-    if($customerdata['name'] == '' && !$customerdata['type'])
-        $error['name'] = trans('First name cannot be empty!');
+	if($customerdata['name'] == '' && !$customerdata['type'])
+		$error['name'] = trans('First name cannot be empty!');
 
 	if($customerdata['address']=='')
 		$error['address'] = trans('Address required!');
@@ -66,6 +66,12 @@ elseif (isset($_POST['customerdata']))
 	{
 		$error['ssn'] = trans('Incorrect Social Security Number! If you are sure you want to accept it, then click "Submit" again.');
 		$ssnwarning = 1;
+	}
+	
+	if($customerdata['invoice_ssn'] != '' && !check_ssn($customerdata['invoice_ssn']) && !isset($customerdata['invoice_ssnwarning']))
+	{
+		$error['invoice_ssn'] = trans('Incorrect Social Security Number! If you are sure you want to accept it, then click "Submit" again.');
+		$invoice_ssnwarning = 1;
 	}
 
 	if($customerdata['regon'] != '' && !check_regon($customerdata['regon']))
@@ -186,7 +192,7 @@ elseif (isset($_POST['customerdata']))
 	else
 	{
 		$olddata = $LMS->GetCustomer($_GET['id']);
-
+		
 		$customerinfo = $customerdata;
 		$customerinfo['createdby'] = $olddata['createdby'];
 		$customerinfo['modifiedby'] = $olddata['modifiedby'];
@@ -196,11 +202,13 @@ elseif (isset($_POST['customerdata']))
 		$customerinfo['balance'] = $olddata['balance'];
 		$customerinfo['stateid'] = isset($olddata['stateid']) ? $olddata['stateid'] : 0;
 		$customerinfo['post_stateid'] = isset($olddata['post_stateid']) ? $olddata['post_stateid'] : 0;
+		$customerinfo['tenwarning'] = empty($tenwarning) ? 0 : 1;
+		$customerinfo['invoice_tenwarning'] = empty($invoice_tenwarning) ? 0 : 1;
+		$customerinfo['ssnwarning'] = empty($ssnwarning) ? 0 : 1;
+		$customerinfo['invoice_ssnwarning'] = empty($invoice_ssnwarning) ? 0 : 1;
 		$customerinfo['zipwarning'] = empty($zipwarning) ? 0 : 1;
 		$customerinfo['post_zipwarning'] = empty($post_zipwarning) ? 0 : 1;
-		$customerinfo['tenwarning'] = empty($tenwarning) ? 0 : 1;
-		$customerinfo['ssnwarning'] = empty($ssnwarning) ? 0 : 1;
-
+		$customerinfo['invoice_zipwarning'] = empty($invoice_zipwarning) ? 0 : 1;
 		$SMARTY->assign('error',$error);
 	}
 }

@@ -32,7 +32,540 @@ $changelog = array(
 	    'opis'	=> '',
 	),
 	
-*/
+*/	
+	
+//	array(
+//	    'data'	=> '',
+//	    'status'	=> '',
+//	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
+//	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość wyłączenia informacji o stanie bilansu klienta na fakturze przed wystawieniem faktury, domyślnie włączone, konf: UI->Invoices->print_balance_info<br>Zmienna dla faktur w formacie pdf (tcpdf) wersji 1 i 2, informacja o wyświetlaniu bilansu jest zapamiętana w dokumencie',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'kilka drobnych poprawek',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano sortowanie w liście urządzeń sieciowych',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Poprawka przeładowania głównej strony po dodaniu nowej wiadomości w tablicy informacyjnej',
+	),
+	array(
+	    'data'	=> '2015-03-17',
+	    'status'	=> '',
+	    'opis'	=> 'Generator SIIS v5',
+	),
+	array(
+	    'data'	=> '2015-03-12',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość które pola szybkiego wyszukiwania mają być widoczne : Konfigracja -> Formularze -> Szybkie wyszukiwanie',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano szybkie wyszukiwanie interfejsów sieciowych',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowa mechanizmu wyszukiwania klientów w "szybkim wyszukiwaniu"',
+	),
+	
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano grupy dla interfejsów sieciowych, konfiguracja w słownikach',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano grupy dla węzłów, konfiguracja w słownikach',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'korekta prędkości w połączeniach interfejs <-> komputer',
+	),
+	array(
+	    'data'	=> '2015-03-09',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość wystawienia korekt w karcie klienta',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano kody ean w modelach urządzeń',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowano filtry w Historii importów',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano uprawnienia dla załączników dla klientów i kontrahentów',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość zdefiniowania które pola mają być widoczne w formularzu edycja/nowy interfejs sieciowy',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano pola login i hasło w karcie interfejsu sieciowego + uprawnienia w karcie użytkownika iNET LMS',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowa filtru w interfejsach sieciowych',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano pokazywanie położenia klienta na mapie google na podstawie jego adresu, w karcie klienta trzeba kliknąć na adres siedziby / zameldowania.',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość zdefiniowania które pola mają być widoczne w formularzu edycja/nowy klient',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przeniesiono zmienną konfiguracyjna node_autoname z sekcji interfejsy sieciowe do konfiguracji formularze -> komputery',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przeniesiono zmienną konfiguracyjną pppoe_login z sekcji interfejsy sieciowe do konfiguracji formularze -> komputery',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przeniesiono zmienną phpui->public_ip do konfiguracji formularza "komputery"',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość zdefiniowania które pola mają być widoczne w formularzu edycja/nowy komputer',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano nową strefę konfiguracyjną : Konfiguracja -> formularze',
+	),
+	array(
+	    'data'	=> '2015-03-04',
+	    'status'	=> '',
+	    'opis'	=> 'wprowadzono informację o liniach telekomunikacyjncyh',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'modyfikacja słownika rodzaje budynków do wymogów SIIS v5',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'modyfikacja zestawiania połączenia sieciowego : interfejs <-> interfejs, dodano dodatkowe pola : Warstwa sieci, Trakt, Linia telekomunikacyjna',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'modyfikacja zestawiania połączenia sieciowego : interfejs <-> komputer, dodano dodatkowe pola : Warstwa sieci, Rodzaj przyłącza',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowa listy interfejsów sieciowych, dodano filtry',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowa listy węzłów, dodano filtry',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'wprowadzono informację o projektach dla węzłów, interfesjów sieciowych oraz w karcie komputera',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano projekty inwestycyjne, konfiguracja : Słownik -> projekty',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość załączenia dokumentów / plikow w karcie kontrahenta',
+	),
+	array(
+	    'data'	=> '2015-02-21',
+	    'status'	=> '',
+	    'opis'	=> 'poprawa czytelności niektórych tabel / list',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'UI -> dodano zmienną node_autoname w sekcji osprzęt sieciowy, włączenie tej zmienne spowoduje automatyczne nadawanie nazwy komputera w formacie C_{id klienta}_N_{id komputera} w przypadku gdy pole nazwa w formularzu pozostawimy puste.<br><b>Domyślnie wyłączone</b>',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano słownik producentów i modeli sprzętu, do wykorzystania w interfejsach sieciowych oraz w karcie urządzenia klienta (komputer)',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowa listy sieci IP, dodano zmienną w netlist_pagelimit w sekcji phpui',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano zmienną gethostbyaddr w UI, sekcja phpui, wartość 0 wyłącza rozwiązywanie adresów IP na nazwę hosta w liście użytkowników. <br><b>DEF.: 1</b>',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'optymalizacja wydajności przy przeglądaniu listy klientów',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'optymalizacja wydajności przy przeglądaniu listy komputerów',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'modyfikacja paska do przewijania stron',
+	),
+
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano zmienną konfiguracyjną (UI) w osprzęcie sieciowym <b>pppoe_login</b>, która włącza nam dodtakowe pole na login dla sesji PPPoE, do wykorzystania jeżeli obecne pola nie zdają nam egzaminu',
+	),
+	array(
+	    'data'	=> '2015-02-05',
+	    'status'	=> '',
+	    'opis'	=> 'aktualizacja userpanel',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'lekka modyfikacja książeczki opłat v2',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka konwersji faktury proforma na fakturę VAT',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodanie lms-payments-proforma, skrypt wystawia tylko faktury proforma',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka skryptu lms-payments, skrypt wystawia faktury VAT i tylko naliczanie',
+	),
+	array(
+	    'data'	=> '2015-02-04',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka książeczki opłat w wersji 2',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka lms-payments dot. barku zmienych w UI. sekcja invoices, zmienne : template_file, template_version, type, sdateview',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka generatora dokumentów',
+	),
+	array(
+	    'data'	=> '2015-02-01',
+	    'status'	=> '',
+	    'opis'	=> 'dodano nową książeczkę płat',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> '<b>!!!</b> - poprawka dla generowanych dok. dot. contenttype, to czy dokument ma być wygenerowany w html czy w pdf decyduje od tej pory wpis w pliku info.php dla danej templatki a nie zmienna w UI',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano skrypt do importu płatności z Alior Bank w formacie xml, skrypt w contrib/bin/cashimport-alior-xml.php<br>W pliku należy wpisać namiary na skrzynkę pocztową itp',
+	),
+	array(
+	    'data'	=> '2015-01-22',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka edycji faktury, błędnie podstawiał pola dla odbiorcy faktury i adresu wysyłki ',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka choosecustomersearch.php , nie można było wybrać klienta jak w nazwie był użyty znak "',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka skryptu lms-payments, nie naliczał abonamentu jak w zobowiązaniu klienta było tylko naliczanie',
+	),
+	array(
+	    'data'	=> '2015-01-19',
+	    'status'	=> '',
+	    'opis'	=> 'Szybkie wyszukiwanie klientów - rozbudowano o pola : NIP, PESEL, REGON, EDG/KRS i Dow. os.',
+	),
+	array(
+	    'data'	=> '2015-01-15',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka invoicelist dla postgresa',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowano filtr STATUS na liście klientów o pola : bilans zerowy , z nadpłątą',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowano filtr ZOBOWIĄZANIA na liście klientów o pola : tylko naliczanie, naliczanie z fakturą, naliczanie z proformą',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka update bazy',
+	),
+	array(
+	    'data'	=> '2015-01-10',
+	    'status'	=> '',
+	    'opis'	=> 'dodano wyszukiwanie klienta po : nr telefonu, nr. gadugau, skype i yahoo , (dane z karty klienta)',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano katalog templates/custom w którym możemy trzymać własne pliki html zastępując oryginalne szablony',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowa tabeli documents o pola post_*, celem jest zapamiętanie adresu wysyłki faktury',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'w konfiguracji firmy/oddziały dodano pole URL Logo File, logo będzie na fakturach, fakturach korygujących i proforma, dotyczy tylko faktur w wersji 2 i ma wyższy priorytet od zmiennej w UI invoices.urllogofile',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'przebudowa pliku bin/lms-payments który jest jedynym słusznym skryptem do naliczania faktur / opłat abonamentów w LMS',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> 'del',
+	    'opis'	=> 'usunięto plik bin/lms-payments.php',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> 'del',
+	    'opis'	=> 'usunięto plik bin/lms-payments-proforma',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> 'del',
+	    'opis'	=> 'usunięto starą wersję USERPANEL',
+	),
+	array(
+	    'data'	=> '2015-01-07',
+	    'status'	=> '',
+	    'opis'	=> 'dostosowano wygląd faktur korygujących do obecnych przepisów',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'doszedł słownik powodów korekty faktury',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dla faktur pdf w formacie FT-0100 na małym blankiecie w nazwie odbiorcy została zastosowana nazwa skrócona firmy / oddziału',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano skrypt bin/lms-invoice2pdf.php.<br>
+			    Za pomocą tego skryptu możemy wygenerować pliki pdf dla faktur, korekt i faktur proforma. Jeżeli będziemy chcieli trzymać faktury w formie pdf to skrypt należy odpalić po skrypcie lms-payments.<br>
+			    zalecane pierwsze uruchomienie z przełącznikiem --help',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'UI -> sekcja invoices , doszły nowe przełączniki<br>
+			    <b>create_pdf_file</b> - tworzenie w locie plików pdf na serwerze dla faktur i korekt <b>Def.: 0</b><br>
+			    <b>create_pdf_file_proforma</b> - tworzenie w locie plików pdf na serwerze dla faktur proforma <b>Def.: 0</b><br>
+			    <b>deleted_closed</b> - umożliwia kasowanie zamkniętych faktur <b>Def.: 0</b><br>
+			    <b>edit_closed</b> - umożliwia edycję zamkniętych faktur <b>Def.: 0</b><br><br>
+			    Domyślnym katalogiem zapisu plików jest documents/invoice_pdf , ściężkę można zmienic dodając w lms.ini w sekcji [directories] wpis np.:<br>
+			    invoice_dir = /mojasciezka/faktury',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'USERPANEL -> Konfiguracja -> VoIP Hiperus C5 -> dodano możliwość ukrycia hasła dla terminala w UP, ',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'USERPANEL - naniesiono kilka poprawek',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka kilku plików php z katalogu bin, poprawka dotyczy includowania nagłówka.<br>
+			    <B>WAŻNE</b><br>
+			    należy skopiować lub zrobić dowiązanie symboliczne pliku z contrib/init_lms.php do /etc/lms/',
+	),
+	array(
+	    'data'	=> '2015/01/04',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano templatkę dla faktur pdf zgodną z nowymi przepisami zachowując możliwość drukowania i wystawiania faktur w starej wersji. Dodana jest osbługa różnych wersji templatek.<br>
+			    Po aktualizacji należy skonfigurować nowe zmienne w UI sekcja invoices<br>
+			    <b>urllogofile</b> -> ścieżka do loga firmy które możemy umieścić na fakturach<br>
+			    <b>template_version</b> -> wersja templatki, dla nowej należy ustawić wartość 2, DEF.: 1<br>
+			    <b>template_file_proforma</b> -> szablon dla faktur PROFORMA<br>
+			    <b>set_protection</b> -> czy wygenerowany dokument pdf ma być zabezpiecony przed modyfikacją<br>
+			    <b>sdateview</b> -> czy na fakturze ma być widoczna data dostawy / wykonania usługi, jeżeli wystawiamy faktury z automatu a w pozycjach zawarty jest okres za jaki to dotyczy to wartość ustawiamy na 0, w innym przypadku na 1. Przy ręcznym wystawianiu faktury możemy zdefiniować czy ów data ma być widoczna.<br><br>
+			    Przebudowano również skrypty lms-payments i lms-payments-proforma, i tylko tych dwóch skryptów należy używać do wystawiania faktur !!!',
+	),
+	array(
+	    'data'	=> '2015/01/01',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka wystawiania faktur oraz rozliczeń konta kontrahenta',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'aktualizacja bazy ethercodes',
+	),
+	array(
+	    'data'	=> '2014/12/31',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano przycisk wyłączający blokadę w "Finanse/Historia importów"',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Aktualizacja TCPDF do wersji 5.9.209',
+	),
+	array(
+	    'data'	=> '2014/12/10',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano obsługę wysyłek sms za pomocą Mikrotika,<br>konfiguracja w UI sekcja sms',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawa ścieżek include w ZEND na potrzeby Jambox',
+	),
+	array(
+	    'data'	=> '2014/11/24',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka błędów przy nadawaniu adresów IP',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano obsługę <b>SGT Jambox</b> :)<br><b>UWAGA</b> - należy uzupełnić zmienne konfiguracyjne w UI sekcja Jambox, moduł nie korzysta już z lmstv.ini !!!',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka konwersji faktury PRO na VAT oraz poprawka odczytu danych firmy na fakturze jeżli pola div_* są puste w tabeli documents',
+	),
+	array(
+	    'data'	=> '2014/11/05',
+	    'status'	=> '',
+	    'opis'	=> 'dodano obsługę serwisu SerwerSMS',
+	),
+        array(
+            'data'      => '2014/10/31',
+            'status'    => '',
+            'opis'      => 'dodano filtr w liście klientów "blokady/ zawieszone blokowanie" - dla klientów z zawieszonym blokowaniem oraz "zobowiązania / zawieszone naliczanie" - dla klientów z zawieszonym naliczaniem dodanych taryf',
+        ),
+    
+        array(
+            'data'      => '2014/10/26',
+            'status'    => '',
+            'opis'      => 'w liście komputerów dodano status "z blokadą" i "z powiadomieniem"',
+        ),
+
+
+	array(
+	    'data'	=> '2014/10/25',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano prostą ewidencję pojazdów',
+	),
+	array(
+	    'data'	=> '2014/10/22',
+	    'status'	=> '',
+	    'opis'	=> 'zmiany dot. uzupełnienia pól w documents div_*, dokumenty KP, KW które są wystawione dla klientów spoza naszej sieci dane są brane na podstawie default_division',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano zmienną w UI phpui.default_division jest to domyślne ID firmy dla dokumentów wystawianych dla klientów nie będącymi klientami sieci / brak ich na liście',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano szybkie wyszukiwanie klienta na podstawie numeru dokumentu',
+	),
+	array(
+	    'data'	=> '2014/10/21',
+	    'status'	=> '',
+	    'opis'	=> 'dodano dodatkowe pole blokada dla komputerów, do wykorzystania np. na przekierowanie o całkowitej blokadzie usług',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano pole IP NAT w sieciach IP',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano pole UPUST w taryfach, do wykorzystania w umowach',
+	),
+	array(
+            'data'      => '2014/10/07',
+            'status'    => '',
+            'opis'      => 'w liście komputerów dodano status "bez zobowiązań" wyświetlający komputery nie powiązane z żadną taryfą',
+	),
+	 array(
+            'data'      => '2014/09/15',
+            'status'    => '',
+            'opis'      => 'w /contrib/bin dodano parser dla formatu 123elixir banku BZWBK',
+        ),
+       array(
+            'data'      => '2014/09/15',
+            'status'    => '',
+            'opis'      => 'dodano sortowanie w Sieci IP',
+	),
 	array(
 	    'data'	=> '2014/06/14',
 	    'status'	=> '',

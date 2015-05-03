@@ -34,8 +34,8 @@ $DB->Execute("
 	primary key(id));
 ");
 
-$DB->Execute("DROP VIEW vnodes ;");
-$DB->Execute("DROP VIEW vmacs;");
+$DB->Execute("DROP VIEW IF EXISTS vnodes ;");
+$DB->Execute("DROP VIEW IF EXISTS vmacs;");
 
 
 $DB->Execute("ALTER TABLE nodes ADD access_from INTEGER DEFAULT 0;");

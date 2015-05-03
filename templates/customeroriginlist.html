@@ -4,7 +4,7 @@
 <p>
 <table width="100%" cellpadding="4" cellspacing="0">
 <tr>
-    <td width="99%" align="left"><h1>{$layout.pagetitle}</h1></td>
+    <td width="99%" align="left">{title value=$layout.pagetitle}</td>
     <td width="1%" nowrap>
     <a href="javascript: void(0);" onclick="xajax_editorigin_add();"><b>Dodaj nowe źródło</b> <img src="img/add.gif"></a>
     </td>
@@ -44,11 +44,11 @@
 <table width="100%" cellpadding="3">
 	<tr class="dark">
 		<td width="1%" class="fleftu" align="center" style="vertical-align:bottom;"><b>#</b></td>
-		<td width="97%" class="fbt"><b>{trans("Name:")}</b><br>{trans("Description:")}</td>
-		<td width="1%" class="fbt" align="center" style="vertical-align:bottom;"><b>Członków</b></td>
-		<td width="1%" class="frightu" align="right" nowrap>&nbsp;</td>
+		<td width="97%" class="fbt pad tleft" align="left"><b>{trans("Name:")}</b><br>{trans("Description:")}</td>
+		<td width="1%" class="fbt pad tleft" align="center" style="vertical-align:bottom;"><b>Członków</b></td>
+		<td width="1%" class="frightu pad tleft" align="right" nowrap>&nbsp;</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=listdata loop=$listdata}
 	<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	
@@ -56,19 +56,19 @@
 			{$listdata[listdata].id|string_format:"%03d"}
 		</td>
 		
-		<td width="97%">
+		<td width="97%" class="pad tleft" align="left">
 			<b>{$listdata[listdata].name}</b>
 			{if $listdata[listdata].description}<br>{$listdata[listdata].description|nl2br}{/if}
 		</td>
 		
-		<td width="1%" align="center">
+		<td width="1%" align="center" class="pad tleft">
 			{$listdata[listdata].customerscount} 
 		</td>
 		
-		<td width="1%" class="fright" align="right">
+		<td width="1%" class="fright pad tleft" align="right">
 			<nobr>
 			{if $listdata[listdata].customerscount}
-				<img src="img/empty.gif" width="16">
+				<img src="img/deleteoff.gif" width="16">
 			{else}
 			    <img src="img/delete.gif" onclick="editorigindelete({$listdata[listdata].id},'{$listdata[listdata].name}');" style="cursor:pointer;" alt="[ {trans('Delete')} ]" title="[ {trans('Delete')} ]"></a>
 			{/if}

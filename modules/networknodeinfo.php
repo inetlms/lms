@@ -42,6 +42,8 @@ $layout['pagetitle'] = 'Węzeł : '.$networknode['name'];
 $tucklist[] = array('tuck' => 'interface', 'name' => 'Interfejsy sieciowe', 'link' => '?m=networknodeinfo&tuck=interface&idn='.$idn, 'tip' => 'Lista urządzeń sieciowych przypisanych do tego węzła');
 $tucklist[] = array('tuck' => 'costs', 'name' => trans('Koszty'), 'link' => '?m=networknodeinfo&tuck=costs&idn='.$idn, 'tip' => trans('Koszty związane z utrzymaniem samego węzła'));
 $tucklist[] = array('tuck' => 'annex', 'name' => 'Załączniki', 'link' => '?m=networknodeinfo&tuck=annex&idn='.$idn, 'tip' => 'Załączone dokumenty, pliki itp. do węzła');
+$tucklist[] = array('tuck' => 'group', 'name' => 'Grupy', 'link' => '?m=networknodeinfo&tuck=group&idn='.$idn, 'tip' => 'Grupy do jakich należy węzeł');
+
 $SMARTY->assign('tucklist',$tucklist);
 
 $tuck = (isset($_GET['tuck']) ? $_GET['tuck'] : NULL);
@@ -65,9 +67,45 @@ elseif ($tuck == 'interface') {
     }
     
     if (isset($_GET['addinterface']) && !empty($_GET['addinterface'])) {
-	$LMS->add_interface_for_networknode($idn,$_GET['addinterface']);
+	$idi = intval($_GET['addinterface']); // id interfejsu sieciowego;
+	$pri = (isset($_GET['pri']) ? $_GET['pri'] : '-1');
+	$prn = (isset($_GET['prn']) ? $_GET['prn'] : '-1');
+	
+	$LMS->add_interface_for_networknode($idn,$idi);
+	
+	if ($pri != '-1') 
+	    $DB->Execute('UPDATE netdevices SET invprojectid = ? WHERE id = ?;',array(($pri ? $pri : NULL),$idi));
+	
+	if ($prn != '-1')
+	    $DB->Execute('UPDATE nodes SET invprojectid = ? WHERE netdev = ?;',array(($prn ? $prn : NULL),$idi));
+	
 	$networknode = $LMS->GetNetworkNode($idn);
 	$SMARTY->assign('networknode',$networknode);
+    }
+    
+    if (isset($_GET['updateinterface']) && !empty($_GET['updateinterface'])) {
+	if (isset($_GET['save'])) {
+	    $idi = intval($_GET['updateinterface']); // id interfejsu sieciowego;
+	    $pri = (isset($_GET['pri']) ? $_GET['pri'] : '-1'); // projekt dla interfejsów
+	    $prn = (isset($_GET['prn']) ? $_GET['prn'] : '-1'); // projekt dla komputerów
+	    $nts = (isset($_GET['nts']) ? $_GET['nts'] : '-1'); // status projektu dla interfejsów
+	    
+	    if ($pri != '-1') 
+		$DB->Execute('UPDATE netdevices SET invprojectid = ? WHERE id = ?;',array(($pri ? $pri : NULL),$idi));
+	
+	    if ($prn != '-1')
+		$DB->Execute('UPDATE nodes SET invprojectid = ? WHERE netdev = ?;',array(($prn ? $prn : NULL),$idi));
+	    
+	    if ($nts != '-1') {
+		if ($nts == '-2') $status = $DB->getOne('SELECT status FROM networknode WHERE id = ? LIMIT 1;',array($idn));
+		else $status = $nts;
+		$DB->Execute('UPDATE netdevices SET status = ? WHERE id = ?;',array(($status ? $status : 0),$idi));
+	    }
+	
+	} else {
+	    $SMARTY->assign('intinfo',$DB->getRow('SELECT id, name FROM netdevices WHERE id = ? LIMIT 1;',array($_GET['updateinterface'])));
+	    $SMARTY->assign('updateint',true);
+	}
     }
     
     if ($count = $DB->GetAll('SELECT id FROM netdevices WHERE networknodeid = ? ORDER BY name ;',array($idn)))
@@ -78,6 +116,7 @@ elseif ($tuck == 'interface') {
     $SMARTY->assign('npnetdev',$npnetdev);
     $SMARTY->assign('opencard',true);
     $SMARTY->assign('netdevlist',$netdevlist);
+    $SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE type = 0 ORDER BY name ASC;'));
     $SMARTY->display('networknodeinfonetdevbox.html');
     die;
 }
@@ -277,6 +316,34 @@ elseif ($tuck == 'annex') {
     include(MODULES_DIR.'/annex.inc.php');
     $SMARTY->display('annex.html');
     die;
+}
+
+elseif ($tuck == 'group') {
+    $layout['popup'] = $layout['ajax'] = true;
+    
+    if (isset($_GET['addgroup']) && !empty($_GET['addgroup'])) {
+	$DB->Execute('INSERT INTO networknodeassignments (networknodeid, networknodegroupid) VALUES (?,?);',array($idn,intval($_GET['addgroup'])));
+    }
+    
+    if (isset($_GET['delgroup']) && !empty($_GET['delgroup'])) {
+	$DB->Execute('DELETE FROM networknodeassignments WHERE networknodeid = ? AND networknodegroupid = ?;',array($idn,intval($_GET['delgroup'])));
+    }
+    
+    $othergroups = $LMS->GetNetworkNodeGroupNamesWithoutNode($idn);
+    $SMARTY->assign('othergroups',$othergroups);
+    
+    $groups = $DB->getAll('SELECT ng.id, ng.name, ng.description 
+			    FROM networknodeassignments na 
+			    JOIN networknodegroups ng ON (ng.id = na.networknodegroupid)
+			    WHERE na.networknodeid = ? 
+			    ORDER BY ng.name ASC;',array($idn));
+    $SMARTY->assign('groups',$groups);
+    
+    
+    $SMARTY->display('networknodegroup.html');
+
+
+die;
 }
 
 $tuck = (isset($_GET['tuck']) ? $_GET['tuck'] : $SESSION->get('net_node_tuck','base'));

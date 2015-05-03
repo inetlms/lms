@@ -41,17 +41,17 @@ $DB->Execute("
 ");
 
 // netlink and node link speed support
-$DB->Execute("DROP VIEW vnodes");
-$DB->Execute("DROP VIEW vmacs");
+$DB->Execute("DROP VIEW IF EXISTS vnodes;");
+$DB->Execute("DROP VIEW IF EXISTS vmacs");
 
 $DB->Execute("ALTER TABLE netlinks ADD speed int(11) DEFAULT '100000' NOT NULL");
 $DB->Execute("ALTER TABLE nodes ADD linkspeed int(11) DEFAULT '100000' NOT NULL");
 
-$DB->Execute("CREATE VIEW vnodes AS
+$DB->Execute("CREATE OR REPLACE VIEW vnodes AS
 		SELECT n.*, m.mac
 		FROM nodes n
 		LEFT JOIN vnodes_mac m ON (n.id = m.nodeid)");
-$DB->Execute("CREATE VIEW vmacs AS
+$DB->Execute("CREATE OR REPLACE VIEW vmacs AS
 		SELECT n.*, m.mac, m.id AS macid
 		FROM nodes n
 		JOIN macs m ON (n.id = m.nodeid)");

@@ -24,6 +24,9 @@
  *  $Id$
  */
 
+if (ini_get('mbstring.func_overload') != '0') {
+    die('Prosze zmienic wartosc zmiennej mbstring.func_overload = 0 w /etc/php5/apache2/php.ini i przeladowac serwer apache');
+}
 if(!is_dir(SMARTY_COMPILE_DIR))
 	die('Missing directory <B>'.SMARTY_COMPILE_DIR.'</B>. Can anybody make them?');
 
@@ -59,6 +62,18 @@ if(!is_dir(UPLOADFILES_DIR))
 	
 if(!is_writable(UPLOADFILES_DIR))
 	die('Can\'t write to directory <B>'.UPLOADFILES_DIR.'</B>. Run: <BR><PRE>chown '.posix_geteuid().':'.posix_getegid().' '.UPLOADFILES_DIR."\nchmod 755 ".UPLOADFILES_DIR.'</PRE>This helps me to work. Thanks.');
+
+//if(!is_dir(PLUG_DIR))
+//	die('Missing directory <B>'.PLUG_DIR.'</B>. Can anybody make them?');
+	
+//if(!is_writable(PLUG_DIR))
+//	die('Can\'t write to directory <B>'.PLUG_DIR.'</B>. Run: <BR><PRE>chown '.posix_geteuid().':'.posix_getegid().' '.PLUG_DIR."\nchmod 755 ".PLUG_DIR.'</PRE>This helps me to work. Thanks.');
+
+if(!is_dir(INVOICE_DIR))
+	die('Missing directory <B>'.INVOICE_DIR.'</B>. Can anybody make them?');
+	
+if(!is_writable(INVOICE_DIR))
+	die('Can\'t write to directory <B>'.INVOICE_DIR.'</B>. Run: <BR><PRE>chown '.posix_geteuid().':'.posix_getegid().' '.INVOICE_DIR."\nchmod 755 ".INVOICE_DIR.'</PRE>This helps me to work. Thanks.');
 
 
 ?>

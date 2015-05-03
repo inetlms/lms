@@ -17,7 +17,7 @@
 	</tr>
 </thead>
 </tbody>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=netlist loop=$netlist}
 	<tr class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 		<td class="fleft" width="96%" onclick="return self.location.href='?m=v_netinfo&id={$netlist[netlist].id}';">

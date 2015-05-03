@@ -37,10 +37,20 @@ $SMARTY->assignByRef('othercustomergroups', $othercustomergroups);
 $balancelist = $LMS->GetCustomerBalanceList($customerid);
 $SMARTY->assignByRef('balancelist', $balancelist);
 
+$taxeslist = $LMS->GetTaxes();
+$SMARTY->assignByRef('taxeslist', $taxeslist);
+
 $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 
-$layout['pagetitle'] = trans('Contractor Info: $a',$customerinfo['customername']);
+$annex_info = array('section'=>'contractor','ownerid'=>$customerid);
+$SMARTY->assign('annex_info',$annex_info);
+include(MODULES_DIR.'/customer_xajax.inc.php');
+$LMS->InitXajax();
+$LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
+$SMARTY->assign('xajax', $LMS->RunXajax());
 
+
+$layout['pagetitle'] = trans('Contractor Info: $a',$customerinfo['customername']);
 $SMARTY->display('contractorinfo.html');
 
 ?>

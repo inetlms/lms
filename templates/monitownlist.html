@@ -83,7 +83,7 @@
 	    <b>Link</b>
 	</td>
     </tr>
-    {cycle values="light,lucid" print=false}
+    {cycle values="lucid,light" print=false}
     {section name=devlist loop=$monitdevlist}
 	{assign var='indeks' value=$smarty.section.devlist.index}
 	{assign var='monit' value=$monitdevlist[devlist].active}

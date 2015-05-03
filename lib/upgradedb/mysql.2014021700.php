@@ -23,10 +23,13 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("INSERT INTO uiconfig (section, var, value) VALUES(?, ?, ?)",
-	array('userpanel', 'allow_message_add_to_closed_tickets', '1'));
-$DB->Execute("INSERT INTO uiconfig (section, var, value) VALUES(?, ?, ?)",
-	array('userpanel', 'limit_ticket_movements_to_selected_queues', '0'));
+//$DB->Execute("INSERT INTO uiconfig (section, var, value) VALUES(?, ?, ?)",
+//	array('userpanel', 'allow_message_add_to_closed_tickets', '1'));
+//$DB->Execute("INSERT INTO uiconfig (section, var, value) VALUES(?, ?, ?)",
+//	array('userpanel', 'limit_ticket_movements_to_selected_queues', '0'));
+
+$DB->addconfig('userpanel', 'allow_message_add_to_closed_tickets', '1');
+$DB->addconfig('userpanel', 'limit_ticket_movements_to_selected_queues', '0');
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014021700', 'dbversion'));
 

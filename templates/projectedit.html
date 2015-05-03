@@ -1,0 +1,269 @@
+{include file="header.html"}
+<!--// start : projectedit.html //-->
+{$xajax}
+
+{title value=$layout.pagetitle link="<a href='?m=projectlist'><b>Lista&nbsp;projektów&nbsp;<img src='img/list.png' alt=''></a>"}
+
+<form name="projectdata" id="projectdata" method="POST">
+    <input type="hidden" name="projectdata[id]" value="{$projectinfo.id}">
+    <input type="hidden" name="projectdata[type]" value="0">
+
+    <table width="100%" class="table" cellpadding="3">
+	<tr class="dark">
+	    <td width="100%" class="fall boxtop pad" align="left" colspan="2">
+		{if $projectinfo.id}{trans('Edycja projektu')} : {$projectinfo.name|truncate:50:"...":true}{else}{trans('Nowy projekt')}{/if}
+	    </td>
+	</tr>
+	
+	<tr class="light">
+	    <!--// lewa strona //-->
+	    <td width="50%" class="pad fleft" style="vertical-align:top;" align="left">
+		<table width="100%" cellpadding="5">
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Nazwa projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <input type="text" name="projectdata[name]" class="required" placeholder="{trans('-- REQUIRED --')}" id="id_name" maxlength="50" style="width:320px;" value="{$projectinfo.name|escape}">
+			    <div id="warn_name" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Firma')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left" style="vertical-align:top;" nowrap>
+			    <input type="text" name="projectdata[division]" id="id_division" style="width:220px;" class="required" placeholder="{trans('-- REQUIRED --')}" value="{$projectinfo.division|escape}">
+			    <select name="projectdata[divisionid]" id="id_divisionid" style="width:100px;">
+				<option value=""></option>
+				{section name='divlist' loop=$divlist}
+				<option value='{$divlist[divlist].name}'{if $divlist[divlist].name == $projectinfo.division} selected{/if}>{$divlist[divlist].shortname}</option>
+				{/section}
+			    </select>
+			    
+			    <div id="warn_division" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Województwo')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left" style="vertical-align:top;" nowrap>
+			    <input type="text" name="projectdata[states]" id="id_states" style="width:220px;" class="required" placeholder="{trans('-- REQUIRED --')}" value="{$projectinfo.states|escape}">
+			    <select name="projectdata[statesid]" id="id_statesid" style="width:100px;">
+				<option value=""></option>
+				{section name='states' loop=$states}
+				<option value='{$states[states].name}'{if $states[states].name == $projectinfo.states} selected{/if}>{$states[states].name}</option>
+				{/section}
+			    </select>
+			    <div id="warn_states" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b><span class="tiphelp" {tip text="Czy projekt jest współfinansowany ze środków Unijnych"}>{trans('Współfinansowany')}</span></b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    {foreach $_TN as $item => $key}<input type="radio" name="projectdata[eu]" id="id_eu_{$item}" value="{$item}"{if $projectinfo.eu == $item} checked {/if} onclick="xajax_display_required({$item});"><label for="id_eu_{$item}">&nbsp;{$key}</label>{/foreach}
+			</td>
+		    </tr>
+		    
+		    <tr id="tr_program" style="display:none;">
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Program')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <select name="projectdata[program]" id="id_program" style="min-width:120px;" onchange="change_program();">
+				<option value="0">{trans('-- REQUIRED --')}</option>
+				{foreach $_PROJECTPROGRAM as $item => $key}
+				<option value="{$item}">{$key}</option>
+				{/foreach}
+			    </select>
+			    <div id="warn_program" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr id="tr_action" style="display:none;">
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Działanie')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <div id="select_action">
+			    <select name="projectdata[action]" id="id_action" style="min-width:120px;" disabled>
+				<option value="0">{trans('wybierz program')}</option>
+			    </select>
+			    </div>
+			    <div id="warn_action" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr id="tr_contractdate" style="display:none;">
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b><span class="tiphelp" {tip text="Data podpisania umowy, wymagane w przypadku współfinansowania projektu ze środków Unijnych"}>{trans('Data pod. umowy')}</span></b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <input type="text" class="tcal required" name="projectdata[contractdate]" value="{if $projectinfo.contractdate}{$projectinfo.contractdate|date_format:'Y-m-d'}{/if}" placeholder="RRRR-MM-DD" style="width:120px;" id="id_contractdate">
+			    <div id="warn_contractdate" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b><span class="tiphelp" {tip text="Planowana data rozpoczęcia inwestycji"}>{trans('Pl. data rozpoczęcia')}</span></b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <input type="text" class="tcal" name="projectdata[fromdate]" value="{if $projectinfo.fromdate}{$projectinfo.fromdate|date_format:'Y-m-d'}{/if}" placeholder="RRRR-MM-DD" style="width:120px;" id="id_fromdate">
+			    <div id="warn_fromdate" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b><span class="tiphelp" {tip text="Planowana data zakończenia inwestycji, wymagana jeżeli projekt jest współfinansowany ze środków Unijnych"}>{trans('Pl. data zakończenia')}</span></b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <input type="text" class="tcal" name="projectdata[todate]" value="{if $projectinfo.todate}{$projectinfo.todate|date_format:'Y-m-d'}{/if}" placeholder="RRRR-MM-DD" style="width:120px;" id="id_todate">
+			    <div id="warn_todate" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Wartość projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <input type="text" name="projectdata[value]" value="{if $projectinfo.value != '0.00'}{$projectinfo.value}{/if}" id="id_value" style="width:100px;text-align:right;" >
+			    <div id="warn_value" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Środki własne')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <input type="text" name="projectdata[ownvalue]" value="{if $projectinfo.ownvalue != '0.00'}{$projectinfo.ownvalue}{/if}" id="id_ownvalue" style="width:100px;text-align:right;">
+			    <div id="warn_ownvalue" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    
+		    
+		</table>
+	    </td>
+	    <!--// prawa strona //-->
+	    <td width="50%" class="pad fright" style="vertical-align:top;" align="left">
+		<table width="100%" cellpadding="5">
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Numer projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <input type="text" name="projectdata[number]" value="{$projectinfo.number|escape}" size="40" id="id_number" class="required" placeholder="{trans('-- REQUIRED --')}" style="width:280px;">
+			    <div id="warn_number" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr id="tr_contract" style="display:none;">
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Numer umowy')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <input type="text" name="projectdata[contract]" value="{$projectinfo.contract|escape}" id="id_contract" class="required" maxlength="30" style="width:280px;" placeholder="{trans('-- REQUIRED --')}">
+			    <div id="warn_contract" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Tytuł projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <textarea name="projectdata[title]" id="id_title" maxlength="250" style="width:280px;">{$projectinfo.title|escape}</textarea>
+			    <div id="warn_title" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Zakres projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <textarea name="projectdata[scope]" id="id_scope" maxlength="250" style="width:280px;">{$projectinfo.scope|escape}</textarea>
+			    <div id="warn_scope" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Dodatkowa<br>informacja')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <textarea name="projectdata[description]" id="id_description" style="width:280px;">{$projectinfo.description|escape}</textarea>
+			    <div id="warn_description" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Status projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <select name="projectdata[status]" id="id_status" style="min-width:120px;">
+				{foreach $_NSTATUS as $item => $key}
+				<option value="{$item}" {if $projectinfo.status == $item} selected {/if}>{$key}</option>
+				{/foreach}
+			    </select>
+			    <div id="warn_status" style="color:red;"></div>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b><span class="tiphelp" {tip text="Uwzględnij projekt w raporcie SIIS"}>{trans('SIIS')}</span></b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <select name="projectdata[siis]" id="id_siis" style="min-width:120px;text-align:center;">
+				<option value="1" {if $projectinfo.siis || !$projectinfo.id}selected{/if}>{trans('YES')}</option>
+				<option value="0" {if !$projectinfo.siis && $projectinfo.id}selected{/if}>{trans('NO')}</option>
+			    </select>
+			</td>
+		    </tr>
+		
+		</table>
+	    </td>
+	</tr>
+	
+	<tr class="dark">
+	    <td width="100%" class="fall pad" align="right" colspan="2">
+		<a href="javascript:void(0);" onclick="xajax_save_project(xajax.getFormValues('projectdata'));">{trans('Save')} <img src="img/save.gif" alt=""></a>
+		<a href="javascript:void(0);" onclick="self.location.href='?m={if $projectinfo.id}projectinfo&id={$projectinfo.id}{else}projectlist{/if}';">{trans('Cancel')} <img src="img/cancel.gif" alt=""></a>
+	    </td>
+	</tr>
+    </table>
+    
+    {literal}
+	<script type="text/javascript" language="JavaScript">
+	<!--
+	
+		$("#id_statesid").change(function() {
+		    document.getElementById('id_states').value = document.getElementById('id_statesid').value;
+		});
+		
+		$("#id_divisionid").change(function() {
+		    document.getElementById('id_division').value = document.getElementById('id_divisionid').value;
+		});
+		
+		$("#id_statesid").change();
+		$("#id_divisionid").change();
+		
+		function change_program()
+		{
+		    var prog = document.getElementById('id_program');
+		    if (prog.value == '0') 
+			prog.className = 'required_select';
+		    else
+			prog.className = '';
+		    xajax_select_action(prog.value);
+		    
+		}
+		
+		{/literal}{if $projectinfo.id}{literal}
+		    xajax_set_default('{/literal}{$projectinfo.id}{literal}');
+		{/literal}{/if}{literal}
+		
+		if (document.getElementById('id_program').value == '0') document.getElementById('id_program').className = 'required_select';  else document.getElementById('id_program').className = '';
+	//-->
+	</script>
+    {/literal}
+
+</form>
+
+<!--// end : projectedit.html //-->
+{include file="footer.html"}

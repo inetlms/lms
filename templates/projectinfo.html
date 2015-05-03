@@ -1,0 +1,162 @@
+{include file="header.html"}
+<!--// start : projectinfo.html //-->
+
+{title value=$layout.pagetitle link="<a href='?m=projectlist'><b>Lista projektów</b> <img src='img/list.png' alt=''></a>&nbsp;&nbsp;<a href='?m=projectadd'><b>Nowy projekt</b>&nbsp;<img src='img/add.gif' alt=''></a>"}
+
+    <table width="100%" class="table" cellpadding="3">
+	<tr class="dark">
+	    <td width="100%" class="fall boxtop pad" align="left" colspan="2">{trans('Project')} : {$projectinfo.name}
+	    </td>
+	</tr>
+	
+	<tr class="light">
+	    <!--// lewa strona //-->
+	    <td width="50%" class="pad fleft" style="vertical-align:top;" align="left">
+		<table width="100%" cellpadding="5">
+		{if $projectinfo.name}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Nazwa projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{$projectinfo.name|escape}</td>
+		    </tr>
+		{/if}
+		{if $projectinfo.division}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Firma/oddział')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;" nowrap>{$projectinfo.division|escape}</td>
+		    </tr>
+		{/if}
+		{if $projectinfo.states}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Województwo')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;" nowrap>{$projectinfo.states|escape}</td>
+		    </tr>
+		{/if}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b><span class="tiphelp" {tip text="Czy projekt jest współfinansowany ze środków Unijnych"}>{trans('Współfinansowany')}</span></b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{assign var='tmp' value=$projectinfo.eu}<span{if $projectinfo.siis && !$projectinfo.eu} style="color:blue;font-weight:bold;"{/if}{if !$projectinfo.siis && $projectinfo.eu} style="color:red; font-weight:bold;"{/if}>{$_TN.$tmp}</span></td>
+		    </tr>
+		{if $projectinfo.program}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Program')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{assign var='tmp' value=$projectinfo.program}{$_PROJECTPROGRAM.$tmp}</td>
+		    </tr>
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Działanie')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    {assign var='program' value=$projectinfo.program}
+			    {assign var='action' value=$projectinfo.action}
+			    {$_PROJECTACTION.$program.$action}
+			</td>
+		    </tr>
+		{/if}
+		{if $projectinfo.contractdate}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b><span class="tiphelp" {tip text="Data podpisania umowy, wymagane w przypadku współfinansowania projektu ze środków Unijnych"}>{trans('Data pod. umowy')}</span></b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{$projectinfo.contractdate|date_format:'Y-m-d'}</td>
+		    </tr>
+		{/if}
+		{if $projectinfo.fromdate}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b><span class="tiphelp" {tip text="Planowana data rozpoczęcia inwestycji"}>{trans('Pl. data rozpoczęcia')}</span></b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{$projectinfo.fromdate|date_format:'Y-m-d'}</td>
+		    </tr>
+		{/if}
+		{if $projectinfo.todate}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b><span class="tiphelp" {tip text="Planowana data zakończenia inwestycji, wymagana jeżeli projekt jest współfinansowany ze środków Unijnych"}>{trans('Pl. data zakończenia')}</span></b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{$projectinfo.todate|date_format:'Y-m-d'}</td>
+		    </tr>
+		{/if}
+		{if $projectinfo.value != '0.00'}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Wartość projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{$projectinfo.value|money_format}</td>
+		    </tr>
+		{/if}
+		{if $projectinfo.ownvalue != '0.00'}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Środki własne')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{$projectinfo.ownvalue|money_format}</td>
+		    </tr>
+		{/if}
+		</table>
+	    </td>
+	    <!--// prawa strona //-->
+	    <td width="50%" class="pad fright" style="vertical-align:top;" align="left">
+		<table width="100%" cellpadding="5">
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Numer projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{$projectinfo.number|escape}</td>
+		    </tr>
+		{if $projectinfo.contract}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Numer umowy')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{$projectinfo.contract|escape}</td>
+		    </tr>
+		{/if}
+		{if $projectinfo.title}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Tytuł projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <table cellpadding="5"><tr><td class="fall superlight" style="width:280px;">{$projectinfo.title|escape}</td></tr></table>
+			</td>
+		    </tr>
+		{/if}
+		{if $projectinfo.scope}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Zakres projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <table cellpadding="5"><tr><td class="fall superlight" style="width:280px;">{$projectinfo.scope|escape}</td></tr></table>
+			</td>
+		    </tr>
+		{/if}
+		{if $projectinfo.description}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Dodatkowa<br>informacja')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">
+			    <table cellpadding="5"><tr><td class="fall superlight" style="width:280px; min-height:40px;">{$projectinfo.description|escape}</td></tr></table>
+			</td>
+		    </tr>
+		{/if}
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b>{trans('Status projektu')}</b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{assign var='tmp' value=$projectinfo.status}<span{if $tmp == $smarty.const.NSTATUS_CLOSED} style="font-weight:bold;color:green;"{/if}>{$_NSTATUS.$tmp}</span></td>
+		    </tr>
+		    
+		    <tr>
+			<td width="1%" nowrap align="left" style="vertical-align:top;"><b><span class="tiphelp" {tip text="Uwzględnij projekt w raporcie SIIS"}>{trans('SIIS')}</span></b></td>
+			<td width="1%" nowrap align="left" class="pad10" style="vertical-align:top;"><b>:</b></td>
+			<td width="98%" align="left"  style="vertical-align:top;">{assign var='tmp' value=$projectinfo.siis}<span{if $projectinfo.siis && !$projectinfo.eu} style="color:blue;font-weight:bold;"{/if}{if !$projectinfo.siis && $projectinfo.eu} style="color:red; font-weight:bold;"{/if}>{$_TN.$tmp}</span></td>
+		    </tr>
+		
+		</table>
+	    </td>
+	</tr>
+	
+	<tr class="dark">
+	    <td width="100%" class="fall pad" align="right" colspan="2">
+		<a href="javascript:void(0);" onclick="self.location.href='?m=projectedit&id={$projectinfo.id}';">{trans('Edit')} <img src="img/edit.gif" alt=""></a>
+	    </td>
+	</tr>
+    </table>
+    
+
+<!--// end : projectinfo.html //-->
+{include file="footer.html"}

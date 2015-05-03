@@ -2,6 +2,28 @@
 
 require_once(LIB_DIR.'/LMS.Hiperus.class.php');
 
+if (defined('USERPANEL_SETUPMODE'))
+{
+    function module_setup()
+    {
+	global $SMARTY,$LMS;
+        $SMARTY->assign('hide_c5_passwd', $LMS->CONFIG['userpanel']['hide_c5_passwd']);
+	$SMARTY->display('module:voiphiperus:setup.html');
+    }
+
+    function module_submit_setup()
+    {
+	global $SMARTY,$DB;
+	
+	if ($DB->GetOne('SELECT 1 FROM uiconfig WHERE section=? AND var=? LIMIT 1;',array('userpanel','hide_c5_passwd'))) {
+	    $DB->Execute('UPDATE uiconfig SET value = ? WHERE section = ? AND var = ?;',array(($_POST['hide_c5_passwd'] ? 1 : 0),'userpanel','hide_c5_passwd'));
+	} else {
+	    $DB->Execute('INSERT INTO uiconfig (section,var,value) VALUES (?,?,?);',array('userpanel','hide_c5_passwd',($_POST['hide_c5_passwd'] ? 1 : 0)));
+	}
+	header("Location: ?m=userpanel&module=voiphiperus");
+    }
+}
+
 function module_main() {
 
     global $LMS,$HIPERUS,$SMARTY,$SESSION, $DB, $CONFIG;
@@ -42,7 +64,8 @@ function module_main() {
 
 	$info['terminal'] = $HIPERUS->GetTerminalOneOrList(NULL,$cusid);
 	$info['pstn'] = $HIPERUS->GetPSTNOneOrList(NULL,$cusid);
-
+	
+	$SMARTY->assign('hide_c5_passwd',$DB->GetOne('SELECT value FROM uiconfig WHERE section=? AND var=? LIMIT 1;',array('userpanel','hide_c5_passwd')));
 	$SMARTY->assign('info',$info);
 	$SMARTY->assign('miesiace',array('1'=>'styczeń','2'=>'luty','3'=>'marzec','4'=>'kwiecień','5'=>'maj','6'=>'czerwiec','7'=>'lipiec','8'=>'sierpień','9'=>'wrzesień','10'=>'październik','11'=>'listopad','12'=>'grudzień'));
     }

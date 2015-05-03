@@ -26,8 +26,11 @@
 
 $DB->BeginTrans();
 
-$DB->Execute("ALTER TABLE networknode ADD available_surface TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'możliwość udostępnienia powierzchni obcym';");
-$DB->Execute("ALTER TABLE networknode ADD eu TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'współfinansowany przez EU';");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'networknode','available'))) 
+	$DB->Execute("ALTER TABLE networknode ADD available_surface TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'możliwość udostępnienia powierzchni obcym';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'networknode','eu'))) 
+	$DB->Execute("ALTER TABLE networknode ADD eu TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'współfinansowany przez EU';");
 
 
 $DB->Execute("

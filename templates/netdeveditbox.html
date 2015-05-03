@@ -13,7 +13,7 @@
 	<input type="hidden" id="old_teryt" value="{$netdevinfo.teryt}">
 	
 	<input type="submit" class="hiddenbtn">
-	<tr class="dark">
+	<tr class="dark boxtop">
 		<td width="1%" class="fleftu">
 			<img src="img/netdev.gif" alt="">
 		</td>
@@ -31,12 +31,8 @@
 		                        <td width="50%" style="vertical-align:top;">
 		                                <table width="100%" cellpadding="3">
 	<tr class="light">
-		<td width="1%">
-		    <img src="img/network-node.png" alt="">
-		</td>
-		<td width="1%">
-		    <b>Węzeł</b>
-		</td>
+		<td width="1%"><img src="img/network-node.png" alt=""></td>
+		<td width="1%"><b>Węzeł</b></td>
 		<td width="98%">
 		    {if $networknodelist}
 			<select name="netdev[networknode]" style="min-width:160px;" onchange="xajax_update_location_interface(this.value);">
@@ -49,57 +45,50 @@
 		    {/if}
 		</td>
 	</tr>
+	{if get_form('netdev.producer')}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/producer.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Producer:")}</b>
-		</td>
+		<td width="1%"><img src="img/producer.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Producer:")}</b></td>
 		<td width="98%">
 			<input type="text" name="netdev[producer]" value="{$netdevinfo.producer}" {tip text="Enter device producer (optional)"}>
 		</td>
 	</tr>
 	<tr class="light">
-		<td width="1%">
-			<img src="img/netdev_model.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Model:")}</b>
-		</td>
+		<td width="1%"><img src="img/netdev_model.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Model:")}</b></td>
 		<td width="98%">
 			<input type="text" name="netdev[model]" value="{$netdevinfo.model}" {tip text="Enter model name (optional)" }>
+			<a href="javascript: void(0);" onclick="return netdevmodelchoosewin('netdev', 'netdevedit', document.forms['netdevedit'].elements['netdev[netdevicemodelid]'].value, document.forms['netdevedit'].elements['netdev[producer]'].value, document.forms['netdevedit'].elements['netdev[model]'].value)" {tip text="Click to select model"}>&raquo;&raquo;&raquo;</a>
+			<input type="hidden" name="netdev[netdevicemodelid]" value="{$netdev.netdevicemodelid}">
+			
 		</td>
 	</tr>
+	{else}
+	    <input type="hidden" name="netdev[producer]" value="{$netdevinfo.producer}">
+	    <input type="hidden" name="netdev[model]" value="{$netdevinfo.model}">
+	{/if}
+	
+	{if get_form('netdev.sn')}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/serialnumber.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Serial number:")}</b>
-		</td>
+		<td width="1%"><img src="img/serialnumber.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Serial number:")}</b></td>
 		<td width="98%">
 			<input type="text" name="netdev[serialnumber]" value="{$netdevinfo.serialnumber}" {tip text="Enter serial number (optional)"}>
 		</td>
 	</tr>
+	{else}
+	    <input type="hidden" name="netdev[serialnumber]" value="{$netdevinfo.serialnumber}">
+	{/if}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/port.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Ports number:")}</b>
-		</td>
+		<td width="1%"><img src="img/port.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Ports number:")}</b></td>
 		<td width="98%">
 			<input type="text" name="netdev[ports]" value="{if $netdevinfo.ports}{$netdevinfo.ports}{/if}" {tip trigger="ports" text="Enter number of ports (optional)"}>
 		</td>
 	</tr>
 	<tr class="light">
-		<td width="1%">
-			<img src="img/home.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Location:")}</b>
-		</td>
+		<td width="1%"><img src="img/home.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Location:")}</b></td>
 		<td width="98%" nowrap>
 		    <input type="text" size="30" value="{$netdevinfo.location}" id="location" name="netdev[location]"  {tip text="Enter location (optional)" trigger="location"}>
 			<a href="javascript: void(0);" id="searchteryt" onclick="if (check_teryt()) return locationchoosewin('netdev', 'netdevedit', document.forms['netdevedit'].elements['netdev[location_city]'].value,  document.forms['netdevedit'].elements['netdev[location_street]'].value)" {tip text="Click to select location"}>&raquo;&raquo;&raquo;</a>
@@ -111,101 +100,70 @@
 			<div id="checkteryt"><input type="checkbox" name="netdev[teryt]" id="teryt" onchange="check_teryt('location')"{if $netdevinfo.teryt} checked{/if}><label for="teryt">{trans("TERRIT-DB")}</label></div>
 		</td>
 	</tr>
+	{if get_form('netdev.gps')}
 	<tr>
-		<td width="1%">
-			<img src="img/home.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("GPS longitude:")}</b>
-		</td>
+		<td width="1%"><img src="img/home.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("GPS longitude:")}</b></td>
 		<td width="98%" nowrap>
 			<input id="longitude" type="text" name="netdev[longitude]" value="{$netdevinfo.longitude}" {tip text="Enter device longitude (optional)" trigger="longitude"}>
 			<a href="javascript: void(0);" id="searchlongitude" onclick="return gpscoordschoosewin(document.netdevedit.elements['netdev[longitude]'], document.netdevedit.elements['netdev[latitude]']);" {tip text="Click to select gps coordinates from map"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
 	<tr>
-		<td width="1%">
-			<img src="img/home.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("GPS latitude:")}</b>
-		</td>
+		<td width="1%"><img src="img/home.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("GPS latitude:")}</b></td>
 		<td width="98%" nowrap>
 			<input id="latitude" type="text" name="netdev[latitude]" value="{$netdevinfo.latitude}" {tip text="Enter device latitude (optional)" trigger="latitude"}>
 			<a href="javascript: void(0);" id="searchlatitude" onclick="return gpscoordschoosewin(document.netdevedit.elements['netdev[longitude]'], document.netdevedit.elements['netdev[latitude]']);" {tip text="Click to select gps coordinates from map"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>
+	{else}
+	    <input type="hidden" name="netdev[longitude]" value="{$netdevinfo.longitude}">
+	    <input type="hidden" name="netdev[latitude]" value="{$netdevinfo.latitude}">
+	{/if}
 {if check_conf('phpui.radius')}
 	<tr class="light">
-		<td width="1%">
+	    <td width="1%" style="text-align:left;vertical-align:top;">
 			<img src="img/radius.gif" alt="">
 		</td>
-		<td width="1%" nowrap>
-			<b><span class="tiphelp" {tip text="Nazwa identyfikacyjna urządzenia"}>Nazwa</span></b>
-		</td>
-		<td width="98%">
-			<input type="text" name="netdev[shortname]" value="{$netdevinfo.shortname}">
-		</td>
-	</tr>
-	<tr class="light">
-		<td width="1%">
-			<img src="img/radius.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Type:")}</b>
-		</td>
-		<td width="98%">
-			<select name="netdev[nastype]" {tip text="Select type (optional)" trigger="nastype"}>
-			<option value="0"></option>
-			{foreach from=$nastype item=item key=key}
-			<option value="{$key}" {if $key==$netdevinfo.nastype} selected{/if}>{$item.name}</option>
-			{/foreach}
-			</select>
-		</td>
-	</tr>
-	<tr class="light">
-		<td width="1%">
-			<img src="img/radius.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Max clients:")}</b>
-		</td>
-		<td width="98%">
-			<input type="text" name="netdev[clients]" value="{if $netdevinfo.clients}{$netdevinfo.clients}{/if}" {tip text="Enter max clients (optional)"}>
-		</td>
-	</tr>
-	<tr class="light">
-		<td width="1%">
-			<img src="img/radius.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Secret:")}</b>
-		</td>
-		<td width="98%">
-			<input type="text" name="netdev[secret]" value="{$netdevinfo.secret}" {tip text="Enter secret (optional)"}>
-		</td>
-	</tr>
-	<tr class="light">
-		<td width="1%">
-			<img src="img/radius.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Community:")}</b>
-		</td>
-		<td width="98%">
-			<input type="text" name="netdev[community]" value="{$netdevinfo.community}" {tip text="Enter community (optional)"}>
-		</td>
-	</tr>
-	<tr class="light">
-		<td width="1%">
-			<img src="img/radius.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>CoA Port</b>
-		</td>
-		<td width="98%">
-			<input type="text" name="netdev[coaport]" value="{$netdevinfo.coaport}" maxlength="5">
-		</td>
+	    <td width="99%" colspan="2" style="text-align:left;vertical-align:top;">
+		<fieldset style="width:300px;"><legend>| <b>RADIUS</b> |</legend>
+		
+		<table width="100%" cellpadding="3">
+		    <tr>
+			<td width="1%" align="left" nowrap style="min-width:100px;"><b><span class="tiphelp" {tip text="Nazwa identyfikacyjna urządzenia"}>Nazwa</span></b></td>
+			<td width="99%"align="left" ><input type="text" name="netdev[shortname]" value="{$netdevinfo.shortname}" style="width:170px;"></td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap style="min-width:100px;"><b>{trans("Type:")}</b></td>
+			<td width="99%"align="left" >
+			    <select name="netdev[nastype]" {tip text="Select type (optional)" trigger="nastype"}  style="width:170px;">
+				<option value="0"></option>
+				{foreach from=$nastype item=item key=key}
+				<option value="{$key}" {if $key==$netdevinfo.nastype} selected{/if}>{$item.name}</option>
+				{/foreach}
+			    </select>
+			</td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap style="min-width:100px;"><b>{trans("Max clients:")}</b></td>
+			<td width="99%"align="left" ><input type="text" name="netdev[clients]" value="{if $netdevinfo.clients}{$netdevinfo.clients}{/if}" {tip text="Enter max clients (optional)"} style="width:170px;"></td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap style="min-width:100px;"><b>{trans("Secret:")}</b></td>
+			<td width="99%"align="left" ><input type="text" name="netdev[secret]" value="{$netdevinfo.secret}" {tip text="Enter secret (optional)"} style="width:170px;"></td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap style="min-width:100px;"><b>{trans("Community:")}</b></td>
+			<td width="99%"align="left" ><input type="text" name="netdev[community]" value="{$netdevinfo.community}" {tip text="Enter community (optional)"} style="width:170px;"></td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap style="min-width:100px;"><b>CoA Port</b></td>
+			<td width="99%"align="left" ><input type="text" name="netdev[coaport]" value="{$netdevinfo.coaport}" maxlength="5" style="width:170px;"></td>
+		    </tr>
+		</table>
+		</fieldset>
+	    </td>
 	</tr>
 {/if}
 {if isset($channels)}
@@ -226,60 +184,49 @@
 		</td>
 	</tr>
 {/if}
+{if get_form('netdev.monitoring')}
 	<tr class="light">
-	    <td width="1%">
-		<img src="img/radar.png" alt="">
+	    <td width="1%" nowrap style="text-align:left;vertical-align:top;"><img src="img/radar.png" alt=""></td>
+	    <td width="99%" style="text-align:left;vertical-algin:top;" colspan="2">
+		<fieldset style="width:300px;"><legend>| <b>Monitoring</b> |</legend>
+		<table width="100%" cellpadding="3">
+		
+		    <tr>
+			<td width="1%" align="left" nowrap style="min-width:100px;"><b>Typ:</b></td>
+			<td width="98%"align="left" >
+			    {assign var='wifi' value=[1,14,15]}
+			    <select name="netdev[monit_nastype]" {tip text="Select type (optional)"} {tip text="wybierz typ"} style="width:170px;">
+				<option value="0"></option>
+				{foreach from=$nastype item=item key=key}
+				{if in_array($key,$wifi)}
+				<option value="{$key}" {if $key==$netdevinfo.monit_nastype} selected{/if}>{$item.name}</option>
+				{/if}
+				{/foreach}
+			    </select>
+			</td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap style="min-width:100px;"><b>Login:</b></td>
+			<td width="98%"align="left" ><input type="text" name="netdev[monit_login]" value="{$netdevinfo.monit_login}" {tip text="Podaj nazwę użytkownika"} style="width:170px;"></td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap style="min-width:100px;"><b>Hasło:</b></td>
+			<td width="98%"align="left" ><input type="text" name="netdev[monit_passwd]" value="{$netdevinfo.monit_passwd}" {tip text="podaj hasło (opcja)"} style="width:170px;"></td>
+		    </tr>
+		    <tr>
+			<td width="1%" align="left" nowrap style="min-width:100px;"><b>Port</b></td>
+			<td width="98%"align="left" ><input type="text" name="netdev[monit_port]" value="{if $netdevinfo.monit_port}{$netdevinfo.monit_port}{/if}" {tip text="podaj numer portu do komunikacji (opcja)"} style="width:170px;"></td>
+		    </tr>
+		</table>
+		</fieldset>
 	    </td>
-	    <td width="1%" nowrap>
-		<b>Typ:</b>
-	    </td>
-	    <td width="98%">
-		{assign var='wifi' value=[1,14,15]}
-		<select name="netdev[monit_nastype]" {tip text="Select type (optional)"} {tip text="wybierz typ"}>
-			<option value="0"></option>
-			{foreach from=$nastype item=item key=key}
-			    {if in_array($key,$wifi)}
-			    <option value="{$key}" {if $key==$netdevinfo.monit_nastype} selected{/if}>{$item.name}</option>
-			    {/if}
-			{/foreach}
-			</select>
-	    </td>
 	</tr>
-	
-	<tr class="light">
-		<td width="1%">
-			<img src="img/radar.png" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>Login:</b>
-		</td>
-		<td width="98%">
-			<input type="text" name="netdev[monit_login]" value="{$netdevinfo.monit_login}" {tip text="Podaj nazwę użytkownika"}>
-		</td>
-	</tr>
-	<tr class="light">
-		<td width="1%">
-			<img src="img/radar.png" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>Hasło:</b>
-		</td>
-		<td width="98%">
-			<input type="text" name="netdev[monit_passwd]" value="{$netdevinfo.monit_passwd}" {tip text="podaj hasło (opcja)"}>
-		</td>
-	</tr>
-	<tr class="light">
-		<td width="1%">
-			<img src="img/radar.png" alt="">
-		</td>
-		<td width="1%" nowrap>
-				<b>Port</b>
-		</td>
-		<td width="98%">
-			<input type="text" name="netdev[monit_port]" value="{if $netdevinfo.monit_port}{$netdevinfo.monit_port}{/if}" {tip text="podaj numer portu do komunikacji (opcja)"}>
-		</td>
-	</tr>
-
+{else}
+    <input type="hidden" name="netdev[monit_nastype]" value="{$netdevinfo.monit_nastype}">
+    <input type="hidden" name="netdev[monit_login]" value="{$netdevinfo.monit_login}">
+    <input type="hidden" name="netdev[monit_passwd]" value="{$netdevinfo.monit_passwd}">
+    <input type="hidden" name="netdev[monit_port]" value="{if $netdevinfo.monit_port}{$netdevinfo.monit_port}{/if}">
+{/if}
 	
 	
                                         </table>
@@ -287,6 +234,7 @@
 			        <td width="50%" style="vertical-align:top;">
 			                <table width="100%" cellpadding="3">
 	
+	{if get_form('netdev.typeofdevice')}
 	<tr class="light">
 		<td width="1%" nowrap><img src="img/netdev.gif"></td>
 		<td width="1%" nowrap><b>Rodzaj urządzenia</b></td>
@@ -304,6 +252,10 @@
 		    {/if}
 		</td>
 	</tr>
+	{else}
+	    <input type="hidden" name="netdev[typeofdevice]" value="{$netdevinfo.typeofdevice}">
+	{/if}
+	
 	<tr class="light">
 		<td width="1%" nowrap><img src="img/options.gif"></td>
 		<td width="1%" nowrap><b>Typ urządzenia</b></td>
@@ -376,17 +328,19 @@
 	    </td>
 	</tr>
 	
+	{if get_form('netdev.purchasedate')}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/calendar.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Purchase date:")}</b>
-		</td>
+		<td width="1%"><img src="img/calendar.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Purchase date:")}</b></td>
 		<td width="98%">
 			<input type="text" name="netdev[purchasedate]" value="{if $netdevinfo.purchasedate}{$netdevinfo.purchasedate}{/if}" size="10" maxsize="10" onclick="javascript:cal1.popup();" {tip trigger="purchasedate" text="Enter device purchase date in 'yyyy/mm/dd' format or click to choose date from calendar (optional)"}>
 		</td>
 	</tr>
+	{else}
+	    <input type="hidden" name="netdev[purchasedate]" value="{if $netdevinfo.purchasedate}{$netdevinfo.purchasedate}{/if}">
+	{/if}
+	
+	{if get_form('netdev.guaranteeperiod')}
 	<tr class="light">
 		<td width="1%">
 			<img src="img/guarantee.png" alt="">
@@ -402,17 +356,73 @@
 			</select>
 		</td>
 	</tr>
+	{else}
+		<input type="hidden" name="netdev[guaranteeperiod]" value="{$netdevinfo.guaranteeperiod}">
+	{/if}
+	
+	{if get_form('netdev.desc')}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/desc.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Description:")}</b>
-		</td>
-		<td width="98%">
-			<textarea name="netdev[description]" cols="40" rows="5" {tip text="Enter additional information (optional)"}>{$netdevinfo.description}</textarea>
-		</td>
+		<td width="1%"><img src="img/desc.gif" alt=""></td>
+		<td width="1%" nowrap><b>{trans("Description:")}</b></td>
+		<td width="98%"><textarea name="netdev[description]" cols="40" rows="5" {tip text="Enter additional information (optional)"}>{$netdevinfo.description}</textarea></td>
 	</tr>
+	{else}
+	    <input type="hidden" name="netdev[description]" value="{$netdevinfo.description|escape}">
+	{/if}
+	
+	{if get_form('netdev.project')}
+	<tr class="light">
+	    <td width="1%"><img src="img/money.gif" alt=""></td>
+	    <td width="1%" nowrap><b>{trans("Investment project:")}</b></td>
+	    <td width="98%" align="left">
+		<select name="netdev[invprojectid]" id="invprojectid" style="width:240px;">
+		    <option value="" {if !$netdevinfo.invprojectid} selected {/if}>{trans('none')}</option>
+		    <option value="1" {if $netdevinfo.invprojectid ==1} selected {/if}>{trans('From root device')}</option>
+		    {section name=projectlist loop=$projectlist}
+		    <option value="{$projectlist[projectlist].id}" {if $netdevinfo.invprojectid == $projectlist[projectlist].id} selected {/if}>{$projectlist[projectlist].name}</option>
+		    {/section}
+		</select>
+	    </td>
+	</tr>
+	{else}
+	    <input type="hidden" name="netdev[invprojectid]" value="{$netdevinfo.invprojectid}">
+	{/if}
+	
+	{if get_form('netdev.status')}
+	<tr class="light">
+	    <td width="1%"><img src="img/producer.gif" alt=""></td>
+	    <td width="1%" nowrap><b>Status urządzenia</b></td>
+	    <td width="98%" align="left">
+		<select name="netdev[status]" id="id_status" style="width:240px;">
+		{foreach $_NSTATUS as $item => $key}
+		<option value="{$item}" {if $netdevinfo.status == $item} selected {/if}>{$key}</option>
+		{/foreach}
+		</select>
+	    </td>
+	</tr>
+	{else}
+	    <input type="hidden" name="netdev[status]" value="{$netdevinfo.status}">
+	{/if}
+	
+	{if check_conf('privileges.netdev_login') && get_form('netdev.login')}
+	<tr class="light">
+	    <td width="1%"><img src="img/name.gif" alt=""></td>
+	    <td width="1%" nowrap><b>Login do urządzenia</b></td>
+	    <td width="98%" align="left">
+		    <input type="text" name="netdev[login]" style="width:240px;" value="{$netdevinfo.login|escape}">
+	    </td>
+	</tr>
+	<tr class="light">
+	    <td width="1%"><img src="img/passwd.gif" alt=""></td>
+	    <td width="1%" nowrap><b>Hasło do urządzenia</b></td>
+	    <td width="98%" align="left">
+		    <input type="text" name="netdev[passwd]" style="width:240px;" value="{$netdevinfo.passwd|escape}">
+	    </td>
+	</tr>
+	{else}
+	    <input type="hidden" name="netdev[login]" value="{$netdevinfo.login|escape}">
+	    <input type="hidden" name="netdev[passwd]" value="{$netdevinfo.passwd|escape}">
+	{/if}
                                     		</table>
                             		</td>
                     		</tr>
@@ -422,7 +432,7 @@
 	</form>
 	<tr class="light">
 		<td width="100%" class="fbottomu" colspan="3" align="right">
-			{if $replacelisttotal>1}
+			{if get_form('netdev.replace') && $replacelisttotal>1}
 			<form method="GET" action="?m=netdevedit" name="replace">
 			<input type="submit" class="hiddenbtn">
 			<input type="hidden" name="m" value="netdevedit">

@@ -1,0 +1,47 @@
+{include file="header.html"}
+<!--// $Id$ //-->
+{title value=$layout.pagetitle link="<a href='?m=networknodegroupadd'><b>Nowa grupa</b> <img src='img/add.gif' alt=''></a>&nbsp;&nbsp;<a href='?m=networknodegrouplist'><b>Lista grup</b> <img src='img/list.png'></a>"}
+<p><table width="100%" cellpadding="3">
+	<tr class="dark">
+		<td width="1%" class="fleftu">
+			<img src="img/nodegroup.gif" alt="">
+		</td>
+		<td width="99%" class="frightu" colspan="2" nowrap>
+			<b>{$nodegroup.name} ({$nodegroup.id|string_format:"%04d"})</b>
+		</td>
+	</tr>
+	<tr class="light">
+		<td width="1%" class="fleft">
+			<img src="img/node.gif" alt="">
+		</td>
+		<td width="1%" nowrap><b>Ilość węzłów</b>
+		</td>
+		<td width="98%" class="fright">
+			{$nodegroup.count}
+		</td>
+	</tr>
+	{if $nodegroup.description}
+	<tr class="light">	
+		<td width="1%" class="fleft">
+			<img src="img/info1.gif" alt="">
+		</td>
+		<td width="98%" class="fright" colspan="2">
+			<table width="100%" cellpadding="3"> 
+			    <tr><td class="fall superlight">
+				    {$nodegroup.description|replace:"\n":"<br>"}
+			    </td></tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	<tr class="light">
+	        <td align="right" class="fbottomu" colspan="3">
+			<a href="?m=networknodegroupedit&id={$nodegroup.id}" accesskey="E">{trans("Edit")} <img src="img/edit.gif" alt=""></a>
+			{if !$nodegroup.count}
+			<a href="?m=networknodegroupdel&id={$nodegroup.id}" onclick="return confirmLink(this,'{trans("Are you sure, you want to delete that group?")}');">{trans("Delete")} <img src="img/delete.gif" alt=""></a>
+			{/if}
+		</td>
+	</tr>
+</table></p>
+{include file="networknodegroupassignments.html"}
+{include file="footer.html"}

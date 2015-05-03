@@ -28,7 +28,7 @@
 					</td>
 					<td width="1%" class="frightu" nowrap></td>
 				</tr>
-				{cycle values="light,lucid" print=false name=syslog}
+				{cycle values="lucid,light" print=false name=syslog}
 				{foreach from=$sysloglist item=item}
 				{assign var="_event" value=$item.event}
 				<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">

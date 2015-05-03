@@ -25,9 +25,18 @@ $DB->BeginTrans();
 
 $DB->Execute("ALTER TABLE netdevices CHANGE monit_port monit_port VARCHAR( 5 ) NULL DEFAULT NULL ;");
 $DB->Execute("UPDATE netdevices SET monit_port = NULL WHERE monit_port = '8728' OR monit_port = '0';");
-$DB->Execute("ALTER TABLE messageitems ADD firstread INT(11) NOT NULL DEFAULT '0';");
-$DB->Execute("ALTER TABLE messageitems ADD lastread INT(11) NOT NULL DEFAULT '0';");
-$DB->Execute("ALTER TABLE messageitems ADD isread TINYINT( 1 ) NOT NULL DEFAULT '0';");
+
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'messageitems','firstread'))) 
+	$DB->Execute("ALTER TABLE messageitems ADD firstread INT(11) NOT NULL DEFAULT '0';");
+
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'messageitems','lastread'))) 
+	$DB->Execute("ALTER TABLE messageitems ADD lastread INT(11) NOT NULL DEFAULT '0';");
+
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'messageitems','isread'))) 
+	$DB->Execute("ALTER TABLE messageitems ADD isread TINYINT( 1 ) NOT NULL DEFAULT '0';");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2013021200', 'dbvex'));
 

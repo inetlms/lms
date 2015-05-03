@@ -67,10 +67,10 @@ $access['table'][11]['name']        	= trans('hosting management');
 $access['table'][11]['allow_reg']   	= '^(accountpasswd|(account|domain|alias|record)(list|edit|add|del|info|search))$';
 
 $access['table'][12]['name']        	= trans('configuration');
-$access['table'][12]['allow_reg']   	= '^(((host|config|numberplan|taxrate|state|division|cashsource)(list|edit|add|del|load))|((promotion|promotionschema)(list|edit|add|del|set|info)))$';
+$access['table'][12]['allow_reg']   	= '^(((config|numberplan|taxrate|state|division|cashsource)(list|edit|add|del|load))|((promotion|promotionschema)(list|edit|add|del|set|info)))$';
 
 $access['table'][13]['name']        	= trans('networks and devices management');
-$access['table'][13]['allow_reg']   	= '^((net|netdev|ewxch)(info|list|edit|add|del|cmp|map(refresh|)|remap|search)|choose(mac|ip|gpscoords)|ewxnodelist|ewxdevlist|chooselocation|ping)$';
+$access['table'][13]['allow_reg']   	= '^((net|netdev|ewxch|networknode|host)(info|list|edit|add|del|cmp|map(refresh|)|remap|search)|choose(mac|ip|gpscoords)|ewxnodelist|ewxdevlist|chooselocation|ping|teleline)$';
 
 $access['table'][14]['name']        	= trans('timetable management');
 $access['table'][14]['allow_reg']   	= '^(event(list|edit|add|del|info|print|search)|choosecustomer)$';
@@ -115,6 +115,15 @@ $access['table'][26]['privilege']	= 'hide_finances';
 $access['table'][27]['name']		= trans('reports');
 $access['table'][27]['privilege']	= 'reports';
 
+$access['table'][28]['name']		= 'Dostęp do loginów i haseł dla interfejsów sieciowych';
+$access['table'][28]['privilege']	= 'netdev_login';
+
+$access['table'][29]['name']		= 'Zgoda na zarządzanie załącznikami klientów';
+$access['table'][29]['privilege']	= 'customerannex';
+
+$access['table'][30]['name']		= 'Zgoda na zarządzanie załącznikami kontrahentów';
+$access['table'][30]['privilege']	= 'contractorannex';
+
 $access['table'][40]['name']		= trans('contractors management');
 $access['table'][40]['allow_reg']	= '^(contractor|contractor(add|edit|info|infoshort|list|del|print|search))$';
 
@@ -145,6 +154,13 @@ $access['table'][48]['privilege']	= 'reopen_callcenter';
 $access['table'][49]['name']		= 'Historia adresów IP';
 $access['table'][49]['allow_reg']	= '^(iphistory)$';
 
+$access['table'][50]['name']		= 'Ewidencja pojazdów';
+$access['table'][50]['allow_reg']	= '^(re_)$';
+
+$access['table'][51]['name']		= trans('Zarządzanie projektami');
+$access['table'][51]['allow_reg']	= '^(project(add|edit|info|del|list))$';
+
+
 $access['table'][102]['name']		= 'Obsługa VoIP HIPERUS C5 - Pełny dostęp';
 $access['table'][102]['allow_reg'] 	= '^hv_*';
 
@@ -153,6 +169,7 @@ $access['table'][103]['allow_reg']	= '^(hv_+(accountinfo|accountlist|billinginfo
 
 $access['table'][105]['name']		= 'Monitoring';
 $access['table'][105]['allow_reg']	= '^monit.*$';
+$access['table'][105]['privilege']	= 'monitoring';
 
 $access['table'][253]['name']		= trans('users edition and addition forbidden');
 $access['table'][253]['deny_reg']	= '^(user(add|del|edit|passwd))$';

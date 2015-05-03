@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <p><table cellpadding="3" width="100%">
 	<tr class="dark">
 		<td width="1%" class="fleftu" valign="top" nowrap>
@@ -19,7 +19,7 @@
 		<td width="1%" class="frightu" nowrap>
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=daylist loop=$daylist}
 	<tr>
 		<td width="100%" colspan="5" class="fbt"><img src="img/empty.gif" alt="" height="1"></td>

@@ -28,7 +28,7 @@
 					</td>
 					<td width="1%" class="frightu" nowrap></td>
 				</tr>
-				{cycle values="light,lucid" print=false name=messages}
+				{cycle values="lucid,light" print=false name=messages}
 				{foreach from=$messagelist item=item}
 				<tr class="{cycle name=messages}{if $item.status==$smarty.const.MSG_ERROR} alert{elseif $item.status==$smarty.const.MSG_SENT} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td width="1%" nowrap onclick="return self.location.href='?m=messageinfo&id={$item.id}'">

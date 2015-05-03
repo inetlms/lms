@@ -23,7 +23,10 @@
 
 $DB->BeginTrans();
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'events','moddate'))) 
 $DB->Execute("ALTER TABLE events ADD moddate INT NOT NULL DEFAULT '0';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'events','moduserid'))) 
 $DB->Execute("ALTER TABLE events ADD moduserid INT NOT NULL DEFAULT '0';");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2012092500', 'dbversion'));

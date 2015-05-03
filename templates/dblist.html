@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <script type="text/javascript">
 	<!--
 	function createBackup(gzip)
@@ -32,7 +32,7 @@
 		<img src="img/empty.gif" alt="" height="16" width="1"><b> {t a=$dblist.total}Total: $a{/t}</b>&nbsp;
 	</td>
 </tr>
-{cycle values="light,lucid" print=false}
+{cycle values="lucid,light" print=false}
 {section name=dblist loop=$dblist.time}
 <tr class="{cycle} lista{if $dblist.dbv[dblist] != $layout.dbschversionex} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 	<td class="fleft" width="98%" onclick="return self.location.href='?m=dbview&db={$dblist.name[dblist]}&file=/iNET-lms-{$dblist.time[dblist]|date_format:"%Y%m%d-%H%M%S"}.sql{if $dblist.type[dblist]=="gz"}.gz{elseif $dblist.type[dblist]=="plain"}{/if}';">

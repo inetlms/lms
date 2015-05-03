@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1 class="title">{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <form method="POST" action="?m=divisionadd" name="division">
 <input type="submit" class="hiddenbtn">
 <table width="100%" cellpadding="3" class="table">
@@ -9,7 +9,7 @@
 			<img src="img/division.gif" alt="">
 		</td>
 		<td width="1%" class="fbt">
-			<b>{trans("Name:")}</b>
+			<b>Nazwa skrócona</b>
 		</td>
 		<td width="98%" class="frightu">
 			<input type="text" name="division[shortname]" value="{$division.shortname|escape}" size="40" {tip text="Enter division short name" trigger="shortname" bold=1}>
@@ -93,6 +93,18 @@
 	
 	<tr class="light">
 		<td width="%1" class="fleft">
+			<img src="img/Earth.png" alt="">
+		</td>
+		<td width="1%" nowrap>
+			<span class="tiphelp" {tip text="Pełny adres http do pliku z logiem firmy, logo będzie na fakturach w wersji 2. Dozwolony typ to JPG i GIF (opcja)"}><b>URL Logo File</b></span>
+		</td>
+		<td width="99%" class="fright">
+			<input type="text" size="40" value="{$division.urllogofile}" name="division[urllogofile]">
+		</td>
+	</tr>
+	
+	<tr class="light">
+		<td width="%1" class="fleft">
 			<img src="img/serialnumber.gif" alt="">
 		</td>
 		<td width="1%" nowrap>
@@ -147,7 +159,7 @@
 			<img src="img/serialnumber.gif" alt="">
 		</td>
 		<td width="1%" nowrap>
-			<b>RJPT</b>
+			<b>RJST</b>
 		</td>
 		<td width="99%" class="fright">
 			<input type="text" size="40" value="{$division.rjpt}" name="division[rjpt]" {tip text="Numer w Rejestrze Jednostek Samorządu Terytorialnego"}>

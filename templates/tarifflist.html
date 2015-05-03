@@ -1,9 +1,9 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 <table width="100%" cellpadding="3">
 	<tr class="dark">
-		<td class="fall" colspan="8">
+		<td class="fall" colspan="9">
 			<form method="GET" action="?m={$layout.module}" name="choosefilter">
 				<input type="submit" class="hiddenbtn">
 				<input type="hidden" name="m" value="tarifflist">
@@ -34,7 +34,7 @@
 		</td>
 	</tr>
 	<tr class="dark" {tip text="Click on column name to change sorting order"}>
-		<td width="93%" class="fleftu" nowrap>
+		<td width="92%" class="fleftu" nowrap>
 			<img src="img/money.gif" alt=""> <a href="?m=tarifflist&o=name{if $listdata.direction eq "asc" && $listdata.order eq "name"},desc{/if}"><b>{trans("Name:")}</b></a> {if $listdata.order eq "name"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
 			<img src="img/info1.gif" alt=""> <a href="?m=tarifflist&o=description{if $listdata.direction eq "asc" && $listdata.order eq "description"},desc{/if}">{trans("Description:")}</a> {if $listdata.order eq "description"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
@@ -51,6 +51,9 @@
 		</td>
 		<td nowrap width="1%" class="fbt" align="right" nowrap>
 			<a href="?m=tarifflist&o=value{if $listdata.direction eq "asc" && $listdata.order eq "value"},desc{/if}"><b>{trans("Value:")}</b></a> {if $listdata.order eq "value"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>
+			Upust:
+		</td>
+		<td nowrap width="1%" class="fbt" align="right" nowrap>
 			{trans("Tax:")}
 		</td>
 		<td width="1%" class="fbt" align="right" nowrap>
@@ -68,10 +71,10 @@
 		</td>
 	</tr>
 
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section name=tariffs loop=$tarifflist}
 	<tr class="{cycle} lista {if !$tarifflist[tariffs].active}blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td width="93%" class="fleft" onclick="return self.location.href='?m=tariffinfo&id={$tarifflist[tariffs].id}';" class="fleft">
+		<td width="92%" class="fleft" onclick="return self.location.href='?m=tariffinfo&id={$tarifflist[tariffs].id}';" class="fleft">
 			<img src="img/money.gif" alt="">&nbsp;<b>{$tarifflist[tariffs].name}</b><br>
 			{if $tarifflist[tariffs].description}<img src="img/info1.gif" alt="">&nbsp;{$tarifflist[tariffs].description}{/if}
 		</td>
@@ -97,7 +100,12 @@
 		<td width="1%" align="right" onclick="return self.location.href='?m=tariffinfo&id={$tarifflist[tariffs].id}';">
 			<nobr>
 			<b>{$tarifflist[tariffs].value|money_format}</b><br>
-			{$tarifflist[tariffs].tax}
+			<span class="blend">{$tarifflist[tariffs].relief|money_format}</span>
+			<nobr>
+		</td>
+		<td width="1%" align="right" onclick="return self.location.href='?m=tariffinfo&id={$tarifflist[tariffs].id}';">
+			<nobr>
+			{if $tarifflist[tariffs].tax}{$tarifflist[tariffs].tax}{else}<span style="color:red;">NIE OKREŚLONO</span>{/if}
 			<nobr>
 		</td>
 		<td width="1%" align="right" onclick="return self.location.href='?m=tariffinfo&id={$tarifflist[tariffs].id}';" nowrap>
@@ -125,7 +133,7 @@
 	</tr>
 	{sectionelse}
 	<tr>
-		<td colspan="8" align="center" class="fall">
+		<td colspan="9" align="center" class="fall">
 			<p>&nbsp;</p>
 			<p><b>{trans("No such subscriptions in database.")}</b></p>
 			<p>&nbsp;</p>
@@ -133,7 +141,7 @@
 	</tr>
 	{/section}
 	<tr class="light">
-		<td class="fleftu" colspan="5" width="97%" align="right">
+		<td class="fleftu" colspan="6" width="97%" align="right">
 			<img src="img/info2.gif" alt="">&nbsp;<b>{trans("Total:")}</b>
 		</td>
 		<td class="fbt" width="1%" align="right" nowrap>

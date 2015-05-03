@@ -3,6 +3,13 @@ uploadfiles/*
 userpanel/templates_c/*
 backups/*
 tmp/*
+rrd/*
+plug/*
+documents/*
+documents/invoice_pdf/*
+templates/custom/*
+modules/custom/*
+userpanel_old/*
 lms.ini
 *~
 *.swp

@@ -19,7 +19,7 @@
 					<td width="1%" class="fbt" nowrap>{trans("Status:")}</td>
 					<td width="1%" class="frightu"></td>
 				</tr>
-				{cycle values="light,lucid" print=false}
+				{cycle values="lucid,light" print=false}
 				{section name=hosts loop=$hosts}
 				<tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
 					<td nowrap onclick="return checkElement({$hosts[hosts].id});"><img src="img/host.gif" alt=""> <span class="bold">{$hosts[hosts].name}</span></td>

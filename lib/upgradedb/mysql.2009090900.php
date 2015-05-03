@@ -24,6 +24,7 @@
  *  $Id$
  */
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",array($DB->_dbname,'networks','notes'))) 
 $DB->Execute("ALTER TABLE networks ADD notes text DEFAULT '' NOT NULL;");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2009090900', 'dbversion'));

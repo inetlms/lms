@@ -1,6 +1,6 @@
 {include file="header.html"}
 <!--// $Id$ //-->
-<h1>{$layout.pagetitle}</h1>
+{title value=$layout.pagetitle}
 {if $docid}<script type="text/javascript">window.open('?m=documentview&id={$docid}');</script>{/if}
 <script type="text/javascript">
 <!--
@@ -98,35 +98,41 @@
 	</tr>
 	{/if}
 	<tr class="dark">
-		<td width="1%" nowrap class="fleftu"> <a href="?m=documentlist&o=cdate{if $listdata.direction eq "asc" && $listdata.order eq "cdate"},desc{/if}">{trans("Date:")}</a>{if $listdata.order eq "cdate"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br><b>{trans("Number:")}</b></td>
-		<td width="1%" nowrap class="fbt"> <a href="?m=documentlist&o=type{if $listdata.direction eq "asc" && $listdata.order eq "type"},desc{/if}"><b>{trans("Type:")}</b></a>{if $listdata.order eq "type"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td width="1%" nowrap class="fbt"> <a href="?m=documentlist&o=title{if $listdata.direction eq "asc" && $listdata.order eq "title"},desc{/if}">{trans("Title:")}</a>{if $listdata.order eq "title"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>{trans("Period:")}</td>
-		<td width="96%" nowrap class="fbt"> <a href="?m=documentlist&o=customer{if $listdata.direction eq "asc" && $listdata.order eq "customer"},desc{/if}">{trans("Customer:")}</a>{if $listdata.order eq "customer"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
-		<td width="1%" nowrap class="frightu" align="right">
+		<td width="1%" nowrap class="fleftu pad5">
+		    <a href="?m=documentlist&o=cdate{if $listdata.direction eq "asc" && $listdata.order eq "cdate"},desc{/if}">{trans("Date:")}</a>{if $listdata.order eq "cdate"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br><b>{trans("Number:")}</b>
+		</td>
+		<td width="1%" nowrap class="fbt pad5 tleft">
+		    <a href="?m=documentlist&o=type{if $listdata.direction eq "asc" && $listdata.order eq "type"},desc{/if}"><b>{trans("Type:")}</b></a>{if $listdata.order eq "type"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</td>
+		<td width="1%" nowrap class="fbt pad5 tleft">
+		    <a href="?m=documentlist&o=title{if $listdata.direction eq "asc" && $listdata.order eq "title"},desc{/if}">{trans("Title:")}</a>{if $listdata.order eq "title"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<br>{trans("Period:")}
+		</td>
+		<td width="96%" nowrap class="fbt pad5 tleft"> <a href="?m=documentlist&o=customer{if $listdata.direction eq "asc" && $listdata.order eq "customer"},desc{/if}">{trans("Customer:")}</a>{if $listdata.order eq "customer"}<img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}</td>
+		<td width="1%" nowrap class="frightu pad5 tleft" align="right">
 			<a href="?m=documentadd&cid={$listdata.customer}&type={$listdata.type}">{trans("New Document")}</a> <img src="img/save.gif" alt="">
 		</td>
 	</tr>
-	{cycle values="light,lucid" print=false}
+	{cycle values="lucid,light" print=false}
 	{section loop=$documentlist name=documentlist start=$start max=$pagelimit}
 	{assign var=doc value=$documentlist[documentlist]}
 	{assign var=docid value=$doc.docid}
 	<tr class="{cycle} lista{if $doc.closed} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
-		<td class="fleft" nowrap onclick="window.open('?m=documentview&id={$doc.docid}');"{if $doc.description} {tip text=$doc.description}{/if}>
+		<td class="fleft pad5" nowrap onclick="window.open('?m=documentview&id={$doc.docid}');"{if $doc.description} {tip text=$doc.description}{/if}>
 			{$doc.cdate|date_format:"%Y/%m/%d"}
 			{if $doc.number}<br>
 				<b>{number number=$doc.number template=$doc.template time=$doc.cdate}</b>
 			{/if}
 		</td>
-		<td nowrap onclick="window.open('?m=documentview&id={$doc.docid}');"><b>{assign var=type value=$doc.type}{$_DOCTYPES.$type}</b></td>
-		<td nowrap onclick="window.open('?m=documentview&id={$doc.docid}');">
+		<td nowrap class="pad10 tleft" style="vertical-align:bottom;" onclick="window.open('?m=documentview&id={$doc.docid}');"><b>{assign var=type value=$doc.type}{$_DOCTYPES.$type}</b></td>
+		<td nowrap class="pad10 tleft" onclick="window.open('?m=documentview&id={$doc.docid}');">
 			{$doc.title|truncate:40:"...":true}
 			{if $doc.fromdate || $doc.todate}<br>
 			    {if $doc.fromdate}{trans("from")} {$doc.fromdate|date_format:"%Y/%m/%d"}{/if}
 			    {if $doc.todate}{trans("to")} {$doc.todate|date_format:"%Y/%m/%d"}{/if}
 			{/if}
 		</td>
-		<td nowrap><a href="?m=customerinfo&id={$doc.customerid}">{$doc.name|truncate:40:"...":true}</a></td>
-		<td class="fright" align="right" nowrap>
+		<td nowrap class="pad5 tleft" align="left"><a href="?m=customerinfo&id={$doc.customerid}">{$doc.name|truncate:40:"...":true}</a></td>
+		<td class="fright pad5 tleft" align="right" nowrap>
 			{assign var=type value=$doc.type}
 			<a href="?m=documentview&id={$doc.docid}&save=1"><img src="img/save.gif" alt="[ {trans("Save")} ]" title="[ {trans("Save")} ]"></a>
 			{if ! $doc.closed && ($docrights.$type.rights & 4)}

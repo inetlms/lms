@@ -24,7 +24,6 @@
  *
  *  $Id: v 1.00 2013/01/07 02:35:35 Sylwester Kondracki Exp $
  */
-
 empty($_SERVER['SHELL']) && die('<br><Br>Sorry Winnetou, tylko powloka shell ;-)');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 
@@ -47,12 +46,22 @@ foreach($short_to_longs as $short => $long)
 		unset($options[$short]);
 	}
 
+
+if (array_key_exists('config-file', $options) && is_readable($options['config-file']))
+    $CONFIG_FILE = $options['config-file'];
+include('/etc/lms/init_lms.php');
+
+
+include_once(LIB_DIR.'/FTP.class.php');
+$FTP = new FTP(get_conf('autobackup.ftphost'),get_conf('autobackup.ftpuser'),get_conf('autobackup.ftppass'),21,120);
+
+
 if (array_key_exists('quiet', $options)) $quiet = true; else $quiet = false;
 
 if (array_key_exists('help', $options))
 {
-	print <<<EOF
-	
+print <<<EOF
+
 lms-autobackup.php
 version 1.0.0
 (C) 2012-2013 iNET LMS 
@@ -64,92 +73,19 @@ version 1.0.0
 Wszystkie opcje konfiguracyjne należy ustawiać w UI !!!
 
 EOF;
-	exit(0);
+exit(0);
+
 }
 
-if (!$quiet)
-{
-	print <<<EOF
-
-(c) 2012-2013 iNET LMS <lms-autobackup.php>
-
-EOF;
-}
-
-if (array_key_exists('config-file', $options) && is_readable($options['config-file']))
-	$CONFIG_FILE = $options['config-file'];
-elseif (is_readable('lms.ini'))
-	$CONFIG_FILE = 'lms.ini';
-elseif (is_readable('/etc/lms/lms.ini'))
-	$CONFIG_FILE = '/etc/lms/lms.ini';
 
 if (!$quiet) 
-	echo "Uzywam pliku konfiguracyjnego ".$CONFIG_FILE."\n\n";
+	print("Uzywam pliku konfiguracyjnego ".$CONFIG_FILE."\n\n");
+	
+
+//define('USER_AGENT', "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+//define('COOKIE_FILE', tempnam('/tmp', 'iNET-lms-xxx-cookies-'));
 
 
-if (!is_readable($CONFIG_FILE))
-	die("Nie mozna odczytac pliku konfiguracyjnego file [".$CONFIG_FILE."]!\n");
-
-$CONFIG = (array) parse_ini_file($CONFIG_FILE, true);
-
-$CONFIG['directories']['sys_dir'] = (!isset($CONFIG['directories']['sys_dir']) ? getcwd() : $CONFIG['directories']['sys_dir']);
-$CONFIG['directories']['lib_dir'] = (!isset($CONFIG['directories']['lib_dir']) ? $CONFIG['directories']['sys_dir'].'/lib' : $CONFIG['directories']['lib_dir']);
-$CONFIG['directories']['doc_dir'] = (!isset($CONFIG['directories']['doc_dir']) ? $CONFIG['directories']['sys_dir'].'/documents' : $CONFIG['directories']['doc_dir']);
-$CONFIG['directories']['modules_dir'] = (!isset($CONFIG['directories']['modules_dir']) ? $CONFIG['directories']['sys_dir'].'/modules' : $CONFIG['directories']['modules_dir']);
-$CONFIG['directories']['backup_dir'] = (!isset($CONFIG['directories']['backup_dir']) ? $CONFIG['directories']['sys_dir'].'/backups' : $CONFIG['directories']['backup_dir']);
-$CONFIG['directories']['config_templates_dir'] = (!isset($CONFIG['directories']['config_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/config_templates' : $CONFIG['directories']['config_templates_dir']);
-$CONFIG['directories']['smarty_compile_dir'] = (!isset($CONFIG['directories']['smarty_compile_dir']) ? $CONFIG['directories']['sys_dir'].'/templates_c' : $CONFIG['directories']['smarty_compile_dir']);
-$CONFIG['directories']['smarty_templates_dir'] = (!isset($CONFIG['directories']['smarty_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/templates' : $CONFIG['directories']['smarty_templates_dir']);
-
-define('SYS_DIR', $CONFIG['directories']['sys_dir']);
-define('LIB_DIR', $CONFIG['directories']['lib_dir']);
-define('DOC_DIR', $CONFIG['directories']['doc_dir']);
-define('BACKUP_DIR', $CONFIG['directories']['backup_dir']);
-define('MODULES_DIR', $CONFIG['directories']['modules_dir']);
-define('SMARTY_COMPILE_DIR', $CONFIG['directories']['smarty_compile_dir']);
-define('SMARTY_TEMPLATES_DIR', $CONFIG['directories']['smarty_templates_dir']);
-
-define('USER_AGENT', "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-
-define('COOKIE_FILE', tempnam('/tmp', 'iNET-lms-xxx-cookies-'));
-
-require_once(LIB_DIR.'/config.php');
-
-require(LIB_DIR.'/LMSDB.php');
-
-$DB = DBInit($CONFIG['database']['type'], $CONFIG['database']['host'], $CONFIG['database']['user'],  $CONFIG['database']['password'], $CONFIG['database']['database']);
-
-if(!$DB)
-{
-	die("Fatal error: cannot connect to database!\n");
-}
-
-if($cfg = $DB->GetAll('SELECT section, var, value FROM uiconfig WHERE disabled=0'))
-	foreach($cfg as $row)
-		$CONFIG[$row['section']][$row['var']] = $row['value'];
-
-$AUTH->id = 0;
-
-//ma dołączyć plik ale nie podności bazy 
-define('NO_CHECK_UPGRADEDB',true);
-include_once(LIB_DIR.'/upgradedb.php');
-
-include_once(LIB_DIR.'/language.php');
-include_once(LIB_DIR.'/definitions.php');
-include_once(LIB_DIR.'/unstrip.php');
-include_once(LIB_DIR.'/common.php');
-include_once(LIB_DIR.'/LMS.class.php');
-include_once(LIB_DIR.'/FTP.class.php');
-
-if (get_conf('phpui.syslog_level')) define('SYSLOG',TRUE); else define('SYSLOG',FALSE);
-
-$LMS = new LMS($DB, $AUTH, $CONFIG);
-$LMS->ui_lang = $_ui_language;
-$LMS->lang = $_language;
-
-$currenttime = time(); // akualny czas
-
-$FTP = new FTP(get_conf('autobackup.ftphost'),get_conf('autobackup.ftpuser'),get_conf('autobackup.ftppass'),21,120);
 
 $akcja = get_conf('autobackup.dir_ftpaction','update');
 $akcja = strtolower($akcja);
@@ -178,7 +114,7 @@ if (get_conf('autobackup.db_backup'))
 	
 	$FTP->chdir(get_conf('autobackup.db_ftppath'),true);
 	
-	if (!$quiet) echo "Tworze kopie bazy na FTP: ".$filename."\n";
+	if (!$quiet) print("Tworze kopie bazy na FTP: ".$filename."\n");
 	$result = $FTP->upload($filename_sql,$filename,'auto',$akcja);
 	
 	$FTP->close();
@@ -225,4 +161,5 @@ if (get_conf('autobackup.dir_ftpsend') && get_conf('autobackup.dir_local','') !=
     
     print_r($DB->errors);
 }
+
 ?>

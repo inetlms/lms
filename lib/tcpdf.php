@@ -342,7 +342,281 @@ class TCPDFpl extends TCPDF {
 		}
 	}
 
+
+
+	public function Table2($header, $invoice) {
+		/* set the line width and headers font */
+		$this->SetFillColor(200, 200, 200);
+		$this->SetTextColor(0);
+		$this->SetDrawColor(0, 0, 0);
+		$this->SetLineWidth(0.3);
+		$this->SetFont('arial', 'B', 8);
+
+		$margins = $this->getMargins();
+		$table_width = $this->getPageWidth() - ($margins['left'] + $margins['right']);
+
+		/* invoice headers */
+		$heads['no'] = trans('No.');
+		$heads['name'] = trans('Name of Product, Commodity or Service:');
+		$heads['prodid'] = trans('Product ID:');
+		$heads['content'] = trans('Unit:');
+		$heads['count'] = trans('Amount:');
+		if (!empty($invoice['pdiscount']) || !empty($invoice['vdiscount']))
+			$heads['discount'] = trans('Discount:');
+		$heads['basevalue'] = 'Cena netto:';//trans('Unitary Net Value:');
+		$heads['totalbase'] = trans('Net Value:');
+		$heads['taxlabel'] = trans('Tax Rate:');
+		$heads['totaltax'] = trans('Tax Value:');
+		$heads['total'] = trans('Gross Value:');
+
+		/* width of the columns on the invoice */
+		foreach ($heads as $name => $text)
+		//$h_width[$name] = $this->getStringWidth($text, '', 'B', 8);
+			$h_width[$name] = $this->getWrapStringWidth($text, 'B');
+
+		/* change the column widths if are wider than the header */
+		if ($invoice['content'])
+			foreach ($invoice['content'] as $item) {
+				$t_width['no'] = 7;
+				$t_width['name'] = $this->getStringWidth($item['description']);
+				$t_width['prodid'] = $this->getStringWidth($item['prodid']);
+				$t_width['content'] = $this->getStringWidth($item['content']);
+				$t_width['count'] = $this->getStringWidth(sprintf('%.2f', $item['count']));
+				if (!empty($invoice['pdiscount']))
+					$t_width['discount'] = $this->getStringWidth(sprintf('%.2f%%', $item['pdiscount']));
+				elseif (!empty($invoice['vdiscount']))
+					$t_width['discount'] = $this->getStringWidth(moneyf($item['vdiscount'])) + 1;
+				$t_width['basevalue'] = $this->getStringWidth(moneyf($item['basevalue'])) + 1;
+				$t_width['totalbase'] = $this->getStringWidth(moneyf($item['totalbase'])) + 1;
+				$t_width['taxlabel'] = $this->getStringWidth($item['taxlabel']) + 1;
+				$t_width['totaltax'] = $this->getStringWidth(moneyf($item['totaltax'])) + 1;
+				$t_width['total'] = $this->getStringWidth(moneyf($item['total'])) + 1;
+			}
+
+		foreach ($t_width as $name => $w)
+			if ($w > $h_width[$name])
+				$h_width[$name] = $w;
+
+		if (isset($invoice['invoice']['content']))
+			foreach ($invoice['invoice']['content'] as $item) {
+				$t_width['no'] = 7;
+				$t_width['name'] = $this->getStringWidth($item['description']);
+				$t_width['prodid'] = $this->getStringWidth($item['prodid']);
+				$t_width['content'] = $this->getStringWidth($item['content']);
+				$t_width['count'] = $this->getStringWidth(sprintf('%.2f', $item['count']));
+				if (!empty($invoice['pdiscount']))
+					$t_width['discount'] = $this->getStringWidth(sprintf('%.2f%%', $item['pdiscount']));
+				elseif (!empty($invoice['vdiscount']))
+					$t_width['discount'] = $this->getStringWidth(moneyf($item['vdiscount'])) + 1;
+				$t_width['basevalue'] = $this->getStringWidth(moneyf($item['basevalue'])) + 1;
+				$t_width['totalbase'] = $this->getStringWidth(moneyf($item['totalbase'])) + 1;
+				$t_width['taxlabel'] = $this->getStringWidth($item['taxlabel']) + 1;
+				$t_width['totaltax'] = $this->getStringWidth(moneyf($item['totaltax'])) + 1;
+				$t_width['total'] = $this->getStringWidth(moneyf($item['total'])) + 1;
+			}
+
+		foreach ($t_width as $name => $w)
+			if ($w > $h_width[$name])
+				$h_width[$name] = $w;
+
+		/* dynamic setting the width of the table 'name' */
+		$sum = 0;
+		foreach ($h_width as $name => $w)
+			if ($name != 'name')
+				$sum += $w;
+		$h_width['name'] = $table_width - $sum;
+
+		$h_head = 0;
+		/* invoice data table headers */
+		foreach ($heads as $item => $name) {
+			//$this->Cell($h_width[$item], 7, $heads[$item], 1, 0, 'C', 1, '', 1);
+			$h_cell = $this->getStringHeight($h_width[$item], $heads[$item], true, false, 0, 1);
+			if ($h_cell > $h_head)
+				$h_head = $h_cell;
+		}
+		foreach ($heads as $item => $name)
+			$this->MultiCell($h_width[$item], $h_head, $heads[$item], 1, 'C', true, 0, '', '', true, 0, false, false, $h_head, 'M');
+
+		$this->Ln();
+		$this->SetFont('arial', '', 7);
+		$this->SetFillColor(255, 255, 255);
+		
+		$roznica_przed = $roznica_po = array();
+
+		/* invoice correction data */
+		if (isset($invoice['invoice'])) {
+			$this->Ln(2);
+			$this->writeHTMLCell(0, 0, '', '', '<b>' . trans('Was:') . '</b>', 0, 1, 0, true, 'L');
+			$this->Ln(1);
+			$i = 1;
+			if ($invoice['invoice']['content'])
+				foreach ($invoice['invoice']['content'] as $item) {
+					$this->Cell($h_width['no'], 7, $i . '.', 1, 0, 'C', 0, '', 1);
+					$this->multicell($h_width['name'], 7, $item['description'],1,'L',true, 0, '', '',  true, 0, false, false,7,'M');
+					$this->Cell($h_width['prodid'], 7, $item['prodid'], 1, 0, 'C', 0, '', 1);
+					$this->Cell($h_width['content'], 7, $item['content'], 1, 0, 'C', 0, '', 1);
+					$this->Cell($h_width['count'], 7, sprintf('%.2f', $item['count']), 1, 0, 'C', 0, '', 1);
+					if (!empty($invoice['pdiscount']))
+						$this->Cell($h_width['discount'], 7, sprintf('%.2f%%', $item['pdiscount']), 1, 0, 'R', 0, '', 1);
+					elseif (!empty($invoice['vdiscount']))
+						$this->Cell($h_width['discount'], 7, moneyf($item['vdiscount']), 1, 0, 'R', 0, '', 1);
+					$this->Cell($h_width['basevalue'], 7, moneyf($item['basevalue']), 1, 0, 'R', 0, '', 1);
+					$this->Cell($h_width['totalbase'], 7, moneyf($item['totalbase']), 1, 0, 'R', 0, '', 1);
+					$this->Cell($h_width['taxlabel'], 7, $item['taxlabel'], 1, 0, 'C', 0, '', 1);
+					$this->Cell($h_width['totaltax'], 7, moneyf($item['totaltax']), 1, 0, 'R', 0, '', 1);
+					$this->Cell($h_width['total'], 7, moneyf($item['total']), 1, 0, 'R', 0, '', 1);
+					$this->Ln();
+					$i++;
+				}
+
+			/* invoice correction summary table - headers */
+			$sum = 0;
+			foreach ($h_width as $name => $w)
+				if (in_array($name, array('no', 'name', 'prodid', 'content', 'count', 'discount', 'basevalue')))
+					$sum += $w;
+
+			$this->SetFont('arial', 'B', 7);
+			$this->Cell($sum, 5, trans('Total:'), 0, 0, 'R', 0, '', 1);
+			$this->SetFont('arial', '', 8);
+			$this->Cell($h_width['totalbase'], 5, moneyf($invoice['invoice']['totalbase']), 1, 0, 'R', 0, '', 1);
+			$this->SetFont('arial', 'B', 8);
+			$this->Cell($h_width['taxlabel'], 5, 'x', 1, 0, 'C', 0, '', 1);
+			$this->SetFont('arial', '', 8);
+			$this->Cell($h_width['totaltax'], 5, moneyf($invoice['invoice']['totaltax']), 1, 0, 'R', 0, '', 1);
+			$this->Cell($h_width['total'], 5, moneyf($invoice['invoice']['total']), 1, 0, 'R', 0, '', 1);
+			$this->Ln();
+			
+			
+			
+			/* invoice correction summary table - data */
+			if ($invoice['invoice']['taxest']) {
+				$i = 1;
+				foreach ($invoice['invoice']['taxest'] as $item) {
+					$this->SetFont('arial', 'B', 8);
+					$this->Cell($sum, 5, trans('in it:'), 0, 0, 'R', 0, '', 1);
+					$this->SetFont('arial', '', 8);
+					$this->Cell($h_width['totalbase'], 5, moneyf($item['base']), 1, 0, 'R', 0, '', 1);
+					$this->Cell($h_width['taxlabel'], 5, $item['taxlabel'], 1, 0, 'C', 0, '', 1);
+					$this->Cell($h_width['totaltax'], 5, moneyf($item['tax']), 1, 0, 'R', 0, '', 1);
+					$this->Cell($h_width['total'], 5, moneyf($item['total']), 1, 0, 'R', 0, '', 1);
+					$this->Ln();
+					$roznica_przed[] = array(
+					    'totalbase'	=> $item['base'],
+					    'taxlabel'	=> $item['taxlabel'],
+					    'totaltax'	=> $item['tax'],
+					    'total'	=> $item['total']
+					);
+					$i++;
+				}
+			}
+
+			/* reason of issue of invoice correction */
+			if ($invoice['reason'] != '') {
+				$this->writeHTMLCell(0, 0, '', '', '<b>' . 'Przyczyna korekty: </b>' . ' ' . $invoice['reason'], 0, 1, 0, true, 'L');
+			}
+			$this->writeHTMLCell(0, 0, '', '', '<b>' . trans('Corrected to:') . '</b>', 0, 1, 0, true, 'L');
+			$this->Ln(1);
+		}
+
+		/* invoice data */
+		$i = 1;
+		$this->SetFont('arial', '', 7);
+		foreach ($invoice['content'] as $item) {
+			$this->Cell($h_width['no'], 7, $i . '.', 1, 0, 'C', 0, '', 1);
+			$this->multicell($h_width['name'], 7, $item['description'],1,'L',true, 0, '', '',  true, 0, false, false,7,'M');
+			$this->Cell($h_width['prodid'], 7, $item['prodid'], 1, 0, 'C', 0, '', 1);
+			$this->Cell($h_width['content'], 7, $item['content'], 1, 0, 'C', 0, '', 1);
+			$this->Cell($h_width['count'], 7, sprintf('%.2f', $item['count']), 1, 0, 'C', 0, '', 1);
+			if (!empty($invoice['pdiscount']))
+				$this->Cell($h_width['discount'], 7, sprintf('%.2f%%', $item['pdiscount']), 1, 0, 'R', 0, '', 1);
+			elseif (!empty($invoice['vdiscount']))
+				$this->Cell($h_width['discount'], 7, moneyf($item['vdiscount']), 1, 0, 'R', 0, '', 1);
+			$this->Cell($h_width['basevalue'], 7, moneyf($item['basevalue']), 1, 0, 'R', 0, '', 1);
+			$this->Cell($h_width['totalbase'], 7, moneyf($item['totalbase']), 1, 0, 'R', 0, '', 1);
+			$this->Cell($h_width['taxlabel'], 7, $item['taxlabel'], 1, 0, 'C', 0, '', 1);
+			$this->Cell($h_width['totaltax'], 7, moneyf($item['totaltax']), 1, 0, 'R', 0, '', 1);
+			$this->Cell($h_width['total'], 7, moneyf($item['total']), 1, 0, 'R', 0, '', 1);
+			$this->Ln();
+			$i++;
+		}
+
+		/* invoice summary table - headers */
+		$sum = 0;
+		foreach ($h_width as $name => $w)
+			if (in_array($name, array('no', 'name', 'prodid', 'content', 'count', 'discount', 'basevalue')))
+				$sum += $w;
+
+		$this->SetFont('arial', 'B', 8);
+		$this->Cell($sum, 5, trans('Total:'), 0, 0, 'R', 0, '', 1);
+		$this->SetFont('arial', '', 8);
+		$this->Cell($h_width['totalbase'], 5, moneyf($invoice['totalbase']), 1, 0, 'R', 0, '', 1);
+		$this->SetFont('arial', 'B', 8);
+		$this->Cell($h_width['taxlabel'], 5, 'x', 1, 0, 'C', 0, '', 1);
+		$this->SetFont('arial', '', 8);
+		$this->Cell($h_width['totaltax'], 5, moneyf($invoice['totaltax']), 1, 0, 'R', 0, '', 1);
+		$this->Cell($h_width['total'], 5, moneyf($invoice['total']), 1, 0, 'R', 0, '', 1);
+		$this->Ln();
+
+		/* invoice summary table - data */
+		if ($invoice['taxest']) {
+			$i = 1;
+			foreach ($invoice['taxest'] as $item) {
+				$this->SetFont('arial', 'B', 8);
+				$this->Cell($sum, 5, trans('in it:'), 0, 0, 'R', 0, '', 1);
+				$this->SetFont('arial', '', 8);
+				$this->Cell($h_width['totalbase'], 5, moneyf($item['base']), 1, 0, 'R', 0, '', 1);
+				$this->Cell($h_width['taxlabel'], 5, $item['taxlabel'], 1, 0, 'C', 0, '', 1);
+				$this->Cell($h_width['totaltax'], 5, moneyf($item['tax']), 1, 0, 'R', 0, '', 1);
+				$this->Cell($h_width['total'], 5, moneyf($item['total']), 1, 0, 'R', 0, '', 1);
+				$roznica_po[] = array(
+				    'totalbase'	=> $item['base'],
+				    'taxlabel'	=> $item['taxlabel'],
+				    'totaltax'	=> $item['tax'],
+				    'total'	=> $item['total']
+				);
+				$this->Ln();
+				$i++;
+			}
+		}
+
+		$this->Ln(3);
+		/* difference between the invoice and the invoice correction */
+		if (isset($invoice['invoice'])) {
+			$total = $invoice['total'] - $invoice['invoice']['total'];
+			$totalbase = $invoice['totalbase'] - $invoice['invoice']['totalbase'];
+			$totaltax = $invoice['totaltax'] - $invoice['invoice']['totaltax'];
+
+			$this->SetFont('arial', 'B', 8);
+			$this->Cell($sum, 5, trans('Difference value:'), 0, 0, 'R', 0, '', 1);
+			$this->SetFont('arial', '', 8);
+			$this->Cell($h_width['totalbase'], 5, moneyf($totalbase), 1, 0, 'R', 0, '', 1);
+			$this->SetFont('arial', 'B', 8);
+			$this->Cell($h_width['taxlabel'], 5, 'x', 1, 0, 'C', 0, '', 1);
+			$this->SetFont('arial', '', 8);
+			$this->Cell($h_width['totaltax'], 5, moneyf($totaltax), 1, 0, 'R', 0, '', 1);
+			$this->Cell($h_width['total'], 5, moneyf($total), 1, 0, 'R', 0, '', 1);
+			$this->Ln();
+			
+			for ($j=0; $j<sizeof($roznica_przed); $j++) {
+			    
+			    $total = $roznica_po[$j]['total'] - $roznica_przed[$j]['total'];
+			    $totalbase = $roznica_po[$j]['totalbase'] - $roznica_przed[$j]['totalbase'];
+			    $totaltax = $roznica_po[$j]['totaltax'] - $roznica_przed[$j]['totaltax'];
+			    
+			    $this->SetFont('arial', 'B', 8);
+			    $this->Cell($sum, 5, trans('in it:'), 0, 0, 'R', 0, '', 1);
+			    $this->SetFont('arial', '', 8);
+			    $this->Cell($h_width['totalbase'], 5, moneyf($totalbase), 1, 0, 'R', 0, '', 1);
+			    $this->Cell($h_width['taxlabel'], 5, $roznica_po[$j]['taxlabel'], 1, 0, 'C', 0, '', 1);
+			    $this->Cell($h_width['totaltax'], 5, moneyf($totaltax), 1, 0, 'R', 0, '', 1);
+			    $this->Cell($h_width['total'], 5, moneyf($total), 1, 0, 'R', 0, '', 1);
+			    $this->Ln();
+			}
+		}
+	}
+
 }
+
 
 function init_pdf($pagesize, $orientation, $title) {
 	global $layout, $CONFIG;
@@ -350,15 +624,16 @@ function init_pdf($pagesize, $orientation, $title) {
 	$pdf = new TCPDFpl($orientation, PDF_UNIT, $pagesize, true, 'UTF-8', false, false);
 	$pdf->invoice_type = $CONFIG['invoices']['template_file'];
 
-	$pdf->SetProducer('LMS Developers');
+	$pdf->SetProducer('iNET LMS Developers');
 	$pdf->SetSubject($title);
-	$pdf->SetCreator('LMS ' . $layout['lmsv']);
+	$pdf->SetCreator($layout['lmsv']);
 	$pdf->SetDisplayMode('fullwidth', 'SinglePage', 'UseNone');
 
 	$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 	$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 	$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 	$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+	$pdf->SetCompression(true);
 
 	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 	$pdf->setLanguageArray($l);

@@ -41,15 +41,17 @@
 	//-->
 	<tr class="light">
 	<td width="50%" align="right" class="fleftu">
-			<b><a href="?m=customerlist&page=1&fletter=&osp=&s=0&st=0&ce=&d=&n=0&g=&ng=&odl=&warn=&or=">{trans("Total:")}</a><br>
+			<a href="?m=customerlist&page=1&fletter=&osp=&s=0&st=0&ce=&d=&n=0&g=&ng=&odl=&warn=&or="><b>{trans("Total:")}</b></a><br>
 			{if !check_conf('privileges.hide_finances')}
-				<nobr><a href="?m=customerlist&page=1&fletter=&s=0&st=6&ce=&d=&n=0&g=&ng=&odl=&warn=&or=">{trans("Total Dues:")}</a></b></nobr>
+				<nobr><a href="?m=customerlist&page=1&fletter=&s=0&st=6&ce=&d=&n=0&g=&ng=&odl=&warn=&or="><b>zadłużonych:</b></a></nobr><br>
+				<nobr><a href="?m=customerlist&page=1&fletter=&s=0&st=17&ce=&d=&n=0&g=&ng=&odl=&warn=&or="><b>nadpłat:</b></a></nobr>
 			{/if}
 		</td>
 		<td width="50%" class="frightu">
 			{$customerstats.total}<br>
 			{if !check_conf('privileges.hide_finances')}
-				<nobr>{$customerstats.debt} ({trans("amount")} {$customerstats.debtvalue|money_format})<nobr>
+				<nobr>{$customerstats.debt} ({trans("amount")} {$customerstats.debtvalue|money_format})<nobr><br>
+				<nobr>{$customerstats.excess} ({trans("amount")} {$customerstats.excessvalue|money_format})<nobr>
 			{/if}
 		</td>
 	</tr>

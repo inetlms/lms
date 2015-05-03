@@ -1,23 +1,79 @@
-{if check_conf('phpui.short_pagescroller')}
-    <b>{trans("Page:")}
-    {if $page > 1}{if $listdata.ajax}<a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation='x - 1' x=$page}');">&laquo;&laquo;&laquo;</a>{else}<a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation="x - 1" x=$page}">&laquo;&laquo;&laquo;</a>{/if}{/if}
-    {math assign=lastpage equation="ceil(x/y)" x=$listdata.total y=$pagelimit}   
-    {if $page == $lastpage}{math assign=scroller_start equation="max(0,x-3)*y" x=$page y=$pagelimit}
-    {elseif $page > 1 && $page < $lastpage}{math assign=scroller_start equation="max(0,x-2)*y" x=$page y=$pagelimit}{/if}
-    {section name=pcnt loop=$loop step=$pagelimit start=$scroller_start|default:0 max=3}
+    <table cellpadding="0" cellspacing="0">
+    <tr>
+    <td width="99%" align="left">
+    <b>
+    {math assign=lastpage equation="ceil(x/y)" x=$listdata.total y=$pagelimit}
+    {if $page > 1}
+	{if $listdata.ajax}
+	    <a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation='x - 1' x=$page}');" {tip text="poprzednia strona"}><img src="img/back_enabled_hover.png"></a>
+	{else}
+	    <a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation="x - 1" x=$page}" {tip text="poprzednia strona"}><img src="img/back_enabled_hover.png"></a>
+	{/if}
+    {else}
+	<img src="img/back_disabled.png" alt="<">
+    {/if}
+    {if $page < $lastpage} 
+	{if $listdata.ajax}
+	    <a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation='x + 1' x=$page}');" {tip text="następna strona"}><img src="img/forward_enabled_hover.png"></a>
+	{else}
+	    <a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation="x + 1" x=$page}" {tip text="następna strona"}><img src="img/forward_enabled_hover.png"></a>
+	{/if}
+    {else}
+	<img src="img/forward_disabled.png">
+    {/if}
+    {if $page == $lastpage}
+	{math assign=scroller_start equation="max(0,x-10)*y" x=$page y=$pagelimit}
+    {elseif $page > 1 && $page < $lastpage}
+	{math assign=scroller_start equation="max(0,x-9)*y" x=$page y=$pagelimit}
+    {/if}
+    {if $page != 1}
+	{if $listdata.ajax}
+	    <a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page=1');">[01]</a>
+	{else}
+	    <a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page=1">[01]</a>
+	{/if}
+    {else}[01]
+    {/if}...
+    {section name=pcnt loop=$loop step=$pagelimit start=$scroller_start|default:0 max=10}
 	{math assign=cnt equation="ceil(x/y)+z" x=$scroller_start|default:0 y=$pagelimit z=$smarty.section.pcnt.rownum}
-    {if $page eq $cnt}[{else}{if $listdata.ajax}<a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={$cnt}');">{else}<a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={$cnt}">{/if}{/if}{$cnt}{if $page eq $cnt}]{else}</a>{/if}
+    {if $page eq $cnt}[{else}
+	{if $listdata.ajax}
+	    <a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={$cnt}');">
+	{else}
+	    <a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={$cnt}">
+	{/if}
+    {/if}
+    {$cnt|string_format:"%02.d"}
+	{if $page eq $cnt}]{else}</a>{/if}
     {/section}
     ... {if $lastpage != $page}
     {if $listdata.ajax}<a href="javascript:void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={$lastpage}');">{else}<a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={$lastpage}">{/if}
-    {/if}[{$lastpage}]{if $lastpage != $page}</a>{/if}
+    {/if}[{$lastpage|string_format:"%02.d"}]{if $lastpage != $page}</a>{/if}
+    {if $page > 1}
+	{if $listdata.ajax}
+	    <a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation='x - 1' x=$page}');" {tip text="poprzednia strona"}><img src="img/back_enabled_hover.png"></a>
+	{else}
+	    <a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation="x - 1" x=$page}" {tip text="poprzednia strona"}><img src="img/back_enabled_hover.png"></a>
+	{/if}
+    {else}
+	<img src="img/back_disabled.png" alt="<">
+    {/if}
     {if $page < $lastpage} 
-    {if $listdata.ajax}<a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation='x + 1' x=$page}');">&raquo;&raquo;&raquo;</a>{else}<a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation="x + 1" x=$page}">&raquo;&raquo;&raquo;</a>{/if}{/if}
+	{if $listdata.ajax}
+	    <a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation='x + 1' x=$page}');" {tip text="następna strona"}><img src="img/forward_enabled_hover.png"></a>
+	{else}
+	    <a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation="x + 1" x=$page}" {tip text="następna strona"}><img src="img/forward_enabled_hover.png"></a>
+	{/if}
+    {else}
+	<img src="img/forward_disabled.png">
+    {/if}
     </b>
+    </td>
+    <td width="1%" nowrap align="right" class="pad">
     {math equation="x + 1" x=$start assign=startx}
     {if $start + $pagelimit > $listdata.total}{assign var=endx value=$listdata.total}{else}{math equation="x + y" x=$start y=$pagelimit assign=endx}{/if}
     ({t a=$startx b=$endx c=$listdata.total}records $a - $b of $c{/t})
-    {if $lastpage > 3}
+    {if $lastpage > 10}
     {if !$scrollerno}
     <form method="get" action="?m={$layout.module}" name="scroller">
     <input type="hidden" name="m" value="{$layout.module}">
@@ -35,30 +91,23 @@
     </form>
     {/if}
     {/if}
-{else}
-    <b>{trans("Page:")}
     {if $page > 1}
 	{if $listdata.ajax}
-	<a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation='x - 1' x=$page}');">&laquo;&laquo;&laquo;</a>
+	    <a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation='x - 1' x=$page}');" {tip text="poprzednia strona"}><img src="img/back_enabled_hover.png"></a>
 	{else}
-	<a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation="x - 1" x=$page}">&laquo;&laquo;&laquo;</a>
+	    <a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation="x - 1" x=$page}" {tip text="poprzednia strona"}><img src="img/back_enabled_hover.png"></a>
 	{/if}
     {else}
-	&laquo;&laquo;&laquo;
+	<img src="img/back_disabled.png" alt="<">
     {/if}
-    {section name=pcnt loop=$loop step=$pagelimit} {if $page eq $smarty.section.pcnt.rownum} [{else}{if $listdata.ajax}<a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{if $listdata.state}&s={$listdata.state}{/if}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={$smarty.section.pcnt.rownum}');">{else}<a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{if $listdata.state}&s={$listdata.state}{/if}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={$smarty.section.pcnt.rownum}">{/if}{/if}{$smarty.section.pcnt.rownum}{if $page eq $smarty.section.pcnt.rownum}] {else}</a>{/if}{/section}
-    {if $page < $smarty.section.pcnt.rownum} 
+    {if $page < $lastpage} 
 	{if $listdata.ajax}
-	<a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation='x + 1' x=$page}');">&raquo;&raquo;&raquo;</a>
+	    <a href="javascript: void(0);" onclick="loadAjax('{if $listdata.ajax_id}{$listdata.ajax_id}{else}id_data{/if}','?m={if $listdata.ajax_link}{$listdata.ajax_link}{else}{$layout.module}{/if}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation='x + 1' x=$page}');" {tip text="następna strona"}><img src="img/forward_enabled_hover.png"></a>
 	{else}
-	<a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation="x + 1" x=$page}">&raquo;&raquo;&raquo;</a>
+	    <a href="?m={$layout.module}{$adlink}{if $listdata.id}&id={$listdata.id}{/if}{if $listdata.customer}&c={$listdata.customer}{/if}{if $listdata.type}&t={$listdata.type}{/if}{if $listdata.state}&s={$listdata.state}{/if}{if $listdata.kind}&k={$listdata.kind}{/if}{if $listdata.order}&o={$listdata.order},{$listdata.direction}{/if}&page={math equation="x + 1" x=$page}" {tip text="następna strona"}><img src="img/forward_enabled_hover.png"></a>
 	{/if}
-    {else} 
-	&raquo;&raquo;&raquo;
+    {else}
+	<img src="img/forward_disabled.png">
     {/if}
-    </b> 
-    {math equation="x + 1" x=$start assign=startx}
-    {if $start + $pagelimit > $listdata.total}{assign var=endx value=$listdata.total}{else}{math equation="x + y" x=$start y=$pagelimit assign=endx}{/if}
-    ({t a=$startx b=$endx c=$listdata.total}records $a - $b of $c{/t})
-{/if}
-
+    </td></tr>
+    </table>
