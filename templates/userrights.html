@@ -1,0 +1,95 @@
+{include file="header.html"}
+{title value=$layout.pagetitle}
+
+<table width="100%" cellpadding="4" cellspacing="0">
+
+<form name="choosefilter" method="GET" action="?m=userrights">
+<input type="hidden" name="m" value="userrights">
+<input type="hidden" name="id" value="{$listdata.cid}">
+<input type="submit" class="hiddenbtn">
+
+<tr class="dark boxtop">
+    <td width="100%" colspan="2" class="fall pad">
+	<b>Sekcja : </b>&nbsp;
+	<select name='sec' style="width:300px;" onchange="javascript:document.choosefilter.submit();">
+	<option value=""></option>
+	{foreach from=$sec item=item key=key}
+	    <option value="{$item}"{if $listdata.sec == $item} selected{/if}>{$item}</option>
+	{/foreach}
+	</select>
+    </td>
+</tr>
+</form>
+
+
+{if $right}
+<form name="prawa" id="prawa" method="POST" action="?m=userrights">
+<input type="hidden" name="prawa[id]" value="{$listdata.cid}">
+<input type="hidden" name="prawa[sec]" value="{$listdata.sec}">
+    
+    <tr class='dark'>
+	<td width="1%" class="pad10 fleft" align="center">
+	    <input type="checkbox" name="select-all" id="select-all" value="1">
+	</td>
+	<td width="99%" colspan="2" class="pad10 fright tleft" align="left">
+	    <label for="select-all" style="color:brown;">Zanzacz / odznacz wszystko</label>
+	</td>
+    </tr>
+    {cycle values='lucid,light' print=false}
+    {section name='right' loop=$right}
+    {assign var='lp' value=$smarty.section.right.index+1}
+    <tr class="{cycle} lista" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td width="1%" nowrap class="fleft pad10" align="center">
+	    <input onclick="document.getElementById('id_zapisz').style.display='';" type="checkbox" name="prawa[md5][]" value="{$right[right].md5}" id="chk{$lp}"{if in_array($right[right].md5,$userright)} checked{/if}>
+	</td>
+	<td width="99%" class="pad fright tleft" align="left" onclick="chk_box('chk{$lp}');">
+	    {$right[right].description}
+	</td>
+    </tr>
+    {/section}
+    <tr class="dark">
+	<td width="100%" colspan="2" align="right" class="fall pad">
+	    {links img="save.gif" href="javascript:void(0);" onclick="document.prawa.submit();" value="<b>Zapisz [ F2 ]</b>" id="id_zapisz" style="display:none;"}&nbsp;
+	    {links img="cancel.gif" href="?m=userlist" value="Anuluj [ ESC ]"}
+	</td>
+</form>
+{/if}
+
+</table>
+
+<script type="text/javascript" language="JavaScript">
+<!--
+    keyPressESC = function() {
+	self.location.href='?m=userlist';
+    }
+    
+    $('#select-all').click(function(event) {
+	if (this.checked) {
+	    $(':checkbox').each(function() {
+		this.checked = true;
+	    });
+	} else {
+	    $(':checkbox').each(function() {
+		this.checked = false;
+	    });
+	}
+	document.getElementById('id_zapisz').style.display='';
+    });
+    
+    function chk_box(id)
+    {
+	if (document.getElementById(id).checked == true)
+	    document.getElementById(id).checked = false;
+	else
+	    document.getElementById(id).checked = true;
+	
+	document.getElementById('id_zapisz').style.display='';
+	
+    
+	keyPressF2 = function() {
+	    document.prawa.submit();
+	}
+    }
+//-->
+</script>
+{include file="footer.html"}

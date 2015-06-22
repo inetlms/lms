@@ -69,8 +69,8 @@
 	</tr>
 	<tr class="light">
 		<td class="fbottomu" align="right" colspan="3">
-			<a href="javascript:document.config.submit();" accesskey="s">{trans("Submit")} <img src="img/save.gif" alt=""></a>
-			<a href="?m=configlist">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a><br>
+			<a href="javascript:document.config.submit();" accesskey="s">{trans("Submit")} [ F2 ]<img src="img/save.gif" alt=""></a>&nbsp;
+			<a href="?m=configlist">{trans("Cancel")} [ ESC ]<img src="img/cancel.gif" alt=""></a><br>
 			<input type="checkbox" name="config[reuse]" value="ON" id="reuse"{if $config.reuse} checked{/if}><label for="reuse">{trans("Display this form again, when this option is saved")}</label>
 		</td>
 	</tr>
@@ -78,7 +78,15 @@
 </p>
 <script type="text/javascript">
 <!--
-document.forms['config'].elements['config[name]'].focus();
+    keyPressF2 = function() {
+	document.config.submit();
+    }
+    
+    keyPressESC = function() {
+	self.location.href='?m=configlist';
+    }
+    
+    document.forms['config'].elements['config[name]'].focus();
 //-->
 </script>
 {include file="footer.html"}

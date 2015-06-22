@@ -72,40 +72,66 @@
 				<tr class="light">
 					<td style="width: 50%; vertical-align: top;">
 						<table style="width: 100%" cellpadding="3">
+	
 	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/host.gif" alt="Host" title="[ HOST ]">
-		</td>
-		<td style="width: 99%;" colspan="2">
-			{if $nodeinfo.hostname}{$nodeinfo.hostname}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}
-		</td>
+	    <td width="100%" colspan="2" style="vertial-align:top;text-align:left;">
+	    <fieldset style="width:250px;"><legend>| <b>Lokalny Adres IP</b> |</legend>
+	    <table width="100%" cellpadding="1" cellspacing="0">
+		<tr class="light">
+		    <td width="1%"><img src="img/ip.gif" alt="{trans("IP address:")}" title="[ Adres IP ]"></td>
+		    <td width="1%" nowrap class="pad"><b>IP</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%"><a href="javascript:ping_popup('{$nodeinfo.ip}')">{$nodeinfo.ip}</a></td>
+		</tr>
+		<tr class="light">
+		    <td width="1%"><img src="img/network.gif" alt="{trans("Network:")}" title="[ SIEĆ ]"></td>
+		    <td width="1%" nowrap class="pad"><b>Sieć</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%"><a href="?m=netinfo&id={$nodeinfo.netid}">{$nodeinfo.networkname}</a></td>
+		</tr>
+		<tr class="light">
+		    <td width="1%"><img src="img/host.gif" alt="Host" title="[ HOST ]"></td>
+		    <td width="1%" nowrap class="pad"><b>Host</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%">{if $nodeinfo.hostname}{$nodeinfo.hostname}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}</td>
+		</tr>
+		
+		
+	    </table>
+	    </fieldset>
+	    </td>
 	</tr>
-	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/network.gif" alt="{trans("Network:")}" title="[ SIEĆ ]">
-		</td>
-		<td style="width: 99%;" colspan="2">
-			<span class="bold"><a href="?m=netinfo&id={$nodeinfo.netid}">{$nodeinfo.netname}</a></span>
-		</td>
-	</tr>
-	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/ip.gif" alt="{trans("IP address:")}" title="[ Adres IP ]">
-		</td>
-		<td style="width: 99%;" colspan="2">
-			<a href="javascript:ping_popup('{$nodeinfo.ip}')">{$nodeinfo.ip}</a>
-		</td>
-	</tr>
+	
 	{if get_form('nodes.public_ip') && $nodeinfo.ip_pub != "0.0.0.0"}
 	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}" title="[ Publiczny Adres IP ]">
-		</td>
-		<td style="width: 99%;" colspan="2">
-			<a href="javascript:ping_popup('{$nodeinfo.ip_pub}')">{$nodeinfo.ip_pub}</a>
-		</td>
+	    <td width="100%" colspan="2" style="text-align:left;vertical-align:top;">
+	    <fieldset style="width:250px;"><legend>| <b>Publiczny Adres IP</b> |</legend>
+	    <table width="100%" cellpadding="1" cellspacing="0">
+		<tr class="light">
+		    <td width="1%"><img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}" title="[ Publiczny Adres IP ]"></td>
+		    <td width="1%" nowrap class="pad"><b>IP</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%"><a href="javascript:ping_popup('{$nodeinfo.ip_pub}')">{$nodeinfo.ip_pub}</a></td>
+		</tr>
+		<tr class="light">
+		    <td width="1%"><img src="img/network.gif" alt="{trans("Network:")}" title="[ SIEĆ ]"></td>
+		    <td width="1%" nowrap class="pad"><b>Sieć</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%"><a href="?m=netinfo&id={$nodeinfo.netid_pub}">{$nodeinfo.networkname_pub}</a></td>
+		</tr>
+		<tr class="light">
+		    <td width="1%;"><img src="img/host.gif" alt="Host" title="[ HOST ]"></td>
+		    <td width="1%" nowrap class="pad"><b>Host</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%">{if $nodeinfo.hostname_pub}{$nodeinfo.hostname_pub}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}</td>
+		</tr>
+	    </table>
+	    </fieldset>
+	    </td>
 	</tr>
 	{/if}
+	
+	
 	
 	{if get_form('nodes.macaddress')}
 	{assign var="counter" value=0}

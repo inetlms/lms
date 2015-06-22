@@ -16,6 +16,7 @@
 			{include file="customerinfobox.html" customerpanel=1}
 		</td>
 	</tr>
+	{/if}
 	{if !get_conf('privileges.hide_callcenter')}
 	<tr>
 		<td width="100%">
@@ -41,14 +42,14 @@
 			{include file="customervoipaccountsbox.html"}
 		</td>
 	</tr>
-	{if}
+	{/if}
 	{if check_modules(81)}
 	<tr>
 		<td width="100%">
 			{include file="hv_accountinfobox2.html"}
 		</td>
 	</tr>
-	{if}
+	{/if}
 	<!--// nettelekom //-->
 	{if check_modules(82) && get_conf('voip.enabled','0')}
 	<tr>
@@ -84,7 +85,7 @@
 			{include file="customerdocuments.html" limit=10}
 		</td>
 	</tr>
-	{if}
+	{/if}
 	{if check_conf('privileges.customerannex')}
 	<tr>
 		<td width="100%">
@@ -98,7 +99,7 @@
 			{include file="customermessages.html" limit=10}
 		</td>
 	</tr>
-	{if}
+	{/if}
 
 	<tr>
 		<td width="100%">
@@ -113,7 +114,7 @@
 			{include file="customerevents.html" limit=10}
 		</td>
 	</tr>
-	{if}
+	{/if}
 	{if check_modules(40)}
 	<tr>
 		<td width="100%">

@@ -318,9 +318,9 @@ switch ($action) {
 		$subtitle = trans('New IP address');
 		$nodeipdata = $_POST['ipadd'];
 		$nodeipdata['netid'] = $_POST['nodeeditnetid'];
+		$nodeipdata['netid_pub'] = $_POST['nodeeditnetidpub'];
 		$nodeipdata['ownerid'] = 0;
 		
-//		echo "<pre>"; print_r($nodeipdata); echo "</pre>"; die;
 		foreach ($nodeipdata['macs'] as $key => $value)
 			$nodeipdata['macs'][$key] = str_replace('-', ':', $value);
 
@@ -355,7 +355,7 @@ switch ($action) {
 				$error['ipaddr_pub'] = trans('Incorrect IP address!');
 			elseif (!$LMS->IsIPValid($nodeipdata['ipaddr_pub']))
 				$error['ipaddr_pub'] = trans('Specified address does not belongs to any network!');
-			elseif (!$LMS->IsIPFree($nodeipdata['ipaddr_pub']))
+			elseif (!$LMS->IsIPFree($nodeipdata['ipaddr_pub'],$nodeipdata['netid_pub']))
 				$error['ipaddr_pub'] = trans('Specified IP address is in use!');
 		}
 		else
@@ -404,7 +404,8 @@ switch ($action) {
 
 		$subtitle = trans('IP address edit');
 		$nodeipdata = $_POST['ipadd'];
-//		$nodeipdata['netid'] = $_POST['nodeeditnetid'];
+		$nodeipdata['netid'] = $_POST['nodeeditnetid'];
+		$nodeipdata['netid_pub'] = $_POST['nodeeditnetidpub'];
 		$nodeipdata['ownerid'] = 0;
 		$error = array();
 		
@@ -442,7 +443,7 @@ switch ($action) {
 			if (check_ip($nodeipdata['ipaddr_pub'])) {
 				if ($LMS->IsIPValid($nodeipdata['ipaddr_pub'])) {
 					$ip = $LMS->GetNodePubIPByID($nodeipdata['id']);
-					if ($ip != $nodeipdata['ipaddr_pub'] && !$LMS->IsIPFree($nodeipdata['ipaddr_pub']))
+					if ($ip != $nodeipdata['ipaddr_pub'] && !$LMS->IsIPFree($nodeipdata['ipaddr_pub'],$nodeipdata['netid_pub']))
 						$error['ipaddr_pub'] = trans('Specified IP address is in use!');
 				}
 				else

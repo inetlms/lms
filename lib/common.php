@@ -1133,5 +1133,9 @@ function calculate_distance_gps($latitude1,$longitude1,$latitude2,$longitude2,$m
     return $distance;
 }
 
+function addRight($module,$list)
+{
+    
+}
 
 ?>

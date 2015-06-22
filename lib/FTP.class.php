@@ -131,7 +131,7 @@ class FTP {
 	// kasowanie pliku na ftp
 	function delete($remote_file = NULL) 
 	{
-		if(ftp_delete($this->_connectid, $remote_file)) return true; else return false;
+		if(@ftp_delete($this->_connectid, $remote_file)) return true; else return false;
 	}
 
 	// kasowanie katalogu i całej jego zawartosci razem z podkatalogami

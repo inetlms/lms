@@ -69,15 +69,23 @@
 	</tr>
 	<tr class="light">
 		<td class="fbottomu" align="right" colspan="3">
-			<a href="javascript:document.config.submit();" accesskey="s">{trans("Submit")} <img src="img/save.gif" alt=""></a>
-			<a href="?m=configdel&id={$config.id}" onclick="return confirmLink(this, '{t a=$config.var}Are you sure, you want to delete option \'$a\' from database?{/t}')">{trans("Delete")} <img src="img/delete.gif" alt=""></a>
-			<a href="?m=configlist">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a>
+			<a href="javascript:document.config.submit();" accesskey="s">{trans("Submit")} [ F2 ]<img src="img/save.gif" alt=""></a>&nbsp;
+			<a href="?m=configdel&id={$config.id}" onclick="return confirmLink(this, '{t a=$config.var}Are you sure, you want to delete option \'$a\' from database?{/t}')">{trans("Delete")} <img src="img/delete.gif" alt=""></a>&nbsp;
+			<a href="?m=configlist">{trans("Cancel")} [ ESC ]<img src="img/cancel.gif" alt=""></a>
 		</td>
 	</tr>
 </table>
 </p>
 <script type="text/javascript">
 <!--
+	keyPressF2 = function() {
+	    document.config.submit();
+	}
+	
+	keyPressESC = function() {
+	    self.location.href='?m=configlist';
+	}
+	
 	document.forms['config'].elements['config[var]'].focus();
 //-->
 </script>

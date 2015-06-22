@@ -3,7 +3,7 @@
 /*
  *  iNET LMS
  *
- *  (C) Copyright 2012 LMS iNET Developers
+ *  (C) Copyright 2012-2015 iNET LMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -21,8 +21,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  *
- *  $Id: v 1.00 Sylwester Kondracki Exp $
- */
+ *  Sylwester Kondracki
+ *  sylwester.kondracki@gmail.com
+ *  gadu-gadu : 6164816
+ *
+*/
 
 if (!isset($annex_info) || empty($annex_info) || !is_array($annex_info))
     $annex_info = array('section' => 'global', 'ownerid' => 0);

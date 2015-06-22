@@ -3,6 +3,8 @@
 <form name="nodeadd" id="nodeadd" method="POST" action="?m=nodeadd{if $customerinfo.id}&ownerid={$customerinfo.id}{/if}">
 <input type="submit" class="hiddenbtn">
 <input type="hidden" name="nodedatanetid" id="nodedatanetid" value="{$nodedata.netid}">
+<input type="hidden" name="nodedatanetid_pub" id="nodedatanetid_pub" value="{$nodedata.netid_pub}">
+
 <table style="width: 100%;" cellpadding="3" class="table">
 	<tr class="dark nav-header">
 		<td style="width: 1%;" class="fleftu">
@@ -19,36 +21,74 @@
 					<td style="width: 50%; vertical-align: top;">
 						<table style="width: 100%;" cellpadding="3">
 	<tr>
-		<td width="1%"><img src="img/host.gif"></td>
-		<td width="99%" align="left"><div id="id_host_name">{$nodedata.hostname}</div></td>
-	</tr>
-	<tr>
-		<td style="width: 1%;">
-			<img src="img/network.gif" alt="{trans("Network:")}">
-		</td>
-		<td style="width: 99%;">
-			
-			<div id="id_network_name">{$nodedata.networkname}</div>
-		</td>
-	</tr>
-	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/ip.gif" alt="{trans("IP address:")}">
-		</td>
-		<td style="width: 99%;">
+	    
+	    <td width="100%" colspan="2" align="left" style="veritcal-align:top;">
+	    <fieldset style="width:250px;"><legend>| <b>Lokalny Adres IP</b> |</legend>
+	    <table width="100%" cellpadding="1" cellspacing="0">
+	    <!--// local address //-->
+		<tr class="light">
+		    <td width="1%"><img src="img/ip.gif" alt="{trans("IP address:")}"></td>
+		    <td width="1%" nowrap class="pad"><b>IP</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%">
 			<input type="text" readonly name="nodedataipaddr" value="{$nodedata.ipaddr}" class="required" {tip text="Enter IP address" trigger="ipaddr"} placeholder="-- WYMAGANE --">
 			<a href="javascript: void(0);" onclick="return ipchoosewin(document.nodeadd.nodedataipaddr, document.nodeadd.nodedatanetid);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
-		</td>
+		    </td>
+		</tr>
+		<tr>
+		    <td width="1%"><img src="img/network.gif" alt="{trans("Network:")}" {tip text="Nazwa sieci"}></td>
+		    <td width="1%" nowrap class="pad"><b>Sieć</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="99%"><div id="id_network_name">{$nodedata.networkname}</div></td>
+		</tr>
+		<tr>
+		    <td width="1%"><img src="img/host.gif" alt="Host:" {tip text="Host"}></td>
+		    <td width="1%" nowrap class="pad"><b>Host</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%" align="left"><div id="id_host_name">{$nodedata.hostname}</div></td>
+		</tr>
+		
+		
+	    <!--// end local address //-->
+	    </table>
+	    </fieldset>
+	    </td>
 	</tr>
+
 	{if get_form('nodes.public_ip')}
-	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}">
-		</td>
-		<td style="width: 99%;">
-			<input type="text" name="nodedataipaddr_pub" value="{$nodedata.ipaddr_pub}" {tip text="Enter IP address (optional)" trigger="ipaddr_pub"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.nodeadd.nodedataipaddr_pub, document.nodeadd.nodedatanetid);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
-		</td>
+	<!--// Public address //-->
+	<tr>
+	    <td width="100%" colspan="2" align="left" style="vertical-align:top;">
+	    <fieldset style="width:250px;"><legend>| <b>Publiczny Adres IP</b> |</legend>
+	    <table width="100%" cellpadding="1" cellspacing="0">
+		<tr class="light">
+		    <td width="1%"><img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}"></td>
+		    <td width="1%" nowrap class="pad"><b>IP</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%;">
+			<input type="text" name="nodedataipaddr_pub" value="{$nodedata.ipaddr_pub}" {tip text="Enter IP address (optional)" trigger="ipaddr_pub"}> 
+			<a href="javascript: void(0);" onclick="return ipchoosewinpub(document.nodeadd.nodedataipaddr_pub, document.nodeadd.nodedatanetid_pub);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
+		    </td>
+		</tr>
+		<tr>
+		    <td width="1%"><img src="img/network.gif" alt="{trans("Network:")}" {tip text="Nazwa sieci"}></td>
+		    <td width="1%" nowrap class="pad"><b>Sieć</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%"><div id="id_network_name_pub">{$nodedata.networkname_pub}</div></td>
+		</tr>
+		<tr class="light">
+		    <td width="1%"><img src="img/host.gif" alt="Host:" {tip text="Host"}></td>
+		    <td width="1%" nowrap class="pad"><b>Host</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%" align="left"><div id="id_host_name_pub">{$nodedata.hostname_pub}</div></td>
+		</tr>
+		
+		
+	    </table>
+	    </fieldset>
+	    </td>
 	</tr>
+	<!--// End Public Address //-->
 	{/if}
 
 	{if get_form('nodes.macaddress')}
@@ -461,12 +501,23 @@
 	<tr class="light nav-footer nav-footer-bordertop">
 		<td style="width: 100%; text-align: right;" class="FBOTTOMU" colspan="2">
 			<a href="?m=nodescan{if $customerinfo.id}&ownerid={$customerinfo.id}{/if}">{trans("Scan")} <img src="img/search.gif" alt=""></a>
-			<a href="javascript:document.nodeadd.submit();" accesskey="s">{trans("Submit")} <img src="img/save.gif" alt=""></a>
-			<a href="?m={if $customerinfo.id}customerinfo&id={$customerinfo.id}{else}nodelist{/if}">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a><br>
+			<a href="javascript:document.nodeadd.submit();" accesskey="s">{trans("Submit")} [ F2 ]<img src="img/save.gif" alt=""></a>
+			<a href="?m={if $customerinfo.id}customerinfo&id={$customerinfo.id}{else}nodelist{/if}">{trans("Cancel")} [ ESC ]<img src="img/cancel.gif" alt=""></a><br>
 			<input type="checkbox" name="nodedata[reuse]" id="reuse" value="ON" id="reuse" {if $nodedata.reuse}checked{/if}> <label for="reuse">{trans("Display this form again, when this node is saved")}</label>
 		</td>
 	</tr>
 </table></form>
+<script type="text/javascript" language="JavaScript">
+<!--
+	keyPressF2 = function() {
+	    document.nodeadd.submit();
+	}
+	
+	keyPressESC = function() {
+	    self.location.href='?m={if $customerinfo.id}customerinfo&id={$customerinfo.id}{else}nodelist{/if}';
+	}
+//-->
+</script>
 {literal}
 <script type="text/javascript" language="JavaScript">
 <!--

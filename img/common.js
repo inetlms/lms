@@ -1,5 +1,48 @@
 // $Id: common.js,v 1.2 2003/04/12 22:31:06 lukasz Exp $
 
+document.onkeyup = CheckKeyPress;
+
+var keyPressF2 = function() { };
+var keyPressF4 = function() { };
+var keyPressF8 = function() { };
+var keyPressF9 = function() { };
+var keyPressESC = function() { };
+var keyPressPageUp = function() { };
+var keyPressPageDown = function() { };
+var keyPressHome = function() { };
+var keyPressEnd = function() { };
+var keyPressLeft = function() { };
+var keyPressUp = function() { };
+var keyPressRight = function() { };
+var keyPressDown = function() { };
+var keyPressInsert = function() { };
+var keyPressDelete = function() { };
+var keyPressEnter = function() { };
+var keyPressTab = function() { };
+
+function CheckKeyPress(e) 
+{
+    var KeyID=(window.event) ? event.keyCode : e.keyCode;
+    
+    if (KeyID == 113) { keyPressF2(); }
+    if (KeyID == 115) { keyPressF4(); }
+    if (KeyID == 119) { keyPressF8(); }
+    if (KeyID == 120) { keyPressF9(); }
+    if (KeyID == 27) { keyPressESC(); }
+    if (KeyID == 33) { keyPressPageUp(); }
+    if (KeyID == 34) { keyPressPageDown(); }
+    if (KeyID == 36) { keyPressHome(); }
+    if (KeyID == 35) { keyPressEnd(); }
+    if (KeyID == 37) { keyPressLeft(); }
+    if (KeyID == 38) { keyPressUp(); }
+    if (KeyID == 39) { keyPressRight(); }
+    if (KeyID == 40) { keyPressDown(); }
+    if (KeyID == 45) { keyPressInsert(); }
+    if (KeyID == 46) { keyPressDelete(); }
+    if (KeyID == 13) { keyPressEnter(); }
+    if (KeyID == 9) { keyPressTab(); }
+}
+
 function confirmLink(theLink, message)
 {
 	var is_confirmed = confirm(message);
@@ -102,6 +145,12 @@ function openSelectWindow2(theURL, winName, myWidth, myHeight, isCenter, formfie
 function ipchoosewin(formfield1, formfield2, netid, device)
 {
 	var url = '?m=chooseip' +  (netid ? '&netid=' + netid : '') + (device ? '&device=' + device : '');
+	return openSelectWindow2(url, 'chooseip', 350, 380, 'true', formfield1, formfield2);
+}
+
+function ipchoosewinpub(formfield1, formfield2, netid, device)
+{
+	var url = '?m=chooseippub' +  (netid ? '&netid=' + netid : '') + (device ? '&device=' + device : '');
 	return openSelectWindow2(url, 'chooseip', 350, 380, 'true', formfield1, formfield2);
 }
 
@@ -777,4 +826,5 @@ function netdevmodelchoosewin(varname, formname, netdevmodelid, producer, model)
 {
 	return openSelectWindow('?m=choosenetdevmodel&name='+varname+'&form='+formname+'&netdevmodelid='+netdevmodelid+'&producer='+producer+'&model='+model,'chooselocation',350,200,'true');
 }
+
 

@@ -1,9 +1,9 @@
 <?php
 
 /*
- * LMS iNET
+ *  iNET LMS
  *
- *  (C) Copyright 2012 LMS iNET Developers
+ *  (C) Copyright 2012-2015 iNET LMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -21,8 +21,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  *
- *  $Id: v 1.00 2013/04/11 20:01:35 Sylwester Kondracki Exp $
- */
+ *  Sylwester Kondracki
+ *  sylwester.kondracki@gmail.com
+ *  gadu-gadu : 6164816
+ *
+*/
 
 $layout['pagetitle'] = 'Historia operacji importów płatności masowych';
 

@@ -664,13 +664,9 @@ class LMS {
 	 */
 
 	function GetCustomerName($id) {
-	
-//		if (!$return = $this->DB->GetOne('SELECT ' . $this->DB->Concat('lastname', "' '", 'name') . ' FROM customers WHERE id = ? LIMIT 1', array($id)))
-//		{
-//		    $this->DB->LockTables('customers');
-		    $return = $this->DB->GetOne('SELECT ' . $this->DB->Concat('lastname', "' '", 'name') . ' FROM customers WHERE id = ? ', array($id));
-//		    $this->DB->UnlockTables();
-//		}
+		
+		$return = $this->DB->GetOne('SELECT ' . $this->DB->Concat('lastname', "' '", 'name') . ' FROM customers WHERE id = ? ', array($id));
+		
 		return $return;
 	}
 
@@ -2207,7 +2203,7 @@ class LMS {
 	}
 
 	function NodeUpdate($nodedata, $deleteassignments = FALSE) {
-
+		
 		if (SYSLOG) {
 		    $diff['old'] = $this->getnode($nodedata['id']);
 		}
@@ -2243,22 +2239,31 @@ class LMS {
 		if (!$nodedata['netid'])
 			$nodedata['netid'] = $this->DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id '.$this->DB->Limit(1).';',
 					array($nodedata['ipaddr']));
-					
+		
+		if ($nodedata['ipaddr_pub'] != '0.0.0.0' && !$nodedata['netid_pub'])
+			$nodedata['netid_pub'] = $this->DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id '.$this->DB->Limit(1).';',
+					array($nodedata['ipaddr_pub']));
+		
+		
 		if (empty($nodedata['name'])) {
 		    $_name = 'C_';
 		    $_name .= sprintf('%04.d',($nodedata['ownerid'] ? $nodedata['ownerid'] : '0'));
 		    $_name .= '_N_';
 		    $_name .= sprintf('%04.d',$nodedata['id']);
 		    $nodedata['name'] = $_name;
-		    
+		
 		}
+		if ($nodedata['ipaddr_pub'] == '0.0.0.0' || empty($nodedata['ipaddr_pub']))
+		    $nodedata['netid_pub'] = 0;
+		    
 		$this->DB->Execute('UPDATE nodes SET name=UPPER(?), ipaddr_pub=inet_aton(?),
 				ipaddr=inet_aton(?), passwd=?, netdev=?, moddate=?NOW?,
 				modid=?, access=?, warning=?, ownerid=?, info=?, location=?,
 				location_city=?, location_street=?, location_house=?, location_flat=?,
 				chkmac=?, halfduplex=?, linktype=?, linkspeed=?, port=?, nas=?,
-				longitude=?, latitude=?, netid=?, linktechnology=?, access_from=?, access_to=?, typeofdevice=?, producer=?, 
-				model=?, sn=?, blockade=?, pppoelogin = ?, netdevicemodelid = ?, invprojectid=?, layer=?, tracttype=? 
+				longitude=?, latitude=?, netid=?, linktechnology=?, access_from=?, access_to=?, 
+				typeofdevice=?, producer=?, model=?, sn=?, blockade=?, pppoelogin = ?, netdevicemodelid = ?, 
+				invprojectid=?, layer=?, tracttype=?, netid_pub = ? 
 				WHERE id=?', array(
 					$nodedata['name'],
 					($nodedata['ipaddr_pub'] ? $nodedata['ipaddr_pub'] : 0),
@@ -2297,6 +2302,7 @@ class LMS {
 					($nodedata['invprojectid'] ? $nodedata['invprojectid'] : NULL),
 					($nodedata['layer'] ? $nodedata['layer'] : NULL),
 					($nodedata['tracttype'] ? $nodedata['tracttype'] : NULL),
+					($nodedata['netid_pub'] ? $nodedata['netid_pub'] : 0),
 					$nodedata['id']
 				)
 		);
@@ -2457,9 +2463,28 @@ class LMS {
 			    $result['access_to'] = date('Y/m/d',$result['access_to']);
 			else
 			    $result['acces_to'] = '';
+			
 			$result['lastonlinedate'] = lastonline_date($result['lastonline']);
-			$result['networkname'] = $result['netname'] = $this->DB->GetOne('SELECT name FROM networks WHERE id=? LIMIT 1;',array($result['netid']));
-			$result['hostname'] = $this->DB->GetOne('SELECT h.name FROM networks n LEFT JOIN hosts h ON (h.id = n.hostid) WHERE n.id = ? LIMIT 1;',array($result['netid']));
+			
+			if ($result['netid']) {
+			    $tmp = $this->DB->GetRow('SELECT n.name AS networkname, h.name AS hostname 
+					FROM networks n 
+					LEFT JOIN hosts h ON (h.id = n.hostid) 
+					WHERE n.id = ? LIMIT 1;',array($result['netid']));
+			    
+			    $result['networkname'] = $tmp['networkname'];
+			    $result['hostname'] = $tmp['hostname'];
+			}
+			
+			if ($result['netid_pub']) {
+			    $tmp = $this->DB->GetRow('SELECT n.name AS networkname, h.name AS hostname 
+					FROM networks n 
+					LEFT JOIN hosts h ON (h.id = n.hostid) 
+					WHERE n.id = ? LIMIT 1;',array($result['netid_pub']));
+			    
+			    $result['networkname_pub'] = $tmp['networkname'];
+			    $result['hostname_pub'] = $tmp['hostname'];
+			}
 
 			$result['mac'] = preg_split('/,/', $result['mac']);
 			foreach ($result['mac'] as $mac)
@@ -2777,9 +2802,17 @@ class LMS {
 
 	function NodeAdd($nodedata) {
 	    
-	    if (!$nodedata['netid'])
-		$nodedata['netid'] = $this->DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id '.$this->DB->Limit(1).';',
+		if (!$nodedata['netid'])
+		    $nodedata['netid'] = $this->DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id '.$this->DB->Limit(1).';',
 				array($nodedata['ipaddr']));
+	    
+		if ($nodedata['ipaddr_pub'] != '0.0.0.0' && !$nodedata['netid_pub']) {
+		    $nodedata['netid_pub'] = $this->DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id '.$this->DB->Limit(1).';',
+			array($nodedata['ipaddr_pub']));
+		} 
+		
+		if ($nodedata['ipaddr_pub'] == '0.0.0.0' || empty($nodedata['ipaddr_pub']))
+		    $nodedata['netid_pub'] = 0;
 		
 		$this->DB->LockTables(array('nodes'));
 		
@@ -2797,9 +2830,9 @@ class LMS {
 			location, location_city, location_street, location_house, location_flat,
 			linktype, linkspeed, port, chkmac, halfduplex, nas, longitude, latitude, netid, linktechnology, 
 			access_from, access_to, typeofdevice, producer, model, sn, blockade,
-			pppoelogin, netdevicemodelid, invprojectid, layer, tracttype )
+			pppoelogin, netdevicemodelid, invprojectid, layer, tracttype,netid_pub )
 			VALUES (?, inet_aton(?), inet_aton(?), ?, ?, ?,
-			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
+			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
 				strtoupper($nodedata['name']),
 				($nodedata['ipaddr'] ? $nodedata['ipaddr'] : 0),
 				($nodedata['ipaddr_pub'] ? $nodedata['ipaddr_pub'] : 0),
@@ -2837,6 +2870,7 @@ class LMS {
 				($nodedata['invprojectid'] ? $nodedata['invprojectid'] : NULL),
 				($nodedata['layer'] ? $nodedata['layer'] : NULL),
 				($nodedata['tracttype'] ? $nodedata['tracttype'] : NULL),
+				($nodedata['netid_pub'] ? $nodedata['netid_pub'] : 0),
 			)); 
 			$id = $this->DB->GetLastInsertID('nodes');
 		$this->DB->UnLockTables();

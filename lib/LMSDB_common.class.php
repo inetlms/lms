@@ -338,7 +338,7 @@ class LMSDB_common
 
 	function _driver_setencoding($name)
 	{
-		$this->Execute('SET NAMES ?', array($name));
+		$this->Execute('SET NAMES ?;', array($name));
 	}
 
 	function GroupConcat($field, $separator = ',')
