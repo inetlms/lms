@@ -3,7 +3,7 @@
 /*
  *  iNET LMS - ewidencja sprzętu
  *
- *  (C) Copyright 2001-2012 LMS Developers
+ *  (C) Copyright 2001-2014 iNET LMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *

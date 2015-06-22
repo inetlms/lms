@@ -17,6 +17,13 @@
 			<a href="?m=configadd{if $listdata.section}&section={$listdata.section}{/if}">{trans("Add option")} <img src="img/save.gif" alt=""> </a>
 		</td>
 	</tr>
+	<script type="text/javascript">
+	<!--
+	    keyPressInsert = function() {
+		self.location.href='?m=configadd{if $listdata.section}&section={$listdata.section}{/if}';
+	    }
+	//-->
+	</script>
 	<tr class="dark">
 		<td class="fall" colspan="4">
 			<form method="GET" action="?m=configlist" name="filter">

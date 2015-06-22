@@ -28,6 +28,7 @@ $layout['pagetitle'] = trans('Users List');
 
 $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 
+$SMARTY->assign('exrights',(!isset($RIGHTS_LIST) || empty($RIGHTS_LIST) ? FALSE : TRUE));
 $SMARTY->assign('userslist',$LMS->GetUserList());
 $SMARTY->display('userlist.html');
 

@@ -37,9 +37,11 @@ class Profile
 
 	public function __construct(&$DB,&$AUTH) 
 	{
+		global $layout;
 		$this->DB =& $DB;
 		$this->AUTH =& $AUTH;
-		if ($this->AUTH->id && $dane = $this->DB->GetOne('SELECT profiles FROM users WHERE id = ? '.$this->DB->Limit(1).' ;',array($this->AUTH->id))) 
+		
+		if ($layout['dbschversionex'] >= '2013012000' && $this->AUTH->id && $dane = $this->DB->GetOne('SELECT profiles FROM users WHERE id = ? '.$this->DB->Limit(1).' ;',array($this->AUTH->id))) 
 		{
 			$this->settings = unserialize($dane);
 		}
@@ -48,8 +50,12 @@ class Profile
 
 	public function __destruct() 
 	{
+		global $layout;
+		
+		if ($layout['dbschversionex'] >= '2013012000') {
 		if (!$this->autosave) 
 			$this->saveProfiles();
+		}
 	}
 
 
@@ -90,14 +96,12 @@ class Profile
 		    $tmp = unserialize($tmp);
 		    
 		    $tmp[$variable] = $content;
-//		    if ($content == '') unset($tmp[$variable]);
 		    $tmp = serialize($tmp);
 		    $this->DB->Execute('UPDATE users SET profiles = ? WHERE id = ? ;',array($tmp,$this->AUTH->id));
 		}
 		else
 		{
 		    $tmp[$variable] = $content;
-//		    if ($content == '') unset($tmp[$variable]);
 		    $tmp = serialize($tmp);
 		    $this->DB->Execute('UPDATE users SET profiles = ? WHERE id = ? ;',array($tmp,$this->AUTH->id));
 		}
@@ -189,8 +193,14 @@ class Profile
 
 function get_profile($variable,$def = NULL)
 {
-    global $PROFILE,$DB;
+    global $PROFILE;
     return $PROFILE->get($variable,$def);
+}
+
+function set_profile($variable,$value=NULL)
+{
+    global $PROFILE;
+    $PROFILE->nowsave($variable,$value);
 }
 
 ?>

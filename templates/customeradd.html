@@ -645,8 +645,8 @@
 	</tr>
 	<tr class="light">
 		<td width="100%" colspan="2" class="fbottomu" align="right">
-			<a href="javascript:document.customeradd.submit();" accesskey="S">{trans("Submit")} <img src="img/save.gif" alt=""></a>
-			<a href="?m=customerlist">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a><br>
+			<a href="javascript:document.customeradd.submit();">{trans("Submit")} [ F2 ]<img src="img/save.gif" alt=""></a>&nbsp;&nbsp;
+			<a href="?m=customerlist">{trans("Cancel")} [ ESC ]<img src="img/cancel.gif" alt=""></a><br>
 			<input type="checkbox" name="customeradd[reuse]" id="customeradd_reuse" value="ON" {if $customeradd.reuse}checked{/if}><label for="customeradd_reuse"> {trans("Display this form again, when this customer is saved")}</label>
 		</td>
 	</tr>
@@ -655,6 +655,14 @@
 </p>
 <script type="text/javascript">
 <!--
+	keyPressF2 = function() {
+	    document.customeradd.submit();
+	}
+	
+	keyPressESC = function() {
+	    self.location.href='?m=customerlist';
+	}
+	
 	document.forms['customeradd'].elements['customeradd[lastname]'].focus();
 	if(document.forms['customeradd'].elements['customeradd[pin]'].value == '') randomize();
 	

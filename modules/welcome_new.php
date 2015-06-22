@@ -1,9 +1,9 @@
 <?php
 
 /*
- * iNET LMS version 1.0.3
+ *  iNET LMS
  *
- *  (C) Copyright 2001-2012 LMS Developers
+ *  (C) Copyright 2012-2015 iNET LMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -21,10 +21,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  *
- *  $Id: v 1.00 2013/09/16 22:01:35 Sylwester Kondracki Exp $
- */
-
-
+ *  Sylwester Kondracki
+ *  sylwester.kondracki@gmail.com
+ *  gadu-gadu : 6164816
+ *
+*/
 
 $layout['pagetitle'] = 'iNET LAN Management System v. '.$layout['lmsvr'];
 

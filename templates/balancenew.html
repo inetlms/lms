@@ -134,7 +134,7 @@
 				</tr>
 				<tr class="light">
 					<td class="fbottomu" align="right" colspan="3">
-						<a href="javascript:document.addbalance.submit();" accesskey="s" >{trans("Submit")} <img src="img/save.gif" alt=""></a>
+						<a href="javascript:document.addbalance.submit();">{trans("Submit")} [ F2 ]<img src="img/save.gif" alt=""></a>
 					</td>
 				</tr>
 			{if $last}
@@ -238,6 +238,13 @@
 </p>
 <script type="text/javascript">
 <!--
+    keyPressF2 = function() {
+	document.addbalance.submit();
+    }
+    
+    keyPressESC = function() {
+	self.location.href='?m=balancelist';
+    }
 var cal1 = new calendar(document.forms['addbalance'].elements['addbalance[time]']);
 //-->
 </script>

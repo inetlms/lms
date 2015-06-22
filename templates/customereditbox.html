@@ -687,14 +687,20 @@
 	</tr>
 	<tr class="light">
 		<td width="100%" class="FBOTTOMU" align="right">
-			<a href="javascript:document.customeredit.submit();" accesskey="S">{trans("Submit")} <img src="img/save.gif" alt=""></a>
-			<a href="?m=customerinfo&id={$customerinfo.id}">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a>
+			<a href="javascript:document.customeredit.submit();">{trans("Submit")} [ F2 ]<img src="img/save.gif" alt=""></a>&nbsp;&nbsp;
+			<a href="?m=customerinfo&id={$customerinfo.id}">{trans("Cancel")} [ ESC ]<img src="img/cancel.gif" alt=""></a>
 		</td>
 	</tr>
 </table>
 </form>
 <script type="text/javascript">
 <!--
+    keyPressF2 = function() {
+	document.customeredit.submit();
+    }
+    keyPressESC = function() {
+	self.location.href='?m=customerinfo&id={$customerinfo.id}';
+    }
 document.forms['customeredit'].elements['customerdata[lastname]'].focus();
 //-->
 </script>

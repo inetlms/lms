@@ -60,23 +60,65 @@
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
 	<tr class="light">
-		<td width="1%">
-			<img src="img/ip.gif" alt="{trans("IP address:")}">
-		</td>
-		<td width="99%" colspan="2">
-			<a href="javascript:ping_popup('{$nodeipdata.ip}')">{$nodeipdata.ip}</a>
-		</td>
+	    <td width="100%" colspan="3" style="text-align:left;vertical-align:top;">
+	    <fieldset style="width:300px;"><legend>| <b>Lokalny Adres IP</b> |</legend>
+	    <table width="100%" cellpadding="2" cellspacing="0">
+		    
+		    <tr class="light">
+			<td width="1%"><img src="img/ip.gif" alt="{trans("IP address:")}"></td>
+			<td width="1%" nowrap class="pad"><b>IP</b></td>
+			<td width="1%" nowrap class="pad"><b>:</b></td>
+			<td width="97%"><a href="javascript:ping_popup('{$nodeipdata.ip}')">{$nodeipdata.ip}</a></td>
+		    </tr>
+		    <tr class="light">
+			<td width="1%"><img src="img/network.gif" alt=""></td>
+			<td width="1%" nowrap class="pad"><b>Sieć</b></td>
+			<td width="1%" nowrap class="pad"><b>:</b></td>
+			<td width="97%"><a href="?m=netinfo&id={$nodeipdata.netid}">{$nodeipdata.networkname}</a></td>
+		    </tr>
+		    <tr class="light">
+			<td width="1%"><img src="img/host.gif" alt=""></td>
+			<td width="1%" nowrap class="pad"><b>Host</b></td>
+			<td width="1%" nowrap class="pad"><b>:</b></td>
+			<td width="97%">{$nodeipdata.hostname}</td>
+		    </tr>
+	    </table>
+	    </fieldset>
+	    </td>
+	    
 	</tr>
+	
+	
 	{if $nodeipdata.ip_pub != "0.0.0.0"}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}">
-		</td>
-		<td width="99%" colspan="2">
-			<a href="javascript:ping_popup('{$nodeipdata.ip_pub}')">{$nodeipdata.ip_pub}</a>
-		</td>
+	    <td width="100%" colspan="3" style="text-align:left;vertical-align:top;">
+	    <fieldset style="width:300px;"><legend>| <b>Publiczny Adres IP</b> |</legend>
+	    <table style="width:100%" cellpadding="1" cellspacing="0">
+		<tr class="light">
+		    <td width="1%"><img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}"></td>
+		    <td width="1%" nowrap class="pad"><b>IP</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%"><a href="javascript:ping_popup('{$nodeipdata.ip_pub}')">{$nodeipdata.ip_pub}</a></td>
+		</tr>
+		<tr class="light">
+			<td width="1%"><img src="img/network.gif" alt=""></td>
+			<td width="1%" nowrap class="pad"><b>Sieć</b></td>
+			<td width="1%" nowrap class="pad"><b>:</b></td>
+			<td width="97%"><a href="?m=netinfo&id={$nodeipdata.netid_pub}">{$nodeipdata.networkname_pub}</a></td>
+		    </tr>
+		    <tr class="light">
+			<td width="1%"><img src="img/host.gif" alt=""></td>
+			<td width="1%" nowrap class="pad"><b>Host</b></td>
+			<td width="1%" nowrap class="pad"><b>:</b></td>
+			<td width="97%">{$nodeipdata.hostname_pub}</td>
+		    </tr>
+	    </table>
+	    </fieldset>
+	    </td>
 	</tr>
 	{/if}
+	
+	
 	{assign var="counter" value=0}
 	{foreach from=$nodeipdata.macs item=item}
 	<tr class="light">

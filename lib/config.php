@@ -168,6 +168,8 @@ $DEFAULTS = array(
 		'car_eventdic' 			=> '1',// zdarzenia tylko ze słownika dla pojazdów
 	),
 	'phpui' => array(
+		'viewtip'			=> '1',
+		'viewtiptime'			=> '5',
 		'networknode_pagelimit'		=> '50',
 		'gethostbyaddr'			=> '1',
 		'default_division' 		=> '0',

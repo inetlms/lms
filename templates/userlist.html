@@ -50,8 +50,14 @@
 				<a href="?m=useraccess&id={$userslist[userslist].id}&access=0"><img src="img/access.gif" alt="[ {trans('Disonnect')} ]" title="[ {trans('Disconnect')} ]" border="0"></a>
 			    {/if}
 			{/if}
+			
 			<a href="?m=userpasswd&id={$userslist[userslist].id}"><img src="img/keys.gif" alt="[ {trans("Change password")} ]" title="[ {trans("Change password")} ]"></a>
-			{if $userslist[userslist].id neq $layout.logid}<a href="?m=userdel&id={$userslist[userslist].id}" onclick="return confirmLink(this, '{trans("Are you sure, you want to irreversibly delete that user account?")}');">{/if}<img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
+			{if $exrights}<a href="?m=userrights&id={$userslist[userslist].id}" title="[ Edycja dodatkowych uprawnień ]"><img src="img/options.gif"></a>{/if}
+			{if $userslist[userslist].id neq $layout.logid}
+			    <a href="?m=userdel&id={$userslist[userslist].id}" onclick="return confirmLink(this, '{trans("Are you sure, you want to irreversibly delete that user account?")}');"><img src="img/delete.gif" alt="[ {trans("Delete")} ]" title="[ {trans("Delete")} ]"></a>
+			{else}
+			    <img src="img/empty.gif" width="16">
+			{/if}
 			<a href="?m=useredit&id={$userslist[userslist].id}"><img src="img/edit.gif" alt="[ {trans("Edit")} ]" title="[ {trans("Edit")} ]"></a>
 			<a href="?m=userinfo&id={$userslist[userslist].id}"><img src="img/info.gif" alt="[ {trans("Info")} ]" title="[ {trans("Info")} ]"></a>
 		</td>

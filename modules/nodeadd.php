@@ -53,6 +53,7 @@ if (isset($_POST['nodedata']))
 	$nodedata = $_POST['nodedata'];
 	
 	$nodedata['netid'] = $_POST['nodedatanetid'];
+	$nodedata['netid_pub'] = $_POST['nodedatanetid_pub'];
 	$nodedata['ipaddr'] = $_POST['nodedataipaddr'];
 	$nodedata['ipaddr_pub'] = $_POST['nodedataipaddr_pub'];
 	
@@ -106,7 +107,7 @@ if (isset($_POST['nodedata']))
                 	$error['ipaddr_pub'] = trans('Incorrect node IP address!');
         	elseif(!$LMS->IsIPValid($nodedata['ipaddr_pub']))
                 	$error['ipaddr_pub'] = trans('Specified IP address doesn\'t overlap with any network!');
-		elseif(!$LMS->IsIPFree($nodedata['ipaddr_pub']))
+		elseif(!$LMS->IsIPFree($nodedata['ipaddr_pub'],$nodedata['netid_pub']))
 			$error['ipaddr_pub'] = trans('Specified IP address is in use!');
 		elseif($LMS->IsIPGateway($nodedata['ipaddr_pub']))
 			$error['ipaddr_pub'] = trans('Specified IP address is network gateway!');
@@ -270,6 +271,24 @@ if (isset($_POST['nodedata']))
 	{
 		if($nodedata['ipaddr_pub']=='0.0.0.0')
 			$nodedata['ipaddr_pub'] = '';
+		
+		if ($nodedata['netid']) {
+		    $tmp = $DB->GetRow('SELECT n.name AS networkname, h.name AS hostname 
+				    FROM networks n 
+				    LEFT JOIN hosts h ON (h.id = n.hostid) 
+				    WHERE n.id = ? LIMIT 1;',array($nodedata['netid']));
+		    $nodedata['hostname'] = $tmp['hostname'];
+		    $nodedata['networkname'] = $tmp['networkname'];
+		}
+		
+		if ($nodedata['netid_pub']) {
+		    $tmp = $DB->GetRow('SELECT n.name AS networkname, h.name AS hostname 
+				    FROM networks n 
+				    LEFT JOIN hosts h ON (h.id = n.hostid) 
+				    WHERE n.id = ? LIMIT 1;',array($nodedata['netid_pub']));
+		    $nodedata['hostname_pub'] = $tmp['hostname'];
+		    $nodedata['networkname_pub'] = $tmp['networkname'];
+		}
 	}
 }
 
