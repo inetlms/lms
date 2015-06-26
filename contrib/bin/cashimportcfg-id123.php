@@ -13,7 +13,7 @@
 
 function bzwbk_time($time, $filename)
 {
-	if (preg_match('/.*PZ([0-9]{4}).*/', $filename, $matches)) {
+	if (preg_match('/.*PZ([0-9]{4}).', $filename, $matches)) {
 		$day = substr($matches[1], 0, 2);
 		$month = substr($matches[1], 2, 2);
 		$year = intval(date('Y'));
