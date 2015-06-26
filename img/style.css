@@ -386,7 +386,7 @@ INPUT { /* IE */
     font-size			:  8pt;
     font-family			:  Tahoma, Verdana, Arial, Helvetica;
     vertical-align		: middle;
-    border-style		: expression(this.type=='checkbox' || this.type=='radio' ? 'none' : 'solid');
+    border-style                : expression(this.type=='checkbox' || this.type=='radio' ? 'none' : 'solid');
     border-width		: expression(this.type=='checkbox' || this.type=='radio' ? '0' : '1px');
     border-color		: expression(this.type=='checkbox' || this.type=='radio' ? '' : 'black');
     background-color		: expression(this.type=='checkbox' || this.type=='radio' ? 'transparent' : '#f6feff');
@@ -1374,7 +1374,7 @@ div.nodata {
 
 
 .listradiuscorners {
-        font-family             :  Tahoma, Verdana, Arial, Helvetica;`
+        font-family             :  Tahoma, Verdana, Arial, Helvetica;
         background              : #f6feff;
         padding                 : 2px 4px;
         border-radius           : 6px;
