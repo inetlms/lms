@@ -149,10 +149,15 @@ function _smarty_function_img($params, $template)
     global $_GET, $img;
     $file = 'img/Abort.png';
     
+    if (isset($params['src']) && !empty($params['src']))
+    {
     if (isset($_GET['plug']) && !empty($_GET['plug']) && file_exists(SYS_DIR.'/plug/'.(isset($_GET['plug']) ? $_GET['plug'] : 'noneplugin').'/img/'.$params['src'])) 
 	$file = 'plug/'.$_GET['plug'].'/img/'.$params['src'];
+    elseif (strstr($params['src'],'plug/') !== FALSE)
+	$file = $params['src'];
     else
 	$file = 'img/'.$params['src'];
+    }
 	
     $result  = '<span style="vertical-align:middle;"><img ';
     $result .= 'src="'.$file.'" ';
@@ -166,6 +171,7 @@ function _smarty_function_img($params, $template)
     if(isset($params['border'])) $result .= 'border="'.$params['border'].'" ';
     if(isset($params['onclick'])) $result .= 'onclick="'.$params['onclick'].'" ';
     if(isset($params['id'])) $result .= 'id="'.$params['id'].'" ';
+    if(isset($params['title'])) $result .= 'title="'.$params['title'].'" ';
     if(isset($params['tip']) && !empty($params['tip']))
     {
 	$tip = $params['tip'];
@@ -219,17 +225,17 @@ function _smarty_function_links($params, $template)
     $id			= (isset($params['id'])			? $params['id']			: NULL);
     
     if (!is_null($rights)) 
-	$rights = check_rights($rights); 
+	$rights = get_rights($rights); 
     else 
 	$rights = true;
     
-    if (!$rights) $tip .= '<br><font color="red">BRAK UPRAWNIEŃ</font>';
+    if (!$rights) $tip = '<br><font color="red">BRAK UPRAWNIEŃ</font>';
     
     if ($confirm) $confirm = "return confirmLinks(this,'".$confirm."');";
     
     $onclick = (isset($params['onclick']) ? $params['onclick'] : $confirm);
     
-    if(!is_null($tip) && !empty($tip) && strlen($tip)!==0 && get_conf('phpui.viewtips'))
+    if(!is_null($tip) && !empty($tip) && strlen($tip)!==0)
     {
 	$tip = str_replace('\'', '\\\'', $tip);
 	$tip = str_replace('"', '&quot;', $tip);
@@ -297,8 +303,6 @@ function _smarty_function_links($params, $template)
      }
     return $result;
 }
-
-
 
 
 

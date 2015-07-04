@@ -71,6 +71,7 @@ function update_location_interface($networknodeid) {
 	global $DB;
 	$obj = new xajaxResponse();
 	
+	
 	if ($networknodeid && ($dane=$DB->GetRow('SELECT city,street,zip,location_city,location_street,location_house,location_flat,longitude,latitude FROM networknode WHERE id = ?;',array($networknodeid)))) {
 	
 		$adres = '';
@@ -118,6 +119,7 @@ function update_location_interface($networknodeid) {
 		
 	}
 	
+	
 	return $obj;
 
 }
@@ -146,8 +148,8 @@ function delete_file_annex($id)
 }
 
 
-$LMS->InitXajax();
+if (!$xajax_only_register) $LMS->InitXajax();
 $LMS->RegisterXajaxFunction(array('getManagementUrls', 'addManagementUrl', 'delManagementUrl','update_location_interface','get_list_annex','delete_file_annex'));
-$SMARTY->assign('xajax', $LMS->RunXajax());
+if (!$xajax_only_register) $SMARTY->assign('xajax', $LMS->RunXajax());
 $SMARTY->assign('incannex',1);
 ?>

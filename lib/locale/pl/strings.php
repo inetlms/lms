@@ -2757,5 +2757,12 @@ $_LANG['on-line'] = 'włączone';
 $_LANG['no nodeassignments'] = 'bez powiązania';
 $_LANG['with blockade'] = 'z blokadą';
 $_LANG['with warning'] = 'z powiadomieniem';
+$_LANG['PPPoE Client'] = 'Klient PPPoE';
+$_LANG['DHCP Client'] = 'Klient DHCP';
+$_LANG['EAP Client'] = 'Klient EAP';
+$_LANG['Enable/disable PPPoE Server Client'] = 'Włącza/Wyłącza komputer jako klient PPPoE';
+$_LANG['Enable/disable DHCP Server Client'] = 'Włącza/Wyłącza komputer jako klient DHCP';
+$_LANG['Enable/disable EAP Server Client'] = 'Włącza/Wyłącza komputer jako klient EAP';
+
 
 ?>

@@ -104,7 +104,7 @@ function setnodeblockade($idek)
 }
 
 
-function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $network = NULL, $status = NULL, $customergroup = NULL, $nodegroup = NULL, $pagestart) 
+function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $network = NULL, $status = NULL, $customergroup = NULL, $nodegroup = NULL, $nas = NULL, $pagestart) 
 {
     global $DB,$LMS;
     
@@ -168,6 +168,7 @@ function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $net
 	.($_node['blockade'] ? $_node['blockade'] : '0')
 	.($_nodecount ? $_nodecount : '0')
 	.($_nodegroup ? $_nodegroup : '0')
+	.($nas ? $nas : '0')
     );
     
     $_cache = $LMS->loadcache('nodelist',$md5);
@@ -181,6 +182,7 @@ function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $net
 	.(!$search ? ' LEFT JOIN netdevices nd ON (nd.id = n.netdev) ' : '')
 	. ($customergroup ? 'JOIN customerassignments ON (customerid = c.id) ' : '')
 	. ($nodegroup ? 'LEFT JOIN nodegroupassignments ng ON (ng.nodeid = n.id) ' : '')
+	
 	. ' WHERE 1=1 '
 	. ($network ? ' AND ((n.ipaddr > ' . $net['address'] . ' AND n.ipaddr < ' . $net['broadcast'] . ') OR (n.ipaddr_pub > ' . $net['address'] . ' AND n.ipaddr_pub < ' . $net['broadcast'] . '))' : '')
 	. ($status == 1 ? ' AND n.access = 1' : '') //connected
@@ -191,6 +193,7 @@ function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $net
 	. ($status == 6 ? ' AND n.warning = 1' : '') // z powiadomieniem
 	. ($customergroup ? ' AND customergroupid = ' . intval($customergroup) : '')
 	. ($nodegroup ? ' AND ng.nodegroupid = ' . intval($nodegroup) : '')
+	. ($nas ? ' AND n.nasid = \''.$nas.'\' ' : '')
 	. (isset($searchargs) ? $searchargs : '')
 	. ($sqlord != '' ? $sqlord . ' ' . $direction : ''));
 	
@@ -223,12 +226,13 @@ function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $net
     
     $nodelist = $DB->GetAll('SELECT n.id AS id, n.ipaddr, inet_ntoa(n.ipaddr) AS ip, n.ipaddr_pub,
 	inet_ntoa(n.ipaddr_pub) AS ip_pub, n.mac, n.name, n.ownerid, n.access, n.warning, n.blockade, 
-	n.linktype, n.linkspeed, n.linktechnology, n.producer, n.model, 
+	n.linktype, n.linkspeed, n.linktechnology, n.producer, n.model, nas.name AS nasname, 
 	n.netdev, n.lastonline, n.info, (SELECT 1 FROM monitnodes WHERE monitnodes.id = n.id LIMIT 1) AS monitoring, '
 	. $DB->Concat('c.lastname', "' '", 'c.name') . ' AS owner '
 	.(!$search ? ', nd.name AS devname, nd.location AS devlocation ' : '')
 	.' FROM vnodes n 
-	JOIN customersview c ON (n.ownerid = c.id) '
+	JOIN customersview c ON (n.ownerid = c.id) 
+	LEFT JOIN nodes nas ON (nas.id = n.nasid AND nas.ownerid = 0) '
 	.(!$search ? ' LEFT JOIN netdevices nd ON (nd.id = n.netdev) ' : '')
 //	. ($customergroup ? 'JOIN customerassignments ON (customerid = c.id) ' : '')
 //	. ($nodegroup ? 'JOIN nodegroupassignments ON (nodeid = n.id) ' : '')
@@ -287,6 +291,12 @@ else
 	$ng = $_GET['ng'];
 $SESSION->save('nlng', $ng);
 
+if (!isset($_GET['nas']))
+    $SESSION->restore('nlnas',$nas);
+else
+    $nas = $_GET['nas'];
+$SESSION->save('nlnas',$nas);
+
 if ($SESSION->is_set('nlp') && !isset($_GET['page']))
 	$SESSION->restore('nlp', $_GET['page']);
 	
@@ -295,7 +305,7 @@ $pagelimit = get_conf('phpui.nodelist_pagelimit','50');
 $start = ($page - 1) * $pagelimit;
 
 
-$nodelist = GetNodeList($o, NULL, NULL, $n, $s, $g, $ng, $start);
+$nodelist = GetNodeList($o, NULL, NULL, $n, $s, $g, $ng, $nas, $start);
 //$nodelist = $LMS->GetNodeList($o, NULL, NULL, $n, $s, $g, $ng);
 
 $listdata['total'] = $nodelist['total'];
@@ -307,6 +317,7 @@ $listdata['network'] = $n;
 $listdata['customergroup'] = $g;
 $listdata['nodegroup'] = $ng;
 $listdata['state'] = $s;
+$listdata['nas'] = $nas;
 
 unset($nodelist['total']);
 unset($nodelist['order']);
@@ -325,6 +336,7 @@ $SMARTY->assign('listdata',$listdata);
 $SMARTY->assign('networks',$LMS->GetNetworks());
 $SMARTY->assign('nodegroups', $LMS->GetNodeGroupNames());
 $SMARTY->assign('customergroups', $LMS->CustomergroupGetAll());
+$SMARTY->assign('naslist',$LMS->getNasList());
 
 $LMS->InitXajax();
 $LMS->RegisterXajaxFunction(array('setnodeaccess','setnodewarning','setnodeblockade'));

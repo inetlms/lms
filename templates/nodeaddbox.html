@@ -300,7 +300,7 @@
 			<img src="img/options.gif" alt="">
 		</td>
 		<td style="width: 99%; white-space: nowrap;">
-			{if get_conf('nodes.checkmac')}
+			{if get_form('nodes.checkmac')}
 			    <label for="chkmac">{trans("MAC checking")}:</label><input type="checkbox" name="nodedata[chkmac]" value="1" id="chkmac" {tip text="Enable/disable MAC address checking" trigger="chkmac"}{if !isset($nodedata.chkmac) || $nodedata.chkmac} checked{/if}>&nbsp;
 			{else}
 			    <input type="hidden" name="nodedata[chkmac]" value="{$nodedata.chkmac}">
@@ -325,6 +325,53 @@
 	    <input type="hidden" name="nodedata[halfduplex]" value="{$nodedata.halfduplex}">
 	    <input type="hidden" name="nodedata[monitoring]" value="{$nodedata.monitoring}">
 	{/if}
+	
+	{if get_form('nodes.pppoe') || get_form('nodes.dhcp') || get_form('nodes.eap')}
+	<tr>
+		<td style="width: 1%;"><img src="img/netdev.gif" alt=""></td>
+		<td style="width: 99%; white-space: nowrap;">
+			{if get_form('nodes.pppoe')}
+			    <label for="pppoe">{trans("PPPoE Client")}</label><input type="checkbox" name="nodeauthtype[pppoe]" value="1" id="pppoe" {if $nodedata.pppoe}checked {/if}{tip text="Enable/disable PPPoE Server Client" trigger="pppoe"}>&nbsp;
+			{else}
+			    <input type="hidden" name="nodeauthtype[pppoe]" value="1" {if $nodedata.pppoe}checked{/if}>
+			{/if}
+			
+			{if get_form('nodes.dhcp')}
+			    <label for="dhcp">{trans("DHCP Client")}</label><input type="checkbox" name="nodeauthtype[dhcp]" value="2" id="dhcp" {if $nodedata.dhcp}checked {/if} {tip text="Enable/disable DHCP Server Client" trigger="dhcp"}>&nbsp;
+			{else}
+			    <input type="hidden" name="nodeauthtype[dhcp]" value="2" {if $nodedata.dhcp}checked{/if}>
+			{/if}
+			
+			{if get_form('nodes.eap')}
+			    <label for="eap">{trans("EAP Client")}</label><input type="checkbox" name="nodeauthtype[eap]" value="4" id="eap" {if $nodedata.eap} checked{/if}{tip text="Enable/disable EAP Server Client" trigger="eap"}>
+			{else}
+			    <input type="hidden" name="nodeauthtype[eap]" value="4" {if $nodedata.eap} checked{/if}>
+			{/if}
+		</td>
+	</tr>
+	{else}
+		<input type="hidden" name="nodeauthtype[pppoe]" value="1" {if $nodedata.pppoe}checked{/if}>
+		<input type="hidden" name="nodeauthtype[dhcp]" value="2" {if $nodedata.dhcp}checked{/if}>
+		<input type="hidden" name="nodeauthtype[eap]" value="4" {if $nodedata.eap} checked{/if}>
+	{/if}
+
+	{if get_form('nodes.nas') }
+	<tr>
+		<td style="width: 1%;"><img src="img/netdev.gif" alt=""></td>
+		<td style="width: 99%; white-space: nowrap;">
+		    NAS:&nbsp;
+			<select name="nodedata[nasid]" style="width:270px;" {tip text="Wybierz NAS do którego jest przypisany komputer (opcja)"}>
+			<option value=""></option>
+			{section name='naslist' loop=$naslist}
+			<option value="{$naslist[naslist].id}"{if $naslist[naslist].id == $nodeinfo.nasid} selected{/if}>{$naslist[naslist].name}</option>
+			{/section}
+			</select>
+		</td>
+	</tr>
+	{else}
+		<input type="hidden" name="nodedata[nasid]" value="{$nodedata.nasid}">
+	{/if}
+
 					</table>
 				</td>
 				<td class="container" style="width: 50%; vertical-align: top;">

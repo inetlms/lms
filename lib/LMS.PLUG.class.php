@@ -46,9 +46,26 @@ class PLUG {
 	}
 
 
+	public function IncludeRegisterHook()
+	{
+	    global $DB,$LMS,$AUTH,$SESSION,$CONFIG;
+	    
+	    if ($info = $DB->GetAll('SELECT name FROM plug;')) {
+		for ($i=0; $i<sizeof($info); $i++) {
+		    if (file_exists(PLUG_DIR.'/'.$info[$i]['name'].'/registerhook.php')) 
+			include(PLUG_DIR.'/'.$info[$i]['name'].'/registerhook.php');
+		}
+		
+	    }
+	}
+
+
 	function addBoxCustomer($plugname,$modfile=NULL,$htmlfile=NULL)
 	{
 		global $_pluginc;
+		
+		if (is_null($modfile) && is_null($htmlfile)) 
+		    return FALSE;
 		
 		if (!is_null($modfile) && !empty($modfile) && file_exists(PLUG_DIR.'/'.$plugname.'/modules/'.$modfile))
 			$modfile = PLUG_DIR.'/'.$plugname.'/modules/'.$modfile;
@@ -70,6 +87,33 @@ class PLUG {
 	}
 
 
+	public function addBox($plugname, $section, $modfile = NULL, $htmlfile = NULL)
+	{
+		global $_pluginc;
+		
+		if (is_null($modfile) && is_null($htmlfile))
+		    return FALSE;
+		
+		if (!is_null($modfile) && !empty($modfile) && file_exists(PLUG_DIR.'/'.$plugname.'/modules/'.$modfile))
+			$modfile = PLUG_DIR.'/'.$plugname.'/modules/'.$modfile;
+		else
+			$modfile = NULL;
+		
+		if (!is_null($htmlfile) && !empty($htmlfile) && file_exists(PLUG_DIR.'/'.$plugname.'/templates/'.$htmlfile))
+			$htmlfile = 'plug/'.$plugname.'/templates/'.$htmlfile;
+		else
+			$htmlfile = NULL;
+		
+		if (!is_null($modfile) || !is_null($htmlfile)) {
+			
+			$_pluginc[$section][] = array(
+			    'modfile'	=> $modfile,
+			    'htmlfile'	=> $htmlfile
+			);
+		}
+	}
+
+
 	function includeJavaScript($script = NULL)
 	{
 	    if (!$script)
@@ -80,8 +124,8 @@ class PLUG {
 	}
 
 
-    public function updateDBPlugins()
-    {
+	public function updateDBPlugins()
+	{
 	global $DB;
 	
 	if (!defined('NO_CHECK_UPGRADEDB')){
@@ -126,8 +170,8 @@ class PLUG {
 	    }
 	    unset($info);
 	    unset($__info);
+	    }
 	}
-    }
 
 
 } // end class

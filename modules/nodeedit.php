@@ -89,6 +89,14 @@ else
 
 $layout['pagetitle'] = trans('Node Edit: $a', $nodeinfo['name']);
 
+$nodeauthtype = array();
+$authtype = $nodeinfo['authtype'];
+if ($authtype != 0) {
+	$nodeauthtype['pppoe'] = ($authtype & 1);
+	$nodeauthtype['dhcp'] = ($authtype & 2);
+	$nodeauthtype['eap'] = ($authtype & 4);
+}
+
 if (isset($_POST['nodeedit'])) {
 	$nodeedit = $_POST['nodeedit'];
 	
@@ -266,7 +274,18 @@ if (isset($_POST['nodeedit'])) {
 		$error['ownerid'] = trans('Customer not selected!');
 	else if ($nodeedit['access'] && $LMS->GetCustomerStatus($nodeedit['ownerid']) < 3)
 		$error['access'] = trans('Node owner is not connected!');
-
+	
+	$nodeedit['authtype'] = 0;
+	if(isset($_POST['nodeauthtype'])) {
+		$authtype = $_POST['nodeauthtype'];
+		if (!empty($authtype)) {
+			foreach ($authtype as $op) {
+				$op = (int)$op;
+				$nodeedit['authtype'] |= $op;
+			}
+		}
+	}
+	
 	if (!$error) {
 		if (empty($nodeedit['teryt'])) {
 			$nodeedit['location_city'] = null;
@@ -357,6 +376,9 @@ $LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
 
 $SMARTY->assign('xajax', $LMS->RunXajax());
 
+if (get_form('nodes.nas'))
+    $SMARTY->assign('naslist',$LMS->getNasList());
+
 $SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
 $SMARTY->assign('netdevices', $LMS->GetNetDevNames());
 $SMARTY->assign('networks', $LMS->GetNetworks(false));
@@ -366,5 +388,6 @@ $SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE
 $SMARTY->assign('hostlist',$DB->GetAll('SELECT id,name FROM hosts ORDER BY name'));
 $SMARTY->assign('error', $error);
 $SMARTY->assign('nodeinfo', $nodeinfo);
+$SMARTY->assign('nodeauthtype',$nodeauthtype);
 $SMARTY->display('nodeedit.html');
 ?>

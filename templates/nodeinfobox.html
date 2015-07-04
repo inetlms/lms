@@ -2,30 +2,6 @@
 {$xajax}
 <script type="text/javascript">
 <!--
-	function chkmac_change()
-	{
-		if (document.getElementById('chkmac').checked)
-			location.href = '?m=nodeedit&id={$nodeinfo.id}&action=chkmac&chkmac=1';
-		else
-			location.href = '?m=nodeedit&id={$nodeinfo.id}&action=chkmac&chkmac=0';
-	}
-
-	function duplex_change()
-	{
-		if (document.getElementById('duplex').checked)
-			location.href = '?m=nodeedit&id={$nodeinfo.id}&action=duplex&duplex=1';
-		else
-			location.href = '?m=nodeedit&id={$nodeinfo.id}&action=duplex&duplex=0';
-	}
-	
-	function monit_change()
-	{
-		if (document.getElementById('monit').checked)
-			location.href = '?m=nodeedit&id={$nodeinfo.id}&action=monit&monit=1';
-		else
-			location.href = '?m=nodeedit&id={$nodeinfo.id}&action=monit&monit=0';
-	}
-	
 	function change_linktype(linktype) {
 		linktype = parseInt(linktype);
 		var options = document.getElementById('linktechnology').options;
@@ -332,15 +308,33 @@
 	</tr>
 	{/if}
 	
-	{if get_form('nodes.checkmac') || get_form('nodes.halfduplex') || get_form('nodes.monitoring')}
+	{if (get_form('nodes.checkmac') || get_form('nodes.halfduplex') || get_form('nodes.monitoring')) && ($nodeinfo.chkmac || $nodeinfo.halfduplex || ($nodeinfo.monitoring && check_modules(110)))}
 	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/options.gif" alt="">
-		</td>
+		<td style="width: 1%;"><img src="img/options.gif" alt=""></td>
 		<td style="width: 99%; white-space: nowrap;" colspan="2">
-			{if get_form('nodes.checkmac')}<label for="chkmac">{trans("MAC checking")}:</label><input type="checkbox" name="chkmac" id="chkmac" value="1" {if $nodeinfo.chkmac} checked{/if} onchange="chkmac_change();">&nbsp;{/if}
-			{if get_form('nodes.halfduplex')}<label for="duplex">{trans("Half duplex")}:</label><input type="checkbox" name="duplex" id="duplex" value="1" {if $nodeinfo.halfduplex} checked{/if} onchange="duplex_change();">{/if}
-			{if get_form('nodes.monitoring') && check_modules(110)}<label for="monit">Monitoruj:</label><input type="checkbox" name="monit" id="monit" value="1" {if $nodeinfo.monitoring} checked{/if} onchange="monit_change();">{/if}
+			{if get_form('nodes.checkmac') && $nodeinfo.chkmac}{trans("MAC checking")},&nbsp;&nbsp;{/if}
+			{if get_form('nodes.halfduplex') && $nodeinfo.halfduplex}{trans("Half duplex")},&nbsp;&nbsp;{/if}
+			{if get_form('nodes.monitoring') && $nodeinfo.monitoring && check_modules(110)}Monitorowanie{/if}
+		</td>
+	</tr>
+	{/if}
+	
+	{if (get_form('nodes.pppoe') || get_form('nodes.dhcp') || get_form('nodes.eap')) && ($nodeauthtype.pppoe || $nodeauthtype.dhcp || $nodeauthtype.eap)}
+	<tr>
+		<td style="width: 1%;"><img src="img/netdev.gif" alt=""></td>
+		<td style="width: 98%; white-space: nowrap;" colspan="2">
+			{if get_form('nodes.pppoe') && $nodeauthtype.pppoe}{trans('PPPoE Client')},&nbsp;&nbsp;{/if}
+			{if get_form('nodes.dhcp') && $nodeauthtype.dhcp}{trans("DHCP Client")},&nbsp;&nbsp;{/if}
+			{if get_form('nodes.eap') && $nodeauthtype.eap}{trans("EAP Client")}{/if}
+		</td>
+	</tr>
+	{/if}
+	
+	{if get_form('nodes.nas') && $nodeinfo.nasid}
+	<tr>
+		<td style="width: 1%;"><img src="img/netdev.gif" alt=""></td>
+		<td style="width: 98%; white-space: nowrap;" colspan="2">
+		NAS:&nbsp;{if $nodeinfo.nasname}{$nodeinfo.nasname}{else}<span style="color:blue;font-weight:bold;">był ale znikł :/</span>{/if}
 		</td>
 	</tr>
 	{/if}

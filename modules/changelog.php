@@ -43,6 +43,16 @@ $changelog = array(
 //	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
 //	),
 	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'w karcie komputera doszło pole NAS, można powiązać komputer z rzeczywistym NAS który autoryzuje urządzenie klienta',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'kolejnych kilka drobnych poprawek',
+	),
+	array(
 	    'data'	=> '2015-06-22',
 	    'status'	=> '',
 	    'opis'	=> 'kilka drobnych zmian i poprawek :-)',

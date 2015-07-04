@@ -108,10 +108,42 @@ elseif ($tuck == 'interface') {
 	}
     }
     
-    if ($count = $DB->GetAll('SELECT id FROM netdevices WHERE networknodeid = ? ORDER BY name ;',array($idn)))
+    $npnetdev_sqladd_field = $npnetdev_sqladd_join = $npnetdev_sqladd_where = NULL;
+    
+    $npnetdev_sqladd_field = $LMS->exechook('networknodeinfo_interface_sqladd_field',$npnetdev_sqladd_field);
+    $npnetdev_sqladd_join = $LMS->exechook('networknodeinfo_interface_sqladd_join',$npnetdev_sqladd_join);
+    $npnetdev_sqladd_where = $LMS->exechook('networknodeinfo_interface_sqladd_where',$npnetdev_sqladd_where);
+    
+    if ($count = $DB->GetAll('
+	SELECT id '
+	.($npnetdev_sqladd_field ? ' '.$npnetdev_sqladd_field.' ' : '')
+	.' FROM netdevices '
+	.($npnetdev_sqladd_join ? ' '.$npnetdev_sqladd_join.' ' : '')
+	.'WHERE networknodeid = ? '
+	.($npnetdev_sqladd_where ? ' '.$npnetdev_sqladd_where.' ' : '')
+	.'ORDER BY name ;',array($idn)))
+	
 	for ($i=0; $i<sizeof($count);$i++) $netdevlist[] = $LMS->GetNetDev($count[$i]['id']);
     
-    $npnetdev = $DB->GetAll('SELECT id, name FROM netdevices WHERE networknodeid = 0 ORDER BY name;');
+    
+    $npnetdev = $DB->GetAll('
+		SELECT id, name '
+		.($npnetdev_sqladd_field ? ' '.$npnetdev_sqladd_field.' ' : '')
+		.'FROM netdevices '
+		.($npnetdev_sqladd_join ? ' '.$npnetdev_sqladd_join.' ' : '')
+		.' WHERE networknodeid = 0 '
+		.($npnetdev_sqladd_where ? ' '.$npnetdev_sqladd_where.' ' : '')
+		.' ORDER BY name;'
+    );
+    
+    if ($_pluginc['networknodeinfo_interface']) {
+    
+	$inclist = $_pluginc['networknodeinfo_interface'];
+	for ($i=0; $i<sizeof($inclist); $i++)
+	    @include($inclist[$i]['modfile']);
+    
+    }
+
     
     $SMARTY->assign('npnetdev',$npnetdev);
     $SMARTY->assign('opencard',true);

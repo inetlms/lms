@@ -1,7 +1,7 @@
 <?php
 
 /*
- * LMS version 1.11-git
+ *  iNET LMS
  *
  *  (C) Copyright 2001-2012 LMS Developers
  *
@@ -23,6 +23,7 @@
  *
  *  $Id$
  */
+
 if (get_conf('jambox.enabled',0))
     require_once(MODULES_DIR.'/customer.tv.inc.php');
 
@@ -91,26 +92,7 @@ $SMARTY->assign(array(
 	'sourceid' => $SESSION->get('addsource'),
 ));
 
-/*
-//echo "<pre>"; print_r($customernodes); echo "</pre>"; die;
-if (check_modules(110) && $customernodes) // sprawdzamy czy moduł monitoringu jest włączony i klient ma kompy
-{
-    $count = sizeof($customernodes);
-    for ($i=0; $i<$count; $i++)
-    {
-	if (file_exists(RRD_DIR.'/ping.node.'.$customernodes[$i]['id'].'.rrd'))
-	{
-//	    $monit['ping_nodeid'][$i] = $customernodes[$i]['id'];
-	    $monit['ping_test'] = true;
-	}
-	if (file_exists(RRD_DIR.'/signal.node.'.$customernodes[$i]['id'].'.rrd')) 
-	{
-//	    $monit['signal_nodeid'][$i] = $customernodes[$i]['id'];
-	    $monit['signal_test'] = true;
-	}
-    }
-}
-*/
+
 $SMARTY->assign('monit',$monit);
 $SMARTY->assign('sourcelist', $DB->GetAll('SELECT id, name FROM cashsources ORDER BY name'));
 $SMARTY->assignByRef('customernodes', $customernodes);

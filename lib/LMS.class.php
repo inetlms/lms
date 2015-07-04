@@ -1,9 +1,9 @@
 <?php
 
 /*
- * LMS version 1.11-git
+ *  iNET LMS (LMS git)
  *
- *  (C) Copyright 2001-2012 LMS Developers
+ *  (C) Copyright 2012-2015 LMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -35,6 +35,7 @@ class LMS {
 	var $cache = array();  // internal cache
 	var $hooks = array(); // registered plugin hooks
 	var $xajax;  // xajax object
+	var $loadxajax = false;
 	var $_version = '1.11-git'; // class version
 	var $_revision = '$Revision$';
 
@@ -42,10 +43,7 @@ class LMS {
 		$this->DB = &$DB;
 		$this->AUTH = &$AUTH;
 		$this->CONFIG = &$CONFIG;
-
-		//$this->_revision = preg_replace('/^.Revision: ([0-9.]+).*/', '\1', $this->_revision);
 		$this->_revision = '';
-		//$this->_version = $this->_version.' ('.$this->_revision.')';
 		$this->_version = '';
 	}
 
@@ -54,17 +52,14 @@ class LMS {
 	}
 
 	function InitUI() {
-		// set current user
-//		$sus = f_round($this->CONFIG['finances']['suspension_percentage']);
-		
 		switch ($this->CONFIG['database']['type']) {
 			case 'postgres':
 				$this->DB->Execute('SELECT set_config(\'lms.current_user\', ?, false)', array($this->AUTH->id));
 				break;
 			case 'mysql':
 			case 'mysqli':
+			case 'mariadb':
 				$this->DB->Execute('SET @lms_current_user=?', array($this->AUTH->id));
-//				$this->DB->Execute('SET @lms_suspension_percentage=?;',array($sus));
 				break;
 		}
 	}
@@ -83,6 +78,7 @@ class LMS {
 		if ($this->xajax) {
 			$xajax_js = $this->xajax->getJavascript();
 			$this->xajax->processRequest();
+			$this->loadxajax = true;
 		}
 		return $xajax_js;
 	}
@@ -123,8 +119,9 @@ class LMS {
 	    ,array($this->AUTH->id));
 	}
 
-    function GetIdContractEnding($dni=NULL)
-    {
+
+	function GetIdContractEnding($dni=NULL)
+	{
 	/* 
 	    możliwe kombinajce dla $dni
 	    -1		: którym zakończyły się zobowiązania - nie działa
@@ -137,8 +134,6 @@ class LMS {
 	    -18		: tylko naliczanie
 	    -19 	: naliczanie - faktury
 	    -20		: naliczanie - proformy
-	    
-         
 	*/
 	if ( (is_null($dni))||($dni>'0'))
 	{
@@ -265,7 +260,7 @@ class LMS {
 	$result = $this->DB->GetCol($zap);
 	
 	return $result;
-    }
+	}
 
 	/*
 	 * Plugins
@@ -284,7 +279,6 @@ class LMS {
 				$vars = call_user_func($hook['callback'], $vars);
 			}
 		}
-
 		return $vars;
 	}
 
@@ -374,7 +368,7 @@ class LMS {
 			foreach ($this->DB->ListTables() as $tablename)
 			    if (!in_array($tablename, $TABLENAME_NOINDEX))
 				fputs($dumpfile_seq,"SELECT setval('".$tablename."_id_seq',max(id)) FROM ".$tablename." ;\n");
-
+			
 			if ($gzipped && extension_loaded('zlib'))
 			{
 				gzclose($dumpfile);
@@ -611,7 +605,6 @@ class LMS {
 
 	function UserUpdate($user) {
 	
-//		if (SYSLOG) $diff['old'] = $this->GetUserInfo($user['id']);
 		$return = $this->DB->Execute('UPDATE users SET login=?, name=?, email=?, rights=?,
 				hosts=?, position=?, ntype=?, phone=?, passwdexpiration=?, access=?, accessfrom=?, accessto=?, gadugadu=?, modules=? WHERE id=?', array($user['login'],
 						$user['name'],
@@ -631,8 +624,6 @@ class LMS {
 				));
 		if ($return && SYSLOG) 
 		{
-//		    $diff['type'] = 'up';
-//		    $diff['card'] = 'users';
 		    addlogs('aktualizacja danych użytkownika: '.$user['login'],'e=up;m=admin;');
 		}
 		
@@ -690,6 +681,9 @@ class LMS {
 	}
 
 	function CustomerAdd($customeradd) {
+		
+		$customeradd = $this->ExecHook('lms_customer_add_before',$customeradd);
+		
 		if ($this->DB->Execute('INSERT INTO customers (name, lastname, type,
 				    address, zip, city, countryid, email, ten, ssn, status, creationdate,
 				    post_name, post_address, post_zip, post_city, post_countryid,
@@ -749,6 +743,10 @@ class LMS {
 				$this->UpdateCountryState($customeradd['invoice_zip'], $customeradd['invoice_stateid']);
 			}
 			$return = $this->DB->GetLastInsertID('customers');
+			$customeradd['id'] = $return;
+			
+			$this->ExecHook('lms_customer_add_after',$customeradd);
+			
 			if (SYSLOG) addlogs('dodano klienta: <b>'.$customeradd['name'].' '.$customeradd['lastname'].'</b>, adres: '.$customeradd['zip'].' '.$customeradd['city'].' '.$customeradd['address'],'e=add;m=cus;c='.$return);
 			return $return;
 		} else
@@ -756,21 +754,13 @@ class LMS {
 	}
 
 	function DeleteCustomer($id) {
+		$this->exechook('lms_customer_del_before',$id);
 		$this->DB->BeginTrans();
 		
 		if (SYSLOG) {
-		
-//		    $diff['old']['customerassignments'] = $this->DB->GetAll('SELLECT * FROM customerassignments WHERE customerid=? ;',array($id));
-//		    $diff['old']['assignments'] = $this->DB->GetAll('SELECT * FROM assignments WHERE customerid=? ;',array($id));
-//		    $diff['old']['nodegroupassignments'] = $this->DB->GetAll('SELECT * FROM nodegroupassignments WHERE nodeid IN (' .join(',', $nodes). ')');
-//		    $diff['old']['nodes'] = $this->DB->GetAll('SELECT * FROM nodes WHERE ownerid = ? ',array($id));
-//		    $diff['old']['up_rights_assignments'] = $this->DB->GetAll('SELECT * FROM up_rights_assignments WHERE customerid = ? ;',array($id));
-//		    $diff['type'] = 'del';
-//		    $diff['card'] = 'customers';
 		    addlogs('skasowano klienta: '.$this->GetCustomerName($id),'e=rm;m=cus;c='.$id);
-		
 		}
-
+		
 		$this->DB->Execute('UPDATE customers SET deleted=1, moddate=?NOW?, modid=?
 				WHERE id=?', array($this->AUTH->id, $id));
 		$this->DB->Execute('DELETE FROM customerassignments WHERE customerid=?', array($id));
@@ -784,15 +774,6 @@ class LMS {
 		// nodes
 		$nodes = $this->DB->GetCol('SELECT id FROM nodes WHERE ownerid=?', array($id));
 		if ($nodes) {
-		/*
-			$this->DB->Execute('DELETE FROM nodegroupassignments WHERE nodeid IN (' . join(',', $nodes) . ')');
-			$plugin_data = array();
-			foreach ($nodes as $node)
-				$plugin_data[] = array('id' => $node, 'ownerid' => $id);
-			$this->ExecHook('node_del_before', $plugin_data);
-			$this->DB->Execute('DELETE FROM nodes WHERE ownerid=?', array($id));
-			$this->ExecHook('node_del_after', $plugin_data);
-		*/
 		    for ($i=0; $i< sizeof($nodes); $i++) $this->DeleteNode($nodes[$i]);
 		}
 		// hosting
@@ -803,15 +784,13 @@ class LMS {
 			$this->DB->Execute('DELETE FROM up_rights_assignments WHERE customerid=?', array($id));
 
 		$this->DB->CommitTrans();
+		$this->exechook('lms_customer_del_after',$id);
 	}
 
 	function CustomerUpdate($customerdata) {
-	
+		$customerdata = $this->exechook('lms_customer_update_before',$customerdata);
 		if (SYSLOG) {
-//			    $diff['old'] = $this->getcustomer($customerdata['id']);
-//			    $diff['type'] = 'up';
-//			    $diff['card'] = 'customers';
-			    addlogs('aktualizacja danych klienta: '.$customerdata['name'].' '.$customerdata['lastname'],'e=up;m=cus;c='.$customerdata['id']);
+		    addlogs('aktualizacja danych klienta: '.$customerdata['name'].' '.$customerdata['lastname'],'e=up;m=cus;c='.$customerdata['id']);
 		}
 		
 		$res = $this->DB->Execute('UPDATE customers SET status=?, type=?, address=?,
@@ -875,6 +854,7 @@ class LMS {
 			if ($customerdata['invoice_zip'] != $customerdata['zip']) {
 				$this->UpdateCountryState($customerdata['invoice_zip'], $customerdata['invoice_stateid']);
 			}
+			$this->exechook('lms_customer_update_after',$customerdata);
 		}
 
 		return $res;
@@ -1375,17 +1355,11 @@ class LMS {
 				ORDER BY name ASC ' . ($count ? 'LIMIT ' . $count : ''), array($id))) {
 			// assign network(s) to node record
 			$networks = (array) $this->GetNetworks();
-
+			
 			foreach ($result as $idx => $node) {
 				$ids[$node['id']] = $idx;
 				$result[$idx]['lastonlinedate'] = lastonline_date($node['lastonline']);
-
-//				foreach ($networks as $net)
-//					if (isipin($node['ip'], $net['address'], $net['mask'])) {
-//						$result[$idx]['network'] = $net;
-//						break;
-//					}
-
+				
 				if ($node['ipaddr_pub'])
 					foreach ($networks as $net)
 						if (isipin($node['ip_pub'], $net['address'], $net['mask'])) {
@@ -1393,7 +1367,7 @@ class LMS {
 							break;
 						}
 			}
-
+			
 			// get EtherWerX channels
 			if (chkconfig($this->CONFIG['phpui']['ewx_support'])) {
 				$channels = $this->DB->GetAllByKey('SELECT nodeid, channelid, c.name, c.id, cid,
@@ -1402,7 +1376,7 @@ class LMS {
 					JOIN ewx_stm_channels nc ON (channelid = nc.id)
 					LEFT JOIN ewx_channels c ON (c.id = nc.cid)
 					WHERE nodeid IN (' . implode(',', array_keys($ids)) . ')', 'nodeid');
-
+				
 				if ($channels)
 					foreach ($channels as $channel) {
 						$idx = $ids[$channel['nodeid']];
@@ -1463,7 +1437,6 @@ class LMS {
 		}
 
 		$saldolist['customerid'] = $id;
-//		echo "<pre>"; print_r($saldolist); echo "</pre>"; die;
 		return $saldolist;
 	}
 
@@ -1521,12 +1494,10 @@ class LMS {
 			return FALSE;
 	}
 
+
 	function CustomergroupUpdate($customergroupdata) {
 	
 		if (SYSLOG) {
-//		    $diff['old'] = $this->DB->GetRow('SELECT * FROM customergroups WHERE id=? ;',array($customergroupdata['id']));
-//		    $diff['type'] = 'up';
-//		    $diff['card'] = 'customersgroup';
 		    addlogs('aktualizacja danych grupy: '.$customergroupdata['name'].' dla klientów','e=up;m=cus;');
 		}
 		
@@ -1537,13 +1508,12 @@ class LMS {
 				));
 	}
 
+
 	function CustomergroupDelete($id) {
 		if (!$this->CustomergroupWithCustomerGet($id)) {
 			
 			if (SYSLOG) {
 			    $diff['old'] = $this->DB->GetRow('SELECT * FROM customergroups WHERE id=?',array($id));
-//			    $diff['type'] = 'del';
-//			    $diff['card'] = 'customersgroup';
 			    addlogs('skasowano grupę: '.$diff['old']['name'].' dla klientów','e=rm;m=cus;');
 			}
 			
@@ -1646,10 +1616,16 @@ class LMS {
 		    addlogs('usunięto klienta: '.$this->getcustomername($customerassignmentdata['customerid']).' z grupy: '.$grname,'e=rm;m=cus;c='.$customerassignmentdata['customerid']);
 		    unset($grname);
 		}
-	
-		return $this->DB->Execute('DELETE FROM customerassignments 
+		
+		$this->exechook('lms_customer_assignment_del_before',$customerassignmentdata);
+		
+		$result = $this->DB->Execute('DELETE FROM customerassignments 
 			WHERE customergroupid=? AND customerid=?', array($customerassignmentdata['customergroupid'],
 						$customerassignmentdata['customerid']));
+		
+		$this->exechook('lms_customer_assignment_del_after',$customerassignmentdata);
+		
+		return $result;
 	}
 
 	function CustomerassignmentAdd($customerassignmentdata) {
@@ -1658,8 +1634,17 @@ class LMS {
 		    addlogs('dodano klienta: '.$this->getcustomername($customerassignmentdata['customerid']).' do grupy: '.$grname,'e=add;m=cus;c='.$customerassignmentdata['customerid']);
 		    unset($grname);
 		}
-		return $this->DB->Execute('INSERT INTO customerassignments (customergroupid, customerid) VALUES (?, ?)', array($customerassignmentdata['customergroupid'],
-						$customerassignmentdata['customerid']));
+		
+		$customerassignmentdata = $this->exechook('lms_customer_assignment_add_before',$customerassignmentdata);
+		
+		$result = $this->DB->Execute('INSERT INTO customerassignments (customergroupid, customerid) VALUES (?, ?)', 
+		    array($customerassignmentdata['customergroupid'],$customerassignmentdata['customerid']));
+		
+		$customerassignmentdata['id'] = $this->DB->GetLastInsertID('customerassignments');
+		
+		$this->exechook('lms_customer_assignment_add_after',$customerassignmentdata);
+		
+		return $result;
 	}
 
 	function CustomerassignmentExist($groupid, $customerid) {
@@ -1684,11 +1669,14 @@ class LMS {
 	/*
 	 * Contractor
 	 */
-	 function GetContractorBalance($id, $totime = NULL) {
-		return $this->DB->GetOne('SELECT SUM(value) FROM cash WHERE customerid = ?' . ($totime ? ' AND time < ' . intval($totime) : ''), array($id));
+	function GetContractorBalance($id, $totime = NULL) {
+		return $this->DB->GetOne('SELECT SUM(value) FROM cash WHERE customerid = ?' 
+		. ($totime ? ' AND time < ' . intval($totime) : ''), array($id));
 	}
-	 function GetContractorBalanceList($id, $totime = NULL, $direction = 'ASC') 
-	 {
+
+
+	function GetContractorBalanceList($id, $totime = NULL, $direction = 'ASC') 
+	{
 		($direction == 'ASC' || $direction == 'asc') ? $direction == 'ASC' : $direction == 'DESC';
 
 		$saldolist = array();
@@ -2204,6 +2192,8 @@ class LMS {
 
 	function NodeUpdate($nodedata, $deleteassignments = FALSE) {
 		
+		$nodedata = $this->exechook('lms_node_update_before',$nodedata);
+		
 		if (SYSLOG) {
 		    $diff['old'] = $this->getnode($nodedata['id']);
 		}
@@ -2263,7 +2253,7 @@ class LMS {
 				chkmac=?, halfduplex=?, linktype=?, linkspeed=?, port=?, nas=?,
 				longitude=?, latitude=?, netid=?, linktechnology=?, access_from=?, access_to=?, 
 				typeofdevice=?, producer=?, model=?, sn=?, blockade=?, pppoelogin = ?, netdevicemodelid = ?, 
-				invprojectid=?, layer=?, tracttype=?, netid_pub = ? 
+				invprojectid=?, layer=?, tracttype=?, netid_pub = ?, authtype = ?, nasid = ? 
 				WHERE id=?', array(
 					$nodedata['name'],
 					($nodedata['ipaddr_pub'] ? $nodedata['ipaddr_pub'] : 0),
@@ -2303,6 +2293,8 @@ class LMS {
 					($nodedata['layer'] ? $nodedata['layer'] : NULL),
 					($nodedata['tracttype'] ? $nodedata['tracttype'] : NULL),
 					($nodedata['netid_pub'] ? $nodedata['netid_pub'] : 0),
+					($nodedata['authtype'] ? $nodedata['authtype'] : 0),
+					($nodedata['nasid'] ? $nodedata['nasid'] : 0),
 					$nodedata['id']
 				)
 		);
@@ -2352,10 +2344,14 @@ class LMS {
 		    unset($cusname);
 		    unset($diff);
 		}
+		
+		$this->exechook('lms_node_update_after',$nodedata);
 	}
 
 
 	function DeleteNode($id) {
+		
+		$this->exechook('lms_node_del_before',$id);
 		
 		$this->DB->BeginTrans();
 		
@@ -2385,8 +2381,9 @@ class LMS {
 		$this->DB->Execute('DELETE FROM nodes WHERE id = ?', array($id));
 		$this->DB->Execute('DELETE FROM nodegroupassignments WHERE nodeid = ?', array($id));
 		
-		
 		$this->DB->CommitTrans();
+		
+		$this->exechook('lms_node_del_after',$id);
 	}
 
 
@@ -2485,12 +2482,17 @@ class LMS {
 			    $result['networkname_pub'] = $tmp['networkname'];
 			    $result['hostname_pub'] = $tmp['hostname'];
 			}
+			
+			if ($result['nasid'] && get_form('nodes.nas')) 
+			    $result['nasname'] = $this->DB->GetOne('SELECT name FROM nas WHERE id = ? LIMIT 1;',array($result['nasid']));
 
 			$result['mac'] = preg_split('/,/', $result['mac']);
 			foreach ($result['mac'] as $mac)
 				$result['macs'][] = array('mac' => $mac, 'producer' => get_producer($mac));
 			unset($result['mac']);
-
+			
+			$result = $this->exechook('lms_getnode_after',$result);
+			
 			return $result;
 		} else
 			return FALSE;
@@ -2801,7 +2803,9 @@ class LMS {
 	}
 
 	function NodeAdd($nodedata) {
-	    
+		
+		$nodedata = $this->exechook('lms_node_add_before',$nodedata);
+		
 		if (!$nodedata['netid'])
 		    $nodedata['netid'] = $this->DB->GetOne('SELECT id FROM networks WHERE INET_ATON(?) & INET_ATON(mask) = address ORDER BY id '.$this->DB->Limit(1).';',
 				array($nodedata['ipaddr']));
@@ -2830,9 +2834,10 @@ class LMS {
 			location, location_city, location_street, location_house, location_flat,
 			linktype, linkspeed, port, chkmac, halfduplex, nas, longitude, latitude, netid, linktechnology, 
 			access_from, access_to, typeofdevice, producer, model, sn, blockade,
-			pppoelogin, netdevicemodelid, invprojectid, layer, tracttype,netid_pub )
+			pppoelogin, netdevicemodelid, invprojectid, layer, tracttype, netid_pub, authtype, nasid )
 			VALUES (?, inet_aton(?), inet_aton(?), ?, ?, ?,
-			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
+			?NOW?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+			array(
 				strtoupper($nodedata['name']),
 				($nodedata['ipaddr'] ? $nodedata['ipaddr'] : 0),
 				($nodedata['ipaddr_pub'] ? $nodedata['ipaddr_pub'] : 0),
@@ -2871,32 +2876,35 @@ class LMS {
 				($nodedata['layer'] ? $nodedata['layer'] : NULL),
 				($nodedata['tracttype'] ? $nodedata['tracttype'] : NULL),
 				($nodedata['netid_pub'] ? $nodedata['netid_pub'] : 0),
+				($nodedata['authtype'] ? $nodedata['authtype'] : 0),
+				($nodedata['nasid'] ? $nodedata['nasid'] : 0),
 			)); 
 			$id = $this->DB->GetLastInsertID('nodes');
-		$this->DB->UnLockTables();
-		
+			$this->DB->UnLockTables();
+			
 			if ($result) {
 			
 			    if (!empty($nodedata['monitoring']))
 				$this->SetMonit($id);
 			
-			if (get_conf('phpui.iphistory'))
-			{
-			    // add info o przydzielonym adresie IP
-			    if (!empty($nodedata['ipaddr']) && $nodedata['ipaddr'] != '0.0.0.0' && $nodedata['ipaddr'] != '0')
-				$this->DB->Execute('INSERT INTO iphistory (nodeid, ipaddr, ipaddr_pub, ownerid, netdev, fromdate, todate) VALUES (?,inet_aton(?),?,?,?,?NOW?,?) ;',
-				    array($id,$nodedata['ipaddr'],0,$nodedata['ownerid'],$nodedata['netdev'],0));
-			
-			    if (!empty($nodedata['ipaddr_pub']) && $nodedata['ipaddr_pub'] != '0.0.0.0' && $nodedata['ipaddr_pub'] != '0')
-				$this->DB->Execute('INSERT INTO iphistory (nodeid, ipaddr, ipaddr_pub, ownerid, netdev, fromdate, todate) VALUES (?,?,inet_aton(?),?,?,?NOW?,?) ;',
-				    array($id,0,$nodedata['ipaddr_pub'],$nodedata['ownerid'],$nodedata['netdev'],0));
-			}
-			
-			
-
-			// EtherWerX support (devices have some limits)
-			// We must to replace big ID with smaller (first free)
-			if ($id > 99999 && chkconfig($this->CONFIG['phpui']['ewx_support'])) {
+			    if (get_conf('phpui.iphistory'))
+			    {
+				// add info o przydzielonym adresie IP
+				if (!empty($nodedata['ipaddr']) && $nodedata['ipaddr'] != '0.0.0.0' && $nodedata['ipaddr'] != '0')
+				    $this->DB->Execute('INSERT INTO iphistory (nodeid, ipaddr, ipaddr_pub, ownerid, netdev, fromdate, todate) VALUES (?,inet_aton(?),?,?,?,?NOW?,?) ;',
+					array($id,$nodedata['ipaddr'],0,$nodedata['ownerid'],$nodedata['netdev'],0));
+				
+				if (!empty($nodedata['ipaddr_pub']) && $nodedata['ipaddr_pub'] != '0.0.0.0' && $nodedata['ipaddr_pub'] != '0')
+				    $this->DB->Execute('INSERT INTO iphistory (nodeid, ipaddr, ipaddr_pub, ownerid, netdev, fromdate, todate) VALUES (?,?,inet_aton(?),?,?,?NOW?,?) ;',
+					array($id,0,$nodedata['ipaddr_pub'],$nodedata['ownerid'],$nodedata['netdev'],0));
+			    }
+			    
+			    
+			    
+			    // EtherWerX support (devices have some limits)
+			    // We must to replace big ID with smaller (first free)
+			    if ($id > 99999 && chkconfig($this->CONFIG['phpui']['ewx_support'])) 
+			    {
 				$this->DB->BeginTrans();
 				$this->DB->LockTables('nodes');
 
@@ -2910,22 +2918,24 @@ class LMS {
 
 				$this->DB->UnLockTables();
 				$this->DB->CommitTrans();
-			}
+			    }
 			
-			foreach ($nodedata['macs'] as $mac)
+			    foreach ($nodedata['macs'] as $mac)
 				$this->DB->Execute('INSERT INTO macs (mac, nodeid) VALUES(?, ?)', array(strtoupper($mac), $id));
 			
-			if (SYSLOG) {
-			    if (!empty($nodedata['ownerid'])) {
-				$ownerid = $this->getnodeowner($id);
-				addlogs('dodano komputer: <b>'.$this->getnodename($id).'</b>, IP:'.$this->GetNodeIPByID($id).', IP publiczne:'.$this->GetNodePubIPByID($id).', MAC:'.$this->GetNodeMACByID($id).', klient: '.$this->getcustomername($ownerid),'e=add;m=node;n='.$id.';c='.$ownerid.';');
+			    if (SYSLOG) {
+				if (!empty($nodedata['ownerid'])) {
+				    $ownerid = $this->getnodeowner($id);
+				    addlogs('dodano komputer: <b>'.$this->getnodename($id).'</b>, IP:'.$this->GetNodeIPByID($id).', IP publiczne:'.$this->GetNodePubIPByID($id).', MAC:'.$this->GetNodeMACByID($id).', klient: '.$this->getcustomername($ownerid),'e=add;m=node;n='.$id.';c='.$ownerid.';');
+				}
+				else
+				    addlogs('dodano adres IP do urządzenia sieciowego '.$this->getnodename($id),'e=add;m=netdev;n='.$nodedata['netdev'].';');
 			    }
-			    else
-				addlogs('dodano adres IP do urządzenia sieciowego '.$this->getnodename($id),'e=add;m=netdev;n='.$nodedata['netdev'].';');
+			    
+			    $nodedata['id'] = $id;
+			    $this->exechook('lms_node_add_after',$nodedata);
+			    return $id;
 			}
-
-			return $id;
-		}
 
 		return FALSE;
 	}
@@ -3034,17 +3044,24 @@ class LMS {
 			ORDER BY nodes.name ASC', array($id));
 	}
 
-	function NetDevLinkNode($id, $devid, $type = 0, $speed = 100000, $port = 0, $technology=0, $layer=NULL, $tracttype = NULL) {
-		return $this->DB->Execute('UPDATE nodes SET netdev=?, linktype=?, linkspeed=?, port=?, linktechnology=?, layer=?, tracttype=? 
-			 WHERE id=?', array($devid,
-						intval($type),
-						intval($speed),
-						intval($port),
-						intval($technology),
-						($layer ? intval($layer) : NULL),
-						($tracttype ? intval($tracttype) : NULL),
-						$id
-				));
+	function NetDevLinkNode($id, $devid, $type = 0, $speed = 100000, $port = 0, $technology=0, $layer=NULL, $tracttype = NULL) 
+	{
+	    $this->exechook('lms_netdevlinknode_before',$id);
+	    $result = $this->DB->Execute('UPDATE nodes SET netdev=?, linktype=?, linkspeed=?, port=?, 
+		linktechnology=?, layer=?, tracttype=? WHERE id = ?;', 
+		array(
+		    $devid,
+		    intval($type),
+		    intval($speed),
+		    intval($port),
+		    intval($technology),
+		    ($layer ? intval($layer) : NULL),
+		    ($tracttype ? intval($tracttype) : NULL),
+		    $id
+		)
+	    );
+	    $this->exechook('lms_netdevlinknode_after',$id);
+	    return $result;
 	}
 
 
@@ -3443,7 +3460,6 @@ class LMS {
 	}
 
 	function AddInvoice($invoice) {
-//		echo "<pre>"; print_r($invoice); echo "</pre>"; die;
 		$currtime = time();
 		$cdate = $invoice['invoice']['cdate'] ? $invoice['invoice']['cdate'] : $currtime;
 		$sdate = $invoice['invoice']['sdate'] ? $invoice['invoice']['sdate'] : $currtime;
@@ -3637,6 +3653,8 @@ class LMS {
 		    unset($number);
 		}
 		
+		$this->exechook('lms_invoice_del_before',$id);
+		
 		$filename = $this->getInvoiceFilename($invoiceid,true);
 		if (check_fileexists($filename))
 		    @unlink($filename);
@@ -3645,6 +3663,8 @@ class LMS {
 		$this->DB->Execute('DELETE FROM documentcontents WHERE docid = ?', array($invoiceid));
 		$this->DB->Execute('DELETE FROM invoicecontents WHERE docid = ?', array($invoiceid));
 		$this->DB->Execute('DELETE FROM cash WHERE docid = ?', array($invoiceid));
+		
+		$this->exechook('lms_invoice_del_after',$id);
 	}
 
 	function InvoiceContentDelete($invoiceid, $itemid = 0) {
@@ -4252,13 +4272,15 @@ class LMS {
 	function AddBalance($addbalance,$sys_log  = true) {
 		$addbalance['value'] = str_replace(',', '.', round($addbalance['value'], 2));
 		
+		$addbalance = $this->exechook('lms_balance_add_before',$addbalance);
+		
 		if (SYSLOG && $sys_log) {
 			    $cusname = $this->getcustomername($addbalance['customerid']);
 			    if ($addbalance['type'] == '0') $str = 'zobowiązanie'; else $str = 'przychód';
 			    addlogs('dodano '.$str.' Pozycja: <b>"'.$addbalance['comment'].'"</b> na kwotę: <b>'.moneyf($addbalance['value']).'</b> dla '.$cusname.'','e=add;m=fin;c='.$addbalance['customerid']);
 		}
 
-		return $this->DB->Execute('INSERT INTO cash (time, userid, value, type, taxid,
+		$return = $this->DB->Execute('INSERT INTO cash (time, userid, value, type, taxid,
 			customerid, comment, docid, itemid, importid, sourceid)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(isset($addbalance['time']) ? $addbalance['time'] : time(),
 						isset($addbalance['userid']) ? $addbalance['userid'] : $this->AUTH->id,
@@ -4272,9 +4294,14 @@ class LMS {
 						!empty($addbalance['importid']) ? $addbalance['importid'] : NULL,
 						!empty($addbalance['sourceid']) ? $addbalance['sourceid'] : NULL,
 				));
+		
+		$addbalance['id'] = $this->DB->GetLastInsertID('cash');
+		$this->exechook('lms_balance_add_after',$addbalance);
+		return $return;
 	}
 
 	function DelBalance($id) {
+		$this->exechook('lms_balance_del_before',$id);
 		$row = $this->DB->GetRow('SELECT docid, itemid, cash.customerid AS cid, value, documents.type AS doctype, importid, comment 
 					FROM cash
 					LEFT JOIN documents ON (docid = documents.id)
@@ -4296,6 +4323,7 @@ class LMS {
 			if ($row['importid'])
 				$this->DB->Execute('UPDATE cashimport SET closed = 0 WHERE id = ?', array($row['importid']));
 		}
+		$this->exechook('lms_balance_del_after',$id);
 	}
 
 	/*
@@ -4842,6 +4870,12 @@ class LMS {
 	/*
 	 *   Network Devices
 	 */
+	
+	function getNasList()
+	{
+	    $result = $this->DB->GetAll('SELECT id,name FROM nas ORDER BY name ASC;');
+	    return $result;
+	}
 
 	function NetDevExists($id) {
 		return ($this->DB->GetOne('SELECT * FROM netdevices WHERE id=?', array($id)) ? TRUE : FALSE);
@@ -4889,6 +4923,12 @@ class LMS {
 		
 		($direction == 'desc') ? $direction = 'desc' : $direction = 'asc';
 		
+		$sqladd_field = $sqladd_where = $sqladd_join = NULL; // dodatkowy warunek wywołany przez exechook
+		
+		$sqladd_field = $this->ExecHook('lms_netdev_list_sqladd_field',$sqladd_field);
+		$sqladd_where = $this->ExecHook('lms_netdev_list_sqladd_where',$sqladd_where);
+		$sqladd_join = $this->ExecHook('lms_netdev_list_sqladd_join',$sqladd_join);
+
 		switch ($order) {
 			case 'id': $sqlord = ' ORDER BY id'; break;
 			case 'producer': $sqlord = ' ORDER BY producer'; break;
@@ -4902,13 +4942,16 @@ class LMS {
 		
 		$netdevlist = $this->DB->GetAll('SELECT d.id, d.name, d.location,
 			d.description, d.producer, d.model, d.serialnumber, d.ports,
-			d.networknodeid, (SELECT nn.name FROM networknode nn WHERE nn.id = d.networknodeid) AS networknodename, 
+			d.networknodeid, 
+			(SELECT nn.name FROM networknode nn WHERE nn.id = d.networknodeid) AS networknodename, 
 			(SELECT COUNT(*) FROM nodes WHERE netdev=d.id AND ownerid > 0)
 			+ (SELECT COUNT(*) FROM netlinks WHERE src = d.id OR dst = d.id)
-			AS takenports
-			FROM netdevices d '
+			AS takenports '
+			.(!is_null($sqladd_field) ? ' '.$sqladd_field.' ' : '')
+			.' FROM netdevices d '
 			.(!is_null($group)  ? ' JOIN netdevicesassignments ng ON (ng.netdevicesid = d.id) ' : '')
 			.(!is_null($groupw) ? ' JOIN networknodeassignments nng ON (nng.networknodeid = d.networknodeid) ' : '')
+			.(!is_null($sqladd_join) ? ' '.$sqladd_join.' ' : '')
 			.'WHERE 1=1 '
 			.(!is_null($status) ? ' AND d.status = '.$status : '')
 			.(!is_null($project) ? ' AND invprojectid = '.$project : '')
@@ -4917,12 +4960,15 @@ class LMS {
 			.(!is_null($model) ? ' AND UPPER(model) = \''.strtoupper($model).'\'' : '')
 			.(!is_null($group) ? ' AND ng.netdevicesgroupid = '.$group : '')
 			.(!is_null($groupw) ? ' AND nng.networknodegroupid = '.$groupw : '')
+			.(!is_null($sqladd_where) ? ' '.$sqladd_where.' ' : '')
 			. ($sqlord != '' ? $sqlord . ' ' . $direction : ''));
 		
+
 		$netdevlist['total'] = sizeof($netdevlist);
 		$netdevlist['order'] = $order;
 		$netdevlist['direction'] = $direction;
 		
+		$netdevlist = $this->ExecHook('lms_netdev_list_after',$netdevlist);
 		return $netdevlist;
 	}
 
@@ -4945,47 +4991,65 @@ class LMS {
 	}
 
 	function GetNetDev($id) {
+		
+		$sqladd_field = $sqladd_join = $sqladd_where = NULL;
+		
+		$sqladd_field = $this->exechook('lms_netdev_get_addsql_field',$sqladd_field);
+		$sqladd_where = $this->exechook('lms_netdev_get_addsql_where',$sqladd_where);
+		$sqladd_join  = $this->exechook('lms_netdev_get_addsql_join',$sqladd_join);
+		
 		$result = $this->DB->GetRow('SELECT d.*, t.name AS nastypename, tt.name AS monit_nastypename, c.name AS channel,
 		        lc.name AS city_name,p.name AS projectname, 
 		        (SELECT nn.name FROM networknode nn WHERE nn.id = d.networknodeid) AS networknodename,
 		        (SELECT dt.type FROM dictionary_devices_client dt WHERE dt.id = d.typeofdevice) AS typeofdevicename,
-			(CASE WHEN ls.name2 IS NOT NULL THEN ' . $this->DB->Concat('ls.name2', "' '", 'ls.name') . ' ELSE ls.name END) AS street_name, lt.name AS street_type
-			FROM netdevices d
+			(CASE WHEN ls.name2 IS NOT NULL THEN ' . $this->DB->Concat('ls.name2', "' '", 'ls.name') . ' ELSE ls.name END) AS street_name, lt.name AS street_type '
+			.($sqladd_field ? $sqladd_field : '') 
+			.'FROM netdevices d
 			LEFT JOIN nastypes t ON (t.id = d.nastype) 
 			LEFT JOIN nastypes tt ON (tt.id = d.monit_nastype) 
 			LEFT JOIN ewx_channels c ON (d.channelid = c.id) 
 			LEFT JOIN location_cities lc ON (lc.id = d.location_city)
 			LEFT JOIN location_streets ls ON (ls.id = d.location_street)
 			LEFT JOIN location_street_types lt ON (lt.id = ls.typeid)
-			LEFT JOIN invprojects p ON (p.id = d.invprojectid) 
-			WHERE d.id = ?', array($id));
-
+			LEFT JOIN invprojects p ON (p.id = d.invprojectid) '
+			.($sqladd_join ? $sqladd_join : '')
+			.' WHERE d.id = ? '
+			.($sqladd_where ? $sqladd_where : '')
+			, array($id));
+		
 		$result['takenports'] = $this->CountNetDevLinks($id);
-
+		
 		if ($result['guaranteeperiod'] != NULL && $result['guaranteeperiod'] != 0)
 			$result['guaranteetime'] = strtotime('+' . $result['guaranteeperiod'] . ' month', $result['purchasetime']); // transform to UNIX timestamp
 		elseif ($result['guaranteeperiod'] == NULL)
 			$result['guaranteeperiod'] = -1;
-
+		
+		$result = $this->exechook('lms_netdev_get_after',$result);
 		return $result;
 	}
 
 	function NetDevDelLinks($id) {
+		$this->exechook('lms_netdev_links_del_before',$id);
 		$this->DB->Execute('DELETE FROM netlinks WHERE src=? OR dst=?', array($id, $id));
 		$this->DB->Execute('UPDATE nodes SET netdev=0, port=0 
 				WHERE netdev=? AND ownerid>0', array($id));
+		$this->exechook('lms_netdev_links_del_after',$id);
 	}
 
 	function DeleteNetDev($id) {
+		$this->exechook('lms_netdev_del_before',$id);
 		$this->DB->BeginTrans();
 		$this->DB->Execute('DELETE FROM netlinks WHERE src=? OR dst=?', array($id));
 		$this->DB->Execute('DELETE FROM nodes WHERE ownerid=0 AND netdev=?', array($id));
 		$this->DB->Execute('UPDATE nodes SET netdev=0 WHERE netdev=?', array($id));
 		$this->DB->Execute('DELETE FROM netdevices WHERE id=?', array($id));
 		$this->DB->CommitTrans();
+		$this->exechook('lms_netdev_del_after',$id);
 	}
 
 	function NetDevAdd($data) {
+		$data = $this->exechook('lms_netdev_add_before',$data);
+		
 		if ($this->DB->Execute('INSERT INTO netdevices (name, location,
 				location_city, location_street, location_house, location_flat,
 				description, producer, model, serialnumber,
@@ -5056,7 +5120,8 @@ class LMS {
 				$this->DB->UnLockTables();
 				$this->DB->CommitTrans();
 			}
-
+			$data['id'] = $id;
+			$this->exechook('lms_netdev_add_after',$data);
 			return $id;
 		}
 		else
@@ -5064,6 +5129,7 @@ class LMS {
 	}
 
 	function NetDevUpdate($data) {
+		$data = $this->exechook('lms_netdev_update_before',$data);
 		$this->DB->Execute('UPDATE netdevices SET name=?, description=?, producer=?, location=?,
 				location_city=?, location_street=?, location_house=?, location_flat=?,
 				model=?, serialnumber=?, ports=?, purchasetime=?, guaranteeperiod=?, shortname=?,
@@ -5115,6 +5181,7 @@ class LMS {
 				($data['passwd'] ? $data['passwd'] : NULL),
 				$data['id']
 		));
+		$this->exechook('lms_netdev_update_after',$data);
 	}
 
 	function IsNetDevLink($dev1, $dev2) {
@@ -5123,9 +5190,34 @@ class LMS {
 	}
 
 	function NetDevLink($dev1, $dev2, $type = 0, $speed = 100000, $sport = 0, $dport = 0, $technology=0, $layer = NULL, $teleline = 0, $tracttype = NULL) {
+		$data = array(
+		    'dev1' => $dev1,
+		    'dev2' => $dev2,
+		    'type' => $type,
+		    'speed' => $speed,
+		    'sport' => $sport,
+		    'dport' => $dport,
+		    'technology' => $technology,
+		    'layer' => $layer,
+		    'teleline' => $teleline,
+		    'tracttype' => $tracttype
+		);
 		if ($dev1 != $dev2)
 			if (!$this->IsNetDevLink($dev1, $dev2))
-				return $this->DB->Execute('INSERT INTO netlinks 
+			{
+			    $data = $this->exechook('lms_netdev_links_add_before',$data);
+			    $dev1 = $data['dev1'];
+			    $dev2 = $data['dev2'];
+			    $type = $data['type'];
+			    $speed = $data['speed'];
+			    $sport = $data['sport'];
+			    $dport = $data['dport'];
+			    $technology = $data['technology'];
+			    $layer = $data['layer'];
+			    $teleline = $data['teleline'];
+			    $tracttype = $data['tracttype'];
+			    
+			    $return = $this->DB->Execute('INSERT INTO netlinks 
 					(src, dst, type, speed, srcport, dstport,technology, layer, teleline, tracttype) 
 					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array($dev1, $dev2, $type, $speed,
 					intval($sport), intval($dport),intval($technology),
@@ -5133,11 +5225,17 @@ class LMS {
 					($teleline ? intval($teleline) : 0),
 					($tracttype ? intval($tracttype) : NULL),
 					));
+			    $data['id'] = $this->DB->GetLastInsertID('netlinks');
+			    $this->exechook('lms_netdev_links_add_after',$data);
+			    return $return;
+			}
 
 		return FALSE;
 	}
 
 	function NetDevUnLink($dev1, $dev2) {
+		$data = array('dev1'=>$dev1,'dev2'=>$dev2);
+		$this->exechook('lms_netdev_unlink_before',$data);
 		$this->DB->Execute('DELETE FROM netlinks WHERE (src=? AND dst=?) OR (dst=? AND src=?)', array($dev1, $dev2, $dev1, $dev2));
 	}
 
@@ -5221,6 +5319,7 @@ class LMS {
 				$user['rights'] = $this->GetUserRightsRT($user['id'], $id);
 				$queue['rights'][] = $user;
 			}
+			$queue = $this->exechook('lms_getqueue_after',$queue);
 			return $queue;
 		}
 		else
