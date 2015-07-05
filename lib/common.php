@@ -1016,31 +1016,18 @@ function addLogs($message = NULL, $string = NULL, $diff = NULL)
 
 function check_modules($mod = NULL)
 {
-    global $AUTH,$menu;
+    global $AUTH;
     
-    $return = true;
-    if (empty($mod) || is_null($mod)) return $return;
-    if (empty($AUTH->nomodules)) return $return;
-    if (is_numeric($mod))
-    {
-	$mod = intval($mod);
-	if (in_array($mod,$AUTH->nomodules)) $return = false;
-	else $return = true;
-    }
-    else // if string
-    {
-	$mod = strtolower($mod);
-	$tab = array();
-	foreach($menu as $key => $item) {
-	    $name = strtolower($key);
-	    $tab[$name] = $item['index'];
-	}
-	$id = $tab[$mod];
-	if (in_array($id,$AUTH->nomodules)) $return = false;
-	else $return = true;
-    }
+    if (empty($mod) || is_null($mod)) 
+	return TRUE;
     
-    return $return;
+    if (empty($AUTH->nomodules)) 
+	return TRUE;
+    
+    if (in_array($mod,$AUTH->nomodules)) 
+	return FALSE;
+
+    return TRUE;
 }
 
 function protect_email($email)

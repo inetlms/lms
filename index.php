@@ -34,7 +34,7 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
-define('LMSV','15.07.04');
+define('LMSV','15.07.09');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 ini_set('mbstring.func_overload','0');
 date_default_timezone_set('Europe/Warsaw');
@@ -258,12 +258,15 @@ $SMARTY->assignByRef('layout', $layout);
 $SMARTY->assignByRef('LANGDEFS', $LANGDEFS);
 $SMARTY->assignByRef('_ui_language', $LMS->ui_lang);
 $SMARTY->assignByRef('_language', $LMS->lang);
+$SMARTY->assignByRef('global_warning',$SESSION->global_warning);
 
 $error = NULL; // initialize error variable needed for (almost) all modules
 
 header('X-Powered-By: iNET LMS/'.$layout['lmsv']);
 
+$PLUG->initPlugins();
 $PLUG->updateDBPlugins();
+$PLUG->IncludeRegisterHook();
 
 // Check privileges and execute modules
 if ($AUTH->islogged) {
@@ -306,8 +309,6 @@ if ($AUTH->islogged) {
 	    unset($__RIGHTS);
 	}
 	
-	$PLUG->IncludeRegisterHook();
-	$PLUG->initPlugins();
 	$_plugcount = sizeof($_pluglist);
 	
 	if ($module == '')
@@ -522,7 +523,6 @@ else
 	$SMARTY->assign('_newversion',$_newversion);
 	$SMARTY->display('login.html');
 }
-
 
 $SESSION->close();
 $DB->Destroy();

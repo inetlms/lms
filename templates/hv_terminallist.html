@@ -44,7 +44,7 @@
 	
     </tr>
     {if $terminallist|@count !=0 }
-	<tr class="dark">
+	<tr class="dark scroller">
 	    <td colspan="7" width="100%" class="fall">
 		{include file="scroller.html" loop=$terminallist}
 	    </td>
@@ -77,7 +77,7 @@
 	</tr>
     {/section}
     {if $terminallist|@count !=0 }
-	<tr class="dark">
+	<tr class="dark scroller">
 	    <td colspan="7" width="100%" class="fall">
 		{include file="scroller.html" loop=$terminallist}
 	    </td>

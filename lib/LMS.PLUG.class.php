@@ -1,11 +1,28 @@
 <?php
 
 $_pluglist = array();
-$_pluginc = array();
+$_pluginc = array();	// lista plików do podłączenia 
+$_pluglinks = array();	// lista linków do wstawienia w róznych kartach
+
+
 
 class PLUG {
 
 	var $plugins = array();
+	
+	// lista dostępnych sekcji gdzie można podpiąć boxy lub linki
+	var $_section_box = array(
+	    'customer',
+	    'networknodeinfo_interface',
+	);
+	
+	var $_section_links = array(
+	    'customer',
+	    'nodeinfo', // komputer klienta
+	    'nodeedit', // komputer klienta
+	    'nodeadd',  // ---"---
+	    'netdevipinfo', // netdevipinfobox.html
+	);
 
 
 	function __construct() { }
@@ -35,14 +52,21 @@ class PLUG {
 
 	public function initPlugins() 
 	{
-		
-		global $DB,$_pluglist;
-		
-		if ($tmp = $DB->GetAll('SELECT name FROM plug WHERE enabled = 1;')) {
-			for ($i=0; $i<sizeof($tmp); $i++)
-				$_pluglist[] = $tmp[$i]['name'];
+	    global $DB,$_pluglist,$SESSION;
+	
+	    if ($tmp = $DB->GetAll('SELECT name FROM plug WHERE enabled = 1;')) {
+	
+		for ($i=0; $i<sizeof($tmp); $i++) {
+		    if (file_exists(PLUG_DIR.'/'.$tmp[$i]['name'].'/configuration.php')) {
+			include(PLUG_DIR.'/'.$tmp[$i]['name'].'/configuration.php');
+			if (version_compare($__info['minversion'],LMSV) != '1')
+			    $_pluglist[] = $tmp[$i]['name'];
+			else
+			    $SESSION->addWarning('Wtyczka <b>'.$__info['display'].'</b> nie została uruchomiona, iNET LMS nie spełnia wymaganej wersji');
+		    }
 		}
-		
+	    }
+	
 	}
 
 
@@ -60,12 +84,30 @@ class PLUG {
 	}
 
 
+    private function check(&$section, $section_array, $indexes = NULL)
+    {
+	global $AUTH;
+	
+	$section = strtolower($section);
+	if (!in_array($section,$section_array))
+	    return FALSE;
+	
+	if (!is_null($indexes) && !empty($indexes) && !empty($AUTH->nomodules) && in_array($indexes,$AUTH->nomodules)) 
+	    return FALSE;
+	
+	return TRUE;
+    }
+
+	// zostaje żeby zachować zgodność ze starymi wtyczkami
 	function addBoxCustomer($plugname,$modfile=NULL,$htmlfile=NULL)
 	{
+	    $this->addBox($plugname,'customer',$modfile,$htmlfile,NULL);
+	}
+
+
+	function addBox($plugname, $section, $modfile = NULL, $htmlfile = NULL, $indexes = NULL)
+	{
 		global $_pluginc;
-		
-		if (is_null($modfile) && is_null($htmlfile)) 
-		    return FALSE;
 		
 		if (!is_null($modfile) && !empty($modfile) && file_exists(PLUG_DIR.'/'.$plugname.'/modules/'.$modfile))
 			$modfile = PLUG_DIR.'/'.$plugname.'/modules/'.$modfile;
@@ -76,37 +118,15 @@ class PLUG {
 			$htmlfile = 'plug/'.$plugname.'/templates/'.$htmlfile;
 		else
 			$htmlfile = NULL;
-		
-		if (!is_null($modfile) || !is_null($htmlfile)) {
-			
-			$_pluginc['customer'][] = array(
-			    'modfile'	=> $modfile,
-			    'htmlfile'	=> $htmlfile
-			);
-		}
-	}
-
-
-	public function addBox($plugname, $section, $modfile = NULL, $htmlfile = NULL)
-	{
-		global $_pluginc;
 		
 		if (is_null($modfile) && is_null($htmlfile))
 		    return FALSE;
 		
-		if (!is_null($modfile) && !empty($modfile) && file_exists(PLUG_DIR.'/'.$plugname.'/modules/'.$modfile))
-			$modfile = PLUG_DIR.'/'.$plugname.'/modules/'.$modfile;
-		else
-			$modfile = NULL;
-		
-		if (!is_null($htmlfile) && !empty($htmlfile) && file_exists(PLUG_DIR.'/'.$plugname.'/templates/'.$htmlfile))
-			$htmlfile = 'plug/'.$plugname.'/templates/'.$htmlfile;
-		else
-			$htmlfile = NULL;
-		
-		if (!is_null($modfile) || !is_null($htmlfile)) {
-			
-			$_pluginc[$section][] = array(
+		$sec = explode('|',$section);
+		for ($i=0; $i<sizeof($sec); $i++)
+		{
+		    if ($this->check($sec[$i],$this->_section_box,$indexes)) 
+			$_pluginc[$sec[$i]][] = array(
 			    'modfile'	=> $modfile,
 			    'htmlfile'	=> $htmlfile
 			);
@@ -114,25 +134,42 @@ class PLUG {
 	}
 
 
-	function includeJavaScript($script = NULL)
-	{
-	    if (!$script)
-		return FALSE;
-	    
-	    global $layout;
-	    $layout['includesjs'][] = $script;
+    public function addLinks($section, $links, $indexes = NULL)
+    {
+	global $_pluglinks;
+	
+	$sec = explode('|',$section);
+	
+	for ($i=0; $i<sizeof($sec); $i++) {
+	
+	    if ($this->check($sec[$i],$this->_section_links,$indexes)) 
+		$_pluglinks[$sec[$i]][] = $links;
 	}
+    }
+
+
+    public function includeJavaScript($script = NULL)
+    {
+	if (!$script)
+	    return FALSE;
+	
+	global $layout;
+	$layout['includesjs'][] = $script;
+    }
 
 
 	public function updateDBPlugins()
 	{
-	global $DB;
+	global $DB,$_pluglist;
 	
 	if (!defined('NO_CHECK_UPGRADEDB')){
 	
 	    if ($info = $DB->GetAll('SELECT name, dbver FROM plug WHERE enabled = 1;')) {
 		for ($i=0; $i<sizeof($info); $i++) {
 		
+		    if (!in_array($info[$i]['name'],$_pluglist))
+			continue;
+		    
 		    if (file_exists(PLUG_DIR.'/'.$info[$i]['name'].'/configuration.php')) {
 			include(PLUG_DIR.'/'.$info[$i]['name'].'/configuration.php');
 			if ($__info['installdb'] && !empty($__info['dbversion']) && $__info[$DB->_dbtype] == true && $__info['dbversion'] > $info[$i]['dbver']) {
@@ -177,4 +214,5 @@ class PLUG {
 } // end class
 
 $PLUG = new PLUG();
+$SMARTY->assignByRef('pluglinks',$_pluglinks);
 ?>

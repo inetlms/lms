@@ -711,13 +711,13 @@ function changeMacFormat(id)
 
 function ShowAjaxLoadingImage()
 {
-    document.getElementById('id_loadajax_img').innerHTML = 
-	'<div style="width:80px;height:80px;position:fixed;top:40%;left:49%;"><img src="img/loading_ajax.gif" alt="Czekaj..."></div>';
+//    document.getElementById('id_loadajax_img').innerHTML = 
+//	'<div style="width:80px;height:80px;position:fixed;top:40%;left:49%;"><img src="img/loading_ajax.gif" alt="Czekaj..."></div>';
 }
 
 function HideAjaxLoadingImage()
 {
-    document.getElementById('id_loadajax_img').innerHTML = '';
+//    document.getElementById('id_loadajax_img').innerHTML = '';
 }
 
 //function ShowAjaxLoadingImage()

@@ -716,11 +716,23 @@
 	    </td>
 	<tr>
 {/if}
+	{if $pluglinks.nodeinfo}
 	<tr class="dark nav-footer nav-footer-bordertop">
-		<td style="width: 100%; text-align: right;" class="fall" colspan="3">
+	    <td style="width: 100%; text-align: right;" class="ftopu" colspan="3">
+	    {assign var='linki' value=$pluglinks.nodeinfo}
+	    {section name='linki' loop=$linki}
+		&nbsp;&nbsp;{$linki[linki]}
+	    {/section}
+	    </td>
+	</tr>
+	{/if}
+	<tr class="dark nav-footer nav-footer-bordertop">
+	    <td style="width: 100%; text-align: right;" class="fall" colspan="3">
 		{if get_conf('monit.live_ping')}<a href="javascript:void(0);" onclick="window.open('?m=nodeping&packetsize=64&ip={$nodeinfo.ip}','pingnode{$nodeinfo.ip}','width=400,height=450')" {tip text="Pinguj urzadzenie"}>Live Ping <img src="img/ping.gif" alt=""></a>&nbsp;{/if}
-			<a href="?m=nodeedit&id={$nodeinfo.id}" accesskey="E">{trans("Edit")} <img src="img/edit.gif" alt=""></a>
-			<a href="?m=nodedel&id={$nodeinfo.id}" onclick="return confirmLink(this, '{t a=$nodeinfo.name}Are you sure, you want to remove node \'$a\' from database?{/t}')">{trans("Delete")} <img src="img/delete.gif" alt=""></a>
-		</td>
-	</tr>	
+		<a href="?m=nodeedit&id={$nodeinfo.id}" accesskey="E">{trans("Edit")} <img src="img/edit.gif" alt=""></a>
+		<a href="?m=nodedel&id={$nodeinfo.id}" onclick="return confirmLink(this, '{t a=$nodeinfo.name}Are you sure, you want to remove node \'$a\' from database?{/t}')">{trans("Delete")} <img src="img/delete.gif" alt=""></a>
+		
+	    </td>
+	</tr>
+	
 </table>

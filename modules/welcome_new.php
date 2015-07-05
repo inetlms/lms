@@ -344,15 +344,20 @@ function board_save($forms)
 $LMS->InitXajax();
 $LMS->RegisterXajaxFunction(array('homepage_start','board_save','board_view_list','board_set_read'));
 $SMARTY->assign('xajax',$LMS->RunXajax());
+
 if (isset($_GET['boardadd'])) {
+
     $SMARTY->assign('boardadd',true);
     $SMARTY->assign('boardedit',false);
     $SMARTY->assign('userlist',$DB->GetAll('SELECT id, name FROM users WHERE deleted = ? AND id != ? ORDER BY name;',array(0,$AUTH->id)));
     $defaultuser = explode("|",$PROFILE->get('board_default_user',$AUTH->id));
     $SMARTY->assign('defaultuser',$defaultuser);
     $SMARTY->display('welcome_box_board.html');
+
+} else {
+
+    $SMARTY->display('welcome_new.html');
+    
 }
-else
-$SMARTY->display('welcome_new.html');
 
 ?>

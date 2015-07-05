@@ -98,7 +98,7 @@
 		</td>
 	</tr>		
 	{if $listdata.total != 0}
-	<tr class="dark">
+	<tr class="dark scroller">
 		<td width="100%" class="fall" colspan="7">
 			{include file="scroller.html" loop=$receiptlist scrollerno=1}
 		</td>
@@ -154,7 +154,7 @@
 	</tr>	
 	{/section}
 	{if $listdata.total != 0}
-	<tr class="dark" id="end">
+	<tr class="dark scroller" id="end">
 		<td width="100%" class="fall" colspan="7">
 			{include file="scroller.html" loop=$receiptlist scrollerno=2}
 		</td>

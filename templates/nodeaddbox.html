@@ -545,14 +545,27 @@
 			</table>
 		</td>
 	</tr>
-	<tr class="light nav-footer nav-footer-bordertop">
-		<td style="width: 100%; text-align: right;" class="FBOTTOMU" colspan="2">
+	
+	{if $pluglinks.nodeadd}
+	<tr class="dark nav-footer nav-footer-bordertop">
+		<td style="width: 100%; text-align: right;" class="ftopu" colspan="2">
+			{assign var='linki' value=$pluglinks.nodeadd}
+		{section name='linki' loop=$linki}
+		    &nbsp;&nbsp;{$linki[linki]}
+		{/section}
+		</td>
+	</tr>
+	{/if}
+	
+	<tr class="dark nav-footer nav-footer-bordertop">
+		<td style="width: 100%; text-align: right;" class="fall" colspan="2">
 			<a href="?m=nodescan{if $customerinfo.id}&ownerid={$customerinfo.id}{/if}">{trans("Scan")} <img src="img/search.gif" alt=""></a>
 			<a href="javascript:document.nodeadd.submit();" accesskey="s">{trans("Submit")} [ F2 ]<img src="img/save.gif" alt=""></a>
 			<a href="?m={if $customerinfo.id}customerinfo&id={$customerinfo.id}{else}nodelist{/if}">{trans("Cancel")} [ ESC ]<img src="img/cancel.gif" alt=""></a><br>
 			<input type="checkbox" name="nodedata[reuse]" id="reuse" value="ON" id="reuse" {if $nodedata.reuse}checked{/if}> <label for="reuse">{trans("Display this form again, when this node is saved")}</label>
 		</td>
 	</tr>
+	
 </table></form>
 <script type="text/javascript" language="JavaScript">
 <!--

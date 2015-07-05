@@ -53,7 +53,7 @@
 		</td>
 	</tr>
 	{if $listdata.total != 0}
-	<tr class="dark">
+	<tr class="dark scroller">
 		<td colspan="4" class="fall">
 			{include file="scroller.html" loop=$customerlist adlink="&search=1"}
 			<input type="hidden" id="warnon" name="setwarnings[warnon]" value="0">
@@ -150,7 +150,7 @@
 	</tr>
 	{/section}
 	{if $listdata.total != 0}
-	<tr class="dark">
+	<tr class="dark scroller">
 		<td colspan="4" class="fall">
 			{include file="scroller.html" loop=$customerlist adlink="&search=1"}
 		</td>

@@ -69,7 +69,7 @@
 		</td>
 	</tr>		
 	{if $queuedata.total != 0}
-	<tr class="dark">
+	<tr class="dark scroller">
 		<td colspan="5" class="fall">
 			{include file="scroller.html" listdata=$queuedata loop=$queue}
 		</td>
@@ -146,7 +146,7 @@
 	</tr>
 	{/section}
 	{if $queuedata.total != 0}
-	<tr class="dark">
+	<tr class="dark scroller">
 		<td colspan="5" class="fall">
 			{include file="scroller.html" listdata=$queuedata loop=$queue}
 		</td>

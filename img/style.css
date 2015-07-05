@@ -37,6 +37,8 @@ TABLE {
     padding			: 5px 0px; 
 }
 
+TR.list TD,
+tr.list td,
 TR.lista TD, 
 tr.lista td {
     border-bottom		: solid 1px #E5E5E5;

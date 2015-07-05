@@ -75,6 +75,7 @@ $othernodegroups = $LMS->GetNodeGroupNamesWithoutNode($nodeid);
 $customerid = $nodeinfo['ownerid'];
 
 include(MODULES_DIR . '/customer.inc.php');
+
 if (get_conf('voip.enabled','0'))
     include(MODULES_DIR.'/customer.voip.inc.php');
 
