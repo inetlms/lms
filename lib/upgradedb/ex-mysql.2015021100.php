@@ -5,6 +5,8 @@ $DB->Execute("DROP VIEW IF EXISTS vnodes_mac;");
 $DB->Execute("DROP VIEW IF EXISTS vmacs;");
 
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'nodes','pppoelogin'))) 
 $DB->Execute("ALTER TABLE nodes ADD pppoelogin VARCHAR( 128 ) DEFAULT '';");
 
 

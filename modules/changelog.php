@@ -45,6 +45,16 @@ $changelog = array(
 	array(
 	    'data'	=> '',
 	    'status'	=> '',
+	    'opis'	=> 'rozbudowa systemu obsługi wtyczek',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka dla preg_replace ( PHP 5.5 )',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
 	    'opis'	=> 'w karcie komputera doszło pole NAS, można powiązać komputer z rzeczywistym NAS który autoryzuje urządzenie klienta',
 	),
 	array(

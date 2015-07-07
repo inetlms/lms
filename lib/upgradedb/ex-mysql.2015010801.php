@@ -24,10 +24,26 @@
 $DB->BeginTrans();
 
 
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'documents','post_name'))) 
 $DB->Execute("ALTER TABLE documents ADD post_name VARCHAR( 255 ) NOT NULL DEFAULT '';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'documents','post_address'))) 
 $DB->Execute("ALTER TABLE documents ADD post_address VARCHAR( 255 ) NOT NULL DEFAULT '';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'documents','post_zip'))) 
 $DB->Execute("ALTER TABLE documents ADD post_zip VARCHAR( 10 ) NOT NULL DEFAULT '';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'documents','post_city'))) 
 $DB->Execute("ALTER TABLE documents ADD post_city VARCHAR( 32 ) NOT NULL DEFAULT '';");
+
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'divisions','urllogofile'))) 
 $DB->Execute("ALTER TABLE divisions ADD urllogofile VARCHAR(255) NOT NULL DEFAULT '';");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2015010801', 'dbvex'));

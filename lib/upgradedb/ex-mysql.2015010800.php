@@ -26,7 +26,12 @@ $DB->BeginTrans();
 $DB->Execute("DROP VIEW IF EXISTS customersview;");
 $DB->Execute("DROP VIEW IF EXISTS contractorview;");
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'customers','invoice_lastname'))) 
 $DB->Execute("ALTER TABLE customers ADD invoice_lastname VARCHAR( 255 ) NOT NULL DEFAULT '';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'customers','invoice_ssn'))) 
 $DB->Execute("ALTER TABLE customers ADD invoice_ssn VARCHAR( 20 ) NOT NULL DEFAULT '';");
 
 $DB->Execute("

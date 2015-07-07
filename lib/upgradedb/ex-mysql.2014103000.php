@@ -32,10 +32,24 @@ $DB->Execute("
     ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 ");
 
-$DB->Execute("ALTER TABLE netlinks ADD layer TINYINT( 1 ) NULL DEFAULT NULL COMMENT 'warstwa sieci, szkielet, dystrybucja, dostep';");
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'netlinks','layer'))) 
+    $DB->Execute("ALTER TABLE netlinks ADD layer TINYINT( 1 ) NULL DEFAULT NULL COMMENT 'warstwa sieci, szkielet, dystrybucja, dostep';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'netlinks','teleline'))) 
 $DB->Execute("ALTER TABLE netlinks ADD teleline INT NOT NULL DEFAULT 0 COMMENT 'id lini telekomunikacyjnej';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'netlinks','distance'))) 
 $DB->Execute("ALTER TABLE netlinks ADD distance INT NOT NULL DEFAULT 0 COMMENT 'długość linku';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'netlinks','distanceoptical'))) 
 $DB->Execute("ALTER TABLE netlinks ADD distanceoptical INT NOT NULL DEFAULT 0 COMMENT 'długość optyczna lub fizyczna linku, dla połączeń światłowodowych lub kablowych';");
+
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'netlinks','tracttype'))) 
 $DB->Execute("ALTER TABLE netlinks ADD tracttype TINYINT(1) DEFAULT NULL COMMENT 'rodzaj traktu';");
 
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2014103000', 'dbvex'));
