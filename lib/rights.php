@@ -1,5 +1,5 @@
 <?php
-
+/*
 $__RIGHTS = array(
 
     'global' => array(
@@ -18,7 +18,7 @@ $__RIGHTS = array(
     ),
 
 );
-
+*/
 
 $_tmp_ = $DB->GetOne('SELECT exrights FROM users WHERE id = ? LIMIT 1;',array($AUTH->id));
 

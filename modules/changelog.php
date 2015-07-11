@@ -43,6 +43,16 @@ $changelog = array(
 //	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
 //	),
 	array(
+	    'data'	=> '2015-07-09',
+	    'status'	=> '',
+	    'opis'	=> 'kilka drobnych poprawek, rozbudowa systemu do obsługi wtyczek',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka DB dla Jambox\'a',
+	),
+	array(
 	    'data'	=> '',
 	    'status'	=> '',
 	    'opis'	=> 'rozbudowa systemu obsługi wtyczek',
