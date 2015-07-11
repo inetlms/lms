@@ -5,7 +5,7 @@
 $DB->BeginTrans();
 
 $DB->Execute("
-    CREATE TABLE networknodegroups (
+    CREATE TABLE IF NOT EXISTS networknodegroups (
 	id INT not null auto_increment,
 	name varchar(128) default null,
 	description text default null,
@@ -15,7 +15,7 @@ $DB->Execute("
 ");
 
 $DB->Execute("
-    CREATE TABLE networknodeassignments (
+    CREATE TABLE IF NOT EXISTS networknodeassignments (
     id int not null auto_increment,
     networknodeid int NOT NULL,
     networknodegroupid int NOT NULL,
@@ -27,7 +27,7 @@ $DB->Execute("
 ");
 
 $DB->Execute("
-    CREATE TABLE netdevicesgroups (
+    CREATE TABLE IF NOT EXISTS netdevicesgroups (
 	id INT not null auto_increment,
 	name varchar(128) default null,
 	description text default null,
@@ -37,7 +37,7 @@ $DB->Execute("
 ");
 
 $DB->Execute("
-    CREATE TABLE netdevicesassignments (
+    CREATE TABLE IF NOT EXISTS netdevicesassignments (
     id int not null auto_increment,
     netdevicesid int NOT NULL,
     netdevicesgroupid int NOT NULL,

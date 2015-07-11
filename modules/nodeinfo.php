@@ -75,6 +75,7 @@ $othernodegroups = $LMS->GetNodeGroupNamesWithoutNode($nodeid);
 $customerid = $nodeinfo['ownerid'];
 
 include(MODULES_DIR . '/customer.inc.php');
+
 if (get_conf('voip.enabled','0'))
     include(MODULES_DIR.'/customer.voip.inc.php');
 
@@ -105,6 +106,15 @@ $LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
 
 $SMARTY->assign('xajax', $LMS->RunXajax());
 
+$nodeauthtype = array();
+$authtype = $nodeinfo['authtype'];
+if ($authtype != 0) {
+	$nodeauthtype['pppoe'] = ($authtype & 1);
+	$nodeauthtype['dhcp'] = ($authtype & 2);
+	$nodeauthtype['eap'] = ($authtype & 4);
+}
+
+$SMARTY->assign('nodeauthtype',$nodeauthtype);
 $SMARTY->assign('netdevices', $netdevices);
 $SMARTY->assign('nodestats', $nodestats);
 $SMARTY->assign('nodegroups', $nodegroups);

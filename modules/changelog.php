@@ -43,6 +43,36 @@ $changelog = array(
 //	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
 //	),
 	array(
+	    'data'	=> '2015-07-09',
+	    'status'	=> '',
+	    'opis'	=> 'kilka drobnych poprawek, rozbudowa systemu do obsługi wtyczek',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka DB dla Jambox\'a',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowa systemu obsługi wtyczek',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka dla preg_replace ( PHP 5.5 )',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'w karcie komputera doszło pole NAS, można powiązać komputer z rzeczywistym NAS który autoryzuje urządzenie klienta',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'kolejnych kilka drobnych poprawek',
+	),
+	array(
 	    'data'	=> '2015-06-22',
 	    'status'	=> '',
 	    'opis'	=> 'kilka drobnych zmian i poprawek :-)',

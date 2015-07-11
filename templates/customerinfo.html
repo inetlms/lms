@@ -22,7 +22,7 @@
 		</td>
 	</tr>
 	{/if}
-	{if check_conf('priviledes.monitoring') && check_modules(110)}
+	{if check_conf('privileges.monitoring') && check_modules(110)}
 	<tr>
 		<td width="100%">
 			{include file="customermonit.html"}
@@ -139,11 +139,13 @@
 	    {assign var='inclist' value=$_pluginc.customer}
 	    {section name='inclist' loop=$inclist}
 		{assign var='plik' value=$inclist[inclist].htmlfile}
+		{if $plik}
 		<tr>
 		    <td width="100%">
 			{include file=$plik}
 		    </td>
 		</tr>
+		{/if}
 	    {/section}
 	{/if}
 </table>

@@ -39,6 +39,7 @@ class Session {
 						// save() or save_by_ref() ?
 	var $GCprob = 10;			// probality (in percent) of
 						// garbage collector procedure
+	var $global_warning = array();
 	
 	function Session(&$DB, $timeout = 0)
 	{
@@ -73,6 +74,13 @@ class Session {
 		list($usec, $sec) = explode(' ', microtime());
 		return md5(uniqid(rand(), true)).sprintf('%09x', $sec).sprintf('%07x', ($usec * 10000000));
 	}
+
+	function addWarning($info = NULL)
+	{
+	    if (!is_null($info) && !empty($info))
+		$this->global_warning[] = $info;
+	}
+
 
 	function save($variable, $content)
 	{

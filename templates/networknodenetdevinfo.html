@@ -4,13 +4,13 @@
 		<td width="1%" class="fleftu" onclick="ShowOrHideBox('devicepanel_{$netdevinfo.id}');">
 			<img src="img/netdev.gif" alt="">
 		</td>
-		<td width="99%" class="fbt" onclick="ShowOrHideBox('devicepanel_{$netdevinfo.id}');">
+		<td width="98%" class="fbt" onclick="ShowOrHideBox('devicepanel_{$netdevinfo.id}');">
 			<b>({$netdevinfo.id|string_format:"%04d"}) {$netdevinfo.name} </b>
 		</td>
 		<td width="1%" nowrap align="right" class="frightu">
 			<a href="?m=netdevinfo&id={$netdevinfo.id}">Przejdź do interfejsu <img src="img/netdev.gif"></a>&nbsp;&nbsp;
 			<a href="javascript:void(0);" onclick="del_interface({$netdevinfo.id});">Usuń z węzła <img src="img/delete.gif" alt=""></a>&nbsp;&nbsp;
-			<a href="javascript:void(0);" onclick="update_interface({$netdevinfo.id});">Aktualizuj inf. o projektach <img src="img/money.png" alt=""></a>
+			<a href="javascript:void(0);" onclick="update_interface({$netdevinfo.id});">Aktualizuj inf. o projektach <img src="img/money.png" alt=""></a> 
 			
 		</td>
 	</tr>

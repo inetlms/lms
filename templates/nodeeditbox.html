@@ -270,9 +270,7 @@
 	
 	{if get_form('nodes.checkmac') || get_form('nodes.halfduplex') || get_form('nodes.monitoring')}
 	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/options.gif" alt="">
-		</td>
+		<td style="width: 1%;"><img src="img/options.gif" alt=""></td>
 		<td style="width: 98%; white-space: nowrap;" colspan="2">
 			{if get_form('nodes.checkmac')}
 			    <label for="chkmac">{trans("MAC checking")}:</label><input type="checkbox" name="nodeedit[chkmac]" value="1" id="chkmac" {tip text="Enable/disable MAC address checking" trigger="chkmac"}{if !isset($nodeinfo.chkmac) || $nodeinfo.chkmac} checked{/if}>&nbsp;
@@ -295,6 +293,52 @@
 	    <input type="hidden" name="nodeedit[chkmac]" value="{$nodeinfo.chkmac}">
 	    <input type="hidden" name="nodeedit[halfduplex]" value="{$nodeinfo.halfduplex}">
 	    <input type="hidden" name="nodeedit[monitoring]" value="{$nodeinfo.monitoring}">
+	{/if}
+	
+	{if get_form('nodes.pppoe') || get_form('nodes.dhcp') || get_form('nodes.eap')}
+	<tr>
+		<td style="width: 1%;"><img src="img/netdev.gif" alt=""></td>
+		<td style="width: 98%; white-space: nowrap;" colspan="2">
+			{if get_form('nodes.pppoe')}
+			    <label for="pppoe">{trans('PPPoE Client')}</label><input type="checkbox" name="nodeauthtype[pppoe]" value="1" id="pppoe" {if $nodeauthtype.pppoe}checked="checked"{/if}{tip text="Enable/disable PPPoE Server Client" trigger="pppoe"}>&nbsp;
+			{else}
+			    <input type="hidden" name="nodeauthtype[pppoe]" value="1" {if $nodeauthtype.pppoe}checked="checked"{/if}}>
+			{/if}
+			
+			{if get_form('nodes.dhcp')}
+			    <label for="dhcp">{trans("DHCP Client")}</label><input type="checkbox" name="nodeauthtype[dhcp]" value="2" id="dhcp" {if $nodeauthtype.dhcp}checked="checked"{/if}{tip text="Enable/disable DHCP Server Client" trigger="dhcp"}>&nbsp;
+			{else}
+			    <input type="hidden" name="nodeauthtype[dhcp]" value="2" {if $nodeauthtype.dhcp}checked="checked"{/if}>
+			{/if}
+			
+			{if get_form('nodes.eap')}
+			    <label for="eap">{trans("EAP Client")}</label><input type="checkbox" name="nodeauthtype[eap]" value="4" id="eap" {if $nodeauthtype.eap}checked="checked"{/if}{tip text="Enable/disable EAP Server Client" trigger="eap"}>
+			{else}
+			    <input type="hidden" name="nodeauthtype[eap]" value="4" {if $nodeauthtype.eap}checked="checked"{/if}>
+			{/if}
+		</td>
+	</tr>
+	{else}
+		<input type="hidden" name="nodeauthtype[pppoe]" value="1" {if $nodeauthtype.pppoe}checked="checked"{/if}}>
+		<input type="hidden" name="nodeauthtype[dhcp]" value="2" {if $nodeauthtype.dhcp}checked="checked"{/if}>
+		<input type="hidden" name="nodeauthtype[eap]" value="4" {if $nodeauthtype.eap}checked="checked"{/if}>
+	{/if}
+	
+	{if get_form('nodes.nas')}
+	<tr>
+		<td style="width: 1%;"><img src="img/netdev.gif" alt=""></td>
+		<td style="width: 98%; white-space: nowrap;" colspan="2">
+			NAS:&nbsp;
+			<select name="nodeedit[nasid]" style="width:270px;" {tip text="Wybierz NAS do którego jest przypisany komputer (opcja)"}>
+			<option value=""></option>
+			{section name='naslist' loop=$naslist}
+			<option value="{$naslist[naslist].id}"{if $naslist[naslist].id == $nodeinfo.nasid} selected{/if}>{$naslist[naslist].name}</option>
+			{/section}
+			</select>
+		</td>
+	</tr>
+	{else}
+		<input type="hidden" name="nodeedit[nasid]" value="{$nodeinfo.nasid}">
 	{/if}
 					</table>
 				</td>
@@ -483,8 +527,18 @@
 			</table>
 		</td>
 	</tr>
-	<tr class="light nav-footer nav-footer-bordertop">
-		<td style="width: 100%; text-align: right;" class="FBOTTOMU" colspan="3">
+	{if $pluglinks.nodeedit}
+	<tr class="dark nav-footer nav-footer-bordertop">
+		<td style="width: 100%; text-align: right;" class="ftopu" colspan="3">
+		{assign var='linki' value=$pluglinks.nodeedit}
+		{section name='linki' loop=$linki}
+		    &nbsp;&nbsp;{$linki[linki]}
+		{/section}
+		</td>
+	</tr>
+	{/if}
+	<tr class="dark nav-footer nav-footer-bordertop">
+		<td style="width: 100%; text-align: right;" class="fall" colspan="3">
 			<a href="javascript:document.editnode.submit();">{trans("Submit")} [ F2 ]<img src="img/save.gif" alt=""></a>&nbsp;
 			<a href="?m=nodeinfo&id={$nodeinfo.id}">{trans("Cancel")} [ ESC ]<img src="img/cancel.gif" alt=""></a>
 		</td>

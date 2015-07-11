@@ -1,0 +1,14 @@
+<table width="100%" cellpadding="3" class="table table-success">
+    <tr class="boxtitlealert">
+	<td class="boxtitlealerttd" align="center" colspan="2">
+	    <b>WAŻNE INFORMACJE</b>
+	</td>
+    </tr>
+    {cycle values="lucid,light" print=false}
+    {section name='warn' loop=$global_warning}
+    <tr class="{cycle} lista">
+	<td width="1%" class="pad" nowrap style="text-align:center;vertical-align:top;"><img src="img/Error.png"></td>
+	<td align="left" width="99%">{$global_warning[warn]}</td>
+    </tr>
+    {/section}
+</table>

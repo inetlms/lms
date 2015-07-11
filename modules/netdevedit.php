@@ -49,7 +49,7 @@ switch ($action) {
 
 		if (!$error) {
 
-			$links1 = $DB->GetAll('(SELECT type, 
+			$links1 = $DB->GetAll('(SELECT type, speed, 
                         (CASE src WHEN ? THEN dst ELSE src END) AS id,
 			(CASE src WHEN ? THEN srcport ELSE dstport END) AS srcport,
 			(CASE src WHEN ? THEN dstport ELSE srcport END) AS dstport
@@ -59,7 +59,7 @@ switch ($action) {
 			FROM nodes WHERE netdev = ? AND ownerid > 0)
 			ORDER BY srcport', array($dev1['id'], $dev1['id'], $dev1['id'],
 					$dev1['id'], $dev1['id'], $dev1['id']));
-			$links2 = $DB->GetAll('(SELECT type, 
+			$links2 = $DB->GetAll('(SELECT type, speed, 
                         (CASE src WHEN ? THEN dst ELSE src END) AS id,
 			(CASE src WHEN ? THEN srcport ELSE dstport END) AS srcport,
 			(CASE src WHEN ? THEN dstport ELSE srcport END) AS dstport

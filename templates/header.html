@@ -62,7 +62,10 @@
 		<tr>
 			<td class="click-menu">
 				<div class="tip"{if $menuitem.tip} {tip text="<b>\$a</b>" a=$menuitem.tip}{/if}{if ! $menuitem.submenu} onclick="{if $menuitem.windowopen}window.open('{$menuitem.link}');{else}return self.location.href='{$menuitem.link}';{/if}"{/if}>
-					<div class="box1"><img src="img/{$menuitem.img}" alt="*" style="position: absolute;width:16px;" ><font style="margin-left: 21px">{$menuitem.name}</font></div>
+					<div class="box1">
+					    {img src="{$menuitem.img}" alt="*" style="position: absolute;width:16px;"}
+					    <font style="margin-left: 21px">{$menuitem.name}</font>
+					</div>
 				</div>
 				<div class="section">
 				{if $menuitem.submenu}

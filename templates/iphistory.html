@@ -39,7 +39,7 @@
 	new AutoSuggest(document.getElementById('iphistory'),document.getElementById('searchcustomer'),'?m=quicksearch&ajax=1&mode=customer&iphistory&what=',1);
     </script>
 
-    <tr class="scroller">
+    <tr class="dark scroller">
 	<td width="100%" colspan="8" class="fall">
 	    {if $listdata.total != 0}{include file="scroller.html" loop=$iplist}{else}&nbsp;{/if}
 	</td>
@@ -76,7 +76,7 @@
     </tr>
     {/section}
 
-    <tr class="scroller">
+    <tr class="dark scroller">
 	<td width="100%" colspan="8" class="fall">
 	    {if $listdata.total != 0}{include file="scroller.html" loop=$iplist}{else}&nbsp;{/if}
 	</td>

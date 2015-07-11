@@ -294,6 +294,12 @@ $menu = array(
 					'prio' => 40,
 				),
 				array(
+					'name' => 'NAS',
+					'link'	=> '?m=naslist',
+					'tip' => 'Lista urządzeń NAS',
+					'prio' => 45,
+				),
+				array(
 					'name' => trans('Hosts'),
 					'link' => '?m=hostlist',
 					'tip' => trans('List of Hosts'),

@@ -40,6 +40,7 @@
 			{section name='networknodelist' loop=$networknodelist}
 			    <option value="{$networknodelist[networknodelist].id}" {if $networknodelist[networknodelist].id == $netdevinfo.networknodeid} selected {/if}>{$networknodelist[networknodelist].name}</option>
 			{/section}
+			</select>
 		    {else}
 		    --- brak zdefiniowanych węzłów ---
 		    {/if}

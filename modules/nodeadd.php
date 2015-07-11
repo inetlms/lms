@@ -26,6 +26,7 @@
 
 $nodedata['access'] = 1;
 $nodedata['ownerid'] = 0;
+$nodedata['authtype'] = 0;
 
 if(isset($_GET['ownerid']))
 {
@@ -230,6 +231,24 @@ if (isset($_POST['nodedata']))
 	if($access_to < $access_from && $access_to != 0 && $access_from != 0)
 		$error['access_to'] = trans('Incorrect date range!');
 
+	if(isset($_POST['nodeauthtype'])) {
+		$authtype = $_POST['nodeauthtype'];
+		if (!empty($authtype)) {
+			foreach ($authtype as $op) {
+			$op = (int)$op;
+			$nodedata['authtype'] |= $op;
+			}
+		}
+	}
+	if(!isset($nodedata['authtype'])) $nodedata['authtype'] = 0;
+	
+	$nodeauthtype = array();
+	$authtype = $nodedata['authtype'];
+	if ($authtype != 0) {
+	    $nodedata['pppoe'] = ($authtype & 1);
+	    $nodedata['dhcp'] = ($authtype & 2);
+	    $nodedata['eap'] = ($authtype & 4);
+	}
 
 	if(!$error)
 	{
@@ -244,6 +263,10 @@ if (isset($_POST['nodedata']))
 		$nodedata = $LMS->ExecHook('node_add_before', $nodedata);
 		$nodedata['access_from'] = $access_from;
 		$nodedata['access_to'] = $access_to;
+		
+		unset($nodedata['pppoe']);
+		unset($nodedata['dhcp']);
+		unset($nodedata['eap']);
 		
 		$nodeid = $LMS->NodeAdd($nodedata);
 		
@@ -324,6 +347,9 @@ if(!isset($CONFIG['phpui']['big_networks']) || !chkconfig($CONFIG['phpui']['big_
 }
 
 $nodedata = $LMS->ExecHook('node_add_init', $nodedata);
+
+if (get_form('nodes.nas'))
+    $SMARTY->assign('naslist',$LMS->getNasList());
 
 $SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
 $SMARTY->assign('netdevices', $LMS->GetNetDevNames());

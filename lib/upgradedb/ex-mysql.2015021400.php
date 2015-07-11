@@ -1,7 +1,7 @@
 <?php
 
 $DB->Execute("
-create table cache (
+create table if not exists cache (
 id integer not null default 0,
 md5 varchar(50) not null default '',
 action char(50) not null default '',

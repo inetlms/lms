@@ -37,9 +37,12 @@ if (check_modules(82) && get_conf('voip.enabled',0)) {// nettelekom
 
 $annex_info = array('section'=>'customer','ownerid'=>$customerid);
 $SMARTY->assign('annex_info',$annex_info);
+
 include(MODULES_DIR.'/customer_xajax.inc.php');
+
 $LMS->InitXajax();
 $LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
+
 $SMARTY->assign('xajax', $LMS->RunXajax());
 
 
