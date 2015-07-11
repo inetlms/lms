@@ -174,7 +174,7 @@ if(isset($_POST['receipt']))
 		
 		// add cash-in receipt 
 		$DB->Execute('INSERT INTO documents (type, number, extnumber, numberplanid, cdate, userid, name, closed, fullnumber)
-					VALUES(?, ?, ?, ?, ?, ?, ?, 1)',
+					VALUES(?, ?, ?, ?, ?, ?, ?, 1, ?)',
 					array(	DOC_RECEIPT,
 						$in_number,
 						$in_extnumber,
