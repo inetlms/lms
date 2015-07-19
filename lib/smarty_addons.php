@@ -144,6 +144,166 @@ function plug_get_secure($tpl_name, $template){return true;}
 function plug_get_trusted($tpl_name, $template){}
 
 
+function _smarty_function_img($params, $template)
+{
+    global $_GET, $img;
+    $file = 'img/Abort.png';
+    
+    if (isset($params['src']) && !empty($params['src']))
+    {
+    if (isset($_GET['plug']) && !empty($_GET['plug']) && file_exists(SYS_DIR.'/plug/'.(isset($_GET['plug']) ? $_GET['plug'] : 'noneplugin').'/img/'.$params['src'])) 
+	$file = 'plug/'.$_GET['plug'].'/img/'.$params['src'];
+    elseif (strstr($params['src'],'plug/') !== FALSE)
+	$file = $params['src'];
+    else
+	$file = 'img/'.$params['src'];
+    }
+	
+    $result  = '<span style="vertical-align:middle;"><img ';
+    $result .= 'src="'.$file.'" ';
+    $repeat = FALSE;
+    
+    if(isset($params['alt'])) $result .= 'alt="'.$params['alt'].'" ';
+    else $result .= 'alt="" ';
+    if(isset($params['width'])) $result .= 'width="'.$params['width'].'" ';
+    if(isset($params['height'])) $result .= 'height="'.$params['height'].'" ';
+    if(isset($params['style'])) $result .= 'style="'.$params['style'].'" ';
+    if(isset($params['border'])) $result .= 'border="'.$params['border'].'" ';
+    if(isset($params['onclick'])) $result .= 'onclick="'.$params['onclick'].'" ';
+    if(isset($params['id'])) $result .= 'id="'.$params['id'].'" ';
+    if(isset($params['title'])) $result .= 'title="'.$params['title'].'" ';
+    if(isset($params['tip']) && !empty($params['tip']))
+    {
+	$tip = $params['tip'];
+	$tip = str_replace('\'', '\\\'', $tip);
+	$tip = str_replace('"', '&quot;', $tip);
+	$tip = str_replace("\r", '', $tip);
+	$tip = str_replace("\n", '<BR>', $tip);
+	if (get_conf('phpui.viewtip')) 
+	    $result .= 'onmouseover="popup(\''.trans($tip).'\');" onmouseout="return nd();"';
+	
+    }
+    $result .= '/></span>';
+    return $result;
+}
+
+function _smarty_function_links($params, $template)
+{
+    global $_GET, $img;
+    $result = '';
+    $value 		= (isset($params['value']) 		? trans($params['value']) 	: NULL);
+    $href 		= (isset($params['href']) 		? $params['href'] 		: NULL);
+    $target 		= (isset($params['target']) 		? $params['target'] 		: NULL);
+    $confirm		= (isset($params['confirm']) 		? $params['confirm'] 		: NULL);
+    $id			= (isset($params['id']) 		? $params['id'] 		: NULL);
+    $onclick 		= NULL;
+    $image 		= (isset($params['img']) 		? $params['img'] 		: NULL);
+    $imageid		= (isset($params['imgid']) 		? $params['imgid'] 		: NULL);
+    $rights 		= (isset($params['rights']) 		? $params['rights'] 		: NULL);
+    $tip 		= (isset($params['tip']) 		? $params['tip'] 		: NULL);
+    $hreflang 		= (isset($params['hreflang']) 		? $params['hreflang'] 		: NULL);
+    $media 		= (isset($params['media']) 		? $params['media'] 		: NULL);
+    $rel 		= (isset($params['rel']) 		? $params['rel'] 		: NULL);
+    $rev 		= (isset($params['rev']) 		? $params['rev'] 		: NULL);
+    $type 		= (isset($params['type']) 		? $params['type'] 		: NULL);
+    $class 		= (isset($params['class']) 		? $params['class'] 		: NULL);
+    $lang 		= (isset($params['lang']) 		? $params['lang'] 		: NULL);
+    $style 		= (isset($params['style']) 		? $params['style'] 		: NULL);
+    $title 		= (isset($params['title']) 		? $params['title'] 		: NULL);
+    $tabindex 		= (isset($params['tabindex']) 		? $params['tabindex'] 		: NULL);
+    $onfocus 		= (isset($params['onfocus']) 		? $params['onfocus'] 		: NULL);
+    $onblur 		= (isset($params['onblur']) 		? $params['onblur'] 		: NULL);
+    $ondblclick 	= (isset($params['ondblclick'])		? $params['ondblclick'] 	: NULL);
+    $onmousedown 	= (isset($params['onmousedown']) 	? $params['onmousedown'] 	: NULL);
+    $onmouseup 		= (isset($params['onmouseup']) 		? $params['onmouseup'] 		: NULL);
+    $onmouseover 	= (isset($params['onmouseover']) 	? $params['onmouseover'] 	: NULL);
+    $onmousemove 	= (isset($params['onmousemove']) 	? $params['onmousemove'] 	: NULL);
+    $onmouseout 	= (isset($params['onmouseout']) 	? $params['onmouseout'] 	: NULL);
+    $onkeypress 	= (isset($params['onkeypress']) 	? $params['onkeypress'] 	: NULL);
+    $onkeydown 		= (isset($params['onkeydown']) 		? $params['onkeydown'] 		: NULL);
+    $onkeyup 		= (isset($params['onkeyup']) 		? $params['onkeyup'] 		: NULL);
+    $id			= (isset($params['id'])			? $params['id']			: NULL);
+    
+    if (!is_null($rights)) 
+	$rights = get_rights($rights); 
+    else 
+	$rights = true;
+    
+    if (!$rights) $tip = '<br><font color="red">BRAK UPRAWNIEŃ</font>';
+    
+    if ($confirm) $confirm = "return confirmLinks(this,'".$confirm."');";
+    
+    $onclick = (isset($params['onclick']) ? $params['onclick'] : $confirm);
+    
+    if(!is_null($tip) && !empty($tip) && strlen($tip)!==0)
+    {
+	$tip = str_replace('\'', '\\\'', $tip);
+	$tip = str_replace('"', '&quot;', $tip);
+	$tip = str_replace("\r", '', $tip);
+	$tip = str_replace("\n", '<BR>', $tip);
+	$tip = 'onmouseover="popup(\''.$tip.'\'); onmouseout="return nd();" ';
+    } 
+	else $tip = NULL;
+    if ($image)
+    {
+	
+	if( isset($_GET['plug']) && !empty($_GET['plug']) && file_exists(SYS_DIR.'/plug/'.(isset($_GET['plug']) ? $_GET['plug'] : 'noneplugin').'/img/'.$image)) 
+	    $file = 'plug/'.$_GET['plug'].'/img/'.$image;
+	elseif(file_exists(SYS_DIR.'/img/'.$image)) 
+	    $file = 'img/'.$image;
+	else $image = NULL;
+    }
+    if ($image) 
+	$image = '&nbsp;<img src="'.$file.'" alt="">';
+    if ($rights)
+    {
+	$result .='<a '
+	.($id 		? 'id="'.$id.'" ' 			: '')
+	.($href 	? 'href="'.$href.'" ' 			: '')
+	.($target 	? 'target="'.$target.'" ' 		: '')
+	.($onclick 	? 'onclick="'.$onclick.'" ' 		: '')
+	.($hreflang 	? 'hreflang="'.$hreflang.'" ' 		: '')
+	.($media 	? 'media="'.$media.'" ' 		: '')
+	.($type 	? 'type="'.$type.'" ' 			: '')
+	.($rel 		? 'rel="'.$rel.'" ' 			: '')
+	.($rev 		? 'rev="'.$rev.'" ' 			: '')
+	.($class 	? 'class="'.$class.'" ' 		: '')
+	.($lang 	? 'lang="'.$lang.'" ' 			: '')
+	.($style 	? 'style="cursor:pointer;'.$style.'" ' 	: ' style="cursor:pointer;"')
+	.($tabindex 	? 'tabindex="'.$tabindex.'" ' 		: '')
+	.($onfocus 	? 'onfocus="'.$onfocus.'" ' 		: '')
+	.($onblur 	? 'onblur="'.$onblur.'" ' 		: '')
+	.($ondblclick 	? 'ondblclick="'.$ondblclick.'" ' 	: '')
+	.($onmousedown 	? 'onmousedown="'.$onmosuedown.'" ' 	: '')
+	.($onmouseup 	? 'onmouseup="'.$onmouseup.'" ' 	: '')
+	.($onmouseover 	? 'onmouseover="'.$onmouseover.'" ' 	: '')
+	.($onmousemove 	? 'onmousemove="'.$onmousemove.'" ' 	: '')
+	.($onmouseout 	? 'onmouseout="'.$onmouseout.'" ' 	: '')
+	.($onkeypress 	? 'onkeypress="'.$onkeypress.'" ' 	: '')
+	.($onkeydown 	? 'onkeydown="'.$onkeydown.'" ' 	: '')
+	.($onkeyup 	? 'onkeyup="'.$onkeyup.'" ' 		: '')
+	.($title 	? 'titile="'.$title.'" ' 		: '')
+	.($tip 		? $tip : '')
+	.'';
+	$result .= '>'
+	.($value ? $value : '')
+	.($image ? $image : '')
+	.'</a>';
+     }
+     else
+     {
+	$result .='<a style="cursor:pointer;"'
+	.($target ? ' target="'.$target.'" ' : '')
+	.($tip ? $tip : '')
+	.'';
+	$result .= '>'
+	.($value ? $value : '')
+	.($image ? $image : '')
+	.'</a>';
+     }
+    return $result;
+}
+
 
 
 $SMARTY->registerResource("plug", array(
@@ -156,6 +316,7 @@ $SMARTY->registerResource("plug", array(
 $SMARTY->registerPlugin('function', 'title', '_smarty_function_title');
 $SMARTY->registerPlugin('function', 'help', '_smarty_function_help');
 $SMARTY->registerPlugin('block','box','_smarty_block_box');
-
+$SMARTY->registerPlugin('function', 'img','_smarty_function_img');
+$SMARTY->registerPlugin('function', 'links','_smarty_function_links');
 
 ?>

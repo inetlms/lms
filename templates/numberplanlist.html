@@ -13,7 +13,7 @@
 		<td width="1%" class="frightu" align="right"  nowrap><a href="?m=numberplanadd">{trans("Add plan")} <img src="img/save.gif" alt=""></a></td>
 	</tr>
 	{if $listdata.total != 0}
-	<tr class="dark">
+	<tr class="dark scroller">
 		<td colspan="8" class="fall">
 			{include file="scroller.html" loop=$numberplanlist}
 		</td>
@@ -60,7 +60,7 @@
 	</tr>
 	{/section}
 	{if $listdata.total != 0}
-	<tr class="dark">
+	<tr class="dark scroller">
 		<td colspan="8" class="fall">
 			{include file="scroller.html" loop=$numberplanlist}
 		</td>

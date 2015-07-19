@@ -4,6 +4,9 @@
 {literal}
 <script type="text/javascript" language="JavaScript">
 <!--
+    keyPressInsert = function() {
+	self.location.href='?m=contractoradd';
+    }
 
     function setfirstletter(fletter)
     {
@@ -67,7 +70,7 @@
 		</td>
 	</tr>		
 	{if $listdata.total != 0}
-	<tr class="scroller">
+	<tr class="dark scroller">
 		<td colspan="3" class="fall">
 			{include file="scroller.html" loop=$customerlist}
 		</td>
@@ -130,7 +133,7 @@
 	</tr>
 	{/section}
 	{if $listdata.total != 0}
-	<tr class="scroller">
+	<tr class="dark scroller">
 		<td colspan="3" class="fall">
 			{include file="scroller.html" loop=$customerlist}
 		</td>

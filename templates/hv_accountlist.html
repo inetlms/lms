@@ -52,7 +52,7 @@
 	<td width="1%" class="frightu" align="center" nowrap >LINK</td>
     </tr>
     {if $lista|@count != 0}
-    <tr class="dark">
+    <tr class="dark scroller">
         <td colspan="7" class="fall">
 	    {include file="scroller.html" loop=$lista}
         </td>
@@ -80,7 +80,7 @@
 	</tr>
     {/section}
     {if $lista|@count != 0}
-	<tr class="dark">
+	<tr class="dark scroller">
 	    <td colspan="7" class="fall">
 		{include file="scroller.html" loop=$lista}
 	    </td>

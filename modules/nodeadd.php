@@ -26,6 +26,7 @@
 
 $nodedata['access'] = 1;
 $nodedata['ownerid'] = 0;
+$nodedata['authtype'] = 0;
 
 if(isset($_GET['ownerid']))
 {
@@ -53,6 +54,7 @@ if (isset($_POST['nodedata']))
 	$nodedata = $_POST['nodedata'];
 	
 	$nodedata['netid'] = $_POST['nodedatanetid'];
+	$nodedata['netid_pub'] = $_POST['nodedatanetid_pub'];
 	$nodedata['ipaddr'] = $_POST['nodedataipaddr'];
 	$nodedata['ipaddr_pub'] = $_POST['nodedataipaddr_pub'];
 	
@@ -106,7 +108,7 @@ if (isset($_POST['nodedata']))
                 	$error['ipaddr_pub'] = trans('Incorrect node IP address!');
         	elseif(!$LMS->IsIPValid($nodedata['ipaddr_pub']))
                 	$error['ipaddr_pub'] = trans('Specified IP address doesn\'t overlap with any network!');
-		elseif(!$LMS->IsIPFree($nodedata['ipaddr_pub']))
+		elseif(!$LMS->IsIPFree($nodedata['ipaddr_pub'],$nodedata['netid_pub']))
 			$error['ipaddr_pub'] = trans('Specified IP address is in use!');
 		elseif($LMS->IsIPGateway($nodedata['ipaddr_pub']))
 			$error['ipaddr_pub'] = trans('Specified IP address is network gateway!');
@@ -229,6 +231,24 @@ if (isset($_POST['nodedata']))
 	if($access_to < $access_from && $access_to != 0 && $access_from != 0)
 		$error['access_to'] = trans('Incorrect date range!');
 
+	if(isset($_POST['nodeauthtype'])) {
+		$authtype = $_POST['nodeauthtype'];
+		if (!empty($authtype)) {
+			foreach ($authtype as $op) {
+			$op = (int)$op;
+			$nodedata['authtype'] |= $op;
+			}
+		}
+	}
+	if(!isset($nodedata['authtype'])) $nodedata['authtype'] = 0;
+	
+	$nodeauthtype = array();
+	$authtype = $nodedata['authtype'];
+	if ($authtype != 0) {
+	    $nodedata['pppoe'] = ($authtype & 1);
+	    $nodedata['dhcp'] = ($authtype & 2);
+	    $nodedata['eap'] = ($authtype & 4);
+	}
 
 	if(!$error)
 	{
@@ -243,6 +263,10 @@ if (isset($_POST['nodedata']))
 		$nodedata = $LMS->ExecHook('node_add_before', $nodedata);
 		$nodedata['access_from'] = $access_from;
 		$nodedata['access_to'] = $access_to;
+		
+		unset($nodedata['pppoe']);
+		unset($nodedata['dhcp']);
+		unset($nodedata['eap']);
 		
 		$nodeid = $LMS->NodeAdd($nodedata);
 		
@@ -270,6 +294,24 @@ if (isset($_POST['nodedata']))
 	{
 		if($nodedata['ipaddr_pub']=='0.0.0.0')
 			$nodedata['ipaddr_pub'] = '';
+		
+		if ($nodedata['netid']) {
+		    $tmp = $DB->GetRow('SELECT n.name AS networkname, h.name AS hostname 
+				    FROM networks n 
+				    LEFT JOIN hosts h ON (h.id = n.hostid) 
+				    WHERE n.id = ? LIMIT 1;',array($nodedata['netid']));
+		    $nodedata['hostname'] = $tmp['hostname'];
+		    $nodedata['networkname'] = $tmp['networkname'];
+		}
+		
+		if ($nodedata['netid_pub']) {
+		    $tmp = $DB->GetRow('SELECT n.name AS networkname, h.name AS hostname 
+				    FROM networks n 
+				    LEFT JOIN hosts h ON (h.id = n.hostid) 
+				    WHERE n.id = ? LIMIT 1;',array($nodedata['netid_pub']));
+		    $nodedata['hostname_pub'] = $tmp['hostname'];
+		    $nodedata['networkname_pub'] = $tmp['networkname'];
+		}
 	}
 }
 
@@ -305,6 +347,9 @@ if(!isset($CONFIG['phpui']['big_networks']) || !chkconfig($CONFIG['phpui']['big_
 }
 
 $nodedata = $LMS->ExecHook('node_add_init', $nodedata);
+
+if (get_form('nodes.nas'))
+    $SMARTY->assign('naslist',$LMS->getNasList());
 
 $SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
 $SMARTY->assign('netdevices', $LMS->GetNetDevNames());

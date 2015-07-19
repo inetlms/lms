@@ -34,6 +34,7 @@ $DB->Execute("
 ) ENGINE=InnoDB;
 ");
 
+if (!$DB->getone('SELECT COUNT(name) FROM dictionary_cnote;'))
 $DB->Execute("
 INSERT INTO dictionary_cnote (name,description) VALUES
 ('stwierdzono pomyłkę w cenie',''),

@@ -1,10 +1,9 @@
 <?php
 
-
 /*
- *  iNET LMS 
+ *  iNET LMS
  *
- *  (C) Copyright 2012-2015 iNET LMS Developers
+ *  (C) Copyright 2012-2015 LMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -22,11 +21,10 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  *
- *  $Id$ project,xajax.php 20150220 
- *
  *  Sylwester Kondracki
+ *  sylwester.kondracki@gmail.com
+ *  gadu-gadu : 6164816
 */
-
 
 
 function save_project($forms)

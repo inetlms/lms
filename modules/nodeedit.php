@@ -89,15 +89,23 @@ else
 
 $layout['pagetitle'] = trans('Node Edit: $a', $nodeinfo['name']);
 
+$nodeauthtype = array();
+$authtype = $nodeinfo['authtype'];
+if ($authtype != 0) {
+	$nodeauthtype['pppoe'] = ($authtype & 1);
+	$nodeauthtype['dhcp'] = ($authtype & 2);
+	$nodeauthtype['eap'] = ($authtype & 4);
+}
+
 if (isset($_POST['nodeedit'])) {
 	$nodeedit = $_POST['nodeedit'];
 	
 	$nodeedit['netid'] = $_POST['nodeeditnetid'];
+	$nodeedit['netid_pub'] = $_POST['nodeeditnetidpub'];
 	$nodeedit['ipaddr'] = $_POST['nodeeditipaddr'];
 	$nodeedit['ipaddr_pub'] = $_POST['nodeeditipaddrpub'];
 	
 
-//	echo "MODUEL<br><br><br><pre>"; print_r($nodeedit); echo "</pre>"; die;
 	foreach ($nodeedit['macs'] as $key => $value)
 		$nodeedit['macs'][$key] = str_replace('-', ':', $value);
 
@@ -136,7 +144,7 @@ if (isset($_POST['nodeedit'])) {
 			
 			if ($LMS->IsIPValid($nodeedit['ipaddr_pub'])) {
 				$ip = $LMS->GetNodePubIPByID($nodeedit['id']);
-				if ($ip != $nodeedit['ipaddr_pub'] && !$LMS->IsIPFree($nodeedit['ipaddr_pub']))
+				if ($ip != $nodeedit['ipaddr_pub'] && !$LMS->IsIPFree($nodeedit['ipaddr_pub'],$nodeedit['netid_pub']))
 					$error['ipaddr_pub'] = trans('Specified IP address is in use!');
 				elseif ($ip != $nodeedit['ipaddr_pub'] && $LMS->IsIPGateway($nodeedit['ipaddr_pub']))
 					$error['ipaddr_pub'] = trans('Specified IP address is network gateway!');
@@ -266,7 +274,18 @@ if (isset($_POST['nodeedit'])) {
 		$error['ownerid'] = trans('Customer not selected!');
 	else if ($nodeedit['access'] && $LMS->GetCustomerStatus($nodeedit['ownerid']) < 3)
 		$error['access'] = trans('Node owner is not connected!');
-
+	
+	$nodeedit['authtype'] = 0;
+	if(isset($_POST['nodeauthtype'])) {
+		$authtype = $_POST['nodeauthtype'];
+		if (!empty($authtype)) {
+			foreach ($authtype as $op) {
+				$op = (int)$op;
+				$nodeedit['authtype'] |= $op;
+			}
+		}
+	}
+	
 	if (!$error) {
 		if (empty($nodeedit['teryt'])) {
 			$nodeedit['location_city'] = null;
@@ -307,6 +326,7 @@ if (isset($_POST['nodeedit'])) {
 	$nodeinfo['latitude'] = $nodeedit['latitude'];
 	$nodeinfo['longitude'] = $nodeedit['longitude'];
 	$nodeinfo['netid'] = $nodeedit['netid'];
+	$nodeinfo['netid_pub'] = $nodeedit['netid_pub'];
 	$nodeinfo['typeofdevices'] = $nodeedit['typeofdevice'];
 	$nodeinfo['producer'] = $nodeedit['producer'];
 	$nodeinfo['model'] = $nodeedit['model'];
@@ -356,6 +376,9 @@ $LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
 
 $SMARTY->assign('xajax', $LMS->RunXajax());
 
+if (get_form('nodes.nas'))
+    $SMARTY->assign('naslist',$LMS->getNasList());
+
 $SMARTY->assign('devicestype',$LMS->GetDictionaryDevicesClientofType());
 $SMARTY->assign('netdevices', $LMS->GetNetDevNames());
 $SMARTY->assign('networks', $LMS->GetNetworks(false));
@@ -365,5 +388,6 @@ $SMARTY->assign('projectlist',$DB->getAll('SELECT id,name FROM invprojects WHERE
 $SMARTY->assign('hostlist',$DB->GetAll('SELECT id,name FROM hosts ORDER BY name'));
 $SMARTY->assign('error', $error);
 $SMARTY->assign('nodeinfo', $nodeinfo);
+$SMARTY->assign('nodeauthtype',$nodeauthtype);
 $SMARTY->display('nodeedit.html');
 ?>

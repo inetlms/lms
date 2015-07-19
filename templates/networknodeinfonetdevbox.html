@@ -115,19 +115,16 @@
     {assign var='target' value="networkinfo"}
     <p>{include file="networknodenetdevinfo.html"}</p>
 
-{sectionelse}
-    <br>
-    <table width="100%" cellpadding="5" cellspacing="0" class="table">
-	<tr class="light error">
-	    <td class="fall" align="center">
-		<p><h2>brak przypisanych urządzeń siecowych (interfejsów)</h2></p>
-	    </td>
-	</tr>
-    </table>
-
 {/section}
 
-{if $netdevlist}
+{if $_pluginc.networknodeinfo_interface}
+	{assign var='inclist' value=$_pluginc.networknodeinfo_interface}
+	{section name='inclist' loop=$inclist}
+		{assign var='plik' value=$inclist[inclist].htmlfile}
+		{if $plik}<p>{include file=$plik}</p>{/if}
+	{/section}
+{/if}
+
 
     {literal}
     <script type="text/javascript" language="JavaScript">
@@ -148,4 +145,3 @@
     </script>
     {/literal}
 
-{/if}

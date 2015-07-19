@@ -560,7 +560,10 @@ function docnumber($number=NULL, $template=NULL, $time=NULL, $ext_num='')
 	$result = str_replace('%I', $ext_num, $template);
 
 	// main document number
-	$result = preg_replace('/%(\\d*)N/e', "sprintf('%0\\1d', $number)", $result);
+	$result = preg_replace_callback('/%(\\d*)N/',
+		function ($m) use ($number) {
+			return sprintf('%0' . $m[1] . 'd', $number);
+		}, $result);
 	
 	// time conversion specifiers
 	return strftime($result, $time);
@@ -588,7 +591,7 @@ function fetch_url($url)
 
 	$request = "GET $path HTTP/1.0\r\nHost: $host\r\n\r\n";
 
-	$fp = @fsockopen($host, $port, $errno, $errstr, 5);
+	$fp = @fsockopen($host, $port, $errno, $errstr, 3);
 
 	if(!$fp) return FALSE;
 
@@ -624,7 +627,11 @@ function qp_encode($string)
         if(!preg_match('#[\x80-\xFF]{1}#', $string))
         	return $string;
 
-        $encoded = preg_replace('/([\x2C\x3F\x80-\xFF])/e', "'='.sprintf('%02X', ord('\\1'))", $string);
+        $encoded = preg_replace_callback(
+	'/([\x2C\x3F\x80-\xFF])/',
+	create_function('$m', 'return "=".sprintf("%02X", ord($m[1]));'),
+	$string);
+        
         // replace spaces with _
         $encoded = str_replace(' ', '_', $encoded);
 
@@ -1016,31 +1023,18 @@ function addLogs($message = NULL, $string = NULL, $diff = NULL)
 
 function check_modules($mod = NULL)
 {
-    global $AUTH,$menu;
+    global $AUTH;
     
-    $return = true;
-    if (empty($mod) || is_null($mod)) return $return;
-    if (empty($AUTH->nomodules)) return $return;
-    if (is_numeric($mod))
-    {
-	$mod = intval($mod);
-	if (in_array($mod,$AUTH->nomodules)) $return = false;
-	else $return = true;
-    }
-    else // if string
-    {
-	$mod = strtolower($mod);
-	$tab = array();
-	foreach($menu as $key => $item) {
-	    $name = strtolower($key);
-	    $tab[$name] = $item['index'];
-	}
-	$id = $tab[$mod];
-	if (in_array($id,$AUTH->nomodules)) $return = false;
-	else $return = true;
-    }
+    if (empty($mod) || is_null($mod)) 
+	return TRUE;
     
-    return $return;
+    if (empty($AUTH->nomodules)) 
+	return TRUE;
+    
+    if (in_array($mod,$AUTH->nomodules)) 
+	return FALSE;
+
+    return TRUE;
 }
 
 function protect_email($email)
@@ -1133,5 +1127,9 @@ function calculate_distance_gps($latitude1,$longitude1,$latitude2,$longitude2,$m
     return $distance;
 }
 
+function addRight($module,$list)
+{
+    
+}
 
 ?>

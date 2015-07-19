@@ -16,7 +16,7 @@
 		<td width="1%" class="frightu" align="right" nowrap><a href="?m=divisionadd">{trans("Add division")} <img src="img/save.gif" alt=""></a></td>
 	</tr>
 	{if $listdata.total != 0}
-	<tr class="dark">
+	<tr class="dark scroller">
 		<td colspan="10" class="fall">
 			{include file="scroller.html" loop=$divisionlist}
 		</td>
@@ -70,7 +70,7 @@
 	</tr>
 	{/section}
 	{if $listdata.total != 0}
-	<tr class="dark">
+	<tr class="dark scroller">
 		<td colspan="10" class="fall">
 			{include file="scroller.html" loop=$divisionlist}
 		</td>

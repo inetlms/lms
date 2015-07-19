@@ -1,9 +1,9 @@
 <?php
 
 /*
- * iNET LMS version 1.0.3
+ *  iNET LMS
  *
- *  (C) Copyright 2001-2012 LMS Developers
+ *  (C) Copyright 2012-2015 iNET LMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -21,10 +21,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  *
- *  $Id: v 1.00 2013/09/16 22:01:35 Sylwester Kondracki Exp $
- */
-
-
+ *  Sylwester Kondracki
+ *  sylwester.kondracki@gmail.com
+ *  gadu-gadu : 6164816
+ *
+*/
 
 $layout['pagetitle'] = 'iNET LAN Management System v. '.$layout['lmsvr'];
 
@@ -343,15 +344,20 @@ function board_save($forms)
 $LMS->InitXajax();
 $LMS->RegisterXajaxFunction(array('homepage_start','board_save','board_view_list','board_set_read'));
 $SMARTY->assign('xajax',$LMS->RunXajax());
+
 if (isset($_GET['boardadd'])) {
+
     $SMARTY->assign('boardadd',true);
     $SMARTY->assign('boardedit',false);
     $SMARTY->assign('userlist',$DB->GetAll('SELECT id, name FROM users WHERE deleted = ? AND id != ? ORDER BY name;',array(0,$AUTH->id)));
     $defaultuser = explode("|",$PROFILE->get('board_default_user',$AUTH->id));
     $SMARTY->assign('defaultuser',$defaultuser);
     $SMARTY->display('welcome_box_board.html');
+
+} else {
+
+    $SMARTY->display('welcome_new.html');
+    
 }
-else
-$SMARTY->display('welcome_new.html');
 
 ?>

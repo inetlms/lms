@@ -51,6 +51,8 @@
 		</td>
 		<td width="99%" class="frightu" colspan="2">
 			<b>{$nodeipdata.name} ({$nodeipdata.id|string_format:"%04d"})</b>
+			<br>
+			{$netdevinfo.id} | {$netdevinfo.name} | {$nodeipdata.ip}
 		</td>
 	</tr>
 	<tr class="light">
@@ -60,23 +62,65 @@
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
 	<tr class="light">
-		<td width="1%">
-			<img src="img/ip.gif" alt="{trans("IP address:")}">
-		</td>
-		<td width="99%" colspan="2">
-			<a href="javascript:ping_popup('{$nodeipdata.ip}')">{$nodeipdata.ip}</a>
-		</td>
+	    <td width="100%" colspan="3" style="text-align:left;vertical-align:top;">
+	    <fieldset style="width:300px;"><legend>| <b>Lokalny Adres IP</b> |</legend>
+	    <table width="100%" cellpadding="2" cellspacing="0">
+		    
+		    <tr class="light">
+			<td width="1%"><img src="img/ip.gif" alt="{trans("IP address:")}"></td>
+			<td width="1%" nowrap class="pad"><b>IP</b></td>
+			<td width="1%" nowrap class="pad"><b>:</b></td>
+			<td width="97%"><a href="javascript:ping_popup('{$nodeipdata.ip}')">{$nodeipdata.ip}</a></td>
+		    </tr>
+		    <tr class="light">
+			<td width="1%"><img src="img/network.gif" alt=""></td>
+			<td width="1%" nowrap class="pad"><b>Sieć</b></td>
+			<td width="1%" nowrap class="pad"><b>:</b></td>
+			<td width="97%"><a href="?m=netinfo&id={$nodeipdata.netid}">{$nodeipdata.networkname}</a></td>
+		    </tr>
+		    <tr class="light">
+			<td width="1%"><img src="img/host.gif" alt=""></td>
+			<td width="1%" nowrap class="pad"><b>Host</b></td>
+			<td width="1%" nowrap class="pad"><b>:</b></td>
+			<td width="97%">{$nodeipdata.hostname}</td>
+		    </tr>
+	    </table>
+	    </fieldset>
+	    </td>
+	    
 	</tr>
+	
+	
 	{if $nodeipdata.ip_pub != "0.0.0.0"}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}">
-		</td>
-		<td width="99%" colspan="2">
-			<a href="javascript:ping_popup('{$nodeipdata.ip_pub}')">{$nodeipdata.ip_pub}</a>
-		</td>
+	    <td width="100%" colspan="3" style="text-align:left;vertical-align:top;">
+	    <fieldset style="width:300px;"><legend>| <b>Publiczny Adres IP</b> |</legend>
+	    <table style="width:100%" cellpadding="1" cellspacing="0">
+		<tr class="light">
+		    <td width="1%"><img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}"></td>
+		    <td width="1%" nowrap class="pad"><b>IP</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%"><a href="javascript:ping_popup('{$nodeipdata.ip_pub}')">{$nodeipdata.ip_pub}</a></td>
+		</tr>
+		<tr class="light">
+			<td width="1%"><img src="img/network.gif" alt=""></td>
+			<td width="1%" nowrap class="pad"><b>Sieć</b></td>
+			<td width="1%" nowrap class="pad"><b>:</b></td>
+			<td width="97%"><a href="?m=netinfo&id={$nodeipdata.netid_pub}">{$nodeipdata.networkname_pub}</a></td>
+		    </tr>
+		    <tr class="light">
+			<td width="1%"><img src="img/host.gif" alt=""></td>
+			<td width="1%" nowrap class="pad"><b>Host</b></td>
+			<td width="1%" nowrap class="pad"><b>:</b></td>
+			<td width="97%">{$nodeipdata.hostname_pub}</td>
+		    </tr>
+	    </table>
+	    </fieldset>
+	    </td>
 	</tr>
 	{/if}
+	
+	
 	{assign var="counter" value=0}
 	{foreach from=$nodeipdata.macs item=item}
 	<tr class="light">
@@ -183,8 +227,21 @@
 			</table>
 		</td>
 	</tr>
+	
+	{if $pluglinks.netdevipinfo}
+	<tr class="lucid pgdark nav-footer nav-footer-bordertop">
+		<td style="width: 100%; text-align: right;" class="ftopu" colspan="3">
+		{assign var='linki' value=$pluglinks.netdevipinfo}
+		{section name='linki' loop=$linki}
+		    &nbsp;&nbsp;{$linki[linki]}
+		{/section}
+		</td>
+	</tr>
+	{/if}
+	
 	<tr class="lucid pgdark">
 		<td width="100%" class="fbottomu" colspan="3" align="right">
+			
 			{if get_conf('monit.live_ping')}<a href="javascript:void(0);" onclick="window.open('?m=nodeping&packetsize=64&ip={$nodeipdata.ip}&netdev={$nodeipdata.id}','pingnode{$nodeipdata.ip}','width=400,height=450')" {tip text="Pinguj urzadzenie"}>Live Ping <img src="img/ping.gif" alt=""></a>&nbsp;{/if}
 			<a href="?m=netdevedit&id={$netdevinfo.id}&action=editip&ip={$nodeipdata.id}" accesskey="E">{trans("Edit")} <img src="img/edit.gif" alt=""></a>&nbsp;
 			<a href="?m=netdevedit&id={$netdevinfo.id}&action=ipdel&ip={$nodeipdata.id}" onclick="return confirmLink(this, '{t a=$nodeipdata.name}Are you sure, you want to delete address \'$a\' from database?{/t}')">{trans("Delete")} <img src="img/delete.gif" alt=""></a>

@@ -3,7 +3,7 @@
 /*
  *  iNET LMS
  *
- *  (C) Copyright 2012-2015 LMS Developers
+ *  (C) Copyright 2012-2015 iNET LMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -21,8 +21,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  *
- *  $Id$
- */
+ *  Sylwester Kondracki
+ *  sylwester.kondracki@gmail.com
+ *  gadu-gadu : 6164816
+ *
+*/
 
 function GetCustomerList($order = 'customername,asc', $state = NULL, $network = NULL, $customergroup = NULL, $search=NULL, $time = NULL, $sqlskey = 'AND', $nodegroup = NULL, $division = NULL, $firstletter = NULL, $status = NULL, $contractend = NULL, $odlaczeni = NULL, $warn = NULL, $origin = NULL, $osobowosc = NULL, $nodeblock = NULL, $pagestart) 
 {

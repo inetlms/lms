@@ -20,49 +20,70 @@
 				<tr class="light">
 					<td width="50%" style="vertical-align:top;">
 						<table width="100%" cellpadding="3">
-	<input type="hidden" name="nodeeditnetid" id="nodeeditnetid" value="{$netdevinfo.id}">
-	
+	<input type="hidden" name="nodeeditnetid" id="nodeeditnetid" value="{$netdevinfo.netid}">
+	<input type="hidden" name="nodeeditnetidpub" id="nodeeditnetidpub" value="{$netdevinfo.netid_pub}">
 	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/host.gif">
+	    <td width="100%" colspan="3" style="text-align:left;vertical-align:top;">
+	    <fieldset style="width:300px;"><legend>| <b>Lokalny Adres IP</b> |</legend>
+	    <table width="100%" cellpadding="1" cellspacing="0">
+	    <tr>
+		<td width="1%"><img src="img/ip.gif" alt=""></td>
+		<td width="1%" nowrap class="pad"><b>IP</b></td>
+		<td width="1%" nowrap class="pad"><b>:</b></td>
+		<td width="97%">
+			<input type="text" name="ipadd[ipaddr]" value="{$nodeipdata.ipaddr}" {tip text="Enter IP address" trigger="ipaddr"}>
+			<a href="javascript: void(0);" onclick="return ipchoosewin(document.editipaddr['ipadd[ipaddr]'],document.editipaddr.nodeeditnetid);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
 		</td>
-		<td style="width: 99%;" colspan="2">
-			<div id="id_host_name">{if $nodeipdata.hostname}{$nodeipdata.hostname}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}</div>
-		</td>
+	    </tr>
+	    <tr>
+		<td style="width: 1%;"><img src="img/network.gif"></td>
+		<td width="1%" nowrap class="pad"><b>Sieć</b></td>
+		<td width="1%" nowrap class="pad"><b>:</b></td>
+		<td width="97%"><div id="id_network_name">{$nodeipdata.networkname}</div></td>
+	    </tr>
+	    <tr>
+		<td width="1%"><img src="img/host.gif"></td>
+		<td width="1%" nowrap class="pad"><b>Host</b></td>
+		<td width="1%" nowrap class="pad"><b>:</b></td>
+		<td width="97%"><div id="id_host_name">{if $nodeipdata.hostname}{$nodeipdata.hostname}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}</div></td>
+	    </tr>
+	    </table>
+	    </fieldset>
+	    </td>
 	</tr>
 	
-	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/network.gif">
-		</td>
-		<td style="width: 99%;" colspan="2">
-			<div id="id_network_name">{$nodeipdata.networkname}</div>
-		</td>
-	</tr>
 	
 	
-	<tr class="light">
-		<td width="1%">
-			<img src="img/ip.gif" alt="">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("IP address:")}</b>
-		</td>
-		<td width="98%">
-			<input type="text" name="ipadd[ipaddr]" value="{$nodeipdata.ipaddr}" {tip text="Enter IP address" trigger="ipaddr"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.editipaddr['ipadd[ipaddr]'],document.editipaddr.nodeeditnetid,{$netdevinfo.id});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
-		</td>
-	</tr>
+	
 	{if get_form('nodes.public_ip')}
 	<tr class="light">
-		<td width="1%">
-			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}">
-		</td>
-		<td width="1%" nowrap>
-			<b>{trans("Pub. IP address:")}</b>
-		</td>
-		<td width="98%">
-		        <input type="text" name="ipadd[ipaddr_pub]" value="{$nodeipdata.ipaddr_pub}" {tip text="Enter IP address (optional)" trigger="ipaddr_pub"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.editipaddr['ipadd[ipaddr_pub]'],0,{$netdevinfo.id});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
-		</td>
+	    <td width="100%" colspan="3" style="text-align:left;vertical-align:top;">
+	    <fieldset style="width:300px;"><legend>| <b>Publiczny Adres IP</b> |</legend>
+	    <table width="100%" cellpadding="1" cellspacing="0">
+		<tr class="light">
+		    <td width="1%"><img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}"></td>
+		    <td width="1%" nowrap class="pad"><b>IP</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%">
+		        <input type="text" name="ipadd[ipaddr_pub]" value="{$nodeipdata.ipaddr_pub}" {tip text="Enter IP address (optional)" trigger="ipaddr_pub"}>
+		        <a href="javascript: void(0);" onclick="return ipchoosewinpub(document.editipaddr['ipadd[ipaddr_pub]'],document.editipaddr.nodeeditnetidpub);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
+		    </td>
+		</tr>
+		<tr>
+		    <td width="1%"><img src="img/network.gif"></td>
+		    <td width="1%" nowrap class="pad"><b>Sieć</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%"><div id="id_network_name_pub">{$nodeipdata.networkname_pub}</div></td>
+		</tr>
+		<tr>
+		    <td width="1%"><img src="img/host.gif"></td>
+		    <td width="1%" nowrap class="pad"><b>Host</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%"><div id="id_host_name_pub">{if $nodeipdata.hostname_pub}{$nodeipdata.hostname_pub}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}</div></td>
+		</tr>
+	    </table>
+	    </fieldset>
+	    </td>
 	</tr>
 	{/if}
 	<tr class="light">

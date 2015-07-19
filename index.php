@@ -34,9 +34,10 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
-define('LMSV','15.03.30');
+define('LMSV','15.07.09');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 ini_set('mbstring.func_overload','0');
+date_default_timezone_set('Europe/Warsaw');
 
 // find alternative config files:
 if (is_readable('lms.ini')) {
@@ -66,10 +67,8 @@ $CONFIG['directories']['doc_dir'] = (!isset($CONFIG['directories']['doc_dir']) ?
 $CONFIG['directories']['uploadfiles_dir'] = (!isset($CONFIG['directories']['uploadfiles_dir']) ? $CONFIG['directories']['sys_dir'].'/uploadfiles' : $CONFIG['directories']['uploadfiles_dir']);
 $CONFIG['directories']['modules_dir'] = (!isset($CONFIG['directories']['modules_dir']) ? $CONFIG['directories']['sys_dir'].'/modules' : $CONFIG['directories']['modules_dir']);
 $CONFIG['directories']['backup_dir'] = (!isset($CONFIG['directories']['backup_dir']) ? $CONFIG['directories']['sys_dir'].'/backups' : $CONFIG['directories']['backup_dir']);
-//$CONFIG['directories']['config_templates_dir'] = (!isset($CONFIG['directories']['config_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/config_templates' : $CONFIG['directories']['config_templates_dir']);
 $CONFIG['directories']['smarty_compile_dir'] = (!isset($CONFIG['directories']['smarty_compile_dir']) ? $CONFIG['directories']['sys_dir'].'/templates_c' : $CONFIG['directories']['smarty_compile_dir']);
 $CONFIG['directories']['smarty_templates_dir'] = (!isset($CONFIG['directories']['smarty_templates_dir']) ? $CONFIG['directories']['sys_dir'].'/templates' : $CONFIG['directories']['smarty_templates_dir']);
-$CONFIG['directories']['plug_dir'] = (!isset($CONFIG['directories']['plug_dir']) ? $CONFIG['directories']['sys_dir'].'/plug' : $CONFIG['directories']['plug_dir']);
 $CONFIG['directories']['invoice_dir'] = (!isset($CONFIG['directories']['invoice_dir']) ? $CONFIG['directories']['doc_dir'].'/invoice_pdf' : $CONFIG['directories']['invoice_dir']);
 
 define('SYS_DIR', $CONFIG['directories']['sys_dir']);
@@ -82,7 +81,7 @@ define('MODULES_DIR', $CONFIG['directories']['modules_dir']);
 define('BACKUP_DIR', $CONFIG['directories']['backup_dir']);
 define('SMARTY_COMPILE_DIR', $CONFIG['directories']['smarty_compile_dir']);
 define('SMARTY_TEMPLATES_DIR', $CONFIG['directories']['smarty_templates_dir']);
-define('PLUG_DIR',$CONFIG['directories']['plug_dir']);
+define('PLUG_DIR',SYS_DIR.'/plug/');
 define('INVOICE_DIR',$CONFIG['directories']['invoice_dir']);
 
 // Do some checks and load config defaults
@@ -145,7 +144,6 @@ else
 
 // Call any of upgrade process before anything else
 require_once(LIB_DIR.'/functions.php');
-
 require_once(LIB_DIR.'/upgradedb.php');
 
 
@@ -243,31 +241,37 @@ $SMARTY->addTemplateDir(
 	    SMARTY_TEMPLATES_DIR
 	)
 );
-//if (get_conf('phpui.custom_module'))
-//    $SMARTY->addTemplateDir(array(SMARTY_TEMPLATES_DIR.'/custom'));
-
 $SMARTY->compile_dir = SMARTY_COMPILE_DIR;
 $SMARTY->debugging = (isset($CONFIG['phpui']['smarty_debug']) ? chkconfig($CONFIG['phpui']['smarty_debug']) : FALSE);
 $SMARTY->use_sub_dirs = TRUE;
 
-
-
+//$SMARTY->error_reporting = false;
+$SMARTY->error_unassigned = false;
+$my_security_policy = new Smarty_Security($SMARTY);
+$my_security_policy->allow_php_tag = true;
+$my_security_policy->php_functions = array();
+$my_security_policy->php_handling = Smarty::PHP_PASSTHRU;
+$my_security_policy->php_modifier = array();
+$my_security_policy->modifiers = array();
 
 $SMARTY->assignByRef('layout', $layout);
 $SMARTY->assignByRef('LANGDEFS', $LANGDEFS);
 $SMARTY->assignByRef('_ui_language', $LMS->ui_lang);
 $SMARTY->assignByRef('_language', $LMS->lang);
-
+$SMARTY->assignByRef('global_warning',$SESSION->global_warning);
 
 $error = NULL; // initialize error variable needed for (almost) all modules
 
-
 header('X-Powered-By: iNET LMS/'.$layout['lmsv']);
 
+$PLUG->initPlugins();
 $PLUG->updateDBPlugins();
+$PLUG->IncludeRegisterHook();
 
 // Check privileges and execute modules
 if ($AUTH->islogged) {
+	
+	$RIGHTS_LIST = $_RL_ = $RIGHTS_USER = array();
 	
 	// info o polach w formularzach
 	if($cfg = $DB->GetAll('SELECT section, var, value FROM formconfig'))
@@ -279,10 +283,6 @@ if ($AUTH->islogged) {
 		foreach ($plugins as $plugin_name)
 			require LIB_DIR . '/plugins/' . $plugin_name . '.php';
 	
-	$res = $LMS->ExecHook('access_table_init', array('accesstable' => $access['table']));
-	if (isset($res['accesstable']))
-		$access['table'] = $res['accesstable'];
-	
 	$module = isset($_GET['m']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_GET['m']) : '';
 	$plug = isset($_GET['plug']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_GET['plug']) : '';
 	
@@ -292,18 +292,23 @@ if ($AUTH->islogged) {
 	
 	$deny = $allow = FALSE;
 	
-	$res = $LMS->ExecHook('module_load_before', array('module' => $module));
-	if ($res['abort']) {
-		$SESSION->close();
-		$DB->Destroy();
-		die;
-	}
-	$module = $res['module'];
-	
 	if ($AUTH->passwdrequiredchange)
 		$module = 'chpasswd';
 	
-	$PLUG->initPlugins();
+	require_once(LIB_DIR.'/rights.php');
+	
+	if (isset($__RIGHTS) && !empty($__RIGHTS)) {
+	    foreach($__RIGHTS as $key => $subrow) 
+		foreach ($subrow as $keys => $row)
+		{
+		    $_keys = explode('%',$keys);
+		    $RIGHTS_LIST[$key][$_keys[0]] = md5(strtoupper($key).strtoupper($_keys[0]));
+		    if ($_keys[1]) $accessnew['nonplug'][$RIGHTS_LIST[$key][$_keys[0]]] = str_replace('%','',$_keys[1]);
+		    $_RL_[$key][$_keys[0]] = $row;
+		}
+	    unset($__RIGHTS);
+	}
+	
 	$_plugcount = sizeof($_pluglist);
 	
 	if ($module == '')
@@ -312,20 +317,6 @@ if ($AUTH->islogged) {
 		if (!file_exists(MODULES_DIR.'/'.$module.'.php'))
 		    $module = 'welcome_new';
 		    $plug = '';
-	}
-	
-	if (!$layout['popup']) {
-	    
-	    if ($_pluglist) {
-		for ($i=0; $i<($_plugcount); $i++) {
-		    if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php') && is_readable(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php'))
-			include(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php');
-		}
-	    }
-	    
-	    foreach($menu as $idx => $item) if(isset($item['submenu'])) uasort($menu[$idx]['submenu'],'menu_cmp');
-	    uasort($menu,'menu_cmp');
-	    $SMARTY->assign('newmenu',$menu);
 	}
 	
 	if ($_plugcount > 0) {
@@ -347,15 +338,96 @@ if ($AUTH->islogged) {
 		    for ($j=0; $j<sizeof($cssfile); $j++) $layout['includescss'][] = 'plug/'.$_pluglist[$i].'/includes/'.$cssfile[$j];
 		}
 		
+		if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/rights.php')) {
+		    include(PLUG_DIR.'/'.$_pluglist[$i].'/rights.php');
+		    if (!empty($__RIGHTS)) {
+			foreach($__RIGHTS as $key => $subrow) 
+			    foreach ($subrow as $keys => $row)
+			    {	
+				$_keys = explode('%',$keys);
+				$RIGHTS_LIST[$key][$_keys[0]] = md5(strtoupper($key).strtoupper($_keys[0]));
+				if ($_keys[1]) $accessnew[$key][$RIGHTS_LIST[$key][$_keys[0]]] = str_replace('%','',$_keys[1]);
+				$_RL_[$key][$_keys[0]] = $row;
+			    }
+			unset($__RIGHTS);
+		    }
+		}
 	    }
-	    
 	    $SMARTY->assignByRef('_pluginc',$_pluginc);
 	}
 	
-	if ($plug) {
+	$res = $LMS->ExecHook('access_table_init', array('accesstable' => $access['table']));
+	if (isset($res['accesstable']))
+		$access['table'] = $res['accesstable'];
+	
+	$res = $LMS->ExecHook('module_load_before', array('module' => $module));
+	if ($res['abort']) {
+		$SESSION->close();
+		$DB->Destroy();
+		die;
+	}
+	$module = $res['module'];
+
+	if (!$layout['popup']) {
 	    
-	    if (file_exists(PLUG_DIR.'/'.$plug.'/lang/'.$LMS->lang.'.php'))
-		require_once(PLUG_DIR.'/'.$plug.'/lang/'.$LMS->lang.'.php');
+	    if ($_pluglist) {
+		for ($i=0; $i<($_plugcount); $i++) {
+		    if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php') && is_readable(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php'))
+			include(PLUG_DIR.'/'.$_pluglist[$i].'/menu.php');
+		}
+	    }
+	    
+	    foreach($menu as $idx => $item) if(isset($item['submenu'])) uasort($menu[$idx]['submenu'],'menu_cmp');
+	    uasort($menu,'menu_cmp');
+	    $SMARTY->assign('newmenu',$menu);
+	}
+
+	$global_allow = !$AUTH->id || (!empty($access['allow']) && preg_match('/'.$access['allow'].'/i', $module));
+	
+	
+	if ($AUTH->id && ($rights = $LMS->GetUserRights($AUTH->id))) {
+	    
+		foreach ($rights as $level)
+		{
+			if (!$global_allow && !$deny && isset($access['table'][$level]['deny_reg'])) 
+				$deny = (bool) preg_match('/'.$access['table'][$level]['deny_reg'].'/i', $module);
+			elseif (!$allow && isset($access['table'][$level]['allow_reg'])) 
+				$allow = (bool) preg_match('/'.$access['table'][$level]['allow_reg'].'/i', $module);
+			if (isset($access['table'][$level]['privilege']))
+				$CONFIG['privileges'][$access['table'][$level]['privilege']] = TRUE;
+		}
+	}
+/*	
+//	if (isset($accessnew[$_GET['plug']][$level])) echo "jest"; else echo "nie ma";
+	echo "<prE>"; print_r($accessnew[$_GET['plug']]); echo "</prE>"; die;
+	if (!$global_allow && !$allow) 
+	{
+	    foreach ($RIGHTS_USER as $level => $key)  
+	    {
+		if (!$allow) 
+		{
+		    //if ($plug && isset($accessnew[$_GET['plug']][$level])) 
+		    if ($plug) 
+		    {
+			echo $level." - ".$key;die;
+			if (!empty($accessnew[$_GET['plug']][$level])) {
+			    $allow = (bool) preg_match('/'.$accessnew[$_GET['plug']][$level].'/i', $module);
+			    exec("beep");
+			} else {
+			    $allow = true;
+			}
+		    }
+		    if (!$plug && isset($accessnew['nonplug'][$level])) {
+			if (!empty($accessnew[$_GET['nonplug']][$level]))
+			    $allow = (bool) preg_match('/'.$accessnew[$_GET['nonplug']][$level].'/i', $module);
+			else
+			    $allow = true;
+		    }
+		}
+	    }
+	}
+*/	
+	if ($plug) {
 	    
 	    if (is_dir(PLUG_DIR.'/'.$plug.'/includes_call')) {
 		$phpfile = $PLUG->list_dir(PLUG_DIR.'/'.$plug.'/includes_call','php');
@@ -365,78 +437,44 @@ if ($AUTH->islogged) {
 		for ($j=0; $j<sizeof($jsfile); $j++) $layout['includesjs'][] = 'plug/'.$plug.'/includes_call/'.$jsfile[$j];
 		for ($j=0; $j<sizeof($cssfile); $j++) $layout['includescss'][] = 'plug/'.$plug.'/includes_call/'.$cssfile[$j];
 	    }
-
-	    if (file_exists(PLUG_DIR.'/'.$plug.'/modules/'.$module.'.php')) {
-		$layout['plug'] = $plug;
-		$layout['module'] = $module;
-		include(PLUG_DIR.'/'.$plug.'/modules/'.$module.'.php');
+	    
+	    if ($global_allow || ($allow && !$deny)) {
+		
+		if (file_exists(PLUG_DIR.'/'.$plug.'/modules/'.$module.'.php')) {
+			$layout['plug'] = $plug;
+			$layout['module'] = $module;
+			include(PLUG_DIR.'/'.$plug.'/modules/'.$module.'.php');
+		} else {
+			$layout['module'] = 'notfound';
+			$layout['pagetitle'] = trans('Error!');
+			$SMARTY->assign('layout', $layout);
+			$SMARTY->assign('server', $_SERVER);
+			$SMARTY->display('notfound.html');
+		}
 	    } else {
-		$layout['module'] = 'notfound';
-		$layout['pagetitle'] = trans('Error!');
-		$SMARTY->assign('layout', $layout);
-		$SMARTY->assign('server', $_SERVER);
-		$SMARTY->display('notfound.html');
+			$SMARTY->display('noaccess.html');
 	    }
 	    
-//	    $SMARTY->assign('plug',$plug);
 	}
-	elseif (file_exists(MODULES_DIR.'/custom/'.$module.'.php'))
-	{
-		$global_allow = !$AUTH->id || (!empty($access['allow']) && preg_match('/'.$access['allow'].'/i', $module));
-
-		if ($AUTH->id && ($rights = $LMS->GetUserRights($AUTH->id)))
-			foreach ($rights as $level)
-			{
-				if ($level === 0) {
-					$CONFIG['privileges']['superuser'] = true;
-				}
-
-				if (!$global_allow && !$deny && isset($access['table'][$level]['deny_reg']))
-					$deny = (bool) preg_match('/'.$access['table'][$level]['deny_reg'].'/i', $module);
-				elseif (!$allow && isset($access['table'][$level]['allow_reg']))
-					$allow = (bool) preg_match('/'.$access['table'][$level]['allow_reg'].'/i', $module);
-
-				if (isset($access['table'][$level]['privilege']))
-					$CONFIG['privileges'][$access['table'][$level]['privilege']] = TRUE;
-			}
-
-		if ($global_allow || ($allow && !$deny))
-		{
+	elseif (file_exists(MODULES_DIR.'/custom/'.$module.'.php')) {
+		
+		if ($global_allow || ($allow && !$deny)) {
 			$layout['module'] = $module;
 			$LMS->InitUI();
 			include(MODULES_DIR.'/custom/'.$module.'.php');
-		}
-		else
+		} else {
 			$SMARTY->display('noaccess.html');
+		}
 	}
-	elseif (file_exists(MODULES_DIR.'/'.$module.'.php'))
-	{
-		$global_allow = !$AUTH->id || (!empty($access['allow']) && preg_match('/'.$access['allow'].'/i', $module));
-
-		if ($AUTH->id && ($rights = $LMS->GetUserRights($AUTH->id)))
-			foreach ($rights as $level)
-			{
-				if ($level === 0) {
-					$CONFIG['privileges']['superuser'] = true;
-				}
-
-				if (!$global_allow && !$deny && isset($access['table'][$level]['deny_reg']))
-					$deny = (bool) preg_match('/'.$access['table'][$level]['deny_reg'].'/i', $module);
-				elseif (!$allow && isset($access['table'][$level]['allow_reg']))
-					$allow = (bool) preg_match('/'.$access['table'][$level]['allow_reg'].'/i', $module);
-
-				if (isset($access['table'][$level]['privilege']))
-					$CONFIG['privileges'][$access['table'][$level]['privilege']] = TRUE;
-			}
-
-		if ($global_allow || ($allow && !$deny))
-		{
+	elseif (file_exists(MODULES_DIR.'/'.$module.'.php')) {
+		
+		if ($global_allow || ($allow && !$deny)) {
 			$layout['module'] = $module;
 			$LMS->InitUI();
 			include(MODULES_DIR.'/'.$module.'.php');
-		}
-		else
+		} else {
 			$SMARTY->display('noaccess.html');
+		}
 	}
 	else
 	{
@@ -485,7 +523,6 @@ else
 	$SMARTY->assign('_newversion',$_newversion);
 	$SMARTY->display('login.html');
 }
-
 
 $SESSION->close();
 $DB->Destroy();

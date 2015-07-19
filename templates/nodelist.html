@@ -14,7 +14,7 @@
 				<input type="hidden" name="m" value="nodelist">
 				<input type="hidden" name="page" value="1">
 				<nobr>{trans("Status:")}
-				<select size="1" name="s" onchange="document.choosefilter.submit();" {if $listdata.state} class="active"{/if}>
+				<select style="width:130px;" name="s" onchange="document.choosefilter.submit();" {if $listdata.state} class="active"{/if}>
 					<option value="0"{if $listdata.state eq 0} selected{/if}>{trans("- all -")}</option>
 					<option value="1"{if $listdata.state eq 1} selected{/if}>{trans("connected<!plural:item>")}</option>
 					<option value="2"{if $listdata.state eq 2} selected{/if}>{trans("disconnected<!plural:item>")}</option>
@@ -24,34 +24,40 @@
 					<option value="6"{if $listdata.state eq 6} selected{/if}>{trans("with warning")}</option> 
 				</select><nobr>&nbsp;
 				<nobr>{trans("Network:")}
-				<select size="1" name="n" onchange="document.choosefilter.submit();" {if $listdata.network} class="active"{/if}>
+				<select style="width:130px;" name="n" onchange="document.choosefilter.submit();" {if $listdata.network} class="active"{/if}>
 					<option value="0" {if !$listdata.network} selected {/if}>{trans("- all networks -")}</option>
 					{section name=networks loop=$networks}
 					<option value="{$networks[networks].id}" {if $listdata.network eq $networks[networks].id} selected {/if}>{$networks[networks].name|truncate:30:"...":true}</option>
 					{/section}
 				</select><nobr>&nbsp;
 				<nobr>{trans("Group:")}
-				<select size="1" name="ng" onchange="document.choosefilter.submit();" {if $listdata.nodegroup} class="active"{/if}>
+				<select style="width:140px;" name="ng" onchange="document.choosefilter.submit();" {if $listdata.nodegroup} class="active"{/if}>
 					<option value="" {if !$listdata.nodegroup} selected {/if}>{trans("- all groups -")}</option>
 					{foreach from=$nodegroups item=nodegroup}
 					<option value="{$nodegroup.id}" {if $listdata.nodegroup eq $nodegroup.id} selected {/if}>{$nodegroup.name|truncate:30:"...":true}</option>
 					{/foreach}
 				</select><nobr>&nbsp;
 				<nobr>{trans("Customers Group:")}
-				<select size="1" name="g" onchange="document.choosefilter.submit();"  {if $listdata.customergroup} class="active"{/if}>
+				<select style="width:140px;" name="g" onchange="document.choosefilter.submit();"  {if $listdata.customergroup} class="active"{/if}>
 					<option value="" {if !$listdata.customergroup} selected {/if}>{trans("- all groups -")}</option>
 					{section name=customergroups loop=$customergroups}
 					<option value="{$customergroups[customergroups].id}" {if $listdata.customergroup eq $customergroups[customergroups].id} selected {/if}>{$customergroups[customergroups].name|truncate:30:"...":true}</option>
 					{/section}
 				</select><nobr>
+				NAS: <select style="width:140px;" name="nas" onchange="document.choosefilter.submit();" {if $listdata.nas} class="active"{/if}>
+					<option value=""></option>
+					{section name='naslist' loop=$naslist}
+					<option value="{$naslist[naslist].id}"{if $listdata.nas == $naslist[naslist].id} selected{/if}>{$naslist[naslist].name}</option>
+					{/section}
+					</select>
 			</form>
 			<td align="right" class="frightu">
-				<img src="img/search.gif">&nbsp;<a href="?m=nodelist&page=1&s=&n=&ng=&g=" {tip text="Wyczyść filtr"}><img src="img/cancel.gif"></a>
+				<img src="img/search.gif">&nbsp;<a href="?m=nodelist&page=1&s=&n=&ng=&g=&nas=" {tip text="Wyczyść filtr"}><img src="img/cancel.gif"></a>
 			</td>
 		</td>
 	</tr>
 	{if $listdata.total != 0}
-	<tr class="scroller">
+	<tr class="dark scroller">
 		<td class="fall" colspan="6">
 			{include file="scrollerpage.html" loop=$listdata.total}
 		</td>
@@ -63,7 +69,7 @@
 			<img src="img/customer.gif" alt=""> <a href="?m=nodelist&o=owner{if $listdata.direction eq "asc" && $listdata.order eq "owner"},desc{/if}">{trans("Customer:")}</a>{if $listdata.order eq "owner"} <img src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
 		</td>
 		<td class="fbt pad10 tleft" align="left"  width="1%" nowrap>
-		    <b>Podłączony do:</b>
+		    <b>Podłączony do:<br>NAS:</b>
 		</td>
 		<td class="fbt pad10 tleft" width="1%" nowrap align="left">
 		    <b>Medium</b><br>
@@ -119,7 +125,9 @@
 		<td align="left" width="1%" nowrap class="pad10 tleft">
 		    {if $nodelist[nodelist].netdev}
 			<a href="?m=netdevinfo&id={$nodelist[nodelist].netdev}" {tip a={$nodelist[nodelist].netdev} dynpopup='?m=netdevinfoshort&id=$a' sticky=0}>{$nodelist[nodelist].devname}</a>{if $nodelist[nodelist].devlocation}<br>{$nodelist[nodelist].devlocation}{/if}
+			
 		    {/if}
+		    {if $nodelist[nodelist].nasname}<br><b>NAS:</b> {$nodelist[nodelist].nasname}{/if}
 		</td>
 		<td align="left" width="1%" nowrap class="pad10 tleft">
 		    {if $nodelist[nodelist].netdev}
@@ -161,7 +169,7 @@
 	</tr>
 	{/section}
 	{if $listdata.total != 0}
-	<tr class="scroller">
+	<tr class="dark scroller">
 		<td class="fall" colspan="6">
 			{include file="scrollerpage.html" loop=$listdata.total}
 		</td>
@@ -184,6 +192,12 @@
 		</td>
 	</tr>
 </table>
-
+<script type="text/javascript">
+<!--
+    keyPressInsert = function() {
+	self.location.href='?m=nodeadd';
+    }
+//-->
+</script>
 {include file="load_gif.html"}
 {include file="footer.html"}

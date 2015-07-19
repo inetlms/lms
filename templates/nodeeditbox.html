@@ -21,46 +21,76 @@
 						<table style="width: 100%;" cellpadding="3">
 	
 	<input type="hidden" name="nodeeditnetid" id="nodeeditnetid" value="{$nodeinfo.netid}">
+	<input type="hidden" name="nodeeditnetidpub" id="nodeeditnetidpub" value="{$nodeinfo.netid_pub}">
 	
+	<!--// Local Address IP //-->
 	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/host.gif">
-		</td>
-		<td style="width: 99%;" colspan="2">
-			<div id="id_host_name">{if $nodeinfo.hostname}{$nodeinfo.hostname}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}</div>
-		</td>
-	</tr>
-	
-	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/network.gif">
-		</td>
-		<td style="width: 99%;" colspan="2">
-			<div id="id_network_name">{$nodeinfo.networkname}</div>
-		</td>
-	</tr>
-	
-	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/ip.gif" alt="{trans("IP address:")}">
-		</td>
-		<td style="width: 99%;" colspan="2">
+	    <td width="100%" colspan="2" align="left" style="vertical-align:top;">
+	    <fieldset style="width:250px;"><legend>| <b>Lokalny Adres IP</b> |</legend>
+	    <table width="100%" cellpadding="1" cellspacing="0">
+		<tr class="light">
+		    <td width="1%"><img src="img/ip.gif" alt="{trans("IP address:")}"></td>
+		    <td width="1%" nowrap class="pad"><b>IP</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%" colspan="2">
 			<input type="text" name="nodeeditipaddr" readonly class="required" value="{$nodeinfo.ip}" {tip text="Enter IP address" trigger="ipaddr"} placeholder="-- WYMAGANE --"> 
 			<a href="javascript: void(0);" onclick="return ipchoosewin(document.editnode.nodeeditipaddr, document.editnode.nodeeditnetid, document.getElementById('nodeeditnetid').value);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
-		</td>
+		    </td>
+		</tr>
+		<tr class="light">
+		    <td width="1%"><img src="img/network.gif"></td>
+		    <td width="1%" nowrap class="pad"><b>Sieć</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%" colspan="2"><div id="id_network_name">{$nodeinfo.networkname}</div></td>
+		</tr>
+		<tr class="light">
+		    <td width="1%"><img src="img/host.gif"></td>
+		    <td width="1%" nowrap class="pad"><b>Host</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%" colspan="2"><div id="id_host_name">{if $nodeinfo.hostname}{$nodeinfo.hostname}{else}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}</div></td>
+		</tr>
+		
+	    </table>
+	    </fieldset>
+	    </td>
 	</tr>
+	<!--// End Local Address IP //-->
 	{if get_form('nodes.public_ip')}
+	<!--// Public Address IP //-->
 	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}">
-		</td>
-		<td style="width: 99%;" colspan="2">
-			<input type="text" name="nodeeditipaddrpub" {if $nodeinfo.ip_pub != "0.0.0.0"}value="{$nodeinfo.ip_pub}"{/if} {tip text="Enter IP address (optional)" trigger="ipaddr_pub"}> <a href="javascript: void(0);" onclick="return ipchoosewin(document.editnode.nodeeditipaddrpub, document.editnode.nodeeditnetid, {if $nodeinfo.netpubid}{$nodeinfo.netpubid}{else}0{/if});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
-		</td>
+	    <td width="100%" colspan="2" align="left" style="vertical-align:top;">
+	    <fieldset style="width:250px;"><legend>| <b>Publiczny Adres IP</b> |</legend>
+	    <table width="100%" cellpadding="1" cellspacing="0">
+		<tr class="light">
+		    <td width="1%"><img src="img/ip_pub.gif" alt="{trans("Pub. IP address:")}"></td>
+		    <td width="1%" nowrap class="pad"><b>IP</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="97%">
+			<input type="text" name="nodeeditipaddrpub" {if $nodeinfo.ip_pub != "0.0.0.0"}value="{$nodeinfo.ip_pub}"{/if} {tip text="Enter IP address (optional)" trigger="ipaddr_pub"}>
+			<a href="javascript: void(0);" onclick="return ipchoosewinpub(document.editnode.nodeeditipaddrpub, document.editnode.nodeeditnetidpub);" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
+		    </td>
+		</tr>
+		<tr class="light">
+		    <td width="1%"><img src="img/network.gif"></td>
+		    <td width="1%" nowrap class="pad"><b>Sieć</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="99%"><div id="id_network_name_pub">{$nodeinfo.networkname_pub}</div></td>
+		</tr>
+		<tr class="light">
+		    <td width="1%"><img src="img/host.gif"></td>
+		    <td width="1%" nowrap class="pad"><b>Host</b></td>
+		    <td width="1%" nowrap class="pad"><b>:</b></td>
+		    <td width="99%"><div id="id_host_name_pub">{if $nodeinfo.hostname_pub}{$nodeinfo.hostname_pub}{else}{if $nodeinfo.netid_pub}<span style="color:blue;">Sieć bez przypisanego hosta</span>{/if}{/if}</div></td>
+		</tr>
+		
+	    </table>
+	    </fieldset>
+	    </td>
 	</tr>
 	{else}
 	    <input type="hidden" name="nodeeditipaddrpub" value="{if $nodeinfo.ip_pub != "0.0.0.0"}{$nodeinfo.ip_pub}"{/if}">
 	{/if}
+	<!--// End Public Address IP //-->
 	
 	
 	{if get_form('nodes.macaddress')}
@@ -240,9 +270,7 @@
 	
 	{if get_form('nodes.checkmac') || get_form('nodes.halfduplex') || get_form('nodes.monitoring')}
 	<tr class="light">
-		<td style="width: 1%;">
-			<img src="img/options.gif" alt="">
-		</td>
+		<td style="width: 1%;"><img src="img/options.gif" alt=""></td>
 		<td style="width: 98%; white-space: nowrap;" colspan="2">
 			{if get_form('nodes.checkmac')}
 			    <label for="chkmac">{trans("MAC checking")}:</label><input type="checkbox" name="nodeedit[chkmac]" value="1" id="chkmac" {tip text="Enable/disable MAC address checking" trigger="chkmac"}{if !isset($nodeinfo.chkmac) || $nodeinfo.chkmac} checked{/if}>&nbsp;
@@ -265,6 +293,52 @@
 	    <input type="hidden" name="nodeedit[chkmac]" value="{$nodeinfo.chkmac}">
 	    <input type="hidden" name="nodeedit[halfduplex]" value="{$nodeinfo.halfduplex}">
 	    <input type="hidden" name="nodeedit[monitoring]" value="{$nodeinfo.monitoring}">
+	{/if}
+	
+	{if get_form('nodes.pppoe') || get_form('nodes.dhcp') || get_form('nodes.eap')}
+	<tr>
+		<td style="width: 1%;"><img src="img/netdev.gif" alt=""></td>
+		<td style="width: 98%; white-space: nowrap;" colspan="2">
+			{if get_form('nodes.pppoe')}
+			    <label for="pppoe">{trans('PPPoE Client')}</label><input type="checkbox" name="nodeauthtype[pppoe]" value="1" id="pppoe" {if $nodeauthtype.pppoe}checked="checked"{/if}{tip text="Enable/disable PPPoE Server Client" trigger="pppoe"}>&nbsp;
+			{else}
+			    <input type="hidden" name="nodeauthtype[pppoe]" value="1" {if $nodeauthtype.pppoe}checked="checked"{/if}}>
+			{/if}
+			
+			{if get_form('nodes.dhcp')}
+			    <label for="dhcp">{trans("DHCP Client")}</label><input type="checkbox" name="nodeauthtype[dhcp]" value="2" id="dhcp" {if $nodeauthtype.dhcp}checked="checked"{/if}{tip text="Enable/disable DHCP Server Client" trigger="dhcp"}>&nbsp;
+			{else}
+			    <input type="hidden" name="nodeauthtype[dhcp]" value="2" {if $nodeauthtype.dhcp}checked="checked"{/if}>
+			{/if}
+			
+			{if get_form('nodes.eap')}
+			    <label for="eap">{trans("EAP Client")}</label><input type="checkbox" name="nodeauthtype[eap]" value="4" id="eap" {if $nodeauthtype.eap}checked="checked"{/if}{tip text="Enable/disable EAP Server Client" trigger="eap"}>
+			{else}
+			    <input type="hidden" name="nodeauthtype[eap]" value="4" {if $nodeauthtype.eap}checked="checked"{/if}>
+			{/if}
+		</td>
+	</tr>
+	{else}
+		<input type="hidden" name="nodeauthtype[pppoe]" value="1" {if $nodeauthtype.pppoe}checked="checked"{/if}}>
+		<input type="hidden" name="nodeauthtype[dhcp]" value="2" {if $nodeauthtype.dhcp}checked="checked"{/if}>
+		<input type="hidden" name="nodeauthtype[eap]" value="4" {if $nodeauthtype.eap}checked="checked"{/if}>
+	{/if}
+	
+	{if get_form('nodes.nas')}
+	<tr>
+		<td style="width: 1%;"><img src="img/netdev.gif" alt=""></td>
+		<td style="width: 98%; white-space: nowrap;" colspan="2">
+			NAS:&nbsp;
+			<select name="nodeedit[nasid]" style="width:270px;" {tip text="Wybierz NAS do którego jest przypisany komputer (opcja)"}>
+			<option value=""></option>
+			{section name='naslist' loop=$naslist}
+			<option value="{$naslist[naslist].id}"{if $naslist[naslist].id == $nodeinfo.nasid} selected{/if}>{$naslist[naslist].name}</option>
+			{/section}
+			</select>
+		</td>
+	</tr>
+	{else}
+		<input type="hidden" name="nodeedit[nasid]" value="{$nodeinfo.nasid}">
 	{/if}
 					</table>
 				</td>
@@ -349,7 +423,7 @@
 		<td style="width: 1%; white-space: nowrap;">
 			<span class="bold">{trans("GPS latitude:")}</span>
 		</td>
-		<td style="width; 98%; white-space: nowrap;">
+		<td style="width: 98%; white-space: nowrap;">
 			<input id="latitude" type="text" name="nodeedit[latitude]" value="{if $nodeinfo.latitude}{$nodeinfo.latitude}{/if}" {tip text="Enter device latitude (optional)" trigger="latitude"}  style="width:150px;">
 			<a href="javascript: void(0);" onclick="return gpscoordschoosewin(document.editnode.elements['nodeedit[longitude]'], document.editnode.elements['nodeedit[latitude]']);" {tip text="Click to select gps coordinates from map"}>&raquo;&raquo;&raquo;</a>
 		</td>
@@ -453,14 +527,36 @@
 			</table>
 		</td>
 	</tr>
-	<tr class="light nav-footer nav-footer-bordertop">
-		<td style="width: 100%; text-align: right;" class="FBOTTOMU" colspan="3">
-			<a href="javascript:document.editnode.submit();" accesskey="s">{trans("Submit")} <img src="img/save.gif" alt=""></a>
-			<a href="?m=nodeinfo&id={$nodeinfo.id}">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a>
+	{if $pluglinks.nodeedit}
+	<tr class="dark nav-footer nav-footer-bordertop">
+		<td style="width: 100%; text-align: right;" class="ftopu" colspan="3">
+		{assign var='linki' value=$pluglinks.nodeedit}
+		{section name='linki' loop=$linki}
+		    &nbsp;&nbsp;{$linki[linki]}
+		{/section}
+		</td>
+	</tr>
+	{/if}
+	<tr class="dark nav-footer nav-footer-bordertop">
+		<td style="width: 100%; text-align: right;" class="fall" colspan="3">
+			<a href="javascript:document.editnode.submit();">{trans("Submit")} [ F2 ]<img src="img/save.gif" alt=""></a>&nbsp;
+			<a href="?m=nodeinfo&id={$nodeinfo.id}">{trans("Cancel")} [ ESC ]<img src="img/cancel.gif" alt=""></a>
 		</td>
 	</tr>
 </table>
 </form>
+<script type="text/javascript" language="JavaScript">
+<!--
+	keyPressF2 = function() {
+	    document.editnode.submit();
+	}
+	
+	keyPressESC = function() {
+	    self.location.href='?m=nodeinfo&id={$nodeinfo.id}';
+	}
+//-->
+</script>
+
 {literal}
 <script type="text/javascript" language="JavaScript">
 <!--

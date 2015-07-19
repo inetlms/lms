@@ -1,10 +1,9 @@
 <?php
 
-
 /*
- * LMS iNET
+ *  iNET LMS
  *
- *  (C) Copyright 2001-2012 LMS Developers
+ *  (C) Copyright 2012-2015 iNET LMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -22,8 +21,12 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  *
- *  $Id Sylwester Kondracki Exp $
- */
+ *  Sylwester Kondracki
+ *  sylwester.kondracki@gmail.com
+ *  gadu-gadu : 6164816
+ *
+*/
+
 $changelog = array(
 /*
 	array(
@@ -39,6 +42,56 @@ $changelog = array(
 //	    'status'	=> '',
 //	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
 //	),
+	array(
+	    'data'	=> '2015-07-09',
+	    'status'	=> '',
+	    'opis'	=> 'kilka drobnych poprawek, rozbudowa systemu do obsługi wtyczek',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka DB dla Jambox\'a',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'rozbudowa systemu obsługi wtyczek',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka dla preg_replace ( PHP 5.5 )',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'w karcie komputera doszło pole NAS, można powiązać komputer z rzeczywistym NAS który autoryzuje urządzenie klienta',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'kolejnych kilka drobnych poprawek',
+	),
+	array(
+	    'data'	=> '2015-06-22',
+	    'status'	=> '',
+	    'opis'	=> 'kilka drobnych zmian i poprawek :-)',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka błędu przy nadawaniu publicznych adresów IP',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano skróty klawiszowe przy edycji / dodawaniu, F2 -> zapisz , ESC -> anuluj',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'Dodano skrót klawiszowy : F9 -> ukrycie / pokazanie menu ',
+	),
 	array(
 	    'data'	=> '',
 	    'status'	=> '',

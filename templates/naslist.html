@@ -1,0 +1,37 @@
+{include file="header.html"}
+
+{title value=$layout.pagetitle}
+
+{if !$naslist}
+<p>Brak zdefiniowanych urządzeń NAS</p>
+{/if}
+
+<table width="100%" cellpadding="4" cellspacing="0">
+
+    <tr class="dark">
+	<td width="30%" nowrap class="fleftu pad"><b>Interfejs Sieciowy</td>
+	<td width="30%" nowrap class="fbt fleft pad10" align="left"><b>NAS</b></td>
+	<td width="38%" nowrap class="fbt fleft pad10" align="left"><b>Węzeł</b></td>
+	<td width="1%" nowrap class="fbt fleft pad10" align="center"><b>IP</b></td>
+	<td width="1%" nowrap class="frightu fleft pad10" align="center"><b>Komputerów</b></td>
+    </tr>
+    {cycle values="lucid,light" print=false}
+    {section name='naslist' loop=$naslist}
+    <tr class="{cycle} list"  onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+	<td width="30%" nowrap class="fleft pad"><a href="?m=netdevinfo&id={$naslist[naslist].netdevid}"><b>{$naslist[naslist].netdevname}</b></a><br>{$naslist[naslist].location}</td>
+	<td width="30%" nowrap class="fleft pad10" align="left"><a href="?m=netdevinfo&id={$naslist[naslist].netdevid}&ip={$naslist[naslist].nodeid}">{$naslist[naslist].name}</a></td>
+	<td width="38%" nowrap class="fleft pad10" align="left">
+	{if $naslist[naslist].wezel}
+	    <a href="?m=networknodeinfo&idn={$naslist[naslist].networknodeid}">{$naslist[naslist].wezel}</a>
+	{/if}
+	</td>
+	<td width="1%" nowrap class="fleft pad10" align="right">{$naslist[naslist].ipaddr}</td>
+	<td width="1%" nowrap class="fright fleft pad10" align="center">
+	<a href="?m=nodelist&page=1&s=&n=&ng=&g=&nas={$naslist[naslist].nodeid}">
+	    &laquo;&nbsp;{$naslist[naslist].connect}&nbsp;&raquo;</a>
+	</td>
+    </tr>
+    {/section}
+</table>
+
+{include file="footer.html"}

@@ -192,8 +192,8 @@
 	</tr>
 	<tr class="light">
 		<td class="fbottomu" align="right" colspan="3">
-			<a href="javascript:document.account.submit();" accesskey="s">{trans("Submit")} <img src="img/save.gif" alt=""></a>
-			<a href="?m=accountlist">{trans("Cancel")} <img src="img/cancel.gif" alt=""></a><br>
+			<a href="javascript:document.account.submit();" accesskey="s">{trans("Submit")} [ F2 ]<img src="img/save.gif" alt=""></a>&nbsp;&nbsp;
+			<a href="?m=accountlist">{trans("Cancel")} [ ESC ]<img src="img/cancel.gif" alt=""></a><br>
 			<input type="checkbox" name="account[reuse]" id="account_reuse" value="ON" {if $account.reuse}checked{/if}><label for="account_reuse">{trans("Display this form again, when this account is saved")}</label>
 		</td>
 	</tr>
@@ -201,6 +201,14 @@
 </form>
 <script type="text/javascript">
 <!--
+    keyPressF2 = function() {
+	document.account.submit();
+    }
+    
+    keyPressESC = function() {
+	self.location.href='?m=accountlist';
+    }
+    
 var cal1 = new calendar(document.forms['account'].elements['account[expdate]']);
 cal1.time_comp = false;
 document.forms['account'].elements['account[login]'].focus();

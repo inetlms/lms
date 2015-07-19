@@ -23,7 +23,10 @@
 
 $DB->BeginTrans();
 
+if (!$DB->GetOne("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND TABLE_NAME = ? AND COLUMN_NAME = ? ;",
+array($DB->_dbname,'documentcontents','url'))) 
 $DB->Execute("ALTER TABLE documentcontents ADD url TEXT NOT NULL DEFAULT '';");
+
 $DB->Execute("UPDATE dbinfo SET keyvalue = ? WHERE keytype = ?", array('2015013100', 'dbvex'));
 
 $DB->CommitTrans();

@@ -168,6 +168,8 @@ $DEFAULTS = array(
 		'car_eventdic' 			=> '1',// zdarzenia tylko ze słownika dla pojazdów
 	),
 	'phpui' => array(
+		'viewtip'			=> '1',
+		'viewtiptime'			=> '5',
 		'networknode_pagelimit'		=> '50',
 		'gethostbyaddr'			=> '1',
 		'default_division' 		=> '0',
@@ -466,6 +468,10 @@ $DEFAULTFORM = array(
 		'gps'		=> array(1,'współrzędne GPS'),
 		'auth'		=> array(1,'autoryzacja czasowa komputera'),
 		'info'		=> array(1,'okno na dodatkową informację'),
+		'pppoe'		=> array(1,'klient PPPoE'),
+		'dhcp'		=> array(1,'klient DHCP'),
+		'eap'		=> array(1,'klient EAP'),
+		'nas'		=> array(1,'informacja do którego NAS jest przypisany komputer'),
     ),
     'customers'	=> array(
 		'origin'	=> array(1,'źródło pochodzenia klienta'),
@@ -604,6 +610,14 @@ function required_form($name, $default = 1)
     else
 	return FALSE;
 
+}
+
+function check_xajax() {
+    global $LMS;
+    if ($LMS->loadxajax == TRUE)
+	return TRUE;
+    else
+	return FALSE;
 }
 
 
