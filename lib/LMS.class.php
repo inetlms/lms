@@ -6286,6 +6286,38 @@ class LMS {
 
 				return MSG_NEW;
 				break;
+			case 'asterisk_manager':
+                                $timeout = "10";
+                                $errno=0 ;
+                                $errstr=0 ;
+                                $wrets='';
+                                $message = str_replace("\x20\x0a", "\r", $message);
+                                $message = str_replace("\x0a", "\r", $message);
+                                $sconn = fsockopen ( get_conf('sms.asterisk_host'),  get_conf('sms.asterisk_port'), $errno, $errstr, $timeout) or die("Connection to $strhost:$strport failed");
+                                if (!$sconn) {
+                                    echo "$errstr ($errno)<br>\n";
+                                    return FALSE;
+                                    }
+                                else {
+                                        fputs ($sconn, "Action: login\r\n");
+                                        fputs ($sconn, "Username: ".get_conf('sms.asterisk_login')."\r\n");
+                                        fputs ($sconn, "Secret: ".get_conf('sms.asterisk_passwd')."\r\n\r\n");
+                                        $wrets = fread($sconn, 4096);
+                                        $wrets .= fread($sconn, 4096);
+                                        $wrets .= fread($sconn, 4096);
+                                        fputs ($sconn, get_conf('sms.asterisk_action')."\r\n");
+                                        fputs ($sconn, get_conf('sms.asterisk_command')." ".$number." \"".$message."\"\r\n\r\n");
+                                        $wrets .= fread($sconn, 4096);
+                                        fputs ($sconn, "Action: Logoff\r\n\r\n");
+                                        fclose ($sconn);
+                                    }
+                                        print($wrets);
+
+                                if (strpos($wrets, 'Response: Follows') !== FALSE)
+                                        return MSG_NEW;
+                                    else
+                                        return FALSE;
+                        break;
 			default:
 				return trans('Unknown SMS service!');
 		}
