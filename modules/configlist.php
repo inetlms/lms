@@ -897,6 +897,30 @@ function GetConfigList($order='var,asc', $section='', $search='')
 						$config[$idx]['description'] = 'Kodowanie wiadomości smstools (UTF8, UCS2). DEF.: UCS2';
 					break;
 					
+                                        case 'asterisk_host':
+                                                $config[$idx]['description'] = 'Adres managera asteriska.';
+                                        break;
+
+                                        case 'asterisk_port':
+                                                $config[$idx]['description'] = 'Port managera asteriska.';
+                                        break;
+
+                                        case 'asterisk_login':
+                                                $config[$idx]['description'] = 'Login managera asteriska.';
+                                        break;
+
+                                        case 'asterisk_passwd':
+                                                $config[$idx]['description'] = 'Hasło managera asteriska.';
+                                        break;
+
+                                        case 'asterisk_action':
+                                                $config[$idx]['description'] = 'Action managera asteriska. DEF.: Action: smscommand';
+                                        break;
+
+                                        case 'asterisk_command':
+                                                $config[$idx]['description'] = 'Command managera asteriska. DEF.: command: gsm send sms 2';
+                                        break;
+
 					default:
 						$config[$idx]['description'] = trans('Unknown option. No description.');
 					break;
