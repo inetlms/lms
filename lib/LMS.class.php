@@ -3247,6 +3247,7 @@ class LMS {
 						$tariffid = 0;
 						$period = DISPOSABLE;
 						$at = $datefrom;
+                                                $promo_discount = 0;
 					} else {
 						continue;
 					}
@@ -3267,16 +3268,16 @@ class LMS {
 					$cday = 0;
 
 					// Find tariff with specified name+value+period...
-					$tariffid = $this->DB->GetOne('SELECT id FROM tariffs
-                        WHERE name = ? AND value = ? AND period = ?
+					$tariffid = $this->DB->GetOne('SELECT id, value FROM tariffs
+                        WHERE name = ?  AND period = ?
                         LIMIT 1', array(
 							$tariff['name'],
-							str_replace(',', '.', $value),
+							
 							$tariff['period'],
 							));
 
 					// ... if not found clone tariff
-					if (!$tariffid) {
+/*					if (!$tariffid) {
 						$this->DB->Execute('INSERT INTO tariffs (name, value, period,
                             taxid, type, upceil, downceil, uprate, downrate,
                             prodid, plimit, climit, dlimit, upceil_n, downceil_n, uprate_n, downrate_n,
@@ -3293,9 +3294,13 @@ class LMS {
 								$tariff['id'],
 						));
 						$tariffid = $this->DB->GetLastInsertId('tariffs');
-					}
+					} 
+ */
+                                $basic_value = $tariff['value'];
+                                $promo_value = str_replace(',', '.', $value);
+                                $promo_discount = $basic_value - $promo_value;
 				}
-
+                                
 				// Create assignment
 				$this->DB->Execute('INSERT INTO assignments (tariffid, customerid, period, at, invoice,
 					    settlement, numberplanid, paytype, datefrom, dateto, pdiscount, vdiscount, liabilityid)
@@ -3310,7 +3315,7 @@ class LMS {
 						$idx ? $datefrom : 0,
 						$idx ? $dateto : 0,
 						0,
-						0,
+						$promo_discount,
 						$lid,
 				));
 
@@ -3322,11 +3327,11 @@ class LMS {
 
 			// add "after promotion" tariff(s)
 			if ($tariff['continuation'] || !$data_schema[0]) {
-				$tariffs[] = $tariff['id'];
+				
 				if ($tariff['ctariffid'] && $data_schema[0] != 0) {
 					$tariffs[] = $tariff['ctariffid'];
 				}
-
+                                else $tariffs[] = $tariff['id'];
 				// Create assignments
 				foreach ($tariffs as $t) {
 					$this->DB->Execute('INSERT INTO assignments (tariffid, customerid, period, at, invoice,

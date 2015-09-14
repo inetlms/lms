@@ -42,6 +42,12 @@ $changelog = array(
 //	    'status'	=> '',
 //	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
 //	),
+    	array(
+	    'data'	=> '2015-09-14',
+	    'status'	=> '',
+	    'opis'	=> 'Zmieniono zasadę działania promocji.',
+	),
+    
 	array(
 	    'data'	=> '2015-07-09',
 	    'status'	=> '',
