@@ -17,7 +17,9 @@ class PLUG {
 	);
 	
 	var $_section_links = array(
-	    'customer',
+	    'customerinfo',
+	    'customeredit',
+	    'customeradd',
 	    'nodeinfo', // komputer klienta
 	    'nodeedit', // komputer klienta
 	    'nodeadd',  // ---"---
@@ -62,7 +64,7 @@ class PLUG {
 			if (version_compare($__info['minversion'],LMSV) != '1')
 			    $_pluglist[] = $tmp[$i]['name'];
 			else
-			    $SESSION->addWarning('Wtyczka <b>'.$__info['display'].'</b> nie została uruchomiona, iNET LMS nie spełnia wymaganej wersji');
+			    $SESSION->addWarning('Wtyczka <b>'.$__info['display'].'</b> nie została uruchomiona, iLMS nie spełnia wymaganej wersji');
 		    }
 		}
 	    }

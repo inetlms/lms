@@ -687,6 +687,12 @@
 	</tr>
 	<tr class="light">
 		<td width="100%" class="FBOTTOMU" align="right">
+			{if $pluglinks.customeredit}
+			    {assign var='linkcustomeredit' value=$pluglinks.customeredit}
+			    {section name='linkcustomeredit' loop=$linkcustomeredit}
+				&nbsp;&nbsp;{$linkcustomeredit[linkcustomeredit]}
+			    {/section}
+			{/if}
 			<a href="javascript:document.customeredit.submit();">{trans("Submit")} [ F2 ]<img src="img/save.gif" alt=""></a>&nbsp;&nbsp;
 			<a href="?m=customerinfo&id={$customerinfo.id}">{trans("Cancel")} [ ESC ]<img src="img/cancel.gif" alt=""></a>
 		</td>

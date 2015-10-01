@@ -428,6 +428,12 @@
 				<a href="?m=customeredit&id={$customerinfo.id}&action=recover">{trans("Restore")} <img src="img/recover.gif" alt="[ {trans("Restore")} ]"></a>
 			{else}
 				<nobr>
+				{if $pluglinks.customerinfo}
+				    {assign var='linkcustomerinfo' value=$pluglinks.customerinfo}
+				    {section name='linkcustomerinfo' loop=$linkcustomerinfo}
+					&nbsp;&nbsp;{$linkcustomerinfo[linkcustomerinfo]}
+				    {/section}
+				{/if}
 				{if check_modules(82) && get_conf('voip.enabled','0')}
 				{if ! $isvoip and $smarty.get.m|truncate:2:"" neq 'v_'}
 					<a href="?m=v_export&id={$customerinfo.id}" {tip text="Kliknij aby klient mógł korzystać z VoIP Nettelekomu"}>Eksport do VOIP</a> <img src="img/voip.gif"></a> 

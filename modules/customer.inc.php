@@ -78,9 +78,27 @@ if(!empty($documents))
 if ($_pluginc['customer']) {
     
     $inclist = $_pluginc['customer'];
-    for ($i=0; $i<sizeof($inclist); $i++)
-	@include($inclist[$i]['modfile']);
+    for ($i=0; $i<sizeof($inclist); $i++) {
+	if ($inclist[$i]['modfile'])
+	    @include($inclist[$i]['modfile']);
+    }
 }
+
+if ($_pluglinks['customerinfo']) {
+    for ($i=0; $i<sizeof($_pluglinks['customerinfo']);$i++)
+	$_pluglinks['customerinfo'][$i] = str_replace('[customerid]',$customerid,$_pluglinks['customerinfo'][$i]);
+}
+
+if ($_pluglinks['customeredit']) {
+    for ($i=0; $i<sizeof($_pluglinks['customeradd']);$i++)
+	$_pluglinks['customeradd'][$i] = str_replace('[customerid]',$customerid,$_pluglinks['customeradd'][$i]);
+}
+
+if ($_pluglinks['customeradd']) {
+    for ($i=0; $i<sizeof($_pluglinks['customeredit']);$i++)
+	$_pluglinks['customeredit'][$i] = str_replace('[customerid]',$customerid,$_pluglinks['customeredit'][$i]);
+}
+
 
 
 $SMARTY->assign(array(

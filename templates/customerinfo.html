@@ -142,7 +142,7 @@
 		{if $plik}
 		<tr>
 		    <td width="100%">
-			{include file=$plik}
+			{if $plik}{include file=$plik}{/if}
 		    </td>
 		</tr>
 		{/if}

@@ -97,6 +97,12 @@ if ($authtype != 0) {
 	$nodeauthtype['eap'] = ($authtype & 4);
 }
 
+if ($_pluglinks['nodeedit']) {
+    for ($i=0; $i<sizeof($_pluglinks['nodeedit']); $i++)
+	$_pluglinks['nodeedit'][$i] = str_replace('[nodeid]',$nodeid,$_pluglinks['nodeedit'][$i]);
+}
+
+
 if (isset($_POST['nodeedit'])) {
 	$nodeedit = $_POST['nodeedit'];
 	

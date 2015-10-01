@@ -143,7 +143,7 @@
 		{assign var='plik' value=$inclist[inclist].htmlfile}
 		<tr>
 		    <td width="100%">
-			{include file=$plik}
+			{if $plik}{include file=$plik}{/if}
 		    </td>
 		</tr>
 	    {/section}

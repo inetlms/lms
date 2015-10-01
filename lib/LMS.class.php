@@ -3738,7 +3738,7 @@ class LMS {
 			$result['totaltax'] = 0;
 			$result['total'] = 0;
 			
-			if ($firma = $this->DB->getrow('SELECT shortname,name,address,city,zip,ten,account,inv_header,inv_footer,inv_author,inv_cplace 
+			if ($result['version'] != '2' && $firma = $this->DB->getrow('SELECT shortname,name,address,city,zip,ten,account,inv_header,inv_footer,inv_author,inv_cplace 
 				FROM divisions WHERE id = ? LIMIT 1;',array($result['divisionid'])))
 			{
 			    if (empty($result['division_name'])) $result['division_name'] = $firma['name'];
@@ -3762,7 +3762,8 @@ class LMS {
 						. $result['division_address'] . "\n" . $result['division_zip'] . ' ' . $result['division_city']
 						. ($result['division_countryid'] && $result['countryid']
 						&& $result['division_countryid'] != $result['countryid'] ? "\n" . trans($this->GetCountryName($result['division_countryid'])) : '')
-						. ($result['division_ten'] != '' ? "\n" . trans('TEN') . ' ' . $result['division_ten'] : '');
+						. ($result['division_ten'] != '' ? "\n" . trans('TEN') . ' ' . $result['division_ten'] : '')
+						. ($result['account'] != '' ? "\n"."Nr konta: ".format_bankaccount(bankaccount($result['customerid'],$result['account'])) : '');
 
 			if ($result['content'] = $this->DB->GetAll('SELECT invoicecontents.value AS value, 
 						itemid, taxid, taxes.value AS taxvalue, taxes.label AS taxlabel, 
