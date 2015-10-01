@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  iNET LMS
+ *  iLMS
  *
  *  (C) Copyright 2001-2012 LMS Developers
  *
@@ -383,7 +383,7 @@ function invoice_title_v2() {
 		if ($invoice['type'] == DOC_INVOICE_PRO)
 		    $title = 'Faktura Proforma nr '.$docnumber;
 		else
-		    $title = 'Faktura nr '.$docnumber;
+		    $title = 'Faktura'.($invoice['cdate']  < 1441745849 ? ' ' : ' VAT ').'nr '.$docnumber;
 	}
 	$pdf->Write(0, $title, '', 0, 'L', true, 0, false, false, 0);
 
@@ -398,7 +398,7 @@ function invoice_title_v2() {
 		    
 		    $title = 'do Faktury Proformy nr '.$docnumber;
 		else
-		    $title = 'do Faktury nr '.$docnumber;
+		    $title = 'do Faktury'.($invoice['cdate']  < 1441745849 ? ' ' : ' VAT ').'nr '.$docnumber;
 		
 		$pdf->Write(0, $title, '', 0, 'L', true, 0, false, false, 0);
 	}
@@ -535,7 +535,6 @@ function invoice_expositor_v2() {
 
 function invoice_footnote_v2() {
 	global $pdf, $invoice;
-	
 	if (!empty($invoice['division_footer'])) {
 		$pdf->Ln(5);
 		$tmp = $invoice['division_footer'];
@@ -546,7 +545,10 @@ function invoice_footnote_v2() {
 		$pdf->SetFont('arial', '', 7);
 		$h = $pdf->getStringHeight(0, $tmp);
 		$tmp = mb_ereg_replace('\r?\n', '<br>', $tmp);
-		$pdf->writeHTMLCell(0, 0, '', 188 - $h, $tmp, 0, 1, 0, true, 'C');
+		if ($invoice['templatefile']=='standard')
+		    $pdf->writeHTMLCell(0, 0, '', '', $tmp, 0, 1, 0, true, 'C');
+		else
+		    $pdf->writeHTMLCell(0, 0, '', 188 - $h, $tmp, 0, 1, 0, true, 'C');
 	}
 }
 

@@ -60,6 +60,12 @@ if (!$LMS->NodeExists($nodeid)) {
 		$SESSION->redirect('?m=nodelist');
 }
 
+if ($_pluglinks['nodeinfo']) {
+    for ($i=0; $i<sizeof($_pluglinks['nodeinfo']); $i++)
+	$_pluglinks['nodeinfo'][$i] = str_replace('[nodeid]',$nodeid,$_pluglinks['nodeinfo'][$i]);
+}
+
+
 if (isset($_GET['devid'])) {
 	$error['netdev'] = trans('It scans for free ports in selected device!');
 	$SMARTY->assign('error', $error);

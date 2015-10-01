@@ -42,6 +42,21 @@ $changelog = array(
 //	    'status'	=> '',
 //	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
 //	),
+	array(
+	    'data'	=> '2015-10-01',
+	    'status'	=> '',
+	    'opis'	=> 'update obsługi wtyczek',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka generowania faktur pdf w wersji 2',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka ścieżek w ZEND',
+	),
     	array(
 	    'data'	=> '2015-09-14',
 	    'status'	=> '',

@@ -719,9 +719,9 @@
 	{if $pluglinks.nodeinfo}
 	<tr class="dark nav-footer nav-footer-bordertop">
 	    <td style="width: 100%; text-align: right;" class="ftopu" colspan="3">
-	    {assign var='linki' value=$pluglinks.nodeinfo}
-	    {section name='linki' loop=$linki}
-		&nbsp;&nbsp;{$linki[linki]}
+	    {assign var='linknodeinfo' value=$pluglinks.nodeinfo}
+	    {section name='linknodeinfo' loop=$linknodeinfo}
+		&nbsp;&nbsp;{$linknodeinfo[linknodeinfo]}
 	    {/section}
 	    </td>
 	</tr>

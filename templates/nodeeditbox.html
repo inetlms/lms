@@ -530,9 +530,9 @@
 	{if $pluglinks.nodeedit}
 	<tr class="dark nav-footer nav-footer-bordertop">
 		<td style="width: 100%; text-align: right;" class="ftopu" colspan="3">
-		{assign var='linki' value=$pluglinks.nodeedit}
-		{section name='linki' loop=$linki}
-		    &nbsp;&nbsp;{$linki[linki]}
+		{assign var='linknodeedit' value=$pluglinks.nodeedit}
+		{section name='linknodeedit' loop=$linknodeedit}
+		    &nbsp;&nbsp;{$linknodeedit[linknodeedit]}
 		{/section}
 		</td>
 	</tr>
