@@ -26,7 +26,7 @@ $DB->BeginTrans();
 $DB->Execute("DROP VIEW IF EXISTS customersview;");
 $DB->Execute("DROP VIEW IF EXISTS contractorview;");
 
-$DB->Execute("ALTER TABLE customers ALTER COLUMN tv_cus_number TYPE VARCHAR(20);");
+$DB->Execute("ALTER TABLE customers ALTER COLUMN tv_cust_number TYPE VARCHAR(20);");
 
 $DB->Execute("
     CREATE VIEW customersview AS

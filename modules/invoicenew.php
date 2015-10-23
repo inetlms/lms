@@ -284,6 +284,12 @@ switch($action)
 				}
 			}
 		}
+
+		if (!$error)
+			$invoice['init_header'] = 1;
+		else
+			$invoice['init_header'] = NULL;
+
 	break;
 
 	case 'save':

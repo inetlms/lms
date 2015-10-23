@@ -27,6 +27,7 @@
  *
 */
 
+exec("beep");
 $taxeslist = $LMS->GetTaxes();
 $currtime=time();
 

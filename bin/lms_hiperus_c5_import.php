@@ -369,8 +369,92 @@ BILINGI - droga cierniowa :)
 		case 'leftmonth' : $from = date('Y-m-d',mktime(0,0,0,date('m')-1,1,date('Y'))); $to = date('Y-m-t',mktime(0,0,0,date('m')-1,1,date('Y'))); break;
 	    }
 	}
-	if (!$quiet) fwrite(STDOUT,"Pobieram biling od dnia : ".$from." do ".$to."\n");
-	$HIPERUS->ImportBilling($from,$to,$option['b_success'],$option['b_type'],NULL,$quiet);
+	if (!$quiet) print("Pobieram biling od dnia : ".$from." do ".$to."\n");
+	
+	$bill = array();
+	
+	if (!$quiet) print("Download incoming : ");
+	sleep(2);
+	$incoming = HiperusActions::Getbilling($from,$to,null,null,false,null,'incoming');
+	if (!$quiet) print(sizeof($incoming)."\n");
+
+	if (!$quiet) print("Download outgoing : ");
+	sleep(2);
+	$outgoing = HiperusActions::Getbilling($from,$to,null,null,false,null,'outgoing');
+	if (!$quiet) print(sizeof($outgoing)."\n");
+	
+	if (!$quiet) print("Download disa : ");
+	sleep(2);
+	$disa = HiperusActions::Getbilling($from,$to,null,null,false,null,'disa');
+	if (!$quiet) print(sizeof($disa)."\n");
+	
+	if (!$quiet) print("Download forwarded : ");
+	sleep(2);
+	$forwarded = HiperusActions::Getbilling($from,$to,null,null,false,null,'forwarded');
+	if (!$quiet) print(sizeof($forwarded)."\n");
+	
+	if (!$quiet) print("Download internal : ");
+	sleep(2);
+	$internal = HiperusActions::Getbilling($from,$to,null,null,false,null,'internal');
+	if (!$quiet) print(sizeof($internal)."\n");
+	
+	if (!$quiet) print("Download vpbx : ");
+	sleep(2);
+	$vpbx = HiperusActions::Getbilling($from,$to,null,null,false,null,'vpbx');
+	if (!$quiet) print(sizeof($vpbx)."\n");
+	
+	$bill = array_merge($incoming,$outgoing,$disa,$forwarded,$internal,$vpbx);
+	$ter = array();
+	
+	$DB->BeginTrans();
+	for ($i=0; $i<sizeof($bill); $i++) {
+	    
+	    if (!isset($ter[$bill[$i]['id_terminal_in']])) {
+		$cusid = $DB->GetOne('SELECT customerid FROM hv_terminal WHERE id = ? LIMIT 1;',array($bill[$i]['id_terminal_in']));
+		$ter[$bill[$i]['id_terminal_in']] = ($cusid ? $cusid : NULL);
+	    }
+	
+	    $bill[$i]['customerid'] = $ter[$bill[$i]['id_terminal_in']];
+	    
+	    if (!$DB->GetOne('SELECT 1 FROM hv_billing WHERE id = ? LIMIT 1;',array($bill[$i]['id']))) {
+	    
+		$DB->Execute('INSERT INTO hv_billing (id,customerid,rel_cause,start_time,start_time_unix,customer_name,terminal_name,ext_billing_id,caller,bill_cpb,duration,calltype,
+		    country,description,operator,type,cost,price,init_charge,reseller_price,reseller_cost,reseller_init_charge,margin,subscription_used,platform_type,success_call) 
+		    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ;',
+		    array(
+			$bill[$i]['id'],
+			$bill[$i]['customerid'],
+			$bill[$i]['rel_cause'],
+			$bill[$i]['start_time'],
+			strtotime($bill[$i]['start_time']),
+			$bill[$i]['customer_name'],
+			(!empty($bill[$i]['terminal_name']) ? $bill[$i]['terminal_name'] : NULL), 
+			(!empty($bill[$i]['ext_billing_id']) ? $bill[$i]['ext_billing_id'] : 0),
+			(!empty($bill[$i]['caller']) ? $bill[$i]['caller'] : NULL),
+			(!empty($bill[$i]['bill_cpb']) ? $bill[$i]['bill_cpb'] : NULL),
+			(!empty($bill[$i]['duration']) ? $bill[$i]['duration'] : 0),
+			(!empty($bill[$i]['calltype']) ? $bill[$i]['calltype'] : NULL),
+			(!empty($bill[$i]['country']) ? $bill[$i]['country'] : NULL),
+			(!empty($bill[$i]['description']) ? $bill[$i]['description'] : NULL),
+			(!empty($bill[$i]['operator']) ? $bill[$i]['operator'] : NULL),
+			(!empty($bill[$i]['type']) ? $bill[$i]['type'] : NULL),
+			(!empty($bill[$i]['cost']) ? $bill[$i]['cost'] : 0),
+			(!empty($bill[$i]['price']) ? $bill[$i]['price'] : 0),
+			(!empty($bill[$i]['init_charge']) ? $bill[$i]['init_charge'] : 0),
+			(!empty($bill[$i]['reseller_price']) ? $bill[$i]['reseller_price'] : 0),
+			(!empty($bill[$i]['reseller_cost']) ? $bill[$i]['reseller_cost'] : 0),
+			(!empty($bill[$i]['reseller_init_charge']) ? $bill[$i]['reseller_init_charge'] : 0),
+			(!empty($bill[$i]['margin']) ? $bill[$i]['margin'] : 0),
+			$bill[$i]['subscription_used'],
+			(!empty($bill[$i]['platform_type']) ? $bill[$i]['platform_type'] : NULL),
+			(!empty($bill[$i]['duration']) ? 't' : 'f'),
+		    )
+		);
+	    
+	    } // end add db
+	}
+	$DB->CommitTrans();
+	
     }
     if ($option['config']) $HIPERUS->GetConfigHiperus();
 ?>

@@ -247,4 +247,6 @@ for ($i=0; $i<$count_u; $i++)
     unset($userlist);
     unset($curl);
     unset($result);
+    
+    @unlink(COOKIE_FILE);
 ?>
