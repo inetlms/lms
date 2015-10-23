@@ -384,25 +384,25 @@ BILINGI - droga cierniowa :)
 	if (!$quiet) print(sizeof($outgoing)."\n");
 	
 	if (!$quiet) print("Download disa : ");
-	sleep(2);
+	sleep(3);
 	$disa = HiperusActions::Getbilling($from,$to,null,null,false,null,'disa');
 	if (!$quiet) print(sizeof($disa)."\n");
 	
 	if (!$quiet) print("Download forwarded : ");
-	sleep(2);
+	sleep(3);
 	$forwarded = HiperusActions::Getbilling($from,$to,null,null,false,null,'forwarded');
 	if (!$quiet) print(sizeof($forwarded)."\n");
 	
 	if (!$quiet) print("Download internal : ");
-	sleep(2);
+	sleep(3);
 	$internal = HiperusActions::Getbilling($from,$to,null,null,false,null,'internal');
 	if (!$quiet) print(sizeof($internal)."\n");
 	
 	if (!$quiet) print("Download vpbx : ");
-	sleep(2);
+	sleep(3);
 	$vpbx = HiperusActions::Getbilling($from,$to,null,null,false,null,'vpbx');
 	if (!$quiet) print(sizeof($vpbx)."\n");
-	
+	sleep(5);
 	$bill = array_merge($incoming,$outgoing,$disa,$forwarded,$internal,$vpbx);
 	$ter = array();
 	
