@@ -260,10 +260,16 @@ BILINGI - droga cierniowa :)
 	$HIPERUS->ImportCustomersList();
 	dberr();
     }
+
+
+
     // pobranie listy zaimportowanych kont VoIP
     $cus=$DB->GetAll('SELECT id, create_date FROM hv_customers ORDER BY id ASC ');
     $cus_count=count($cus);
     dberr();
+
+
+
     // Pobranie listy terminali
     if( ( $option['all'] || $option['terminal'] ) && $cus_count !==0 )
     {
@@ -275,6 +281,9 @@ BILINGI - droga cierniowa :)
 	if ( !$quiet ) fwrite(STDOUT,"Pobieram liste terminali\n");
 	$HIPERUS->ImportTerminalList();
     }
+
+
+
     // pobranie informacji o numerach PSTN
     if ( ($option['all'] || $option['pstn']) && $cus_count!==0 )
     {
@@ -290,6 +299,9 @@ BILINGI - droga cierniowa :)
 	$HIPERUS->ImportPSTNRangeList();
 	$HIPERUS->ImportPSTNUsageList();
     }
+
+
+
     // informacje o użytkownikach koncowych panelu klienta
     if( ($option['all'] || $option['enduser'] ) && $cus_count!==0 )
     {
@@ -301,6 +313,8 @@ BILINGI - droga cierniowa :)
 	if(!$quiet)fwrite(STDOUT,"Pobieram liste uzytkownikow panelu koncowego klienta\n");
 	$HIPERUS->ImportEndUserList();
     }
+    
+    
     // informacje o cennikach
     if ( $option['all'] || $option['price'] )
     {
@@ -323,6 +337,8 @@ BILINGI - droga cierniowa :)
 	if (!$quiet) fwrite(STDOUT,"Pobieram liste abonamentow zdefiniowanych przez resllera\n");
 	$HIPERUS->ImportSubscriptionList();
     }
+    
+    
     //if ($option['billing'] || $option['billing-file'])
     if ($option['billing'])
     {
