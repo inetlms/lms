@@ -35,6 +35,8 @@ if (!isset($CONFIG_FILE))
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
+define('LMSV','15.10.26');
+define('LMSR','iNET LMS');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 
 // find alternative config files:
@@ -170,6 +172,7 @@ require_once(LIB_DIR.'/Session.class.php');
 require_once(LIB_DIR.'/GaduGadu.class.php');
 require_once(LIB_DIR.'/LMS.Hiperus.class.php');
 require_once(LIB_DIR.'/RADIUS.class.php');
+require_once(LIB_DIR.'/LMS.PLUG.class.php');
 
 $AUTH = NULL;
 
@@ -189,6 +192,33 @@ $currenttime = time(); // akualny czas
 
 
 include(LIB_DIR.'/smarty_addons.php');
+
+$SMARTY->setTemplateDir(NULL);
+$SMARTY->addTemplateDir(
+	array(
+	    SMARTY_TEMPLATES_DIR.'/custom',
+	    SMARTY_TEMPLATES_DIR
+	)
+);
+$SMARTY->compile_dir = SMARTY_COMPILE_DIR;
+$SMARTY->debugging = (isset($CONFIG['phpui']['smarty_debug']) ? chkconfig($CONFIG['phpui']['smarty_debug']) : FALSE);
+$SMARTY->compile_check = true;
+$SMARTY->force_compile = true;
+$SMARTY->use_sub_dirs = TRUE;
+//$SMARTY->error_reporting = false;
+$SMARTY->error_unassigned = false;
+$my_security_policy = new Smarty_Security($SMARTY);
+$my_security_policy->allow_php_tag = true;
+$my_security_policy->php_functions = array();
+$my_security_policy->php_handling = Smarty::PHP_PASSTHRU;
+$my_security_policy->php_modifier = array();
+$my_security_policy->modifiers = array();
+$SMARTY->assignByRef('layout', $layout);
+$SMARTY->assignByRef('LANGDEFS', $LANGDEFS);
+$SMARTY->assignByRef('_ui_language', $LMS->ui_lang);
+$SMARTY->assignByRef('_language', $LMS->lang);
+$SMARTY->assignByRef('global_warning',$SESSION->global_warning);
+
 
 if (get_conf('registryequipment.enabled')) {
 	require_once(LIB_DIR.'/Registry.Equipment.class.php');
@@ -214,5 +244,44 @@ if(get_conf('voip.enabled','0') )
 if (get_conf('sms.service') == 'serwersms') {
     require_once(LIB_DIR.'/SerwerSMS_api.php');
 }
+
+$error = NULL; // initialize error variable needed for (almost) all modules
+
+header('X-Powered-By: iLMS/'.$layout['lmsv']);
+
+$PLUG->initPlugins();
+$PLUG->updateDBPlugins();
+$PLUG->IncludeRegisterHook();
+
+$_plugcount = sizeof($_pluglist);
+
+if ($_plugcount > 0) 
+{
+    
+    for ($i=0; $i<$_plugcount; $i++) 
+    {
+	
+	if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/lang/'.$LMS->lang.'.php'))
+	    require_once(PLUG_DIR.'/'.$_pluglist[$i].'/lang/'.$LMS->lang.'.php');
+	
+	if (file_exists(PLUG_DIR.'/'.$_pluglist[$i].'/inc.php'))
+	    require_once(PLUG_DIR.'/'.$_pluglist[$i].'/inc.php');
+	
+	if (is_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes')) 
+	{
+	    $phpfile = $PLUG->list_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes','php');
+	    $jsfile = $PLUG->list_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes','js');
+	    $cssfile = $PLUG->list_dir(PLUG_DIR.'/'.$_pluglist[$i].'/includes','css');
+	    for ($j=0; $j<sizeof($phpfile); $j++) require_once(PLUG_DIR.'/'.$_pluglist[$i].'/includes/'.$phpfile[$j]);
+	    for ($j=0; $j<sizeof($jsfile); $j++) $layout['includesjs'][] = 'plug/'.$_pluglist[$i].'/includes/'.$jsfile[$j];
+	    for ($j=0; $j<sizeof($cssfile); $j++) $layout['includescss'][] = 'plug/'.$_pluglist[$i].'/includes/'.$cssfile[$j];
+	}
+
+    }
+    
+    if ($SMARTY)
+	$SMARTY->assignByRef('_pluginc',$_pluginc);
+}
+
 
 ?>

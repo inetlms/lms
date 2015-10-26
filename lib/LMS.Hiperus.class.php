@@ -537,7 +537,7 @@ class LMSHiperus
 	    for ($i=0;$i<$cus_count;$i++)
 	    {
 		$lista = HiperusActions::GetPSTNNumberList($cus[$i]['id']);
-		sleep(1);
+		sleep(2);
 		if (is_array($lista)) $count = count($lista); else $count=0;
 		if ($count!==0)
 		    for ($j=0;$j<$count;$j++)
@@ -638,7 +638,7 @@ class LMSHiperus
 			$this->DB->Execute('INSERT INTO hv_pstnusage (extension,number,customerid,country_code,customer_name,idrange) VALUES (?,?,?,?,?,?) ;',
 			    array($lista[$j]['extension'],$lista[$j]['number'],$customerid,$lista[$j]['country_code'],$customername,$pule[$i]['id']));
 		    }
-		sleep(1);
+		sleep(2);
 		}
     }
     
