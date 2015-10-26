@@ -61,14 +61,17 @@ class PLUG {
 		for ($i=0; $i<sizeof($tmp); $i++) {
 		    if (file_exists(PLUG_DIR.'/'.$tmp[$i]['name'].'/configuration.php')) {
 			include(PLUG_DIR.'/'.$tmp[$i]['name'].'/configuration.php');
-			if (version_compare($__info['minversion'],LMSV) != '1')
-			    $_pluglist[] = $tmp[$i]['name'];
-			else
-			    $SESSION->addWarning('Wtyczka <b>'.$__info['display'].'</b> nie została uruchomiona, iLMS nie spełnia wymaganej wersji');
+			if (isset($__info['revision']) && $__info['revision'] != 'iNET LMS') {
+			    $SESSION->addWarning('Wtyczka <b>'.$__info['display'].'</b> nie została uruchomiona, Wtyczka napisana tylko pod iLMS');
+			} else {
+			    if (version_compare($__info['minversion'],LMSV) != '1') 
+				$_pluglist[] = $tmp[$i]['name'];
+			    else 
+				$SESSION->addWarning('Wtyczka <b>'.$__info['display'].'</b> nie została uruchomiona, iNET LMS nie spełnia wymaganej wersji');
+			}
 		    }
 		}
 	    }
-	
 	}
 
 

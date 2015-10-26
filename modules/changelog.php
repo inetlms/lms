@@ -43,6 +43,11 @@ $changelog = array(
 //	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
 //	),
 	array(
+	    'data'	=> '2015-10-26',
+	    'status'	=> '',
+	    'opis'	=> 'aktualizacja obsługi wtyczek',
+	),
+	array(
 	    'data'	=> '2015-10-24',
 	    'status'	=> '',
 	    'opis'	=> 'poprawka dla Hiperus C5',

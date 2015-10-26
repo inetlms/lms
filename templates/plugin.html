@@ -10,7 +10,7 @@
 	<td width="1%" class="pad10 h24 fbt" nowrap align="right"><b>{trans('Version')}</b></td>
 	<td width="1%" class="pad10 h24 fbt" nowrap align="right"><b>{trans('Version DB')}</b></td>
 	<td width="92%" class="pad10 h24 fbt" align="left"><b>{trans('Author')}<br>{trans('E-mail')}</b></td>
-	<td width="1%" class="pad10 h24 fbt" align="center" nowrap><b>{trans('Minimum version')}<br>iNET LMS</b></td>
+	<td width="1%" class="pad10 h24 fbt" align="center" nowrap><b>{trans('Minimum version')}<br>iLMS</b></td>
 	<td width="1%" class="pad10 h24 fbt" align="center"><b>{trans('Supported<br>Databases')}</b></td>
 	
 	<td width="1%" class="pad h24 fbt" align="center"><b>{trans('Installed')}</b></td>
@@ -49,11 +49,16 @@
 	{else}
 	    {if $item.config}<a href="?plug={$item.name}&m=config" ><img src="img/options.gif" alt="[ {trans('configuration')} ]" title="[ {trans('configuration')} ]"></a>{/if}
 	    {if $item.enabled}
+		
 		<img src="img/access.gif" title="[ {trans('disable')} ]" onclick="self.location.href='?m=plugin&action=enabled&set=0&id={$item.id}';">
+		<img src="img/deleteoff.gif" {tip text="Nie można odinstalować wtyczki ponieważ jest w użyciu"}>
 	    {else}
+		
 		<img src="img/noaccess.gif" title="[ {trans('enable')} ]" onclick="self.location.href='?m=plugin&action=enabled&set=1&id={$item.id}';">
+		<a href="javascript:void(0);" onclick="self.location.href='?m=pluginun&id={$item.id}';"><img src="img/delete.gif" {tip text="Odinstaluj wtyczkę"}></a>
 	    {/if}
 	{/if}
+	    
 	</td>
     </tr>
     

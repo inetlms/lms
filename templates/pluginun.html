@@ -1,0 +1,62 @@
+{include file="header.html"}
+{title value=$layout.pagetitle color='red'}
+
+<form name="uninstall" id="uninstall" method="POST" action="?m=pluginun">
+    <input type="hidden" name="uninstall[id]" value="{$info.id}">
+    
+    <table width="100%" cellpadding="4" cellspacing="0">
+	
+	<tr class="light">
+	    <td width="1%" class="ftl pad" nowrap>
+		<input type="checkbox" name="uninstall[issure]" value="1" id="issure">
+	    </td>
+	    <td width="99%" class="ftr pad" style="font-weight:bold;text-align:left;">
+		Potwierdzam odinstalowanie wtyczki : {$info.display}
+	    </td>
+	</tr>
+	
+	{if $info.installdb}
+	<tr class="light">
+	    <td width="1%" class="fleft pad" nowrap>
+		<input type="checkbox" name="uninstall[undb]" value="1" id="undb">
+	    </td>
+	    <td width="99%" class="fright pad" style="font-weight:bold;text-align:left;">
+		Odinstaluj również strukturę bazy danych<br>
+		<font style="color:red;">UWAGA !!!</font> zostaną również skasowane wszystkie dane które są powiązane z daną wtyczką !!!
+	    </td>
+	</tr>
+	{else}
+	    <input type="hidden" name="uninstall[undb]" value="0">
+	{/if}
+
+	<tr class="dark">
+	    <td width="100%" colspan="2" class="fall pad" style="text-align:right;font-weight:bold;">
+		<a href="javascript:void(0);" onclick="potwierdz();">Zastosuj <img src="img/save.gif" alt=""></a>&nbsp;&nbsp;
+		<a href="javascript:void(0);" onclick="self.location.href='?m=plugin';">Anuluj [ ESC ] <img src="img/cancel.gif" alt=""></a>
+	    </td>
+	</tr>
+
+    </table>
+
+</form>
+
+{literal}
+    <script type="text/javascript" language="JavaScript">
+    <!--
+	
+	function potwierdz() {
+	    if (confirm('Potwierdź że wiesz co robisz')) {
+		document.uninstall.submit();
+	    } else {
+		self.location.href='?m=plugin';
+	    }
+	}
+	
+	keyPressESC = function () {
+	    self.location.href='?m=plugin';
+	}
+    //-->
+    </script>
+{/literal}
+
+{include file="footer.html"}
