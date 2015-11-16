@@ -23,7 +23,7 @@
 	<tr>
 		<td>{if check_conf('userpanel.show_tariffname')}{$assignment.name}{/if}</td>
 		<td>{$assignment.value|money_format}</td>
-		<td>{if $assignment.discount > 0}{$assignment.discount}%{/if}</td>
+		<td>{if $assignment.pdiscount != 0}{$assignment.pdiscount}%{else}{if $assignment.vdiscount != 0}{$assignment.vdiscount|money_format}{else}-{/if}{/if}</td>
 		<td>{$assignment.payday}</td>
 		{if $show_speeds}
 			<td>
