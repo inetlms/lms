@@ -6211,13 +6211,12 @@ class LMS {
 				    else
 					return trans('SMS Message too long!');
 				$param = array();
-				$param['numer'] = $number;
-				$param['wiadomosc'] = $message;
-				$param['test'] = 0;
-				if (!get_conf('sms.smsapi_eco',1) && get_conf('sms.from','')) {
-				    $param['nadawca'] = get_conf('sms.from');
-				}
-				$result = SerwerSMS::wyslij_sms($param);
+				
+				if ($messageid)
+				    $param['unique_id'] = $messageid;
+				    
+				$result = SerwerSMS::sendSMS($number,$message,$param);
+				
 				if ($result)
 				    return MSG_SENT;
 				else
