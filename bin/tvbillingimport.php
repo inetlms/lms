@@ -42,7 +42,6 @@ $end = cal_days_in_month(CAL_GREGORIAN, Date("m"), Date("Y"));
 
 $start_date = Date("Y-m-02", strtotime("last month")); 
 $end_date = Date("Y-m-".$end); 
-//$end_date = Date("Y-m-d"); 
 
 print("\n".$start_date." - ".$end_date."\n"); 
 
@@ -55,25 +54,6 @@ if (count($res)) {
 
 	foreach ($res as $key => $r){
 		try{
-		
-				/*$sql = "INSERT INTO tv_billingevent (customerid, account_id, be_selling_date, be_desc, be_vat, be_gross, be_b2b_netto, group_id, cust_number, package_id, hash, beid)
-				values (".(empty($r['cust_external_id']) ? 0 : $r['cust_external_id']).",
-				".$r['account_id'].",
-				'".$r['be_selling_date']."',
-				'".$r['be_desc']."',
-				".$r['be_vat'].",
-				".$r['be_gross'].",
-				".$r['be_b2b_netto'].",
-				".(empty($r['group_id']) ? 0 : $r['group_id']).",
-				'".$r['cust_number']."',
-				".$r['package_id'].",
-				'".md5($r['id'])."',
-				".$r['id']."); ";
-		
-				print_r($r);
-				
-				 $DB->Execute($sql); */
-		
 				 $DB->Execute('INSERT INTO tv_billingevent (customerid, account_id, be_selling_date, be_desc, be_vat, be_gross, be_b2b_netto, group_id, cust_number, package_id, hash, beid)
 						VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
 				array(
