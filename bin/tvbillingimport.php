@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 /*
  * LMS version 1.11-git
@@ -42,12 +43,13 @@ $end = cal_days_in_month(CAL_GREGORIAN, Date("m"), Date("Y"));
 $start_date = Date("Y-m-02", strtotime("last month")); 
 $end_date = Date("Y-m-".$end); 
 //$end_date = Date("Y-m-d"); 
-echo $start_date;
-echo $end_date;
+
+print("\n".$start_date." - ".$end_date."\n"); 
+
 
 $res = $LMSTV->GetBillingEvents($start_date, $end_date);
 
-print_r($res);
+//print_r($res);
 
 if (count($res)) {
 
