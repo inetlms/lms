@@ -155,7 +155,7 @@ $access['table'][49]['name']		= 'Historia adresów IP';
 $access['table'][49]['allow_reg']	= '^(iphistory)$';
 
 $access['table'][50]['name']		= 'Ewidencja pojazdów';
-$access['table'][50]['allow_reg']	= '^(re_)$';
+$access['table'][50]['allow_reg']	= '^re_*';
 
 $access['table'][51]['name']		= trans('Zarządzanie projektami');
 $access['table'][51]['allow_reg']	= '^(project(add|edit|info|del|list))$';
