@@ -24,6 +24,13 @@
  *  $Id$
  */
 
+// dlugosc listy w quicksearch
+if ($CONFIG['phpui']['quicksearch_limit'] > 0) {
+$xlimit = $CONFIG['phpui']['quicksearch_limit'];
+} else {
+$xlimit = 15;
+}
+
 function macformat($mac, $escape=false)
 {
 	global $DB;
@@ -130,7 +137,7 @@ switch($mode)
 				FROM customersview c 
 				LEFT JOIN customercontacts p ON (p.customerid = c.id) 
 				LEFT JOIN imessengers i ON (i.customerid = c.id) 
-				WHERE c.deleted=0 $sql ORDER by username, email, address LIMIT 15");
+				WHERE c.deleted=0 $sql ORDER by username, email, address LIMIT ".$xlimit."");
 			
 			
 			$eglible=array(); $actions=array(); $descriptions=array();
@@ -244,7 +251,7 @@ switch($mode)
 			
 			$candidates = $DB->getAll("SELECT id, name, location, description, producer, model, serialnumber
 				FROM netdevices
-				WHERE 1=1 $sql ORDER by name ASC LIMIT 15");
+				WHERE 1=1 $sql ORDER by name ASC LIMIT ".$xlimit."");
 			
 			$eglible=array(); $actions=array(); $descriptions=array();
 			if ($candidates)
@@ -344,7 +351,7 @@ switch($mode)
 			        INET_NTOA(ipaddr_pub) AS ip_pub, mac
 				    FROM vnodes n
 				    WHERE %where
-    				ORDER BY n.name LIMIT 15';
+    				ORDER BY n.name LIMIT '.$xlimit.'';
             else
 			    $sql_query = 'SELECT n.id, n.name, n.pppoelogin, INET_NTOA(ipaddr) as ip,
 			        INET_NTOA(ipaddr_pub) AS ip_pub, mac
@@ -355,7 +362,7 @@ switch($mode)
                         GROUP BY nodeid
                     ) m ON (n.id = m.nodeid)
 				    WHERE %where
-    				ORDER BY n.name LIMIT 15';
+    				ORDER BY n.name LIMIT '.$xlimit.'';
 
             $sql_where = '('.(preg_match('/^[0-9]+$/',$search) ? "n.id = $search OR " : '')."
 				LOWER(n.name) ?LIKE? LOWER($sql_search)
@@ -466,7 +473,7 @@ switch($mode)
 					OR LOWER(c.name) ?LIKE? LOWER($sql_search)
 					OR LOWER(c.lastname) ?LIKE? LOWER($sql_search))
 					ORDER BY t.subject, t.id, c.lastname, c.name, t.requestor
-					LIMIT 15");
+					LIMIT ".$xlimit."");
 
 			$eglible=array(); $actions=array(); $descriptions=array();
 			if ($candidates)
@@ -523,7 +530,7 @@ switch($mode)
 					WHERE a.login ?LIKE? LOWER($username)
 					".($domain ? "AND d.name ?LIKE? LOWER($domain)" : '').")
 					ORDER BY login, domain
-					LIMIT 15");
+					LIMIT ".$xlimit."");
 
 			$eglible=array(); $actions=array(); $descriptions=array();
 
@@ -565,7 +572,7 @@ switch($mode)
 				WHERE (LOWER(d.fullnumber) ?LIKE? LOWER($sql_search)
 					OR 1 = 0)
 					ORDER BY d.fullnumber
-					LIMIT 15");
+					LIMIT ".$xlimit."");
 
 			$eglible = array(); $actions = array(); $descriptions = array();
 			if ($candidates)
