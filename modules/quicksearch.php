@@ -340,13 +340,13 @@ switch($mode)
 		    // Build different query for each database engine,
 		    // MySQL is slow here when vnodes view is used
 		    if ($CONFIG['database']['type'] == 'postgres')
-			    $sql_query = 'SELECT n.id, n.name, INET_NTOA(ipaddr) as ip,
+			    $sql_query = 'SELECT n.id, n.name, n.pppoelogin, INET_NTOA(ipaddr) as ip,
 			        INET_NTOA(ipaddr_pub) AS ip_pub, mac
 				    FROM vnodes n
 				    WHERE %where
     				ORDER BY n.name LIMIT 15';
             else
-			    $sql_query = 'SELECT n.id, n.name, INET_NTOA(ipaddr) as ip,
+			    $sql_query = 'SELECT n.id, n.name, n.pppoelogin, INET_NTOA(ipaddr) as ip,
 			        INET_NTOA(ipaddr_pub) AS ip_pub, mac
 				    FROM nodes n
 				    JOIN (
@@ -359,6 +359,7 @@ switch($mode)
 
             $sql_where = '('.(preg_match('/^[0-9]+$/',$search) ? "n.id = $search OR " : '')."
 				LOWER(n.name) ?LIKE? LOWER($sql_search)
+				OR LOWER(n.pppoelogin) ?LIKE? LOWER($sql_search)
 				OR INET_NTOA(ipaddr) ?LIKE? $sql_search
 				OR INET_NTOA(ipaddr_pub) ?LIKE? $sql_search
 				OR LOWER(mac) ?LIKE? LOWER(".macformat($search, true)."))
@@ -386,6 +387,10 @@ switch($mode)
 				}
 				if (preg_match("~$search~i", $row['name'])) {
 				    $descriptions[$row['id']] = escape_js(trans('Name').': '.$row['name']);
+				    continue;
+				}
+				if (preg_match("~$search~i", $row['pppoelogin'])) {
+				    $descriptions[$row['id']] = escape_js(trans('PPPoE').': '.$row['pppoelogin']);
 				    continue;
 				}
 				if (preg_match("~$search~i", $row['ip'])) {
@@ -432,6 +437,7 @@ switch($mode)
 
 		// use nodesearch module to find all matching nodes
 		$s['name'] = $search;
+		$s['pppoelogin'] = $search;
 		$s['mac'] = $search;
 		$s['ipaddr'] = $search;
 
