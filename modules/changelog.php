@@ -43,6 +43,16 @@ $changelog = array(
 //	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
 //	),
 	array(
+	    'data'	=> '2016-02-06',
+	    'status'	=> '',
+	    'opis'	=> 'dodano pola iBGP oraz eBGP w urządzeniach sieciowych, konfig w : Konfiguracja->formularze',
+	),
+	array(
+	    'data'	=> '',
+	    'status'	=> '',
+	    'opis'	=> 'dodano edytory wizualne w karcie klienta i komputera, konfig w : Konfiguracja->formularze',
+	),
+	array(
 	    'data'	=> '2015-12-01',
 	    'status'	=> '',
 	    'opis'	=> 'zmiana klasy do wysyłki sms przez serwis SerwerSMS',

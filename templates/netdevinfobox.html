@@ -81,6 +81,22 @@
 		<td width="98%"><a href="?m=netdevmap&netdevid={$netdevinfo.id}"><img src="img/network.gif" alt=""> {trans("Show on map")} &raquo;&raquo;&raquo;</a></td>
 	</tr>
 	{/if}
+	
+	{if get_form('netdev.ebgp') && $netdevinfo.ebgp}
+	<tr class="light">
+	    <td width="1%"><img src="img/router.png" alt=""></td>
+	    <td width="1%" nowrap><b>eBGP</b></td>
+	    <td width="98%">{$netdevinfo.ebgp}</td>
+	</tr>
+	{/if}
+	
+	{if get_form('netdev.ibgp') && $netdevinfo.ibgp}
+	<tr class="light">
+	    <td width="1%"><img src="img/router.png" alt=""></td>
+	    <td width="1%" nowrap><b>iBGP</b></td>
+	    <td width="98%">{$netdevinfo.ibgp}</td>
+	</tr>
+	{/if}
 
 	{if check_conf('phpui.radius') && ($netdevinfo.shortname || $netdevinfo.nastype || $netdevinfo.clients || $netdevinfo.secret || $netdevinfo.community || $netdevinfo.coaport)}
 	{cycle values="light,lucid" print=false}

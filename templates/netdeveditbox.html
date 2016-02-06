@@ -122,6 +122,24 @@
 	    <input type="hidden" name="netdev[longitude]" value="{$netdevinfo.longitude}">
 	    <input type="hidden" name="netdev[latitude]" value="{$netdevinfo.latitude}">
 	{/if}
+	{if get_form('netdev.ebgp')}
+	    <tr>
+		<td width="1%"><img src="img/router.png" alt=""></td>
+		<td width="1%" nowrap><b>eBGP</b></td>
+		<td width="98%" nowrap>
+			<input id="ebgp" type="number" name="netdev[ebgp]" value="{if $netdevinfo.ebgp}{$netdevinfo.ebgp}{/if}" {tip text="Zewnętrzny identyfikator routera BGP (opcja)" trigger="ebgp"}>
+		</td>
+	</tr>
+	{/if}
+	{if get_form('netdev.ibgp')}
+	    <tr>
+		<td width="1%"><img src="img/router.png" alt=""></td>
+		<td width="1%" nowrap><b>iBGP</b></td>
+		<td width="98%" nowrap>
+			<input id="ibgp" type="number" name="netdev[ibgp]" value="{if $netdevinfo.ibgp}{$netdevinfo.ibgp}{/if}" {tip text="Wewnętrzny identyfikator routera BGP (opcja)" trigger="ibgp"}>
+		</td>
+	</tr>
+	{/if}
 {if check_conf('phpui.radius')}
 	<tr class="light">
 	    <td width="1%" style="text-align:left;vertical-align:top;">

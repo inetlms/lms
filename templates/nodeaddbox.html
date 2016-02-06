@@ -1,5 +1,6 @@
 <!--// $Id$ //-->
 {include file="calendar_js.html"}
+<script type="text/javascript" src="img/tinymce3/tiny_mce.js"> </script>
 <form name="nodeadd" id="nodeadd" method="POST" action="?m=nodeadd{if $customerinfo.id}&ownerid={$customerinfo.id}{/if}">
 <input type="submit" class="hiddenbtn">
 <input type="hidden" name="nodedatanetid" id="nodedatanetid" value="{$nodedata.netid}">
@@ -533,7 +534,7 @@
 			<img src="img/info1.gif" alt="{trans("Description:")}">
 		</td>
 		<td style="width: 99%;" colspan="2">
-			<textarea name="nodedata[info]" cols="50" rows="5" {tip text="Enter additional information (optional)"}>{$nodedata.info}</textarea>
+			<textarea name="nodedata[info]" id="info" cols="80" rows="12" {tip text="Enter additional information (optional)"}>{$nodedata.info}</textarea>
 		</td>
 	</tr>
 	{else}
@@ -668,6 +669,9 @@
 
 
 	check_teryt('location', true);
+	
+	tinymce_init('{/literal}{$_ui_language}{literal}');
+	{/literal}{if get_form('nodes.info') && get_form('nodes.info_visual')}{literal}toggle_visual_editor('info');{/literal}{/if}{literal}
 //-->
 </script>
 {/literal}

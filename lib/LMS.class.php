@@ -5063,8 +5063,8 @@ class LMS {
 				nastype, clients, secret, community, channelid,
 				longitude, latitude, monit_nastype, monit_login, monit_passwd,  monit_port, networknodeid, server, coaport,
 				devtype, managed, sharing, modular, backbone_layer, distribution_layer, access_layer, typeofdevice, netdevicemodelid,
-				invprojectid, status, login, passwd)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', array(
+				invprojectid, status, login, passwd, ebgp, ibgp)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)', array(
 						$data['name'],
 						($data['location'] ? $data['location'] : ''),
 						($data['location_city'] ? $data['location_city'] : null),
@@ -5106,6 +5106,8 @@ class LMS {
 						($data['status'] ? $data['status'] : 0),
 						($data['login'] ? $data['login'] : NULL),
 						($data['passwd'] ? $data['passwd'] : NULL),
+						($data['ebgp'] ? $data['ebgp'] : 0),
+						($data['ibgp'] ? $data['ibgp'] : 0),
 				))) {
 			$id = $this->DB->GetLastInsertID('netdevices');
 
@@ -5142,7 +5144,7 @@ class LMS {
 				nastype=?, clients=?, secret=?, community=?, channelid=?, longitude=?, latitude=?,
 				monit_nastype = ?, monit_login = ?, monit_passwd = ?, monit_port = ?, networknodeid = ?, server=?, coaport=?,
 				devtype=?, managed=?, sharing=?, modular=?, backbone_layer=?, distribution_layer=?, access_layer=?, typeofdevice=?,
-				netdevicemodelid=?, invprojectid=?, status=?, login=?, passwd=? 
+				netdevicemodelid=?, invprojectid=?, status=?, login=?, passwd=?, ebgp=?, ibgp=? 
 				WHERE id=?', array(
 				$data['name'],
 				($data['description'] ? $data['description'] : ''),
@@ -5185,6 +5187,8 @@ class LMS {
 				($data['status'] ? $data['status'] : 0),
 				($data['login'] ? $data['login'] : NULL),
 				($data['passwd'] ? $data['passwd'] : NULL),
+				($data['ebgp'] ? $data['ebgp'] : 0),
+				($data['ibgp'] ? $data['ibgp'] : 0),
 				$data['id']
 		));
 		$this->exechook('lms_netdev_update_after',$data);

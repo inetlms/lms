@@ -34,7 +34,7 @@ $CONFIG_FILE = '/etc/lms/lms.ini';
 
 define('START_TIME', microtime(true));
 define('LMS-UI', true);
-define('LMSV','15.12.01');
+define('LMSV','16.02.06');
 define('LMSR','iNET LMS');
 ini_set('error_reporting', E_ALL&~E_NOTICE);
 ini_set('mbstring.func_overload','0');

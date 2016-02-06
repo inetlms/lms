@@ -2,6 +2,7 @@
 {$xajax}
 <!--// $Id$ //-->
 {title value=$layout.pagetitle}
+<script type="text/javascript" src="img/tinymce3/tiny_mce.js"> </script>
 <script type="text/javascript">
 <!--
 	function randomize()
@@ -619,7 +620,7 @@
 			    {if get_form('customers.info')}
 				<tr>
 			            <td width="1%"><img src="img/info1.gif" alt=""></td>
-				    <td width="99%"><textarea rows="10" cols="60" name="customeradd[info]" {tip text="Enter additional information (optional)"}>{$customeradd.info|escape}</textarea></td>
+				    <td width="99%"><textarea id="info" rows="12" cols="80" name="customeradd[info]" {tip text="Enter additional information (optional)"}>{$customeradd.info|escape}</textarea></td>
 				</tr>
 			    {else}
 				<input type="hidden" name="customeradd[info]" value="{$customeradd.info|escape}">
@@ -627,7 +628,7 @@
 			    {if get_form('customers.warning')}
 				<tr>
 			            <td width="1%"><img src="img/warningon.gif" alt=""></td>
-				    <td width="99%"><textarea rows="10" cols="60" name="customeradd[message]" {tip text="Enter notice contents (optional)"}>{$customeradd.message|escape}</textarea></td>
+				    <td width="99%"><textarea id="message" rows="12" cols="80" name="customeradd[message]" {tip text="Enter notice contents (optional)"}>{$customeradd.message|escape}</textarea></td>
 				</tr>
 			    {else}
 				<input type="hidden" name="customeradd[message]" value="{$customeradd.message|escape}">
@@ -635,7 +636,7 @@
 			    {if get_form('customers.notes')}
 				<tr>
 			            <td width="1%"><img src="img/note.gif" alt=""></td>
-				    <td width="99%"><textarea rows="10" cols="60" name="customeradd[notes]" {tip text="Enter notes (optional)"}>{$customeradd.notes|escape}</textarea></td>
+				    <td width="99%"><textarea id="notes" rows="12" cols="80" name="customeradd[notes]" {tip text="Enter notes (optional)"}>{$customeradd.notes|escape}</textarea></td>
 				</tr>
 			    {else}
 				<input type="hidden" name="customeradd[notes]" value="{$customeradd.notes|escape}">
@@ -711,6 +712,13 @@
 	    )
 		document.getElementById('show_post_recipient').style.display = '';
 	{/if}
+	
+	tinymce_init('{$_ui_language}');
+	
+	{if get_form('customers.info') && get_form('customers.info_visual')}toggle_visual_editor('info');{/if}
+	{if get_form('customers.warning') && get_form('customers.warning_visual')}toggle_visual_editor('message');{/if}
+	{if get_form('customers.notes') && get_form('customers.notes_visual')}toggle_visual_editor('notes');{/if}
+	
 //-->
 </script>
 {include file="footer.html"}

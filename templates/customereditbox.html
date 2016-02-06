@@ -1,4 +1,5 @@
 <!--// $Id$ //-->
+<script type="text/javascript" src="img/tinymce3/tiny_mce.js"> </script>
 <script type="text/javascript">
 <!--
 	function randomize()
@@ -635,7 +636,7 @@
 			<img src="img/info1.gif" alt="">
 		</td>
 		<td width="99%">
-			<textarea name="customerdata[info]" cols="60" rows="10" {tip text="Enter additional information (optional)"}>{$customerinfo.info|escape}</textarea>
+			<textarea name="customerdata[info]" id="info" cols="80" rows="12" {tip text="Enter additional information (optional)"}>{$customerinfo.info|escape}</textarea>
 		</td>
 	</tr>
 	{else}<input type="hidden" name="customerdata[info]" value="{$customerinfo.info|escape}">{/if}
@@ -645,7 +646,7 @@
 			<img src="img/warningon.gif" alt="">
 		</td>
 		<td width="99%">
-			<textarea name="customerdata[message]" cols="60" rows="10" {tip text="Enter notice contents (optional)"}>{$customerinfo.message|escape}</textarea>
+			<textarea name="customerdata[message]" id="message" cols="80" rows="12" {tip text="Enter notice contents (optional)"}>{$customerinfo.message|escape}</textarea>
 		</td>
 	</tr>
 	{else}<input type="hidden" name="customerdata[message]" value="{$customerinfo.message|escape}">{/if}
@@ -655,7 +656,7 @@
 			<img src="img/note.gif" alt="">
 		</td>
 		<td width="99%">
-			<textarea name="customerdata[notes]" cols="60" rows="10" {tip text="Enter notes (optional)"}>{$customerinfo.notes|escape}</textarea>
+			<textarea name="customerdata[notes]" id="notes" cols="80" rows="12" {tip text="Enter notes (optional)"}>{$customerinfo.notes|escape}</textarea>
 		</td>
 	</tr>
 	{else}<input type="hidden" name="customerdata[notes]" value="{$customerinfo.notes|escape}">{/if}
@@ -707,7 +708,14 @@
     keyPressESC = function() {
 	self.location.href='?m=customerinfo&id={$customerinfo.id}';
     }
-document.forms['customeredit'].elements['customerdata[lastname]'].focus();
+    
+    tinymce_init('{$_ui_language}');
+    {if get_form('customers.info') && get_form('customers.info_visual')}toggle_visual_editor('info');{/if}
+    {if get_form('customers.warning') && get_form('customers.warning_visual')}toggle_visual_editor('message');{/if}
+    {if get_form('customers.notes') && get_form('customers.notes_visual')}toggle_visual_editor('notes');{/if}
+    
+    
+    document.forms['customeredit'].elements['customerdata[lastname]'].focus();
 //-->
 </script>
 

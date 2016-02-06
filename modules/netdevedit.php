@@ -509,7 +509,7 @@ switch ($action) {
 if (isset($_POST['netdev'])) {
 	$netdevdata = $_POST['netdev'];
 	$netdevdata['id'] = $_GET['id'];
-
+	
 	if ($netdevdata['name'] == '')
 		$error['name'] = trans('Device name is required!');
 	elseif (strlen($netdevdata['name']) > 32)
@@ -524,7 +524,21 @@ if (isset($_POST['netdev'])) {
 		$netdevdata['clients'] = 0;
 	else
 		$netdevdata['clients'] = intval($netdevdata['clients']);
-
+	
+	if (!empty($netdevdata['ebgp'])) {
+	    $netdevdata['ebgp'] = str_replace(',','',$netdevdata['ebgp']);
+	    $netdevdata['ebgp'] = str_replace('.','',$netdevdata['ebgp']);
+	} else {
+	    $netdevdata['ebgp'] = 0;
+	}
+	
+	if (!empty($netdevdata['ibgp'])) {
+	    $netdevdata['ibgp'] = str_replace(',','',$netdevdata['ibgp']);
+	    $netdevdata['ibgp'] = str_replace('.','',$netdevdata['ibgp']);
+	} else {
+	    $netdevdata['ibgp'] = 0;
+	}
+	
 	$netdevdata['purchasetime'] = 0;
 	if ($netdevdata['purchasedate'] != '') {
 		// date format 'yyyy/mm/dd'
