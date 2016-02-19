@@ -104,7 +104,7 @@ if($help)
 {
 	print STDERR <<EOF;
 lms-mgc, version $_version
-(C) 2001-2012 LMS Developers
+(C) 2001-2012 LMS Developers + poprawki by Paweł Adamczewski (c) 2016
 
 -C, --config-file=/etc/lms/lms-mgc.ini	alternate config file (default: /etc/lms/lms-mgc.ini);
 -i, --instances=name		Name(s) or number(s) of instance(s) to run, useful
@@ -122,7 +122,7 @@ if($version)
 {
 	print STDERR <<EOF;
 lms-mgc, version $_version
-(C) 2001-2012 LMS Developers
+(C) 2001-2012 LMS Developers + poprawki by Paweł Adamczewski (c) 2016
 
 EOF
 	exit 0;
@@ -136,7 +136,7 @@ if(!$configfile)
 if(!$quiet)
 {
 	print STDOUT "lms-mgc, version $_version\n";
-	print STDOUT "(C) 2001-2012 LMS Developers\n";
+	print STDOUT "(C) 2001-2012 LMS Developers + poprawki by Paweł Adamczewski (c) 2016\n";
 	print STDOUT "Using file $configfile as config.\n";
 }
 
@@ -218,6 +218,7 @@ sub instance($)
 		}
 		return 0;
 	}
+
 
 	my $groups_sql = '';
 
@@ -351,7 +352,7 @@ sub instance($)
 			
 	my @dst_networks = split ' ',$dst_networks;
 	my @ignore_items = split ' ',$ignore_list;
-	
+	my $netid;
 	foreach my $srcnetwork (@networks)
 	{
 		$srcnetwork = uc($srcnetwork);
@@ -368,6 +369,9 @@ sub instance($)
 		}
 		$row->{'name'} = lc($row->{'name'});
 		$row->{'NAME'} = uc($row->{'name'});
+
+		$netid=$row->{'id'};
+
 		
 		if($network_header)
 		{
@@ -384,6 +388,14 @@ sub instance($)
 			$tnh =~ s/\%DOMAIN/$row->{'domain'}/g;
 			$tnh =~ s/\%WINS/$row->{'wins'}/g;
 			$tnh =~ s/\%DHCPS/$row->{'dhcpstart'}/g;
+
+my $l1 = substr($row->{'dhcpstart'}, rindex($row->{'dhcpstart'}, '.')+1);
+my $l2 = substr($row->{'dhcpend'}, rindex($row->{'dhcpend'}, '.')+1);
+my $l3 = $l2-$l1;
+$tnh =~ s/\%DHCPLS/$l1/g;
+$tnh =~ s/\%DHCPLE/$l2/g;
+$tnh =~ s/\%DHCPLC/$l3/g;
+
 			$tnh =~ s/\%DHCPE/$row->{'dhcpend'}/g;
 			$tnh =~ s/\%TIMES/$times/g;
 			$tnh =~ s/\%TIME/$time/g;
@@ -419,6 +431,16 @@ sub instance($)
 				$dtnh =~ s/\%WINS/$row->{'wins'}/g;
 				$dtnh =~ s/\%DHCPS/$row->{'dhcpstart'}/g;
 				$dtnh =~ s/\%DHCPE/$row->{'dhcpend'}/g;
+
+my $l1 = substr($row->{'dhcpstart'}, rindex($row->{'dhcpstart'}, '.')+1);
+my $l2 = substr($row->{'dhcpend'}, rindex($row->{'dhcpend'}, '.')+1);
+my $l3 = $l2-$l1;
+$dtnh =~ s/\%DHCPLS/$l1/g;
+$dtnh =~ s/\%DHCPLE/$l2/g;
+$dtnh =~ s/\%DHCPLC/$l3/g;
+
+
+
 				$dtnh =~ s/\%TIMES/$times/g;
 				$dtnh =~ s/\%TIME/$time/g;
 				$dtnh =~ s/\%UTIME/$utime/g;
@@ -457,6 +479,14 @@ sub instance($)
 			$tnb =~ s/\%WINS/$row->{'wins'}/g;
 			$tnb =~ s/\%DHCPS/$row->{'dhcpstart'}/g;
 			$tnb =~ s/\%DHCPE/$row->{'dhcpend'}/g;
+
+my $l1 = substr($row->{'dhcpstart'}, rindex($row->{'dhcpstart'}, '.')+1);
+my $l2 = substr($row->{'dhcpend'}, rindex($row->{'dhcpend'}, '.')+1);
+my $l3 = $l2-$l1;
+$tnb =~ s/\%DHCPLS/$l1/g;
+$tnb =~ s/\%DHCPLE/$l2/g;
+$tnb =~ s/\%DHCPLC/$l3/g;
+
 			$tnb =~ s/\%TIMES/$times/g;
 			$tnb =~ s/\%TIME/$time/g;
 			$tnb =~ s/\%UTIME/$utime/g;
@@ -509,6 +539,7 @@ sub instance($)
 		
 		# BUILD NODELIST
 
+		my %netidlist;
 		my %pubiplist;
 		my %maclist;
 		my %accesslist;
@@ -522,17 +553,22 @@ sub instance($)
 		my %portlist;
 		my %passlist;
 		my %customerlist;
-		
+
+
+#print ("Sieć ".$row->{'id'}.":".$row->{'name'}."\n");
+$groups_sql=" WHERE vnodes.netid = ".$netid;
+
 		$dbq = $dbase->prepare("SELECT inet_ntoa(ipaddr) AS ipaddr, 
 			inet_ntoa(ipaddr_pub) AS ipaddr_pub, mac, passwd, access, 
 			vnodes.id as id, ownerid, vnodes.name as name, warning, 
-			vnodes.info AS info, pin, port, $customerq 
+			vnodes.info AS info, pin, port, netid, $customerq 
 			FROM vnodes 
 			LEFT JOIN customers ON ownerid = customers.id
 			$groups_sql");
 		$dbq->execute();
 		while (my $row = $dbq->fetchrow_hashref())
 		{
+			$netidlist{$row->{'netid'}} = $row->{'netid'};
 			$pubiplist{$row->{'ipaddr'}} = $row->{'ipaddr_pub'};
 			$maclist{$row->{'ipaddr'}} = (split ',', $row->{'mac'} || '')[0];
 			$passlist{$row->{'ipaddr'}} = $row->{'passwd'};
@@ -559,6 +595,9 @@ sub instance($)
 		my $dhcpnode;
 		my $default;
 		
+
+my $netidavail = " 1 2 ";
+
 		if(isprivate($row->{'address'}))
 		{
 			print "private (using _priv rules), " if $debug;
@@ -580,6 +619,7 @@ sub instance($)
 		
 		for(my $i=$longip+1;$i<$longip+$netsize-1;$i++)
 		{
+
 			my $ipaddr = u32todotquad($i);
 			my $rule = '';
 			my $ignored = 0;
@@ -783,6 +823,15 @@ sub instance($)
 			$tnh =~ s/\%WINS/$row->{'wins'}/g;
 			$tnh =~ s/\%DHCPS/$row->{'dhcpstart'}/g;
 			$tnh =~ s/\%DHCPE/$row->{'dhcpend'}/g;
+
+my $l1 = substr($row->{'dhcpstart'}, rindex($row->{'dhcpstart'}, '.')+1);
+my $l2 = substr($row->{'dhcpend'}, rindex($row->{'dhcpend'}, '.')+1);
+my $l3 = $l2-$l1;
+$tnh =~ s/\%DHCPLS/$l1/g;
+$tnh =~ s/\%DHCPLE/$l2/g;
+$tnh =~ s/\%DHCPLC/$l3/g;
+
+
 			$tnh =~ s/\%TIMES/$times/g;
 			$tnh =~ s/\%TIME/$time/g;
 			$tnh =~ s/\%UTIME/$utime/g;
