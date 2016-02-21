@@ -131,7 +131,6 @@ my %table;
 while (my $row = $dbq->fetchrow_hashref())
 {    
     $table{$row->{'ipaddr'}} = $row->{'id'};
-    print($row->{'id'}."\n");
 }
 
 # read log file
