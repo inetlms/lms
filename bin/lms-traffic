@@ -115,6 +115,7 @@ if (my $row = $dbq1->fetchrow_hashref())
 {    
     $netid=$row->{'id'};
 }
+$dbq1->finish();
 my $netsearch;
 if ($net) {
     if (!$netid) {
@@ -122,6 +123,7 @@ if ($net) {
 	exit 1;
     }
     $netsearch="WHERE netid=$netid";
+    print STDOUT "Using only ".$net." network\n";
 }
 
 # get nodes IDs table
