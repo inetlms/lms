@@ -28,13 +28,15 @@ use Config::IniFiles;
 use Getopt::Long;
 use vars qw($configfile $quiet $help $version $iplist);
 
-$ENV{'PATH'}='/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin';
+$ENV{'PATH'}='/usr/sbin';
 
 my $_version = '1.11-cvs';
+my $nets='';
 
 my %options = (
 	"--config-file|C=s"  	=>	\$configfile,
         "--quiet|q"          	=>     	\$quiet,
+	"--net|n=s"		=>	\$nets,
         "--help|h"		=>     	\$help,
         "--version|v"          	=>     	\$version,
 	"--iplist|L=s"		=>	\$iplist
@@ -60,10 +62,11 @@ if($help)
 {
      print STDERR <<EOF;
 lms-arping, version $_version
-(C) 2001-2012 LMS Developers
+(C) 2001-2012 LMS Developers + poprawki by Paweł Adamczewski (c) 2016
 
 -C, --config-file=/etc/lms/lms.ini     alternate config file (default: /etc/lms/lms.ini);
 -h, --help			print this help and exit;
+-n, --net=network		runs on specified network;
 -v, --version               	print version info and exit;
 -q, --quiet               	suppress any output, except errors;
 -L, --iplist=/some/file		file that contains ip addresses of online computers; useful for external pingers ;-)
@@ -75,7 +78,7 @@ if($version)
 {
      print STDERR <<EOF;
 lms-arping, version $_version
-(C) 2001-2012 LMS Developers
+(C) 2001-2012 LMS Developers + poprawki by Paweł Adamczewski (c) 2016
 
 EOF
      exit 0;
@@ -89,7 +92,7 @@ if(!$configfile)
 if(!$quiet)
 {
      print STDOUT "lms-arping, version $_version\n";
-     print STDOUT "(C) 2001-2012 LMS Developers\n";
+     print STDOUT "(C) 2001-2012 LMS Developers + poprawki by Paweł Adamczewski (c) 2016\n";
      print STDOUT "Using file $configfile as config.\n";
 }
 
@@ -102,9 +105,9 @@ if(! -r $configfile)
 my $ini = new Config::IniFiles -file => $configfile;
 print @Config::IniFiles::errors;
 
-my $networks_list = $ini->val('arping','networks') || '';
+my $networks_list = $ini->val('arping','networks') || $nets || '';
 my $excluded_networks_list = $ini->val('arping','excluded_networks') || '';
-my $arping = $ini->val('arping','arping_binary') || '/sbin/arping';
+my $arping = $ini->val('arping','arping_binary') || '/usr/sbin/arping';
 
 my $dbtype = $ini->val('database', 'type') || 'mysql';
 my $dbhost = $ini->val('database', 'host') || 'localhost';
