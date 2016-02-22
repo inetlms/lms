@@ -1,26 +1,4 @@
 #!/usr/bin/perl -Tw
-#
-#  LMS version 1.11-git
-#
-#  Copyright (C) 2001-2012 LMS Developers
-#
-#  Please, see the doc/AUTHORS for more information about authors!
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License Version 2 as
-#  published by the Free Software Foundation.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-#  USA.
-#
-#  $Id$
 
 use strict;
 use DBI;
@@ -31,10 +9,13 @@ use POSIX qw(strftime);
 
 my $_version = '1.11-cvs';
 
+my $net='';
+my $netid='';
 my %options = (
 	"--traffic-log-file|f=s"=>	\$logfile,
 	"--config-file|C=s"	=>	\$configfile,
 	"--quiet|q"		=>	\$quiet,
+	"--net|n=s"		=>	\$net,
 	"--help|h"		=>	\$help,
 	"--version|v"		=>	\$version,
 );
@@ -46,10 +27,11 @@ if($help)
 {
 	print STDERR <<EOF;
 lms-traffic, version $_version
-(C) 2001-2012 LMS Developers
+(C) 2001-2012 LMS Developers + zmiany by Paweł Adamczewski (c) 2016
 
 -f, --traffic-log-file=/var/log/traffic.log	traffic log file (default: /var/log/traffic.log);
 -C, --config-file=/etc/lms/lms.ini	alternate config file (default: /etc/lms/lms.ini);
+-n, --network=NETWORK_NAME	run on NETWORK_NAME only
 -h, --help			print this help and exit;
 -v, --version			print version info and exit;
 -q, --quiet			suppress any output, except errors;
@@ -62,7 +44,7 @@ if($version)
 {
 	print STDERR <<EOF;
 lms-traffic, version $_version
-(C) 2001-2012 LMS Developers
+(C) 2001-2012 LMS Developers + zmiany by Paweł Adamczewski (c) 2016
 
 EOF
 	exit 0;
@@ -76,7 +58,7 @@ if(!$configfile)
 if(!$quiet)
 {
 	print STDOUT "lms-traffic, version $_version\n";
-	print STDOUT "(C) Copyright 2001-2012 LMS Developers\n";
+	print STDOUT "(C) 2001-2012 LMS Developers + zmiany by Paweł Adamczewski (c) 2016\n";
 	print STDOUT "Using file $configfile as config.\n";
 }
 
@@ -126,8 +108,26 @@ else
 }
 
 
+# get net ID
+my $dbq1 = $dbase->prepare("SELECT id FROM networks WHERE name = '".$net."'");
+$dbq1->execute();
+if (my $row = $dbq1->fetchrow_hashref())
+{    
+    $netid=$row->{'id'};
+}
+$dbq1->finish();
+my $netsearch;
+if ($net) {
+    if (!$netid) {
+	print STDERR "Fatal error: can't find network ".$net;
+	exit 1;
+    }
+    $netsearch="WHERE netid=$netid";
+    print STDOUT "Using only ".$net." network\n";
+}
+
 # get nodes IDs table
-my $dbq = $dbase->prepare("SELECT id, inet_ntoa(ipaddr) AS ipaddr FROM nodes");
+my $dbq = $dbase->prepare("SELECT id, inet_ntoa(ipaddr) AS ipaddr FROM nodes $netsearch");
 $dbq->execute();
 my %table;      
 while (my $row = $dbq->fetchrow_hashref())
