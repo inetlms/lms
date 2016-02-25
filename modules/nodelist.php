@@ -4,6 +4,7 @@
  *  iLMS version 1.0.3
  *
  *  (C) Copyright 2001-2012 LMS Developers
+ *  + poprawki by Paweł Adamczewski (c) 2016
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -184,7 +185,9 @@ function GetNodeList($order = 'name,asc', $search = NULL, $sqlskey = 'AND', $net
 	. ($nodegroup ? 'LEFT JOIN nodegroupassignments ng ON (ng.nodeid = n.id) ' : '')
 	
 	. ' WHERE 1=1 '
-	. ($network ? ' AND ((n.ipaddr > ' . $net['address'] . ' AND n.ipaddr < ' . $net['broadcast'] . ') OR (n.ipaddr_pub > ' . $net['address'] . ' AND n.ipaddr_pub < ' . $net['broadcast'] . '))' : '')
+	. ($network ? ' AND n.netid = ' . $net['id'] : '') // wyświetla jedynie komputery będące w danej sieci
+	. ($network ? ' AND ((n.ipaddr > ' . $net['address'] . ' AND n.ipaddr < ' . $net['broadcast'] . ') 
+	   OR (n.ipaddr_pub > ' . $net['address'] . ' AND n.ipaddr_pub < ' . $net['broadcast'] . '))' : '') // oryginalne wyświetla jedynie komputery z danego zakresu IP
 	. ($status == 1 ? ' AND n.access = 1' : '') //connected
 	. ($status == 2 ? ' AND n.access = 0' : '') //disconnected
 	. ($status == 3 ? ' AND n.lastonline > ?NOW? - ' . intval(get_conf('phpui.lastonline_limit',600)) : '') //online
