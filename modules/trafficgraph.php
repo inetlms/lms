@@ -133,7 +133,7 @@ function TrafficGraph($nodeid, $net = NULL, $customer = NULL, $bar = NULL, $from
 			{
 				$params['address']++;
 				$params['broadcast']--;
-				$net = ' nodes.netid='.$parame['id'].' AND (( ipaddr > '.$params['address'].' AND ipaddr < '.$params['broadcast'].')
+				$net = ' nodes.netid='.$param['id'].' AND (( ipaddr > '.$params['address'].' AND ipaddr < '.$params['broadcast'].')
 					OR ( ipaddr_pub > '.$params['address'].' AND ipaddr_pub < '.$params['broadcast'].')) ';
 			}
 			else
