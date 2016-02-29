@@ -1320,4 +1320,16 @@ foreach($menu as $idx => $item)
 
 uasort($menu,'menu_cmp');
 */
+
+if(file_exists($CONFIG['directories']['modules_dir'].'/documenttry.php'))
+    if(file_exists($CONFIG['directories']['smarty_templates_dir'].'/documenttry.html')) {
+	$menu['documents']['submenu'][]=array(
+	    'name' => trans('Test szablonu dokumentu'),
+	    'link' => '?m=documenttry',
+	    'tip' => trans('Umożliwia testowanie nowego szablonu bez zapisywania go'),
+	    'prio' => 20,
+	);
+    }
+
+
 ?>
