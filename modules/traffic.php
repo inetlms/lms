@@ -40,7 +40,7 @@ function Traffic($from = 0, $to = 0, $net = 0, $customerid = 0, $order = '', $li
 		$params = $LMS->GetNetworkParams($net);
 		$params['address']++;
 		$params['broadcast']--;
-		$net = ' AND (( ipaddr > '.$params['address'].' AND ipaddr < '.$params['broadcast'].')
+		$net = ' AND nodes.netid='.$params['id'].' AND (( ipaddr > '.$params['address'].' AND ipaddr < '.$params['broadcast'].')
 			OR ( ipaddr_pub > '.$params['address'].' AND ipaddr_pub < '.$params['broadcast'].')) ';
 	}
 	else
@@ -83,6 +83,8 @@ function Traffic($from = 0, $to = 0, $net = 0, $customerid = 0, $order = '', $li
 		    .($customerid ? ' AND ownerid = '.intval($customerid) : '')
 		    .' GROUP BY nodeid, name, ipaddr'
 		    .$order.$limit;
+//echo $query;
+//die();
 
 	// get results
 	if ($traffic = $DB->GetAll($query))
