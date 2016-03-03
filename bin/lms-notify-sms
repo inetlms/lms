@@ -29,6 +29,7 @@ use Getopt::Long;
 use Encode;
 use vars qw($configfile $quiet $help $version $debug);
 use POSIX qw(strftime mktime);
+use LWP::Simple;
 
 $ENV{'PATH'}='/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin';
 
@@ -65,7 +66,7 @@ if($version)
 {
 	print STDERR <<EOF;
 lms-notify-sms, version $_version
-(C) 2001-2012 LMS Developers
+(C) 2001-2012 LMS Developers + poprawka na SMSCenter by Paweł Adamczewski (c) 2016
 
 EOF
 	exit 0;
@@ -79,7 +80,7 @@ if(!$configfile)
 if(!$quiet)
 {
 	print STDOUT "lms-notify-sms, version $_version\n";
-	print STDOUT "(C) Copyright 2001-2012 LMS Developers\n";
+	print STDOUT "(C) 2001-2012 LMS Developers + poprawka na SMSCenter by Paweł Adamczewski (c) 2016\n";
 	print STDOUT "Using file $configfile as config.\n";
 }
 
@@ -97,6 +98,9 @@ my $dbhost = $ini->val('database', 'host') || 'localhost';
 my $dbuser = $ini->val('database', 'user') || 'root';
 my $dbpasswd = $ini->val('database', 'password') || '';
 my $dbname = $ini->val('database', 'database') || 'lms';
+
+
+
 
 # debtors notify
 my $limit = $ini->val('notify-sms', 'limit') || 0;
@@ -162,6 +166,8 @@ my %cfg;
 $cfg{'prefix'} = $ini->val('sms', 'prefix') || 48;
 $cfg{'service'} = $ini->val('sms', 'service') || '';
 $cfg{'debug_sms'} = $ini->val('sms', 'debug_sms') || '';
+$cfg{'user'} = $ini->val('sms', 'username') || '';
+$cfg{'pass'} = $ini->val('sms', 'pasword') || '';
 
 my $query = $dbase->prepare("SELECT var, value FROM uiconfig WHERE section='sms' AND disabled=0");
 $query->execute();
@@ -292,6 +298,19 @@ sub send_sms
 		close(SMSFILE);
 
 		return 1; #MSG_NEW
+	} elsif ($cfg{'service'} eq 'smscenter') {
+		my $strona="https://api.mobitex.pl/sms.php?user=".$cfg{'username'}."&pass=".$cfg{'password'}."&type=sms&number=".$phone."&text=".$sms."";
+		my $c = get($strona);
+		my @lista = split(' ', $c);
+		if ($lista[0] eq 'Status:') {
+		    if ($lista[1] eq '002') {
+			return 2;
+		    } else {
+			return $lista[1]
+		    }
+		} else {
+		    return "API error: ".$c;
+		}
 	} else {
 		return 'Unknown SMS service!';
 	}
