@@ -1,0 +1,19 @@
+<table width="100%" cellpadding="3" class="table table-info">
+    <tr class="boxtitleinfo">
+	<td height="24" align="center" colspan="2" class="boxtitleinfotd" nowrap>
+	    <b>SMSCENTER INFO</b>
+	</td>
+    </tr>
+    <tr class="light">
+	<td width="50%" align="right" class="fleft" {if $smscenter.saldo lt $smscenter.warn}bgcolor="#FF0000"{/if}>
+	    {if $smscenter.saldo lt $smscenter.warn}<font color="#f0f0f0">{/if}
+		<b>Saldo konta:</b>
+	    {if $smscenter.saldo lt $smscenter.warn}</font>{/if}
+	</td>
+	<td width="50%" class="fright" {if $smscenter.saldo lt $smscenter.warn}bgcolor="#FF0000"{/if}>
+	    {if $smscenter.saldo lt $smscenter.warn}<font color="#f0f0f0">{/if}
+		<b>{$smscenter.saldo|money_format}</b>
+	    {if $smscenter.saldo lt $smscenter.warn}</font>{/if}
+	</td>
+    </tr>
+</table>
