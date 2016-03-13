@@ -28,6 +28,7 @@ $customerid = intval($_GET['id']);
 
 include(MODULES_DIR.'/infocenter.inc.php');
 include(MODULES_DIR.'/customer.inc.php');
+include(MODULES_DIR.'/customer_phone.inc.php');
 
 
 if (check_modules(82) && get_conf('voip.enabled',0)) {// nettelekom
@@ -53,6 +54,13 @@ $SESSION->save('backto', $_SERVER['QUERY_STRING']);
 
 $layout['pagetitle'] = trans('Customer Info: $a',$customerinfo['customername']);
 
+foreach ($customerinfo['contacts'] as $a=>$b) {
+    $p=SprawdzSiecTelefonu($b['phone']);
+    $customerinfo['contacts'][$a]['operator_kod']=$p['kod'];
+    $customerinfo['contacts'][$a]['operator_nazwa']=$p['nazwa'];
+}
+
 $SMARTY->display('customerinfo.html');
+
 
 ?>
