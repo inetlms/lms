@@ -1,9 +1,9 @@
 <?php
 
 /*
- *  iNET LMS
+ *  iLMS
  *
- *  (C) Copyright 2012 LMS iNET Developers
+ *  (C) Copyright 2015 iLMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -41,6 +41,14 @@ class UKE {
     function getSIISlist()
     {
 	$result = $this->DB->GetAll('SELECT * FROM uke WHERE report_type=? ORDER BY reportyear DESC;',array('SIIS'));
+	return $result;
+    }
+    
+    
+    function trim($text) {
+	$result = trim($text);
+	$result = str_replace(' ','_',$result);
+	$result = str_replace('-','_',$result);
 	return $result;
     }
 

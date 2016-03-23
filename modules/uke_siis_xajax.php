@@ -1,9 +1,9 @@
 <?php
 
 /*
- *  iNET LMS
+ *  iLMS
  *
- *  (C) Copyright 2012 LMS iNET Developers
+ *  (C) Copyright 2015 iLMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
@@ -650,7 +650,7 @@ function view_select_po_to_ww($idw,$idr)
 
 function add_po_to_ww($idr,$idw,$idp=NULL,$redirect = true,$useraport=1)
 {
-	global $DB,$LMS;
+	global $DB,$LMS,$UKE;
 	$obj = new xajaxResponse();
 	$blad = false;
 	
@@ -682,7 +682,7 @@ function add_po_to_ww($idr,$idw,$idp=NULL,$redirect = true,$useraport=1)
 	}
 	
 	if (!$blad) {
-		
+//		$networknode['name'] = $UKE->trim($networknode['name']);
 		$data = serialize($networknode);
 		$DB->Execute('INSERT INTO uke_data (rapid,mark,markid,useraport,data) VALUES (?,?,?,?,?);',array($idr,'WW',$networknode['name'],($useraport ? 1 : 0),$data));
 		
@@ -1099,8 +1099,17 @@ function import_LK($idr)
 	for ($i=0; $i<sizeof($nl); $i++) {
 	    
 	    if ($nl[$i]['latitude_a'] && $nl[$i]['longitude_a'] && $nl[$i]['latitude_b'] && $nl[$i]['longitude_b']) {
+	    
+	    $nl[$i]['latitude_a'] = str_replace(',','.',$nl[$i]['latitude_a']);
+	    $nl[$i]['longitude_a'] = str_replace(',','.',$nl[$i]['longitude_a']);
+	    $nl[$i]['latitude_b'] = str_replace(',','.',$nl[$i]['latitude_b']);
+	    $nl[$i]['longitude_b'] = str_replace(',','.',$nl[$i]['longitude_b']);
+	
 		$distance = calculate_distance_gps($nl[$i]['latitude_a'],$nl[$i]['longitude_a'],$nl[$i]['latitude_b'],$nl[$i]['longitude_b']);
 	    } else $distance = '0.1';
+	    
+	    if ($distance == '0.0')
+		$distance = '0.1';
 	    
 	    $lp[] = array(
 		'identyfikator'		=> $nl[$i]['src'].'_'.$nl[$i]['dst'],			// D
@@ -1463,8 +1472,8 @@ function import_ZAS($idr)
 		    $rang[$i]['linktechnology'] = 53;
 		    $rang[$i]['linkspeed'] = 10000;
 		}
-		else 
-		    $rang[$i]['linktype'] = LINKTYPES_RADIO;
+//		else 
+//		    $rang[$i]['linktype'] = LINKTYPES_RADIO;
 		    
 		if (($rang[$i]['linktype'] == LINKTYPES_RADIO) && (!$rang[$i]['linktechnology'] || (!in_array($rang[$i]['linktechnology'],array(100,101,113,104,102,103,105,106,107,108,109,110,111,112,114,115))))) 
 		{

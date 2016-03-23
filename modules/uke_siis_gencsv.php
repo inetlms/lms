@@ -114,7 +114,7 @@ if (
 				$tmp = unserialize($PO[$i]['data']);
 				
 				$dane = 'PO,';
-				$dane .= '"'.str_replace('"','',str_replace(' ','_',$tmp['shortname'])).'",';
+				$dane .= '"'.str_replace('"','',$UKE->trim($tmp['shortname'])).'",';
 				$dane .= '"'.str_replace('"','',$tmp['name']).'",';
 				$dane .= '"'.str_replace('-','',$tmp['ten']).'",';
 				$dane .= '"'.$tmp['regon'].'",';
@@ -181,7 +181,7 @@ if (
 				    $latitude = $longitude = '0.0000';
 				
 				$dane = 'WW,';
-				$dane .= '"'.str_replace(' ','_',$WW[$i]['markid']).'",';			// D
+				$dane .= '"'.$UKE->trim($WW[$i]['markid']).'",';			// D
 				$dane .= '"'.$TNODE[$tmp['type']].'",';						// E
 				$dane .= '"'.((($tmp['type'] == NODE_ALIEN || $tmp['type'] == NODE_FOREIGN) && $tmp['podmiot_obcy']) ? $tmp['podmiot_obcy'] : '').'",';	// f
 				$dane .= '"",';									// g
@@ -209,6 +209,14 @@ if (
 				} else
 					$dane .= '"",""';
 				
+				$c_netlink = $c_node = NULL;
+				
+				if ($_int = $DB->GetCol('SELECT id FROM netdevices WHERE networknodeid = ? ;',array($tmp['id']))) {
+				    $int = implode(',',$_int);
+				    $c_netlink = $DB->GetOne('SELECT 1 FROM netlinks WHERE src IN (?) OR dst IN (?) LIMIT 1;',array($int,$int));
+				    $c_node = $DB->GetOne('SELECT 1 FROM nodes WHERE netdev IN (?) LIMIT 1;',array($int));
+				}
+				if ($c_netlink || $c_node )
 				fputs($file,$dane."\n");
 			}
 			unset($WW);
@@ -230,7 +238,7 @@ if (
 				    $latitude = $longitude = '0.0000';
 				
 				$dane = 'WO,';
-				$dane .= '"'.str_replace(' ','_',$WO[$i]['markid']).'",'; //  c
+				$dane .= '"'.$UKE->trim($WO[$i]['markid']).'",'; //  c
 				$dane .= '"'.$tmp['podstawa'].'",';
 				$dane .= '"'.$tmp['podmiot_obcy'].'",';
 				$dane .= '"'.$tmp['states'].'",';
@@ -268,8 +276,8 @@ if (
 				$tmp = unserialize($INT[$i]['data']);
 				$dane = 'I,';
 				
-				$dane .= '"'.$tmp['netnodename'].'",';
-				$dane .= '"'.$tmp['networknodename'].'",';
+				$dane .= '"'.$UKE->trim($tmp['netnodename']).'",';
+				$dane .= '"'.$UKE->trim($tmp['networknodename']).'",';
 				$dane .= '"'.$tmp['backbone_layer'].'",';
 				$dane .= '"'.$tmp['distribution_layer'].'",';
 				$dane .= '"'.$tmp['access_layer'].'",';
@@ -284,7 +292,9 @@ if (
 				$dane .= '"'.$tmp['sharing'].'",';
 				$dane .= '"'.$tmp['projectnumber'].'",';
 				$dane .= '"'.$tmp['status'].'"';
-				fputs($file,$dane."\n");
+				
+
+				    fputs($file,$dane."\n");
 			}
 			
 			unset($INT);
@@ -304,8 +314,8 @@ if (
 			$dane = 'Z,';
 			
 			$dane .= '"'.$i.'_'.$tmp['id'].'",';
-			$dane .= '"'.$tmp['networknodename'].'",';
-			$dane .= '"'.$tmp['netnodename'].'",';
+			$dane .= '"'.$UKE->trim($tmp['networknodename']).'",';
+			$dane .= '"'.$UKE->trim($tmp['netnodename']).'",';
 			$dane .= '"Nie",';
 			$dane .= '"",';
 			$dane .= '"0",';
@@ -328,13 +338,13 @@ if (
 		for ($i=0;$i<$count;$i++) {
 		    $tmp = unserialize($LK[$i]['data']);
 		    $dane = 'LK,';
-		    $dane .= '"'.$tmp['identyfikator'].'",';		// D
+		    $dane .= '"'.$UKE->trim($tmp['identyfikator']).'",';		// D
 		    $dane .= '"'.$tmp['wlasnosc'].'",';			// E
 		    $dane .= '"'.$tmp['obcy'].'",';			// F
 		    $dane .= '"'.$tmp['rodzaja'].'",';			// G
-		    $dane .= '"'.$tmp['identyfikatora'].'",';		// H
+		    $dane .= '"'.$UKE->trim($tmp['identyfikatora']).'",';		// H
 		    $dane .= '"'.$tmp['rodzajb'].'",';			// I
-		    $dane .= '"'.$tmp['identyfikatorb'].'",';		// J
+		    $dane .= '"'.$UKE->trim($tmp['identyfikatorb']).'",';		// J
 		    $dane .= '"'.$tmp['medium'].'",';			// K
 		    $dane .= '"'.$tmp['typwlokna'].'",';		// L
 		    $dane .= '"'.$tmp['liczbawlokien'].'",';		// M
@@ -360,9 +370,9 @@ if (
 		    $tmp = unserialize($LB[$i]['data']);
 		    $dane = 'LB,';
 		    
-		    $dane .= '"'.$tmp['identyfikator'].'",';		// D
-		    $dane .= '"'.$tmp['identyfikatora'].'",';		// E
-		    $dane .= '"'.$tmp['identyfikatorb'].'",';		// F
+		    $dane .= '"'.$UKE->trim($tmp['identyfikator']).'",';		// D
+		    $dane .= '"'.$UKE->trim($tmp['identyfikatora']).'",';		// E
+		    $dane .= '"'.$UKE->trim($tmp['identyfikatorb']).'",';		// F
 		    $dane .= '"'.$tmp['medium'].'",';			// G
 		    $dane .= '"'.$tmp['pozwolenie'].'",';		// H
 		    $dane .= '"'.$tmp['pasmo'].'",';			// I
@@ -383,11 +393,11 @@ if (
 		    $tmp = unserialize($POL[$i]['data']);
 		    $dane = 'P,';
 		    
-		    $dane .= '"'.$tmp['identyfikator'].'",';
+		    $dane .= '"'.$UKE->trim($tmp['identyfikator']).'",';
 		    $dane .= '"'.$tmp['wlasnosc'].'",';
 		    $dane .= '"'.$tmp['obcy'].'",';
-		    $dane .= '"'.$tmp['identyfikatora'].'",';
-		    $dane .= '"'.$tmp['identyfikatorb'].'",';
+		    $dane .= '"'.$UKE->trim($tmp['identyfikatora']).'",';
+		    $dane .= '"'.$UKE->trim($tmp['identyfikatorb']).'",';
 		    $dane .= '"'.$tmp['backbone_layer'].'",';
 		    $dane .= '"'.$tmp['distribution_layer'].'",';
 		    $dane .= '"'.$tmp['access_layer'].'",';
@@ -410,11 +420,11 @@ if (
 	    {
 		    $tmp = unserialize($ZAS[$i]['data']);
 		    $dane = 'ZS,';
-		    $dane .= $tmp['identyfikator'].',';
+		    $dane .= $UKE->trim($tmp['identyfikator']).',';
 		    $dane .= '"'.$tmp['wlasnosc'].'",';
 		    $dane .= '"'.$tmp['formaobca'].'",';
-		    $dane .= '"'.$tmp['identyfikatorobcy'].'",';
-		    $dane .= '"'.$tmp['networknode'].'",';
+		    $dane .= '"'.$UKE->trim($tmp['identyfikatorobcy']).'",';
+		    $dane .= '"'.$UKE->trim($tmp['networknode']).'",';
 		    $dane .= '"'.$tmp['states'].'",';
 		    $dane .= '"'.$tmp['districts'].'",';
 		    $dane .= '"'.$tmp['boroughs'].'",';
@@ -462,7 +472,7 @@ if (
 		    $tmp = unserialize($US[$i]['data']);
 		    $dane = 'U,';
 		    $dane .= ($i + 1).',';
-		    $dane .= $tmp['identyfikator'].',';
+		    $dane .= $UKE->trim($tmp['identyfikator']).',';
 		    $dane .= $tmp['isdn'].',';
 		    $dane .= $tmp['voip'].',';
 		    $dane .= $tmp['telmobile'].',';

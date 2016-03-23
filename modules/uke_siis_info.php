@@ -2,9 +2,9 @@
 
 
 /*
- *  iNET LMS
+ *  iLMS
  *
- *  (C) Copyright 2012 LMS iNET Developers
+ *  (C) Copyright 2015 iLMS Developers
  *
  *  Please, see the doc/AUTHORS for more information about authors!
  *
