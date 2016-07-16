@@ -147,8 +147,9 @@
 			<img src="img/phone.gif" alt="">
 		</td>
 		<td width="99%">
+			<font color='#a0a0ff'><b>{$item.operator_nazwa}</b> ({$item.operator_kod})</font> 
 			TEL.: {$item.phone|phone_format}
-			{if $item.typestr}[{$item.typestr}]{/if}
+			{if $item.typestr}[{$item.typestr}]{/if} 
 			{if $item.name} ({$item.name|truncate:"40":"...":true}){/if}
 		</td>
 	</tr>
