@@ -80,6 +80,7 @@ function homepage_start()
 	if (get_conf('homepage.box_system') && !check_conf('privileges.hide_sysinfo')) $pageview[] = 'box_system';
 	if (get_conf('homepage.box_lms') && !check_conf('privileges.hide_sysinfo')) $pageview[] = 'box_lms';
 	if (get_conf('homepage.box_totd')) $pageview[] = 'box_totd';
+	if (get_conf('homepage.box_smscenter')) $pageview[] = 'box_smscenter';
 	
 	$obj = new xajaxResponse();
 	
@@ -97,6 +98,25 @@ function homepage_start()
 			$SMARTY->assign('contractending7',$LMS->getIdContractEnding('7'));
 			$SMARTY->assign('contractnodata',$LMS->getIdContractEnding('-2'));
 			
+		} elseif ($pageview[$i] == 'box_smscenter') {
+
+if($cfg = $DB->GetAll('SELECT section, var, value FROM uiconfig WHERE disabled=0'))
+    foreach($cfg as $row)
+	$config[$row['section']][$row['var']] = $row['value'];
+
+$login=$config['sms']['username'];
+$pass=$config['sms']['password'];
+$smsy['warn']=$config['sms']['warn'];
+
+$balance_page="http://api.mobitex.pl/balance.php?user=".$login."&pass=".$pass;
+$curl = curl_init($balance_page);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+$odpowiedz=explode(" ",curl_exec($curl));
+curl_close($curl);
+$smsy['saldo']=$odpowiedz[1];
+if ($odpowiedz[0]=="ERROR") $smsy['saldo']="BŁĄD POBIERANIA DANYCH";
+$SMARTY->assign('smscenter', $smsy);
+
 		} elseif ($pageview[$i] == 'box_nodes') {
 			
 			$SMARTY->assign('nodestats', $LMS->NodeStats());
@@ -361,3 +381,4 @@ if (isset($_GET['boardadd'])) {
 }
 
 ?>
+
