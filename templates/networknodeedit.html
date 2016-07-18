@@ -267,13 +267,13 @@
 	</tr>
 	
 	<tr class="pglight">
-	    <td width="1%" nowrap align="left"><span class="tiphelp" {tip text="Możliwość instalacji anten dla radiowej sieci dostępowej lub anten dla radiolinii"}>Możliwość intalacji anten</span></td>
+	    <td width="1%" nowrap align="left"><span class="tiphelp" {tip text="Możliwość instalacji anten dla radiowej sieci dostępowej lub anten dla radiolinii"}>Możliwość instalacji anten</span></td>
 	    <td width="1%" class="pad">:</td>
 	    <td width="98%"  nowrap>{foreach $_TN as $item => $key}<input type="radio" name="networknode[instofanten]" id="id_instofanten{$item}" value="{$item}" {if $networknodeinfo.instofanten == $item} checked{/if}><label for="id_instofanten{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
 	
 	<tr class="pglight">
-	    <td width="1%" nowrap align="left">Możliwość intalacji masztu</td>
+	    <td width="1%" nowrap align="left">Możliwość instalacji masztu</td>
 	    <td width="1%" class="pad">:</td>
 	    <td width="98%"  nowrap>{foreach $_TN as $item => $key}<input type="radio" name="networknode[instmast]" id="id_instmast{$item}" value="{$item}" {if $networknodeinfo.instmast == $item}checked{/if}><label for="id_instmast{$item}">&nbsp;{$key}</label>{/foreach}</td>
 	</tr>
