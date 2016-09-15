@@ -96,6 +96,8 @@ if(!empty($_POST['qscustomer'])) {
 	$mode = $_GET['mode'];
 }
 
+$search = mb_strtoupper($search);
+
 $sql_search = $DB->Escape("%$search%");
 
 switch($mode)
@@ -115,19 +117,19 @@ switch($mode)
 			    $sql_search = "'%".$_search[$i]."%'";
 			    $sql .= "AND ("
 			    .(preg_match('/^[0-9]+$/', $_search[$i]) ? ' c.id = '.intval($_search[$i]).' OR ' : '')
-			    ."LOWER(c.name) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(c.lastname) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(c.address) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(c.post_name) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(c.post_address) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(c.email) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(c.ten) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(c.ssn) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(c.regon) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(c.rbe) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(c.icn) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(p.phone) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(i.uid) ?LIKE? LOWER($sql_search) 
+			    ."UPPER(c.name) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(c.lastname) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(c.address) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(c.post_name) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(c.post_address) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(c.email) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(c.ten) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(c.ssn) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(c.regon) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(c.rbe) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(c.icn) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(p.phone) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(i.uid) ?LIKE? UPPER($sql_search) 
 			    ) ";
 			}
 			
@@ -161,23 +163,23 @@ switch($mode)
 				    $descriptions[$row['id']] = escape_js(trans('Id:').' '.$row['id']);
 				    continue;
 				}
-				if (preg_match("~$search~i",$row['username'])) {
+				if (preg_match("~$search~i",mb_strtoupper($row['username']))) {
 				    $descriptions[$row['id']] = escape_js(trans('Address:').' '.$row['address']);
 				    continue;
 				}
-				if (preg_match("~$search~i",$row['address'])) {
+				if (preg_match("~$search~i",mb_strtoupper($row['address']))) {
 				    $descriptions[$row['id']] = escape_js(trans('Address:').' '.$row['address']);
 				    continue;
 				}
-				else if (preg_match("~$search~i",$row['post_name'])) {
+				else if (preg_match("~$search~i",mb_strtoupper($row['post_name']))) {
 				    $descriptions[$row['id']] = escape_js(trans('Name:').' '.$row['post_name']);
 				    continue;
 				}
-				else if (preg_match("~$search~i",$row['post_address'])) {
+				else if (preg_match("~$search~i",mb_strtoupper($row['post_address']))) {
 				    $descriptions[$row['id']] = escape_js(trans('Address:').' '.$row['post_address']);
 				    continue;
 				}
-				if (preg_match("~$search~i",$row['email'])) {
+				if (preg_match("~$search~i",mb_strtoupper($row['email']))) {
 				    $descriptions[$row['id']] = escape_js(trans('E-mail:').' '.$row['email']);
 				    continue;
 				}
@@ -240,12 +242,12 @@ switch($mode)
 			    $sql_search = "'%".$_search[$i]."%'";
 			    $sql .= "AND ("
 			    .(preg_match('/^[0-9]+$/', $_search[$i]) ? ' id = '.intval($_search[$i]).' OR ' : '')
-			    ."LOWER(name) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(location) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(description) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(producer) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(model) ?LIKE? LOWER($sql_search) 
-			    OR LOWER(serialnumber) ?LIKE? LOWER($sql_search) 
+			    ."UPPER(name) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(location) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(description) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(producer) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(model) ?LIKE? UPPER($sql_search) 
+			    OR UPPER(serialnumber) ?LIKE? UPPER($sql_search) 
 			    ) ";
 			}
 			
@@ -267,33 +269,33 @@ switch($mode)
 					    $descriptions[$row['id']] .= ('ID') . ' ';
 				    }
 				    
-				    if (preg_match("~$search~i",$row['name'])) {
+				    if (preg_match("~$search~i",mb_strtoupper($row['name']))) {
 					$res = stripos($descriptions[$row['id']],'Nazwa'); 
 					if (empty($res))
 					    $descriptions[$row['id']] .= ('Nazwa') . ' ';
 				    }
 				    
 				    
-				    if (preg_match("~$search~i",$row['description'])) {
+				    if (preg_match("~$search~i",mb_strtoupper($row['description']))) {
 					$tmp = strtoupper($descriptions[$row['id']]);
 					$res = stripos("$tmp","OPIS");
 					if ($res=='')
 					    $descriptions[$row['id']] .= ('Opis') . ' ';
 				    }
 				    
-				    if (preg_match("~$search~i",$row['producer'])) {
+				    if (preg_match("~$search~i",mb_strtoupper($row['producer']))) {
 				        $res = stripos($descriptions[$row['id']],'Producent');
 				        if (empty($res))
 					    $descriptions[$row['id']] .= ('Producent') . ' ';
 				    }
 				    
-				    if (preg_match("~$search~i",$row['model'])) {
+				    if (preg_match("~$search~i",mb_strtoupper($row['model']))) {
 					$res = stripos(strtoupper($descriptions[$row['id']]),'MODEL');
 					if (empty($res))
 					    $descriptions[$row['id']] .= ('Model') . ' ';
 				    }
 				    
-				    if (preg_match("~$search~i",$row['serialnumber'])) {
+				    if (preg_match("~$search~i",mb_strtoupper($row['serialnumber']))) {
 					$res = stripos($descriptions[$row['id']],'S/N');
 					if (empty($res))
 					    $descriptions[$row['id']] .= ('S/N') . ' ';
@@ -365,12 +367,12 @@ switch($mode)
     				ORDER BY n.name LIMIT '.$xlimit.'';
 
             $sql_where = '('.(preg_match('/^[0-9]+$/',$search) ? "n.id = $search OR " : '')."
-				LOWER(n.name) ?LIKE? LOWER($sql_search)
-				OR LOWER(n.pppoelogin) ?LIKE? LOWER($sql_search)
-				OR LOWER(n.sn) ?LIKE? LOWER($sql_search)
+				UPPER(n.name) ?LIKE? UPPER($sql_search)
+				OR UPPER(n.pppoelogin) ?LIKE? UPPER($sql_search)
+				OR UPPER(n.sn) ?LIKE? UPPER($sql_search)
 				OR INET_NTOA(ipaddr) ?LIKE? $sql_search
 				OR INET_NTOA(ipaddr_pub) ?LIKE? $sql_search
-				OR LOWER(mac) ?LIKE? LOWER(".macformat($search, true)."))
+				OR UPPER(mac) ?LIKE? UPPER(".macformat($search, true)."))
 			    AND NOT EXISTS (
                     SELECT 1 FROM customerassignments a
                     JOIN excludedgroups e ON (a.customergroupid = e.customergroupid)
@@ -393,11 +395,11 @@ switch($mode)
 				    $descriptions[$row['id']] = escape_js(trans('Id').': '.$row['id']);
 				    continue;
 				}
-				if (preg_match("~$search~i", $row['name'])) {
+				if (preg_match("~$search~i", mb_strtoupper($row['name']))) {
 				    $descriptions[$row['id']] = escape_js(trans('Name').': '.$row['name']);
 				    continue;
 				}
-				if (preg_match("~$search~i", $row['pppoelogin'])) {
+				if (preg_match("~$search~i", mb_strtoupper($row['pppoelogin']))) {
 				    $descriptions[$row['id']] = escape_js(trans('PPPoE').': '.$row['pppoelogin']);
 				    continue;
 				}
@@ -474,10 +476,10 @@ switch($mode)
 				LEFT JOIN customersview c on (t.customerid = c.id)
 				WHERE ".(is_array($catids) ? "tc.categoryid IN (".implode(',', $catids).")" : "tc.categoryid IS NULL")
 					." AND (".(preg_match('/^[0-9]+$/',$search) ? 't.id = '.intval($search).' OR ' : '')."
-					LOWER(t.subject) ?LIKE? LOWER($sql_search)
-					OR LOWER(t.requestor) ?LIKE? LOWER($sql_search)
-					OR LOWER(c.name) ?LIKE? LOWER($sql_search)
-					OR LOWER(c.lastname) ?LIKE? LOWER($sql_search))
+					UPPER(t.subject) ?LIKE? UPPER($sql_search)
+					OR UPPER(t.requestor) ?LIKE? UPPER($sql_search)
+					OR UPPER(c.name) ?LIKE? UPPER($sql_search)
+					OR UPPER(c.lastname) ?LIKE? UPPER($sql_search))
 					ORDER BY t.subject, t.id, c.lastname, c.name, t.requestor
 					LIMIT ".$xlimit."");
 
@@ -527,14 +529,14 @@ switch($mode)
 			$candidates = $DB->GetAll("(SELECT p.id, p.login, d.name AS domain, 0 AS type
 					FROM passwd p
 					JOIN domains d ON (p.domainid = d.id)
-					WHERE p.login ?LIKE? LOWER($username)
-					".($domain ? "AND d.name ?LIKE? LOWER($domain)" : '').")
+					WHERE p.login ?LIKE? UPPER($username)
+					".($domain ? "AND d.name ?LIKE? UPPER($domain)" : '').")
 					UNION 
 					(SELECT a.id, a.login, d.name AS domain, 1 AS type 
 					FROM aliases a
 					JOIN domains d ON (a.domainid = d.id)
-					WHERE a.login ?LIKE? LOWER($username)
-					".($domain ? "AND d.name ?LIKE? LOWER($domain)" : '').")
+					WHERE a.login ?LIKE? UPPER($username)
+					".($domain ? "AND d.name ?LIKE? UPPER($domain)" : '').")
 					ORDER BY login, domain
 					LIMIT ".$xlimit."");
 
@@ -575,7 +577,7 @@ switch($mode)
 					d.customerid AS cid, d.name AS customername
 				FROM documents d
 				JOIN customersview c on d.customerid = c.id
-				WHERE (LOWER(d.fullnumber) ?LIKE? LOWER($sql_search)
+				WHERE (UPPER(d.fullnumber) ?LIKE? UPPER($sql_search)
 					OR 1 = 0)
 					ORDER BY d.fullnumber
 					LIMIT ".$xlimit."");
@@ -617,7 +619,7 @@ switch($mode)
 		$docs = $DB->GetAll("SELECT d.id, d.type, d.customerid AS cid, d.name AS customername
 			FROM documents d
 			JOIN customersview c ON c.id = d.customerid
-			WHERE LOWER(fullnumber) ?LIKE? LOWER($sql_search)");
+			WHERE UPPER(fullnumber) ?LIKE? UPPER($sql_search)");
 		if (count($docs) == 1) {
 			$cid = $docs[0]['cid'];
 /*
