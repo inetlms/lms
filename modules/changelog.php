@@ -42,6 +42,19 @@ $changelog = array(
 //	    'status'	=> '',
 //	    'opis'	=> 'dodano w słownikach podmioty obce korzystające lub współdzielące infrastrukturę telekomunikacyjną',
 //	),
+	
+	array(
+	    'data'	=> '2016-11-20',
+	    'status'	=> '',
+	    'opis'	=> 'dodano możliwość zdefiniowania ilości znaków w kodzie PIN od 4 do 12 znaków, zmienna pin_size, sekcja phpui, ',
+	),
+	
+	array(
+	    'data'	=> '2016-11-18',
+	    'status'	=> '',
+	    'opis'	=> 'poprawka listy klientów, sortowanie po abonamencie',
+	),
+	
 	array(
 	    'data'	=> '2016-02-06',
 	    'status'	=> '',

@@ -103,7 +103,7 @@ elseif (isset($_POST['customerdata']))
 
 	if($customerdata['pin'] == '')
 		$error['pin'] = trans('PIN code is required!');
-	elseif(!preg_match('/^[0-9]{4,6}$/',$customerdata['pin']))
+	elseif(!preg_match('/^[0-9]{4,12}$/',$customerdata['pin']))
 		$error['pin'] = trans('Incorrect PIN code!');
 
 	if($customerdata['status'] == 1 && $LMS->GetCustomerNodesNo($customerdata['id'])) 
@@ -246,6 +246,18 @@ include(MODULES_DIR.'/customer_xajax.inc.php');
 $LMS->InitXajax();
 $LMS->RegisterXajaxFunction(array('get_list_annex','delete_file_annex'));
 $SMARTY->assign('xajax', $LMS->RunXajax());
+
+$pinsize = get_conf('phpui.pin_size',6);
+
+if (!$pinsize || !intval($pinsize))
+    $pinsize = 6;
+elseif ($pinsize < 4 && $pinsize > 12)
+    $pinsize = 6;
+$pinsizestr = '1';
+for ($i=0; $i<$pinsize; $i++)
+    $pinsizestr .= '0';
+    
+$SMARTY->assign('pinsizestr',$pinsizestr);
 
 
 $SMARTY->assign('originlist',$DB->GetAll('SELECT id, name FROM customerorigin ORDER BY name;'));

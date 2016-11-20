@@ -10,7 +10,7 @@
 		
 		var r = 0;
 		do
-			r = Math.floor(Math.random()*1000000-1);
+			r = Math.floor(Math.random()* {$pinsizestr} -1);
 		while (r<1000);
 		document.customeredit.elements['customerdata[pin]'].value = r;
 	}
@@ -462,7 +462,7 @@
 			<img src="img/pin.gif" alt="">
 		</td>
 		<td width="98%">
-			<input type="text" name="customerdata[pin]" value="{if $customerinfo.pin}{$customerinfo.pin}{/if}" size="6" {tip text="Enter 4 to 6 digits PIN number (optional)" trigger="pin"}>&nbsp;
+			<input type="text" name="customerdata[pin]" value="{if $customerinfo.pin}{$customerinfo.pin}{/if}" size="12" {tip text="Enter 4 to 6 digits PIN number (optional)" trigger="pin"}>&nbsp;
 			<a href="javascript: randomize()" {tip text="Generate PIN"}>&raquo;&raquo;&raquo;</a>
 		</td>
 	</tr>

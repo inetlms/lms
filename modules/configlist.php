@@ -307,6 +307,10 @@ function GetConfigList($order='var,asc', $section='', $search='')
 					$config[$idx]['description'] = 'Dodaje link umożliwiający usunięcie naliczonego zobowiązania w karcie klienta, box konto klienta';
 				break;
 				
+				case 'pin_size':
+					$config[$idx]['description'] = 'Ilość znaków w kodzie PIN , dozwolona wartość od 4 do 12, DEF.: 6';
+				break;
+				
 				case 'allow_from':
 					$config[$idx]['description'] = trans('List of networks and IP addresses, with access to LMS. If empty, every IP address has access to LMS. When you write list of addresses or address pools here, LMS will dismiss every unwanted user with HTTP 403 error.');
 				break;

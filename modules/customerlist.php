@@ -59,6 +59,7 @@ function GetCustomerList($order = 'customername,asc', $state = NULL, $network = 
 	case 'address'	: $sqlord = ' ORDER BY address';break;
 	case 'balance'	: $sqlord = ' ORDER BY balance'; break;
 	case 'tariff'	: $sqlord = ' ORDER BY tariffvalue'; break;
+//	case 'tariff'	: $sqlord = ' ORDER BY t.value'; break;
 	default		: $sqlord = ' ORDER BY customername'; break;
     }
 
@@ -264,7 +265,7 @@ function GetCustomerList($order = 'customername,asc', $state = NULL, $network = 
     if (!$_cache) 
     {
     $preload = $DB->GetAll(
-	'SELECT c.id AS id, ' . $DB->Concat('UPPER(lastname)', "' '", 'c.name') . ' AS customername , COALESCE(b.value, 0) AS balance 
+	'SELECT c.id AS id, ' . $DB->Concat('UPPER(lastname)', "' '", 'c.name') . ' AS customername , COALESCE(b.value, 0) AS balance, COALESCE(t.value, 0) AS tariffvalue 
 	FROM customersview c
 	LEFT JOIN countries ON (c.countryid = countries.id) '
 	. ($customergroup ? 'LEFT JOIN customerassignments ON (c.id = customerassignments.customerid) ' : '')
@@ -274,7 +275,7 @@ function GetCustomerList($order = 'customername,asc', $state = NULL, $network = 
 		FROM cash 
 		GROUP BY customerid
 	) b ON (b.customerid = c.id) ')
-	.($indebted3 || $indebted2 ? ' LEFT JOIN (SELECT a.customerid,
+	.' LEFT JOIN (SELECT a.customerid,
 		SUM((CASE a.suspended
 		WHEN 0 THEN (((100 - a.pdiscount) * (CASE WHEN t.value IS NULL THEN l.value ELSE t.value END) / 100) - a.vdiscount)
 		ELSE ((((100 - a.pdiscount) * (CASE WHEN t.value IS NULL THEN l.value ELSE t.value END) / 100) - a.vdiscount) * ' . $suspension_percentage . ' / 100) END)
@@ -296,7 +297,7 @@ function GetCustomerList($order = 'customername,asc', $state = NULL, $network = 
 		LEFT JOIN liabilities l ON (l.id = a.liabilityid AND a.period != ' . DISPOSABLE . ')
 		WHERE (a.datefrom <= ?NOW? OR a.datefrom = 0) AND (a.dateto > ?NOW? OR a.dateto = 0) 
 		GROUP BY a.customerid
-	) t ON (t.customerid = c.id)' : '')
+	) t ON (t.customerid = c.id)' 
 	.((
 	    ($online ) ||
 	    (!$odlaczeni && $disabled) || ($odlaczeni && $disabled == 1) || ($odlaczeni && $disabled == 2) || ($odlaczeni && $disabled == 3) || 
@@ -403,7 +404,7 @@ function GetCustomerList($order = 'customername,asc', $state = NULL, $network = 
 	COALESCE(t.value, 0) AS tariffvalue, s.account, s.warncount, s.online, s.blockcount,
 	c.type AS customertype, cutoffstop, 
 	(SELECT max(cash.time) FROM cash WHERE cash.customerid = c.id) AS lastcash,
-	(CASE WHEN s.account = s.acsum THEN 1 WHEN s.acsum > 0 THEN 2	ELSE 0 END) AS nodeac,
+	(CASE WHEN s.account = s.acsum THEN 1 WHEN s.acsum > 0 THEN 2 ELSE 0 END) AS nodeac,
 	(CASE WHEN s.warncount = s.warnsum THEN 1 WHEN s.warnsum > 0 THEN 2 ELSE 0 END) AS nodewarn,
 	(CASE WHEN s.blockcount = s.blocksum THEN 1 WHEN s.blocksum > 0 THEN 2 ELSE 0 END) as nodeblock 
 	FROM customersview c

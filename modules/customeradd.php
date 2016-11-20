@@ -145,7 +145,7 @@ if (isset($_POST['customeradd']))
 
 	if($customeradd['pin'] == '')
 		$error['pin'] = trans('PIN code is required!');
-        elseif(!preg_match('/^[0-9]{4,6}$/', $customeradd['pin']))
+        elseif(!preg_match('/^[0-9]{4,12}$/', $customeradd['pin']))
 	        $error['pin'] = trans('Incorrect PIN code!');
 
 	if($customeradd['email']!='' && !check_email($customeradd['email']))
@@ -342,6 +342,18 @@ $LMS->InitXajax();
 $LMS->RegisterXajaxFunction(array('check_isset_icn','check_isset_ssn','check_isset_ten','check_isset_regon','check_isset_customer'));
 
 $SMARTY->assign('xajax', $LMS->RunXajax());
+
+$pinsize = get_conf('phpui.pin_size',6);
+
+if (!$pinsize || !intval($pinsize))
+    $pinsize = 6;
+elseif ($pinsize < 4 && $pinsize > 12)
+    $pinsize = 6;
+$pinsizestr = '1';
+for ($i=0; $i<$pinsize; $i++)
+    $pinsizestr .= '0';
+    
+$SMARTY->assign('pinsizestr',$pinsizestr);
 
 $SMARTY->assign('cstateslist', $LMS->GetCountryStates());
 $SMARTY->assign('originlist',$DB->GetAll('SELECT id, name FROM customerorigin ORDER BY name;'));

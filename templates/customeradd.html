@@ -9,7 +9,7 @@
 	{
 		var r = 0;
 		do
-			r = Math.floor(Math.random()*1000000-1);
+			r = Math.floor(Math.random()* {$pinsizestr} -1);
 		while (r<1000);
 		document.customeradd.elements['customeradd[pin]'].value = r;
 	}
@@ -452,7 +452,7 @@
 						<img src="img/pin.gif" alt="">
 					</td>
 					<td width="99%">
-						<input type="text" size="6" value="{if $customeradd.pin}{$customeradd.pin}{/if}" name="customeradd[pin]" {tip text="Enter 4 to 6 digits PIN number (optional)" trigger="pin"}>&nbsp;<a href="javascript: randomize()" {tip text="Generate random PIN"}>&raquo;&raquo;&raquo;</a>
+						<input type="text" size="12" value="{if $customeradd.pin}{$customeradd.pin}{/if}" name="customeradd[pin]" {tip text="Enter 4 to 6 digits PIN number (optional)" trigger="pin"}>&nbsp;<a href="javascript: randomize()" {tip text="Generate random PIN"}>&raquo;&raquo;&raquo;</a>
 					</td>
 				</tr>
 				{else}
