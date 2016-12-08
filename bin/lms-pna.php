@@ -34,6 +34,7 @@ $parameters = array(
 	'v' => 'version',
 	'f' => 'fetch',
 	'u' => 'update',
+	'l:' => 'list:',
 );
 
 foreach ($parameters as $key => $val) {
@@ -68,6 +69,7 @@ lms-pna.php
 -C, --config-file=/etc/lms/lms.ini      alternate config file (default: /etc/lms/lms.ini);
 -f, --fetch                     fetch PNA file from server;
 -u, --update                    update PNA database using PNA file;
+-l, --list=<list>               comma-separated list of state IDs;
 -h, --help                      print this help and exit;
 -v, --version                   print version info and exit;
 -q, --quiet                     suppress any output, except errors;
@@ -160,6 +162,31 @@ define('BOROUGH', 4);
 define('DISTRICT', 5);
 define('STATE', 6);
 
+$states = array(
+	2 => 'dolnosląskie',
+	4 => 'kujawsko-pomorskie',
+	6 => 'lubelskie',
+	8 => 'lubuskie',
+	10 => 'łódzkie',
+	12 => 'małopolskie',
+	14 => 'mazowieckie',
+	16 => 'opolskie',
+	18 => 'podkarpackie',
+	20 => 'podlaskie',
+	22 => 'pomorskie',
+	24 => 'śląskie',
+	26 => 'świętokrzyskie',
+	28 => 'warmińsko-mazurskie',
+	30 => 'wielkopolskie',
+	32 => 'zachodniopomorskie',
+);
+
+$list = array_key_exists('list', $options) ? $options['list'] : '';
+if (preg_match('/^[0-9]+(,[0-9]+)*$/', $list)) {
+	$list = array_flip(explode(',', $list));
+	$states = array_intersect_key($states, $list);
+}
+
 $cols = array(
 	PNA => "PNA",
 	CITY => "Miejscowość",
@@ -169,6 +196,18 @@ $cols = array(
 	DISTRICT => "Powiat",
 	STATE => "Województwo"
 );
+
+
+$cols = array(
+	PNA => "PNA",
+	CITY => "Miejscowość",
+	STREET => "Ulica",
+	HOUSE => "Numery",
+	BOROUGH => "Gmina",
+	DISTRICT => "Powiat",
+	STATE => "Województwo"
+);
+
 
 function convert_pna_to_teryt($data) {
 	global $DB, $cols;
@@ -283,17 +322,17 @@ function convert_pna_to_teryt($data) {
 		printf("city=%s", implode(",", $data[CITY]));
 		if (!empty($data[STREET][0]))
 			printf(" street=%s", implode(",", $data[STREET]));
-		printf(" not found.\n");
+		printf(" not found." . PHP_EOL);
 	}
 }
 
 if ($fetch) {
 	$fh = fopen("compress.zlib://http://lms.org.pl/spispna.txt.gz", "r");
 	if (!$fh)
-		die("Unable to fetch http://lms.org.pl/spispna.txt.gz!\n");
+		die("Unable to fetch http://lms.org.pl/spispna.txt.gz!" . PHP_EOL);
 	$lh = fopen("spispna.txt", "w");
 	if (!$lh)
-		die("Unable to create spispna.txt file!\n");
+		die("Unable to create spispna.txt file!" . PHP_EOL);
 
 	while (!feof($fh)) {
 		$line = fgets($fh, 1024);
@@ -307,18 +346,19 @@ if ($fetch) {
 if ($update) {
 	$fh = fopen("spispna.txt", "r");
 	if (!$fh)
-		die("Unable to open spispna.txt file!\n");
+		die("Unable to open spispna.txt file!" . PHP_EOL);
 
 	$DB->Execute("DELETE FROM pna");
 	while (!feof($fh)) {
 		$line = fgets($fh, 200);
-		$line = mb_ereg_replace("\n$", "", $line);
+		$line = mb_ereg_replace(PHP_EOL . "$", "", $line);
 		$data = mb_split(";", $line);
-		if (mb_ereg_match("^[[:digit:]]{2}-[[:digit:]]{3}$", $data[PNA]))
+		if (mb_ereg_match("^[0-9]{2}-[0-9]{3}$", $data[PNA]) && in_array($data[STATE], $states))
 			convert_pna_to_teryt($data);
 	}
 
 	fclose($fh);
+
 }
 
 ?>
