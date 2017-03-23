@@ -516,7 +516,7 @@ if (
 	    header("Content-Disposition: attachment; filename=\"".$filename."\"");
 	    header("Accept-Ranges: bytes");
 	    header("Content-Transfer-Encoding: binary");
-	    header("Content-Length : ".filesize($fullname)."");
+	    header("Content-Length: ".filesize($fullname)."");
 	    readfile($fullname);
 
 	}
